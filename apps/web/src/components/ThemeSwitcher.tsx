@@ -21,8 +21,8 @@ function write(theme: Theme) {
   listeners.forEach((listener) => listener());
 }
 
-/** One button: shows the current choice (Auto, Light or Dark) and cycles on tap. */
-export function ThemeSwitcher() {
+/** One button: shows the current choice (Auto, Light or Dark) and cycles on tap. `plain` swaps the black outline for the quiet one the menu rows use. */
+export function ThemeSwitcher({ plain = false }: { plain?: boolean }) {
   const { t } = useLingui();
   // The server cannot know the cookie, so it renders "auto"; the browser then corrects it.
   const theme = useSyncExternalStore(subscribe, read, () => "auto" as Theme);
@@ -34,8 +34,8 @@ export function ThemeSwitcher() {
     <button
       type="button"
       onClick={() => write(nextTheme(theme))}
-      aria-label={t`画面の明るさ：${label}。押すと切り替わります。`}
-      className="inline-flex min-h-12 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-ink bg-paper px-3.5 text-base font-bold text-ink hover:bg-surface [&>svg]:size-5"
+      aria-label={t`テーマ：${label}。押すと切り替わります。`}
+      className={`inline-flex min-h-12 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border bg-paper px-3.5 text-base font-bold text-ink hover:bg-surface [&>svg]:size-5 ${plain ? "border-line" : "border-ink"}`}
     >
       {icon}
       <span>{label}</span>

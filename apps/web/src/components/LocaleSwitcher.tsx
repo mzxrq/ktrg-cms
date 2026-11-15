@@ -47,7 +47,7 @@ export function LocaleSwitcher() {
  * The same choice as a drop-down, small enough for the menu's top row (next to its close button), so the language is
  * always one tap away without a block of its own inside the menu.
  */
-export function LocaleSelect() {
+export function LocaleSelect({ plain = false }: { plain?: boolean }) {
   const { t, i18n } = useLingui();
   const router = useRouter();
   return (
@@ -60,7 +60,7 @@ export function LocaleSelect() {
         rememberLocale(next);
         router.refresh();
       }}
-      className="min-h-12 rounded-full border border-ink bg-paper px-3.5 text-base font-bold text-ink hover:bg-surface"
+      className={`min-h-12 rounded-full border bg-paper px-3.5 text-base font-bold text-ink hover:bg-surface ${plain ? "border-line" : "border-ink"}`}
     >
       {locales.map((locale) => (
         <option key={locale} value={locale} lang={locale}>

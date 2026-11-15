@@ -246,19 +246,19 @@ export function SiteHeader({
             </MenuGroup>
 
             <MenuGroup title={t`表示と設定`}>
-              {/* Brightness and language side by side, each its own section (a label over a full-width control). */}
-              <div className="grid grid-cols-2 gap-3 [&_button]:w-full [&_button]:justify-center [&_select]:w-full">
-                <div className="flex min-w-0 flex-col gap-1">
-                  <p className="text-lg font-bold">{t`画面の明るさ`}</p>
-                  <ThemeSwitcher />
-                </div>
-                <div className="flex min-w-0 flex-col gap-1">
-                  <p className="text-lg font-bold">{t`言語`}</p>
-                  <LocaleSelect />
-                </div>
-              </div>
               <div className="flex flex-col gap-2">
-                <QuickActions prefs={prefs} signedIn={signedIn} />
+                {/* One light list, the same rows as the settings page: the words on the left, the switch or the choice on the right. */}
+                <div className="divide-y divide-line/40 overflow-hidden rounded-[1.75rem] bg-surface">
+                  <QuickActions prefs={prefs} signedIn={signedIn} />
+                  <div className="tap-target flex items-center gap-4 px-4 py-3">
+                    <span className="min-w-0 flex-1 text-lg font-bold">{t`テーマ`}</span>
+                    <ThemeSwitcher plain />
+                  </div>
+                  <div className="tap-target flex items-center gap-4 px-4 py-3">
+                    <span className="min-w-0 flex-1 text-lg font-bold">{t`言語`}</span>
+                    <LocaleSelect plain />
+                  </div>
+                </div>
                 <MenuLinks>
                   <MenuLink href="/settings" label={t`見やすさの設定`} />
                 </MenuLinks>

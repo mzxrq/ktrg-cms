@@ -8484,3 +8484,15 @@ msgstr "右上の「追加」を押します"
 #: src/components/InstallSteps.tsx
 msgid "ホーム画面に葛城修験のアイコンが並びます"
 msgstr "ホーム画面に葛城修験のアイコンが並びます"
+
+#: src/components/QuickActions.tsx
+msgid "文字を大きくする"
+msgstr "文字を大きくする"
+
+#: src/components/SiteHeader.tsx
+msgid "テーマ"
+msgstr "テーマ"
+
+#: src/components/ThemeSwitcher.tsx
+msgid "テーマ：{label}。押すと切り替わります。"
+msgstr "テーマ：{label}。押すと切り替わります。"
