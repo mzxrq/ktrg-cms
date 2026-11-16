@@ -1,13 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type MouseEvent, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { useLingui } from "@lingui/react/macro";
 import { buttonStyle } from "@/components/button";
 import { useDistanceText } from "@/components/map/PlacesPanel";
 import { formatUpdated } from "@/lib/format";
 import { pickText } from "@/lib/pick-text";
-import type { BookPage } from "@/lib/rally-book";
+import { WIDE_QUERY, watchQuery } from "@/lib/screen";
+import { NameRuby } from "./Ruby";
+import { BOOK_SIDE_ID, type BookPage } from "@/lib/rally-book";
 import { moveTo, turnIn, walkSeconds } from "@/lib/rally-motion";
 import { isDone } from "@/lib/rally-trail";
 import { ChevronIcon } from "./icons";
@@ -15,8 +18,13 @@ import { RoutePhoto } from "./RoutePhoto";
 import { StatusWord } from "./StatusWord";
 import { Walker } from "./Walker";
 
+const subscribeWide = (onChange: () => void) => watchQuery(WIDE_QUERY, onChange);
+const isWide = () => window.matchMedia(WIDE_QUERY).matches;
+
+
 /**
- * The trail (its children) with a book page for each place. Pressing a place's card opens its page over the trail; the
+ * The trail (its children) with a book page for each place. On a wide screen the page opens in the right column under the
+ * stamps instead of over the trail (2026-11-16, user: the page has two columns, so no pop-up there). Pressing a place's card opens its page over the trail; the
  * arrows turn to the next and previous place; closing returns to the trail. Without scripts a card is still a link to the
  * place's own page, where the stamp is pressed. The rising and fading comes from the shared dialog motion.
  */
@@ -31,13 +39,22 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
   const dir = useRef<1 | -1>(1);
   const [index, setIndex] = useState<number | null>(null);
   const page = index === null ? null : (pages[index] ?? null);
+  const wide = useSyncExternalStore(subscribeWide, isWide, () => false);
+  const heading = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     const d = ref.current;
     if (!d) return;
-    if (page && !d.open) d.showModal();
-    if (!page && d.open) d.close();
-  }, [page]);
+    if (page && !wide && !d.open) d.showModal();
+    if ((!page || wide) && d.open) d.close();
+  }, [page, wide]);
+
+  // In the column the page opens beside the trail: bring it into view and move the focus to its name.
+  useEffect(() => {
+    if (!wide || index === null) return;
+    heading.current?.focus({ preventScroll: true });
+    document.getElementById(BOOK_SIDE_ID)?.scrollIntoView({ block: "nearest", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }, [wide, index]);
 
   // A turn of the page, and the trail's walker following the page that is open (home again when the book closes).
   useLayoutEffect(() => {
@@ -45,6 +62,7 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
     was.current = index;
     if (index !== null && before !== null && before !== index) {
       ref.current?.scrollTo(0, 0);
+      document.getElementById(BOOK_SIDE_ID)?.scrollTo(0, 0);
       if (article.current) turnIn(article.current, dir.current);
     }
     const walker = root.current?.querySelector<SVGElement>("[data-trail-walker]");
@@ -73,7 +91,7 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
   };
 
   const pick = (ja: string | null, en: string | null) => (ja === null ? null : pickText(locale, ja, en));
-  const name = page ? (pick(page.nameJa, page.nameEn) ?? { text: page.nameJa, lang: "ja" as const }) : null;
+  const name = page ? (pick(page.nameJa, page.nameEn) ?? { text: page.nameJa, lang: "ja" as const, fallback: false }) : null;
   const line = page ? pick(page.descriptionJa, page.descriptionEn) : null;
   const history = page ? pick(page.historyJa, page.historyEn) : null;
   const note = page ? pick(page.statusNoteJa, page.statusNoteEn) : null;
@@ -86,23 +104,8 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
   const when = page?.stampedAt ? formatUpdated(locale, page.stampedAt) : "";
   const counted = pages.filter((p) => p.number !== null).length;
 
-  return (
-    <>
-      <div ref={root} onClickCapture={open}>
-        {children}
-      </div>
-      <dialog
-        ref={ref}
-        aria-label={name?.text}
-        onClose={() => setIndex(null)}
-        onClick={(e) => e.target === ref.current && setIndex(null)}
-        onKeyDown={(e) => {
-          if (e.key === "ArrowLeft") turn(-1);
-          if (e.key === "ArrowRight") turn(1);
-        }}
-        className="m-auto max-h-[92dvh] w-[min(34rem,calc(100vw-1.5rem))] overflow-y-auto rounded-[1.75rem] border-2 border-ink bg-paper p-0 text-ink backdrop:bg-black/60"
-      >
-        {page && name ? (
+  const content =
+    page && name ? (
           <article ref={article} className="flex flex-col">
             <div className="relative aspect-[16/10]">
               <RoutePhoto src={page.photoUrl} alt={name.text} />
@@ -110,10 +113,10 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
             <div className="flex flex-col gap-4 p-5">
               <header className="flex flex-col gap-1">
                 {page.number !== null ? <p className="text-base text-muted">{`${page.number} / ${counted}`}</p> : null}
-                <h2 lang={name.lang} className="font-serif text-2xl font-bold leading-snug text-accent">
-                  {name.text}
+                {/* The reading over the kanji, as on the course page (NameRuby: Japanese only, a reading a person typed). */}
+                <h2 ref={heading} tabIndex={-1} lang={name.lang} className="font-serif text-2xl font-bold leading-[2] text-accent focus:outline-none">
+                  <NameRuby title={name} reading={page.nameKana} />
                 </h2>
-                {page.nameKana ? <p className="text-base text-muted">{page.nameKana}</p> : null}
               </header>
 
               <p className="text-lg font-bold">
@@ -122,7 +125,8 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
                 ) : page.state === "stamped" ? (
                   <span className="text-moss">{t`押した`}</span>
                 ) : page.state === "next" ? (
-                  <span className="text-accent">{t`つぎ`}</span>
+                  // The place to stamp next stands out (2026-11-16, user: a plain つぎ was easy to miss). White on brand red is for large bold words only.
+                  <span className="inline-flex items-center rounded-full bg-brand px-4 py-1 text-xl font-bold text-paper">{t`つぎに押す場所`}</span>
                 ) : page.state === "todo" ? (
                   <span className="text-muted">{t`まだ`}</span>
                 ) : null}
@@ -203,7 +207,27 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
               </div>
             </div>
           </article>
-        ) : null}
+    ) : null;
+  const side = wide && typeof document !== "undefined" ? document.getElementById(BOOK_SIDE_ID) : null;
+
+  return (
+    <>
+      {side && content ? createPortal(<section aria-label={name?.text} className="overflow-hidden rounded-[1.75rem] border-2 border-ink bg-paper">{content}</section>, side) : null}
+      <div ref={root} onClickCapture={open}>
+        {children}
+      </div>
+      <dialog
+        ref={ref}
+        aria-label={name?.text}
+        onClose={() => setIndex(null)}
+        onClick={(e) => e.target === ref.current && setIndex(null)}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft") turn(-1);
+          if (e.key === "ArrowRight") turn(1);
+        }}
+        className="m-auto max-h-[92dvh] w-[min(34rem,calc(100vw-1.5rem))] overflow-y-auto rounded-[1.75rem] border-2 border-ink bg-paper p-0 text-ink backdrop:bg-black/60"
+      >
+        {wide ? null : content}
       </dialog>
     </>
   );

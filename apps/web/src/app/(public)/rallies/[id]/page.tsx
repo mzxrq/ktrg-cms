@@ -11,6 +11,7 @@ import { SaveBookmark } from "@/components/SaveBookmark";
 import { RallyNearbyStamp } from "@/components/RallyNearbyStamp";
 import { Bar } from "@/components/RallyViews";
 import { RallyBook } from "@/components/RallyBook";
+import { BOOK_SIDE_ID } from "@/lib/rally-book";
 import { RallyTrail } from "@/components/RallyTrail";
 import { Medal } from "@/components/Medal";
 import { StampGrid } from "@/components/StampGrid";
@@ -167,7 +168,8 @@ export default async function RallyPage({ params, searchParams }: Props) {
       </div>
 
       {/* The stamp faces: on a phone they come after the buttons, on a wide screen they stand in the right column. */}
-      <div className="order-6 wide:sticky wide:top-4 wide:order-none">
+      {/* On a wide screen the column also holds the place page that is open (RallyBook), so it scrolls within the screen's height. */}
+      <div className="order-6 wide:sticky wide:top-4 wide:order-none wide:flex wide:max-h-[calc(100dvh-2rem)] wide:flex-col wide:gap-4 wide:overflow-y-auto">
       {rally.total > 0 ? (
         <section className="flex flex-col gap-3 px-4 wide:rounded-[1.75rem] wide:bg-surface wide:p-6">
           <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
@@ -177,6 +179,7 @@ export default async function RallyPage({ params, searchParams }: Props) {
           <StampGrid total={rally.total} stamped={stampedNumbers(rally)} showNext={rally.stamped !== null} />
         </section>
       ) : null}
+      <div id={BOOK_SIDE_ID} className="hidden empty:hidden wide:block" />
       </div>
     </div>
   );

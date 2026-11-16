@@ -67,7 +67,7 @@ msgid "{0}m · {1}km · {slopeWords}"
 msgstr "{0}m · {1}km · {slopeWords}"
 
 #. placeholder {0}: rally.total
-#: src/app/(public)/rallies/[id]/page.tsx:121
+#: src/app/(public)/rallies/[id]/page.tsx:122
 msgid "{0}か所、すべてそろいました。"
 msgstr "{0}か所、すべてそろいました。"
 
@@ -275,6 +275,11 @@ msgstr "{due}（日本時間）に、アカウントとすべての記録が消�
 #: src/components/ProfileSettings.tsx:168
 msgid "{due}（日本時間）に、アカウントとすべての記録が消えます。異議があるときは、理由を送ってください。管理者が確認します。"
 msgstr "{due}（日本時間）に、アカウントとすべての記録が消えます。異議があるときは、理由を送ってください。管理者が確認します。"
+
+#. placeholder {0}: routes.length
+#: src/app/(public)/badges/page.tsx:49
+msgid "{earned} / {0} コース"
+msgstr "{earned} / {0} コース"
 
 #: src/components/auth/EmailCodeStep.tsx:56
 msgid "{email} に、6桁の番号を送りました。"
@@ -982,12 +987,14 @@ msgstr "アップロード済みの写真から選ぶ"
 msgid "アップロード済みの写真です。選んで「この写真を使う」を押すと、その写真のリンクが入ります。"
 msgstr "アップロード済みの写真です。選んで「この写真を使う」を押すと、その写真のリンクが入ります。"
 
+#. placeholder {0}: near.left
 #. placeholder {0}: rally.total - stamped
-#: src/app/(public)/rallies/[id]/page.tsx:142
+#: src/app/(public)/badges/page.tsx:69
+#: src/app/(public)/rallies/[id]/page.tsx:143
 msgid "あと{0}か所"
 msgstr "あと{0}か所"
 
-#: src/components/RallyViews.tsx:104
+#: src/components/RallyViews.tsx:105
 msgid "あと{remaining}か所"
 msgstr "あと{remaining}か所"
 
@@ -1095,7 +1102,7 @@ msgstr "いま、通信がつながっていません。つながると、また
 msgid "いまいる場所から、いちばん近いスタンプの場所まで案内します。位置は、この端末の中だけで使います。"
 msgstr "いまいる場所から、いちばん近いスタンプの場所まで案内します。位置は、この端末の中だけで使います。"
 
-#: src/app/(public)/rallies/[id]/page.tsx:150
+#: src/app/(public)/rallies/[id]/page.tsx:151
 msgid "いますぐはじめる"
 msgstr "いますぐはじめる"
 
@@ -1107,7 +1114,7 @@ msgstr "いまのガイド点を通る道を、1回だけ探します"
 msgid "いまのスタンプは、このブラウザにしか残っていません。ブラウザのデータを消したり、スマホを変えたりすると、なくなります。登録すると、ずっと残り、コンプリート証ももらえます。"
 msgstr "いまのスタンプは、このブラウザにしか残っていません。ブラウザのデータを消したり、スマホを変えたりすると、なくなります。登録すると、ずっと残り、コンプリート証ももらえます。"
 
-#: src/components/RallyViews.tsx:93
+#: src/components/RallyViews.tsx:94
 msgid "いまのラリー"
 msgstr "いまのラリー"
 
@@ -1419,7 +1426,7 @@ msgstr "コース（管理）"
 msgid "コース{0}"
 msgstr "コース{0}"
 
-#: src/components/RallyViews.tsx:172
+#: src/components/RallyViews.tsx:173
 msgid "コース{order}"
 msgstr "コース{order}"
 
@@ -1455,7 +1462,7 @@ msgstr "コースにもどる"
 msgid "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。"
 msgstr "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。"
 
-#: src/app/(public)/badges/page.tsx:39
+#: src/app/(public)/badges/page.tsx:44
 msgid "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
 msgstr "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
 
@@ -1559,7 +1566,7 @@ msgstr "コースを直した"
 msgid "コースを直す（管理）"
 msgstr "コースを直す（管理）"
 
-#: src/components/RallyViews.tsx:250
+#: src/components/RallyViews.tsx:251
 msgid "コースを見る"
 msgstr "コースを見る"
 
@@ -1759,8 +1766,8 @@ msgstr "このボタンは、もう使えません。7日を過ぎたか、す�
 msgid "このメールアドレスは、使えません。すでに別のアカウントで使われているか、このアカウントにはメールが入っています。"
 msgstr "このメールアドレスは、使えません。すでに別のアカウントで使われているか、このアカウントにはメールが入っています。"
 
-#: src/components/RallyViews.tsx:132
-#: src/components/RallyViews.tsx:234
+#: src/components/RallyViews.tsx:133
+#: src/components/RallyViews.tsx:235
 msgid "このラリーのページを開く"
 msgstr "このラリーのページを開く"
 
@@ -1864,7 +1871,7 @@ msgid "この場所のスタンプは、確認のため取り消されていま�
 msgstr "この場所のスタンプは、確認のため取り消されています。お困りの場合は運営にお問い合わせください。"
 
 #: src/components/map/MapScreen.tsx:607
-#: src/components/RallyBook.tsx:187
+#: src/components/RallyBook.tsx:191
 msgid "この場所のページを開く"
 msgstr "この場所のページを開く"
 
@@ -2128,7 +2135,7 @@ msgstr "コントラスト"
 msgid "コンビニ・商店"
 msgstr "コンビニ・商店"
 
-#: src/app/(public)/rallies/[id]/page.tsx:118
+#: src/app/(public)/rallies/[id]/page.tsx:119
 #: src/components/StampProgressPopup.tsx:50
 msgid "コンプリート！"
 msgstr "コンプリート！"
@@ -2253,7 +2260,7 @@ msgid "スタッフが確認すると、ここに表示されます。"
 msgstr "スタッフが確認すると、ここに表示されます。"
 
 #: src/app/(admin)/admin/page.tsx:77
-#: src/app/(public)/rallies/[id]/page.tsx:174
+#: src/app/(public)/rallies/[id]/page.tsx:176
 #: src/components/admin/map-editor/PlaceList.tsx:122
 #: src/components/admin/PlaceTable.tsx:138
 #: src/components/JourneyFacts.tsx:27
@@ -2327,9 +2334,9 @@ msgstr "スタンプの経由地 {0}"
 msgid "スタンプの記録を読めませんでした。"
 msgstr "スタンプの記録を読めませんでした。"
 
-#: src/app/(public)/rallies/[id]/page.tsx:141
-#: src/components/RallyViews.tsx:107
-#: src/components/RallyViews.tsx:198
+#: src/app/(public)/rallies/[id]/page.tsx:142
+#: src/components/RallyViews.tsx:108
+#: src/components/RallyViews.tsx:199
 msgid "スタンプの進み具合"
 msgstr "スタンプの進み具合"
 
@@ -2339,7 +2346,7 @@ msgstr "スタンプは押せません。場所のページは見られます。
 
 #: src/components/admin/HomeTextFields.tsx:20
 #: src/components/landing/useHomeWords.ts:9
-#: src/components/RallyViews.tsx:172
+#: src/components/RallyViews.tsx:173
 msgid "スタンプラリー"
 msgstr "スタンプラリー"
 
@@ -2439,7 +2446,7 @@ msgid "すべて"
 msgstr "すべて"
 
 #: src/components/landing/HomeProgress.tsx:51
-#: src/components/RallyViews.tsx:104
+#: src/components/RallyViews.tsx:105
 msgid "すべてそろいました。"
 msgstr "すべてそろいました。"
 
@@ -2576,9 +2583,8 @@ msgstr "チェック"
 msgid "チェックを入れると、「経由地をつないで道をつくる」で、この点は通りません。代わりに、一つ前の経由地から、この場所までの寄り道の線（青い細い点線）を、地図で描けます。分かれ道に経由地を置き、その次にこの場所を並べてください。"
 msgstr "チェックを入れると、「経由地をつないで道をつくる」で、この点は通りません。代わりに、一つ前の経由地から、この場所までの寄り道の線（青い細い点線）を、地図で描けます。分かれ道に経由地を置き、その次にこの場所を並べてください。"
 
-#: src/components/RallyBook.tsx:125
 #: src/components/RallyTrail.tsx:39
-#: src/components/RallyViews.tsx:111
+#: src/components/RallyViews.tsx:112
 #: src/components/StampGrid.tsx:77
 #: src/components/StampGrid.tsx:99
 #: src/components/StampGrid.tsx:109
@@ -2586,11 +2592,19 @@ msgstr "チェックを入れると、「経由地をつないで道をつくる
 msgid "つぎ"
 msgstr "つぎ"
 
+#: src/app/(public)/badges/page.tsx:63
+msgid "つぎにもらえそうなバッジ"
+msgstr "つぎにもらえそうなバッジ"
+
+#: src/components/RallyBook.tsx:129
+msgid "つぎに押す場所"
+msgstr "つぎに押す場所"
+
 #: src/components/landing/HomeProgress.tsx:65
 msgid "つぎの場所"
 msgstr "つぎの場所"
 
-#: src/components/RallyBook.tsx:158
+#: src/components/RallyBook.tsx:162
 msgid "つぎの場所まで"
 msgstr "つぎの場所まで"
 
@@ -2629,7 +2643,7 @@ msgstr "つくり方を変える"
 msgid "つくり方を変える…"
 msgstr "つくり方を変える…"
 
-#: src/app/(public)/rallies/[id]/page.tsx:150
+#: src/app/(public)/rallies/[id]/page.tsx:151
 msgid "つづきをはじめる"
 msgstr "つづきをはじめる"
 
@@ -2810,7 +2824,7 @@ msgid "はじめての設定"
 msgstr "はじめての設定"
 
 #: src/components/RallyViews.tsx:73
-#: src/components/RallyViews.tsx:93
+#: src/components/RallyViews.tsx:94
 msgid "はじめのラリー"
 msgstr "はじめのラリー"
 
@@ -2944,15 +2958,15 @@ msgstr "パソコンの画面の写真"
 msgid "パソコン幅"
 msgstr "パソコン幅"
 
-#: src/app/(public)/badges/page.tsx:15
-#: src/app/(public)/badges/page.tsx:33
-#: src/app/(public)/rallies/page.tsx:39
+#: src/app/(public)/badges/page.tsx:16
+#: src/app/(public)/badges/page.tsx:41
+#: src/app/(public)/rallies/page.tsx:38
 #: src/app/(public)/sitemap/page.tsx:93
 #: src/components/landing/HomeProgress.tsx:113
 msgid "バッジ"
 msgstr "バッジ"
 
-#: src/app/(public)/badges/page.tsx:44
+#: src/app/(public)/badges/page.tsx:76
 msgid "バッジは、まだ準備中です。"
 msgstr "バッジは、まだ準備中です。"
 
@@ -3290,9 +3304,9 @@ msgid "まず、GPXファイルをここにドラッグするか「GPXファイ�
 msgstr "まず、GPXファイルをここにドラッグするか「GPXファイルから読み込む」を押してください。手で入れるときは「経由地を置く」で経由地を入れ、「線を描く」で区間ごとに道すじを描きます。"
 
 #: src/components/admin/RouteEditor.tsx:871
-#: src/components/RallyBook.tsx:127
+#: src/components/RallyBook.tsx:131
 #: src/components/RallyTrail.tsx:39
-#: src/components/RallyViews.tsx:158
+#: src/components/RallyViews.tsx:159
 #: src/components/StampLegend.tsx:10
 msgid "まだ"
 msgstr "まだ"
@@ -3329,9 +3343,9 @@ msgstr "まだコメントはありません。"
 msgid "まだスタンプがありません。"
 msgstr "まだスタンプがありません。"
 
-#: src/app/(public)/rallies/[id]/page.tsx:142
+#: src/app/(public)/rallies/[id]/page.tsx:143
 #: src/components/landing/HomeProgress.tsx:53
-#: src/components/RallyViews.tsx:104
+#: src/components/RallyViews.tsx:105
 msgid "まだスタンプはありません。"
 msgstr "まだスタンプはありません。"
 
@@ -3454,7 +3468,7 @@ msgstr "メインメニュー"
 msgid "メイン写真"
 msgstr "メイン写真"
 
-#: src/app/(public)/rallies/[id]/page.tsx:160
+#: src/app/(public)/rallies/[id]/page.tsx:161
 msgid "めぐる場所"
 msgstr "めぐる場所"
 
@@ -3559,9 +3573,13 @@ msgstr "もどりの経由地を別に作る必要はありません。利用者
 msgid "もどる"
 msgstr "もどる"
 
-#: src/app/(public)/badges/page.tsx:59
+#: src/app/(public)/badges/page.tsx:91
 msgid "もらいました"
 msgstr "もらいました"
+
+#: src/app/(public)/badges/page.tsx:53
+msgid "もらったバッジの数"
+msgstr "もらったバッジの数"
 
 #: src/components/admin/PublishedEditDialog.tsx:63
 #: src/components/admin/RallyEditor.tsx:191
@@ -3623,10 +3641,10 @@ msgid "ライト"
 msgstr "ライト"
 
 #: src/app/(admin)/admin/rallies/page.tsx:22
-#: src/app/(public)/badges/page.tsx:30
-#: src/app/(public)/rallies/[id]/page.tsx:94
+#: src/app/(public)/badges/page.tsx:38
+#: src/app/(public)/rallies/[id]/page.tsx:95
 #: src/app/(public)/rallies/page.tsx:20
-#: src/app/(public)/rallies/page.tsx:36
+#: src/app/(public)/rallies/page.tsx:35
 #: src/app/(public)/sitemap/page.tsx:88
 #: src/components/admin/AdminNav.tsx:38
 #: src/components/BookmarkList.tsx:55
@@ -3665,7 +3683,7 @@ msgstr "ラリーに入れるコース"
 msgid "ラリーに入れる経由地"
 msgstr "ラリーに入れる経由地"
 
-#: src/app/(public)/rallies/page.tsx:65
+#: src/app/(public)/rallies/page.tsx:68
 msgid "ラリーの一覧"
 msgstr "ラリーの一覧"
 
@@ -3690,7 +3708,7 @@ msgstr "ラリーの名前"
 msgid "ラリーは、コースを集めてつくるか、経由地を集めてつくります。名前を押すと、名前・公開・中身を直せます。"
 msgstr "ラリーは、コースを集めてつくるか、経由地を集めてつくります。名前を押すと、名前・公開・中身を直せます。"
 
-#: src/app/(public)/rallies/page.tsx:55
+#: src/app/(public)/rallies/page.tsx:60
 msgid "ラリーは、まだ準備中です。"
 msgstr "ラリーは、まだ準備中です。"
 
@@ -4435,11 +4453,11 @@ msgstr "公開する"
 msgid "公開できるようになったら、ここにコースが表示されます。"
 msgstr "公開できるようになったら、ここにコースが表示されます。"
 
-#: src/app/(public)/badges/page.tsx:45
+#: src/app/(public)/badges/page.tsx:77
 msgid "公開できるようになったら、ここにコースのバッジが表示されます。"
 msgstr "公開できるようになったら、ここにコースのバッジが表示されます。"
 
-#: src/app/(public)/rallies/page.tsx:56
+#: src/app/(public)/rallies/page.tsx:61
 msgid "公開できるようになったら、ここにスタンプのラリーが表示されます。"
 msgstr "公開できるようになったら、ここにスタンプのラリーが表示されます。"
 
@@ -4562,7 +4580,7 @@ msgstr "内容を確認する"
 msgid "最低 {lowest}m"
 msgstr "最低 {lowest}m"
 
-#: src/components/RallyViews.tsx:83
+#: src/components/RallyViews.tsx:84
 msgid "最初の場所を見る"
 msgstr "最初の場所を見る"
 
@@ -4571,7 +4589,7 @@ msgstr "最初の場所を見る"
 msgid "最寄り"
 msgstr "最寄り"
 
-#: src/components/RallyViews.tsx:96
+#: src/components/RallyViews.tsx:97
 msgid "最後に押した日時　{when}"
 msgstr "最後に押した日時　{when}"
 
@@ -4726,7 +4744,7 @@ msgid "出かける前に"
 msgstr "出かける前に"
 
 #: src/app/(public)/notices/page.tsx:29
-#: src/app/(public)/rallies/page.tsx:76
+#: src/app/(public)/rallies/page.tsx:79
 #: src/app/(public)/routes/page.tsx:67
 #: src/components/landing/TrailNotices.tsx:66
 #: src/components/landing/useHomeWords.ts:24
@@ -4923,7 +4941,7 @@ msgid "前の動画のリンク"
 msgstr "前の動画のリンク"
 
 #: src/components/map/TrailMap.tsx:517
-#: src/components/RallyBook.tsx:192
+#: src/components/RallyBook.tsx:196
 msgid "前の場所"
 msgstr "前の場所"
 
@@ -5941,9 +5959,9 @@ msgid "折り返し"
 msgstr "折り返し"
 
 #: src/components/map/MapScreen.tsx:438
-#: src/components/RallyBook.tsx:123
+#: src/components/RallyBook.tsx:126
 #: src/components/RallyTrail.tsx:39
-#: src/components/RallyViews.tsx:158
+#: src/components/RallyViews.tsx:159
 #: src/components/StampLegend.tsx:9
 #: src/components/StopList.tsx:187
 msgid "押した"
@@ -5953,7 +5971,7 @@ msgstr "押した"
 msgid "押したスタンプは消えません。"
 msgstr "押したスタンプは消えません。"
 
-#: src/components/RallyBook.tsx:121
+#: src/components/RallyBook.tsx:124
 msgid "押した日時　{when}"
 msgstr "押した日時　{when}"
 
@@ -6450,7 +6468,7 @@ msgid "次の写真"
 msgstr "次の写真"
 
 #: src/components/map/TrailMap.tsx:523
-#: src/components/RallyBook.tsx:200
+#: src/components/RallyBook.tsx:204
 msgid "次の場所"
 msgstr "次の場所"
 
@@ -6494,7 +6512,7 @@ msgid "次まで 登り{up}m・下り{down}m"
 msgstr "次まで 登り{up}m・下り{down}m"
 
 #: src/components/landing/useHomeWords.ts:10
-#: src/components/RallyViews.tsx:265
+#: src/components/RallyViews.tsx:266
 msgid "歩いて、スタンプを集めよう。"
 msgstr "歩いて、スタンプを集めよう。"
 
@@ -6545,7 +6563,7 @@ msgstr "歩く道を調べるには、ログインしてください。"
 msgid "歩く順番に並んでいます。名前を押すと、文章や地図を直せます。"
 msgstr "歩く順番に並んでいます。名前を押すと、文章や地図を直せます。"
 
-#: src/components/RallyBook.tsx:149
+#: src/components/RallyBook.tsx:153
 #: src/components/RouteView.tsx:123
 msgid "歴史"
 msgstr "歴史"
@@ -6651,10 +6669,10 @@ msgstr "淡色"
 msgid "港・フェリー乗り場"
 msgstr "港・フェリー乗り場"
 
-#: src/app/(public)/rallies/[id]/page.tsx:108
+#: src/app/(public)/rallies/[id]/page.tsx:109
 #: src/components/admin/RouteTable.tsx:43
 #: src/components/BookmarkList.tsx:57
-#: src/components/RallyViews.tsx:180
+#: src/components/RallyViews.tsx:181
 #: src/components/RoutePill.tsx:37
 #: src/components/TrailRibbon.tsx:64
 msgid "準備中"
@@ -7121,7 +7139,7 @@ msgstr "約{n}m"
 msgid "約{TRAIL_KM}km"
 msgstr "約{TRAIL_KM}km"
 
-#: src/components/RallyViews.tsx:214
+#: src/components/RallyViews.tsx:215
 msgid "納経帳"
 msgstr "納経帳"
 
@@ -7147,7 +7165,7 @@ msgstr "経塚"
 msgid "経塚 {name}"
 msgstr "経塚 {name}"
 
-#: src/components/RallyViews.tsx:172
+#: src/components/RallyViews.tsx:173
 msgid "経塚ラリー"
 msgstr "経塚ラリー"
 
@@ -7564,12 +7582,12 @@ msgid "行き"
 msgstr "行き"
 
 #: src/components/landing/useHomeWords.ts:11
-#: src/components/RallyViews.tsx:268
+#: src/components/RallyViews.tsx:269
 msgid "行き先の近くでボタンを押すと、スタンプがたまります。位置は、押した一回だけ調べ、保存しません。"
 msgstr "行き先の近くでボタンを押すと、スタンプがたまります。位置は、押した一回だけ調べ、保存しません。"
 
 #: src/components/navigation/NavFarCard.tsx:41
-#: src/components/RallyBook.tsx:169
+#: src/components/RallyBook.tsx:173
 msgid "行き方"
 msgstr "行き方"
 
@@ -7938,7 +7956,7 @@ msgstr "近くにスタンプの場所がありません。いちばん近いの
 msgid "近くのスタンプを押す"
 msgstr "近くのスタンプを押す"
 
-#: src/components/RallyBook.tsx:178
+#: src/components/RallyBook.tsx:182
 msgid "近くのトイレ"
 msgstr "近くのトイレ"
 
@@ -8031,7 +8049,7 @@ msgid "通行止めなどがあれば、ここに表示されます。"
 msgstr "通行止めなどがあれば、ここに表示されます。"
 
 #: src/app/(admin)/admin/pages/page.tsx:23
-#: src/app/(public)/rallies/page.tsx:43
+#: src/app/(public)/rallies/page.tsx:42
 #: src/app/(public)/sitemap/page.tsx:96
 #: src/components/admin/PageTextEditor.tsx:60
 #: src/components/pages/PageViews.tsx:63
@@ -8189,7 +8207,7 @@ msgstr "達成した人 {0}"
 msgid "達成した人の記録は残ります。スタンプは変わりません。"
 msgstr "達成した人の記録は残ります。スタンプは変わりません。"
 
-#: src/app/(public)/rallies/[id]/page.tsx:125
+#: src/app/(public)/rallies/[id]/page.tsx:126
 msgid "達成日"
 msgstr "達成日"
 
@@ -8326,7 +8344,7 @@ msgstr "長さ"
 #: src/components/map/TrailMap.tsx:411
 #: src/components/map/TrailMap.tsx:472
 #: src/components/ProfileSettings.tsx:271
-#: src/components/RallyBook.tsx:198
+#: src/components/RallyBook.tsx:202
 #: src/components/SampleNotice.tsx:65
 #: src/components/SiteHeader.tsx:212
 #: src/components/StampOutbox.tsx:156

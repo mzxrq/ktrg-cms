@@ -7,7 +7,7 @@ import { isSoon, nextSlot, sealName, stampedNumbers, type RallyItem } from "@/li
 import { journeyFacts, type JourneyRoute } from "@/lib/rally-journey";
 import { JourneyFacts } from "./JourneyFacts";
 import { RoutePhoto } from "./RoutePhoto";
-import { CreditCaption } from "./PhotoCredit";
+import { CreditToggle } from "./PhotoCredit";
 import { CertificateButton } from "./CertificateButton";
 import { ChevronIcon } from "./icons";
 import { SectionBanner } from "./SectionBanner";
@@ -74,9 +74,10 @@ export function FeaturedRally({ rally, locale, account, routes = [] }: { rally: 
         <div className="pattern-shippo overflow-hidden rounded-[1.75rem] bg-surface">
           <div className="relative aspect-[16/9]">
             <RoutePhoto src={facts.photoUrl} alt={name} />
+            {/* The © button over the photo, as on the course page, not a line of small print on the tile (2026-11-16, user). */}
+            <CreditToggle credit={facts.photoCredit} />
           </div>
           <div className="flex flex-col gap-3 p-5">
-            <CreditCaption credit={facts.photoCredit} />
             <h2 className="text-2xl font-bold leading-snug">{name}</h2>
             <JourneyFacts facts={facts} />
             <Link href={`/rallies/${rally.id}`} className={buttonStyle("primary", "lg", "flex w-full")}>

@@ -28,7 +28,6 @@ export default async function StampsPage({ searchParams }: { searchParams: Promi
 
   return (
     <div className="flex flex-col gap-6 pt-2 wide:pt-0">
-      {/* One column in this order, on a phone and on a desktop alike: the title, you, the rally you are in, then the rest as cards side by side. */}
       {/* The title, with the badges and how to play to its side ("?"): how to play lives here, with the stamps, and nowhere else. */}
       {/* On a phone the top bar carries the title (as on the course list); the heading stays for screen readers and a wider page. */}
       <div className="flex items-center justify-end gap-3 px-4 md:justify-start">
@@ -47,24 +46,28 @@ export default async function StampsPage({ searchParams }: { searchParams: Promi
         </Link>
       </div>
 
-      <RallyHero />
-
-      {/* Signed out: a reason to sign in and the rallies, never a false "0 stamps". */}
-      {viewer.signedIn ? null : <SignInPrompt compact />}
+      {/* A wide screen uses its width (2026-11-16, user: it was the phone page made big): how it works and signing in on the
+          left, your rally on the right; the other rallies below, side by side. */}
+      <div className="flex flex-col gap-6 wide:grid wide:grid-cols-2 wide:items-start">
+        <div className="flex flex-col gap-6">
+          <RallyHero />
+          {/* Signed out: a reason to sign in and the rallies, never a false "0 stamps". */}
+          {viewer.signedIn ? null : <SignInPrompt compact />}
+        </div>
+        {featured ? <FeaturedRally rally={featured} locale={i18n.locale} account={viewer.signedIn} routes={routes} /> : null}
+      </div>
       {rallies.length === 0 ? (
         <EmptyState title={<Trans>ラリーは、まだ準備中です。</Trans>}>
           <Trans>公開できるようになったら、ここにスタンプのラリーが表示されます。</Trans>
         </EmptyState>
       ) : null}
 
-      {featured ? <FeaturedRally rally={featured} locale={i18n.locale} account={viewer.signedIn} routes={routes} /> : null}
-
       {others.length > 0 ? (
         <section className="flex flex-col gap-3 px-4">
           <SectionBanner>
             <Trans>ラリーの一覧</Trans>
           </SectionBanner>
-          <ul className="list-in grid gap-3 wide:grid-cols-2 wide:gap-4">
+          <ul className="list-in grid gap-3 wide:grid-cols-2 wide:gap-4 2xl:grid-cols-3">
             {others.map((rally) => (
               <RallyCard key={rally.id} rally={rally} locale={i18n.locale} account={viewer.signedIn} routes={routes} />
             ))}
