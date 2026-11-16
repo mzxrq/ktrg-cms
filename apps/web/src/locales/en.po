@@ -4114,7 +4114,7 @@ msgstr "Address"
 
 #: src/components/RouteStats.tsx:47
 msgid "体力"
-msgstr "Fitness"
+msgstr "Effort"
 
 #: src/components/RouteStats.tsx:47
 msgid "体力の目安"
