@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { getRouteLine } from "@/lib/navigation/line-client";
 import { askCompass } from "@/lib/navigation/compass";
 import { loadResume } from "@/lib/navigation/resume";
@@ -23,7 +23,7 @@ import { NavFarCard } from "./NavFarCard";
 import { NavTargetPicker } from "./NavTargetPicker";
 import { useNavigation, type NavStopInfo } from "./NavigationProvider";
 import { buttonStyle } from "@/components/button";
-import { CloseIcon, SoundOffIcon, SoundOnIcon } from "@/components/icons";
+import { CloseIcon, SoundOffIcon, SoundOnIcon, SunIcon } from "@/components/icons";
 
 // The navigation toast: a small card floating at the bottom of the screen while a navigation runs, on every tab (on a
 // phone just above the tab bar and the phone's own bar, on a wider screen at the bottom right). Two lines: which way and
@@ -62,6 +62,9 @@ function TurnSign({ kind }: { kind: TurnKind | null }) {
     </svg>
   );
 }
+
+/** For useSyncExternalStore: a fact that never changes during the visit. */
+const noChange = () => () => {};
 
 /** Space kept between the toast and what is above it. */
 const GAP_PX = 8;
@@ -134,7 +137,9 @@ export function NavigationStart({ route, more }: { route: MapScreenRoute; more: 
 
 export function NavigationToast() {
   const { t, i18n } = useLingui();
-  const { session, stop, markStamped, skipPassed, returnToPassed, voiceByDefault, setToastPx, setBannerPx, sheetUp } = useNavigation();
+  const { session, stop, markStamped, skipPassed, returnToPassed, voiceByDefault, setToastPx, setBannerPx, sheetUp, awake, setAwake } = useNavigation();
+  // Only offered where the browser can keep the screen on (not on the server: the switch appears after hydration).
+  const canStayAwake = useSyncExternalStore(noChange, () => "wakeLock" in navigator, () => false);
   const pathname = usePathname();
   const box = useRef<HTMLElement>(null);
   const banner = useRef<HTMLElement>(null);
@@ -407,6 +412,19 @@ export function NavigationToast() {
         <section ref={banner} aria-label={t`ナビ中：${routeName}`} className="fixed inset-x-0 top-0 z-30 flex max-h-[70dvh] flex-col gap-1 overflow-y-auto rounded-b-2xl border-b border-line/30 bg-paper px-4 pb-3 pt-[calc(0.75rem+var(--top-clear))] shadow-lg md:inset-x-auto md:left-[calc(50%-14rem)] md:top-[calc(0.5rem+var(--top-clear))] md:w-[28rem] md:rounded-2xl md:border-b-0 md:pt-3 md:shadow-2xl md:ring-1 md:ring-line/30">
           <div className="flex items-start gap-2">
             <div className="min-w-0 flex-1">{main}</div>
+            {canStayAwake && !tucked ? (
+              <button
+                type="button"
+                role="switch"
+                aria-checked={awake}
+                aria-label={t`画面をつけたままにする（電池を多く使います）`}
+                title={t`画面をつけたままにする（電池を多く使います）`}
+                onClick={() => setAwake(!awake)}
+                className={`tap-target inline-flex shrink-0 items-center justify-center rounded-full border border-ink ${awake ? "bg-ink text-paper" : "bg-paper text-ink"}`}
+              >
+                <SunIcon />
+              </button>
+            ) : null}
             {voice.supported && !far && !tucked ? (
               <button
                 type="button"
@@ -435,11 +453,12 @@ export function NavigationToast() {
           inert={tucked}
           aria-hidden={tucked || undefined}
           // Away first, then the sheet rises (MapScreen waits NAV_HANDOFF_MS); back only after the sheet has gone down (the delay).
-          // Above the tab bar when it shows (--tabbar-room, globals.css): the map's overview keeps the tabs.
-          className={`fixed inset-x-0 bottom-[var(--tabbar-room)] z-30 transition duration-200 ease-out motion-reduce:transition-none md:inset-x-auto md:bottom-6 md:right-6 md:w-[24rem] ${tucked ? "pointer-events-none translate-y-[calc(100%+2rem)] opacity-0" : "translate-y-0 opacity-100 delay-200"}`}
+          // Above the tab bar's top edge when it shows (--tabbar-room + --bar-inset, globals.css): the map's overview keeps the
+          // tabs. With no tab bar it reaches the bottom and pads for the system bar itself (the inset minus what the bar took).
+          className={`fixed inset-x-0 bottom-[calc(var(--tabbar-room)+var(--bar-inset))] z-30 transition duration-200 ease-out motion-reduce:transition-none md:inset-x-auto md:bottom-6 md:right-6 md:w-[24rem] ${tucked ? "pointer-events-none translate-y-[calc(100%+2rem)] opacity-0" : "translate-y-0 opacity-100 delay-200"}`}
         >
           {/* Its own box: the pattern's class sets `position` and would undo the `fixed` above. */}
-          <div className="pattern-shippo flex flex-col gap-3 rounded-t-2xl border-t border-line/30 bg-paper px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-4px_24px_rgb(0_0_0/0.28)] md:rounded-2xl md:pb-3">
+          <div className="pattern-shippo flex flex-col gap-3 rounded-t-2xl border-t border-line/30 bg-paper px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px)-var(--bar-inset))] pt-3 shadow-[0_-4px_24px_rgb(0_0_0/0.28)] md:rounded-2xl md:pb-3">
           {offRouteCard}
           {far ? null : progressLine}
           {far || !profile ? null : <NavElevation profile={profile} />}

@@ -14,6 +14,7 @@ export function MapHelp() {
     { name: t`動かす`, how: t`1本の指でなぞります。` },
     { name: t`大きくする・小さくする`, how: t`2本の指を広げたり、せばめたりします。` },
     { name: t`傾ける`, how: t`3本の指で、上下になぞります。` },
+    { name: t`画面をつけたまま`, how: t`ナビのあいだは、画面が消えません。上の太陽のボタンで切りかえます。電池を多く使うので、長いコースでは電池の残りに気をつけてください。` },
   ];
   const current = steps[step]!;
   const last = step === steps.length - 1;

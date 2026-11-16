@@ -355,7 +355,7 @@ export function MapScreenCanvas({
       stop();
       compass.current = null;
     };
-  }, [ready, following]); // eslint-disable-line react-hooks/exhaustive-deps -- padding() reads the current layout
+  }, [ready, following]);
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready || !following || !user) return;

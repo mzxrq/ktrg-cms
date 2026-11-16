@@ -962,6 +962,7 @@ body.map-screen-active .site-footer {
   /* Things kept above the tab bar (the navigation strip) follow it down. */
   html[data-bars="hidden"]:not(:has([data-tabbar]:focus-within)) {
     --tabbar-room: 0px;
+    --bar-inset: 0px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -972,9 +973,13 @@ body.map-screen-active .site-footer {
 
 /* How much of the bottom the tab bar takes right now, for things fixed above it (the navigation's buttons): the bar on a
    phone, none from 768 px (a side rail) or when a chosen course hides it. Same 5.5rem as MapScreen's TAB_ROOM_REM. A var() with
-   no value makes the whole `bottom` invalid, and the buttons then fall to the end of the page, off the screen. */
+   no value makes the whole `bottom` invalid, and the buttons then fall to the end of the page, off the screen.
+   `--bar-inset`: the system bar's inset (Android's navigation, the iPhone's home line) that the tab bar adds below its 5.5rem
+   while it shows, else 0. So the bar's top edge is `--tabbar-room + --bar-inset`; without it the navigation panel sat that
+   much inside the tab bar (2026-11-16, navigation v2 N2-2). */
 :root {
   --tabbar-room: 0px;
+  --bar-inset: 0px;
 }
 /* Motion: things that arrive slow down into place (enter), things that go speed up as they leave (leave), and a move from
    one place to another does both (standard). 150 to 300 ms for the screen; the stamp moment is a show and takes longer. */
@@ -986,9 +991,11 @@ body.map-screen-active .site-footer {
 @media (max-width: 767px) {
   :root {
     --tabbar-room: 5.5rem;
+    --bar-inset: env(safe-area-inset-bottom, 0px);
   }
   body.map-tabs-hidden {
     --tabbar-room: 0px;
+    --bar-inset: 0px;
   }
 }
 
