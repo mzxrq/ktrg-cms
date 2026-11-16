@@ -109,6 +109,7 @@ lands on a colour under 4.5:1.
 - **GSAP is allowed** (agreed 2026-11-10) where it does the job better than plain CSS: drawing the ridge line on
   scroll, section ground changes, staggered reveals. Reading pages only, loaded on those pages (not in the shared
   bundle), with `gsap.matchMedia()` so reduced motion gets the final state. Plain CSS stays the choice for small things.
+- **Rallies (amended 2026-11-16, `docs/rally-design.md`):** the rally pages are a journey, not a tool: photos, a drawn walker (a pilgrim with a sedge hat and staff, `components/Walker.tsx`), the course as a dotted path and a book page for each place. Our own drawing only, never AI images; the plain version is the same screens at the Fade only / Off levels.
 - **Tools register (amended 2026-11-16, `docs/motion-design.md`):** everything that appears or leaves may move, but
   only briefly (150 to 300 ms) and never in the way of a tap: menus, dialogs, toasts, banners, empty and error
   states, lists, route changes. Three motion levels apply everywhere: **Full** (move and fade), **Fade only**
