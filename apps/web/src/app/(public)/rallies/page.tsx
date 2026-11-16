@@ -66,7 +66,7 @@ export default async function StampsPage({ searchParams }: { searchParams: Promi
           </SectionBanner>
           <ul className="list-in grid gap-3 wide:grid-cols-2 wide:gap-4">
             {others.map((rally) => (
-              <RallyCard key={rally.id} rally={rally} locale={i18n.locale} account={viewer.signedIn} />
+              <RallyCard key={rally.id} rally={rally} locale={i18n.locale} account={viewer.signedIn} routes={routes} />
             ))}
           </ul>
         </section>

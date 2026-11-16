@@ -16,6 +16,7 @@ import { StampLegend } from "./StampLegend";
 import { buttonStyle } from "@/components/button";
 import { Seal } from "./Seal";
 import { SutraScroll } from "./landing/Decor";
+import { Walker } from "./Walker";
 
 const nameOf = (locale: string, ja: string, en: string | null) => pickText(locale, ja, en)?.text ?? ja;
 
@@ -31,6 +32,24 @@ export function Bar({ stamped, total, label }: { stamped: number; total: number;
       className="h-4 overflow-hidden rounded-full border-2 border-line bg-paper"
     >
       <div className="h-full bg-moss" style={{ width: `${(total > 0 ? stamped / total : 0) * 100}%` }} />
+    </div>
+  );
+}
+
+/**
+ * How far along a rally is, as the trail itself: a dotted path with the part walked drawn solid, the walker where the
+ * visitor is and the last stamp waiting, dashed, at the end. Still a progress bar for a screen reader. Drawn on the
+ * server, no script.
+ */
+export function PathProgress({ stamped, total, label }: { stamped: number; total: number; label: string }) {
+  const pct = total > 0 ? Math.min(1, stamped / total) : 0;
+  const span = `(100% - 1rem) * ${pct}`;
+  return (
+    <div role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={total} aria-valuenow={stamped} className="relative h-10">
+      <span aria-hidden="true" className="absolute inset-x-2 top-[34px] border-t-[3px] border-dotted border-line" />
+      <span aria-hidden="true" className="absolute left-2 top-[34px] border-t-[3px] border-moss" style={{ width: `calc(${span})` }} />
+      <span aria-hidden="true" className="absolute right-1 top-[26px] size-4 rounded-full border-2 border-dashed border-line" />
+      <Walker className="absolute top-0 h-9 text-moss" style={{ left: `max(0px, calc(0.5rem + ${span} - 1rem))` }} />
     </div>
   );
 }
@@ -85,7 +104,7 @@ export function FeaturedRally({ rally, locale, account, routes = [] }: { rally: 
           {remaining === 0 ? t`すべてそろいました。` : stamped === 0 ? t`まだスタンプはありません。` : t`あと${remaining}か所`}
         </p>
         <div className="mt-3">
-          <Bar stamped={stamped} total={rally.total} label={t`スタンプの進み具合`} />
+          <PathProgress stamped={stamped} total={rally.total} label={t`スタンプの進み具合`} />
         </div>
         {next ? (
           <p className="mt-3 text-lg">
@@ -146,7 +165,7 @@ export function SlotList({ rally, locale }: { rally: RallyItem; locale: string }
 }
 
 /** One rally in the list: its name and progress; open it to see every place. */
-export function RallyCard({ rally, locale, account }: { rally: RallyItem; locale: string; account: boolean }) {
+export function RallyCard({ rally, locale, account, routes = [] }: { rally: RallyItem; locale: string; account: boolean; routes?: readonly JourneyRoute[] }) {
   const { t } = useLingui();
   const name = nameOf(locale, rally.nameJa, rally.nameEn);
   const order = rally.order;
@@ -176,7 +195,7 @@ export function RallyCard({ rally, locale, account }: { rally: RallyItem; locale
               {stamped} / {rally.total}
             </span>
             <span className="min-w-0 flex-1">
-              <Bar stamped={stamped} total={rally.total} label={t`スタンプの進み具合`} />
+              <PathProgress stamped={stamped} total={rally.total} label={t`スタンプの進み具合`} />
             </span>
             <span className="shrink-0 transition-transform group-open:rotate-90">
               <ChevronIcon />
@@ -202,6 +221,12 @@ export function RallyCard({ rally, locale, account }: { rally: RallyItem; locale
               book
               names={new Map(rally.slots.map((slot) => [slot.number, sealName(slot.nameJa)]))}
             />
+          </div>
+        ) : null}
+        {stamped === 0 && rally.total > 0 ? (
+          // Not started: how big the walk is, before the list of places.
+          <div className="border-t border-line p-4">
+            <JourneyFacts facts={journeyFacts(rally, routes)} compact />
           </div>
         ) : null}
         <div className="border-t-2 border-line px-4 py-3">
