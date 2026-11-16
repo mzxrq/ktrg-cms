@@ -1189,7 +1189,7 @@ msgstr "いまは「コースでつくる」です。"
 msgid "いまは「経由地でつくる」です。"
 msgstr "いまは「経由地でつくる」です。"
 
-#: src/components/navigation/NavTargetPicker.tsx:65
+#: src/components/navigation/NavTargetPicker.tsx:76
 msgid "いま向かっている場所"
 msgstr "いま向かっている場所"
 
@@ -2684,14 +2684,14 @@ msgstr "トイレ・休憩"
 msgid "トイレやお店などを、地図を開いたときから表示します。"
 msgstr "トイレやお店などを、地図を開いたときから表示します。"
 
-#: src/components/navigation/NavTargetPicker.tsx:51
+#: src/components/navigation/NavTargetPicker.tsx:62
 msgid "どこへ向かいますか？"
 msgstr "どこへ向かいますか？"
 
 #: src/components/navigation/NavFarCard.tsx:52
 #: src/components/navigation/NavFarCard.tsx:126
 #: src/components/navigation/NavigationHud.tsx:282
-#: src/components/navigation/NavTargetPicker.tsx:79
+#: src/components/navigation/NavTargetPicker.tsx:90
 #: src/components/StampProgressPopup.tsx:61
 msgid "とじる"
 msgstr "とじる"
@@ -3282,7 +3282,7 @@ msgstr "ほかのコースの経由地を加える"
 msgid "ほかの乗り物"
 msgstr "ほかの乗り物"
 
-#: src/components/navigation/NavTargetPicker.tsx:40
+#: src/components/navigation/NavTargetPicker.tsx:44
 msgid "ほかの場所へ"
 msgstr "ほかの場所へ"
 
@@ -7962,7 +7962,7 @@ msgstr "辞書の読み（確認待ち）"
 msgid "辞書の読みが{n}件ふえました。確認してください。"
 msgstr "辞書の読みが{n}件ふえました。確認してください。"
 
-#: src/components/navigation/NavTargetPicker.tsx:75
+#: src/components/navigation/NavTargetPicker.tsx:86
 msgid "近い順にもどす"
 msgstr "近い順にもどす"
 
@@ -8311,7 +8311,7 @@ msgstr "選んでください"
 msgid "選択をやめる"
 msgstr "選択をやめる"
 
-#: src/components/navigation/NavTargetPicker.tsx:44
+#: src/components/navigation/NavTargetPicker.tsx:48
 msgid "選択中"
 msgstr "選択中"
 
@@ -8387,7 +8387,7 @@ msgstr "閉店・撤去"
 #: src/app/(public)/map/page.tsx:199
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
-#: src/components/navigation/NavTargetPicker.tsx:65
+#: src/components/navigation/NavTargetPicker.tsx:76
 #: src/components/StatusWord.tsx:13
 msgid "閉鎖中"
 msgstr "閉鎖中"

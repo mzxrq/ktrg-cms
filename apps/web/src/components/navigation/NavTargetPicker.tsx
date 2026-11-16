@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type MouseEvent } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { distanceM } from "@/lib/navigation/geometry";
 import { distanceParts } from "@/lib/stamp-flow";
@@ -32,6 +32,10 @@ export function NavTargetPicker() {
     setTarget(id);
     dialog.current?.close();
   };
+  // A tap on the dimmed map lands on the dialog itself, not on anything inside it.
+  const closeOnBackdrop = (e: MouseEvent<HTMLDialogElement>) => {
+    if (e.target === e.currentTarget) dialog.current?.close();
+  };
   const row = "tap-target flex w-full items-center justify-between gap-3 rounded-full border border-ink px-4 py-2 text-left text-lg font-bold hover:bg-surface disabled:opacity-60";
 
   return (
@@ -45,8 +49,15 @@ export function NavTargetPicker() {
           </>
         ) : null}
       </button>
-      {/* Rule 1 (docs/navigation-v2-plan.md): the title and the buttons stay put; only the list scrolls between them. */}
-      <dialog ref={dialog} aria-labelledby="nav-target-title" className="m-auto max-h-[85dvh] w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl bg-paper text-ink backdrop:bg-black/60 open:flex">
+      {/* Rule 1 (docs/navigation-v2-plan.md): the title and the buttons stay put; only the list scrolls between them.
+          N2-6: on a phone a sheet from the bottom (in thumb reach, sliding up: .nav-sheet in globals.css), from 768 px a
+          centred box. A tap on the dimmed map above it closes it (the click lands on the dialog itself, not its content). */}
+      <dialog
+        ref={dialog}
+        aria-labelledby="nav-target-title"
+        onClick={closeOnBackdrop}
+        className="nav-sheet mx-0 mb-0 mt-auto max-h-[85dvh] w-full max-w-none flex-col overflow-hidden rounded-t-3xl bg-paper text-ink backdrop:bg-black/60 open:flex md:m-auto md:w-[calc(100%-2rem)] md:max-w-sm md:rounded-3xl"
+      >
         <h2 id="nav-target-title" className="shrink-0 px-5 pt-5 text-2xl font-bold">
           {t`どこへ向かいますか？`}
         </h2>
@@ -69,7 +80,7 @@ export function NavTargetPicker() {
             );
           })}
         </ul>
-        <div data-nav-footer className="flex shrink-0 flex-col gap-2 border-t border-line px-5 pb-5 pt-4">
+        <div data-nav-footer className="flex shrink-0 flex-col gap-2 border-t border-line px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] pt-4 md:pb-5">
           {snap.forcedId ? (
             <button type="button" onClick={() => pick(null)} className={buttonStyle("primary", "lg", "flex w-full")}>
               {t`近い順にもどす`}

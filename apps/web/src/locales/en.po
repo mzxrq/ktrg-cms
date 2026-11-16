@@ -1189,7 +1189,7 @@ msgstr "It is now \"Made from courses\"."
 msgid "いまは「経由地でつくる」です。"
 msgstr "It is now \"Made from waypoints\"."
 
-#: src/components/navigation/NavTargetPicker.tsx:65
+#: src/components/navigation/NavTargetPicker.tsx:76
 msgid "いま向かっている場所"
 msgstr "Heading here now"
 
@@ -2684,14 +2684,14 @@ msgstr "Toilets and rest"
 msgid "トイレやお店などを、地図を開いたときから表示します。"
 msgstr "Show toilets, shops and so on as soon as the map opens."
 
-#: src/components/navigation/NavTargetPicker.tsx:51
+#: src/components/navigation/NavTargetPicker.tsx:62
 msgid "どこへ向かいますか？"
 msgstr "Where do you want to go?"
 
 #: src/components/navigation/NavFarCard.tsx:52
 #: src/components/navigation/NavFarCard.tsx:126
 #: src/components/navigation/NavigationHud.tsx:282
-#: src/components/navigation/NavTargetPicker.tsx:79
+#: src/components/navigation/NavTargetPicker.tsx:90
 #: src/components/StampProgressPopup.tsx:61
 msgid "とじる"
 msgstr "Close"
@@ -3282,7 +3282,7 @@ msgstr "Add a waypoint from another course"
 msgid "ほかの乗り物"
 msgstr "Other vehicle"
 
-#: src/components/navigation/NavTargetPicker.tsx:40
+#: src/components/navigation/NavTargetPicker.tsx:44
 msgid "ほかの場所へ"
 msgstr "Another place"
 
@@ -7962,7 +7962,7 @@ msgstr "Dictionary readings (waiting for approval)"
 msgid "辞書の読みが{n}件ふえました。確認してください。"
 msgstr "{n} new dictionary readings. Please check them."
 
-#: src/components/navigation/NavTargetPicker.tsx:75
+#: src/components/navigation/NavTargetPicker.tsx:86
 msgid "近い順にもどす"
 msgstr "Back to nearest first"
 
@@ -8311,7 +8311,7 @@ msgstr "Please choose"
 msgid "選択をやめる"
 msgstr "Clear choice"
 
-#: src/components/navigation/NavTargetPicker.tsx:44
+#: src/components/navigation/NavTargetPicker.tsx:48
 msgid "選択中"
 msgstr "chosen"
 
@@ -8387,7 +8387,7 @@ msgstr "Closed for good"
 #: src/app/(public)/map/page.tsx:199
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
-#: src/components/navigation/NavTargetPicker.tsx:65
+#: src/components/navigation/NavTargetPicker.tsx:76
 #: src/components/StatusWord.tsx:13
 msgid "閉鎖中"
 msgstr "Closed"
