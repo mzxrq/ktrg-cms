@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLingui } from "@lingui/react/macro";
 import { buttonStyle } from "@/components/button";
@@ -45,37 +45,27 @@ function useBackCloses(onBack: () => void) {
   }, []);
 }
 
-/** At a stamp place: its photo, and the stamp button up front. "Later" leaves the small button at the bottom of the screen. */
-export function ArrivalPrompt({ name, nameLang, photo, onLater, children }: { name: string; nameLang: "ja" | "en"; photo: MapPhoto | null; onLater: () => void; children: (later: ReactNode) => ReactNode }) {
+/**
+ * At a stamp place (N2-4, docs/navigation-v2-plan.md): the navigation strip itself shows the arrival, with a small photo, and
+ * the stamp button comes right under it. No card over the map, so there is nothing to put away ("later" is gone): the button
+ * stays while the walker is within the place's radius. Announced once (role="status").
+ */
+export function ArrivalStrip({ name, nameLang, photo }: { name: string; nameLang: "ja" | "en"; photo: MapPhoto | null }) {
   const { t } = useLingui();
-  useBackCloses(onLater); // back = あとで
-  // The dimmed cover fades in and the card rises (lib/motion; none at the level Off).
-  const coverRef = useEnter<HTMLDivElement>("fade");
-  const cardRef = useEnter<HTMLElement>("rise");
-  const later = (
-    <button type="button" onClick={onLater} className={buttonStyle("secondary", "lg", "flex shrink-0")}>
-      {t`あとで`}
-    </button>
-  );
+  const ref = useEnter<HTMLDivElement>("rise");
   return (
-    <div ref={coverRef} className={COVER}>
-      <section ref={cardRef} role="dialog" aria-modal="true" aria-labelledby="nav-arrived" className="flex max-h-full w-full max-w-sm flex-col overflow-hidden rounded-2xl bg-paper text-ink shadow-2xl">
-        {/* With no photo the night ground with the 七宝 pattern, as on a course's banner, so every arrival looks the same.
-            At most 30 % of the screen's height, and gone on a short screen (a phone on its side): the buttons never give way. */}
-        <div className="pattern-shippo pattern-on-night relative aspect-[16/9] max-h-[30dvh] shrink-0 bg-night [@media(max-height:34rem)]:hidden">
-          {photo ? <Image src={photo.src} alt={photo.alt} fill sizes="24rem" className="object-cover" unoptimized={photo.src.startsWith("https://")} /> : null}
-        </div>
-        <div className="flex min-h-0 flex-col gap-1 overflow-y-auto px-5 pt-5">
-          <CreditCaption credit={photo?.credit} className="mb-1 [@media(max-height:34rem)]:hidden" />
-          <p className="text-lg font-bold text-accent">{t`着きました`}</p>
-          <h2 id="nav-arrived" lang={nameLang} className="font-serif text-2xl font-bold leading-snug">
-            {name}
-          </h2>
-        </div>
-        <div data-nav-footer className="shrink-0 px-5 pb-5 pt-3">
-          {children(later)}
-        </div>
-      </section>
+    <div ref={ref} role="status" className="flex items-center gap-3">
+      {/* With no photo the night ground with the 七宝 pattern, as on a course's banner, so every arrival looks the same. */}
+      <div className="pattern-shippo pattern-on-night relative size-16 shrink-0 overflow-hidden rounded-lg bg-night [@media(max-height:34rem)]:hidden">
+        {photo ? <Image src={photo.src} alt={photo.alt} fill sizes="4rem" className="object-cover" unoptimized={photo.src.startsWith("https://")} /> : null}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-lg font-bold leading-tight text-accent">{t`着きました`}</p>
+        <p lang={nameLang} className="font-serif text-2xl font-bold leading-snug">
+          {name}
+        </p>
+        <CreditCaption credit={photo?.credit} className="[@media(max-height:34rem)]:hidden" />
+      </div>
     </div>
   );
 }
