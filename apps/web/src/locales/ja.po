@@ -8552,3 +8552,7 @@ msgstr "つぎの場所まで"
 #: src/components/RallyBook.tsx
 msgid "近くのトイレ"
 msgstr "近くのトイレ"
+
+#: src/components/JourneyFacts.tsx:27
+msgid "{total}か所"
+msgstr "{total}か所"
