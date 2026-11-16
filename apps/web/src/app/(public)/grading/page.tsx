@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { Trans } from "@lingui/react/macro";
 import { BackLink } from "@/components/BackLink";
 import { initLingui } from "@/i18n/server";
-import { PHYSICAL_LEVEL_UPPER_BOUNDS, TECHNICAL_LEVELS } from "@/lib/grading";
+import { Stars } from "@/components/Stars";
+import { PHYSICAL_LEVEL_UPPER_BOUNDS, STAR_COUNT, TECHNICAL_LEVELS, technicalStars } from "@/lib/grading";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
-  return { title: i18n.locale === "ja" ? "体力度と技術度について" : "About the physical and technical levels" };
+  return { title: i18n.locale === "ja" ? "体力の目安と道のけわしさについて" : "About the effort and path stars" };
 }
 
 const panel = "mx-4 flex flex-col gap-3 rounded-[1.75rem] bg-surface p-5 text-lg leading-8";
@@ -36,19 +37,19 @@ export default async function GradingPage() {
     <div className="page-narrow flex flex-col gap-6 pt-2">
       <div className="flex flex-col gap-6 px-4">
         <BackLink href="/routes">
-          <Trans>ルート一覧</Trans>
+          <Trans>コース一覧</Trans>
         </BackLink>
         <h1 className="font-serif text-3xl font-bold text-accent">
-          <Trans>体力度と技術度について</Trans>
+          <Trans>体力の目安と道のけわしさについて</Trans>
         </h1>
         <p className="text-lg leading-8">
-          <Trans>ルートの「体力度」と「技術度」は、歩く前に大変さを知るための目安です。公式の情報ではありません。天気や体調で、感じ方は変わります。</Trans>
+          <Trans>コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。</Trans>
         </p>
       </div>
 
       <section id="physical" className={`${panel} scroll-mt-24`}>
         <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-          <Trans>体力度（1〜10）</Trans>
+          <Trans>体力の目安（星1〜5）</Trans>
         </h2>
         <p>
           <Trans>歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど、体力が必要です。</Trans>
@@ -57,40 +58,41 @@ export default async function GradingPage() {
           <Trans>コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）</Trans>
         </p>
         <p>
-          <Trans>たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、体力度は2です。</Trans>
+          <Trans>たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、星1つです。</Trans>
         </p>
+        {/* Two of the prefecture's ten levels to a star: the constant's range for each star. */}
         <ul className="flex flex-col gap-1">
-          {PHYSICAL_LEVEL_UPPER_BOUNDS.map((upper, i) => (
-            <li key={upper} className="flex justify-between gap-4 border-t border-line/30 pt-1 tabular-nums">
-              <span className="font-bold">
-                <Trans>体力度 {i + 1}</Trans>
-              </span>
-              <span>{i === 0 ? `〜 ${upper}` : `${PHYSICAL_LEVEL_UPPER_BOUNDS[i - 1]} 〜 ${upper}`}</span>
-            </li>
-          ))}
-          <li className="flex justify-between gap-4 border-t border-line/30 pt-1 tabular-nums">
-            <span className="font-bold">
-              <Trans>体力度 10</Trans>
-            </span>
-            <span>{`${PHYSICAL_LEVEL_UPPER_BOUNDS.at(-1)} 〜`}</span>
-          </li>
+          {Array.from({ length: STAR_COUNT }, (_, i) => {
+            const low = i === 0 ? null : PHYSICAL_LEVEL_UPPER_BOUNDS[2 * i - 1];
+            const high = i === STAR_COUNT - 1 ? null : PHYSICAL_LEVEL_UPPER_BOUNDS[2 * i + 1];
+            return (
+              <li key={i} className="flex items-center justify-between gap-4 border-t border-line/30 pt-1 tabular-nums">
+                <span className="text-xl">
+                  <Stars n={i + 1} />
+                </span>
+                <span>{low === null ? `〜 ${high}` : high === null ? `${low} 〜` : `${low} 〜 ${high}`}</span>
+              </li>
+            );
+          })}
         </ul>
         <p className="text-base text-muted">
-          <Trans>数字は目安です。保存される体力度は、ルートを作った人が、この計算を見て決めています。</Trans>
+          <Trans>数字は目安です。星の数は、コースを作った人が、この計算を見て決めています（長野県の体力度1〜10の、2段ずつが星1つです）。</Trans>
         </p>
       </section>
 
       <section id="technical" className={`${panel} scroll-mt-24`}>
         <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-          <Trans>技術度（A〜E）</Trans>
+          <Trans>道のけわしさ（星1〜5）</Trans>
         </h2>
         <p>
-          <Trans>技術度は計算ではなく、道の様子から人が決めます。Aがいちばんやさしく、Eがいちばん難しいです。</Trans>
+          <Trans>道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。</Trans>
         </p>
         <dl className="flex flex-col gap-2">
           {TECHNICAL_LEVELS.map((level) => (
             <div key={level} className="flex gap-3 border-t border-line/30 pt-2">
-              <dt className="grid size-9 shrink-0 place-items-center rounded-full bg-ink text-xl font-bold text-paper">{level}</dt>
+              <dt className="shrink-0 text-xl">
+                <Stars n={technicalStars(level)} />
+              </dt>
               <dd>{technical[level]}</dd>
             </div>
           ))}
@@ -98,7 +100,7 @@ export default async function GradingPage() {
       </section>
 
       <p className="mx-4 text-base text-muted">
-        <Trans>この考え方は、長野県の「信州 山のグレーディング」を参考にしています。説明は、このサイト独自の言葉です。</Trans>
+        <Trans>この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。</Trans>
       </p>
     </div>
   );

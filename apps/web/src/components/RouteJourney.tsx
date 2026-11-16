@@ -15,11 +15,11 @@ export function stopName(stop: TrailStop, locale: string) {
   return stop.type === "stamp" ? pickText(locale, stop.spot.nameJa, stop.spot.nameEn) : pickText(locale, stop.point.nameJa, stop.point.nameEn);
 }
 
-/** The small word that says how the walk goes: 片道, 周回 or 往復. */
+/** The small word that says how the walk goes: 通り抜け, 一周 or 往復 (片道 read oddly, 2026-11-16). */
 export function WalkStyleChip({ style, className = "" }: { style: WalkStyle; className?: string }) {
   return (
     <span className={`inline-block rounded-lg border-2 border-ink px-2 font-bold ${className}`}>
-      {style === "loop" ? <Trans>周回</Trans> : style === "out_and_back" ? <Trans>往復</Trans> : <Trans>片道</Trans>}
+      {style === "loop" ? <Trans>一周</Trans> : style === "out_and_back" ? <Trans>往復</Trans> : <Trans>通り抜け</Trans>}
     </span>
   );
 }

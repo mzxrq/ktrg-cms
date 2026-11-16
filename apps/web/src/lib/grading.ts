@@ -44,3 +44,11 @@ export function suggestPhysicalLevel(route: {
   });
   return { constant, level: physicalLevelOf(constant) };
 }
+
+/**
+ * The levels as stars for visitors (2026-11-16, user's manager: a letter like D reads as "dangerous" and puts people off;
+ * five stars read faster). Physical 1-10 -> 1-5 stars (two levels a star); technical A-E -> 1-5. The levels stay as saved.
+ */
+export const STAR_COUNT = 5;
+export const physicalStars = (level: number): number => Math.min(STAR_COUNT, Math.max(1, Math.ceil(level / 2)));
+export const technicalStars = (level: TechnicalLevel): number => TECHNICAL_LEVELS.indexOf(level) + 1;

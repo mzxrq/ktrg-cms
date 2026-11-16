@@ -11,8 +11,8 @@ msgstr "（{0} まで）"
 msgid "（{ageText}・{0} MB）"
 msgstr "（{ageText}・{0} MB）"
 
-#: src/components/landing/Landing.tsx:184
-#: src/components/landing/Landing.tsx:208
+#: src/components/landing/Landing.tsx:180
+#: src/components/landing/Landing.tsx:204
 msgid "（公式サイト、新しいタブで開きます）"
 msgstr "（公式サイト、新しいタブで開きます）"
 
@@ -280,16 +280,16 @@ msgstr "{due}（日本時間）に、アカウントとすべての記録が消�
 msgid "{email} に、6桁の番号を送りました。"
 msgstr "{email} に、6桁の番号を送りました。"
 
-#: src/components/RouteStats.tsx:39
+#: src/components/RouteStats.tsx:42
 msgid "{hours}時間"
 msgstr "{hours}時間"
 
-#: src/components/RouteStats.tsx:39
+#: src/components/RouteStats.tsx:42
 msgid "{hours}時間{minutes}分"
 msgstr "{hours}時間{minutes}分"
 
 #: src/components/ElevationProfile.tsx:37
-#: src/components/RouteStats.tsx:27
+#: src/components/RouteStats.tsx:30
 #: src/components/SpotStats.tsx:32
 msgid "{km}km"
 msgstr "{km}km"
@@ -310,11 +310,11 @@ msgstr "{label}の言語"
 msgid "{m}分"
 msgstr "{m}分"
 
-#: src/components/RouteStats.tsx:31
+#: src/components/RouteStats.tsx:34
 msgid "{meters}m"
 msgstr "{meters}m"
 
-#: src/components/RouteStats.tsx:39
+#: src/components/RouteStats.tsx:42
 msgid "{minutes}分"
 msgstr "{minutes}分"
 
@@ -385,15 +385,15 @@ msgid "{number}番 まだ押していません"
 msgstr "{number}番 まだ押していません"
 
 #: src/components/map/MapScreen.tsx:367
-#: src/components/map/MapScreenCanvas.tsx:479
+#: src/components/map/MapScreenCanvas.tsx:472
 msgid "{order}. {name}"
 msgstr "{order}. {name}"
 
-#: src/components/map/MapScreenCanvas.tsx:479
+#: src/components/map/MapScreenCanvas.tsx:472
 msgid "{order}. {name}（スタンプ完了）"
 msgstr "{order}. {name}（スタンプ完了）"
 
-#: src/components/map/MapScreenCanvas.tsx:479
+#: src/components/map/MapScreenCanvas.tsx:472
 msgid "{order}. {name}（準備中）"
 msgstr "{order}. {name}（準備中）"
 
@@ -437,6 +437,10 @@ msgstr "{shownKm} km"
 msgid "{shownKm} km・歩いて約{minutes}分"
 msgstr "{shownKm} km・歩いて約{minutes}分"
 
+#: src/components/Stars.tsx:8
+msgid "{STAR_COUNT}段階中{n}"
+msgstr "{STAR_COUNT}段階中{n}"
+
 #: src/components/navigation/NavigationHud.tsx:316
 msgid "{steerWord} {distText}"
 msgstr "{steerWord} {distText}"
@@ -467,7 +471,7 @@ msgid "{title}を読み込めませんでした。しばらくしてから、ペ
 msgstr "{title}を読み込めませんでした。しばらくしてから、ページを開き直してください。"
 
 #: src/components/landing/Journey.tsx:55
-#: src/components/landing/Landing.tsx:324
+#: src/components/landing/Landing.tsx:320
 msgid "{TOTAL_STAMPS}か所"
 msgstr "{TOTAL_STAMPS}か所"
 
@@ -575,14 +579,6 @@ msgstr "「はい」か「いいえ」で書いてください"
 #: src/components/admin/RouteImport.tsx:75
 msgid "「ルート」シート {0} 行目"
 msgstr "「ルート」シート {0} 行目"
-
-#: src/app/(admin)/admin/settings/page.tsx:24
-msgid "「地図」ページ、ルートのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
-msgstr "「地図」ページ、ルートのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
-
-#: src/components/admin/SiteSettingsForm.tsx:129
-msgid "「地図」ページで、山を立体にする"
-msgstr "「地図」ページで、山を立体にする"
 
 #: src/components/admin/RouteEditor.tsx:803
 msgid "「地図と線」で経由地を置く"
@@ -1243,7 +1239,7 @@ msgstr "お名前に使えない文字が含まれているか、長すぎます
 msgid "お名前は未設定です"
 msgstr "お名前は未設定です"
 
-#: src/components/landing/Landing.tsx:198
+#: src/components/landing/Landing.tsx:194
 msgid "お土産"
 msgstr "お土産"
 
@@ -1361,7 +1357,7 @@ msgstr "くっきり表示"
 msgid "クリックで、この点を消します"
 msgstr "クリックで、この点を消します"
 
-#: src/components/landing/Landing.tsx:197
+#: src/components/landing/Landing.tsx:193
 msgid "グルメ"
 msgstr "グルメ"
 
@@ -1375,8 +1371,8 @@ msgid "ゲストのまま使う"
 msgstr "ゲストのまま使う"
 
 #: src/components/landing/Journey.tsx:53
-#: src/components/landing/Landing.tsx:322
-#: src/components/map/MapScreenCanvas.tsx:619
+#: src/components/landing/Landing.tsx:318
+#: src/components/map/MapScreenCanvas.tsx:612
 msgid "コース"
 msgstr "コース"
 
@@ -1401,6 +1397,10 @@ msgstr "コースでつくったラリー：えらんだコースを全部終え
 msgid "コースでつくる"
 msgstr "コースでつくる"
 
+#: src/app/(public)/grading/page.tsx:46
+msgid "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。"
+msgstr "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。"
+
 #: src/app/(public)/badges/page.tsx:39
 msgid "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
 msgstr "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
@@ -1413,6 +1413,10 @@ msgstr "コースのラリー"
 #: src/components/map/TrailMap.tsx:378
 msgid "コースの出発地点から近い順（まっすぐ測った距離です）"
 msgstr "コースの出発地点から近い順（まっすぐ測った距離です）"
+
+#: src/components/RouteStats.tsx:27
+msgid "コースの形"
+msgstr "コースの形"
 
 #: src/components/admin/CourseAreaEditor.tsx:178
 msgid "コースの範囲"
@@ -1430,7 +1434,11 @@ msgstr "コースの終わりが次のコースの始まりのときは、同じ
 msgid "コースを見る"
 msgstr "コースを見る"
 
-#: src/app/(public)/grading/page.tsx:57
+#: src/app/(public)/grading/page.tsx:40
+msgid "コース一覧"
+msgstr "コース一覧"
+
+#: src/app/(public)/grading/page.tsx:58
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 msgstr "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 
@@ -1812,7 +1820,7 @@ msgstr "この端末では、顔・指紋のログインを使えません。メ
 msgid "この端末では地図の見本を表示できません。"
 msgstr "この端末では地図の見本を表示できません。"
 
-#: src/components/map/MapScreenCanvas.tsx:575
+#: src/components/map/MapScreenCanvas.tsx:568
 msgid "この端末では地図を表示できません。下の一覧から区間を選べます。"
 msgstr "この端末では地図を表示できません。下の一覧から区間を選べます。"
 
@@ -1871,9 +1879,9 @@ msgstr "この経由地を削除"
 msgid "この線は、経由地の順番や位置と合わないため、区間に分けていません。経由地の順番と位置を直してから「区間に分ける」を押すか、区間を描くと、その区間から線が置き換わります（「元に戻す」で戻せます）。"
 msgstr "この線は、経由地の順番や位置と合わないため、区間に分けていません。経由地の順番と位置を直してから「区間に分ける」を押すか、区間を描くと、その区間から線が置き換わります（「元に戻す」で戻せます）。"
 
-#: src/app/(public)/grading/page.tsx:101
-msgid "この考え方は、長野県の「信州 山のグレーディング」を参考にしています。説明は、このサイト独自の言葉です。"
-msgstr "この考え方は、長野県の「信州 山のグレーディング」を参考にしています。説明は、このサイト独自の言葉です。"
+#: src/app/(public)/grading/page.tsx:103
+msgid "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。"
+msgstr "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。"
 
 #: src/components/admin/FuriganaWords.tsx:79
 msgid "この言葉はもう一覧にあります。"
@@ -1922,7 +1930,7 @@ msgstr "この顔・指紋のログインを消しますか？"
 msgid "コピーしました"
 msgstr "コピーしました"
 
-#: src/components/admin/AdminNav.tsx:54
+#: src/components/admin/AdminNav.tsx:53
 msgid "コミュニティ"
 msgstr "コミュニティ"
 
@@ -2020,7 +2028,11 @@ msgstr "サイトで見る"
 msgid "サイトに反映しますか？"
 msgstr "サイトに反映しますか？"
 
-#: src/components/admin/AdminNav.tsx:53
+#: src/app/(admin)/admin/settings/page.tsx:24
+msgid "サイトの全体に関わる設定です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
+msgstr "サイトの全体に関わる設定です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
+
+#: src/components/admin/AdminNav.tsx:52
 msgid "サイトの内容"
 msgstr "サイトの内容"
 
@@ -2412,9 +2424,9 @@ msgstr "ダッシュボード（管理）"
 msgid "たった今"
 msgstr "たった今"
 
-#: src/app/(public)/grading/page.tsx:60
-msgid "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、体力度は2です。"
-msgstr "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、体力度は2です。"
+#: src/app/(public)/grading/page.tsx:61
+msgid "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、星1つです。"
+msgstr "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、星1つです。"
 
 #: src/components/admin/useChecklistLabels.ts:22
 msgid "チェック"
@@ -2632,7 +2644,7 @@ msgstr "なめらかにする"
 msgid "ニックネームでもかまいません。"
 msgstr "ニックネームでもかまいません。"
 
-#: src/components/RouteStats.tsx:31
+#: src/components/RouteStats.tsx:34
 msgid "のぼり"
 msgstr "のぼり"
 
@@ -2641,7 +2653,7 @@ msgstr "のぼり"
 msgid "のぼり {0}m"
 msgstr "のぼり {0}m"
 
-#: src/components/landing/Landing.tsx:382
+#: src/components/landing/Landing.tsx:378
 msgid "のものです。"
 msgstr "のものです。"
 
@@ -3186,7 +3198,7 @@ msgid "まだスタンプはありません。"
 msgstr "まだスタンプはありません。"
 
 #: src/components/admin/HomeSectionsForm.tsx:62
-#: src/components/admin/SiteSettingsForm.tsx:145
+#: src/components/admin/SiteSettingsForm.tsx:136
 msgid "まだ保存していません。"
 msgstr "まだ保存していません。"
 
@@ -3212,7 +3224,7 @@ msgstr "まっすぐつなぐ"
 msgid "マップ"
 msgstr "マップ"
 
-#: src/components/landing/LandingMap.tsx:103
+#: src/components/landing/LandingMap.tsx:97
 msgid "マップをひらく"
 msgstr "マップをひらく"
 
@@ -3308,7 +3320,7 @@ msgstr "メイン写真"
 msgid "めぐる場所"
 msgstr "めぐる場所"
 
-#: src/components/admin/AdminNav.tsx:76
+#: src/components/admin/AdminNav.tsx:75
 #: src/components/SiteHeader.tsx:208
 #: src/components/TabBar.tsx:152
 msgid "メニュー"
@@ -3553,7 +3565,7 @@ msgid "ラリーを直す（管理）"
 msgstr "ラリーを直す（管理）"
 
 #: src/components/landing/Journey.tsx:92
-#: src/components/landing/Landing.tsx:124
+#: src/components/landing/Landing.tsx:120
 #: src/components/RestoreStamps.tsx:44
 msgid "ラリーを見る"
 msgstr "ラリーを見る"
@@ -3669,17 +3681,13 @@ msgstr "ルートがまだありません。"
 msgid "ルートがまだありません。「新しいルート」から作ってください。"
 msgstr "ルートがまだありません。「新しいルート」から作ってください。"
 
-#: src/components/admin/AdminNav.tsx:52
+#: src/components/admin/AdminNav.tsx:51
 msgid "ルートとラリー"
 msgstr "ルートとラリー"
 
 #: src/app/(public)/spots/[id]/page.tsx:71
 msgid "ルートにもどる"
 msgstr "ルートにもどる"
-
-#: src/app/(public)/grading/page.tsx:45
-msgid "ルートの「体力度」と「技術度」は、歩く前に大変さを知るための目安です。公式の情報ではありません。天気や体調で、感じ方は変わります。"
-msgstr "ルートの「体力度」と「技術度」は、歩く前に大変さを知るための目安です。公式の情報ではありません。天気や体調で、感じ方は変わります。"
 
 #: src/app/(public)/sitemap/page.tsx:70
 msgid "ルートの一覧"
@@ -3735,7 +3743,7 @@ msgid "ルートやラリー、ブログの記事で、しおりのボタンを�
 msgstr "ルートやラリー、ブログの記事で、しおりのボタンを押すと、ここに保存されます。ログインしていれば、アカウントに保存されます。"
 
 #: src/components/admin/RouteTable.tsx:127
-#: src/components/landing/Landing.tsx:121
+#: src/components/landing/Landing.tsx:117
 #: src/components/landing/LandingHero.tsx:72
 msgid "ルートをさがす"
 msgstr "ルートをさがす"
@@ -3761,7 +3769,6 @@ msgstr "ルートを直す（管理）"
 msgid "ルートを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "ルートを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 
-#: src/app/(public)/grading/page.tsx:39
 #: src/app/(public)/routes/[id]/page.tsx:40
 #: src/app/(public)/routes/[id]/page.tsx:61
 msgid "ルート一覧"
@@ -3792,7 +3799,7 @@ msgstr "ログアウトする"
 #: src/components/auth/RegisterFlow.tsx:179
 #: src/components/blog/CommentSection.tsx:127
 #: src/components/GuestNag.tsx:88
-#: src/components/landing/Landing.tsx:130
+#: src/components/landing/Landing.tsx:126
 #: src/components/landing/LandingHero.tsx:78
 #: src/components/ProfileSettings.tsx:220
 #: src/components/SignInPrompt.tsx:26
@@ -3828,6 +3835,11 @@ msgstr "わかりました"
 #: src/components/navigation/NavPrompts.tsx:111
 msgid "を通りすぎました"
 msgstr "を通りすぎました"
+
+#: src/components/RouteJourney.tsx:22
+#: src/components/RouteStats.tsx:27
+msgid "一周"
+msgstr "一周"
 
 #: src/components/admin/map-editor/PlaceList.tsx:136
 msgid "一周して、ここに戻るルートのとき: 同じ位置に、スタンプのない終点を追加します"
@@ -4103,37 +4115,31 @@ msgstr "低い"
 msgid "住所"
 msgstr "住所"
 
-#: src/components/RouteStats.tsx:43
+#: src/components/RouteStats.tsx:47
 msgid "体力"
 msgstr "体力"
 
-#: src/components/RouteStats.tsx:43
-msgid "体力度"
-msgstr "体力度"
+#: src/components/RouteStats.tsx:47
+msgid "体力の目安"
+msgstr "体力の目安"
 
-#. placeholder {0}: i + 1
-#: src/app/(public)/grading/page.tsx:66
-msgid "体力度 {0}"
-msgstr "体力度 {0}"
+#: src/app/(public)/grading/page.tsx:52
+msgid "体力の目安（星1〜5）"
+msgstr "体力の目安（星1〜5）"
 
-#: src/app/(public)/grading/page.tsx:73
-msgid "体力度 10"
-msgstr "体力度 10"
+#: src/components/RouteStats.tsx:53
+msgid "体力の目安とは"
+msgstr "体力の目安とは"
 
-#: src/app/(public)/grading/page.tsx:51
+#: src/app/(public)/grading/page.tsx:43
+msgid "体力の目安と道のけわしさについて"
+msgstr "体力の目安と道のけわしさについて"
+
 #: src/components/admin/GradingFields.tsx:48
 msgid "体力度（1〜10）"
 msgstr "体力度（1〜10）"
 
-#: src/components/RouteStats.tsx:49
-msgid "体力度とは"
-msgstr "体力度とは"
-
-#: src/app/(public)/grading/page.tsx:42
-msgid "体力度と技術度について"
-msgstr "体力度と技術度について"
-
-#: src/components/landing/Landing.tsx:199
+#: src/components/landing/Landing.tsx:195
 msgid "体験"
 msgstr "体験"
 
@@ -4202,7 +4208,7 @@ msgid "保存していない編集が、このブラウザに残っています�
 msgstr "保存していない編集が、このブラウザに残っています（{offeredAt}）。戻しますか？"
 
 #: src/components/admin/HomeSectionsForm.tsx:60
-#: src/components/admin/SiteSettingsForm.tsx:140
+#: src/components/admin/SiteSettingsForm.tsx:131
 msgid "保存しています…"
 msgstr "保存しています…"
 
@@ -4251,7 +4257,7 @@ msgstr "保存しました。次に確認する場所はありません。"
 #: src/components/admin/PageTextEditor.tsx:67
 #: src/components/admin/RouteEditor.tsx:490
 #: src/components/admin/SiteSettingsForm.tsx:50
-#: src/components/admin/SiteSettingsForm.tsx:140
+#: src/components/admin/SiteSettingsForm.tsx:131
 #: src/components/ProfileSettings.tsx:261
 #: src/components/settings/PasskeyManager.tsx:136
 #: src/components/settings/PrefsForm.tsx:173
@@ -4373,17 +4379,17 @@ msgstr "入力"
 msgid "入力に、まちがいがあるようです。見直して、もう一度お試しください。"
 msgstr "入力に、まちがいがあるようです。見直して、もう一度お試しください。"
 
-#: src/components/landing/LandingMap.tsx:58
+#: src/components/landing/LandingMap.tsx:55
 msgid "全{count}区間のある場所を示した図"
 msgstr "全{count}区間のある場所を示した図"
 
 #: src/components/landing/Journey.tsx:53
-#: src/components/landing/Landing.tsx:322
+#: src/components/landing/Landing.tsx:318
 msgid "全{TOTAL_ROUTES}区間"
 msgstr "全{TOTAL_ROUTES}区間"
 
-#: src/components/landing/Landing.tsx:284
-#: src/components/landing/Landing.tsx:356
+#: src/components/landing/Landing.tsx:280
+#: src/components/landing/Landing.tsx:352
 msgid "全{TOTAL_ROUTES}区間を見る"
 msgstr "全{TOTAL_ROUTES}区間を見る"
 
@@ -4629,7 +4635,7 @@ msgstr "写真がない"
 msgid "写真と動画"
 msgstr "写真と動画"
 
-#: src/components/landing/Landing.tsx:378
+#: src/components/landing/Landing.tsx:374
 msgid "写真と文章の一部は、"
 msgstr "写真と文章の一部は、"
 
@@ -4785,7 +4791,7 @@ msgstr "初めから入っている設定に戻しました。"
 msgid "初めの設定に戻す"
 msgstr "初めの設定に戻す"
 
-#: src/components/admin/SiteSettingsForm.tsx:143
+#: src/components/admin/SiteSettingsForm.tsx:134
 msgid "初期値にする"
 msgstr "初期値にする"
 
@@ -5268,11 +5274,6 @@ msgstr "名前を変える"
 msgid "名前順"
 msgstr "名前順"
 
-#: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:24
-msgid "周回"
-msgstr "周回"
-
 #: src/components/admin/RouteEditor.tsx:567
 msgid "周回（元の場所へ）"
 msgstr "周回（元の場所へ）"
@@ -5327,7 +5328,7 @@ msgstr "国"
 msgid "国を選択してください"
 msgstr "国を選択してください"
 
-#: src/components/landing/LandingMap.tsx:98
+#: src/components/landing/LandingMap.tsx:92
 msgid "国土地理院（地理院タイル）"
 msgstr "国土地理院（地理院タイル）"
 
@@ -5338,10 +5339,6 @@ msgstr "国土地理院の「地理院地図Vector」のスタイル編集で保
 #: src/components/admin/LargeStyleUpload.tsx:76
 msgid "国土地理院のスタイルファイル"
 msgstr "国土地理院のスタイルファイル"
-
-#: src/components/admin/SiteSettingsForm.tsx:131
-msgid "国土地理院の標高タイルで、傾けた地図の山を高く見せます。読みこむタイルが増えるので、電波の弱い山の中では重くなります。下の見本は平らなままです。「地図」ページで確かめてください。"
-msgstr "国土地理院の標高タイルで、傾けた地図の山を高く見せます。読みこむタイルが増えるので、電波の弱い山の中では重くなります。下の見本は平らなままです。「地図」ページで確かめてください。"
 
 #: src/components/admin/HoursInput.tsx:15
 msgid "土曜日"
@@ -5382,7 +5379,7 @@ msgstr "地図で見る"
 msgid "地図と線"
 msgstr "地図と線"
 
-#: src/components/map/MapScreenCanvas.tsx:588
+#: src/components/map/MapScreenCanvas.tsx:581
 msgid "地図に出すもの"
 msgstr "地図に出すもの"
 
@@ -5406,15 +5403,9 @@ msgstr "地図の種類"
 msgid "地図の見せ方"
 msgstr "地図の見せ方"
 
-#: src/app/(admin)/admin/settings/page.tsx:21
-#: src/components/admin/AdminNav.tsx:46
 #: src/components/admin/SiteSettingsForm.tsx:81
 msgid "地図の見た目"
 msgstr "地図の見た目"
-
-#: src/app/(admin)/admin/settings/page.tsx:10
-msgid "地図の見た目（管理）"
-msgstr "地図の見た目（管理）"
 
 #: src/components/admin/HomeTextFields.tsx:31
 msgid "地図の見出し"
@@ -5468,7 +5459,7 @@ msgstr "地図を保存"
 msgid "地図を保存しています… {percent}%"
 msgstr "地図を保存しています… {percent}%"
 
-#: src/components/map/MapScreenCanvas.tsx:661
+#: src/components/map/MapScreenCanvas.tsx:654
 msgid "地図を傾ける"
 msgstr "地図を傾ける"
 
@@ -5476,7 +5467,7 @@ msgstr "地図を傾ける"
 msgid "地図を動かす"
 msgstr "地図を動かす"
 
-#: src/components/map/MapScreenCanvas.tsx:661
+#: src/components/map/MapScreenCanvas.tsx:654
 msgid "地図を平らにする（北が上）"
 msgstr "地図を平らにする（北が上）"
 
@@ -5491,7 +5482,7 @@ msgstr "地図を見やすくする"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1210
 #: src/components/admin/map-editor/MapEditorLoader.tsx:11
-#: src/components/map/MapScreenCanvas.tsx:584
+#: src/components/map/MapScreenCanvas.tsx:577
 #: src/components/map/MapScreenCanvasLoader.tsx:12
 #: src/components/map/TrailMap.tsx:433
 #: src/components/map/TrailMapLoader.tsx:12
@@ -5693,7 +5684,7 @@ msgstr "季節営業"
 msgid "完了"
 msgstr "完了"
 
-#: src/components/landing/Landing.tsx:200
+#: src/components/landing/Landing.tsx:196
 msgid "宿泊"
 msgstr "宿泊"
 
@@ -5711,7 +5702,7 @@ msgstr "寄り道（道すじから少しはずれた、任意の立ち寄り先
 msgid "寄り道の点を選んでいます。サブコースの線（{legName}）は、右の一覧の「サブコースの線を描く」か、「線を描く」で描けます。本線の点をクリックする必要はありません。"
 msgstr "寄り道の点を選んでいます。サブコースの線（{legName}）は、右の一覧の「サブコースの線を描く」か、「線を描く」で描けます。本線の点をクリックする必要はありません。"
 
-#: src/components/map/MapScreenCanvas.tsx:619
+#: src/components/map/MapScreenCanvas.tsx:612
 msgid "寄り道の線"
 msgstr "寄り道の線"
 
@@ -5818,7 +5809,7 @@ msgid "役小角（役行者）"
 msgstr "役小角（役行者）"
 
 #: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:24
+#: src/components/RouteStats.tsx:27
 msgid "往復"
 msgstr "往復"
 
@@ -5924,26 +5915,9 @@ msgstr "手順"
 msgid "承認"
 msgstr "承認"
 
-#: src/components/RouteStats.tsx:44
-msgid "技術"
-msgstr "技術"
-
-#: src/components/RouteStats.tsx:44
-msgid "技術度"
-msgstr "技術度"
-
-#: src/app/(public)/grading/page.tsx:85
 #: src/components/admin/GradingFields.tsx:80
 msgid "技術度（A〜E）"
 msgstr "技術度（A〜E）"
-
-#: src/components/RouteStats.tsx:53
-msgid "技術度とは"
-msgstr "技術度とは"
-
-#: src/app/(public)/grading/page.tsx:88
-msgid "技術度は計算ではなく、道の様子から人が決めます。Aがいちばんやさしく、Eがいちばん難しいです。"
-msgstr "技術度は計算ではなく、道の様子から人が決めます。Aがいちばんやさしく、Eがいちばん難しいです。"
 
 #: src/components/RouteJourney.tsx:83
 #: src/components/StopList.tsx:105
@@ -5988,7 +5962,7 @@ msgstr "押せます"
 msgid "担当 {0}"
 msgstr "担当 {0}"
 
-#: src/components/map/MapScreenCanvas.tsx:650
+#: src/components/map/MapScreenCanvas.tsx:643
 #: src/components/map/TrailMap.tsx:447
 msgid "拡大"
 msgstr "拡大"
@@ -6039,8 +6013,8 @@ msgid "数字の丸をドラッグすると、経由地を動かせます。道�
 msgstr "数字の丸をドラッグすると、経由地を動かせます。道すじは「線を描く」か、GPXファイルで入れます。"
 
 #: src/app/(public)/grading/page.tsx:79
-msgid "数字は目安です。保存される体力度は、ルートを作った人が、この計算を見て決めています。"
-msgstr "数字は目安です。保存される体力度は、ルートを作った人が、この計算を見て決めています。"
+msgid "数字は目安です。星の数は、コースを作った人が、この計算を見て決めています（長野県の体力度1〜10の、2段ずつが星1つです）。"
+msgstr "数字は目安です。星の数は、コースを作った人が、この計算を見て決めています（長野県の体力度1〜10の、2段ずつが星1つです）。"
 
 #: src/components/admin/GoalsForm.tsx:39
 msgid "数字を空にすると、その目標はなしになります。保存すると、ページを開き直したときに反映されます。"
@@ -6155,7 +6129,7 @@ msgstr "新しく作るには、名前（日本語）が必要です"
 #: src/app/(public)/sitemap/page.tsx:111
 #: src/components/auth/LoginFlow.tsx:153
 #: src/components/GuestNag.tsx:85
-#: src/components/landing/Landing.tsx:118
+#: src/components/landing/Landing.tsx:114
 #: src/components/landing/LandingHero.tsx:69
 #: src/components/SignInPrompt.tsx:23
 #: src/components/SignInPrompt.tsx:51
@@ -6216,11 +6190,11 @@ msgstr "日本語の名前を入れてください。"
 msgid "日本語の字幕です。もう一度送ると、置き換わります。字幕は動画の横に保存され、動画を入れ替えたときは、字幕も送りなおしてください。"
 msgstr "日本語の字幕です。もう一度送ると、置き換わります。字幕は動画の横に保存され、動画を入れ替えたときは、字幕も送りなおしてください。"
 
-#: src/components/landing/Landing.tsx:176
+#: src/components/landing/Landing.tsx:172
 msgid "日本遺産 葛城修験ストーリー"
 msgstr "日本遺産 葛城修験ストーリー"
 
-#: src/components/landing/Landing.tsx:165
+#: src/components/landing/Landing.tsx:161
 msgid "日本遺産「葛城修験」PR動画（180秒）"
 msgstr "日本遺産「葛城修験」PR動画（180秒）"
 
@@ -6230,9 +6204,9 @@ msgstr "時刻表"
 
 #: src/components/map/MapScreen.tsx:521
 #: src/components/map/PlacesPanel.tsx:240
-#: src/components/RouteStats.tsx:37
-#: src/components/RouteStats.tsx:61
-#: src/components/RouteStats.tsx:82
+#: src/components/RouteStats.tsx:40
+#: src/components/RouteStats.tsx:65
+#: src/components/RouteStats.tsx:92
 msgid "時間"
 msgstr "時間"
 
@@ -6405,7 +6379,7 @@ msgstr "検索"
 msgid "概要"
 msgstr "概要"
 
-#: src/components/landing/Landing.tsx:178
+#: src/components/landing/Landing.tsx:174
 msgid "構成文化財"
 msgstr "構成文化財"
 
@@ -6526,7 +6500,6 @@ msgid "歩いて行く道を見る"
 msgstr "歩いて行く道を見る"
 
 #: src/components/admin/RouteEditor.tsx:563
-#: src/components/RouteStats.tsx:24
 msgid "歩き方"
 msgstr "歩き方"
 
@@ -6540,11 +6513,11 @@ msgstr "歩く"
 msgid "歩く時間"
 msgstr "歩く時間"
 
-#: src/components/RouteStats.tsx:50
-msgid "歩く時間・距離・登りと下りから、必要な体力を1（やさしい）から10（とても大変）で表した目安です。"
-msgstr "歩く時間・距離・登りと下りから、必要な体力を1（やさしい）から10（とても大変）で表した目安です。"
+#: src/components/RouteStats.tsx:54
+msgid "歩く時間・距離・登りと下りから、必要な体力を星1つ（やさしい）から星5つ（とても大変）で表した目安です。"
+msgstr "歩く時間・距離・登りと下りから、必要な体力を星1つ（やさしい）から星5つ（とても大変）で表した目安です。"
 
-#: src/app/(public)/grading/page.tsx:54
+#: src/app/(public)/grading/page.tsx:55
 msgid "歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど、体力が必要です。"
 msgstr "歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど、体力が必要です。"
 
@@ -6723,11 +6696,6 @@ msgstr "点を消す (E)"
 msgid "点を置く"
 msgstr "点を置く"
 
-#: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:24
-msgid "片道"
-msgstr "片道"
-
 #: src/components/admin/RouteEditor.tsx:566
 msgid "片道（別の場所へ）"
 msgstr "片道（別の場所へ）"
@@ -6756,7 +6724,7 @@ msgstr "状態は未確認"
 msgid "現在の場所"
 msgstr "現在の場所"
 
-#: src/components/map/MapScreenCanvas.tsx:674
+#: src/components/map/MapScreenCanvas.tsx:667
 msgid "現在地を真ん中にする（進む向きが上）"
 msgstr "現在地を真ん中にする（進む向きが上）"
 
@@ -6875,7 +6843,7 @@ msgid "登録なしで残せるスタンプの数が、上限になりました�
 msgstr "登録なしで残せるスタンプの数が、上限になりました。新規登録すると、続けて集められます。"
 
 #: src/components/auth/RegisterFlow.tsx:177
-#: src/components/landing/Landing.tsx:128
+#: src/components/landing/Landing.tsx:124
 #: src/components/landing/LandingHero.tsx:76
 msgid "登録済みの方は"
 msgstr "登録済みの方は"
@@ -7043,10 +7011,6 @@ msgstr "空から撮った写真の地図です。"
 msgid "空のままにすると、ルートの写真が使われます。日本語の欄に入れた写真は、英語の画面でも使われます。"
 msgstr "空のままにすると、ルートの写真が使われます。日本語の欄に入れた写真は、英語の画面でも使われます。"
 
-#: src/components/admin/SiteSettingsForm.tsx:126
-msgid "立体の地図（3D）"
-msgstr "立体の地図（3D）"
-
 #: src/components/settings/PasskeyManager.tsx:125
 msgid "端末の名前"
 msgstr "端末の名前"
@@ -7064,7 +7028,7 @@ msgstr "答えなくても大丈夫です。"
 msgid "箇条書き"
 msgstr "箇条書き"
 
-#: src/components/admin/AdminNav.tsx:68
+#: src/components/admin/AdminNav.tsx:67
 msgid "管理メニュー"
 msgstr "管理メニュー"
 
@@ -7141,7 +7105,7 @@ msgid "約{n}m"
 msgstr "約{n}m"
 
 #: src/components/landing/Journey.tsx:54
-#: src/components/landing/Landing.tsx:323
+#: src/components/landing/Landing.tsx:319
 msgid "約{TRAIL_KM}km"
 msgstr "約{TRAIL_KM}km"
 
@@ -7161,13 +7125,13 @@ msgstr "終了"
 #: src/components/admin/PlacePanel.tsx:44
 #: src/components/landing/DeskPanel.tsx:41
 #: src/components/landing/Journey.tsx:55
-#: src/components/landing/Landing.tsx:324
-#: src/components/map/MapScreenCanvas.tsx:619
+#: src/components/landing/Landing.tsx:320
+#: src/components/map/MapScreenCanvas.tsx:612
 #: src/components/PointKindName.tsx:9
 msgid "経塚"
 msgstr "経塚"
 
-#: src/components/map/MapScreenCanvas.tsx:520
+#: src/components/map/MapScreenCanvas.tsx:513
 msgid "経塚 {name}"
 msgstr "経塚 {name}"
 
@@ -7439,7 +7403,7 @@ msgstr "緯度と経度は、両方書いてください"
 msgid "縦の長さ"
 msgstr "縦の長さ"
 
-#: src/components/map/MapScreenCanvas.tsx:650
+#: src/components/map/MapScreenCanvas.tsx:643
 #: src/components/map/TrailMap.tsx:452
 msgid "縮小"
 msgstr "縮小"
@@ -7566,7 +7530,7 @@ msgstr "葛城修験とは"
 msgid "葛城修験の地図"
 msgstr "葛城修験の地図"
 
-#: src/components/landing/Landing.tsx:177
+#: src/components/landing/Landing.tsx:173
 msgid "葛城修験の基礎知識"
 msgstr "葛城修験の基礎知識"
 
@@ -7579,7 +7543,7 @@ msgstr "葛城修験の道"
 msgid "葛城修験の道のことや、歩いた日のことをお知らせします。"
 msgstr "葛城修験の道のことや、歩いた日のことをお知らせします。"
 
-#: src/components/landing/Landing.tsx:380
+#: src/components/landing/Landing.tsx:376
 msgid "葛城修験日本遺産活用推進協議会の公式サイト"
 msgstr "葛城修験日本遺産活用推進協議会の公式サイト"
 
@@ -7727,11 +7691,11 @@ msgstr "見出し"
 msgid "見出しは、よくあるご質問では質問、遊び方では手順の名前になります。その下に、本文を書きます。"
 msgstr "見出しは、よくあるご質問では質問、遊び方では手順の名前になります。その下に、本文を書きます。"
 
-#: src/components/map/MapScreenCanvas.tsx:640
+#: src/components/map/MapScreenCanvas.tsx:633
 msgid "見本の位置（目安です）"
 msgstr "見本の位置（目安です）"
 
-#: src/components/landing/Landing.tsx:196
+#: src/components/landing/Landing.tsx:192
 msgid "観光"
 msgstr "観光"
 
@@ -7831,6 +7795,15 @@ msgstr "詳しく見る"
 msgid "詳細"
 msgstr "詳細"
 
+#: src/app/(admin)/admin/settings/page.tsx:21
+#: src/components/admin/AdminNav.tsx:45
+msgid "詳細設定"
+msgstr "詳細設定"
+
+#: src/app/(admin)/admin/settings/page.tsx:10
+msgid "詳細設定（管理）"
+msgstr "詳細設定（管理）"
+
 #: src/components/admin/HomeTextFields.tsx:24
 #: src/components/admin/HomeTextFields.tsx:38
 #: src/components/admin/InfoTip.tsx:22
@@ -7904,9 +7877,9 @@ msgid "足りないもの"
 msgstr "足りないもの"
 
 #: src/components/admin/RouteEditor.tsx:576
-#: src/components/RouteStats.tsx:27
-#: src/components/RouteStats.tsx:61
-#: src/components/RouteStats.tsx:82
+#: src/components/RouteStats.tsx:30
+#: src/components/RouteStats.tsx:65
+#: src/components/RouteStats.tsx:92
 msgid "距離"
 msgstr "距離"
 
@@ -8027,6 +8000,11 @@ msgstr "送信待ちだったスタンプが、{accepted}件、受け付けら�
 msgid "送信待ちのスタンプが{waiting}件あります。ログアウトすると、次にログインするまで送れません。ログアウトしますか？"
 msgstr "送信待ちのスタンプが{waiting}件あります。ログアウトすると、次にログインするまで送れません。ログアウトしますか？"
 
+#: src/components/RouteJourney.tsx:22
+#: src/components/RouteStats.tsx:27
+msgid "通り抜け"
+msgstr "通り抜け"
+
 #: src/components/admin/MunicipalitiesField.tsx:67
 msgid "通る順に並べます。市・町・村は一覧から選びます。一覧にない地名は、下に入力して追加します（8つまで）。"
 msgstr "通る順に並べます。市・町・村は一覧から選びます。一覧にない地名は、下に入力して追加します（8つまで）。"
@@ -8057,7 +8035,7 @@ msgstr "通行止めなどがあれば、ここに表示されます。"
 msgid "遊び方"
 msgstr "遊び方"
 
-#: src/components/admin/AdminNav.tsx:55
+#: src/components/admin/AdminNav.tsx:54
 msgid "運営"
 msgstr "運営"
 
@@ -8065,6 +8043,10 @@ msgstr "運営"
 #: src/app/(admin)/admin/visits/page.tsx:64
 msgid "過去{0}日"
 msgstr "過去{0}日"
+
+#: src/components/RouteStats.tsx:48
+msgid "道"
+msgstr "道"
 
 #: src/components/SpotStats.tsx:42
 msgid "道から"
@@ -8106,6 +8088,22 @@ msgstr "道に沿わせる"
 msgid "道に沿わせる機能が、まだ使えません。管理する人に、道案内サービスの設定を頼んでください。手で線を描くことはできます。"
 msgstr "道に沿わせる機能が、まだ使えません。管理する人に、道案内サービスの設定を頼んでください。手で線を描くことはできます。"
 
+#: src/components/RouteStats.tsx:48
+msgid "道のけわしさ"
+msgstr "道のけわしさ"
+
+#: src/app/(public)/grading/page.tsx:85
+msgid "道のけわしさ（星1〜5）"
+msgstr "道のけわしさ（星1〜5）"
+
+#: src/components/RouteStats.tsx:57
+msgid "道のけわしさとは"
+msgstr "道のけわしさとは"
+
+#: src/app/(public)/grading/page.tsx:88
+msgid "道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。"
+msgstr "道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。"
+
 #: src/components/RouteView.tsx:125
 #: src/components/RouteView.tsx:277
 msgid "道のり"
@@ -8132,9 +8130,9 @@ msgstr "道の状態から、手で選びます。"
 msgid "道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。"
 msgstr "道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。"
 
-#: src/components/RouteStats.tsx:54
-msgid "道の険しさや迷いやすさを、A（整った道）からE（厳しい岩場や藪）で表した目安です。"
-msgstr "道の険しさや迷いやすさを、A（整った道）からE（厳しい岩場や藪）で表した目安です。"
+#: src/components/RouteStats.tsx:58
+msgid "道の険しさや迷いやすさを、星1つ（整った歩きやすい道）から星5つ（岩場や手を使う所が多い道）で表した目安です。"
+msgstr "道の険しさや迷いやすさを、星1つ（整った歩きやすい道）から星5つ（岩場や手を使う所が多い道）で表した目安です。"
 
 #. placeholder {0}: meters(back.m)
 #: src/components/navigation/NavigationHud.tsx:251
@@ -8300,7 +8298,7 @@ msgid "金曜日"
 msgstr "金曜日"
 
 #: src/components/landing/Journey.tsx:54
-#: src/components/landing/Landing.tsx:323
+#: src/components/landing/Landing.tsx:319
 msgid "長さ"
 msgstr "長さ"
 
@@ -8369,7 +8367,7 @@ msgstr "隠す"
 msgid "離れる"
 msgstr "離れる"
 
-#: src/components/RouteStats.tsx:45
+#: src/components/RouteStats.tsx:49
 msgid "難しさ"
 msgstr "難しさ"
 
@@ -8534,3 +8532,23 @@ msgstr "駐車場"
 #: src/components/map/MapSheet.tsx:182
 msgid "高い"
 msgstr "高い"
+
+#: src/app/(admin)/admin/settings/page.tsx:24
+msgid "「地図」ページ、ルートのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
+msgstr "「地図」ページ、ルートのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
+
+#: src/components/admin/SiteSettingsForm.tsx:129
+msgid "「地図」ページで、山を立体にする"
+msgstr "「地図」ページで、山を立体にする"
+
+#: src/components/admin/SiteSettingsForm.tsx:131
+msgid "国土地理院の標高タイルで、傾けた地図の山を高く見せます。読みこむタイルが増えるので、電波の弱い山の中では重くなります。下の見本は平らなままです。「地図」ページで確かめてください。"
+msgstr "国土地理院の標高タイルで、傾けた地図の山を高く見せます。読みこむタイルが増えるので、電波の弱い山の中では重くなります。下の見本は平らなままです。「地図」ページで確かめてください。"
+
+#: src/app/(admin)/admin/settings/page.tsx:10
+msgid "地図の見た目（管理）"
+msgstr "地図の見た目（管理）"
+
+#: src/components/admin/SiteSettingsForm.tsx:126
+msgid "立体の地図（3D）"
+msgstr "立体の地図（3D）"
