@@ -1,16 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { buttonStyle } from "@/components/button";
 import { useDistanceText } from "@/components/map/PlacesPanel";
 import { formatUpdated } from "@/lib/format";
 import { pickText } from "@/lib/pick-text";
 import type { BookPage } from "@/lib/rally-book";
+import { moveTo, turnIn, walkSeconds } from "@/lib/rally-motion";
 import { ChevronIcon } from "./icons";
 import { RoutePhoto } from "./RoutePhoto";
 import { StatusWord } from "./StatusWord";
+import { Walker } from "./Walker";
 
 /**
  * The trail (its children) with a book page for each place. Pressing a place's card opens its page over the trail; the
@@ -22,6 +24,10 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
   const locale = i18n.locale;
   const distance = useDistanceText();
   const ref = useRef<HTMLDialogElement>(null);
+  const root = useRef<HTMLDivElement>(null);
+  const article = useRef<HTMLElement>(null);
+  const was = useRef<number | null>(null);
+  const dir = useRef<1 | -1>(1);
   const [index, setIndex] = useState<number | null>(null);
   const page = index === null ? null : (pages[index] ?? null);
 
@@ -31,6 +37,24 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
     if (page && !d.open) d.showModal();
     if (!page && d.open) d.close();
   }, [page]);
+
+  // A turn of the page, and the trail's walker following the page that is open (home again when the book closes).
+  useLayoutEffect(() => {
+    const before = was.current;
+    was.current = index;
+    if (index !== null && before !== null && before !== index) {
+      ref.current?.scrollTo(0, 0);
+      if (article.current) turnIn(article.current, dir.current);
+    }
+    const walker = root.current?.querySelector<SVGElement>("[data-trail-walker]");
+    const home = walker?.closest("li")?.querySelector("[data-marker]");
+    const id = index === null ? null : pages[index]?.id;
+    const target = id ? root.current?.querySelector(`a[data-stop="${CSS.escape(id)}"]`)?.closest("li")?.querySelector("[data-marker]") : home;
+    if (walker && home && target) {
+      const dy = target.getBoundingClientRect().top - home.getBoundingClientRect().top;
+      moveTo(walker, { y: dy }, walkSeconds(dy));
+    }
+  }, [index, pages]);
 
   const open = (e: MouseEvent) => {
     if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // a new tab keeps the link
@@ -42,7 +66,10 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
     e.stopPropagation(); // the card is a next/link: it must not navigate as well
     setIndex(at);
   };
-  const turn = (by: number) => setIndex((i) => (i === null ? i : Math.min(pages.length - 1, Math.max(0, i + by))));
+  const turn = (by: number) => {
+    dir.current = by > 0 ? 1 : -1;
+    setIndex((i) => (i === null ? i : Math.min(pages.length - 1, Math.max(0, i + by))));
+  };
 
   const pick = (ja: string | null, en: string | null) => (ja === null ? null : pickText(locale, ja, en));
   const name = page ? (pick(page.nameJa, page.nameEn) ?? { text: page.nameJa, lang: "ja" as const }) : null;
@@ -60,7 +87,9 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
 
   return (
     <>
-      <div onClickCapture={open}>{children}</div>
+      <div ref={root} onClickCapture={open}>
+        {children}
+      </div>
       <dialog
         ref={ref}
         aria-label={name?.text}
@@ -73,7 +102,7 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
         className="m-auto max-h-[92dvh] w-[min(34rem,calc(100vw-1.5rem))] overflow-y-auto rounded-[1.75rem] border-2 border-ink bg-paper p-0 text-ink backdrop:bg-black/60"
       >
         {page && name ? (
-          <article className="flex flex-col">
+          <article ref={article} className="flex flex-col">
             <div className="relative aspect-[16/10]">
               <RoutePhoto src={page.photoUrl} alt={name.text} />
             </div>
@@ -132,6 +161,8 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
                 </p>
               ) : null}
 
+              {page.next ? <BookStrip key={page.id} state={page.state} /> : null}
+
               {access ? (
                 <section className="flex flex-col gap-1">
                   <h3 className={label}>{t`行き方`}</h3>
@@ -174,5 +205,31 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
         ) : null}
       </dialog>
     </>
+  );
+}
+
+/**
+ * A small path inside the page, from this place to the next. On a place already stamped the walker has gone on toward the
+ * next one (it walks across at Full, stands at the far end otherwise); on the next place it stands here; a place still to
+ * do has the path only.
+ */
+function BookStrip({ state }: { state: BookPage["state"] }) {
+  const box = useRef<HTMLDivElement>(null);
+  const walker = useRef<SVGSVGElement>(null);
+  useLayoutEffect(() => {
+    const b = box.current;
+    const w = walker.current;
+    if (!b || !w) return;
+    const travel = Math.max(0, b.clientWidth - w.clientWidth - 24);
+    moveTo(w, { x: state === "stamped" ? travel : 0 }, walkSeconds(travel) + 0.3, { x: 0 });
+  }, [state]);
+  const walking = state === "stamped" || state === "next";
+  return (
+    <div ref={box} aria-hidden="true" className="relative h-10">
+      <span className="absolute inset-x-2 top-[34px] border-t-[3px] border-dotted border-line" />
+      <span className="absolute left-1 top-[28px] size-3.5 rounded-full bg-shu" />
+      <span className="absolute right-1 top-[27px] size-4 rounded-full border-2 border-dashed border-line" />
+      {walking ? <Walker ref={walker} className="absolute left-3 top-0 h-9 text-moss" /> : null}
+    </div>
   );
 }
