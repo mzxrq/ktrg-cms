@@ -1,5 +1,6 @@
 "use client";
 
+import { CreditInput } from "./CreditInput";
 import { useId, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { findPlacePhotos, type PhotoCandidate } from "@/lib/admin/place-photos";
@@ -81,7 +82,7 @@ export function PhotoListEditor({ stored, onChange, name, lat, lng }: { stored: 
                 <label htmlFor={`${groupName}-credit-${i}`} className="text-base text-muted">
                   {t`出どころ（撮った人、使用条件）`}
                 </label>
-                <TextInput id={`${groupName}-credit-${i}`} value={p.credit ?? ""} onChange={(v) => set(patchPhoto(photos, i, { credit: v }))} maxLength={300} placeholder={t`例：山田太郎, CC BY-SA 4.0`} />
+                <CreditInput id={`${groupName}-credit-${i}`} value={p.credit ?? ""} onChange={(v) => set(patchPhoto(photos, i, { credit: v }))} placeholder={t`例：山田太郎, CC BY-SA 4.0`} />
                 <div className="flex flex-wrap items-center gap-2">
                   <button type="button" disabled={i === 0} onClick={() => set(movePhoto(photos, i, -1))} aria-label={t`前へ`} className={smallButton}>
                     <ArrowUpIcon size={22} />

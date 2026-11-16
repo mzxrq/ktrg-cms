@@ -250,7 +250,8 @@ export function RouteView({ route, locale, places, settings, placesFirst, labels
           ) : null}
 
           {video || videoFile ? (
-            <section id="video" className="order-10 px-4 scroll-mt-[calc(5rem+var(--top-clear))] @4xl:order-none">
+            // On a phone and a tablet the video comes right after 歴史・由来 (same order number, so the page's own order decides).
+            <section id="video" className="order-5 px-4 scroll-mt-[calc(5rem+var(--top-clear))] @4xl:order-none">
               <Fold open title={<span className="border-l-4 border-brand pl-3 font-serif text-accent"><Trans>コースの動画</Trans></span>}>
                 <div className="flex flex-col gap-3">
                   {video ? (

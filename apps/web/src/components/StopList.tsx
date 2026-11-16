@@ -128,7 +128,9 @@ export function StopList({ rows, hrefFor, locale }: { rows: WalkRow[]; hrefFor: 
                   </span>
                 ) : null}
                 {description && description.text.trim() ? (
-                  <span className="mt-1 block whitespace-pre-line text-lg leading-7">
+                  // A long description stops after three lines with "…": the whole card opens the stop's page, which has all of it
+                  // (2026-11-16, user: no "read more" words, the card itself invites the tap).
+                  <span className="mt-1 line-clamp-3 whitespace-pre-line text-lg leading-7">
                     <span lang={description.lang}>{plainRich(description.text)}</span>
                   </span>
                 ) : null}
