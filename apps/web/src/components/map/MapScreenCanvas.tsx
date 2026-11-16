@@ -18,6 +18,7 @@ import { boundsOf, gsiAttribution, lineFeature, markerKind, nextStopId, pinScale
 import type { MapSettings } from "@/lib/map-settings";
 import { GSI_DEM_SOURCE, registerGsiDem } from "@/lib/gsi-dem";
 import { getRouteLine } from "@/lib/navigation/line-client";
+import { smoothHeading, turnBetween, watchCompass } from "@/lib/navigation/compass";
 import { useCursorMarker } from "./useCursorMarker";
 import { createMarkerElement, createPinElement, createPlaceMarkerElement, createCourseDot } from "./MapMarker";
 
@@ -329,13 +330,38 @@ export function MapScreenCanvas({
   // Following only means something while there is a position (a navigation runs).
   const following = follow && user !== null && !far;
 
-  // While following: keep the visitor in the middle, the way they walk up.
+  // While following: the map turns with the phone's compass (heading-up, 2026-11-16, user: "my pinpoint as the forward
+  // point"), else with the way the visitor walks (GPS, only while moving). A camera move cancels the one before it, so each
+  // move carries both the centre and the heading; the compass moves the map at most four times a second, and only for a turn
+  // worth seeing.
+  const compass = useRef<number | null>(null);
+  const userRef = useRef(user);
+  useEffect(() => {
+    userRef.current = user;
+  }, [user]);
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready || !following) return;
+    let last = 0;
+    const stop = watchCompass((deg) => {
+      compass.current = smoothHeading(compass.current, deg);
+      const now = Date.now();
+      const u = userRef.current;
+      if (!u || now - last < 250 || Math.abs(turnBetween(map.getBearing(), compass.current)) < 4) return;
+      last = now;
+      map.easeTo({ center: [u.lng, u.lat], bearing: compass.current, padding: padding(), duration: 250 });
+    });
+    return () => {
+      stop();
+      compass.current = null;
+    };
+  }, [ready, following]); // eslint-disable-line react-hooks/exhaustive-deps -- padding() reads the current layout
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready || !following || !user) return;
     map.easeTo({
       center: [user.lng, user.lat],
-      bearing: user.headingDeg ?? map.getBearing(),
+      bearing: compass.current ?? user.headingDeg ?? map.getBearing(),
       zoom: Math.max(map.getZoom(), 16),
       padding: padding(),
       duration: 600,
