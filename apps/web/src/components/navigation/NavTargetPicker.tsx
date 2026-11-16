@@ -45,11 +45,12 @@ export function NavTargetPicker() {
           </>
         ) : null}
       </button>
-      <dialog ref={dialog} aria-labelledby="nav-target-title" className="m-auto max-h-[80dvh] w-[calc(100%-2rem)] max-w-sm overflow-y-auto rounded-3xl bg-paper p-5 text-ink backdrop:bg-black/60">
-        <h2 id="nav-target-title" className="text-2xl font-bold">
+      {/* Rule 1 (docs/navigation-v2-plan.md): the title and the buttons stay put; only the list scrolls between them. */}
+      <dialog ref={dialog} aria-labelledby="nav-target-title" className="m-auto max-h-[85dvh] w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl bg-paper text-ink backdrop:bg-black/60 open:flex">
+        <h2 id="nav-target-title" className="shrink-0 px-5 pt-5 text-2xl font-bold">
           {t`どこへ向かいますか？`}
         </h2>
-        <ul className="mt-4 flex flex-col gap-2">
+        <ul className="mt-4 flex min-h-0 flex-col gap-2 overflow-y-auto px-5 pb-1">
           {left.map((s) => {
             const info = session.stops[s.id];
             const closed = offersNoStamp(s.status);
@@ -68,7 +69,7 @@ export function NavTargetPicker() {
             );
           })}
         </ul>
-        <div className="mt-4 flex flex-col gap-2">
+        <div data-nav-footer className="flex shrink-0 flex-col gap-2 border-t border-line px-5 pb-5 pt-4">
           {snap.forcedId ? (
             <button type="button" onClick={() => pick(null)} className={buttonStyle("primary", "lg", "flex w-full")}>
               {t`近い順にもどす`}

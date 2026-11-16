@@ -67,7 +67,7 @@ The bugs were not described one by one yet, so v2 starts with a short checklist 
 
 ## Slices (one PR each, never stacked)
 
-1. **N2-1 Dialog shape**: pinned footers and photo limits for `NavPrompts`, `NavFarCard`, `NavTargetPicker`; the source test.
+1. **N2-1 Dialog shape**: pinned footers and photo limits for `NavPrompts`, `NavFarCard`, `NavTargetPicker`; the source test. **Built 2026-11-16** (also the end confirm; `lib/nav-dialogs.test.ts`; the photo hides below 34rem of height).
 2. **N2-2 Android bottom insets**: toast and floating buttons use the max-inset pattern; system back closes dialogs.
 3. **N2-3 Android checklist fixes**: whatever the user's phone shows from the list above (voice, resume, Huawei position).
 4. **N2-4 Arrival in the strip**: the stamp moment without a card.
