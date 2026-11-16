@@ -107,8 +107,8 @@ msgid "{0}を消す"
 msgstr "{0}を消す"
 
 #. placeholder {0}: name(item)
-#: src/components/admin/AdminListTable.tsx:291
-#: src/components/admin/AdminListTable.tsx:348
+#: src/components/admin/AdminListTable.tsx:326
+#: src/components/admin/AdminListTable.tsx:383
 msgid "{0}を選ぶ"
 msgstr "{0}を選ぶ"
 
@@ -148,7 +148,7 @@ msgid "{0}件を削除しました。"
 msgstr "{0}件を削除しました。"
 
 #. placeholder {0}: gone.size
-#: src/components/admin/AdminListTable.tsx:117
+#: src/components/admin/AdminListTable.tsx:123
 msgid "{0}件を削除しました。残りは削除できませんでした：{failure}"
 msgstr "{0}件を削除しました。残りは削除できませんでした：{failure}"
 
@@ -453,7 +453,7 @@ msgstr "{text} を1つ後ろへ"
 msgid "{title}（管理）"
 msgstr "{title}（管理）"
 
-#: src/components/admin/AdminListTable.tsx:268
+#: src/components/admin/AdminListTable.tsx:303
 msgid "{title}はまだありません。"
 msgstr "{title}はまだありません。"
 
@@ -475,7 +475,7 @@ msgstr "{TOTAL_STAMPS}か所"
 msgid "{total}か所"
 msgstr "{total}か所"
 
-#: src/components/admin/AdminListTable.tsx:264
+#: src/components/admin/AdminListTable.tsx:299
 msgid "{total}件"
 msgstr "{total}件"
 
@@ -539,7 +539,7 @@ msgid "「{0}」を保存しました。"
 msgstr "「{0}」を保存しました。"
 
 #. placeholder {0}: name(one)
-#: src/components/admin/AdminListTable.tsx:103
+#: src/components/admin/AdminListTable.tsx:109
 msgid "「{0}」を削除します。元に戻せません。よろしいですか？"
 msgstr "「{0}」を削除します。元に戻せません。よろしいですか？"
 
@@ -592,7 +592,7 @@ msgstr "「地形」ボタンを押した状態で見る"
 msgid "「大きい文字」の大きさ"
 msgstr "「大きい文字」の大きさ"
 
-#: src/components/admin/AdminItemForm.tsx:329
+#: src/components/admin/AdminItemForm.tsx:342
 msgid "「必須」の欄をすべて入れると保存できます。"
 msgstr "「必須」の欄をすべて入れると保存できます。"
 
@@ -1559,7 +1559,7 @@ msgstr "このブラウザでは、スタンプが消えてしまうことがあ
 msgid "このページの項目"
 msgstr "このページの項目"
 
-#: src/components/admin/AdminListTable.tsx:253
+#: src/components/admin/AdminListTable.tsx:288
 msgid "このページをすべて選ぶ"
 msgstr "このページをすべて選ぶ"
 
@@ -1914,7 +1914,7 @@ msgstr "この顔・指紋のログインを消しますか？"
 msgid "コピーしました"
 msgstr "コピーしました"
 
-#: src/components/admin/AdminNav.tsx:52
+#: src/components/admin/AdminNav.tsx:53
 msgid "コミュニティ"
 msgstr "コミュニティ"
 
@@ -2012,11 +2012,11 @@ msgstr "サイトで見る"
 msgid "サイトに反映しますか？"
 msgstr "サイトに反映しますか？"
 
-#: src/app/(admin)/admin/settings/page.tsx:25
+#: src/app/(admin)/admin/settings/page.tsx:24
 msgid "サイトの全体に関わる設定です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
 msgstr "サイトの全体に関わる設定です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
 
-#: src/components/admin/AdminNav.tsx:51
+#: src/components/admin/AdminNav.tsx:52
 msgid "サイトの内容"
 msgstr "サイトの内容"
 
@@ -2035,8 +2035,8 @@ msgstr "サイトマップ"
 msgid "さがしています…"
 msgstr "さがしています…"
 
-#: src/components/admin/AdminListTable.tsx:196
-#: src/components/admin/AdminListTable.tsx:196
+#: src/components/admin/AdminListTable.tsx:231
+#: src/components/admin/AdminListTable.tsx:231
 #: src/components/admin/DuplicateFinder.tsx:54
 #: src/components/admin/FuriganaWords.tsx:120
 msgid "さがす"
@@ -2272,7 +2272,7 @@ msgid "ストーリーを読む"
 msgstr "ストーリーを読む"
 
 #: src/app/(public)/blog/page.tsx:63
-#: src/components/admin/AdminListTable.tsx:158
+#: src/components/admin/AdminListTable.tsx:164
 #: src/components/admin/CommentInbox.tsx:30
 #: src/components/admin/DirectoryPicker.tsx:158
 #: src/components/admin/list-parts.tsx:31
@@ -2645,7 +2645,7 @@ msgstr "のものです。"
 msgid "の道のり"
 msgstr "の道のり"
 
-#: src/components/admin/AdminItemForm.tsx:135
+#: src/components/admin/AdminItemForm.tsx:148
 msgid "はい"
 msgstr "はい"
 
@@ -2804,15 +2804,15 @@ msgstr "バッジ"
 msgid "バッジは、まだ準備中です。"
 msgstr "バッジは、まだ準備中です。"
 
-#: src/app/(admin)/admin/banners/page.tsx:13
-msgid "バナー（管理）"
-msgstr "バナー（管理）"
-
 #: src/components/admin/BannerOrder.tsx:38
 msgid "バナーがまだありません。「新しいバナー」から作ってください。"
 msgstr "バナーがまだありません。「新しいバナー」から作ってください。"
 
-#: src/app/(admin)/admin/banners/page.tsx:36
+#: src/components/admin/HomeBanners.tsx:40
+msgid "バナーを加えました。"
+msgstr "バナーを加えました。"
+
+#: src/app/(admin)/admin/pages/[key]/page.tsx:67
 msgid "バナーを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "バナーを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 
@@ -2975,7 +2975,7 @@ msgstr "プロフィール写真"
 
 #: src/app/(admin)/admin/pages/page.tsx:30
 #: src/app/(public)/blog/page.tsx:88
-#: src/components/admin/AdminNav.tsx:42
+#: src/components/admin/AdminNav.tsx:43
 #: src/components/Pager.tsx:19
 msgid "ページ"
 msgstr "ページ"
@@ -2984,7 +2984,7 @@ msgstr "ページ"
 msgid "ページ（例：/routes や /rallies。空なら全部）"
 msgstr "ページ（例：/routes や /rallies。空なら全部）"
 
-#: src/app/(admin)/admin/pages/[key]/page.tsx:20
+#: src/app/(admin)/admin/pages/[key]/page.tsx:24
 #: src/app/(admin)/admin/pages/page.tsx:12
 msgid "ページ（管理）"
 msgstr "ページ（管理）"
@@ -3005,7 +3005,7 @@ msgstr "ページの先頭へ"
 msgid "ページの漢字すべてに、読みがなをつけます。"
 msgstr "ページの漢字すべてに、読みがなをつけます。"
 
-#: src/app/(admin)/admin/pages/[key]/page.tsx:47
+#: src/app/(admin)/admin/pages/[key]/page.tsx:59
 msgid "ページへ戻る"
 msgstr "ページへ戻る"
 
@@ -3115,7 +3115,7 @@ msgstr "ほかの乗り物"
 msgid "ほかの場所へ"
 msgstr "ほかの場所へ"
 
-#: src/components/admin/AdminListTable.tsx:235
+#: src/components/admin/AdminListTable.tsx:270
 msgid "ほかの絞りこみ"
 msgstr "ほかの絞りこみ"
 
@@ -3143,7 +3143,7 @@ msgstr "まず、GPXファイルをここにドラッグするか「GPXファイ
 msgid "まだ"
 msgstr "まだ"
 
-#: src/components/admin/AdminItemForm.tsx:189
+#: src/components/admin/AdminItemForm.tsx:202
 msgid "まだ、ありません。"
 msgstr "まだ、ありません。"
 
@@ -3304,7 +3304,7 @@ msgstr "メイン写真"
 msgid "めぐる場所"
 msgstr "めぐる場所"
 
-#: src/components/admin/AdminNav.tsx:67
+#: src/components/admin/AdminNav.tsx:75
 #: src/components/SiteHeader.tsx:208
 #: src/components/TabBar.tsx:152
 msgid "メニュー"
@@ -3665,7 +3665,7 @@ msgstr "ルートがまだありません。"
 msgid "ルートがまだありません。「新しいルート」から作ってください。"
 msgstr "ルートがまだありません。「新しいルート」から作ってください。"
 
-#: src/components/admin/AdminNav.tsx:50
+#: src/components/admin/AdminNav.tsx:51
 msgid "ルートとラリー"
 msgstr "ルートとラリー"
 
@@ -3909,7 +3909,7 @@ msgstr "不明"
 msgid "両方を合わせる（おすすめ）"
 msgstr "両方を合わせる（おすすめ）"
 
-#: src/components/admin/AdminListTable.tsx:326
+#: src/components/admin/AdminListTable.tsx:361
 msgid "並べかえ"
 msgstr "並べかえ"
 
@@ -4137,7 +4137,7 @@ msgstr "体験"
 msgid "作っています…"
 msgstr "作っています…"
 
-#: src/components/admin/AdminItemForm.tsx:297
+#: src/components/admin/AdminItemForm.tsx:310
 msgid "作成"
 msgstr "作成"
 
@@ -4161,7 +4161,7 @@ msgstr "例：祝日は休み／ラストオーダーは閉店30分前"
 msgid "例：臥薪嘗胆"
 msgstr "例：臥薪嘗胆"
 
-#: src/components/admin/AdminItemForm.tsx:297
+#: src/components/admin/AdminItemForm.tsx:310
 #: src/components/admin/FuriganaWords.tsx:146
 #: src/components/admin/PageTextEditor.tsx:99
 msgid "保存"
@@ -4175,7 +4175,7 @@ msgstr "保存した地図を開く"
 msgid "保存していない内容も含めて調べています。"
 msgstr "保存していない内容も含めて調べています。"
 
-#: src/components/admin/AdminItemForm.tsx:289
+#: src/components/admin/AdminItemForm.tsx:302
 #: src/components/admin/PageTextEditor.tsx:93
 #: src/components/admin/RouteEditor.tsx:487
 msgid "保存していない変更があります"
@@ -4202,11 +4202,11 @@ msgstr "保存していない編集が、このブラウザに残っています
 msgid "保存しています…"
 msgstr "保存しています…"
 
-#: src/components/admin/AdminItemForm.tsx:293
+#: src/components/admin/AdminItemForm.tsx:306
 msgid "保存して次へ"
 msgstr "保存して次へ"
 
-#: src/components/admin/AdminItemForm.tsx:105
+#: src/components/admin/AdminItemForm.tsx:118
 #: src/components/admin/GoalsForm.tsx:24
 #: src/components/admin/HomeSectionsForm.tsx:36
 #: src/components/admin/RallyEditor.tsx:75
@@ -4238,7 +4238,7 @@ msgstr "保存しました。ただし、情報源が空のため、線は「確
 msgid "保存しました。ただし、未完成の経由地が{heldCount}件あり、まだ保存していません（赤く示した項目）。"
 msgstr "保存しました。ただし、未完成の経由地が{heldCount}件あり、まだ保存していません（赤く示した項目）。"
 
-#: src/components/admin/AdminItemForm.tsx:82
+#: src/components/admin/AdminItemForm.tsx:95
 msgid "保存しました。次に確認する場所はありません。"
 msgstr "保存しました。次に確認する場所はありません。"
 
@@ -4282,13 +4282,13 @@ msgstr "保存できませんでした。もう一度お試しください。"
 msgid "保存できませんでした。電波の良い場所でもう一度お試しください。"
 msgstr "保存できませんでした。電波の良い場所でもう一度お試しください。"
 
-#: src/components/admin/AdminItemForm.tsx:297
+#: src/components/admin/AdminItemForm.tsx:310
 #: src/components/admin/PageTextEditor.tsx:99
 #: src/components/admin/RouteEditor.tsx:490
 msgid "保存中…"
 msgstr "保存中…"
 
-#: src/components/admin/AdminItemForm.tsx:289
+#: src/components/admin/AdminItemForm.tsx:302
 #: src/components/admin/PageTextEditor.tsx:93
 #: src/components/OfflinePack.tsx:96
 msgid "保存済み"
@@ -4341,7 +4341,7 @@ msgstr "先に直すもの"
 msgid "先頭だけ残して、ほかを削除"
 msgstr "先頭だけ残して、ほかを削除"
 
-#: src/components/admin/AdminListTable.tsx:264
+#: src/components/admin/AdminListTable.tsx:299
 msgid "先頭の{total}件を表示しています。"
 msgstr "先頭の{total}件を表示しています。"
 
@@ -4439,7 +4439,7 @@ msgstr "公開できるようになったら、ここにルートが表示され
 msgid "公開できるようになったら、ここに場所の一覧が表示されます。"
 msgstr "公開できるようになったら、ここに場所の一覧が表示されます。"
 
-#: src/components/admin/AdminItemForm.tsx:334
+#: src/components/admin/AdminItemForm.tsx:347
 msgid "公開と記事の情報"
 msgstr "公開と記事の情報"
 
@@ -4541,7 +4541,7 @@ msgstr "共有"
 msgid "共有する"
 msgstr "共有する"
 
-#: src/components/admin/AdminItemForm.tsx:327
+#: src/components/admin/AdminItemForm.tsx:340
 msgid "内容"
 msgstr "内容"
 
@@ -4830,10 +4830,10 @@ msgid "制限中"
 msgstr "制限中"
 
 #: src/components/admin/AccessPointsEditor.tsx:53
-#: src/components/admin/AdminItemForm.tsx:339
-#: src/components/admin/AdminListTable.tsx:281
-#: src/components/admin/AdminListTable.tsx:315
-#: src/components/admin/AdminListTable.tsx:379
+#: src/components/admin/AdminItemForm.tsx:352
+#: src/components/admin/AdminListTable.tsx:316
+#: src/components/admin/AdminListTable.tsx:350
+#: src/components/admin/AdminListTable.tsx:414
 #: src/components/admin/CommentInbox.tsx:143
 #: src/components/admin/CommentInbox.tsx:184
 #: src/components/admin/DuplicateFinder.tsx:86
@@ -4856,8 +4856,8 @@ msgstr "削除が予約されています。3日たつと、アカウントと�
 msgid "削除しました。"
 msgstr "削除しました。"
 
-#: src/components/admin/AdminItemForm.tsx:110
-#: src/components/admin/AdminListTable.tsx:104
+#: src/components/admin/AdminItemForm.tsx:123
+#: src/components/admin/AdminListTable.tsx:110
 #: src/components/admin/CommentInbox.tsx:82
 #: src/components/admin/DuplicateFinder.tsx:32
 #: src/components/admin/RallyEditor.tsx:111
@@ -4866,9 +4866,9 @@ msgstr "削除しました。"
 msgid "削除しますか？"
 msgstr "削除しますか？"
 
-#: src/components/admin/AdminItemForm.tsx:110
-#: src/components/admin/AdminItemForm.tsx:341
-#: src/components/admin/AdminListTable.tsx:104
+#: src/components/admin/AdminItemForm.tsx:123
+#: src/components/admin/AdminItemForm.tsx:354
+#: src/components/admin/AdminListTable.tsx:110
 #: src/components/admin/CommentInbox.tsx:82
 #: src/components/admin/DuplicateFinder.tsx:32
 #: src/components/admin/FuriganaWords.tsx:64
@@ -4938,6 +4938,10 @@ msgstr "前へ"
 #: src/app/(public)/blog/[id]/page.tsx:214
 msgid "前後の記事"
 msgstr "前後の記事"
+
+#: src/components/admin/AdminListTable.tsx:205
+msgid "加えました。"
+msgstr "加えました。"
 
 #: src/components/admin/FuriganaWords.tsx:101
 msgid "加える"
@@ -5188,8 +5192,8 @@ msgstr "同じ番号の行が、前にもあります"
 msgid "同じ道を行って、同じ道を戻ります。"
 msgstr "同じ道を行って、同じ道を戻ります。"
 
-#: src/components/admin/AdminListTable.tsx:277
-#: src/components/admin/AdminListTable.tsx:336
+#: src/components/admin/AdminListTable.tsx:312
+#: src/components/admin/AdminListTable.tsx:371
 #: src/components/admin/map-editor/PlaceList.tsx:95
 #: src/components/admin/PhotoLibrary.tsx:175
 #: src/components/admin/RallyCreate.tsx:76
@@ -5990,7 +5994,7 @@ msgstr "捨てる"
 msgid "探しています…"
 msgstr "探しています…"
 
-#: src/components/admin/AdminListTable.tsx:198
+#: src/components/admin/AdminListTable.tsx:233
 #: src/components/admin/CommentInbox.tsx:120
 #: src/components/admin/map-editor/MapEditor.tsx:1055
 msgid "探す"
@@ -6093,10 +6097,6 @@ msgstr "新しいバージョンがあります。"
 msgid "新しいパスワード"
 msgstr "新しいパスワード"
 
-#: src/app/(admin)/admin/banners/page.tsx:28
-msgid "新しいバナー"
-msgstr "新しいバナー"
-
 #: src/components/admin/RallyCreate.tsx:61
 #: src/components/admin/RallyList.tsx:88
 msgid "新しいラリー"
@@ -6127,7 +6127,7 @@ msgstr "新しい言葉はありませんでした。"
 msgid "新しい記事"
 msgstr "新しい記事"
 
-#: src/components/admin/AdminListTable.tsx:335
+#: src/components/admin/AdminListTable.tsx:370
 #: src/components/admin/PhotoLibrary.tsx:145
 msgid "新しい順"
 msgstr "新しい順"
@@ -6337,7 +6337,7 @@ msgstr "本人かどうか、確認します"
 msgid "本人からの異議"
 msgstr "本人からの異議"
 
-#: src/components/admin/AdminItemForm.tsx:317
+#: src/components/admin/AdminItemForm.tsx:330
 #: src/components/admin/BlockEditor.tsx:354
 #: src/components/admin/PageTextEditor.tsx:152
 #: src/components/admin/PageTextEditor.tsx:153
@@ -6352,7 +6352,7 @@ msgstr "本文で使われていません"
 msgid "本文へ移動"
 msgstr "本文へ移動"
 
-#: src/components/admin/AdminListTable.tsx:268
+#: src/components/admin/AdminListTable.tsx:303
 msgid "条件に合う{title}はありません。"
 msgstr "条件に合う{title}はありません。"
 
@@ -6365,7 +6365,7 @@ msgstr "条件に合うラリーがありません。"
 msgid "条件に合うルートがありません。"
 msgstr "条件に合うルートがありません。"
 
-#: src/components/admin/AdminListTable.tsx:211
+#: src/components/admin/AdminListTable.tsx:246
 msgid "条件をやめる"
 msgstr "条件をやめる"
 
@@ -7046,7 +7046,7 @@ msgstr "答えなくても大丈夫です。"
 msgid "箇条書き"
 msgstr "箇条書き"
 
-#: src/components/admin/AdminNav.tsx:59
+#: src/components/admin/AdminNav.tsx:67
 msgid "管理メニュー"
 msgstr "管理メニュー"
 
@@ -7270,7 +7270,7 @@ msgstr "経由地を置く"
 msgid "経由地を置くと、近い順に並びます。"
 msgstr "経由地を置くと、近い順に並びます。"
 
-#: src/components/admin/AdminListTable.tsx:220
+#: src/components/admin/AdminListTable.tsx:255
 msgid "絞りこみ"
 msgstr "絞りこみ"
 
@@ -7381,7 +7381,7 @@ msgstr "線を道に沿わせました。形を確かめてから、保存して
 msgid "編集して下書きに戻す"
 msgstr "編集して下書きに戻す"
 
-#: src/components/admin/AdminItemForm.tsx:303
+#: src/components/admin/AdminItemForm.tsx:316
 #: src/components/admin/RouteEditor.tsx:533
 msgid "編集する内容"
 msgstr "編集する内容"
@@ -7809,16 +7809,16 @@ msgstr "該当する場所はありません。"
 msgid "詳しく見る"
 msgstr "詳しく見る"
 
-#: src/components/admin/AdminItemForm.tsx:317
+#: src/components/admin/AdminItemForm.tsx:330
 msgid "詳細"
 msgstr "詳細"
 
-#: src/app/(admin)/admin/settings/page.tsx:22
-#: src/components/admin/AdminNav.tsx:44
+#: src/app/(admin)/admin/settings/page.tsx:21
+#: src/components/admin/AdminNav.tsx:45
 msgid "詳細設定"
 msgstr "詳細設定"
 
-#: src/app/(admin)/admin/settings/page.tsx:11
+#: src/app/(admin)/admin/settings/page.tsx:10
 msgid "詳細設定（管理）"
 msgstr "詳細設定（管理）"
 
@@ -8048,7 +8048,7 @@ msgstr "通行止めなどがあれば、ここに表示されます。"
 msgid "遊び方"
 msgstr "遊び方"
 
-#: src/components/admin/AdminNav.tsx:53
+#: src/components/admin/AdminNav.tsx:54
 msgid "運営"
 msgstr "運営"
 
@@ -8196,7 +8196,7 @@ msgstr "選ばない"
 msgid "選びなおす"
 msgstr "選びなおす"
 
-#: src/components/admin/AdminListTable.tsx:276
+#: src/components/admin/AdminListTable.tsx:311
 #: src/components/admin/map-editor/PlaceList.tsx:71
 msgid "選ぶ"
 msgstr "選ぶ"
@@ -8210,12 +8210,12 @@ msgid "選ぶのをやめる"
 msgstr "選ぶのをやめる"
 
 #. placeholder {0}: ticked.size
-#: src/components/admin/AdminListTable.tsx:257
+#: src/components/admin/AdminListTable.tsx:292
 msgid "選んだ{0}件を削除"
 msgstr "選んだ{0}件を削除"
 
 #. placeholder {0}: ids.length
-#: src/components/admin/AdminListTable.tsx:103
+#: src/components/admin/AdminListTable.tsx:109
 msgid "選んだ{0}件を削除します。元に戻せません。よろしいですか？"
 msgstr "選んだ{0}件を削除します。元に戻せません。よろしいですか？"
 
@@ -8295,9 +8295,11 @@ msgstr "金曜日"
 msgid "長さ"
 msgstr "長さ"
 
+#: src/components/admin/AdminListTable.tsx:193
 #: src/components/admin/BlockEditor.tsx:561
 #: src/components/admin/BlockEditor.tsx:599
 #: src/components/admin/BlockEditor.tsx:612
+#: src/components/admin/HomeBanners.tsx:27
 #: src/components/admin/map-editor/MapEditor.tsx:1073
 #: src/components/admin/PhotoLibrary.tsx:130
 #: src/components/admin/SharedPlaces.tsx:181

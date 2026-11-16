@@ -4,6 +4,10 @@ import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { AdminBack } from "@/components/admin/AdminBack";
 import { PageTextEditor } from "@/components/admin/PageTextEditor";
+import { HomeBanners } from "@/components/admin/HomeBanners";
+import { HomeSectionsForm } from "@/components/admin/HomeSectionsForm";
+import type { BannerItem } from "@/components/admin/BannerOrder";
+import { listMetaOr404 } from "@/lib/admin/lists/server";
 import { initLingui } from "@/i18n/server";
 import { adminGet } from "@/lib/admin/admin-fetch";
 import { listBanners, slidesToShow } from "@/lib/banners";
@@ -41,12 +45,30 @@ export default async function EditPageText({ params }: { params: Promise<{ key: 
           introVideo: homeIntroVideo(),
         }))
       : undefined;
+  // The home page also holds its photos and which sections it shows (they were their own screens before 2026-11-16).
+  const homeParts =
+    key === "home"
+      ? await Promise.all([listMetaOr404("banners"), adminGet<{ ok: true; items: BannerItem[] }>("/banners/order")]).then(([meta, order]) => ({
+          meta,
+          banners: order.status === 200 && order.body?.ok ? order.body.items : null,
+        }))
+      : undefined;
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-4">
       <AdminBack href="/admin/pages">
         <Trans>ページへ戻る</Trans>
       </AdminBack>
       <PageTextEditor pageKey={key as PageKey} saved={saved} builtIn={builtIn} locale={i18n.locale} home={home} />
+      {homeParts ? (
+        homeParts.banners ? (
+          <HomeBanners meta={homeParts.meta} items={homeParts.banners} locale={i18n.locale} />
+        ) : (
+          <p role="alert" className="rounded-2xl bg-surface p-6 text-lg font-bold text-danger">
+            <Trans>バナーを読み込めませんでした。しばらくしてから、ページを開き直してください。</Trans>
+          </p>
+        )
+      ) : null}
+      {home ? <HomeSectionsForm initial={{ tourism: home.showTourism }} /> : null}
     </div>
   );
 }

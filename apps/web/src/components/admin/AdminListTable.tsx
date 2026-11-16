@@ -9,6 +9,8 @@ import { Chip } from "./Chip";
 import { FilterGroup, SortHeader } from "./list-parts";
 import { DuplicateFinder } from "./DuplicateFinder";
 import { PlaceImport } from "./PlaceImport";
+import { AdminItemForm } from "./AdminItemForm";
+import { showToast } from "@/lib/admin/toast";
 import { inputClass } from "./fields";
 import { cellOf, itemHref, itemName, listColumns, nameIsFallback, pick, type FieldUi, type ListMeta } from "@/lib/admin/lists/config";
 import { listRequest, type ListPage } from "@/lib/admin/lists/list-client";
@@ -44,6 +46,10 @@ export function AdminListTable({ meta: config, initial, locale, choices }: { met
   // The order of the rows on the page: the list's own (newest first) until a column header is pressed.
   const [sort, setSort] = useState<Sort>(null);
   const base = `/admin/${config.key}`;
+  // A short form (a notice, a banner, a tag) opens above the list instead of on its own page (2026-11-16, user); a long one
+  // (a post with its editor, a directory place with its map) keeps its page.
+  const inlineNew = config.fields.length <= 8 && !config.fields.some((f) => f.kind === "bilingual-long" || f.kind === "decimal");
+  const [adding, setAdding] = useState(false);
   const name = (item: (typeof items)[number]) => itemName(config, item, locale);
   const title = pick(config.title, locale);
   const columns = listColumns(config);
@@ -178,9 +184,38 @@ export function AdminListTable({ meta: config, initial, locale, choices }: { met
   return (
     <div className="flex flex-col gap-4">
       {config.ops.create && config.newLabel ? (
-        <Link href={`${base}/new`} className="tap-target inline-flex w-fit items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
-          {pick(config.newLabel, locale)}
-        </Link>
+        inlineNew ? (
+          adding ? (
+            <section aria-label={pick(config.newLabel, locale)} className="flex flex-col gap-3 rounded-2xl border-2 border-line p-4 sm:p-5">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h2 className="text-2xl font-bold">{pick(config.newLabel, locale)}</h2>
+                <button type="button" onClick={() => setAdding(false)} className="tap-target rounded-full border border-line px-5 text-lg font-bold">
+                  {t`閉じる`}
+                </button>
+              </div>
+              <AdminItemForm
+                meta={config}
+                initial={null}
+                locale={locale}
+                choices={choices}
+                onCreated={(item) => {
+                  setItems((all) => [item, ...all]);
+                  setTotal((n) => n + 1);
+                  setAdding(false);
+                  showToast({ kind: "ok", text: t`加えました。` });
+                }}
+              />
+            </section>
+          ) : (
+            <button type="button" onClick={() => setAdding(true)} className="tap-target inline-flex w-fit items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
+              {pick(config.newLabel, locale)}
+            </button>
+          )
+        ) : (
+          <Link href={`${base}/new`} className="tap-target inline-flex w-fit items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
+            {pick(config.newLabel, locale)}
+          </Link>
+        )
       ) : null}
       {config.key === "directory" ? <PlaceImport onDone={() => void search(q, picked)} /> : null}
       {config.key === "directory" ? <DuplicateFinder meta={config} locale={locale} choices={choices} onChanged={() => void search(q, picked)} /> : null}

@@ -33,7 +33,20 @@ import { showToast } from "@/lib/admin/toast";
 /** How each list's long text is drawn for visitors, which decides its editor. Anything else is shown as typed: a plain box. */
 const LONG_TEXT: Record<string, "blocks" | "short"> = { posts: "blocks", directory: "short" };
 
-export function AdminItemForm({ meta: config, initial, locale, choices }: { meta: ListMeta; initial: ListItem | null; locale: string; choices: Record<string, { id: string; name: string; detail?: string }[]> }) {
+export function AdminItemForm({
+  meta: config,
+  initial,
+  locale,
+  choices,
+  onCreated,
+}: {
+  meta: ListMeta;
+  initial: ListItem | null;
+  locale: string;
+  choices: Record<string, { id: string; name: string; detail?: string }[]>;
+  /** Shown in place above a list: a new row is handed back instead of opening its own page. */
+  onCreated?: (item: ListItem) => void;
+}) {
   const { t } = useLingui();
   const messages = useErrorMessages();
   const router = useRouter();
@@ -98,7 +111,7 @@ export function AdminItemForm({ meta: config, initial, locale, choices }: { meta
     setBusy(false);
     const item = got.item;
     if (!outcome.ok || !item) return outcome.ok || outcome.code === "cancelled" ? undefined : showToast({ kind: "error", text: messages[outcome.code] });
-    if (!saved) return router.push(`/admin/${config.key}/${item.id}`);
+    if (!saved) return onCreated ? onCreated(item) : router.push(`/admin/${config.key}/${item.id}`);
     setSaved(item);
     setValues(formValues(config, item));
     setWords((item.translations ?? {}) as Translations);
