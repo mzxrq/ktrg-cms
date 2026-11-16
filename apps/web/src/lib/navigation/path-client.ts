@@ -1,5 +1,5 @@
 // Walking paths from OpenRouteService for a visitor who is off the course line, through our API
-// (POST /api/v1/navigation/path, signed-in only). When to ask is a pure rule (shouldAskForPath) so it is tested; asking
+// (POST /api/v1/navigation/path for an account, /guest-path without one). When to ask is a pure rule (shouldAskForPath) so it is tested; asking
 // never throws. The visitor's position is sent for this one request and is not kept by the server.
 
 import { distanceM, type LatLng, type LinePoint } from "./geometry";
@@ -33,10 +33,13 @@ export function parsePathResponse(status: number, body: unknown): PathAnswer {
   return { ok: false, backOff: status === 503 || status === 429 };
 }
 
-/** Ask our API for a walking path to the stop. Never throws: a network failure is a plain "no path". */
-export async function requestPath(spotId: string, from: LatLng): Promise<PathAnswer> {
+/**
+ * Ask our API for a walking path to the stop. Never throws: a network failure is a plain "no path". `guest`: no account,
+ * so the guest route (held to its own pace per address; 2026-11-16, user: no sign-in wall in front of the walk).
+ */
+export async function requestPath(spotId: string, from: LatLng, guest = false): Promise<PathAnswer> {
   try {
-    const res = await fetch("/api/v1/navigation/path", {
+    const res = await fetch(guest ? "/api/v1/navigation/guest-path" : "/api/v1/navigation/path", {
       method: "POST",
       credentials: "same-origin",
       headers: { "content-type": "application/json" },

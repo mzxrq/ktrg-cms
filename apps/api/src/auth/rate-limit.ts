@@ -65,6 +65,10 @@ export const AUTH_LIMITS = {
   navigationPathUser: { name: "navigation-path-user", limit: 20, windowMs: 15 * MINUTE },
   // Keyed by user id, per day: one account cannot take most of the site's shared OpenRouteService allowance.
   navigationPathDaily: { name: "navigation-path-daily", limit: 200, windowMs: 24 * 60 * MINUTE },
+  // Keyed by IP: walking paths for a visitor with no account (2026-11-16). The same pace as an account; a smaller day, since
+  // nobody is behind an address and one could otherwise take much of the shared allowance.
+  navigationPathGuestIp: { name: "navigation-path-guest-ip", limit: 20, windowMs: 15 * MINUTE },
+  navigationPathGuestDaily: { name: "navigation-path-guest-daily", limit: 100, windowMs: 24 * 60 * MINUTE },
   // Keyed by user id: writing blog comments. A few a quarter hour is a reader; more is a script.
   commentUser: { name: "comment-user", limit: 5, windowMs: 15 * MINUTE },
   // Keyed by user id: an admin saving routes and places. Generous, because the editor saves often.
