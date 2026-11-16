@@ -1251,7 +1251,7 @@ msgstr "お店・食事"
 #: src/app/(public)/places/page.tsx:12
 #: src/app/(public)/places/page.tsx:37
 #: src/app/(public)/sitemap/page.tsx:64
-#: src/components/SiteFooter.tsx:21
+#: src/components/SiteFooter.tsx:26
 #: src/components/SiteHeader.tsx:275
 msgid "お店と施設"
 msgstr "お店と施設"
@@ -1366,16 +1366,28 @@ msgstr "くわしく見る"
 msgid "ゲストのまま使う"
 msgstr "ゲストのまま使う"
 
+#: src/app/(public)/blog/[id]/page.tsx:106
+#: src/app/(public)/routes/page.tsx:16
+#: src/app/(public)/sitemap/page.tsx:68
+#: src/components/BookmarkList.tsx:55
 #: src/components/landing/Journey.tsx:53
 #: src/components/landing/Landing.tsx:318
 #: src/components/map/MapScreenCanvas.tsx:612
+#: src/components/places/DirectoryView.tsx:81
 msgid "コース"
 msgstr "コース"
 
 #. placeholder {0}: r.memberCount
+#. placeholder {0}: route.order
 #: src/components/admin/RallyList.tsx:37
+#: src/components/blog/LinkedCards.tsx:22
 msgid "コース {0}"
 msgstr "コース {0}"
+
+#. placeholder {0}: p.routes.join("、")
+#: src/components/places/DirectoryView.tsx:116
+msgid "コース{0}"
+msgstr "コース{0}"
 
 #: src/components/RallyViews.tsx:172
 msgid "コース{order}"
@@ -1393,6 +1405,10 @@ msgstr "コースでつくったラリー：えらんだコースを全部終え
 msgid "コースでつくる"
 msgstr "コースでつくる"
 
+#: src/app/(public)/spots/[id]/page.tsx:71
+msgid "コースにもどる"
+msgstr "コースにもどる"
+
 #: src/app/(public)/badges/page.tsx:39
 msgid "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
 msgstr "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
@@ -1402,9 +1418,21 @@ msgstr "コースのすべての場所でスタンプを押すと、そのコー
 msgid "コースのラリー"
 msgstr "コースのラリー"
 
+#: src/app/(public)/sitemap/page.tsx:70
+msgid "コースの一覧"
+msgstr "コースの一覧"
+
 #: src/components/map/TrailMap.tsx:378
 msgid "コースの出発地点から近い順（まっすぐ測った距離です）"
 msgstr "コースの出発地点から近い順（まっすぐ測った距離です）"
+
+#: src/components/RouteView.tsx:254
+msgid "コースの動画"
+msgstr "コースの動画"
+
+#: src/app/(public)/routes/page.tsx:53
+msgid "コースの案内は準備中です。"
+msgstr "コースの案内は準備中です。"
 
 #: src/components/admin/CourseAreaEditor.tsx:178
 msgid "コースの範囲"
@@ -1418,16 +1446,33 @@ msgstr "コースの範囲の地図"
 msgid "コースの終わりが次のコースの始まりのときは、同じ場所を二つのコースに置けます。スタンプは1つで、両方のコースに数えられます。内容を直すときは、もとのコースで直します。"
 msgstr "コースの終わりが次のコースの始まりのときは、同じ場所を二つのコースに置けます。スタンプは1つで、両方のコースに数えられます。内容を直すときは、もとのコースで直します。"
 
+#: src/components/BookmarkList.tsx:45
+msgid "コースやラリー、ブログの記事で、しおりのボタンを押すと、ここに保存されます。ログインしていれば、アカウントに保存されます。"
+msgstr "コースやラリー、ブログの記事で、しおりのボタンを押すと、ここに保存されます。ログインしていれば、アカウントに保存されます。"
+
+#: src/components/landing/Landing.tsx:117
+msgid "コースをさがす"
+msgstr "コースをさがす"
+
 #: src/components/RallyViews.tsx:250
 msgid "コースを見る"
 msgstr "コースを見る"
+
+#: src/app/(public)/routes/[id]/page.tsx:40
+#: src/app/(public)/routes/[id]/page.tsx:59
+msgid "コース一覧"
+msgstr "コース一覧"
+
+#: src/app/(public)/routes/[id]/page.tsx:85
+msgid "コース一覧にもどる"
+msgstr "コース一覧にもどる"
 
 #: src/app/(public)/grading/page.tsx:57
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 msgstr "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 
 #: src/app/(public)/map/page.tsx:199
-#: src/app/(public)/routes/[id]/page.tsx:69
+#: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/RouteJourney.tsx:34
 #: src/components/RouteJourney.tsx:97
@@ -1512,6 +1557,10 @@ msgstr "このアプリを知ったきっかけ"
 #: src/components/admin/SharedPlaces.tsx:167
 msgid "このコースに置く"
 msgstr "このコースに置く"
+
+#: src/app/(public)/routes/[id]/page.tsx:77
+msgid "このコースのお知らせをフィードで受け取る"
+msgstr "このコースのお知らせをフィードで受け取る"
 
 #: src/components/admin/SharedPlaces.tsx:99
 msgid "このコースの経由地で、ほかのコースにも置いているもの"
@@ -1621,10 +1670,6 @@ msgstr "このルートがまだありません"
 msgid "このルートに追加"
 msgstr "このルートに追加"
 
-#: src/app/(public)/routes/[id]/page.tsx:79
-msgid "このルートのお知らせをフィードで受け取る"
-msgstr "このルートのお知らせをフィードで受け取る"
-
 #: src/components/admin/RallyMemberPicker.tsx:65
 msgid "このルートの経由地をすべて"
 msgstr "このルートの経由地をすべて"
@@ -1691,8 +1736,8 @@ msgid "この区間を見る"
 msgstr "この区間を見る"
 
 #: src/app/(public)/routes/page.tsx:57
-msgid "この地域のルートはまだありません。"
-msgstr "この地域のルートはまだありません。"
+msgid "この地域のコースはまだありません。"
+msgstr "この地域のコースはまだありません。"
 
 #: src/components/admin/PlacePanel.tsx:184
 msgid "この場所のスタンプの絵"
@@ -2026,7 +2071,7 @@ msgstr "サイトの文章を辞書が読んで、読みを考えたものです
 
 #: src/app/(public)/sitemap/page.tsx:15
 #: src/app/(public)/sitemap/page.tsx:50
-#: src/components/SiteFooter.tsx:30
+#: src/components/SiteFooter.tsx:35
 #: src/components/SiteHeader.tsx:280
 msgid "サイトマップ"
 msgstr "サイトマップ"
@@ -2076,7 +2121,7 @@ msgid "スクロール"
 msgstr "スクロール"
 
 #: src/app/(public)/map/page.tsx:199
-#: src/app/(public)/routes/[id]/page.tsx:69
+#: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/RouteJourney.tsx:31
 #: src/components/RouteJourney.tsx:93
@@ -2258,7 +2303,7 @@ msgid "スタンプ数"
 msgstr "スタンプ数"
 
 #: src/app/(public)/map/page.tsx:199
-#: src/app/(public)/routes/[id]/page.tsx:69
+#: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 msgid "スタンプ済み"
 msgstr "スタンプ済み"
@@ -2292,12 +2337,12 @@ msgid "すべてなめらか"
 msgstr "すべてなめらか"
 
 #: src/components/places/DirectoryView.tsx:84
-msgid "すべてのルート"
-msgstr "すべてのルート"
+msgid "すべてのコース"
+msgstr "すべてのコース"
 
 #: src/app/(public)/routes/page.tsx:59
-msgid "すべてのルートを見る"
-msgstr "すべてのルートを見る"
+msgid "すべてのコースを見る"
+msgstr "すべてのコースを見る"
 
 #: src/components/admin/RouteEditor.tsx:846
 msgid "すべての公開をやめる"
@@ -2429,10 +2474,6 @@ msgstr "チェックを入れると、「経由地をつないで道をつくる
 #: src/components/StampLegend.tsx:11
 msgid "つぎ"
 msgstr "つぎ"
-
-#: src/app/(public)/routes/[id]/page.tsx:90
-msgid "つぎのルート"
-msgstr "つぎのルート"
 
 #: src/components/landing/HomeProgress.tsx:65
 msgid "つぎの場所"
@@ -2905,14 +2946,14 @@ msgstr "ブックマークをはずしました"
 msgid "ブックマーク済み"
 msgstr "ブックマーク済み"
 
-#: src/components/SiteFooter.tsx:16
+#: src/components/SiteFooter.tsx:21
 msgid "フッター"
 msgstr "フッター"
 
 #: src/app/(admin)/admin/pages/page.tsx:25
 #: src/app/(public)/sitemap/page.tsx:129
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:36
+#: src/components/SiteFooter.tsx:41
 #: src/components/SiteHeader.tsx:278
 msgid "プライバシーポリシー"
 msgstr "プライバシーポリシー"
@@ -2938,7 +2979,7 @@ msgstr "プレビュー"
 #: src/app/(public)/sitemap/page.tsx:79
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/BlogCard.tsx:22
-#: src/components/SiteFooter.tsx:18
+#: src/components/SiteFooter.tsx:23
 #: src/components/SiteHeader.tsx:246
 msgid "ブログ"
 msgstr "ブログ"
@@ -2998,6 +3039,8 @@ msgid "ページが開かれた回数を、接続元のおおよその地域（�
 msgstr "ページが開かれた回数を、接続元のおおよその地域（国・都道府県・市）ごとに数えています。IPアドレスや個人は記録しません。市や町の位置は、実際の場所とずれることがあります。"
 
 #: src/components/BackToTop.tsx:15
+#: src/components/ScrollTopButton.tsx:27
+#: src/components/ScrollTopButton.tsx:28
 msgid "ページの先頭へ"
 msgstr "ページの先頭へ"
 
@@ -3445,7 +3488,7 @@ msgstr "やり直す"
 #: src/app/(admin)/admin/pages/page.tsx:22
 #: src/app/(public)/sitemap/page.tsx:123
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:24
+#: src/components/SiteFooter.tsx:29
 #: src/components/SiteHeader.tsx:276
 msgid "よくあるご質問"
 msgstr "よくあるご質問"
@@ -3459,7 +3502,7 @@ msgid "よみ"
 msgstr "よみ"
 
 #: src/app/(public)/sitemap/page.tsx:132
-#: src/components/SiteFooter.tsx:27
+#: src/components/SiteFooter.tsx:32
 #: src/components/SiteHeader.tsx:279
 msgid "ライセンス情報"
 msgstr "ライセンス情報"
@@ -3622,21 +3665,11 @@ msgid "リンク先のページが用意できてから、オンにしてくだ�
 msgstr "リンク先のページが用意できてから、オンにしてください。オフの間は、ホームページに出ません。"
 
 #: src/app/(admin)/admin/routes/page.tsx:24
-#: src/app/(public)/blog/[id]/page.tsx:106
-#: src/app/(public)/routes/page.tsx:16
-#: src/app/(public)/sitemap/page.tsx:68
 #: src/components/admin/AdminNav.tsx:37
 #: src/components/admin/FuriganaOverview.tsx:127
-#: src/components/BookmarkList.tsx:55
-#: src/components/places/DirectoryView.tsx:81
 #: src/components/TabBar.tsx:88
 msgid "ルート"
 msgstr "ルート"
-
-#. placeholder {0}: route.order
-#: src/components/blog/LinkedCards.tsx:22
-msgid "ルート {0}"
-msgstr "ルート {0}"
 
 #. placeholder {0}: preview.routes.length
 #. placeholder {1}: preview.places.length
@@ -3652,11 +3685,6 @@ msgstr "ルート：{name}"
 msgid "ルート（管理）"
 msgstr "ルート（管理）"
 
-#. placeholder {0}: p.routes.join("、")
-#: src/components/places/DirectoryView.tsx:116
-msgid "ルート{0}"
-msgstr "ルート{0}"
-
 #: src/components/admin/RallyMemberPicker.tsx:48
 msgid "ルートがまだありません。"
 msgstr "ルートがまだありません。"
@@ -3669,17 +3697,9 @@ msgstr "ルートがまだありません。「新しいルート」から作っ
 msgid "ルートとラリー"
 msgstr "ルートとラリー"
 
-#: src/app/(public)/spots/[id]/page.tsx:71
-msgid "ルートにもどる"
-msgstr "ルートにもどる"
-
 #: src/app/(public)/grading/page.tsx:45
 msgid "ルートの「体力度」と「技術度」は、歩く前に大変さを知るための目安です。公式の情報ではありません。天気や体調で、感じ方は変わります。"
 msgstr "ルートの「体力度」と「技術度」は、歩く前に大変さを知るための目安です。公式の情報ではありません。天気や体調で、感じ方は変わります。"
-
-#: src/app/(public)/sitemap/page.tsx:70
-msgid "ルートの一覧"
-msgstr "ルートの一覧"
 
 #: src/components/admin/DirectoryPicker.tsx:167
 msgid "ルートの最初の経由地に近い順です。"
@@ -3689,10 +3709,6 @@ msgstr "ルートの最初の経由地に近い順です。"
 msgid "ルートの写真のリンク"
 msgstr "ルートの写真のリンク"
 
-#: src/components/RouteView.tsx:254
-msgid "ルートの動画"
-msgstr "ルートの動画"
-
 #: src/components/admin/RouteEditor.tsx:556
 msgid "ルートの名前"
 msgstr "ルートの名前"
@@ -3700,10 +3716,6 @@ msgstr "ルートの名前"
 #: src/components/admin/RouteEditor.tsx:557
 msgid "ルートの名前の読み（ふりがな）"
 msgstr "ルートの名前の読み（ふりがな）"
-
-#: src/app/(public)/routes/page.tsx:53
-msgid "ルートの案内は準備中です。"
-msgstr "ルートの案内は準備中です。"
 
 #: src/app/(admin)/admin/places/[id]/page.tsx:41
 msgid "ルートの画面で開く"
@@ -3726,12 +3738,7 @@ msgstr "ルートの説明"
 msgid "ルートの順番を変えた"
 msgstr "ルートの順番を変えた"
 
-#: src/components/BookmarkList.tsx:45
-msgid "ルートやラリー、ブログの記事で、しおりのボタンを押すと、ここに保存されます。ログインしていれば、アカウントに保存されます。"
-msgstr "ルートやラリー、ブログの記事で、しおりのボタンを押すと、ここに保存されます。ログインしていれば、アカウントに保存されます。"
-
 #: src/components/admin/RouteTable.tsx:127
-#: src/components/landing/Landing.tsx:117
 #: src/components/landing/LandingHero.tsx:72
 msgid "ルートをさがす"
 msgstr "ルートをさがす"
@@ -3758,8 +3765,6 @@ msgid "ルートを読み込めませんでした。しばらくしてから、�
 msgstr "ルートを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 
 #: src/app/(public)/grading/page.tsx:39
-#: src/app/(public)/routes/[id]/page.tsx:40
-#: src/app/(public)/routes/[id]/page.tsx:61
 msgid "ルート一覧"
 msgstr "ルート一覧"
 
@@ -3983,8 +3988,8 @@ msgid "今後はこの確認を表示しない"
 msgstr "今後はこの確認を表示しない"
 
 #: src/components/map/TrailMap.tsx:442
-msgid "仮のルート・位置（未確認）"
-msgstr "仮のルート・位置（未確認）"
+msgid "仮のコース・位置（未確認）"
+msgstr "仮のコース・位置（未確認）"
 
 #: src/components/admin/HoursInput.tsx:27
 #: src/components/map/PlacesPanel.tsx:241
@@ -4423,6 +4428,10 @@ msgstr "公開しました。"
 msgid "公開する"
 msgstr "公開する"
 
+#: src/app/(public)/routes/page.tsx:54
+msgid "公開できるようになったら、ここにコースが表示されます。"
+msgstr "公開できるようになったら、ここにコースが表示されます。"
+
 #: src/app/(public)/badges/page.tsx:45
 msgid "公開できるようになったら、ここにコースのバッジが表示されます。"
 msgstr "公開できるようになったら、ここにコースのバッジが表示されます。"
@@ -4430,10 +4439,6 @@ msgstr "公開できるようになったら、ここにコースのバッジが
 #: src/app/(public)/rallies/page.tsx:56
 msgid "公開できるようになったら、ここにスタンプのラリーが表示されます。"
 msgstr "公開できるようになったら、ここにスタンプのラリーが表示されます。"
-
-#: src/app/(public)/routes/page.tsx:54
-msgid "公開できるようになったら、ここにルートが表示されます。"
-msgstr "公開できるようになったら、ここにルートが表示されます。"
 
 #: src/components/RouteView.tsx:270
 msgid "公開できるようになったら、ここに場所の一覧が表示されます。"
@@ -4796,7 +4801,7 @@ msgstr "別の人が先に保存しました。読み込み直してから、も
 #: src/app/(admin)/admin/pages/page.tsx:24
 #: src/app/(public)/sitemap/page.tsx:126
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:33
+#: src/components/SiteFooter.tsx:38
 #: src/components/SiteHeader.tsx:277
 msgid "利用規約"
 msgstr "利用規約"
@@ -5379,8 +5384,8 @@ msgid "地図に出すもの"
 msgstr "地図に出すもの"
 
 #: src/components/SampleNotice.tsx:58
-msgid "地図のルートと場所は仮のものです。実際の公開情報ではありません。"
-msgstr "地図のルートと場所は仮のものです。実際の公開情報ではありません。"
+msgid "地図のコースと場所は仮のものです。実際の公開情報ではありません。"
+msgstr "地図のコースと場所は仮のものです。実際の公開情報ではありません。"
 
 #: src/components/map/MapScreen.tsx:467
 msgid "地図の上の場所は、準備中です。"
@@ -6089,10 +6094,6 @@ msgstr "文章の書式"
 msgid "斜体"
 msgstr "斜体"
 
-#: src/components/ServiceWorker.tsx:43
-msgid "新しいバージョンがあります。"
-msgstr "新しいバージョンがあります。"
-
 #: src/components/settings/PasswordMethod.tsx:86
 msgid "新しいパスワード"
 msgstr "新しいパスワード"
@@ -6253,10 +6254,6 @@ msgstr "更新 {0}"
 #: src/components/StatusBanner.tsx:37
 msgid "更新 {updated}（日本時間）"
 msgstr "更新 {updated}（日本時間）"
-
-#: src/components/ServiceWorker.tsx:45
-msgid "更新する"
-msgstr "更新する"
 
 #: src/components/OfflinePack.tsx:119
 msgid "更新できませんでした。前に保存した地図は、そのまま使えます。"
@@ -8333,7 +8330,7 @@ msgid "閉店・撤去"
 msgstr "閉店・撤去"
 
 #: src/app/(public)/map/page.tsx:199
-#: src/app/(public)/routes/[id]/page.tsx:69
+#: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/navigation/NavTargetPicker.tsx:64
 #: src/components/StatusWord.tsx:13

@@ -1,30 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useLingui } from "@lingui/react/macro";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { SerwistProvider, useSerwist } from "@serwist/turbopack/react";
 
 /**
- * Registers the service worker (src/app/sw.ts) in the built app, and asks before a new version takes over: it waits until the
- * visitor taps 「更新する」, so nobody is switched to new code in the middle of a walk. Not registered in development.
+ * Registers the service worker (src/app/sw.ts) in the built app. A new version takes over quietly when the visitor next goes
+ * to another page (2026-11-16, user's manager: the 「新しいバージョンがあります」 bar confused older visitors): the page is
+ * changing then anyway, so the reload is not felt, and nothing changes under someone reading or walking (navigation mode
+ * resumes after a reload). Not registered in development.
  * `reloadOnOnline` is off: coming back online must not reload a page someone is using (the stamp outbox handles that moment).
  */
 export function ServiceWorker() {
   return (
     <SerwistProvider swUrl="/serwist/sw.js" disable={process.env.NODE_ENV !== "production"} reloadOnOnline={false}>
-      <UpdatePrompt />
+      <QuietUpdate />
     </SerwistProvider>
   );
 }
 
-function UpdatePrompt() {
-  const { t } = useLingui();
+function QuietUpdate() {
   const { serwist } = useSerwist();
-  const [waiting, setWaiting] = useState(false);
+  const pathname = usePathname();
+  const waiting = useRef(false);
+  const first = useRef(pathname);
 
   useEffect(() => {
     if (!serwist) return;
-    const onWaiting = () => setWaiting(true);
+    const onWaiting = () => {
+      waiting.current = true;
+    };
     // A new version took over: load it. Not on a first visit, where the first worker taking the page changes nothing on it.
     const onControlling = ({ isUpdate }: { isUpdate?: boolean }) => {
       if (isUpdate) window.location.reload();
@@ -37,13 +42,12 @@ function UpdatePrompt() {
     };
   }, [serwist]);
 
-  if (!waiting || !serwist) return null;
-  return (
-    <div role="status" className="fixed inset-x-3 top-[calc(0.5rem+var(--top-clear))] z-40 flex items-center gap-3 rounded-2xl bg-ink p-3 text-paper shadow-2xl md:inset-x-auto md:right-6 md:w-[24rem]">
-      <p className="min-w-0 flex-1 text-base font-bold leading-snug">{t`新しいバージョンがあります。`}</p>
-      <button type="button" onClick={() => serwist.messageSkipWaiting()} className="tap-target shrink-0 rounded-full bg-paper px-4 text-base font-bold text-ink">
-        {t`更新する`}
-      </button>
-    </div>
-  );
+  // The visitor moved to another page: let the waiting version take over now.
+  useEffect(() => {
+    if (pathname === first.current) return;
+    first.current = pathname;
+    if (waiting.current && serwist) serwist.messageSkipWaiting();
+  }, [pathname, serwist]);
+
+  return null;
 }

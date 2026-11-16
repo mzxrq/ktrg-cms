@@ -10,7 +10,7 @@ import { ShareRoute } from "@/components/ShareRoute";
 import { RouteView } from "@/components/RouteView";
 import Link from "next/link";
 import { ChevronIcon } from "@/components/icons";
-import { getRoute, listPlacesForRoute, listRoutes, pickText, toMapPlace } from "@/lib/content";
+import { getRoute, listPlacesForRoute, pickText, toMapPlace } from "@/lib/content";
 import { initLingui } from "@/i18n/server";
 import { getMapSettings } from "@/lib/site-settings";
 import { getMyStamps } from "@/lib/my-stamps";
@@ -37,7 +37,7 @@ export default async function RouteDetailPage({ params }: Props) {
     return (
       <div className="flex flex-col gap-4 px-4">
         <BackLink href="/routes">
-          <Trans>ルート一覧</Trans>
+          <Trans>コース一覧</Trans>
         </BackLink>
         <h1 className="font-serif text-3xl font-bold text-accent">{pickText(i18n.locale, route.nameJa, route.nameEn)?.text}</h1>
         <p className="rounded-[1.75rem] bg-surface p-4 text-lg font-bold">
@@ -46,11 +46,9 @@ export default async function RouteDetailPage({ params }: Props) {
       </div>
     );
   }
-  // The places are looked up by the route's number, so they wait for the route; the course list gives the next course.
-  const [placeRows, routes] = await Promise.all([listPlacesForRoute(route.order), listRoutes()]);
+  // The places are looked up by the route's number, so they wait for the route.
+  const placeRows = await listPlacesForRoute(route.order);
   const places = placeRows.map((p) => toMapPlace(i18n.locale, p));
-  const next = routes.filter((r) => r.order > route.order).sort((a, b) => a.order - b.order)[0];
-  const nextName = next ? pickText(i18n.locale, next.nameJa, next.nameEn) : null;
   const notices = allNotices.filter((n) => n.routeId === null || n.routeId === route.id);
 
   return (
@@ -58,7 +56,7 @@ export default async function RouteDetailPage({ params }: Props) {
       <RouteView
         back={
           <BackLink href="/routes">
-            <Trans>ルート一覧</Trans>
+            <Trans>コース一覧</Trans>
           </BackLink>
         }
         route={route}
@@ -76,26 +74,17 @@ export default async function RouteDetailPage({ params }: Props) {
             <>
               <TrailNotices notices={notices} locale={i18n.locale} />
               <a href={`/notices/feed.xml?route=${encodeURIComponent(route.id)}${i18n.locale === "en" ? "&lang=en" : ""}`} className="tap-target mx-4 inline-flex w-fit items-center text-base text-accent underline @4xl:mx-0">
-                <Trans>このルートのお知らせをフィードで受け取る</Trans>
+                <Trans>このコースのお知らせをフィードで受け取る</Trans>
               </a>
             </>
           ) : null
         }
       />
-      {/* The trail goes on: the next course, so a walker reading the whole page does not have to go back to the list. */}
-      {next && nextName ? (
-        <Link href={`/routes/${next.id}`} className="tap-target mx-4 flex items-center justify-between gap-3 rounded-[1.75rem] bg-surface p-4 no-underline">
-          <span className="min-w-0">
-            <span className="block text-base text-muted">
-              <Trans>つぎのルート</Trans>
-            </span>
-            <span lang={nextName.lang} className="block text-xl font-bold leading-snug">
-              {next.order}. {nextName.text}
-            </span>
-          </span>
-          <ChevronIcon />
-        </Link>
-      ) : null}
+      {/* The page ends back at the list of courses (2026-11-16, user: つぎのルート read like a story's next path). */}
+      <Link href="/routes" className="tap-target mx-4 flex items-center justify-between gap-3 rounded-[1.75rem] bg-surface p-4 no-underline text-xl font-bold">
+        <Trans>コース一覧にもどる</Trans>
+        <ChevronIcon />
+      </Link>
       {/* Share: handy, but not what a visitor opens the page for, so it comes last (the bookmark is in the jump bar). */}
       <ShareRoute route={{ nameJa: route.nameJa }} />
     </div>

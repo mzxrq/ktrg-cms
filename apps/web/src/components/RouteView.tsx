@@ -251,7 +251,7 @@ export function RouteView({ route, locale, places, settings, placesFirst, labels
 
           {video || videoFile ? (
             <section id="video" className="order-10 px-4 scroll-mt-[calc(5rem+var(--top-clear))] @4xl:order-none">
-              <Fold open title={<span className="border-l-4 border-brand pl-3 font-serif text-accent"><Trans>ルートの動画</Trans></span>}>
+              <Fold open title={<span className="border-l-4 border-brand pl-3 font-serif text-accent"><Trans>コースの動画</Trans></span>}>
                 <div className="flex flex-col gap-3">
                   {video ? (
                     <IntroVideo video={video} title={pickText(locale, route.nameJa, route.nameEn)?.text ?? route.nameJa} />

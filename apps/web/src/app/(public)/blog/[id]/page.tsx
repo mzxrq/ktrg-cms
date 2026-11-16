@@ -103,7 +103,7 @@ export default async function BlogPostPage({ params }: Props) {
           <p className="flex flex-wrap gap-2">
             {route ? (
               <Link href={`/routes/${route.id}`} className={chip}>
-                <Trans>ルート</Trans> <Localized value={pickText(locale, route.nameJa, route.nameEn)} />
+                <Trans>コース</Trans> <Localized value={pickText(locale, route.nameJa, route.nameEn)} />
               </Link>
             ) : null}
             {spot ? (

@@ -78,10 +78,10 @@ export function DirectoryView({
         <form action="/places" method="get" autoComplete="off" className="flex flex-wrap items-end gap-3 px-4 wide:px-0">
           {group ? <input type="hidden" name="group" value={group} /> : null}
           <label className="flex min-w-0 flex-1 flex-col gap-1 text-lg font-bold">
-            {t`ルート`}
+            {t`コース`}
             {/* key, and autoComplete off on the form: after Back the browser would put the old choice back in the box while the list shows the new address */}
             <select key={route ?? "all"} name="route" defaultValue={route ?? ""} className="tap-target w-full rounded-xl border-2 border-line bg-paper px-4 text-lg font-normal text-ink">
-              <option value="">{t`すべてのルート`}</option>
+              <option value="">{t`すべてのコース`}</option>
               {routes.map((r) => (
                 <option key={r.order} value={r.order}>
                   {r.order}. {r.name}
@@ -113,7 +113,7 @@ export function DirectoryView({
                   </span>
                   <span className="flex flex-wrap gap-x-3 text-base text-muted">
                     <span>{categoryNames[p.category]}</span>
-                    {p.routes.length > 0 ? <span>{t`ルート${p.routes.join("、")}`}</span> : null}
+                    {p.routes.length > 0 ? <span>{t`コース${p.routes.join("、")}`}</span> : null}
                     {p.status === "closed" || p.status === "seasonal" ? <span className="font-bold text-ink">{statusNames[p.status]}</span> : null}
                   </span>
                   {p.hours ? <span className="block text-base">{p.hours}</span> : null}

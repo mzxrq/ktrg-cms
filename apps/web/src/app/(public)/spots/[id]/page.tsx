@@ -68,7 +68,7 @@ export default async function SpotPage({ params, searchParams }: Props) {
     <div className="page-narrow flex flex-col gap-6">
       <div className="px-4">
         <BackLink href={`/routes/${spot.routeId}`}>
-          <Trans>ルートにもどる</Trans>
+          <Trans>コースにもどる</Trans>
         </BackLink>
       </div>
       <SpotSheet place={place} stampMock={stampMock} stampProgress={stampProgress} nearby={near} nearest={nearest} spot={spot} locale={i18n.locale} loginHref={`${"/login"}?next=${encodeURIComponent(`/spots/${spot.id}`)}`} />

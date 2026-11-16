@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { foundationEn, foundationJa } from "@/lib/terms-content";
+import { LocaleSelect } from "./LocaleSwitcher";
 
 /**
  * What every page ends with: the questions people ask, the terms, the licenses, the privacy policy, and who makes the
@@ -13,6 +14,10 @@ export function SiteFooter({ locale, variant = "page" }: { locale: string; varia
   const link = `tap-target inline-flex items-center font-bold underline ${sidebar ? "text-base" : "text-lg"}`;
   return (
     <footer className={sidebar ? "print:hidden site-footer border-t border-line/30 px-2 pt-3" : "print:hidden site-footer mt-10 border-t border-line/30 px-4 pt-4"}>
+      {/* The language beside the links people look through for it (2026-11-16, user: easier to find on a computer). */}
+      <div className={sidebar ? "mb-2" : "mb-3"}>
+        <LocaleSelect plain />
+      </div>
       <nav aria-label={t`フッター`} className={sidebar ? "flex flex-col" : "flex flex-wrap gap-x-6 gap-y-1"}>
         <Link prefetch={false} href="/blog" className={link}>
           <Trans>ブログ</Trans>

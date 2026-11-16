@@ -19,7 +19,7 @@ export function RouteCard({ route, locale }: { route: RouteSummary; locale: stri
       </span>
       <span className="flex min-w-0 flex-1 flex-col gap-1 p-4">
         <span className="text-base text-muted">
-          <Trans>ルート {route.order}</Trans>
+          <Trans>コース {route.order}</Trans>
         </span>
         <span className="text-xl font-bold leading-snug text-accent group-hover:underline">
           <Localized value={name} />
