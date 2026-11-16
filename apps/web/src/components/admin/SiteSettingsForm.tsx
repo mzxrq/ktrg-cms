@@ -18,7 +18,7 @@ const choice = (on: boolean) =>
   `tap-target flex flex-col items-start gap-1 rounded-xl border-2 px-4 py-3 text-left ${on ? "border-ink bg-paper ring-2 ring-ink" : "border-line bg-paper hover:bg-surface"}`;
 
 /**
- * 管理 > 詳細設定. What is chosen here is what every visitor sees, at once: the screen says so at the top and asks
+ * 管理 > 地図の見た目. What is chosen here is what every visitor sees, at once: the screen says so at the top and asks
  * again before saving. The first setting is the look of the map (the base map, the terrain shading, and how calm the
  * colours are); the preview map follows the choices before anything is saved.
  */
@@ -55,7 +55,7 @@ export function SiteSettingsForm({ initial }: { initial: MapSettings }) {
         method: "PUT",
         credentials: "same-origin",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ base: s.base, terrain: s.terrain, terrainOpacity: s.terrainOpacity, saturation: s.saturation, contrast: s.contrast, labelScale: s.labelScale, iconScale: s.iconScale, lineScale: s.lineScale }),
+        body: JSON.stringify({ base: s.base, terrain: s.terrain, terrainOpacity: s.terrainOpacity, saturation: s.saturation, contrast: s.contrast, labelScale: s.labelScale, iconScale: s.iconScale, lineScale: s.lineScale, terrain3d: s.terrain3d }),
       });
       const json = await readJson<{ ok?: unknown; error?: unknown }>(res);
       if (res.ok && json?.ok === true) {
@@ -122,6 +122,15 @@ export function SiteSettingsForm({ initial }: { initial: MapSettings }) {
             <p className="text-base text-muted">{t`100%が、国土地理院の地図に自分たちの調整を重ねた大きさです。大きくしすぎると文字が重なって読めなくなります。下の見本で確かめてください。`}</p>
           </fieldset>
         ) : null}
+        <fieldset className="flex flex-col gap-2">
+          <legend className="mb-1 text-lg font-bold">{t`立体の地図（3D）`}</legend>
+          <label className="tap-target inline-flex w-fit items-center gap-3 text-lg">
+            <input type="checkbox" className="size-6 accent-[var(--color-brand)]" checked={s.terrain3d} onChange={(e) => set({ terrain3d: e.target.checked })} />
+            {t`「地図」ページで、山を立体にする`}
+          </label>
+          <p className="text-base text-muted">{t`国土地理院の標高タイルで、傾けた地図の山を高く見せます。読みこむタイルが増えるので、電波の弱い山の中では重くなります。下の見本は平らなままです。「地図」ページで確かめてください。`}</p>
+        </fieldset>
+
         {s.base === "large" ? <LargeStyleUpload draft={draft} onDraft={setDraft} /> : null}
 
         <MapStylePreview settings={s} entries={draft} />

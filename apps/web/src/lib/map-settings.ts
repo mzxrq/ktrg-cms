@@ -1,5 +1,5 @@
 // How the trail map looks. One setting set, shared by every map and every visitor: an admin chooses it in
-// 管理 > 詳細設定 (kept in the database, read from the API), and the built-in default below applies until then.
+// 管理 > 地図の見た目 (kept in the database, read from the API), and the built-in default below applies until then.
 // Pure functions, unit-tested.
 
 /**
@@ -31,6 +31,8 @@ export interface MapSettings {
   labelScale: number;
   iconScale: number;
   lineScale: number;
+  /** The map page only: hills raised from GSI's elevation tiles under the tilted view (more downloads, so off by default). */
+  terrain3d: boolean;
 }
 
 /** The look until an admin chooses one: the quieter pale map. */
@@ -43,6 +45,7 @@ export const defaultMapSettings: MapSettings = {
   labelScale: 1,
   iconScale: 1,
   lineScale: 1,
+  terrain3d: false,
 };
 
 const pick = <T extends string>(allowed: readonly T[], value: unknown, fallback: T): T =>
@@ -63,5 +66,6 @@ export function sanitizeMapSettings(value: unknown): MapSettings {
     labelScale: clamp(v.labelScale, 0.8, 2, defaultMapSettings.labelScale),
     iconScale: clamp(v.iconScale, 0.8, 2, defaultMapSettings.iconScale),
     lineScale: clamp(v.lineScale, 0.8, 2, defaultMapSettings.lineScale),
+    terrain3d: v.terrain3d === true,
   };
 }

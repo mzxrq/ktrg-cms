@@ -41,17 +41,18 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
     // Banners live on the home page's screen (ページ > ホーム), so they have no line of their own.
     ...lists.filter((l) => l.key !== "authors" && l.key !== "tags" && l.key !== "banners").map((l) => ({ key: l.key, href: `${base}/${l.key}`, label: l.title, icon: LIST_ICONS[l.key] ?? <DocumentIcon /> })),
     { key: "pages", href: `${base}/pages`, label: t`ページ`, icon: <DocumentIcon /> },
-    // The site settings are for an admin only (the API refuses an editor).
-    ...(isAdmin ? [{ key: "settings", href: `${base}/settings`, label: t`詳細設定`, icon: <GearIcon /> }] : []),
+    // The map's look is for an admin only (the API refuses an editor). It sits with the routes (2026-11-16, user: every admin
+    // change is site-wide, so "site settings" said nothing).
+    ...(isAdmin ? [{ key: "settings", href: `${base}/settings`, label: t`地図の見た目`, icon: <GearIcon /> }] : []),
   ];
   // Menu sections, split by a line. A list the app does not know yet joins the site's content.
   const SECTIONS: { title?: string; keys: string[] }[] = [
     { keys: ["attention"] },
     { keys: ["dashboard"] },
-    { title: t`ルートとラリー`, keys: ["routes", "rallies", "stamps", "places", "directory"] },
+    { title: t`ルートとラリー`, keys: ["routes", "rallies", "stamps", "places", "directory", "settings"] },
     { title: t`サイトの内容`, keys: ["notices", "furigana", "pages", "posts"] },
     { title: t`コミュニティ`, keys: ["comments", "users"] },
-    { title: t`運営`, keys: ["visits", "audit", "settings"] },
+    { title: t`運営`, keys: ["visits", "audit"] },
   ];
   const known = new Set(SECTIONS.flatMap((s) => s.keys));
   const isActive = (item: { key: string; href: string }) =>

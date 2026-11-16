@@ -13,6 +13,9 @@ export const gsiAttribution = `<a href="${gsiTileListUrl}" target="_blank" rel="
 /** Real tile ranges (checked on the GSI tile list): base map 5 to 18, relief 5 to 15, hillshade 2 to 16. */
 export const zoomLimits = { min: 5, max: 18, reliefMax: 15, hillshadeMax: 16 } as const;
 
+/** The GSI raster layer for a base map choice (the vector 「大きい文字」 map falls back to the standard tiles). */
+export const baseRasterLayer = (base: keyof typeof baseTiles) => baseTiles[base].layer;
+
 /** GSI's English map: the standard map with English names, for Japan as far as this zoom; closer in, GSI has only Japanese. */
 export const englishMaxZoom = 11;
 

@@ -27,6 +27,8 @@ export const MAP_STYLE = t.Object({
   labelScale: t.Optional(t.Number({ minimum: 0.8, maximum: 2 })),
   iconScale: t.Optional(t.Number({ minimum: 0.8, maximum: 2 })),
   lineScale: t.Optional(t.Number({ minimum: 0.8, maximum: 2 })),
+  // The map page only: hills raised from GSI's elevation tiles under the tilted view.
+  terrain3d: t.Optional(t.Boolean()),
 });
 export type MapStyleSetting = Static<typeof MAP_STYLE>;
 

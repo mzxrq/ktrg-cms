@@ -9,6 +9,7 @@ import { CoverWatch } from "@/components/CoverWatch";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
 import { LandingMap } from "@/components/landing/LandingMap";
+import type { MapSettings } from "@/lib/map-settings";
 import { Journey } from "@/components/landing/Journey";
 import { Chapter, type Ground } from "@/components/landing/Chapter";
 import { StoryMotion } from "@/components/landing/StoryMotion";
@@ -61,6 +62,7 @@ export function Landing({
   greeting,
   text,
   chapterPhotos,
+  mapLook,
 }: {
   locale: string;
   routes: RouteSummary[];
@@ -68,7 +70,7 @@ export function Landing({
   introVideo: EmbedVideo | null;
   slides: BannerSlide[];
   posts: BlogPost[];
-  /** The tourism cards are shown only when an admin switched them on (管理 > 詳細設定). */
+  /** The tourism cards are shown only when an admin switched them on (管理 > ページ > ホーム). */
   showTourism: boolean;
   /** For a signed-in visitor: shown under the hero (and the stamp rally's explanation is left out). */
   top?: ReactNode;
@@ -78,6 +80,8 @@ export function Landing({
   text?: HomeText;
   /** The editor's own photos for the desktop picture panel (ridge, rally); null where none is set. */
   chapterPhotos?: (string | null)[];
+  /** The map look an admin chose (管理 > 地図の見た目), so the home map matches the map page. */
+  mapLook?: MapSettings;
 }) {
   const w = useHomeWords(text);
   // Grounds for the chapters after the first ones: surface, paper, surface ... in page order. The journey ends on a surface
@@ -293,7 +297,7 @@ export function Landing({
               heading={w.mapHeading}
               id="map-title"
               decoration={<SeamFade from={drawn[drawn.length - 2] ?? null} to={drawn[drawn.length - 1]!} />}
-              wide={<LandingMap routes={routes} />}
+              wide={<LandingMap routes={routes} look={mapLook} />}
             >
               {null}
             </Chapter>
@@ -330,7 +334,7 @@ export function Landing({
         ) : (
           <>
             {/* 4: the map of every course (the GSI map for now; it may become a drawing later). */}
-            <Chapter ground={ground()} heading={w.mapHeading} id="map-title" wide={<LandingMap routes={routes} />}>
+            <Chapter ground={ground()} heading={w.mapHeading} id="map-title" wide={<LandingMap routes={routes} look={mapLook} />}>
               {null}
             </Chapter>
 
