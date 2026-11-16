@@ -46,6 +46,7 @@ export function RallyTrail({ places, held, locale }: { places: readonly TrailPla
             </div>
             <Link
               href={`/spots/${s.id}`}
+              data-stop={s.id}
               className={`block min-w-0 flex-1 overflow-hidden rounded-[1.25rem] bg-surface ${next ? "border-[3px] border-accent" : "border border-line/40"}`}
             >
               <div className={`relative ${next ? "aspect-[16/9]" : "aspect-[16/6]"}`}>

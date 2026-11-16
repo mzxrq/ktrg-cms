@@ -378,11 +378,11 @@ describe("what visitors read about rallies", () => {
 });
 
 describe("one rally for its own page", () => {
-  const spot = (id: string, routeId: string, lat: number | null) => ({ id, routeId, nameJa: id, nameEn: null, status: "open", radiusM: 40, photoUrl: `https://example.com/${id}.jpg`, descriptionJa: `${id}の説明`, descriptionEn: null, position: lat === null ? null : { lat, lng: 135.1, verified: true } });
+  const spot = (id: string, routeId: string, lat: number | null) => ({ id, routeId, nameJa: id, nameEn: null, status: "open", radiusM: 40, photoUrl: `https://example.com/${id}.jpg`, descriptionJa: `${id}の説明`, descriptionEn: null, nameKana: `${id}かな`, historyJa: `${id}の歴史`, historyEn: null, statusNoteJa: null, statusNoteEn: null, position: lat === null ? null : { lat, lng: 135.1, verified: true } });
   const content = {
     publicRoute: async (id: string) =>
       id === ROUTE_A
-        ? { route: { photoUrl: "https://example.com/a.jpg", photoCredit: "x" }, spots: [spot(A1, ROUTE_A, 34.2)], points: [] }
+        ? { route: { photoUrl: "https://example.com/a.jpg", photoCredit: "x", accessJa: "駅からバス", accessEn: null }, spots: [spot(A1, ROUTE_A, 34.2)], points: [] }
         : id === ROUTE_B
           ? { route: { photoUrl: null, photoCredit: null }, spots: [spot(B1, ROUTE_B, null)], points: [] }
           : null,
@@ -404,6 +404,13 @@ describe("one rally for its own page", () => {
     const s = setup();
     const { rally } = (await (await appFor(s).handle(new Request(`http://localhost/api/v1/rallies/${s.mounds.id}`))).json()) as Json;
     expect(rally.places[0]).toMatchObject({ id: A1, photoUrl: `https://example.com/${A1}.jpg`, descriptionJa: `${A1}の説明`, descriptionEn: null });
+  });
+
+  test("the book page fields: reading, history, status note, and each course's access text", async () => {
+    const s = setup();
+    const { rally } = (await (await appFor(s).handle(new Request(`http://localhost/api/v1/rallies/${s.mounds.id}`))).json()) as Json;
+    expect(rally.places[0]).toMatchObject({ nameKana: `${A1}かな`, historyJa: `${A1}の歴史`, historyEn: null, statusNoteJa: null, statusNoteEn: null });
+    expect(rally.routes).toEqual([{ routeId: ROUTE_A, accessJa: "駅からバス", accessEn: null }]);
   });
 
   test("a rally of courses lists every stamp place of its courses, and its courses", async () => {

@@ -10,13 +10,15 @@ import { LastUpdated } from "@/components/LastUpdated";
 import { SaveBookmark } from "@/components/SaveBookmark";
 import { RallyNearbyStamp } from "@/components/RallyNearbyStamp";
 import { Bar } from "@/components/RallyViews";
+import { RallyBook } from "@/components/RallyBook";
 import { RallyTrail } from "@/components/RallyTrail";
 import { Medal } from "@/components/Medal";
 import { StampGrid } from "@/components/StampGrid";
 import { StampLegend } from "@/components/StampLegend";
-import { fetchPublicRally } from "@/lib/api-content";
+import { fetchPublicPlaces, fetchPublicRally } from "@/lib/api-content";
 import { listRallies, listRoutes, pickText } from "@/lib/content";
 import { journeyFacts } from "@/lib/rally-journey";
+import { bookPages } from "@/lib/rally-book";
 import { JourneyFacts } from "@/components/JourneyFacts";
 import { getMyStamps } from "@/lib/my-stamps";
 import { isSoon, nextSlot, stampedNumbers } from "@/lib/rally-model";
@@ -38,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function RallyPage({ params, searchParams }: Props) {
   const i18n = await initLingui();
   const { id } = await params;
-  const [viewer, detail, rallies, mine, routes] = await Promise.all([getViewer(searchParams), fetchPublicRally(id), listRallies(), getMyStamps(), listRoutes()]);
+  const [viewer, detail, rallies, mine, routes, directory] = await Promise.all([getViewer(searchParams), fetchPublicRally(id), listRallies(), getMyStamps(), listRoutes(), fetchPublicPlaces()]);
   const rally = rallies.find((r) => r.id === id);
   if (!detail || !rally) notFound();
 
@@ -48,6 +50,30 @@ export default async function RallyPage({ params, searchParams }: Props) {
   const held = [...mine.ids];
   const finishedAt = mine.completed.get(id) ?? null;
   const heldSet = new Set(held);
+  // Each place's book page: its own text, the course's access text and the nearest toilet of the directory (checked positions only).
+  const pages = bookPages({
+    places: detail.places.map((p) => ({
+      id: p.id,
+      routeId: p.routeId,
+      status: p.status,
+      nameJa: p.nameJa,
+      nameEn: p.nameEn,
+      nameKana: p.nameKana ?? null,
+      photoUrl: p.photoUrl ?? null,
+      descriptionJa: p.descriptionJa ?? null,
+      descriptionEn: p.descriptionEn ?? null,
+      historyJa: p.historyJa ?? null,
+      historyEn: p.historyEn ?? null,
+      statusNoteJa: p.statusNoteJa ?? null,
+      statusNoteEn: p.statusNoteEn ?? null,
+      lat: p.lat,
+      lng: p.lng,
+    })),
+    held: heldSet,
+    stampedAt: mine.at,
+    routes: detail.routes ?? [],
+    toilets: (directory ?? []).filter((d) => d.category === "toilet"),
+  });
   // Where "start now" leads: the next place not yet stamped (the first one when nothing is), opened on the map.
   const next = nextSlot(rally);
   const start = detail.places.find((p) => (next && detail.kind === "course" ? p.routeId === next.id : true) && !heldSet.has(p.id)) ?? detail.places.find((p) => !heldSet.has(p.id));
@@ -133,11 +159,9 @@ export default async function RallyPage({ params, searchParams }: Props) {
           <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
             <Trans>めぐる場所</Trans>
           </h2>
-          <RallyTrail
-            places={detail.places.map((p) => ({ id: p.id, status: p.status, nameJa: p.nameJa, nameEn: p.nameEn, photoUrl: p.photoUrl ?? null, descriptionJa: p.descriptionJa ?? null, descriptionEn: p.descriptionEn ?? null }))}
-            held={heldSet}
-            locale={i18n.locale}
-          />
+          <RallyBook pages={pages}>
+            <RallyTrail places={pages} held={heldSet} locale={i18n.locale} />
+          </RallyBook>
         </section>
       ) : null}
       </div>

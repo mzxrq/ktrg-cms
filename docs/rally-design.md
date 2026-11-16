@@ -15,7 +15,7 @@ invites anyone to walk. Goal: a page that explains the whole walk at a glance, a
 
 1. **Data and first-time card (built).** `RallyItem.routeIds`; `lib/rally-journey.ts` (`journeyFacts`: places, km, time rounded to 5 min, first photo among the rally's courses); `JourneyFacts`, `Walker`; used on `/rallies` (FeaturedRally) and `/rallies/[id]` when nothing is stamped.
 2. **Trail view (built).** `GET /rallies/:id` places carry `photoUrl` and the descriptions; `lib/rally-trail.ts` (`trailStops`, `walkerAt`; closed counts as done, info is never numbered or next); `RallyTrail` replaces the plain list on `/rallies/[id]` with the dotted path, a card per place (photo, name, short line, status) and the walker at the next place. Cards open the place page for now. Distance between places is not shown yet: it needs the course line, so it comes with the book page.
-3. Book page sheet with flip (adds history, access, nearest toilet from the places directory; only places with a checked position).
+3. **Book page (built).** `GET /rallies/:id` also sends reading, history, status note and each course's access text; `lib/rally-book.ts` (`bookPages`, `nearestToilet`: within 2 km, straight line, checked positions only); `RallyBook` opens a place from its trail card as a dialog (progressive: the card is still a link without scripts), ‹ › and the arrow keys turn pages, controls pinned at the bottom. Distance to the next place is a straight line ("約"); walking time is not shown because it would be a guess. Dots are left out (31 places in the mound rally); a "3 / 10" count stands instead.
 4. Walker and flip motion at the three levels.
 5. `/rallies` list cards.
 

@@ -1,0 +1,178 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
+import { useLingui } from "@lingui/react/macro";
+import { buttonStyle } from "@/components/button";
+import { useDistanceText } from "@/components/map/PlacesPanel";
+import { formatUpdated } from "@/lib/format";
+import { pickText } from "@/lib/pick-text";
+import type { BookPage } from "@/lib/rally-book";
+import { ChevronIcon } from "./icons";
+import { RoutePhoto } from "./RoutePhoto";
+import { StatusWord } from "./StatusWord";
+
+/**
+ * The trail (its children) with a book page for each place. Pressing a place's card opens its page over the trail; the
+ * arrows turn to the next and previous place; closing returns to the trail. Without scripts a card is still a link to the
+ * place's own page, where the stamp is pressed. The rising and fading comes from the shared dialog motion.
+ */
+export function RallyBook({ pages, children }: { pages: readonly BookPage[]; children: ReactNode }) {
+  const { t, i18n } = useLingui();
+  const locale = i18n.locale;
+  const distance = useDistanceText();
+  const ref = useRef<HTMLDialogElement>(null);
+  const [index, setIndex] = useState<number | null>(null);
+  const page = index === null ? null : (pages[index] ?? null);
+
+  useEffect(() => {
+    const d = ref.current;
+    if (!d) return;
+    if (page && !d.open) d.showModal();
+    if (!page && d.open) d.close();
+  }, [page]);
+
+  const open = (e: MouseEvent) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // a new tab keeps the link
+    const link = (e.target as Element).closest<HTMLAnchorElement>("a[data-stop]");
+    if (!link) return;
+    const at = pages.findIndex((p) => p.id === link.dataset.stop);
+    if (at < 0) return;
+    e.preventDefault();
+    e.stopPropagation(); // the card is a next/link: it must not navigate as well
+    setIndex(at);
+  };
+  const turn = (by: number) => setIndex((i) => (i === null ? i : Math.min(pages.length - 1, Math.max(0, i + by))));
+
+  const pick = (ja: string | null, en: string | null) => (ja === null ? null : pickText(locale, ja, en));
+  const name = page ? (pick(page.nameJa, page.nameEn) ?? { text: page.nameJa, lang: "ja" as const }) : null;
+  const line = page ? pick(page.descriptionJa, page.descriptionEn) : null;
+  const history = page ? pick(page.historyJa, page.historyEn) : null;
+  const note = page ? pick(page.statusNoteJa, page.statusNoteEn) : null;
+  const access = page ? pick(page.accessJa, page.accessEn) : null;
+  const nextName = page?.next ? (pick(page.next.nameJa, page.next.nameEn)?.text ?? page.next.nameJa) : null;
+  const toiletName = page?.toilet ? (pick(page.toilet.nameJa, page.toilet.nameEn)?.text ?? page.toilet.nameJa) : null;
+  const toiletHours = page?.toilet ? pick(page.toilet.hoursJa, page.toilet.hoursEn)?.text : null;
+  const label = "text-base font-bold text-accent";
+  const arrow = "tap-target inline-flex size-12 items-center justify-center rounded-full border-2 border-ink bg-paper disabled:opacity-40";
+  const when = page?.stampedAt ? formatUpdated(locale, page.stampedAt) : "";
+  const counted = pages.filter((p) => p.number !== null).length;
+
+  return (
+    <>
+      <div onClickCapture={open}>{children}</div>
+      <dialog
+        ref={ref}
+        aria-label={name?.text}
+        onClose={() => setIndex(null)}
+        onClick={(e) => e.target === ref.current && setIndex(null)}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft") turn(-1);
+          if (e.key === "ArrowRight") turn(1);
+        }}
+        className="m-auto max-h-[92dvh] w-[min(34rem,calc(100vw-1.5rem))] overflow-y-auto rounded-[1.75rem] border-2 border-ink bg-paper p-0 text-ink backdrop:bg-black/60"
+      >
+        {page && name ? (
+          <article className="flex flex-col">
+            <div className="relative aspect-[16/10]">
+              <RoutePhoto src={page.photoUrl} alt={name.text} />
+            </div>
+            <div className="flex flex-col gap-4 p-5">
+              <header className="flex flex-col gap-1">
+                {page.number !== null ? <p className="text-base text-muted">{`${page.number} / ${counted}`}</p> : null}
+                <h2 lang={name.lang} className="font-serif text-2xl font-bold leading-snug text-accent">
+                  {name.text}
+                </h2>
+                {page.nameKana ? <p className="text-base text-muted">{page.nameKana}</p> : null}
+              </header>
+
+              <p className="text-lg font-bold">
+                {page.state === "stamped" && page.stampedAt ? (
+                  <span className="text-moss">{t`押した日時　${when}`}</span>
+                ) : page.state === "stamped" ? (
+                  <span className="text-moss">{t`押した`}</span>
+                ) : page.state === "next" ? (
+                  <span className="text-accent">{t`つぎ`}</span>
+                ) : page.state === "todo" ? (
+                  <span className="text-muted">{t`まだ`}</span>
+                ) : null}
+              </p>
+
+              {page.status !== "open" ? (
+                <div className="flex flex-col gap-1 rounded-xl bg-surface p-3">
+                  <StatusWord status={page.status} />
+                  {note ? (
+                    <p lang={note.lang} className="text-base leading-snug">
+                      {note.text}
+                    </p>
+                  ) : null}
+                </div>
+              ) : null}
+
+              {line ? (
+                <p lang={line.lang} className="text-lg leading-relaxed">
+                  {line.text}
+                </p>
+              ) : null}
+              {history ? (
+                <section className="flex flex-col gap-1">
+                  <h3 className={label}>{t`歴史`}</h3>
+                  <p lang={history.lang} className="text-base leading-relaxed">
+                    {history.text}
+                  </p>
+                </section>
+              ) : null}
+
+              {page.next && nextName ? (
+                <p className="text-base">
+                  <span className="text-muted">{t`つぎの場所まで`}　</span>
+                  <span className="font-bold">
+                    {nextName}　{distance(page.next.meters)}
+                  </span>
+                </p>
+              ) : null}
+
+              {access ? (
+                <section className="flex flex-col gap-1">
+                  <h3 className={label}>{t`行き方`}</h3>
+                  <p lang={access.lang} className="text-base leading-relaxed">
+                    {access.text}
+                  </p>
+                </section>
+              ) : null}
+
+              {page.toilet && toiletName ? (
+                <section className="flex flex-col gap-1">
+                  <h3 className={label}>{t`近くのトイレ`}</h3>
+                  <p className="text-base">
+                    <span className="font-bold">{toiletName}</span>　{distance(page.toilet.meters)}
+                    {toiletHours ? <span className="text-muted">　{toiletHours}</span> : null}
+                  </p>
+                </section>
+              ) : null}
+
+              <Link href={`/spots/${page.id}`} className={buttonStyle("primary", "lg", "flex w-full")}>
+                {t`この場所のページを開く`}
+              </Link>
+
+              {/* Pinned to the bottom edge, so a long page can still be turned without scrolling back down. */}
+              <div className="sticky bottom-0 -mx-5 -mb-5 flex items-center justify-between gap-3 border-t border-line/40 bg-paper px-5 py-3">
+                <button type="button" aria-label={t`前の場所`} disabled={index === 0} onClick={() => turn(-1)} className={arrow}>
+                  <span className="rotate-180">
+                    <ChevronIcon />
+                  </span>
+                </button>
+                <button type="button" onClick={() => setIndex(null)} className={buttonStyle("secondary", "md", "inline-flex")}>
+                  {t`閉じる`}
+                </button>
+                <button type="button" aria-label={t`次の場所`} disabled={index === pages.length - 1} onClick={() => turn(1)} className={arrow}>
+                  <ChevronIcon />
+                </button>
+              </div>
+            </div>
+          </article>
+        ) : null}
+      </dialog>
+    </>
+  );
+}
