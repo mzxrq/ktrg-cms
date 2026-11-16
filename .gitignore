@@ -92,6 +92,7 @@ Desktop.ini
 !docs/
 !docs/*.md
 !deploy/aws/README.md
+!deploy/lightsail/README.md
 
 # Database dumps
 sql/
