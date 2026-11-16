@@ -403,9 +403,11 @@ export function MapScreenCanvas({
     keptRoute.current = undefined;
     if (!map || !ready) return;
     const points = route ? framePoints(route.line || !lines[route.id] ? route : { ...route, line: lines[route.id] ?? null }) : routes.flatMap((r) => (r.area ? framePoints(r) : []));
-    const bounds = boundsOf(points);
+    // Navigating from far away: the visitor is in the frame too, so the screen shows where they are and where the course is
+    // (2026-11-16, user: the map should come to where the walker is). Near the course the following below takes over.
+    const bounds = boundsOf(far && user ? [...points, { lat: user.lat, lng: user.lng }] : points);
     if (bounds) map.fitBounds(bounds, { padding: padding(), maxZoom: route ? 15 : 11, duration: 600 });
-  }, [ready, routeId, mapGen, navEnds, routeId ? lines[routeId] : null]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [ready, routeId, mapGen, navEnds, far, routeId ? lines[routeId] : null]); // eslint-disable-line react-hooks/exhaustive-deps -- not `user`: each new fix would refit the view
 
   // After the framing above: 「ナビにもどる」 may have just brought the course back, and the walker comes first.
   useEffect(() => {

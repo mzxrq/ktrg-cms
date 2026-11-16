@@ -1,4 +1,4 @@
-import type { LayerSpecification, StyleSpecification } from "maplibre-gl";
+import type { ExpressionSpecification, LayerSpecification, StyleSpecification } from "maplibre-gl";
 import { defaultMapSettings, type MapSettings } from "./map-settings";
 
 // Pure helpers for the trail map (WBS 3.2.1, 3.2.2). No DOM and no MapLibre runtime, so they
@@ -167,6 +167,11 @@ export function mapStyle(settings: MapSettings = defaultMapSettings, locale = "j
  * The route line: a wide casing under a coloured line so it stays visible on any tile colour.
  * Dashed while it is only straight segments between stops (an approximation), solid for a real path.
  */
+/** The course line: deep magenta, thicker as the map zooms in (so it reads both in the overview and on the trail). */
+export const ROUTE_LINE_COLOR = "#c2185b";
+const ROUTE_LINE_WIDTH: ExpressionSpecification = ["interpolate", ["linear"], ["zoom"], 10, 4, 14, 6, 17, 9];
+const ROUTE_CASING_WIDTH: ExpressionSpecification = ["interpolate", ["linear"], ["zoom"], 10, 8, 14, 11, 17, 15];
+
 export function routeLineLayers(sourceId: string, approximate: boolean): LayerSpecification[] {
   return [
     {
@@ -174,7 +179,7 @@ export function routeLineLayers(sourceId: string, approximate: boolean): LayerSp
       type: "line",
       source: sourceId,
       layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": "#ffffff", "line-width": 11, "line-opacity": 1 },
+      paint: { "line-color": "#ffffff", "line-width": ROUTE_CASING_WIDTH, "line-opacity": 1 },
     },
     {
       id: `${sourceId}-line`,
@@ -182,10 +187,11 @@ export function routeLineLayers(sourceId: string, approximate: boolean): LayerSp
       source: sourceId,
       layout: { "line-cap": approximate ? "butt" : "round", "line-join": "round" },
       paint: {
-        // Fixed colours on purpose: the map tiles do not change with the app theme, so the line
-        // must read on them in both themes. A vivid orange with a thick white casing stands out on the pale tiles.
-        "line-color": "#e8590c",
-        "line-width": 6,
+        // Fixed colours on purpose: the map tiles do not change with the app theme, so the line must read on them in both
+        // themes. Deep magenta, a colour GSI's maps do not use (the orange line used to vanish among GSI's orange and yellow
+        // roads, 2026-11-16), the classic colour of a walking route on paper maps, over a white casing.
+        "line-color": ROUTE_LINE_COLOR,
+        "line-width": ROUTE_LINE_WIDTH,
         ...(approximate ? { "line-dasharray": [2, 1.4] } : {}),
       },
     },
