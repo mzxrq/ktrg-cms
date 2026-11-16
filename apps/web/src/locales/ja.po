@@ -6236,7 +6236,7 @@ msgstr "時刻表"
 #: src/components/map/PlacesPanel.tsx:240
 #: src/components/RouteStats.tsx:40
 #: src/components/RouteStats.tsx:65
-#: src/components/RouteStats.tsx:92
+#: src/components/RouteStats.tsx:96
 msgid "時間"
 msgstr "時間"
 
@@ -7900,7 +7900,7 @@ msgstr "足りないもの"
 #: src/components/admin/RouteEditor.tsx:577
 #: src/components/RouteStats.tsx:30
 #: src/components/RouteStats.tsx:65
-#: src/components/RouteStats.tsx:92
+#: src/components/RouteStats.tsx:96
 msgid "距離"
 msgstr "距離"
 

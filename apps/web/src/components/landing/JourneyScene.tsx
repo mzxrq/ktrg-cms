@@ -2,14 +2,15 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import { beatAt, drawnShare, motionMode, sealsPlaced } from "@/lib/journey";
-import { DESK_QUERY, PHONE_RIDGE_ROOM_PX, RIDGE_ROOM_PX, SCENE_QUERY, beatsFit } from "@/lib/landing-desktop";
+import { DESK_QUERY, PHONE_RIDGE_ROOM_PX, RIDGE_ROOM_PX, SCENE_QUERY, SHORT_SCREEN_QUERY, beatsFit } from "@/lib/landing-desktop";
 
 /**
  * The landing journey's motion (docs/landing-journey-design.md). `children` are the complete static page (Journey.tsx);
  * this only adds to it, and every way it can fail leaves that page as it was:
  *  - calm on, no script, GSAP failing to load: nothing happens (the page stays stacked and complete);
  *  - reduced motion: no scene; the three beats fade in once as they arrive, nothing moves;
- *  - a screen shorter than 38rem (a phone on its side): no scene, the stacked page;
+ *  - a screen shorter than 38rem, or a beat taller than the screen: no scene, the stacked page with the beats fading in
+ *    (2026-11-16, user: Android phones and laptops at 125-150 % scaling got no motion at all, which read as broken);
  *  - otherwise the scene: `.journey-live` turns the page into 250svh of scroll with one sticky stage, and a single
  *    scrubbed trigger draws the ridge, drops the seals and picks the beat whose text shows (`data-active-beat`).
  * Turning reduced motion on while the page is open reverts to the plain page (gsap.matchMedia).
@@ -43,14 +44,18 @@ export function JourneyScene({ children, seals }: { children: ReactNode; seals: 
         if (gone) return;
         gsap.registerPlugin(ScrollTrigger);
         const mm = gsap.matchMedia();
+        // Each later beat fades in once as it arrives: the reduced-motion version, and the fallback when the scene cannot fit.
+        const fadeBeats = () =>
+          beats.forEach((beat) => {
+            gsap.fromTo(beat, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none", clearProps: "opacity", scrollTrigger: { trigger: beat, start: "top 85%", once: true } });
+          });
+        if (mode === "scene") mm.add(SHORT_SCREEN_QUERY, fadeBeats);
         // The scene needs a screen tall enough to hold a beat (a phone on its side is not: the story would be cut off and the
         // ridge out of reach), so a short screen keeps the stacked page. matchMedia re-checks it when the phone is turned.
         mm.add(mode === "scene" ? SCENE_QUERY : "(prefers-reduced-motion: reduce)", () => {
           if (mode === "fade") {
             // Reduced motion: the final scene as it is (ridge drawn, seals placed); each later beat only fades in, once.
-            beats.forEach((beat) => {
-              gsap.fromTo(beat, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none", clearProps: "opacity", scrollTrigger: { trigger: beat, start: "top 85%", once: true } });
-            });
+            fadeBeats();
             return;
           }
           el.classList.add("journey-live");
@@ -72,6 +77,7 @@ export function JourneyScene({ children, seals }: { children: ReactNode; seals: 
           if (!beatsFit(needs, window.innerHeight)) {
             el.classList.remove("journey-live");
             delete el.dataset.activeBeat;
+            fadeBeats(); // the stacked page, but still alive
             return;
           }
           // The line is revealed with a clip from the left, not a dash: with vector-effect non-scaling-stroke the dash is measured in

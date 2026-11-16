@@ -62,25 +62,29 @@ export function RouteStats({ route, compact = false, icons = false, inline = fal
   if (items.length === 0) return null;
 
   if (line) {
-    const parts = items.filter((i) => i.info || i.label === t`距離` || i.label === t`時間`);
-    // Two columns of picture and number, so the pictures of one column stand in one line (a wrapping row let them drift).
+    const parts = items.filter((i) => i.label === t`距離` || i.label === t`時間`);
+    const levels = items.filter((i) => i.info);
+    const cell = (part: (typeof items)[number]) => (
+      <span key={part.label} className="inline-flex items-center gap-1.5 whitespace-nowrap">
+        <span aria-hidden="true" className="shrink-0 text-brand [&_svg]:size-5">
+          {part.icon}
+        </span>
+        {/* The short words (体力, 道 / Effort, Path) so the row fits beside the photo; the stars follow, a little smaller. */}
+        {part.info ? (
+          <>
+            {part.short ?? part.label} <span className="text-[0.85em]">{part.value}</span>
+          </>
+        ) : (
+          part.value
+        )}
+      </span>
+    );
+    // Distance and time: two columns of picture and number, so the pictures stand in one line. The two star meters are wider,
+    // so they share a row of their own that wraps rather than run into each other (2026-11-16, user: the stars hid an icon).
     return (
       <p className="grid grid-cols-[minmax(6.75rem,max-content)_max-content] justify-start gap-x-5 gap-y-1 text-base font-bold tabular-nums">
-        {parts.map((part) => (
-          <span key={part.label} className="inline-flex items-center gap-1.5 whitespace-nowrap">
-            <span aria-hidden="true" className="shrink-0 text-brand [&_svg]:size-5">
-              {part.icon}
-            </span>
-            {/* The short words (体力, 道 / Effort, Path) so the row fits beside the photo; the stars follow. */}
-            {part.info ? (
-              <>
-                {part.short ?? part.label} {part.value}
-              </>
-            ) : (
-              part.value
-            )}
-          </span>
-        ))}
+        {parts.map(cell)}
+        {levels.length > 0 ? <span className="col-span-2 flex flex-wrap gap-x-5 gap-y-1">{levels.map(cell)}</span> : null}
       </p>
     );
   }
