@@ -9,7 +9,8 @@ import { CoverPhoto } from "@/components/CoverPhoto";
 import { LastUpdated } from "@/components/LastUpdated";
 import { SaveBookmark } from "@/components/SaveBookmark";
 import { RallyNearbyStamp } from "@/components/RallyNearbyStamp";
-import { Bar, SlotList } from "@/components/RallyViews";
+import { Bar } from "@/components/RallyViews";
+import { RallyTrail } from "@/components/RallyTrail";
 import { Medal } from "@/components/Medal";
 import { StampGrid } from "@/components/StampGrid";
 import { StampLegend } from "@/components/StampLegend";
@@ -132,9 +133,11 @@ export default async function RallyPage({ params, searchParams }: Props) {
           <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
             <Trans>めぐる場所</Trans>
           </h2>
-          <div className="rounded-[1.75rem] bg-surface">
-            <SlotList rally={rally} locale={i18n.locale} />
-          </div>
+          <RallyTrail
+            places={detail.places.map((p) => ({ id: p.id, status: p.status, nameJa: p.nameJa, nameEn: p.nameEn, photoUrl: p.photoUrl ?? null, descriptionJa: p.descriptionJa ?? null, descriptionEn: p.descriptionEn ?? null }))}
+            held={heldSet}
+            locale={i18n.locale}
+          />
         </section>
       ) : null}
       </div>

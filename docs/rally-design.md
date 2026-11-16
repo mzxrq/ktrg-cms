@@ -14,7 +14,7 @@ invites anyone to walk. Goal: a page that explains the whole walk at a glance, a
 ## Staging
 
 1. **Data and first-time card (built).** `RallyItem.routeIds`; `lib/rally-journey.ts` (`journeyFacts`: places, km, time rounded to 5 min, first photo among the rally's courses); `JourneyFacts`, `Walker`; used on `/rallies` (FeaturedRally) and `/rallies/[id]` when nothing is stamped.
-2. Trail view with place cards and the walker marker (needs per-place photo, description, km between places; extend `GET /rallies/:id`).
+2. **Trail view (built).** `GET /rallies/:id` places carry `photoUrl` and the descriptions; `lib/rally-trail.ts` (`trailStops`, `walkerAt`; closed counts as done, info is never numbered or next); `RallyTrail` replaces the plain list on `/rallies/[id]` with the dotted path, a card per place (photo, name, short line, status) and the walker at the next place. Cards open the place page for now. Distance between places is not shown yet: it needs the course line, so it comes with the book page.
 3. Book page sheet with flip (adds history, access, nearest toilet from the places directory; only places with a checked position).
 4. Walker and flip motion at the three levels.
 5. `/rallies` list cards.

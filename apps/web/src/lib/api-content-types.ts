@@ -77,7 +77,7 @@ export interface PublicRallyDetail {
   photoUrl: string | null;
   photoCredit: string | null;
   /** The stamp places, in order (for a rally of courses: those of every course). lat and lng are null until a person has checked the position. */
-  places: { id: string; routeId: string; nameJa: string; nameEn: string | null; status: "open" | "caution" | "closed" | "info"; radiusM: number; lat: number | null; lng: number | null }[];
+  places: { id: string; routeId: string; nameJa: string; nameEn: string | null; status: "open" | "caution" | "closed" | "info"; radiusM: number; photoUrl?: string | null; descriptionJa?: string | null; descriptionEn?: string | null; lat: number | null; lng: number | null }[];
   courses: { routeId: string; nameJa: string; nameEn: string | null }[];
 }
 

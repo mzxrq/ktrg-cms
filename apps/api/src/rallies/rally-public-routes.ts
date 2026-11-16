@@ -38,6 +38,9 @@ export function rallyPublicRoutes(getServices: () => { rallyAdmin: RallyAdminSer
       nameEn: s.nameEn,
       status: s.status,
       radiusM: s.radiusM,
+      photoUrl: s.photoUrl,
+      descriptionJa: s.descriptionJa,
+      descriptionEn: s.descriptionEn,
       lat: s.position ? s.position.lat : null,
       lng: s.position ? s.position.lng : null,
     });
