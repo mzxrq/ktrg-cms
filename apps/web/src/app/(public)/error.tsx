@@ -17,7 +17,7 @@ export default function PublicError({ error, reset }: { error: Error & { digest?
   }, [error]);
 
   return (
-    <div role="alert" className="flex flex-col gap-6 px-4 pt-2">
+    <div role="alert" className="state-stagger flex flex-col gap-6 px-4 pt-2">
       <h1 className="font-serif text-3xl font-bold text-accent">{t`うまく表示できませんでした`}</h1>
       <p className="text-xl leading-8">{t`こちらの問題です。もう一度お試しください。それでも直らないときは、しばらくしてからお試しください。`}</p>
       <div className="flex flex-col gap-3">

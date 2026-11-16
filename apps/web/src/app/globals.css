@@ -1261,6 +1261,32 @@ html[data-furigana] {
   100% { transform: scale(2.2); opacity: 0; }
 }
 
+/* Messages and empty states arrive with a short rise and fade (docs/motion-design.md, stage 3): every role="alert" message, an
+   EmptyState or Notice (.state-in), and the pieces of a whole state one after another (.state-stagger: heading, words, buttons).
+   CSS rather than GSAP because many are drawn by the server: a script would hide them after they were already on screen.
+   Fade only keeps the fade and drops the rise; calm (and the device's reduce-motion setting) shows them at once. */
+@keyframes state-in {
+  from { opacity: 0; transform: translateY(0.5rem); }
+}
+@keyframes state-in-fade {
+  from { opacity: 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [role="alert"]:not(.sr-only, .state-stagger),
+  .state-in,
+  .state-stagger > * {
+    animation: state-in 260ms var(--ease-enter) backwards;
+  }
+  .state-stagger > :nth-child(2) { animation-delay: 70ms; }
+  .state-stagger > :nth-child(3) { animation-delay: 140ms; }
+  .state-stagger > :nth-child(n + 4) { animation-delay: 210ms; }
+  html[data-fade] [role="alert"]:not(.sr-only, .state-stagger),
+  html[data-fade] .state-in,
+  html[data-fade] .state-stagger > * {
+    animation-name: state-in-fade;
+  }
+}
+
 /* Fade only (html[data-fade]): the stamp moments keep their timing and lose their movement: no jolt, scale, tilt-in or ink ring.
    (The device's own reduce-motion setting still keeps them off, as before.) */
 @keyframes stamp-press-overlay-fade {

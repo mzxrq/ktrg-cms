@@ -9,8 +9,12 @@ import { useLayoutEffect, useRef, useState } from "react";
 import type { gsap as Gsap } from "gsap";
 
 export type MotionLevel = "full" | "fade" | "off";
-/** What an element does when it enters or leaves: drop from the top (phone menu), pop out of a corner (wide menu), rise a little, or just fade. */
-export type MotionKind = "drop" | "pop" | "rise" | "fade";
+/**
+ * What an element does when it enters or leaves: drop from the top (phone menu), pop out of a corner (wide menu), rise a
+ * little, just fade, or collapse (an element in the page flow: it fades while its height closes, so what is below it slides
+ * up instead of jumping; at Fade only it just fades).
+ */
+export type MotionKind = "drop" | "pop" | "rise" | "fade" | "collapse";
 
 /**
  * The level now: calm is Off, the visitor's Fade only is fade, and the device's own reduce-motion setting also
@@ -49,7 +53,11 @@ const MOVE: Record<MotionKind, gsap.TweenVars> = {
   pop: { scale: 0.95, x: -8 }, // the origin is set by the menu, beside its button
   rise: { y: 10 },
   fade: {},
+  collapse: {},
 };
+
+/** The box that a collapse closes: height, padding and margin together, so nothing is left behind. */
+const CLOSED = { height: 0, paddingTop: 0, paddingBottom: 0, marginTop: 0, marginBottom: 0, overflow: "hidden" } as const;
 
 export const ENTER_S = 0.18;
 export const LEAVE_S = 0.15;
@@ -64,6 +72,11 @@ export function enter(el: HTMLElement, kind: MotionKind): void {
   if (!g || level === "off") {
     g?.killTweensOf(el);
     g?.set(el, { clearProps: "all" });
+    return;
+  }
+  if (kind === "collapse" && level === "full") {
+    // from() takes the real height, padding and margin as where it ends, so any size works.
+    g.from(el, { opacity: 0, ...CLOSED, duration: ENTER_S, ease: "power2.out", clearProps: "opacity,height,padding,margin,overflow", overwrite: true });
     return;
   }
   const from = level === "full" ? { opacity: 0, ...MOVE[kind] } : { opacity: 0 };
@@ -90,7 +103,7 @@ export function leave(el: HTMLElement, kind: MotionKind, done: () => void): () =
     done();
   };
   const timer = setTimeout(finish, LEAVE_LIMIT_MS);
-  const to = level === "full" ? { opacity: 0, ...MOVE[kind] } : { opacity: 0 };
+  const to = level === "full" ? { opacity: 0, ...(kind === "collapse" ? CLOSED : MOVE[kind]) } : { opacity: 0 };
   g.to(el, { ...to, duration: LEAVE_S, ease: "power2.in", overwrite: true, onComplete: finish });
   return () => {
     finished = true;
