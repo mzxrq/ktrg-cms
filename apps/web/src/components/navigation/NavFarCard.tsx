@@ -43,8 +43,9 @@ export function NavFarCard() {
       <button type="button" onClick={() => dialog.current?.showModal()} className={buttonStyle("primary", "md", "flex w-full")}>
         {t`行き方を見る`}
       </button>
-      <dialog ref={dialog} aria-labelledby="nav-far-title" className="m-auto max-h-[85dvh] w-[calc(100%-2rem)] max-w-sm overflow-y-auto rounded-lg bg-paper p-5 text-ink backdrop:bg-black/60">
-        <div className="flex items-center justify-between gap-2">
+      {/* Rule 1 (docs/navigation-v2-plan.md): the title and the buttons stay put; only the ways to get there scroll. */}
+      <dialog ref={dialog} aria-labelledby="nav-far-title" className="m-auto max-h-[85dvh] w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-lg bg-paper text-ink backdrop:bg-black/60 open:flex">
+        <div className="flex shrink-0 items-center justify-between gap-2 px-5 pt-5">
           <h2 id="nav-far-title" className="text-2xl font-bold">
             {t`行き方`}
           </h2>
@@ -52,7 +53,7 @@ export function NavFarCard() {
             <CloseIcon />
           </button>
         </div>
-        <div className="mt-3 flex flex-col gap-4">
+        <div className="mt-3 flex min-h-0 flex-col gap-4 overflow-y-auto px-5 pb-1">
           {points.length > 0 ? (
             <section className="flex flex-col gap-2">
               <h3 className="text-lg font-bold">{t`電車・バスで行く`}</h3>
@@ -101,6 +102,8 @@ export function NavFarCard() {
           ) : (
             <p className="text-base leading-snug text-muted">{t`この区間の行き方は、まだ登録されていません。`}</p>
           )}
+        </div>
+        <div data-nav-footer className="flex shrink-0 flex-col gap-2 border-t border-line px-5 pb-5 pt-4">
           {offer ? (
             <section aria-labelledby="nav-far-signup" className="flex flex-col gap-2 rounded-lg bg-surface p-3">
               <h3 id="nav-far-signup" className="text-lg font-bold">

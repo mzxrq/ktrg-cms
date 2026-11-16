@@ -783,7 +783,7 @@ msgstr "Ctrlキーを押しながら地図を動かします"
 msgid "Google マップで開く"
 msgstr "Google マップで開く"
 
-#: src/components/navigation/NavFarCard.tsx:64
+#: src/components/navigation/NavFarCard.tsx:65
 msgid "Googleマップ"
 msgstr "Googleマップ"
 
@@ -892,7 +892,7 @@ msgstr "Webサイト"
 msgid "WikipediaやWikimedia Commonsから探す"
 msgstr "WikipediaやWikimedia Commonsから探す"
 
-#: src/components/navigation/NavFarCard.tsx:65
+#: src/components/navigation/NavFarCard.tsx:66
 msgid "Yahoo!マップ"
 msgstr "Yahoo!マップ"
 
@@ -1004,7 +1004,7 @@ msgstr "あとからでも、「メニュー」の「見やすさの設定」で
 
 #: src/components/InstallNudge.tsx:95
 #: src/components/InstallNudge.tsx:96
-#: src/components/navigation/NavPrompts.tsx:27
+#: src/components/navigation/NavPrompts.tsx:29
 msgid "あとで"
 msgstr "あとで"
 
@@ -1190,7 +1190,7 @@ msgstr "いまは「コースでつくる」です。"
 msgid "いまは「経由地でつくる」です。"
 msgstr "いまは「経由地でつくる」です。"
 
-#: src/components/navigation/NavTargetPicker.tsx:64
+#: src/components/navigation/NavTargetPicker.tsx:65
 msgid "いま向かっている場所"
 msgstr "いま向かっている場所"
 
@@ -1836,7 +1836,7 @@ msgstr "この区間のナビに切り替える"
 msgid "この区間の移動"
 msgstr "この区間の移動"
 
-#: src/components/navigation/NavFarCard.tsx:102
+#: src/components/navigation/NavFarCard.tsx:103
 msgid "この区間の行き方は、まだ登録されていません。"
 msgstr "この区間の行き方は、まだ登録されていません。"
 
@@ -2685,14 +2685,14 @@ msgstr "トイレ・休憩"
 msgid "トイレやお店などを、地図を開いたときから表示します。"
 msgstr "トイレやお店などを、地図を開いたときから表示します。"
 
-#: src/components/navigation/NavTargetPicker.tsx:50
+#: src/components/navigation/NavTargetPicker.tsx:51
 msgid "どこへ向かいますか？"
 msgstr "どこへ向かいますか？"
 
-#: src/components/navigation/NavFarCard.tsx:51
-#: src/components/navigation/NavFarCard.tsx:123
+#: src/components/navigation/NavFarCard.tsx:52
+#: src/components/navigation/NavFarCard.tsx:126
 #: src/components/navigation/NavigationHud.tsx:279
-#: src/components/navigation/NavTargetPicker.tsx:78
+#: src/components/navigation/NavTargetPicker.tsx:79
 #: src/components/StampProgressPopup.tsx:61
 msgid "とじる"
 msgstr "とじる"
@@ -2755,7 +2755,7 @@ msgstr "ナビにもどる"
 msgid "ナビの操作"
 msgstr "ナビの操作"
 
-#: src/components/navigation/NavPrompts.tsx:72
+#: src/components/navigation/NavPrompts.tsx:77
 msgid "ナビをつづける"
 msgstr "ナビをつづける"
 
@@ -2771,13 +2771,13 @@ msgstr "ナビをはじめる"
 msgid "ナビを準備しています…"
 msgstr "ナビを準備しています…"
 
-#: src/components/navigation/NavPrompts.tsx:65
+#: src/components/navigation/NavPrompts.tsx:70
 msgid "ナビを終えますか？"
 msgstr "ナビを終えますか？"
 
 #: src/components/navigation/NavigationHud.tsx:450
 #: src/components/navigation/NavigationHud.tsx:476
-#: src/components/navigation/NavPrompts.tsx:75
+#: src/components/navigation/NavPrompts.tsx:80
 msgid "ナビを終える"
 msgstr "ナビを終える"
 
@@ -3568,7 +3568,7 @@ msgstr "もどりの経由地を別に作る必要はありません。利用者
 #: src/app/(admin)/admin/routes/[id]/page.tsx:37
 #: src/app/(admin)/admin/routes/new/page.tsx:23
 #: src/components/ConfirmDialog.tsx:76
-#: src/components/navigation/NavPrompts.tsx:118
+#: src/components/navigation/NavPrompts.tsx:126
 #: src/components/SiteHeader.tsx:175
 msgid "もどる"
 msgstr "もどる"
@@ -3761,7 +3761,7 @@ msgstr "リンク（任意）"
 msgid "リンクで追加"
 msgstr "リンクで追加"
 
-#: src/components/navigation/NavFarCard.tsx:99
+#: src/components/navigation/NavFarCard.tsx:100
 msgid "リンクは別のサービスを開きます。渡すのは駅の場所だけで、あなたの位置は渡しません。"
 msgstr "リンクは別のサービスを開きます。渡すのは駅の場所だけで、あなたの位置は渡しません。"
 
@@ -3847,7 +3847,7 @@ msgstr "ログインの方法"
 msgid "わかりました"
 msgstr "わかりました"
 
-#: src/components/navigation/NavPrompts.tsx:111
+#: src/components/navigation/NavPrompts.tsx:117
 msgid "を通りすぎました"
 msgstr "を通りすぎました"
 
@@ -5967,7 +5967,7 @@ msgstr "折り返し"
 msgid "押した"
 msgstr "押した"
 
-#: src/components/navigation/NavPrompts.tsx:67
+#: src/components/navigation/NavPrompts.tsx:72
 msgid "押したスタンプは消えません。"
 msgstr "押したスタンプは消えません。"
 
@@ -6167,7 +6167,7 @@ msgstr "新しく作るには、名前（日本語）が必要です"
 msgid "新規登録"
 msgstr "新規登録"
 
-#: src/components/navigation/NavFarCard.tsx:111
+#: src/components/navigation/NavFarCard.tsx:114
 msgid "新規登録する"
 msgstr "新規登録する"
 
@@ -6232,7 +6232,7 @@ msgstr "日本遺産 葛城修験ストーリー"
 msgid "日本遺産「葛城修験」PR動画（180秒）"
 msgstr "日本遺産「葛城修験」PR動画（180秒）"
 
-#: src/components/navigation/NavFarCard.tsx:66
+#: src/components/navigation/NavFarCard.tsx:67
 msgid "時刻表"
 msgstr "時刻表"
 
@@ -6476,7 +6476,7 @@ msgstr "次の写真"
 msgid "次の場所"
 msgstr "次の場所"
 
-#: src/components/navigation/NavPrompts.tsx:113
+#: src/components/navigation/NavPrompts.tsx:119
 msgid "次の場所へ進みますか？"
 msgstr "次の場所へ進みますか？"
 
@@ -6494,7 +6494,7 @@ msgstr "次の記事"
 msgid "次へ"
 msgstr "次へ"
 
-#: src/components/navigation/NavPrompts.tsx:115
+#: src/components/navigation/NavPrompts.tsx:123
 msgid "次へ進む（{left}秒）"
 msgstr "次へ進む（{left}秒）"
 
@@ -6525,7 +6525,7 @@ msgstr "歩いて、スタンプを集めよう。"
 msgid "歩いて約{0}分"
 msgstr "歩いて約{0}分"
 
-#: src/components/navigation/NavFarCard.tsx:119
+#: src/components/navigation/NavFarCard.tsx:122
 msgid "歩いて行く道を見る"
 msgstr "歩いて行く道を見る"
 
@@ -6555,7 +6555,7 @@ msgstr "歩く時間、距離、登りと下りの高さから、「コース定
 msgid "歩く道"
 msgstr "歩く道"
 
-#: src/components/navigation/NavFarCard.tsx:119
+#: src/components/navigation/NavFarCard.tsx:122
 msgid "歩く道を調べています…"
 msgstr "歩く道を調べています…"
 
@@ -6847,7 +6847,7 @@ msgstr "登録ありがとうございます"
 msgid "登録した人"
 msgstr "登録した人"
 
-#: src/components/navigation/NavFarCard.tsx:107
+#: src/components/navigation/NavFarCard.tsx:110
 msgid "登録しておきませんか"
 msgstr "登録しておきませんか"
 
@@ -6859,11 +6859,11 @@ msgstr "登録しなくても、スタンプは押せます。"
 msgid "登録する"
 msgstr "登録する"
 
-#: src/components/navigation/NavFarCard.tsx:109
+#: src/components/navigation/NavFarCard.tsx:112
 msgid "登録すると、スタンプや歩いた記録がアカウントに残り、ほかの端末でも見られます。登録しなくても、このまま道を見られます。"
 msgstr "登録すると、スタンプや歩いた記録がアカウントに残り、ほかの端末でも見られます。登録しなくても、このまま道を見られます。"
 
-#: src/components/navigation/NavFarCard.tsx:114
+#: src/components/navigation/NavFarCard.tsx:117
 msgid "登録せずに道を見る"
 msgstr "登録せずに道を見る"
 
@@ -6939,7 +6939,7 @@ msgstr "直すところは、ありません。"
 msgid "直す場所を見る"
 msgstr "直す場所を見る"
 
-#: src/components/navigation/NavPrompts.tsx:39
+#: src/components/navigation/NavPrompts.tsx:42
 msgid "着きました"
 msgstr "着きました"
 
@@ -7598,7 +7598,7 @@ msgstr "行き"
 msgid "行き先の近くでボタンを押すと、スタンプがたまります。位置は、押した一回だけ調べ、保存しません。"
 msgstr "行き先の近くでボタンを押すと、スタンプがたまります。位置は、押した一回だけ調べ、保存しません。"
 
-#: src/components/navigation/NavFarCard.tsx:49
+#: src/components/navigation/NavFarCard.tsx:50
 #: src/components/RallyBook.tsx:173
 msgid "行き方"
 msgstr "行き方"
@@ -7950,7 +7950,7 @@ msgstr "辞書の読み（確認待ち）"
 msgid "辞書の読みが{n}件ふえました。確認してください。"
 msgstr "辞書の読みが{n}件ふえました。確認してください。"
 
-#: src/components/navigation/NavTargetPicker.tsx:74
+#: src/components/navigation/NavTargetPicker.tsx:75
 msgid "近い順にもどす"
 msgstr "近い順にもどす"
 
@@ -8375,7 +8375,7 @@ msgstr "閉店・撤去"
 #: src/app/(public)/map/page.tsx:199
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
-#: src/components/navigation/NavTargetPicker.tsx:64
+#: src/components/navigation/NavTargetPicker.tsx:65
 #: src/components/StatusWord.tsx:13
 msgid "閉鎖中"
 msgstr "閉鎖中"
@@ -8440,7 +8440,7 @@ msgstr "電話番号"
 msgid "電車"
 msgstr "電車"
 
-#: src/components/navigation/NavFarCard.tsx:58
+#: src/components/navigation/NavFarCard.tsx:59
 msgid "電車・バスで行く"
 msgstr "電車・バスで行く"
 

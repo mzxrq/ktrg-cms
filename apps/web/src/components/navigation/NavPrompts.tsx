@@ -10,6 +10,8 @@ import type { MapPhoto } from "@/lib/map-screen";
 import { useEnter } from "@/lib/motion";
 
 // The two moments a navigation stops to ask something, as cards in the middle of the screen: at a stamp place, and just past one.
+// Rule 1 of docs/navigation-v2-plan.md: the buttons sit in a footer that is always on screen (data-nav-footer); only the middle
+// may scroll, and on a short screen the photo gives way first (nav-dialogs.test.ts checks this).
 
 const CARD = "w-full max-w-sm rounded-2xl bg-paper p-5 text-ink shadow-2xl";
 const COVER = "fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4";
@@ -29,18 +31,21 @@ export function ArrivalPrompt({ name, nameLang, photo, onLater, children }: { na
   );
   return (
     <div ref={coverRef} className={COVER}>
-      <section ref={cardRef} role="dialog" aria-modal="true" aria-labelledby="nav-arrived" className="max-h-full w-full max-w-sm overflow-y-auto rounded-2xl bg-paper text-ink shadow-2xl">
-        {/* With no photo the night ground with the 七宝 pattern, as on a course's banner, so every arrival looks the same. */}
-        <div className="pattern-shippo pattern-on-night relative aspect-[16/9] bg-night">
+      <section ref={cardRef} role="dialog" aria-modal="true" aria-labelledby="nav-arrived" className="flex max-h-full w-full max-w-sm flex-col overflow-hidden rounded-2xl bg-paper text-ink shadow-2xl">
+        {/* With no photo the night ground with the 七宝 pattern, as on a course's banner, so every arrival looks the same.
+            At most 30 % of the screen's height, and gone on a short screen (a phone on its side): the buttons never give way. */}
+        <div className="pattern-shippo pattern-on-night relative aspect-[16/9] max-h-[30dvh] shrink-0 bg-night [@media(max-height:34rem)]:hidden">
           {photo ? <Image src={photo.src} alt={photo.alt} fill sizes="24rem" className="object-cover" unoptimized={photo.src.startsWith("https://")} /> : null}
         </div>
-        <div className="flex flex-col gap-1 p-5">
-          <CreditCaption credit={photo?.credit} className="mb-1" />
+        <div className="flex min-h-0 flex-col gap-1 overflow-y-auto px-5 pt-5">
+          <CreditCaption credit={photo?.credit} className="mb-1 [@media(max-height:34rem)]:hidden" />
           <p className="text-lg font-bold text-accent">{t`着きました`}</p>
           <h2 id="nav-arrived" lang={nameLang} className="font-serif text-2xl font-bold leading-snug">
             {name}
           </h2>
-          <div className="mt-2">{children(later)}</div>
+        </div>
+        <div data-nav-footer className="shrink-0 px-5 pb-5 pt-3">
+          {children(later)}
         </div>
       </section>
     </div>
@@ -55,8 +60,8 @@ export function EndPrompt({ onEnd, onKeep }: { onEnd: () => void; onKeep: () => 
     dialog.current?.showModal();
   }, []);
   return (
-    <dialog ref={dialog} aria-labelledby="nav-end" onClose={onKeep} className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-2xl bg-paper p-5 text-ink shadow-2xl backdrop:bg-black/50">
-      <div className="flex items-start gap-3">
+    <dialog ref={dialog} aria-labelledby="nav-end" onClose={onKeep} className="m-auto max-h-[85dvh] w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-2xl bg-paper p-5 text-ink shadow-2xl backdrop:bg-black/50 open:flex">
+      <div className="flex min-h-0 items-start gap-3 overflow-y-auto">
         <span className="mt-0.5 shrink-0 text-caution">
           <WarningIcon />
         </span>
@@ -67,7 +72,7 @@ export function EndPrompt({ onEnd, onKeep }: { onEnd: () => void; onKeep: () => 
           <p className="mt-2 text-lg leading-snug">{t`押したスタンプは消えません。`}</p>
         </div>
       </div>
-      <div className="mt-4 flex flex-col gap-2">
+      <div data-nav-footer className="mt-4 flex shrink-0 flex-col gap-2">
         <button type="button" autoFocus onClick={onKeep} className={buttonStyle("primary", "md", "flex w-full")}>
           {t`ナビをつづける`}
         </button>
@@ -105,18 +110,22 @@ export function PassedPrompt({ name, nameLang, onGoOn, onGoBack }: { name: strin
   }, []);
   return (
     <div ref={coverRef} className={COVER}>
-      <section ref={cardRef} role="alertdialog" aria-modal="true" aria-labelledby="nav-passed" className={`${CARD} flex flex-col gap-3`}>
-        <h2 id="nav-passed" className="text-xl font-bold leading-snug">
-          <span lang={nameLang}>{name}</span>
-          {t`を通りすぎました`}
-        </h2>
-        <p className="text-lg leading-snug">{t`次の場所へ進みますか？`}</p>
+      <section ref={cardRef} role="alertdialog" aria-modal="true" aria-labelledby="nav-passed" className={`${CARD} flex max-h-full flex-col gap-3 overflow-hidden`}>
+        <div className="flex min-h-0 flex-col gap-3 overflow-y-auto">
+          <h2 id="nav-passed" className="text-xl font-bold leading-snug">
+            <span lang={nameLang}>{name}</span>
+            {t`を通りすぎました`}
+          </h2>
+          <p className="text-lg leading-snug">{t`次の場所へ進みますか？`}</p>
+        </div>
+        <div data-nav-footer className="flex shrink-0 flex-col gap-3">
         <button type="button" onClick={onGoOn} className={buttonStyle("action", "lg", "flex w-full tabular-nums")}>
           {t`次へ進む（${left}秒）`}
         </button>
         <button type="button" onClick={onGoBack} className={buttonStyle("secondary", "md", "flex w-full")}>
           {t`もどる`}
         </button>
+        </div>
       </section>
     </div>
   );
