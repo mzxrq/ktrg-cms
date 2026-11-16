@@ -19,6 +19,8 @@ import { hasHardKanji } from "./kyoiku-kanji";
 export const FURIGANA_FIELDS = {
   word: t.String({ minLength: 1, maxLength: 40 }),
   reading: t.String({ minLength: 1, maxLength: 120 }),
+  // Shown to everyone reading Japanese, not only to those who turned furigana on.
+  always: t.Optional(t.Boolean()),
 };
 
 const furiganaFields = t.Object(FURIGANA_FIELDS);
@@ -31,7 +33,7 @@ export type FuriganaRow = ListRow & FuriganaFields & { pending?: boolean };
  */
 export interface FuriganaStore extends ListStore<FuriganaRow, FuriganaFields> {
   /** Every word a person typed or approved, with its marked-up reading. */
-  all(): Promise<{ word: string; reading: string }[]>;
+  all(): Promise<{ word: string; reading: string; always: boolean }[]>;
   findByWord(word: string): Promise<FuriganaRow | null>;
   /** The dictionary's suggestions still waiting, in the order of the words. */
   pending(): Promise<FuriganaRow[]>;
@@ -193,6 +195,9 @@ export function createFuriganaService(deps: {
       return deps.store.setSuggestions(actor, suggestions);
     },
     pending: () => deps.store.pending(),
+    /** The words drawn for every visitor reading Japanese, whether or not they turned furigana on. */
+    always: async () => (await deps.store.all()).filter((w) => w.always).map((w) => w.word),
+    allWords: () => deps.store.all(),
     approve: (actor: string, ids: string[]) => deps.store.approve(actor, ids),
     unread: async () => (await deps.unread?.()) ?? [],
     /**
@@ -235,7 +240,7 @@ export function createMemoryFuriganaStore(audit: AuditWriter, opts: { now?: () =
       return r;
     },
     async all() {
-      return mine().map(({ word, reading }) => ({ word, reading }));
+      return mine().map(({ word, reading, always }) => ({ word, reading, always: always === true }));
     },
     async pending() {
       return [...rows.values()].filter((r) => r.pending).sort((a, b) => a.word.localeCompare(b.word, "ja"));
@@ -309,6 +314,16 @@ export const furiganaList: ListDef<"furigana", typeof FURIGANA_FIELDS, FuriganaR
         required: true,
         inList: { text: { ja: "読み：{value}", en: "Reading: {value}" } },
       },
+      {
+        name: "always",
+        kind: "boolean",
+        label: { ja: "いつも表示する", en: "Always show" },
+        hint: {
+          ja: "とても難しい字や四字熟語に。ふりがなの設定にかかわらず、日本語のページを読むすべての人に表示します。",
+          en: "For very hard kanji or four-character idioms: shown to everyone reading Japanese, whatever their furigana setting.",
+        },
+        inList: { yes: { ja: "いつも表示", en: "Always shown" } },
+      },
     ],
   },
 };
@@ -326,7 +341,7 @@ export function adminFuriganaRoutes(getServices: () => FuriganaServices, opts: R
       "/overview",
       async () => {
         const [pending, unread] = await Promise.all([svc().pending(), svc().unread()]);
-        return { ok: true as const, pending: pending.map(({ id, word, reading }) => ({ id, word, reading })), unread };
+        return { ok: true as const, pending: pending.map(({ id, word, reading, updatedAt }) => ({ id, word, reading, updatedAt: updatedAt.toISOString() })), unread };
       },
       { auth: "furigana.manage", detail: { summary: "Dictionary suggestions waiting, and names that still need a reading" } },
     )
@@ -346,10 +361,16 @@ export function adminFuriganaRoutes(getServices: () => FuriganaServices, opts: R
 export function publicFuriganaRoutes(getFurigana: () => FuriganaService) {
   return new Elysia({ detail: { tags: ["Content"] } }).get(
     "/furigana/words",
-    async ({ set }) => {
+    async ({ set, query }) => {
       publicCache(set, 300);
-      return { ok: true as const, words: await getFurigana().words() };
+      // A visitor with furigana off needs only the few words marked always: not the whole list on every page.
+      if (query.only === "always") {
+        const words = Object.fromEntries((await getFurigana().allWords()).filter((w) => w.always).map((w) => [w.word, w.reading]));
+        return { ok: true as const, words, always: Object.keys(words) };
+      }
+      const [words, always] = await Promise.all([getFurigana().words(), getFurigana().always()]);
+      return { ok: true as const, words, always };
     },
-    { detail: { summary: "The words furigana is drawn over, with their readings" } },
+    { query: t.Object({ only: t.Optional(t.Literal("always")) }), detail: { summary: "The words furigana is drawn over, with their readings (`only=always`: just the words shown to everyone)" } },
   );
 }

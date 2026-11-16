@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { createMemoryAuditWriter } from "../audit/audit-log";
 import { createMemoryContentStore } from "../content/content-memory-store";
-import { alignReading, createFuriganaService, createMemoryFuriganaStore, nameReadings, siteTexts, unreadNames } from "./furigana-words";
+import { alignReading, createFuriganaService, createMemoryFuriganaStore, nameReadings, publicFuriganaRoutes, siteTexts, unreadNames } from "./furigana-words";
 import type { Tokenizer } from "./dictionary";
 
 describe("alignReading", () => {
@@ -30,6 +30,24 @@ describe("the furigana list", () => {
     expect((await s.create(admin, { word: "葛城山", reading: "かつらぎさん" })).ok).toBe(true);
     expect((await s.create(admin, { word: "取り扱い", reading: "取{と}り扱{あつか}い" })).ok).toBe(true);
     expect(await s.words()).toEqual({ 葛城山: "葛城山{かつらぎさん}", 取り扱い: "取{と}り扱{あつか}い" });
+  });
+
+  test("a word marked always is listed for every visitor; the rest only for those who turned furigana on", async () => {
+    const s = setup();
+    await s.create(admin, { word: "臥薪嘗胆", reading: "がしんしょうたん", always: true });
+    await s.create(admin, { word: "葛城山", reading: "かつらぎさん" });
+    expect(await s.always()).toEqual(["臥薪嘗胆"]);
+    expect(Object.keys(await s.words()).sort()).toEqual(["臥薪嘗胆", "葛城山"].sort());
+  });
+
+  test("a visitor with furigana off is sent only the words marked always", async () => {
+    const s = setup();
+    await s.create(admin, { word: "臥薪嘗胆", reading: "がしんしょうたん", always: true });
+    await s.create(admin, { word: "葛城山", reading: "かつらぎさん" });
+    const app = publicFuriganaRoutes(() => s);
+    const get = async (q: string) => (await app.handle(new Request(`http://localhost/furigana/words${q}`))).json();
+    expect(await get("?only=always")).toEqual({ ok: true, words: { 臥薪嘗胆: "臥薪嘗胆{がしんしょうたん}" }, always: ["臥薪嘗胆"] });
+    expect(Object.keys((await get("")).words).sort()).toEqual(["臥薪嘗胆", "葛城山"].sort());
   });
 
   test("a word may be listed once, must hold a kanji, and its reading must fit it", async () => {

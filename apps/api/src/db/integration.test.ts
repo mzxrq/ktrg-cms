@@ -2013,7 +2013,7 @@ describe.skipIf(!url)("list and report stores on real PostgreSQL", () => {
       expect(await store.setSuggestions(actor, [{ word: "葛城", reading: "x" }, { word: "修験", reading: "しゅげん" }, { word: "行者", reading: "ぎょうじゃ" }])).toEqual({ added: 2, removed: 0 });
       const waiting = await store.pending();
       expect(waiting.map((w) => w.word).sort()).toEqual(["修験", "行者"]);
-      expect(await store.all()).toEqual([{ word: "葛城", reading: "かつらぎ" }]); // visitors get none of the waiting ones
+      expect(await store.all()).toEqual([{ word: "葛城", reading: "かつらぎ", always: false }]); // visitors get none of the waiting ones
       expect((await store.list(null, 10)).map((r) => r.word)).toEqual(["葛城"]);
       expect(await store.approve(actor, [waiting[0]!.id])).toBe(1);
       expect(await store.approve(actor, [waiting[0]!.id])).toBe(0); // already approved

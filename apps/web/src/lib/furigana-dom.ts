@@ -31,8 +31,11 @@ function build(parts: Part[]): HTMLSpanElement {
   return span;
 }
 
-/** Starts furigana on the page; returns the function that stops it and restores the text. */
-export function startFurigana(root: HTMLElement = document.body): () => void {
+/**
+ * Starts furigana on the page; returns the function that stops it and restores the text. `alwaysOnly`: the visitor did not
+ * turn furigana on, so only the words the admin marked いつも表示する are drawn (none: nothing is done).
+ */
+export function startFurigana(root: HTMLElement = document.body, alwaysOnly = false): () => void {
   const done = new Map<Text, { original: string; span: HTMLSpanElement }>();
   const drawn = new Map<string, Part[]>(); // a text and how it is cut, kept: the page repeats its texts a lot
   let cut: ((text: string) => Part[]) | null = null;
@@ -91,9 +94,11 @@ export function startFurigana(root: HTMLElement = document.body): () => void {
   const begin = () => {
     window.setTimeout(async () => {
       try {
-        const body = (await (await fetch("/api/v1/furigana/words")).json()) as { ok?: boolean; words?: Record<string, string> };
+        const body = (await (await fetch(`/api/v1/furigana/words${alwaysOnly ? "?only=always" : ""}`)).json()) as { ok?: boolean; words?: Record<string, string>; always?: string[] };
         if (!body.ok || !body.words) return;
-        cut = wordMatcher(body.words);
+        const words = alwaysOnly ? Object.fromEntries((body.always ?? []).flatMap((w) => (body.words![w] ? [[w, body.words![w]]] : []))) : body.words;
+        if (Object.keys(words).length === 0) return observer.disconnect();
+        cut = wordMatcher(words);
         run();
       } catch {
         // offline: the page simply stays without furigana

@@ -10,8 +10,11 @@ import { errorKeyFromApi, isServerCode, type ErrorKey } from "@/lib/api-error";
 import { showToast } from "@/lib/admin/toast";
 import { parseRuby } from "@/lib/ruby";
 import { readJson } from "@/lib/read-json";
+import { listRequest } from "@/lib/admin/lists/list-client";
+import { MARKUP_EXAMPLE, plainReading } from "./FuriganaWords";
+import { inputClass } from "./fields";
 
-type Suggestion = { id: string; word: string; reading: string };
+type Suggestion = { id: string; word: string; reading: string; updatedAt: string };
 type Unread = { kind: "route" | "spot" | "place"; id: string; routeId?: string; nameJa: string };
 type Answer<T> = { ok: true; data: T } | { ok: false; key: ErrorKey };
 
@@ -33,7 +36,7 @@ async function call<T>(method: "GET" | "POST", path: string, body?: unknown): Pr
 }
 
 /** The word with its reading over it, as visitors would see it. */
-function Preview({ word, reading }: { word: string; reading: string }) {
+export function RubyPreview({ word, reading }: { word: string; reading: string }) {
   const parts = parseRuby(reading);
   if (!parts) return <span className="text-2xl">{word}</span>;
   return (
@@ -66,6 +69,8 @@ export function FuriganaOverview() {
   const [picked, setPicked] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<ErrorKey | null>(null);
+  // The suggestion being corrected in place, and the reading typed for it.
+  const [fixing, setFixing] = useState<{ id: string; reading: string } | null>(null);
 
   const load = useCallback(async () => {
     const r = await call<{ pending: Suggestion[]; unread: Unread[] }>("GET", "overview");
@@ -102,6 +107,19 @@ export function FuriganaOverview() {
     const n = r.data.added;
     showToast({ kind: "ok", text: n > 0 ? t`辞書の読みが${n}件ふえました。確認してください。` : t`新しい言葉はありませんでした。` });
     await load();
+  }
+
+  /** A corrected reading: saved as a person's word, which approves it (the server lines plain kana up with the kanji). */
+  async function fix(p: Suggestion, reading: string) {
+    if (busy || !reading.trim()) return;
+    setBusy(true);
+    const r = await listRequest("PATCH", `furigana/${p.id}`, { updatedAt: p.updatedAt, word: p.word, reading: reading.trim() });
+    setBusy(false);
+    if (!r.ok) return showToast({ kind: "error", text: r.key === "validation_failed" ? t`読みが言葉に合いません。ひらがなで入れるか、漢字ごとに「${MARKUP_EXAMPLE}」と入れてください。` : messages[r.key] });
+    setFixing(null);
+    showToast({ kind: "ok", text: t`「${p.word}」の読みを直して承認しました。` });
+    await load();
+    router.refresh();
   }
 
   const toggle = (id: string) => setPicked((now) => (now.has(id) ? new Set([...now].filter((x) => x !== id)) : new Set([...now, id])));
@@ -167,14 +185,29 @@ export function FuriganaOverview() {
                 <li key={p.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 py-2">
                   <label className="tap-target flex min-w-0 flex-1 items-center gap-3">
                     <input type="checkbox" className="size-5 shrink-0 accent-[var(--color-brand)]" checked={picked.has(p.id)} onChange={() => toggle(p.id)} />
-                    <Preview word={p.word} reading={p.reading} />
+                    <RubyPreview word={p.word} reading={p.reading} />
                   </label>
                   <button type="button" disabled={busy} onClick={() => void approve([p.id])} className={buttonStyle("secondary", "sm", "inline-flex")}>
                     {t`承認`}
                   </button>
-                  <Link href={`/admin/furigana/${p.id}`} className={buttonStyle("secondary", "sm", "inline-flex")}>
-                    {t`直す`}
-                  </Link>
+                  {fixing?.id === p.id ? (
+                    <form
+                      className="flex w-full gap-2 sm:w-auto"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        void fix(p, fixing.reading);
+                      }}
+                    >
+                      <input autoFocus value={fixing.reading} onChange={(e) => setFixing({ id: p.id, reading: e.target.value })} aria-label={t`「${p.word}」の読み`} className={inputClass} maxLength={120} />
+                      <button type="submit" disabled={busy} className={buttonStyle("action", "sm", "inline-flex shrink-0")}>
+                        {t`直して承認`}
+                      </button>
+                    </form>
+                  ) : (
+                    <button type="button" disabled={busy} onClick={() => setFixing({ id: p.id, reading: plainReading(p.reading) })} className={buttonStyle("secondary", "sm", "inline-flex")}>
+                      {t`直す`}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>

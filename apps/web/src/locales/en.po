@@ -326,7 +326,7 @@ msgstr "{minutes} min ({km} km)"
 msgid "{mode} {minutes}分"
 msgstr "{mode} {minutes} min"
 
-#: src/components/admin/FuriganaOverview.tsx:91
+#: src/components/admin/FuriganaOverview.tsx:96
 msgid "{n}件の読みを承認しました。訪れる人に表示されます。"
 msgstr "Approved {n} readings. Visitors will see them."
 
@@ -449,7 +449,7 @@ msgstr "Move {text} up"
 msgid "{text} を1つ後ろへ"
 msgstr "Move {text} down"
 
-#: src/app/(admin)/admin/[list]/page.tsx:17
+#: src/app/(admin)/admin/[list]/page.tsx:18
 msgid "{title}（管理）"
 msgstr "{title} (admin)"
 
@@ -462,7 +462,7 @@ msgid "{title}を直す（管理）"
 msgstr "Edit {title} (admin)"
 
 #: src/app/(admin)/admin/[list]/[id]/page.tsx:39
-#: src/app/(admin)/admin/[list]/page.tsx:63
+#: src/app/(admin)/admin/[list]/page.tsx:64
 msgid "{title}を読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "{title} could not be loaded. Please reload the page in a little while."
 
@@ -511,10 +511,32 @@ msgstr "You already have the stamp for \"{0}\"."
 msgid "「{0}」のスタンプを押しました！"
 msgstr "Stamped \"{0}\"!"
 
+#. placeholder {0}: row.word
+#: src/components/admin/FuriganaWords.tsx:64
+msgid "「{0}」のふりがなを削除しますか？"
+msgstr "Delete the furigana of “{0}”?"
+
+#. placeholder {0}: p.word
+#. placeholder {0}: row.word
+#: src/components/admin/FuriganaOverview.tsx:201
+#: src/components/admin/FuriganaWords.tsx:143
+msgid "「{0}」の読み"
+msgstr "Reading of “{0}”"
+
+#. placeholder {0}: p.word
+#: src/components/admin/FuriganaOverview.tsx:120
+msgid "「{0}」の読みを直して承認しました。"
+msgstr "Corrected and approved the reading of “{0}”."
+
 #. placeholder {0}: firstAlong.nameJa || t`1番目の経由地`
 #: src/components/admin/RouteEditor.tsx:785
 msgid "「{0}」をゴールにもする（出発した場所にもどる）"
 msgstr "Make “{0}” the goal too (the walk comes back to where it started)"
+
+#. placeholder {0}: row.word
+#: src/components/admin/FuriganaWords.tsx:60
+msgid "「{0}」を保存しました。"
+msgstr "Saved “{0}”."
 
 #. placeholder {0}: name(one)
 #: src/components/admin/AdminListTable.tsx:103
@@ -1040,6 +1062,14 @@ msgstr "Remove the last return line"
 #: src/components/admin/UserActions.tsx:82
 msgid "いつまで（空なら、解除するまで）"
 msgstr "Until (empty: until you lift it)"
+
+#: src/components/admin/FuriganaWords.tsx:152
+msgid "いつも表示"
+msgstr "Always shown"
+
+#: src/components/admin/FuriganaWords.tsx:106
+msgid "いつも表示する（とても難しい字や四字熟語に）"
+msgstr "Always show (for very hard kanji or four-character idioms)"
 
 #: src/app/offline/page.tsx:16
 msgid "いま、通信がつながっていません"
@@ -1837,6 +1867,10 @@ msgstr "This line does not match the order or positions of the waypoints, so it 
 msgid "この考え方は、長野県の「信州 山のグレーディング」を参考にしています。説明は、このサイト独自の言葉です。"
 msgstr "The idea follows the mountain grading used in Nagano Prefecture (信州 山のグレーディング). The explanations are in this site's own words."
 
+#: src/components/admin/FuriganaWords.tsx:79
+msgid "この言葉はもう一覧にあります。"
+msgstr "This word is already in the list."
+
 #: src/app/(public)/blog/[id]/page.tsx:167
 msgid "この記事の場所"
 msgstr "What this post is about"
@@ -1986,7 +2020,7 @@ msgstr "Settings that affect the whole site. What you change here shows on visit
 msgid "サイトの内容"
 msgstr "Site content"
 
-#: src/components/admin/FuriganaOverview.tsx:146
+#: src/components/admin/FuriganaOverview.tsx:164
 msgid "サイトの文章を辞書が読んで、読みを考えたものです。人が確かめて承認するまで、訪れる人には表示されません。同じ字でも読み方が変わる言葉は、文に合う読みか確かめてください。1時間ごとにも読み直します。"
 msgstr "Readings the dictionary worked out from the site's text. Visitors don't see them until a person checks and approves them. For a word that can be read more than one way, check the reading fits the sentence. The dictionary also reads the site again every hour."
 
@@ -2004,6 +2038,7 @@ msgstr "Searching…"
 #: src/components/admin/AdminListTable.tsx:196
 #: src/components/admin/AdminListTable.tsx:196
 #: src/components/admin/DuplicateFinder.tsx:54
+#: src/components/admin/FuriganaWords.tsx:120
 msgid "さがす"
 msgstr "Search"
 
@@ -2272,7 +2307,7 @@ msgstr "Unpublish all"
 msgid "すべての区間（線のない所）に"
 msgstr "For all legs without a line:"
 
-#: src/components/admin/FuriganaOverview.tsx:122
+#: src/components/admin/FuriganaOverview.tsx:140
 msgid "すべての名前に読みがあります。"
 msgstr "Every name has a reading."
 
@@ -2298,7 +2333,7 @@ msgid "すべて見る（{0}か所）"
 msgstr "See all ({0} places)"
 
 #: src/components/admin/CommentInbox.tsx:128
-#: src/components/admin/FuriganaOverview.tsx:159
+#: src/components/admin/FuriganaOverview.tsx:177
 #: src/components/admin/RallyMemberPicker.tsx:39
 msgid "すべて選ぶ"
 msgstr "Select all"
@@ -2343,7 +2378,7 @@ msgstr "Tiles"
 msgid "タグ"
 msgstr "Tags"
 
-#: src/app/(admin)/admin/[list]/page.tsx:44
+#: src/app/(admin)/admin/[list]/page.tsx:45
 msgid "タグを管理する"
 msgstr "Manage tags"
 
@@ -2916,7 +2951,7 @@ msgstr "All posts"
 msgid "ブログの記事の、書いた人のところに表示されます。"
 msgstr "Shown by the author's name on the blog posts you write."
 
-#: src/app/(admin)/admin/[list]/page.tsx:33
+#: src/app/(admin)/admin/[list]/page.tsx:34
 msgid "ブログへ戻る"
 msgstr "Back to the blog"
 
@@ -3001,7 +3036,7 @@ msgstr "Base map"
 #: src/app/(public)/sitemap/page.tsx:48
 #: src/app/(public)/sitemap/page.tsx:53
 #: src/app/(public)/sitemap/page.tsx:55
-#: src/app/(public)/story/page.tsx:40
+#: src/app/(public)/story/page.tsx:41
 #: src/components/admin/PageTextEditor.tsx:60
 #: src/components/pages/PageViews.tsx:88
 #: src/components/pages/PageViews.tsx:151
@@ -3154,6 +3189,10 @@ msgstr "Not saved yet."
 #: src/components/admin/PhotoLibrary.tsx:169
 msgid "まだ写真がありません。"
 msgstr "There are no photos yet."
+
+#: src/components/admin/FuriganaWords.tsx:125
+msgid "まだ言葉がありません。"
+msgstr "No words yet."
 
 #: src/components/navigation/NavigationHud.tsx:217
 msgid "まっすぐ"
@@ -3587,7 +3626,7 @@ msgstr "Turn this on once the pages it links to are ready. While it is off, it d
 #: src/app/(public)/routes/page.tsx:16
 #: src/app/(public)/sitemap/page.tsx:68
 #: src/components/admin/AdminNav.tsx:37
-#: src/components/admin/FuriganaOverview.tsx:109
+#: src/components/admin/FuriganaOverview.tsx:127
 #: src/components/BookmarkList.tsx:55
 #: src/components/places/DirectoryView.tsx:81
 #: src/components/TabBar.tsx:88
@@ -4106,6 +4145,10 @@ msgstr "Create"
 msgid "使える写真は見つかりませんでした。"
 msgstr "No usable photos were found."
 
+#: src/components/admin/FuriganaWords.tsx:98
+msgid "例：がしんしょうたん"
+msgstr "e.g. がしんしょうたん"
+
 #: src/components/admin/PhotoListEditor.tsx:84
 msgid "例：山田太郎, CC BY-SA 4.0"
 msgstr "e.g. Jane Doe, CC BY-SA 4.0"
@@ -4114,7 +4157,12 @@ msgstr "e.g. Jane Doe, CC BY-SA 4.0"
 msgid "例：祝日は休み／ラストオーダーは閉店30分前"
 msgstr "e.g. Closed on public holidays / last order 30 minutes before closing"
 
+#: src/components/admin/FuriganaWords.tsx:94
+msgid "例：臥薪嘗胆"
+msgstr "e.g. 臥薪嘗胆"
+
 #: src/components/admin/AdminItemForm.tsx:297
+#: src/components/admin/FuriganaWords.tsx:146
 #: src/components/admin/PageTextEditor.tsx:99
 msgid "保存"
 msgstr "Save"
@@ -4790,6 +4838,7 @@ msgstr "Restricted"
 #: src/components/admin/CommentInbox.tsx:184
 #: src/components/admin/DuplicateFinder.tsx:86
 #: src/components/admin/fields.tsx:157
+#: src/components/admin/FuriganaWords.tsx:155
 #: src/components/admin/HoursInput.tsx:36
 #: src/components/admin/PlaceTable.tsx:141
 #: src/components/admin/PlaceTable.tsx:206
@@ -4822,6 +4871,7 @@ msgstr "Delete this?"
 #: src/components/admin/AdminListTable.tsx:104
 #: src/components/admin/CommentInbox.tsx:82
 #: src/components/admin/DuplicateFinder.tsx:32
+#: src/components/admin/FuriganaWords.tsx:64
 #: src/components/admin/RallyEditor.tsx:111
 #: src/components/admin/RouteEditor.tsx:436
 #: src/components/admin/WaypointEditor.tsx:90
@@ -4888,6 +4938,10 @@ msgstr "Earlier"
 #: src/app/(public)/blog/[id]/page.tsx:214
 msgid "前後の記事"
 msgstr "Earlier and later posts"
+
+#: src/components/admin/FuriganaWords.tsx:101
+msgid "加える"
+msgstr "Add"
 
 #: src/components/MotionSelect.tsx:18
 msgid "動かさない"
@@ -5461,7 +5515,7 @@ msgstr "Basics"
 
 #: src/components/admin/BlockEditor.tsx:130
 #: src/components/admin/BlockEditor.tsx:366
-#: src/components/admin/FuriganaOverview.tsx:109
+#: src/components/admin/FuriganaOverview.tsx:127
 msgid "場所"
 msgstr "Place"
 
@@ -5652,7 +5706,7 @@ msgstr "Show side trips"
 msgid "寺社"
 msgstr "Temple or shrine"
 
-#: src/components/admin/FuriganaOverview.tsx:120
+#: src/components/admin/FuriganaOverview.tsx:138
 msgid "寺社・経塚・行場などの名前は、辞書には任せず人が読みを入れます。それぞれの編集画面の「名前の読み」で入れてください。"
 msgstr "Names of temples, shrines, sutra mounds and practice places are read by a person, not the dictionary. Type them in 名前の読み on each editing screen."
 
@@ -5848,7 +5902,7 @@ msgstr "Only routes that need work ({needsWorkCount})"
 msgid "手順"
 msgstr "Step"
 
-#: src/components/admin/FuriganaOverview.tsx:173
+#: src/components/admin/FuriganaOverview.tsx:191
 msgid "承認"
 msgstr "Approve"
 
@@ -6065,7 +6119,7 @@ msgstr "New route (admin)"
 msgid "新しい点は、選んだ点（{chosenNo}番）のあとに入ります。もう一度クリックすると、選びなおせます。"
 msgstr "New points go after the chosen point (number {chosenNo}). Click it again to choose differently."
 
-#: src/components/admin/FuriganaOverview.tsx:103
+#: src/components/admin/FuriganaOverview.tsx:108
 msgid "新しい言葉はありませんでした。"
 msgstr "No new words."
 
@@ -6224,7 +6278,7 @@ msgstr "Once rewritten, the \"this is a draft\" notice and the updated date are 
 msgid "書きかえ済み"
 msgstr "Rewritten"
 
-#: src/app/(admin)/admin/[list]/page.tsx:41
+#: src/app/(admin)/admin/[list]/page.tsx:42
 msgid "書き手を管理する"
 msgstr "Manage writers"
 
@@ -6623,6 +6677,10 @@ msgstr "The furigana over the kanji. Temple, shrine and sutra mound names are ty
 msgid "漢字を入れると、ここで漢字ごとに読みを入れられます。"
 msgstr "Once there are kanji, type the reading for each here."
 
+#: src/components/admin/FuriganaWords.tsx:79
+msgid "漢字を含む言葉と、それに合う読みを入れてください。"
+msgstr "Enter a word with kanji and a reading that fits it."
+
 #: src/components/admin/HoursInput.tsx:51
 msgid "火〜金に同じ時間を入れる"
 msgstr "Copy Monday's hours to Tuesday–Friday"
@@ -6836,7 +6894,11 @@ msgstr "Save goals"
 msgid "目標を決める・変える"
 msgstr "Set or change the goals"
 
-#: src/components/admin/FuriganaOverview.tsx:176
+#: src/components/admin/FuriganaOverview.tsx:203
+msgid "直して承認"
+msgstr "Correct and approve"
+
+#: src/components/admin/FuriganaOverview.tsx:208
 msgid "直す"
 msgstr "Correct"
 
@@ -6912,7 +6974,7 @@ msgstr "Waiting"
 msgid "確認待ちのコメントはありません。"
 msgstr "No comments are waiting."
 
-#: src/components/admin/FuriganaOverview.tsx:148
+#: src/components/admin/FuriganaOverview.tsx:166
 msgid "確認待ちの読みはありません。"
 msgstr "No readings waiting."
 
@@ -7102,7 +7164,7 @@ msgstr "Sutra mound rally"
 msgid "経度"
 msgstr "Longitude"
 
-#: src/components/admin/FuriganaOverview.tsx:109
+#: src/components/admin/FuriganaOverview.tsx:127
 #: src/components/admin/useChecklistLabels.ts:22
 msgid "経由地"
 msgstr "Waypoints"
@@ -7548,7 +7610,7 @@ msgstr "Delete table"
 msgid "表示"
 msgstr "View"
 
-#: src/app/(admin)/admin/[list]/page.tsx:52
+#: src/app/(admin)/admin/[list]/page.tsx:53
 msgid "表示している読み"
 msgstr "Readings shown to visitors"
 
@@ -7601,6 +7663,7 @@ msgstr "Places found"
 msgid "見つからない写真（その写真だけ入りません）：{0}"
 msgstr "Photos not found (only those photos are left out): {0}"
 
+#: src/components/admin/FuriganaWords.tsx:125
 #: src/components/admin/PhotoLibrary.tsx:170
 #: src/components/admin/RelationPicker.tsx:137
 #: src/components/admin/SharedPlaces.tsx:159
@@ -7666,6 +7729,23 @@ msgstr "Tourism information"
 #: src/components/admin/HomeSectionsForm.tsx:54
 msgid "観光情報（観光・グルメ・お土産・体験・宿泊）を表示する"
 msgstr "Show the tourism information (sightseeing, gourmet, souvenirs, experiences, stay)"
+
+#: src/components/admin/FuriganaWords.tsx:93
+msgid "言葉"
+msgstr "Word"
+
+#: src/components/admin/FuriganaWords.tsx:118
+#: src/components/admin/FuriganaWords.tsx:118
+msgid "言葉をさがす"
+msgstr "Search words"
+
+#: src/components/admin/FuriganaWords.tsx:84
+msgid "言葉を加えました。訪れる人に表示されます。"
+msgstr "Word added. Visitors will see it."
+
+#: src/components/admin/FuriganaWords.tsx:90
+msgid "言葉を加える"
+msgstr "Add a word"
 
 #: src/components/LocaleSwitcher.tsx:20
 #: src/components/LocaleSwitcher.tsx:55
@@ -7754,11 +7834,20 @@ msgstr "About this place"
 msgid "説明文（日本語）"
 msgstr "Description (Japanese)"
 
+#: src/components/admin/FuriganaWords.tsx:97
+msgid "読み（ひらがな）"
+msgstr "Reading (hiragana)"
+
+#: src/components/admin/FuriganaOverview.tsx:118
+#: src/components/admin/FuriganaWords.tsx:56
+msgid "読みが言葉に合いません。ひらがなで入れるか、漢字ごとに「{MARKUP_EXAMPLE}」と入れてください。"
+msgstr "The reading does not fit the word. Type it in hiragana, or after each kanji as “{MARKUP_EXAMPLE}”."
+
 #: src/components/admin/RouteEditor.tsx:557
 msgid "読みを入れた漢字の上に、小さく表示されます（ひらがな）。"
 msgstr "Shown small over the kanji that have a reading (hiragana)."
 
-#: src/components/admin/FuriganaOverview.tsx:118
+#: src/components/admin/FuriganaOverview.tsx:136
 msgid "読みを入れてほしい名前"
 msgstr "Names that need a reading"
 
@@ -7781,7 +7870,7 @@ msgid "読み込めませんでした。しばらくしてから、ページを�
 msgstr "Could not load. Please reload the page in a moment."
 
 #: src/components/admin/BlockEditor.tsx:131
-#: src/components/admin/FuriganaOverview.tsx:112
+#: src/components/admin/FuriganaOverview.tsx:130
 #: src/components/admin/PhotoLibrary.tsx:163
 msgid "読み込んでいます…"
 msgstr "Loading…"
@@ -7834,15 +7923,15 @@ msgstr "Car"
 msgid "転落・滑落の危険がある所がある。地図を読む力と、ミスをしない注意が必要。"
 msgstr "Some places where a fall is dangerous. Needs map-reading skill and care not to slip up."
 
-#: src/components/admin/FuriganaOverview.tsx:143
+#: src/components/admin/FuriganaOverview.tsx:161
 msgid "辞書で読み直す"
 msgstr "Read again with the dictionary"
 
-#: src/components/admin/FuriganaOverview.tsx:140
+#: src/components/admin/FuriganaOverview.tsx:158
 msgid "辞書の読み（確認待ち）"
 msgstr "Dictionary readings (waiting for approval)"
 
-#: src/components/admin/FuriganaOverview.tsx:103
+#: src/components/admin/FuriganaOverview.tsx:108
 msgid "辞書の読みが{n}件ふえました。確認してください。"
 msgstr "{n} new dictionary readings. Please check them."
 
@@ -8158,7 +8247,7 @@ msgid "選んだ数：{0} / {1}"
 msgstr "Selected: {0} / {1}"
 
 #. placeholder {0}: picked.size
-#: src/components/admin/FuriganaOverview.tsx:162
+#: src/components/admin/FuriganaOverview.tsx:180
 msgid "選んだ読みを承認する（{0}件）"
 msgstr "Approve selected ({0})"
 

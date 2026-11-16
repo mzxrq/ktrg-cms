@@ -70,7 +70,8 @@ export default async function PublicLayout({ children }: { children: ReactNode }
       </div>
       <InstallNudge />
       {viewer.signedIn ? (hasGuestStamps ? <GuestClaim /> : null) : <GuestNag hasStamps={hasGuestStamps} />}
-      {prefsState.effective.furigana ? <FuriganaLayer /> : null}
+      {/* Off still draws the words marked いつも表示する (very hard ones); the key restarts it when the setting changes. */}
+      <FuriganaLayer key={String(prefsState.effective.furigana)} alwaysOnly={!prefsState.effective.furigana} />
       <StampProgressPopup />
       <StampOutbox userKey={viewer.signedIn ? (viewer.publicId ?? "guest") : "guest"} />
       <NavigationToast />

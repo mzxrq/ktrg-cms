@@ -491,6 +491,13 @@
       "when": 1794554827658,
       "tag": "0069_info_spot_needs_no_permission",
       "breakpoints": true
+    },
+    {
+      "idx": 70,
+      "version": "7",
+      "when": 1794805291856,
+      "tag": "0070_furigana_always",
+      "breakpoints": true
     }
   ]
 }

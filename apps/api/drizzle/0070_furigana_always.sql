@@ -1,0 +1,1 @@
+ALTER TABLE "furigana_words" ADD COLUMN "always" boolean DEFAULT false NOT NULL;
