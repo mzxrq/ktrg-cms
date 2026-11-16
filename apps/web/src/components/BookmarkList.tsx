@@ -47,7 +47,7 @@ export function BookmarkList({
     );
   }
   return (
-    <ul className="mx-4 flex flex-col gap-3">
+    <ul className="list-in mx-4 flex flex-col gap-3">
       {saved.map((b) => (
         <li key={b.id} className="flex items-center gap-2 rounded-[1.75rem] bg-surface">
           <Link href={b.href} className="tap-target flex min-w-0 flex-1 items-center justify-between gap-3 px-5 py-3 text-xl font-bold text-accent">

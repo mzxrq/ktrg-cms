@@ -78,7 +78,7 @@ export function StopList({ rows, hrefFor, locale }: { rows: WalkRow[]; hrefFor: 
   // The walk so far: the line is moss up to the last stamped place.
   const stampedUpTo = rows.reduce<boolean[]>((acc, { stop: s }) => [...acc, s.type === "stamp" ? s.spot.stamped === true : (acc[acc.length - 1] ?? false)], []);
   return (
-    <ol>
+    <ol className="list-in">
       {rows.map(({ stop, key, role, legKm }, index) => {
         const hasNext = index < rows.length - 1;
         const doneAbove = index > 0 && stampedUpTo[index - 1] === true;

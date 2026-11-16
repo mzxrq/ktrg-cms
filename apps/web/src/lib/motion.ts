@@ -80,7 +80,9 @@ export function enter(el: HTMLElement, kind: MotionKind): void {
     return;
   }
   const from = level === "full" ? { opacity: 0, ...MOVE[kind] } : { opacity: 0 };
-  g.fromTo(el, from, { opacity: 1, x: 0, y: 0, scale: 1, duration: ENTER_S, ease: "power2.out", clearProps: "opacity,transform", overwrite: true });
+  // Only what it moved from goes back to rest: a kind that only fades never gets a transform (a moving ancestor carries fixed children along).
+  const rest = level === "full" ? Object.fromEntries(Object.keys(MOVE[kind]).filter((k) => k !== "transformOrigin").map((k) => [k, k === "scale" ? 1 : 0])) : {};
+  g.fromTo(el, from, { opacity: 1, ...rest, duration: ENTER_S, ease: "power2.out", clearProps: "opacity,transform", overwrite: true });
 }
 
 /**

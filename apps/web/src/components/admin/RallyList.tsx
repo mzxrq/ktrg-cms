@@ -123,7 +123,7 @@ export function RallyList({ initial, locale }: { initial: AdminRally[]; locale: 
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-line">
+              <tbody className="rows-in divide-y divide-line">
                 {visible.map((r) => (
                   <tr key={r.id} className="align-top hover:bg-surface/60">
                     <td className="p-3">

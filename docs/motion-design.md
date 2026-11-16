@@ -1,4 +1,4 @@
-# Motion everywhere: design (2026-11-16, approved; stages 1 to 3 built)
+# Motion everywhere: design (2026-11-16, approved; all four stages built)
 
 ## Why
 
@@ -43,7 +43,7 @@ Some screens feel unfinished next to the landing page: the menu eases open but v
 1. **Foundation + menu:** the `fade` pref and 3-way control, `lib/motion.ts`, `usePresence`, design doc amendment, menu close (phone drop-up, wide pop-out, backdrop fade).
 2. **Overlays (built):** every native modal `<dialog>` at once through `lib/dialog-motion.ts` (wraps `showModal` / `close` and turns Escape into the animated close; the backdrop fades through `--backdrop-o`), toasts on the helper, Fade-only versions of the stamp press / landing stamp / medal (`html[data-fade]` in globals.css), the install bar (`usePresence`) and the navigation prompts (`useEnter`). Not done: exits for the navigation prompts (their parent removes them), `<dialog>`s a component removes while open, and the map sheet (it already moves between snap heights).
 3. **States (built):** every `role="alert"` message, `EmptyState`, `Notice`, `error.tsx` and `not-found.tsx` arrive with a short rise and fade (`.state-in`, and `.state-stagger` for heading, words, buttons one after another). These are plain CSS on purpose: many are drawn by the server, and a script that hides them after hydration would make them flash. Fade only keeps the fade and drops the rise. The offline bar and dismissible notices use the new `collapse` kind of `lib/motion.ts` (fade while the height closes, so the page below slides). Not done: exits for `LoadingOverlay` and the stamp progress states (their parents remove them), and `StatusBanner` (it comes with its page).
-4. **Lists and page changes:** staggered list and card entrance, a soft route change (`template.tsx`), admin tables and editors.
+4. **Lists and page changes (built):** `.list-in` staggers the first 16 cards of a list (45 ms apart: rallies, blog, badges, bookmarks, the places directory, a course's stops); `.rows-in` fades the first 12 rows of an admin table; a `template.tsx` in `(public)` and `(admin)` fades the page area (`#main`) on every page change through `RouteFade` (opacity only, no wrapper element, skipped on the first page of a visit). Not done: the route ribbon on /routes, the map, and the admin editors (they appear with their page).
 
 ## Approaches considered
 

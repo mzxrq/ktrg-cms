@@ -281,7 +281,7 @@ export function AdminListTable({ meta: config, initial, locale, choices }: { met
                   {canDelete ? <th scope="col" className="w-24 p-3"><span className="sr-only">{t`削除`}</span></th> : null}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-line">
+              <tbody className="rows-in divide-y divide-line">
                 {rows.map((item) => {
                   const href = itemHref(config, item);
                   return (
