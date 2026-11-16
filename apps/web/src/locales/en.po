@@ -8512,3 +8512,31 @@ msgstr "No motion"
 #: src/components/settings/PrefsForm.tsx
 msgid "アニメーションや、ふわっと動く表示の量を選びます。"
 msgstr "Choose how much the page animates and fades."
+
+#: src/components/JourneyFacts.tsx
+msgid "約{h}時間{m}分"
+msgstr "About {h} h {m} min"
+
+#: src/components/JourneyFacts.tsx
+msgid "約{h}時間"
+msgstr "About {h} h"
+
+#: src/components/JourneyFacts.tsx
+msgid "約{m}分"
+msgstr "About {m} min"
+
+#: src/components/JourneyFacts.tsx
+msgid "の道のり"
+msgstr "of trail"
+
+#: src/components/JourneyFacts.tsx
+msgid "さあ、最初の一歩へ。{total}か所のスタンプが待っています。"
+msgstr "Take the first step. {total} stamps are waiting."
+
+#: src/components/RallyViews.tsx
+msgid "最初の場所を見る"
+msgstr "See the first place"
+
+#: src/components/JourneyFacts.tsx
+msgid "か所"
+msgstr "places"

@@ -252,7 +252,8 @@ export function ralliesFromApi(rallies: readonly PublicRally[], stamped: Readonl
       const at = stampedAt.get(id);
       return at && (!best || Date.parse(at) > Date.parse(best)) ? at : best;
     }, null);
-    return { id: r.id, kind: "rally", order: i + 1, nameJa: r.nameJa, nameEn: r.nameEn, routeId: null, total: slots.length, stamped: slots.filter((s) => s.stamped).length, lastStampedAt, slots };
+    const routeIds = [...new Set(r.kind === "places" ? r.places.map((p) => p.routeId) : r.courses.map((c) => c.routeId))];
+    return { id: r.id, kind: "rally", order: i + 1, nameJa: r.nameJa, nameEn: r.nameEn, routeId: null, routeIds, total: slots.length, stamped: slots.filter((s) => s.stamped).length, lastStampedAt, slots };
   });
 }
 

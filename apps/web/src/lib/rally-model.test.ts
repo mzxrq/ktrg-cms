@@ -18,6 +18,7 @@ const rally = (over: Partial<RallyItem> & { id: string }): RallyItem => ({
   nameJa: over.id,
   nameEn: null,
   routeId: null,
+  routeIds: [],
   total: 3,
   stamped: 0,
   lastStampedAt: null,

@@ -14,7 +14,9 @@ import { Medal } from "@/components/Medal";
 import { StampGrid } from "@/components/StampGrid";
 import { StampLegend } from "@/components/StampLegend";
 import { fetchPublicRally } from "@/lib/api-content";
-import { listRallies, pickText } from "@/lib/content";
+import { listRallies, listRoutes, pickText } from "@/lib/content";
+import { journeyFacts } from "@/lib/rally-journey";
+import { JourneyFacts } from "@/components/JourneyFacts";
 import { getMyStamps } from "@/lib/my-stamps";
 import { isSoon, nextSlot, stampedNumbers } from "@/lib/rally-model";
 import { getViewer } from "@/lib/viewer";
@@ -35,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function RallyPage({ params, searchParams }: Props) {
   const i18n = await initLingui();
   const { id } = await params;
-  const [viewer, detail, rallies, mine] = await Promise.all([getViewer(searchParams), fetchPublicRally(id), listRallies(), getMyStamps()]);
+  const [viewer, detail, rallies, mine, routes] = await Promise.all([getViewer(searchParams), fetchPublicRally(id), listRallies(), getMyStamps(), listRoutes()]);
   const rally = rallies.find((r) => r.id === id);
   if (!detail || !rally) notFound();
 
@@ -97,6 +99,11 @@ export default async function RallyPage({ params, searchParams }: Props) {
             </p>
           ) : null}
           {viewer.signedIn ? <CertificateButton title={name} total={rally.total} locale={i18n.locale} /> : null}
+        </section>
+      ) : stamped === 0 && rally.total > 0 ? (
+        // Not started: how big the walk is and an invitation, not "0 / N".
+        <section className="pattern-shippo order-4 mx-4 rounded-[1.75rem] bg-surface p-4 wide:order-none">
+          <JourneyFacts facts={journeyFacts(rally, routes)} />
         </section>
       ) : (
         <section className="order-4 mx-4 flex flex-col gap-3 rounded-[1.75rem] bg-surface p-4 wide:order-none">

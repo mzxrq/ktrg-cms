@@ -21,6 +21,8 @@ export interface RallyItem {
   nameEn: string | null;
   /** The course's page; null for the mound rally. */
   routeId: string | null;
+  /** Every course the rally runs through (one for a course rally, many for the mound rally), in the order of its places. */
+  routeIds: string[];
   total: number;
   /** Stamps held; null when not signed in. */
   stamped: number | null;

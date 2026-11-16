@@ -7,7 +7,7 @@ import { Notice } from "@/components/Notice";
 import { FeaturedRally, RallyCard, RallyHero } from "@/components/RallyViews";
 import { SectionBanner } from "@/components/SectionBanner";
 import { SignInPrompt } from "@/components/SignInPrompt";
-import { listRallies } from "@/lib/content";
+import { listRallies, listRoutes } from "@/lib/content";
 import { otherRallies, pickFeatured } from "@/lib/rally-model";
 import { getViewer } from "@/lib/viewer";
 import { initLingui } from "@/i18n/server";
@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function StampsPage({ searchParams }: { searchParams: Promise<{ as?: string }> }) {
   const i18n = await initLingui();
-  const [viewer, rallies] = await Promise.all([getViewer(searchParams), listRallies()]);
+  const [viewer, rallies, routes] = await Promise.all([getViewer(searchParams), listRallies(), listRoutes()]);
   const featured = pickFeatured(rallies);
   const others = otherRallies(rallies, featured);
 
@@ -57,7 +57,7 @@ export default async function StampsPage({ searchParams }: { searchParams: Promi
         </EmptyState>
       ) : null}
 
-      {featured ? <FeaturedRally rally={featured} locale={i18n.locale} account={viewer.signedIn} /> : null}
+      {featured ? <FeaturedRally rally={featured} locale={i18n.locale} account={viewer.signedIn} routes={routes} /> : null}
 
       {others.length > 0 ? (
         <section className="flex flex-col gap-3 px-4">
