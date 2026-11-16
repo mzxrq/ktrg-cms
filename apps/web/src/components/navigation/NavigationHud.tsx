@@ -16,7 +16,7 @@ import type { MapScreenRoute } from "@/lib/map-screen";
 import { courseProgress } from "@/lib/navigation/progress";
 import { distanceParts } from "@/lib/stamp-flow";
 import { say, useNavVoice, voiceIsOn } from "./useNavVoice";
-import { ArrivalPrompt, EndPrompt, PassedPrompt } from "./NavPrompts";
+import { ArrivalStrip, EndPrompt, PassedPrompt } from "./NavPrompts";
 import { NavElevation } from "./NavElevation";
 import { legProfile } from "@/lib/navigation/elevation";
 import { NavFarCard } from "./NavFarCard";
@@ -145,8 +145,6 @@ export function NavigationToast() {
   const banner = useRef<HTMLElement>(null);
   const [now, setNow] = useState(() => Date.now());
   const voice = useNavVoice(session?.snapshot.state ?? null, session?.snapshot.state.targetId ? session.stops[session.snapshot.state.targetId]?.name : undefined, voiceByDefault);
-  // The stamp place whose arrival card was put off: its small button stays at the bottom of the screen.
-  const [laterId, setLaterId] = useState<string | null>(null);
   // The off-the-path card was closed; it stays closed until the visitor is back on the path.
   const [offClosed, setOffClosed] = useState(false);
   const [ending, setEnding] = useState(false);
@@ -382,14 +380,10 @@ export function NavigationToast() {
     ) : null;
 
   const passed = snap.passedId ? session.stops[snap.passedId] : undefined;
-  const arrived = canStamp && laterId !== st.targetId && !passed;
-  const prompts = passed ? (
-    <PassedPrompt key={snap.passedId} name={passed.name} nameLang={passed.nameLang} onGoOn={skipPassed} onGoBack={returnToPassed} />
-  ) : arrived && target ? (
-    <ArrivalPrompt key={st.targetId} name={target.name} nameLang={target.nameLang} photo={target.photo} onLater={() => setLaterId(st.targetId)}>
-      {stampButton}
-    </ArrivalPrompt>
-  ) : null;
+  // At a stamp place the strip itself turns into the arrival (N2-4): no card over the map.
+  const arrived = canStamp && !passed;
+  const arrivalStrip = arrived && target ? <ArrivalStrip key={st.targetId} name={target.name} nameLang={target.nameLang} photo={target.photo} /> : null;
+  const prompts = passed ? <PassedPrompt key={snap.passedId} name={passed.name} nameLang={passed.nameLang} onGoOn={skipPassed} onGoBack={returnToPassed} /> : null;
 
   const endPrompt = ending ? (
     <EndPrompt
@@ -460,9 +454,9 @@ export function NavigationToast() {
           {/* Its own box: the pattern's class sets `position` and would undo the `fixed` above. */}
           <div className="pattern-shippo flex flex-col gap-3 rounded-t-2xl border-t border-line/30 bg-paper px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px)-var(--bar-inset))] pt-3 shadow-[0_-4px_24px_rgb(0_0_0/0.28)] md:rounded-2xl md:pb-3">
           {offRouteCard}
-          {far ? null : progressLine}
-          {far || !profile ? null : <NavElevation profile={profile} />}
-          {far || arrived ? null : stampButton()}
+          {far ? null : (arrivalStrip ?? progressLine)}
+          {far || arrived || !profile ? null : <NavElevation profile={profile} />}
+          {far ? null : stampButton()}
           <div className={far ? "" : "grid grid-cols-2 gap-2"}>
             {far ? null : <NavTargetPicker />}
             <button type="button" onClick={() => setEnding(true)} className={buttonStyle("secondary", "md", "flex w-full")}>
@@ -499,7 +493,8 @@ export function NavigationToast() {
       </div>
       {offRouteBlock}
       {note ? <p className="text-base leading-snug">{note}</p> : null}
-      {arrived ? null : stampButton()}
+      {arrivalStrip}
+      {stampButton()}
       {prompts}
       {endPrompt}
     </section>
