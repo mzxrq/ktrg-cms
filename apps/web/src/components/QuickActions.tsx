@@ -3,11 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
+import { MotionSelect } from "./MotionSelect";
 import { persistPrefs } from "@/lib/prefs-client";
 import { setSound, useSound } from "@/lib/stamp-feel";
 import type { Prefs } from "@/lib/prefs";
 
-type Toggle = "furigana" | "contrast" | "calm";
+type Toggle = "furigana" | "contrast";
 
 /** One row of the menu's list: the words on the left, the switch on the right (the same row as the settings page). */
 export function SwitchRow({ label, on, set }: { label: string; on: boolean; set: (value: boolean) => void }) {
@@ -37,6 +38,8 @@ export function QuickActions({ prefs, signedIn }: { prefs: Prefs; signedIn: bool
       if (next[key]) dataset[key] = "";
       else delete dataset[key];
     }
+    if (next.fade && !next.calm) dataset.fade = "";
+    else delete dataset.fade;
     await persistPrefs(next, signedIn);
     router.refresh();
   }
@@ -48,7 +51,10 @@ export function QuickActions({ prefs, signedIn }: { prefs: Prefs; signedIn: bool
       <SwitchRow label={t`文字を大きくする`} on={grown} set={(on) => change({ ...current, size: on ? "large" : "standard" })} />
       <SwitchRow label={t`ふりがなをつける`} on={current.furigana} set={(on) => flip("furigana", on)} />
       <SwitchRow label={t`くっきり表示`} on={current.contrast} set={(on) => flip("contrast", on)} />
-      <SwitchRow label={t`動きをへらす`} on={current.calm} set={(on) => flip("calm", on)} />
+      <div className="tap-target flex items-center gap-4 px-4 py-3">
+        <span className="min-w-0 flex-1 text-lg font-bold">{t`動き`}</span>
+        <MotionSelect prefs={current} onChange={change} />
+      </div>
       {/* The stamp sound: kept on this device only, off until chosen. */}
       <SwitchRow label={t`音`} on={sound} set={setSound} />
     </>

@@ -54,11 +54,11 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   // The visitor's Light or Dark choice, written into the HTML so the first paint is already right.
   // Reading the cookie makes pages render per request; that is the price of no flash and no script.
   // The text and component size the visitor chose, written the same way.
-  const [jar, { size, contrast, calm, furigana }] = await Promise.all([cookies(), getPrefs()]);
+  const [jar, { size, contrast, calm, fade, furigana }] = await Promise.all([cookies(), getPrefs()]);
   const theme = themeFromValue(jar.get(themeCookie)?.value);
 
   return (
-    <html lang={i18n.locale} data-theme={theme === "auto" ? undefined : theme} data-size={size} data-contrast={contrast ? "" : undefined} data-calm={calm ? "" : undefined} data-furigana={furigana ? "" : undefined}>
+    <html lang={i18n.locale} data-theme={theme === "auto" ? undefined : theme} data-size={size} data-contrast={contrast ? "" : undefined} data-calm={calm ? "" : undefined} data-fade={fade && !calm ? "" : undefined} data-furigana={furigana ? "" : undefined}>
       <body>
         {/* The solid band behind the status bar; hidden outside the installed app (globals.css). */}
         <div aria-hidden="true" className="status-strip" />

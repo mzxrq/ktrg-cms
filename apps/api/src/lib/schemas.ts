@@ -75,6 +75,7 @@ export const preferencesSchema = t.Object(
     furigana: t.Optional(t.Boolean()),
     contrast: t.Optional(t.Boolean()),
     calm: t.Optional(t.Boolean()),
+    fade: t.Optional(t.Boolean()),
     // Milliseconds since 1970, up to the year 2100: a number, never a date string.
     updatedAt: t.Integer({ minimum: 0, maximum: 4102444800000 }),
   },

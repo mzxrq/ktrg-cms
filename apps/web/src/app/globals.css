@@ -556,17 +556,7 @@ rt {
 
 /* GSI has no dark tiles, and the map stays as it is in dark mode: dimmed or inverted maps were too dark to read outdoors. */
 
-/* The header menu drops down from the top on a phone, and grows out of the rail's button from 768 px. Reduced motion: it just appears. */
-@media (prefers-reduced-motion: no-preference) {
-  .menu-drop {
-    animation: menu-drop 160ms var(--ease-enter);
-  }
-  @media (min-width: 768px) {
-    .menu-drop {
-      animation: menu-pop 150ms var(--ease-enter);
-    }
-  }
-}
+/* The header menu's drop (phone) and pop (from 768 px) and its leaving are in lib/motion.ts (usePresence), by motion level. */
 @media (prefers-reduced-motion: no-preference) {
   .toast-in {
     animation: toast-in 200ms var(--ease-enter);
@@ -585,18 +575,6 @@ rt {
   from {
     opacity: 0;
     transform: translateY(-0.5rem);
-  }
-}
-@keyframes menu-drop {
-  from {
-    opacity: 0;
-    transform: translateY(-0.75rem);
-  }
-}
-@keyframes menu-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateX(-0.5rem);
   }
 }
 

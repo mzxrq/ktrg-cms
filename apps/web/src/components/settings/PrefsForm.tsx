@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
+import { MotionSelect } from "@/components/MotionSelect";
 import { persistPrefs } from "@/lib/prefs-client";
 import { defaultPrefs, textSizes, type Prefs, type TextSize } from "@/lib/prefs";
 import { primaryButton, secondaryButton } from "@/components/auth/authUi";
@@ -38,6 +39,8 @@ export function PrefsForm({
       if (prefs[key]) dataset[key] = "";
       else delete dataset[key];
     }
+    if (prefs.fade && !prefs.calm) dataset.fade = "";
+    else delete dataset.fade;
   }, [prefs]);
 
   const sizes: Record<TextSize, { name: string; hint: string }> = {
@@ -71,7 +74,7 @@ export function PrefsForm({
   }
 
   // One row of a list: the words on the left, the switch on the right.
-  const switchRow = (key: "placesOnMap" | "furigana" | "contrast" | "calm", title: string, hint: string) => (
+  const switchRow = (key: "placesOnMap" | "furigana" | "contrast", title: string, hint: string) => (
     <label className="tap-target flex cursor-pointer items-center gap-4 px-4 py-3">
       <span className="min-w-0 flex-1">
         <span className="block text-lg font-bold">{title}</span>
@@ -123,7 +126,13 @@ export function PrefsForm({
         <div className={list}>
           {switchRow("furigana", t`ふりがなをつける`, t`ページの漢字すべてに、読みがなをつけます。`)}
           {switchRow("contrast", t`くっきり表示`, t`文字と背景の差を大きくし、線を太く、リンクに下線をつけます。`)}
-          {switchRow("calm", t`動きをへらす`, t`アニメーションや、ふわっと動く表示をやめます。`)}
+          <div className="tap-target flex items-center gap-4 px-4 py-3">
+            <span className="min-w-0 flex-1">
+              <span className="block text-lg font-bold">{t`動き`}</span>
+              <span className="mt-0.5 block text-base text-muted">{t`アニメーションや、ふわっと動く表示の量を選びます。`}</span>
+            </span>
+            <MotionSelect prefs={prefs} onChange={setPrefs} />
+          </div>
         </div>
       </fieldset>
 
