@@ -934,8 +934,15 @@ body.map-screen-active .site-footer {
    scrolls, and `safe-area-inset-bottom` follows it. The inset must not go into padding (Chrome then skips its fast path and the
    bar ended up behind a Huawei phone's navigation bar, 2026-11-16): pad for the largest inset, move only `bottom`
    (developer.chrome.com/docs/css-ui/edge-to-edge). Without the max inset (Safari, older Chrome) it falls back to the inset,
-   which is the old bottom 0 plus inset padding. */
+   which is the old bottom 0 plus inset padding.
+   Only in a browser tab (the chin lives there): the installed app hangs the bar from 100dvh with `bottom: auto` (rule above),
+   and a `bottom` here pushed the bar down off the screen on the iPhone and under Android's navigation (#552, fixed 2026-11-16). */
 @media (max-width: 767px) {
+  [data-tabbar] {
+    padding-bottom: calc(0.375rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+@media (max-width: 767px) and (display-mode: browser) {
   [data-tabbar] {
     padding-bottom: calc(0.375rem + env(safe-area-max-inset-bottom, env(safe-area-inset-bottom, 0px)));
     bottom: calc(env(safe-area-inset-bottom, 0px) - env(safe-area-max-inset-bottom, env(safe-area-inset-bottom, 0px)));
