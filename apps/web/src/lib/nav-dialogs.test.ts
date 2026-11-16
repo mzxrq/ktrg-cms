@@ -24,7 +24,12 @@ test.each(files)("%s: the dialog box does not scroll, and its buttons are in a f
   }
 });
 
-test("the arrival photo gives way on a short screen and takes at most 30 % of the height", () => {
+// N2-4: the arrival is part of the navigation strip, not a card over the map; its small photo gives way on a short screen.
+test("arrival lives in the strip: no arrival card, a small photo that hides on a short screen", () => {
   const src = read("NavPrompts.tsx");
-  expect(src).toMatch(/aspect-\[16\/9\] max-h-\[30dvh\] shrink-0[^"]*\[@media\(max-height:34rem\)\]:hidden/);
+  expect(src).not.toContain("ArrivalPrompt");
+  expect(src).toMatch(/size-16 shrink-0[^"]*\[@media\(max-height:34rem\)\]:hidden/);
+  const hud = read("NavigationHud.tsx");
+  expect(hud).toContain("{far ? null : (arrivalStrip ?? progressLine)}");
+  expect(hud).not.toContain("setLaterId");
 });

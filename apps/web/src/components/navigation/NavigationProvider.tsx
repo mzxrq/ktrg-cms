@@ -31,7 +31,7 @@ export interface NavStopInfo {
   name: string;
   nameLang: "ja" | "en";
   status: "open" | "caution" | "closed" | "info";
-  /** Shown on the arrival card. */
+  /** Shown in the arrival strip (ArrivalStrip). */
   photo: MapPhoto | null;
 }
 

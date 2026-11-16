@@ -19,8 +19,7 @@ test("the navigation panel and the button above it start at the tab bar's top ed
   expect(read("components", "map", "MapScreen.tsx")).toContain("bottom-[calc(var(--tabbar-room)+var(--bar-inset)+var(--nav-toast)+0.25rem)]");
 });
 
-test("the arrival and passed cards close with Android's back", () => {
+test("the passed card closes with Android's back (the arrival is in the strip since N2-4, nothing to close)", () => {
   const src = read("components", "navigation", "NavPrompts.tsx");
-  expect(src).toContain("useBackCloses(onLater)");
   expect(src).toContain("useBackCloses(onGoOn)");
 });
