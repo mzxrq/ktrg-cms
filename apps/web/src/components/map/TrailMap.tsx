@@ -67,6 +67,8 @@ const NO_SIDE_LINES: Position[][] = [];
 // Keep every stop clear of the buttons: zoom buttons at the top right, the chip at the top left,
 // the "bigger" button and the credit line along the bottom.
 const FIT = { padding: { top: 76, bottom: 112, left: 56, right: 92 }, maxZoom: 16, animate: false } as const;
+// The two buttons beside the place chips take the chips' shape (a tile under the map, a pill over it), so the row reads as one set.
+const chipShape = "tap-target flex items-center gap-2 rounded-2xl border border-ink px-3 py-2 text-lg font-bold leading-tight text-ink hover:bg-surface @4xl:rounded-full @4xl:py-1";
 const buttonClass =
   "tap-target inline-flex items-center justify-center gap-2 rounded-full border border-ink bg-paper px-3 text-lg font-bold text-ink hover:bg-surface";
 // The small round controls laid over the map: a 48 px target (the older-reader rule) with a smaller circle drawn in it.
@@ -499,12 +501,12 @@ export function TrailMap({
               <div className="order-3 grid min-w-0 grid-cols-2 gap-2 @4xl:order-none @4xl:flex @4xl:flex-wrap @4xl:gap-1.5">
             {anyPlaces ? <PlaceChips compact className="contents @4xl:flex @4xl:flex-wrap @4xl:gap-1.5" counts={counts} active={active} onToggle={toggleGroup} /> : null}
             {hasSide ? (
-              <button type="button" aria-pressed={showSide} onClick={() => setShowSide((on) => !on)} className={`${buttonClass} w-full justify-start @4xl:w-auto ${showSide ? "!bg-ink !text-paper" : "bg-paper/95 shadow-sm"}`}>
+              <button type="button" aria-pressed={showSide} onClick={() => setShowSide((on) => !on)} className={`${chipShape} w-full justify-start text-left @4xl:w-auto ${showSide ? "!bg-ink !text-paper" : "bg-paper/95 shadow-sm"}`}>
                 {t`寄り道の線を見る`}
               </button>
             ) : null}
             {sortedPlaces.length > 0 ? (
-              <button type="button" aria-expanded={listOpen} onClick={() => setListOpen((on) => !on)} className={`${buttonClass} w-full justify-start bg-paper/95 shadow-sm @4xl:w-auto`}>
+              <button type="button" aria-expanded={listOpen} onClick={() => setListOpen((on) => !on)} className={`${chipShape} w-full justify-start bg-paper/95 text-left shadow-sm @4xl:w-auto`}>
                 <ListIcon />
                 {t`まわりの場所`}
               </button>

@@ -1,5 +1,6 @@
 "use client";
 
+import { CreditInput } from "./CreditInput";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useReducer, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
@@ -606,8 +607,8 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                       <TextInput id="route-photo" value={draft.photoUrl} onChange={text("photoUrl")} maxLength={500} invalid={problemOf("photo_link")} />
                     </Field>
                   </PhotoLinkDetails>
-                  <Field label={t`写真の出どころ`} htmlFor="route-photo-credit" hint={t`写真の上や下に ℹ︎ と一緒に表示されます。撮った人や、写真を載せているサイトを書きます。リンクは [表示する文字](https://…) と書きます。`}>
-                    <TextInput id="route-photo-credit" value={draft.photoCredit} onChange={text("photoCredit")} maxLength={500} />
+                  <Field label={t`写真の出どころ`} htmlFor="route-photo-credit" hint={t`写真の上や下に ℹ︎ と一緒に表示されます。左に撮った人や使用条件を、右に写真を載せているページのリンク（なくてもよい）を入れます。`}>
+                    <CreditInput id="route-photo-credit" value={draft.photoCredit} onChange={text("photoCredit")} placeholder={t`例：山田太郎, CC BY-SA 4.0`} />
                   </Field>
                   {problemOf("photo_link") ? <p role="alert" className="text-base font-bold text-danger">{t`写真のリンクは、https:// で始まるものだけ使えます。`}</p> : null}
                   <PhotoSlot url={draft.photoUrl} className="max-w-md" />
