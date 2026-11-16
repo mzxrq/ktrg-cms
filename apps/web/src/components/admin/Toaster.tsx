@@ -1,14 +1,14 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useLayoutEffect, useRef, useSyncExternalStore } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { AlertIcon, TickIcon, XIcon } from "@/components/icons";
-import { readToast, showToast, subscribeToast } from "@/lib/admin/toast";
+import { readToast, showToast, subscribeToast, type Toast } from "@/lib/admin/toast";
+import { enter, leave } from "@/lib/motion";
 
 /** The message over every admin page: over the page, not in it, so it catches the eye wherever the page is scrolled to. */
 export function Toaster() {
-  const { t } = useLingui();
   const toast = useSyncExternalStore(subscribeToast, readToast, () => null);
   // "/admin/routes", not the whole address: saving a new route moves it to its own address, and its message must stay.
   const section = (usePathname() ?? "").split("/").slice(0, 3).join("/");
@@ -18,10 +18,22 @@ export function Toaster() {
     if (readToast()?.kind === "error") showToast(null);
   }, [section]);
 
-  if (!toast) return null;
+  return toast ? <ToastCard key={toast.id} toast={toast} /> : null;
+}
+
+/** One message: it drops in when it appears and fades out while `leaving` (lib/motion, by motion level). */
+function ToastCard({ toast }: { toast: Toast }) {
+  const { t } = useLingui();
+  const ref = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (ref.current) enter(ref.current, "drop");
+  }, []);
+  useEffect(() => {
+    if (toast.leaving && ref.current) return leave(ref.current, "drop", () => {});
+  }, [toast.leaving]);
   const error = toast.kind === "error";
   return (
-    <div key={toast.id} className={`${toast.leaving ? "toast-out pointer-events-none" : "toast-in"} fixed inset-x-4 top-20 z-50 mx-auto flex max-w-xl items-start gap-3 rounded-2xl border-2 border-paper/40 p-4 text-paper shadow-2xl ${error ? "bg-danger" : "bg-moss"}`}>
+    <div ref={ref} className={`${toast.leaving ? "pointer-events-none" : ""} fixed inset-x-4 top-20 z-50 mx-auto flex max-w-xl items-start gap-3 rounded-2xl border-2 border-paper/40 p-4 text-paper shadow-2xl ${error ? "bg-danger" : "bg-moss"}`}>
       <span aria-hidden="true" className="grid size-8 shrink-0 place-items-center rounded-full bg-paper text-ink">
         {error ? <AlertIcon size={20} /> : <TickIcon size={20} />}
       </span>

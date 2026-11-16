@@ -32,6 +32,9 @@ export function levelFor(calm: boolean, fade: boolean, deviceReduces: boolean): 
 let loaded: typeof Gsap | null = null;
 let loading: Promise<void> | null = null;
 
+/** GSAP once it has loaded, else null (then nothing animates). */
+export const getGsap = () => loaded;
+
 /** Start loading GSAP (once). Call it when the page is idle; the level Off never loads it. */
 export function preloadMotion(): void {
   if (loaded || loading || motionLevel() === "off") return;
@@ -48,8 +51,8 @@ const MOVE: Record<MotionKind, gsap.TweenVars> = {
   fade: {},
 };
 
-const ENTER_S = 0.18;
-const LEAVE_S = 0.15;
+export const ENTER_S = 0.18;
+export const LEAVE_S = 0.15;
 /** A leave that has not ended by now is forced to end, so a stuck tween can never leave an invisible element blocking the page. */
 const LEAVE_LIMIT_MS = 600;
 
@@ -94,6 +97,17 @@ export function leave(el: HTMLElement, kind: MotionKind, done: () => void): () =
     clearTimeout(timer);
     g.killTweensOf(el);
   };
+}
+
+/** Bring an element in once, when it first appears on screen (for things whose parent decides when they go). */
+export function useEnter<T extends HTMLElement>(kind: MotionKind) {
+  const ref = useRef<T>(null);
+  useLayoutEffect(() => {
+    if (ref.current) enter(ref.current, kind);
+    // Only when it first appears.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return ref;
 }
 
 /**

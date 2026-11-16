@@ -1,12 +1,14 @@
 // The one message over the admin pages. It lives outside React so it stays on screen across a page change, and every form
 // shares it. Good news closes itself; an error stays until it is closed, or until the page changes (see Toaster).
 
+import { motionLevel } from "@/lib/motion";
+
 /** `leaving`: closed, and on screen only while it fades away. */
 export type Toast = { id: number; kind: "ok" | "error"; text: string; action?: { label: string; run: () => void }; leaving?: boolean };
 
 /** Long enough for an older reader to finish the longest message. */
 export const TOAST_OK_MS = 8000;
-/** The fade of a closing message (.toast-out in globals.css). */
+/** The fade of a closing message (Toaster plays it with lib/motion; at the level Off it closes at once). */
 export const TOAST_LEAVE_MS = 150;
 
 let current: Toast | null = null;
@@ -33,7 +35,7 @@ export function showToast(next: Omit<Toast, "id" | "leaving"> | null) {
     timer = setTimeout(() => {
       current = null;
       notify();
-    }, TOAST_LEAVE_MS);
+    }, motionLevel() === "off" ? 0 : TOAST_LEAVE_MS);
   }
   notify();
 }

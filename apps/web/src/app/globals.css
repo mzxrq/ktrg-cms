@@ -557,25 +557,10 @@ rt {
 /* GSI has no dark tiles, and the map stays as it is in dark mode: dimmed or inverted maps were too dark to read outdoors. */
 
 /* The header menu's drop (phone) and pop (from 768 px) and its leaving are in lib/motion.ts (usePresence), by motion level. */
-@media (prefers-reduced-motion: no-preference) {
-  .toast-in {
-    animation: toast-in 200ms var(--ease-enter);
-  }
-  .toast-out {
-    animation: toast-out 150ms var(--ease-leave) forwards;
-  }
-}
-@keyframes toast-out {
-  to {
-    opacity: 0;
-    transform: translateY(-0.5rem);
-  }
-}
-@keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translateY(-0.5rem);
-  }
+/* Toasts and dialogs drop, rise and fade in lib/motion.ts and lib/dialog-motion.ts. A dialog's dimmed backdrop fades with the
+   --backdrop-o variable they set on the dialog (the backdrop inherits it). */
+dialog::backdrop {
+  opacity: var(--backdrop-o, 1);
 }
 
 /*
@@ -1274,6 +1259,45 @@ html[data-furigana] {
 @keyframes stamp-press-ring {
   0% { transform: scale(0.9); opacity: 0.7; }
   100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Fade only (html[data-fade]): the stamp moments keep their timing and lose their movement: no jolt, scale, tilt-in or ink ring.
+   (The device's own reduce-motion setting still keeps them off, as before.) */
+@keyframes stamp-press-overlay-fade {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes stamp-press-seal-fade {
+  0% { opacity: 0; transform: rotate(-2deg); }
+  16% { opacity: 1; }
+  100% { opacity: 1; transform: rotate(-2deg); }
+}
+@keyframes stamp-land-fade {
+  from { opacity: 0; }
+  to { opacity: 1; transform: rotate(-2deg); }
+}
+@keyframes medal-fade {
+  from { opacity: 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html[data-fade] .stamp-press {
+    animation-name: stamp-press-overlay-fade;
+  }
+  html[data-fade] .stamp-press-seal {
+    animation-name: stamp-press-seal-fade;
+    animation-timing-function: ease-out;
+  }
+  html[data-fade] .stamp-press-ring {
+    display: none;
+  }
+  html[data-fade] .stamp-land {
+    animation-name: stamp-land-fade;
+  }
+  html[data-fade] .medal-pop {
+    animation-name: medal-fade;
+  }
 }
 
 /* A finished rally's medal pops when the ring closes (StampProgressPopup). */

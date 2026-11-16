@@ -1,4 +1,4 @@
-# Motion everywhere: design (2026-11-16, approved; stage 1 built)
+# Motion everywhere: design (2026-11-16, approved; stages 1 and 2 built)
 
 ## Why
 
@@ -41,7 +41,7 @@ Some screens feel unfinished next to the landing page: the menu eases open but v
 ## Staging (one PR each, each checked in a real browser at all three levels)
 
 1. **Foundation + menu:** the `fade` pref and 3-way control, `lib/motion.ts`, `usePresence`, design doc amendment, menu close (phone drop-up, wide pop-out, backdrop fade).
-2. **Overlays:** `ConfirmDialog` (native `<dialog>`), toasts, stamp pop-ups, bottom sheets and backdrops.
+2. **Overlays (built):** every native modal `<dialog>` at once through `lib/dialog-motion.ts` (wraps `showModal` / `close` and turns Escape into the animated close; the backdrop fades through `--backdrop-o`), toasts on the helper, Fade-only versions of the stamp press / landing stamp / medal (`html[data-fade]` in globals.css), the install bar (`usePresence`) and the navigation prompts (`useEnter`). Not done: exits for the navigation prompts (their parent removes them), `<dialog>`s a component removes while open, and the map sheet (it already moves between snap heights).
 3. **States:** `EmptyState`, `Notice` / `OfflineNotice` / `StatusBanner`, `error.tsx`, `not-found.tsx`, loading skeletons, success and failure feedback on forms.
 4. **Lists and page changes:** staggered list and card entrance, a soft route change (`template.tsx`), admin tables and editors.
 
