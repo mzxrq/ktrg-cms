@@ -280,16 +280,16 @@ msgstr "{due}（日本時間）に、アカウントとすべての記録が消�
 msgid "{email} に、6桁の番号を送りました。"
 msgstr "{email} に、6桁の番号を送りました。"
 
-#: src/components/RouteStats.tsx:39
+#: src/components/RouteStats.tsx:42
 msgid "{hours}時間"
 msgstr "{hours}時間"
 
-#: src/components/RouteStats.tsx:39
+#: src/components/RouteStats.tsx:42
 msgid "{hours}時間{minutes}分"
 msgstr "{hours}時間{minutes}分"
 
 #: src/components/ElevationProfile.tsx:37
-#: src/components/RouteStats.tsx:27
+#: src/components/RouteStats.tsx:30
 #: src/components/SpotStats.tsx:32
 msgid "{km}km"
 msgstr "{km}km"
@@ -310,11 +310,11 @@ msgstr "{label}の言語"
 msgid "{m}分"
 msgstr "{m}分"
 
-#: src/components/RouteStats.tsx:31
+#: src/components/RouteStats.tsx:34
 msgid "{meters}m"
 msgstr "{meters}m"
 
-#: src/components/RouteStats.tsx:39
+#: src/components/RouteStats.tsx:42
 msgid "{minutes}分"
 msgstr "{minutes}分"
 
@@ -436,6 +436,10 @@ msgstr "{shownKm} km"
 #: src/components/StopList.tsx:168
 msgid "{shownKm} km・歩いて約{minutes}分"
 msgstr "{shownKm} km・歩いて約{minutes}分"
+
+#: src/components/Stars.tsx:8
+msgid "{STAR_COUNT}段階中{n}"
+msgstr "{STAR_COUNT}段階中{n}"
 
 #: src/components/navigation/NavigationHud.tsx:316
 msgid "{steerWord} {distText}"
@@ -1393,6 +1397,10 @@ msgstr "コースでつくったラリー：えらんだコースを全部終え
 msgid "コースでつくる"
 msgstr "コースでつくる"
 
+#: src/app/(public)/grading/page.tsx:46
+msgid "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。"
+msgstr "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。"
+
 #: src/app/(public)/badges/page.tsx:39
 msgid "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
 msgstr "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
@@ -1405,6 +1413,10 @@ msgstr "コースのラリー"
 #: src/components/map/TrailMap.tsx:378
 msgid "コースの出発地点から近い順（まっすぐ測った距離です）"
 msgstr "コースの出発地点から近い順（まっすぐ測った距離です）"
+
+#: src/components/RouteStats.tsx:27
+msgid "コースの形"
+msgstr "コースの形"
 
 #: src/components/admin/CourseAreaEditor.tsx:178
 msgid "コースの範囲"
@@ -1422,7 +1434,11 @@ msgstr "コースの終わりが次のコースの始まりのときは、同じ
 msgid "コースを見る"
 msgstr "コースを見る"
 
-#: src/app/(public)/grading/page.tsx:57
+#: src/app/(public)/grading/page.tsx:40
+msgid "コース一覧"
+msgstr "コース一覧"
+
+#: src/app/(public)/grading/page.tsx:58
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 msgstr "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 
@@ -1863,9 +1879,9 @@ msgstr "この経由地を削除"
 msgid "この線は、経由地の順番や位置と合わないため、区間に分けていません。経由地の順番と位置を直してから「区間に分ける」を押すか、区間を描くと、その区間から線が置き換わります（「元に戻す」で戻せます）。"
 msgstr "この線は、経由地の順番や位置と合わないため、区間に分けていません。経由地の順番と位置を直してから「区間に分ける」を押すか、区間を描くと、その区間から線が置き換わります（「元に戻す」で戻せます）。"
 
-#: src/app/(public)/grading/page.tsx:101
-msgid "この考え方は、長野県の「信州 山のグレーディング」を参考にしています。説明は、このサイト独自の言葉です。"
-msgstr "この考え方は、長野県の「信州 山のグレーディング」を参考にしています。説明は、このサイト独自の言葉です。"
+#: src/app/(public)/grading/page.tsx:103
+msgid "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。"
+msgstr "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。"
 
 #: src/components/admin/FuriganaWords.tsx:79
 msgid "この言葉はもう一覧にあります。"
@@ -2408,9 +2424,9 @@ msgstr "ダッシュボード（管理）"
 msgid "たった今"
 msgstr "たった今"
 
-#: src/app/(public)/grading/page.tsx:60
-msgid "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、体力度は2です。"
-msgstr "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、体力度は2です。"
+#: src/app/(public)/grading/page.tsx:61
+msgid "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、星1つです。"
+msgstr "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、星1つです。"
 
 #: src/components/admin/useChecklistLabels.ts:22
 msgid "チェック"
@@ -2628,7 +2644,7 @@ msgstr "なめらかにする"
 msgid "ニックネームでもかまいません。"
 msgstr "ニックネームでもかまいません。"
 
-#: src/components/RouteStats.tsx:31
+#: src/components/RouteStats.tsx:34
 msgid "のぼり"
 msgstr "のぼり"
 
@@ -3673,10 +3689,6 @@ msgstr "ルートとラリー"
 msgid "ルートにもどる"
 msgstr "ルートにもどる"
 
-#: src/app/(public)/grading/page.tsx:45
-msgid "ルートの「体力度」と「技術度」は、歩く前に大変さを知るための目安です。公式の情報ではありません。天気や体調で、感じ方は変わります。"
-msgstr "ルートの「体力度」と「技術度」は、歩く前に大変さを知るための目安です。公式の情報ではありません。天気や体調で、感じ方は変わります。"
-
 #: src/app/(public)/sitemap/page.tsx:70
 msgid "ルートの一覧"
 msgstr "ルートの一覧"
@@ -3757,7 +3769,6 @@ msgstr "ルートを直す（管理）"
 msgid "ルートを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "ルートを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 
-#: src/app/(public)/grading/page.tsx:39
 #: src/app/(public)/routes/[id]/page.tsx:40
 #: src/app/(public)/routes/[id]/page.tsx:61
 msgid "ルート一覧"
@@ -3824,6 +3835,11 @@ msgstr "わかりました"
 #: src/components/navigation/NavPrompts.tsx:111
 msgid "を通りすぎました"
 msgstr "を通りすぎました"
+
+#: src/components/RouteJourney.tsx:22
+#: src/components/RouteStats.tsx:27
+msgid "一周"
+msgstr "一周"
 
 #: src/components/admin/map-editor/PlaceList.tsx:136
 msgid "一周して、ここに戻るルートのとき: 同じ位置に、スタンプのない終点を追加します"
@@ -4099,35 +4115,29 @@ msgstr "低い"
 msgid "住所"
 msgstr "住所"
 
-#: src/components/RouteStats.tsx:43
+#: src/components/RouteStats.tsx:47
 msgid "体力"
 msgstr "体力"
 
-#: src/components/RouteStats.tsx:43
-msgid "体力度"
-msgstr "体力度"
+#: src/components/RouteStats.tsx:47
+msgid "体力の目安"
+msgstr "体力の目安"
 
-#. placeholder {0}: i + 1
-#: src/app/(public)/grading/page.tsx:66
-msgid "体力度 {0}"
-msgstr "体力度 {0}"
+#: src/app/(public)/grading/page.tsx:52
+msgid "体力の目安（星1〜5）"
+msgstr "体力の目安（星1〜5）"
 
-#: src/app/(public)/grading/page.tsx:73
-msgid "体力度 10"
-msgstr "体力度 10"
+#: src/components/RouteStats.tsx:53
+msgid "体力の目安とは"
+msgstr "体力の目安とは"
 
-#: src/app/(public)/grading/page.tsx:51
+#: src/app/(public)/grading/page.tsx:43
+msgid "体力の目安と道のけわしさについて"
+msgstr "体力の目安と道のけわしさについて"
+
 #: src/components/admin/GradingFields.tsx:48
 msgid "体力度（1〜10）"
 msgstr "体力度（1〜10）"
-
-#: src/components/RouteStats.tsx:49
-msgid "体力度とは"
-msgstr "体力度とは"
-
-#: src/app/(public)/grading/page.tsx:42
-msgid "体力度と技術度について"
-msgstr "体力度と技術度について"
 
 #: src/components/landing/Landing.tsx:195
 msgid "体験"
@@ -5264,11 +5274,6 @@ msgstr "名前を変える"
 msgid "名前順"
 msgstr "名前順"
 
-#: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:24
-msgid "周回"
-msgstr "周回"
-
 #: src/components/admin/RouteEditor.tsx:567
 msgid "周回（元の場所へ）"
 msgstr "周回（元の場所へ）"
@@ -5804,7 +5809,7 @@ msgid "役小角（役行者）"
 msgstr "役小角（役行者）"
 
 #: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:24
+#: src/components/RouteStats.tsx:27
 msgid "往復"
 msgstr "往復"
 
@@ -5910,26 +5915,9 @@ msgstr "手順"
 msgid "承認"
 msgstr "承認"
 
-#: src/components/RouteStats.tsx:44
-msgid "技術"
-msgstr "技術"
-
-#: src/components/RouteStats.tsx:44
-msgid "技術度"
-msgstr "技術度"
-
-#: src/app/(public)/grading/page.tsx:85
 #: src/components/admin/GradingFields.tsx:80
 msgid "技術度（A〜E）"
 msgstr "技術度（A〜E）"
-
-#: src/components/RouteStats.tsx:53
-msgid "技術度とは"
-msgstr "技術度とは"
-
-#: src/app/(public)/grading/page.tsx:88
-msgid "技術度は計算ではなく、道の様子から人が決めます。Aがいちばんやさしく、Eがいちばん難しいです。"
-msgstr "技術度は計算ではなく、道の様子から人が決めます。Aがいちばんやさしく、Eがいちばん難しいです。"
 
 #: src/components/RouteJourney.tsx:83
 #: src/components/StopList.tsx:105
@@ -6025,8 +6013,8 @@ msgid "数字の丸をドラッグすると、経由地を動かせます。道�
 msgstr "数字の丸をドラッグすると、経由地を動かせます。道すじは「線を描く」か、GPXファイルで入れます。"
 
 #: src/app/(public)/grading/page.tsx:79
-msgid "数字は目安です。保存される体力度は、ルートを作った人が、この計算を見て決めています。"
-msgstr "数字は目安です。保存される体力度は、ルートを作った人が、この計算を見て決めています。"
+msgid "数字は目安です。星の数は、コースを作った人が、この計算を見て決めています（長野県の体力度1〜10の、2段ずつが星1つです）。"
+msgstr "数字は目安です。星の数は、コースを作った人が、この計算を見て決めています（長野県の体力度1〜10の、2段ずつが星1つです）。"
 
 #: src/components/admin/GoalsForm.tsx:39
 msgid "数字を空にすると、その目標はなしになります。保存すると、ページを開き直したときに反映されます。"
@@ -6216,9 +6204,9 @@ msgstr "時刻表"
 
 #: src/components/map/MapScreen.tsx:521
 #: src/components/map/PlacesPanel.tsx:240
-#: src/components/RouteStats.tsx:37
-#: src/components/RouteStats.tsx:61
-#: src/components/RouteStats.tsx:82
+#: src/components/RouteStats.tsx:40
+#: src/components/RouteStats.tsx:65
+#: src/components/RouteStats.tsx:92
 msgid "時間"
 msgstr "時間"
 
@@ -6512,7 +6500,6 @@ msgid "歩いて行く道を見る"
 msgstr "歩いて行く道を見る"
 
 #: src/components/admin/RouteEditor.tsx:563
-#: src/components/RouteStats.tsx:24
 msgid "歩き方"
 msgstr "歩き方"
 
@@ -6526,11 +6513,11 @@ msgstr "歩く"
 msgid "歩く時間"
 msgstr "歩く時間"
 
-#: src/components/RouteStats.tsx:50
-msgid "歩く時間・距離・登りと下りから、必要な体力を1（やさしい）から10（とても大変）で表した目安です。"
-msgstr "歩く時間・距離・登りと下りから、必要な体力を1（やさしい）から10（とても大変）で表した目安です。"
+#: src/components/RouteStats.tsx:54
+msgid "歩く時間・距離・登りと下りから、必要な体力を星1つ（やさしい）から星5つ（とても大変）で表した目安です。"
+msgstr "歩く時間・距離・登りと下りから、必要な体力を星1つ（やさしい）から星5つ（とても大変）で表した目安です。"
 
-#: src/app/(public)/grading/page.tsx:54
+#: src/app/(public)/grading/page.tsx:55
 msgid "歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど、体力が必要です。"
 msgstr "歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど、体力が必要です。"
 
@@ -6708,11 +6695,6 @@ msgstr "点を消す (E)"
 #: src/components/admin/map-editor/MapEditor.tsx:1153
 msgid "点を置く"
 msgstr "点を置く"
-
-#: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:24
-msgid "片道"
-msgstr "片道"
 
 #: src/components/admin/RouteEditor.tsx:566
 msgid "片道（別の場所へ）"
@@ -7895,9 +7877,9 @@ msgid "足りないもの"
 msgstr "足りないもの"
 
 #: src/components/admin/RouteEditor.tsx:576
-#: src/components/RouteStats.tsx:27
-#: src/components/RouteStats.tsx:61
-#: src/components/RouteStats.tsx:82
+#: src/components/RouteStats.tsx:30
+#: src/components/RouteStats.tsx:65
+#: src/components/RouteStats.tsx:92
 msgid "距離"
 msgstr "距離"
 
@@ -8018,6 +8000,11 @@ msgstr "送信待ちだったスタンプが、{accepted}件、受け付けら�
 msgid "送信待ちのスタンプが{waiting}件あります。ログアウトすると、次にログインするまで送れません。ログアウトしますか？"
 msgstr "送信待ちのスタンプが{waiting}件あります。ログアウトすると、次にログインするまで送れません。ログアウトしますか？"
 
+#: src/components/RouteJourney.tsx:22
+#: src/components/RouteStats.tsx:27
+msgid "通り抜け"
+msgstr "通り抜け"
+
 #: src/components/admin/MunicipalitiesField.tsx:67
 msgid "通る順に並べます。市・町・村は一覧から選びます。一覧にない地名は、下に入力して追加します（8つまで）。"
 msgstr "通る順に並べます。市・町・村は一覧から選びます。一覧にない地名は、下に入力して追加します（8つまで）。"
@@ -8056,6 +8043,10 @@ msgstr "運営"
 #: src/app/(admin)/admin/visits/page.tsx:64
 msgid "過去{0}日"
 msgstr "過去{0}日"
+
+#: src/components/RouteStats.tsx:48
+msgid "道"
+msgstr "道"
 
 #: src/components/SpotStats.tsx:42
 msgid "道から"
@@ -8097,6 +8088,22 @@ msgstr "道に沿わせる"
 msgid "道に沿わせる機能が、まだ使えません。管理する人に、道案内サービスの設定を頼んでください。手で線を描くことはできます。"
 msgstr "道に沿わせる機能が、まだ使えません。管理する人に、道案内サービスの設定を頼んでください。手で線を描くことはできます。"
 
+#: src/components/RouteStats.tsx:48
+msgid "道のけわしさ"
+msgstr "道のけわしさ"
+
+#: src/app/(public)/grading/page.tsx:85
+msgid "道のけわしさ（星1〜5）"
+msgstr "道のけわしさ（星1〜5）"
+
+#: src/components/RouteStats.tsx:57
+msgid "道のけわしさとは"
+msgstr "道のけわしさとは"
+
+#: src/app/(public)/grading/page.tsx:88
+msgid "道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。"
+msgstr "道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。"
+
 #: src/components/RouteView.tsx:125
 #: src/components/RouteView.tsx:277
 msgid "道のり"
@@ -8123,9 +8130,9 @@ msgstr "道の状態から、手で選びます。"
 msgid "道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。"
 msgstr "道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。"
 
-#: src/components/RouteStats.tsx:54
-msgid "道の険しさや迷いやすさを、A（整った道）からE（厳しい岩場や藪）で表した目安です。"
-msgstr "道の険しさや迷いやすさを、A（整った道）からE（厳しい岩場や藪）で表した目安です。"
+#: src/components/RouteStats.tsx:58
+msgid "道の険しさや迷いやすさを、星1つ（整った歩きやすい道）から星5つ（岩場や手を使う所が多い道）で表した目安です。"
+msgstr "道の険しさや迷いやすさを、星1つ（整った歩きやすい道）から星5つ（岩場や手を使う所が多い道）で表した目安です。"
 
 #. placeholder {0}: meters(back.m)
 #: src/components/navigation/NavigationHud.tsx:251
@@ -8360,7 +8367,7 @@ msgstr "隠す"
 msgid "離れる"
 msgstr "離れる"
 
-#: src/components/RouteStats.tsx:45
+#: src/components/RouteStats.tsx:49
 msgid "難しさ"
 msgstr "難しさ"
 

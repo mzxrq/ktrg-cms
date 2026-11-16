@@ -280,16 +280,16 @@ msgstr "Your account and all its records will be deleted on {due} (Japan time). 
 msgid "{email} に、6桁の番号を送りました。"
 msgstr "We sent a 6-digit number to {email}."
 
-#: src/components/RouteStats.tsx:39
+#: src/components/RouteStats.tsx:42
 msgid "{hours}時間"
 msgstr "{hours} h"
 
-#: src/components/RouteStats.tsx:39
+#: src/components/RouteStats.tsx:42
 msgid "{hours}時間{minutes}分"
 msgstr "{hours} h {minutes} min"
 
 #: src/components/ElevationProfile.tsx:37
-#: src/components/RouteStats.tsx:27
+#: src/components/RouteStats.tsx:30
 #: src/components/SpotStats.tsx:32
 msgid "{km}km"
 msgstr "{km} km"
@@ -310,11 +310,11 @@ msgstr "Language of {label}"
 msgid "{m}分"
 msgstr "{m} min"
 
-#: src/components/RouteStats.tsx:31
+#: src/components/RouteStats.tsx:34
 msgid "{meters}m"
 msgstr "{meters} m"
 
-#: src/components/RouteStats.tsx:39
+#: src/components/RouteStats.tsx:42
 msgid "{minutes}分"
 msgstr "{minutes} min"
 
@@ -436,6 +436,10 @@ msgstr "{shownKm} km"
 #: src/components/StopList.tsx:168
 msgid "{shownKm} km・歩いて約{minutes}分"
 msgstr "{shownKm} km · about {minutes} min on foot"
+
+#: src/components/Stars.tsx:8
+msgid "{STAR_COUNT}段階中{n}"
+msgstr "{n} of {STAR_COUNT}"
 
 #: src/components/navigation/NavigationHud.tsx:316
 msgid "{steerWord} {distText}"
@@ -1393,6 +1397,10 @@ msgstr "A rally of courses: complete when every chosen course is finished."
 msgid "コースでつくる"
 msgstr "Make it from courses"
 
+#: src/app/(public)/grading/page.tsx:46
+msgid "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。"
+msgstr "A course's effort and path stars show how hard it is before you go, from one star to five. Fewer stars means an easier course. They are a guide, not official information, and the weather and how you feel change how hard it is."
+
 #: src/app/(public)/badges/page.tsx:39
 msgid "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
 msgstr "Press a stamp at every place of a course to get that course's badge."
@@ -1405,6 +1413,10 @@ msgstr "Course rally"
 #: src/components/map/TrailMap.tsx:378
 msgid "コースの出発地点から近い順（まっすぐ測った距離です）"
 msgstr "Nearest first from the start of the course (straight-line distance)"
+
+#: src/components/RouteStats.tsx:27
+msgid "コースの形"
+msgstr "Course shape"
 
 #: src/components/admin/CourseAreaEditor.tsx:178
 msgid "コースの範囲"
@@ -1422,7 +1434,11 @@ msgstr "When one course ends where the next begins, the same place can be on bot
 msgid "コースを見る"
 msgstr "See the courses"
 
-#: src/app/(public)/grading/page.tsx:57
+#: src/app/(public)/grading/page.tsx:40
+msgid "コース一覧"
+msgstr "All courses"
+
+#: src/app/(public)/grading/page.tsx:58
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 msgstr "Course constant = 1.8 × hours + 0.3 × distance (km) + 10 × climb (km) + 0.6 × descent (km)"
 
@@ -1863,9 +1879,9 @@ msgstr "Delete this waypoint"
 msgid "この線は、経由地の順番や位置と合わないため、区間に分けていません。経由地の順番と位置を直してから「区間に分ける」を押すか、区間を描くと、その区間から線が置き換わります（「元に戻す」で戻せます）。"
 msgstr "This line does not match the order or positions of the waypoints, so it has not been cut into legs. Fix the order and positions and press \"Cut into legs\", or draw a leg: the line is then replaced leg by leg (Undo brings it back)."
 
-#: src/app/(public)/grading/page.tsx:101
-msgid "この考え方は、長野県の「信州 山のグレーディング」を参考にしています。説明は、このサイト独自の言葉です。"
-msgstr "The idea follows the mountain grading used in Nagano Prefecture (信州 山のグレーディング). The explanations are in this site's own words."
+#: src/app/(public)/grading/page.tsx:103
+msgid "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。"
+msgstr "The idea follows Nagano Prefecture's Shinshu mountain grading (physical and technical levels). The descriptions are this site's own words."
 
 #: src/components/admin/FuriganaWords.tsx:79
 msgid "この言葉はもう一覧にあります。"
@@ -2408,9 +2424,9 @@ msgstr "Dashboard (admin)"
 msgid "たった今"
 msgstr "Just now"
 
-#: src/app/(public)/grading/page.tsx:60
-msgid "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、体力度は2です。"
-msgstr "For example, 4 hours, 8 km, 500 m up and 500 m down gives 1.8×4 + 0.3×8 + 10×0.5 + 0.6×0.5 = 14.9, so the physical level is 2."
+#: src/app/(public)/grading/page.tsx:61
+msgid "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、星1つです。"
+msgstr "For example, 4 hours, 8 km, 500 m up and 500 m down gives 1.8×4 + 0.3×8 + 10×0.5 + 0.6×0.5 = 14.9: one star."
 
 #: src/components/admin/useChecklistLabels.ts:22
 msgid "チェック"
@@ -2628,7 +2644,7 @@ msgstr "Smooth"
 msgid "ニックネームでもかまいません。"
 msgstr "A nickname is fine."
 
-#: src/components/RouteStats.tsx:31
+#: src/components/RouteStats.tsx:34
 msgid "のぼり"
 msgstr "Climb"
 
@@ -3673,10 +3689,6 @@ msgstr "Routes and rallies"
 msgid "ルートにもどる"
 msgstr "Back to route"
 
-#: src/app/(public)/grading/page.tsx:45
-msgid "ルートの「体力度」と「技術度」は、歩く前に大変さを知るための目安です。公式の情報ではありません。天気や体調で、感じ方は変わります。"
-msgstr "The physical level and technical level of a route are a guide to how hard it is before you set out. They are not official information, and how it feels changes with the weather and how you feel."
-
 #: src/app/(public)/sitemap/page.tsx:70
 msgid "ルートの一覧"
 msgstr "All routes"
@@ -3757,7 +3769,6 @@ msgstr "Edit route (admin)"
 msgid "ルートを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "Could not load the routes. Please wait a moment and reopen the page."
 
-#: src/app/(public)/grading/page.tsx:39
 #: src/app/(public)/routes/[id]/page.tsx:40
 #: src/app/(public)/routes/[id]/page.tsx:61
 msgid "ルート一覧"
@@ -3824,6 +3835,11 @@ msgstr "OK"
 #: src/components/navigation/NavPrompts.tsx:111
 msgid "を通りすぎました"
 msgstr " is behind you"
+
+#: src/components/RouteJourney.tsx:22
+#: src/components/RouteStats.tsx:27
+msgid "一周"
+msgstr "Loop"
 
 #: src/components/admin/map-editor/PlaceList.tsx:136
 msgid "一周して、ここに戻るルートのとき: 同じ位置に、スタンプのない終点を追加します"
@@ -4099,35 +4115,29 @@ msgstr "low"
 msgid "住所"
 msgstr "Address"
 
-#: src/components/RouteStats.tsx:43
+#: src/components/RouteStats.tsx:47
 msgid "体力"
-msgstr "Fitness"
+msgstr "Effort"
 
-#: src/components/RouteStats.tsx:43
-msgid "体力度"
-msgstr "Physical level"
+#: src/components/RouteStats.tsx:47
+msgid "体力の目安"
+msgstr "Effort"
 
-#. placeholder {0}: i + 1
-#: src/app/(public)/grading/page.tsx:66
-msgid "体力度 {0}"
-msgstr "Physical level {0}"
+#: src/app/(public)/grading/page.tsx:52
+msgid "体力の目安（星1〜5）"
+msgstr "Effort (1 to 5 stars)"
 
-#: src/app/(public)/grading/page.tsx:73
-msgid "体力度 10"
-msgstr "Physical level 10"
+#: src/components/RouteStats.tsx:53
+msgid "体力の目安とは"
+msgstr "About the effort stars"
 
-#: src/app/(public)/grading/page.tsx:51
+#: src/app/(public)/grading/page.tsx:43
+msgid "体力の目安と道のけわしさについて"
+msgstr "About the effort and path stars"
+
 #: src/components/admin/GradingFields.tsx:48
 msgid "体力度（1〜10）"
 msgstr "Physical level (1–10)"
-
-#: src/components/RouteStats.tsx:49
-msgid "体力度とは"
-msgstr "About the physical level"
-
-#: src/app/(public)/grading/page.tsx:42
-msgid "体力度と技術度について"
-msgstr "About the physical and technical levels"
 
 #: src/components/landing/Landing.tsx:195
 msgid "体験"
@@ -5264,11 +5274,6 @@ msgstr "Rename"
 msgid "名前順"
 msgstr "Name"
 
-#: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:24
-msgid "周回"
-msgstr "Round trip"
-
 #: src/components/admin/RouteEditor.tsx:567
 msgid "周回（元の場所へ）"
 msgstr "Loop (back to the start)"
@@ -5804,7 +5809,7 @@ msgid "役小角（役行者）"
 msgstr "En no Ozunu (En no Gyoja)"
 
 #: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:24
+#: src/components/RouteStats.tsx:27
 msgid "往復"
 msgstr "Out and back"
 
@@ -5910,26 +5915,9 @@ msgstr "Step"
 msgid "承認"
 msgstr "Approve"
 
-#: src/components/RouteStats.tsx:44
-msgid "技術"
-msgstr "Skill"
-
-#: src/components/RouteStats.tsx:44
-msgid "技術度"
-msgstr "Technical level"
-
-#: src/app/(public)/grading/page.tsx:85
 #: src/components/admin/GradingFields.tsx:80
 msgid "技術度（A〜E）"
 msgstr "Technical level (A–E)"
-
-#: src/components/RouteStats.tsx:53
-msgid "技術度とは"
-msgstr "About the technical level"
-
-#: src/app/(public)/grading/page.tsx:88
-msgid "技術度は計算ではなく、道の様子から人が決めます。Aがいちばんやさしく、Eがいちばん難しいです。"
-msgstr "The technical level is not calculated: a person decides it from what the path is like. A is the easiest and E the hardest."
 
 #: src/components/RouteJourney.tsx:83
 #: src/components/StopList.tsx:105
@@ -6025,8 +6013,8 @@ msgid "数字の丸をドラッグすると、経由地を動かせます。道�
 msgstr "Drag a numbered circle to move a waypoint. Add the path with \"Draw line\" or a GPX file."
 
 #: src/app/(public)/grading/page.tsx:79
-msgid "数字は目安です。保存される体力度は、ルートを作った人が、この計算を見て決めています。"
-msgstr "The numbers are a guide. The saved physical level is chosen by whoever made the route, looking at this calculation."
+msgid "数字は目安です。星の数は、コースを作った人が、この計算を見て決めています（長野県の体力度1〜10の、2段ずつが星1つです）。"
+msgstr "The numbers are a guide: the person who made the course chooses the stars after seeing this sum (each star covers two of Nagano's physical levels 1 to 10)."
 
 #: src/components/admin/GoalsForm.tsx:39
 msgid "数字を空にすると、その目標はなしになります。保存すると、ページを開き直したときに反映されます。"
@@ -6216,9 +6204,9 @@ msgstr "Timetable"
 
 #: src/components/map/MapScreen.tsx:521
 #: src/components/map/PlacesPanel.tsx:240
-#: src/components/RouteStats.tsx:37
-#: src/components/RouteStats.tsx:61
-#: src/components/RouteStats.tsx:82
+#: src/components/RouteStats.tsx:40
+#: src/components/RouteStats.tsx:65
+#: src/components/RouteStats.tsx:92
 msgid "時間"
 msgstr "Time"
 
@@ -6512,7 +6500,6 @@ msgid "歩いて行く道を見る"
 msgstr "Show the way on foot"
 
 #: src/components/admin/RouteEditor.tsx:563
-#: src/components/RouteStats.tsx:24
 msgid "歩き方"
 msgstr "How it is walked"
 
@@ -6526,11 +6513,11 @@ msgstr "Walk"
 msgid "歩く時間"
 msgstr "Walking time"
 
-#: src/components/RouteStats.tsx:50
-msgid "歩く時間・距離・登りと下りから、必要な体力を1（やさしい）から10（とても大変）で表した目安です。"
-msgstr "A guide to the stamina a route needs, from 1 (easy) to 10 (very demanding), worked out from walking time, distance, and climbing and descending."
+#: src/components/RouteStats.tsx:54
+msgid "歩く時間・距離・登りと下りから、必要な体力を星1つ（やさしい）から星5つ（とても大変）で表した目安です。"
+msgstr "How much stamina the walk takes, from its time, distance, climb and descent: one star (easy) to five (very hard)."
 
-#: src/app/(public)/grading/page.tsx:54
+#: src/app/(public)/grading/page.tsx:55
 msgid "歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど、体力が必要です。"
 msgstr "From the walking time, distance and the height climbed and descended, we work out a number called the course constant. The bigger it is, the more stamina is needed."
 
@@ -6708,11 +6695,6 @@ msgstr "Erase points (E)"
 #: src/components/admin/map-editor/MapEditor.tsx:1153
 msgid "点を置く"
 msgstr "Add points"
-
-#: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:24
-msgid "片道"
-msgstr "One way"
 
 #: src/components/admin/RouteEditor.tsx:566
 msgid "片道（別の場所へ）"
@@ -7895,9 +7877,9 @@ msgid "足りないもの"
 msgstr "What is missing"
 
 #: src/components/admin/RouteEditor.tsx:576
-#: src/components/RouteStats.tsx:27
-#: src/components/RouteStats.tsx:61
-#: src/components/RouteStats.tsx:82
+#: src/components/RouteStats.tsx:30
+#: src/components/RouteStats.tsx:65
+#: src/components/RouteStats.tsx:92
 msgid "距離"
 msgstr "Distance"
 
@@ -8018,6 +8000,11 @@ msgstr "{accepted} waiting stamp(s) were accepted!"
 msgid "送信待ちのスタンプが{waiting}件あります。ログアウトすると、次にログインするまで送れません。ログアウトしますか？"
 msgstr "{waiting} stamps are waiting to be sent. If you sign out they cannot be sent until you sign in again. Sign out anyway?"
 
+#: src/components/RouteJourney.tsx:22
+#: src/components/RouteStats.tsx:27
+msgid "通り抜け"
+msgstr "Point to point"
+
 #: src/components/admin/MunicipalitiesField.tsx:67
 msgid "通る順に並べます。市・町・村は一覧から選びます。一覧にない地名は、下に入力して追加します（8つまで）。"
 msgstr "Put them in the order the course passes through. Choose cities, towns and villages from the list; type a name that is not on it below (up to 8)."
@@ -8056,6 +8043,10 @@ msgstr "Running the site"
 #: src/app/(admin)/admin/visits/page.tsx:64
 msgid "過去{0}日"
 msgstr "Last {0} days"
+
+#: src/components/RouteStats.tsx:48
+msgid "道"
+msgstr "Path"
 
 #: src/components/SpotStats.tsx:42
 msgid "道から"
@@ -8097,6 +8088,22 @@ msgstr "Snap to trails"
 msgid "道に沿わせる機能が、まだ使えません。管理する人に、道案内サービスの設定を頼んでください。手で線を描くことはできます。"
 msgstr "Snapping to trails is not available yet. Ask whoever manages the site to set up the route-finding service. You can still draw the line by hand."
 
+#: src/components/RouteStats.tsx:48
+msgid "道のけわしさ"
+msgstr "Path"
+
+#: src/app/(public)/grading/page.tsx:85
+msgid "道のけわしさ（星1〜5）"
+msgstr "Path (1 to 5 stars)"
+
+#: src/components/RouteStats.tsx:57
+msgid "道のけわしさとは"
+msgstr "About the path stars"
+
+#: src/app/(public)/grading/page.tsx:88
+msgid "道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。"
+msgstr "The path stars are not worked out by a sum: a person chooses them from how the path is. One star is the easiest path, five the hardest."
+
 #: src/components/RouteView.tsx:125
 #: src/components/RouteView.tsx:277
 msgid "道のり"
@@ -8123,9 +8130,9 @@ msgstr "Choose by hand, based on the condition of the path."
 msgid "道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。"
 msgstr "Toilets, shops, stations, bus stops and more near the trail. Opening hours can change, so check before you go."
 
-#: src/components/RouteStats.tsx:54
-msgid "道の険しさや迷いやすさを、A（整った道）からE（厳しい岩場や藪）で表した目安です。"
-msgstr "A guide to how rough a path is and how easy it is to lose, from A (a well-kept path) to E (hard rock or thick brush)."
+#: src/components/RouteStats.tsx:58
+msgid "道の険しさや迷いやすさを、星1つ（整った歩きやすい道）から星5つ（岩場や手を使う所が多い道）で表した目安です。"
+msgstr "How rough the path is and how easy to lose: one star (a well-kept, easy path) to five (much rock, and places where you use your hands)."
 
 #. placeholder {0}: meters(back.m)
 #: src/components/navigation/NavigationHud.tsx:251
@@ -8360,7 +8367,7 @@ msgstr "hidden"
 msgid "離れる"
 msgstr "Leave"
 
-#: src/components/RouteStats.tsx:45
+#: src/components/RouteStats.tsx:49
 msgid "難しさ"
 msgstr "Difficulty"
 
