@@ -1,6 +1,6 @@
 /**
  * A walking pilgrim with a sedge hat and a staff: the figure that stands where the visitor is on a rally's trail. A solid
- * silhouette in the colour around it. The body is from walk.svg (SVG Repo, royalty free per the team); the hat and
+ * silhouette in the colour around it. The body is from walk.svg (SVG Repo, public domain: no credit needed, see svgrepo.com/page/licensing/#PD); the hat and
  * staff are our own.
  */
 export function Walker({ className = "" }: { className?: string }) {
