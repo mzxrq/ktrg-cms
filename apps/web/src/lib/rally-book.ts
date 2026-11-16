@@ -85,3 +85,6 @@ export function bookPages(input: BookInput): BookPage[] {
     };
   });
 }
+
+/** Where the open book page goes on a wide screen: the right column, under the stamps (the rally page places it; RallyBook fills it). */
+export const BOOK_SIDE_ID = "rally-book-side";
