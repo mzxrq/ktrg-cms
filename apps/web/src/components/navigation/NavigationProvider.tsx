@@ -51,6 +51,9 @@ interface NavigationApi {
   /** Far from the course, the visitor chose a walking route after all (anyone; a guest is offered signing up first). */
   chooseWalk(): void;
   signedIn: boolean;
+  /** Keep the screen on while navigating (the visitor's choice on this device, on until they turn it off). */
+  awake: boolean;
+  setAwake(on: boolean): void;
   /** How tall the navigation toast is (0 when hidden), so a page can keep that room free at the bottom. */
   toastPx: number;
   setToastPx(px: number): void;
@@ -65,7 +68,17 @@ interface NavigationApi {
   setSheetUp(up: boolean): void;
 }
 
-const NavigationContext = createContext<NavigationApi>({ session: null, start: () => {}, stop: () => {}, markStamped: () => {}, setTarget: () => {}, skipPassed: () => {}, returnToPassed: () => {}, voiceByDefault: false, chooseWalk: () => {}, signedIn: false, toastPx: 0, setToastPx: () => {}, bannerPx: 0, setBannerPx: () => {}, sheetUp: false, setSheetUp: () => {} });
+const NavigationContext = createContext<NavigationApi>({ session: null, start: () => {}, stop: () => {}, markStamped: () => {}, setTarget: () => {}, skipPassed: () => {}, returnToPassed: () => {}, voiceByDefault: false, chooseWalk: () => {}, signedIn: false, awake: true, setAwake: () => {}, toastPx: 0, setToastPx: () => {}, bannerPx: 0, setBannerPx: () => {}, sheetUp: false, setSheetUp: () => {} });
+
+const AWAKE_KEY = "ktrg-nav-awake";
+/** The screen stays on unless this visitor turned it off on this device (localStorage: a per-viewer convenience). */
+const awakeSaved = () => {
+  try {
+    return window.localStorage.getItem(AWAKE_KEY) !== "0";
+  } catch {
+    return true;
+  }
+};
 
 export function NavigationProvider({ children, signedIn, voiceByDefault = false }: { children: ReactNode; signedIn: boolean; voiceByDefault?: boolean }) {
   const controller = useRef<NavigationController | null>(null);
@@ -73,6 +86,15 @@ export function NavigationProvider({ children, signedIn, voiceByDefault = false 
   const [toastPx, setToastPx] = useState(0);
   const [bannerPx, setBannerPx] = useState(0);
   const [sheetUp, setSheetUp] = useState(false);
+  const [awake, setAwakeState] = useState(() => (typeof window === "undefined" ? true : awakeSaved()));
+  const setAwake = useCallback((on: boolean) => {
+    setAwakeState(on);
+    try {
+      window.localStorage.setItem(AWAKE_KEY, on ? "1" : "0");
+    } catch {
+      // private window: the choice lasts for this visit only
+    }
+  }, []);
   // Read when a path is wanted, so signing in or out during a session takes effect without restarting it.
   const signedInRef = useRef(signedIn);
   useEffect(() => {
@@ -113,11 +135,11 @@ export function NavigationProvider({ children, signedIn, voiceByDefault = false 
 
   const running = session !== null;
 
-  // The screen stays on while a navigation runs (2026-11-16, user: wake lock on by default), because the screen is the
-  // guidance. The browser lets the lock go whenever the page is hidden, so it is taken again on coming back; released at the
+  // The screen stays on while a navigation runs (2026-11-16, user: wake lock on by default, with an on/off switch: it uses
+  // more battery on a long course), because the screen is the guidance. The browser lets the lock go whenever the page is hidden, so it is taken again on coming back; released at the
   // end. Where the browser has no wake lock nothing happens.
   useEffect(() => {
-    if (!running || typeof navigator === "undefined" || !("wakeLock" in navigator)) return;
+    if (!running || !awake || typeof navigator === "undefined" || !("wakeLock" in navigator)) return;
     let lock: WakeLockSentinel | null = null;
     let gone = false;
     const take = () => {
@@ -137,7 +159,7 @@ export function NavigationProvider({ children, signedIn, voiceByDefault = false 
       document.removeEventListener("visibilitychange", take);
       void lock?.release().catch(() => {});
     };
-  }, [running]);
+  }, [running, awake]);
 
   // A place can close during the walk: asked once a minute and on coming back, only while the page is in view.
   useEffect(() => {
@@ -161,7 +183,7 @@ export function NavigationProvider({ children, signedIn, voiceByDefault = false 
   // Leaving the site (or a full reload) ends the session; nothing is kept.
   useEffect(() => () => controller.current?.stop(), []);
 
-  const api = useMemo(() => ({ session, start, stop, markStamped, setTarget, skipPassed, returnToPassed, voiceByDefault, chooseWalk, signedIn, toastPx, setToastPx, bannerPx, setBannerPx, sheetUp, setSheetUp }), [session, start, stop, markStamped, setTarget, skipPassed, returnToPassed, voiceByDefault, chooseWalk, signedIn, toastPx, bannerPx, sheetUp]);
+  const api = useMemo(() => ({ session, start, stop, markStamped, setTarget, skipPassed, returnToPassed, voiceByDefault, chooseWalk, signedIn, awake, setAwake, toastPx, setToastPx, bannerPx, setBannerPx, sheetUp, setSheetUp }), [session, start, stop, markStamped, setTarget, skipPassed, returnToPassed, voiceByDefault, chooseWalk, signedIn, awake, setAwake, toastPx, bannerPx, sheetUp]);
   return <NavigationContext.Provider value={api}>{children}</NavigationContext.Provider>;
 }
 

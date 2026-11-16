@@ -68,7 +68,7 @@ The bugs were not described one by one yet, so v2 starts with a short checklist 
 ## Slices (one PR each, never stacked)
 
 1. **N2-1 Dialog shape**: pinned footers and photo limits for `NavPrompts`, `NavFarCard`, `NavTargetPicker`; the source test. **Built 2026-11-16** (also the end confirm; `lib/nav-dialogs.test.ts`; the photo hides below 34rem of height).
-2. **N2-2 Android bottom insets**: toast and floating buttons use the max-inset pattern; system back closes dialogs.
+2. **N2-2 Android bottom insets**: toast and floating buttons use the max-inset pattern; system back closes dialogs. **Built 2026-11-16**: `--bar-inset` (the system bar the tab bar adds) for the panel and the コースにもどる button; Android back closes the arrival card (= あとで) and the passed card (= 次へ進む) via CloseWatcher. Also the wake lock on/off switch (☀, on by default, battery note in the label and the map help; side agent and CLAUDE.md: behind a toggle).
 3. **N2-3 Android checklist fixes**: whatever the user's phone shows from the list above (voice, resume, Huawei position).
 4. **N2-4 Arrival in the strip**: the stamp moment without a card.
 5. **N2-5 Wake lock and compass**: built first (2026-11-16, user asked why the map would not turn): heading-up from the phone's compass while following, wake lock on during navigation; browser APIs only, no library. A toggle is left for later if the compass misbehaves on a phone.

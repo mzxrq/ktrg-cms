@@ -18,9 +18,37 @@ const COVER = "fixed inset-0 z-40 flex items-center justify-center bg-black/50 p
 /** Long enough to read and answer with a walking pole in one hand. */
 const PASSED_WAIT_S = 20;
 
+// Not in TypeScript's DOM types yet (Chrome 120+, Android's back gesture and button; elsewhere it does not exist).
+type CloseWatcherLike = { onclose: (() => void) | null; destroy(): void };
+type CloseWatcherCtor = new () => CloseWatcherLike;
+
+/**
+ * Android's back closes the card instead of leaving the map (N2-2, docs/navigation-v2-plan.md). A dialog element opened with
+ * showModal() gets this from the browser; these cards are plain boxes, so they ask for it. Without CloseWatcher: nothing.
+ */
+function useBackCloses(onBack: () => void) {
+  const latest = useRef(onBack);
+  useEffect(() => {
+    latest.current = onBack;
+  }, [onBack]);
+  useEffect(() => {
+    const Ctor = (window as unknown as { CloseWatcher?: CloseWatcherCtor }).CloseWatcher;
+    if (!Ctor) return;
+    let watcher: CloseWatcherLike;
+    try {
+      watcher = new Ctor();
+    } catch {
+      return;
+    }
+    watcher.onclose = () => latest.current();
+    return () => watcher.destroy();
+  }, []);
+}
+
 /** At a stamp place: its photo, and the stamp button up front. "Later" leaves the small button at the bottom of the screen. */
 export function ArrivalPrompt({ name, nameLang, photo, onLater, children }: { name: string; nameLang: "ja" | "en"; photo: MapPhoto | null; onLater: () => void; children: (later: ReactNode) => ReactNode }) {
   const { t } = useLingui();
+  useBackCloses(onLater); // back = あとで
   // The dimmed cover fades in and the card rises (lib/motion; none at the level Off).
   const coverRef = useEnter<HTMLDivElement>("fade");
   const cardRef = useEnter<HTMLElement>("rise");
@@ -90,6 +118,7 @@ export function PassedPrompt({ name, nameLang, onGoOn, onGoBack }: { name: strin
   // The dimmed cover fades in and the card rises (lib/motion; none at the level Off).
   const coverRef = useEnter<HTMLDivElement>("fade");
   const cardRef = useEnter<HTMLElement>("rise");
+  useBackCloses(onGoOn); // back = what happens anyway after the countdown
   const [left, setLeft] = useState(PASSED_WAIT_S);
   const goOn = useRef(onGoOn);
   useEffect(() => {
