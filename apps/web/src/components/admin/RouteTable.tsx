@@ -182,7 +182,7 @@ export function RouteTable({ initial, locale }: { initial: AdminRouteSummary[]; 
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-line">
+              <tbody className="rows-in divide-y divide-line">
                 {shown.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="p-6 text-lg">

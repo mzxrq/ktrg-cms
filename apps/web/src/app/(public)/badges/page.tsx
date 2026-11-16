@@ -45,7 +45,7 @@ export default async function BadgesPage() {
           <Trans>公開できるようになったら、ここにコースのバッジが表示されます。</Trans>
         </EmptyState>
       ) : (
-        <ul className="grid grid-cols-2 gap-4 px-4 sm:grid-cols-3">
+        <ul className="list-in grid grid-cols-2 gap-4 px-4 sm:grid-cols-3">
           {routes.map((r, i) => {
             const done = states[i] === "complete";
             return (

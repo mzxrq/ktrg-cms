@@ -141,7 +141,7 @@ export function PlaceTable({
                 {heading(6, t`削除`, true)}
               </tr>
             </thead>
-            <tbody className="divide-y divide-line">
+            <tbody className="rows-in divide-y divide-line">
               {places.map((p, i) => {
                 const row = i + 1;
                 return (
