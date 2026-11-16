@@ -14,8 +14,9 @@ import { groupOf } from "@/lib/places";
 import { PlaceGroupPicture } from "@/components/PlaceIcon";
 import { useGroupNames } from "./PlacesPanel";
 import { mapStyleSource } from "@/lib/large-map-style";
-import { boundsOf, lineFeature, markerKind, nextStopId, pinScale, PIN_NUMBER_MIN_ZOOM, routeLineLayers, sideLineCollection, sideLineLayers, zoomLimits, type Position } from "@/lib/map";
+import { boundsOf, gsiAttribution, lineFeature, markerKind, nextStopId, pinScale, PIN_NUMBER_MIN_ZOOM, routeLineLayers, sideLineCollection, sideLineLayers, zoomLimits, type Position } from "@/lib/map";
 import type { MapSettings } from "@/lib/map-settings";
+import { GSI_DEM_SOURCE, registerGsiDem } from "@/lib/gsi-dem";
 import { getRouteLine } from "@/lib/navigation/line-client";
 import { useCursorMarker } from "./useCursorMarker";
 import { createMarkerElement, createPinElement, createPlaceMarkerElement, createCourseDot } from "./MapMarker";
@@ -227,6 +228,12 @@ export function MapScreenCanvas({
         const start = () => {
           if (started || cancelled || !map || !map.isStyleLoaded()) return;
           started = true;
+          // 3D, when an admin turned it on: the hills raised under the tilted view (GSI elevation tiles; see lib/gsi-dem.ts).
+          if (settings.terrain3d) {
+            registerGsiDem(ml);
+            map.addSource("gsi-dem", { ...GSI_DEM_SOURCE, attribution: gsiAttribution });
+            map.setTerrain({ source: "gsi-dem", exaggeration: 1.5 });
+          }
           map.addSource(AREAS, { type: "geojson", data: EMPTY });
           // A course not open yet (soon) is the same box, lighter and dashed, so the map shows it is there but not open.
           const OPEN = ["!", ["get", "soon"]] as never;

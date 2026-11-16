@@ -3,7 +3,7 @@ import { defaultMapSettings, sanitizeMapSettings } from "./map-settings";
 
 describe("map settings", () => {
   test("the defaults: the quiet pale map, hillshade terrain, tiles as GSI draws them", () => {
-    expect(defaultMapSettings).toEqual({ base: "pale", terrain: "hillshade", terrainOpacity: 0.5, saturation: 0, contrast: 0, labelScale: 1, iconScale: 1, lineScale: 1 });
+    expect(defaultMapSettings).toEqual({ base: "pale", terrain: "hillshade", terrainOpacity: 0.5, saturation: 0, contrast: 0, labelScale: 1, iconScale: 1, lineScale: 1, terrain3d: false });
   });
 
   test("each field falls back on its own, and the numbers are kept in range", () => {
@@ -16,6 +16,7 @@ describe("map settings", () => {
       labelScale: 1,
       iconScale: 1,
       lineScale: 1,
+      terrain3d: false,
     });
     expect(sanitizeMapSettings({ terrainOpacity: -1 }).terrainOpacity).toBe(0.2);
     expect(sanitizeMapSettings({ terrainOpacity: "high" }).terrainOpacity).toBe(0.5);
@@ -26,4 +27,10 @@ describe("map settings", () => {
     expect(sanitizeMapSettings(null)).toEqual(defaultMapSettings);
     expect(sanitizeMapSettings("pale")).toEqual(defaultMapSettings);
   });
+});
+
+test("3D is on only when an admin saved true; anything else is off", () => {
+  expect(sanitizeMapSettings({ terrain3d: true }).terrain3d).toBe(true);
+  expect(sanitizeMapSettings({ terrain3d: "yes" }).terrain3d).toBe(false);
+  expect(sanitizeMapSettings({}).terrain3d).toBe(false);
 });

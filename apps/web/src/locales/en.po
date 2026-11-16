@@ -11,8 +11,8 @@ msgstr " (until {0})"
 msgid "（{ageText}・{0} MB）"
 msgstr "({ageText}, {0} MB)"
 
-#: src/components/landing/Landing.tsx:180
-#: src/components/landing/Landing.tsx:204
+#: src/components/landing/Landing.tsx:184
+#: src/components/landing/Landing.tsx:208
 msgid "（公式サイト、新しいタブで開きます）"
 msgstr "(official site, opens in a new tab)"
 
@@ -385,15 +385,15 @@ msgid "{number}番 まだ押していません"
 msgstr "No. {number}, not stamped yet"
 
 #: src/components/map/MapScreen.tsx:367
-#: src/components/map/MapScreenCanvas.tsx:472
+#: src/components/map/MapScreenCanvas.tsx:479
 msgid "{order}. {name}"
 msgstr "{order}. {name}"
 
-#: src/components/map/MapScreenCanvas.tsx:472
+#: src/components/map/MapScreenCanvas.tsx:479
 msgid "{order}. {name}（スタンプ完了）"
 msgstr "{order}. {name} (all stamps collected)"
 
-#: src/components/map/MapScreenCanvas.tsx:472
+#: src/components/map/MapScreenCanvas.tsx:479
 msgid "{order}. {name}（準備中）"
 msgstr "{order}. {name} (coming soon)"
 
@@ -467,7 +467,7 @@ msgid "{title}を読み込めませんでした。しばらくしてから、ペ
 msgstr "{title} could not be loaded. Please reload the page in a little while."
 
 #: src/components/landing/Journey.tsx:55
-#: src/components/landing/Landing.tsx:320
+#: src/components/landing/Landing.tsx:324
 msgid "{TOTAL_STAMPS}か所"
 msgstr "{TOTAL_STAMPS} places"
 
@@ -575,6 +575,14 @@ msgstr "Write はい (yes) or いいえ (no)"
 #: src/components/admin/RouteImport.tsx:75
 msgid "「ルート」シート {0} 行目"
 msgstr "Row {0} of the “ルート” sheet"
+
+#: src/app/(admin)/admin/settings/page.tsx:24
+msgid "「地図」ページ、ルートのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
+msgstr "How the maps look on the Map page, the route pages and the home page. What you change here shows on visitors' screens at once."
+
+#: src/components/admin/SiteSettingsForm.tsx:129
+msgid "「地図」ページで、山を立体にする"
+msgstr "Raise the mountains in 3D on the Map page"
 
 #: src/components/admin/RouteEditor.tsx:803
 msgid "「地図と線」で経由地を置く"
@@ -1235,7 +1243,7 @@ msgstr "The name has characters that cannot be used, or is too long (40 characte
 msgid "お名前は未設定です"
 msgstr "No name set"
 
-#: src/components/landing/Landing.tsx:194
+#: src/components/landing/Landing.tsx:198
 msgid "お土産"
 msgstr "Souvenirs"
 
@@ -1353,7 +1361,7 @@ msgstr "Bold display"
 msgid "クリックで、この点を消します"
 msgstr "Click to remove this point"
 
-#: src/components/landing/Landing.tsx:193
+#: src/components/landing/Landing.tsx:197
 msgid "グルメ"
 msgstr "Gourmet"
 
@@ -1367,8 +1375,8 @@ msgid "ゲストのまま使う"
 msgstr "Stay as a guest"
 
 #: src/components/landing/Journey.tsx:53
-#: src/components/landing/Landing.tsx:318
-#: src/components/map/MapScreenCanvas.tsx:612
+#: src/components/landing/Landing.tsx:322
+#: src/components/map/MapScreenCanvas.tsx:619
 msgid "コース"
 msgstr "Courses"
 
@@ -1804,7 +1812,7 @@ msgstr "This device can't use face or fingerprint login. Please try email instea
 msgid "この端末では地図の見本を表示できません。"
 msgstr "The map preview cannot be shown on this device."
 
-#: src/components/map/MapScreenCanvas.tsx:568
+#: src/components/map/MapScreenCanvas.tsx:575
 msgid "この端末では地図を表示できません。下の一覧から区間を選べます。"
 msgstr "This device can't show the map. You can choose a course from the list below."
 
@@ -1914,7 +1922,7 @@ msgstr "Remove this face or fingerprint login?"
 msgid "コピーしました"
 msgstr "Copied"
 
-#: src/components/admin/AdminNav.tsx:53
+#: src/components/admin/AdminNav.tsx:54
 msgid "コミュニティ"
 msgstr "Community"
 
@@ -2012,11 +2020,7 @@ msgstr "View on site"
 msgid "サイトに反映しますか？"
 msgstr "Publish this to the site?"
 
-#: src/app/(admin)/admin/settings/page.tsx:24
-msgid "サイトの全体に関わる設定です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
-msgstr "Settings that affect the whole site. What you change here shows on visitors' screens at once."
-
-#: src/components/admin/AdminNav.tsx:52
+#: src/components/admin/AdminNav.tsx:53
 msgid "サイトの内容"
 msgstr "Site content"
 
@@ -2637,7 +2641,7 @@ msgstr "Climb"
 msgid "のぼり {0}m"
 msgstr "Climb {0} m"
 
-#: src/components/landing/Landing.tsx:378
+#: src/components/landing/Landing.tsx:382
 msgid "のものです。"
 msgstr "."
 
@@ -3182,7 +3186,7 @@ msgid "まだスタンプはありません。"
 msgstr "No stamps yet."
 
 #: src/components/admin/HomeSectionsForm.tsx:62
-#: src/components/admin/SiteSettingsForm.tsx:136
+#: src/components/admin/SiteSettingsForm.tsx:145
 msgid "まだ保存していません。"
 msgstr "Not saved yet."
 
@@ -3208,7 +3212,7 @@ msgstr "Connect straight"
 msgid "マップ"
 msgstr "Map"
 
-#: src/components/landing/LandingMap.tsx:97
+#: src/components/landing/LandingMap.tsx:103
 msgid "マップをひらく"
 msgstr "Open the map"
 
@@ -3304,7 +3308,7 @@ msgstr "Main photo"
 msgid "めぐる場所"
 msgstr "Places to visit"
 
-#: src/components/admin/AdminNav.tsx:75
+#: src/components/admin/AdminNav.tsx:76
 #: src/components/SiteHeader.tsx:208
 #: src/components/TabBar.tsx:152
 msgid "メニュー"
@@ -3549,7 +3553,7 @@ msgid "ラリーを直す（管理）"
 msgstr "Edit rally (admin)"
 
 #: src/components/landing/Journey.tsx:92
-#: src/components/landing/Landing.tsx:120
+#: src/components/landing/Landing.tsx:124
 #: src/components/RestoreStamps.tsx:44
 msgid "ラリーを見る"
 msgstr "See the rallies"
@@ -3665,7 +3669,7 @@ msgstr "There are no routes yet."
 msgid "ルートがまだありません。「新しいルート」から作ってください。"
 msgstr "There are no routes yet. Create one with \"New route\"."
 
-#: src/components/admin/AdminNav.tsx:51
+#: src/components/admin/AdminNav.tsx:52
 msgid "ルートとラリー"
 msgstr "Routes and rallies"
 
@@ -3731,7 +3735,7 @@ msgid "ルートやラリー、ブログの記事で、しおりのボタンを�
 msgstr "Press the bookmark button on a route, a rally or a blog post and it is saved here. When you are signed in, it is saved to your account."
 
 #: src/components/admin/RouteTable.tsx:127
-#: src/components/landing/Landing.tsx:117
+#: src/components/landing/Landing.tsx:121
 #: src/components/landing/LandingHero.tsx:72
 msgid "ルートをさがす"
 msgstr "Find a route"
@@ -3788,7 +3792,7 @@ msgstr "Log out"
 #: src/components/auth/RegisterFlow.tsx:179
 #: src/components/blog/CommentSection.tsx:127
 #: src/components/GuestNag.tsx:88
-#: src/components/landing/Landing.tsx:126
+#: src/components/landing/Landing.tsx:130
 #: src/components/landing/LandingHero.tsx:78
 #: src/components/ProfileSettings.tsx:220
 #: src/components/SignInPrompt.tsx:26
@@ -4129,7 +4133,7 @@ msgstr "About the physical level"
 msgid "体力度と技術度について"
 msgstr "About the physical and technical levels"
 
-#: src/components/landing/Landing.tsx:195
+#: src/components/landing/Landing.tsx:199
 msgid "体験"
 msgstr "Experiences"
 
@@ -4198,7 +4202,7 @@ msgid "保存していない編集が、このブラウザに残っています�
 msgstr "Unsaved edits were kept in this browser ({offeredAt}). Restore them?"
 
 #: src/components/admin/HomeSectionsForm.tsx:60
-#: src/components/admin/SiteSettingsForm.tsx:131
+#: src/components/admin/SiteSettingsForm.tsx:140
 msgid "保存しています…"
 msgstr "Saving…"
 
@@ -4247,7 +4251,7 @@ msgstr "Saved. No more places waiting to be checked."
 #: src/components/admin/PageTextEditor.tsx:67
 #: src/components/admin/RouteEditor.tsx:490
 #: src/components/admin/SiteSettingsForm.tsx:50
-#: src/components/admin/SiteSettingsForm.tsx:131
+#: src/components/admin/SiteSettingsForm.tsx:140
 #: src/components/ProfileSettings.tsx:261
 #: src/components/settings/PasskeyManager.tsx:136
 #: src/components/settings/PrefsForm.tsx:173
@@ -4369,17 +4373,17 @@ msgstr "Edit"
 msgid "入力に、まちがいがあるようです。見直して、もう一度お試しください。"
 msgstr "Something in what you entered looks wrong. Please check it and try again."
 
-#: src/components/landing/LandingMap.tsx:55
+#: src/components/landing/LandingMap.tsx:58
 msgid "全{count}区間のある場所を示した図"
 msgstr "A diagram of where all {count} courses lie"
 
 #: src/components/landing/Journey.tsx:53
-#: src/components/landing/Landing.tsx:318
+#: src/components/landing/Landing.tsx:322
 msgid "全{TOTAL_ROUTES}区間"
 msgstr "{TOTAL_ROUTES} sections"
 
-#: src/components/landing/Landing.tsx:280
-#: src/components/landing/Landing.tsx:352
+#: src/components/landing/Landing.tsx:284
+#: src/components/landing/Landing.tsx:356
 msgid "全{TOTAL_ROUTES}区間を見る"
 msgstr "See all {TOTAL_ROUTES} sections"
 
@@ -4625,7 +4629,7 @@ msgstr "No photo"
 msgid "写真と動画"
 msgstr "Photo and video"
 
-#: src/components/landing/Landing.tsx:374
+#: src/components/landing/Landing.tsx:378
 msgid "写真と文章の一部は、"
 msgstr "Some of the photos and text are from the "
 
@@ -4781,7 +4785,7 @@ msgstr "Back to the settings that came with the app."
 msgid "初めの設定に戻す"
 msgstr "Go back to the first settings"
 
-#: src/components/admin/SiteSettingsForm.tsx:134
+#: src/components/admin/SiteSettingsForm.tsx:143
 msgid "初期値にする"
 msgstr "Use the default"
 
@@ -5323,7 +5327,7 @@ msgstr "Country"
 msgid "国を選択してください"
 msgstr "Choose your country"
 
-#: src/components/landing/LandingMap.tsx:92
+#: src/components/landing/LandingMap.tsx:98
 msgid "国土地理院（地理院タイル）"
 msgstr "Geospatial Information Authority of Japan (GSI Tiles)"
 
@@ -5334,6 +5338,10 @@ msgstr "Takes the sizes and colours of text, symbols and lines from a JSON file 
 #: src/components/admin/LargeStyleUpload.tsx:76
 msgid "国土地理院のスタイルファイル"
 msgstr "GSI style file"
+
+#: src/components/admin/SiteSettingsForm.tsx:131
+msgid "国土地理院の標高タイルで、傾けた地図の山を高く見せます。読みこむタイルが増えるので、電波の弱い山の中では重くなります。下の見本は平らなままです。「地図」ページで確かめてください。"
+msgstr "Uses GSI elevation tiles to raise the mountains on the tilted map. It downloads more tiles, so it is heavier on a weak signal in the mountains. The preview below stays flat; check it on the Map page."
 
 #: src/components/admin/HoursInput.tsx:15
 msgid "土曜日"
@@ -5374,7 +5382,7 @@ msgstr "Show in the map"
 msgid "地図と線"
 msgstr "Map & line"
 
-#: src/components/map/MapScreenCanvas.tsx:581
+#: src/components/map/MapScreenCanvas.tsx:588
 msgid "地図に出すもの"
 msgstr "Show on the map"
 
@@ -5398,9 +5406,15 @@ msgstr "Map type"
 msgid "地図の見せ方"
 msgstr "How the map is shown"
 
+#: src/app/(admin)/admin/settings/page.tsx:21
+#: src/components/admin/AdminNav.tsx:46
 #: src/components/admin/SiteSettingsForm.tsx:81
 msgid "地図の見た目"
 msgstr "Map appearance"
+
+#: src/app/(admin)/admin/settings/page.tsx:10
+msgid "地図の見た目（管理）"
+msgstr "Map appearance (admin)"
 
 #: src/components/admin/HomeTextFields.tsx:31
 msgid "地図の見出し"
@@ -5454,7 +5468,7 @@ msgstr "Save map"
 msgid "地図を保存しています… {percent}%"
 msgstr "Saving the map… {percent}%"
 
-#: src/components/map/MapScreenCanvas.tsx:654
+#: src/components/map/MapScreenCanvas.tsx:661
 msgid "地図を傾ける"
 msgstr "Tilt the map"
 
@@ -5462,7 +5476,7 @@ msgstr "Tilt the map"
 msgid "地図を動かす"
 msgstr "Move the map there"
 
-#: src/components/map/MapScreenCanvas.tsx:654
+#: src/components/map/MapScreenCanvas.tsx:661
 msgid "地図を平らにする（北が上）"
 msgstr "Lay the map flat (north up)"
 
@@ -5477,7 +5491,7 @@ msgstr "Make the map easier on the eyes"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1210
 #: src/components/admin/map-editor/MapEditorLoader.tsx:11
-#: src/components/map/MapScreenCanvas.tsx:577
+#: src/components/map/MapScreenCanvas.tsx:584
 #: src/components/map/MapScreenCanvasLoader.tsx:12
 #: src/components/map/TrailMap.tsx:433
 #: src/components/map/TrailMapLoader.tsx:12
@@ -5679,7 +5693,7 @@ msgstr "Seasonal"
 msgid "完了"
 msgstr "Done"
 
-#: src/components/landing/Landing.tsx:196
+#: src/components/landing/Landing.tsx:200
 msgid "宿泊"
 msgstr "Stay"
 
@@ -5697,7 +5711,7 @@ msgstr "Side trip (an optional stop a little off the path)"
 msgid "寄り道の点を選んでいます。サブコースの線（{legName}）は、右の一覧の「サブコースの線を描く」か、「線を描く」で描けます。本線の点をクリックする必要はありません。"
 msgstr "This side trip is selected. Draw its sub-course line ({legName}) with \"Draw the sub-course line\" in the list on the right, or the Draw line tool. You do not need to click the main-route point."
 
-#: src/components/map/MapScreenCanvas.tsx:612
+#: src/components/map/MapScreenCanvas.tsx:619
 msgid "寄り道の線"
 msgstr "Side trips"
 
@@ -5974,7 +5988,7 @@ msgstr "Available"
 msgid "担当 {0}"
 msgstr "By {0}"
 
-#: src/components/map/MapScreenCanvas.tsx:643
+#: src/components/map/MapScreenCanvas.tsx:650
 #: src/components/map/TrailMap.tsx:447
 msgid "拡大"
 msgstr "Zoom in"
@@ -6141,7 +6155,7 @@ msgstr "A Japanese name is needed to create a new one"
 #: src/app/(public)/sitemap/page.tsx:111
 #: src/components/auth/LoginFlow.tsx:153
 #: src/components/GuestNag.tsx:85
-#: src/components/landing/Landing.tsx:114
+#: src/components/landing/Landing.tsx:118
 #: src/components/landing/LandingHero.tsx:69
 #: src/components/SignInPrompt.tsx:23
 #: src/components/SignInPrompt.tsx:51
@@ -6202,11 +6216,11 @@ msgstr "Enter the Japanese name."
 msgid "日本語の字幕です。もう一度送ると、置き換わります。字幕は動画の横に保存され、動画を入れ替えたときは、字幕も送りなおしてください。"
 msgstr "Japanese subtitles. Sending again replaces them. They are stored beside the video, so when you replace the video, send the subtitles again."
 
-#: src/components/landing/Landing.tsx:172
+#: src/components/landing/Landing.tsx:176
 msgid "日本遺産 葛城修験ストーリー"
 msgstr "The Japan Heritage Katsuragi Shugen Story"
 
-#: src/components/landing/Landing.tsx:161
+#: src/components/landing/Landing.tsx:165
 msgid "日本遺産「葛城修験」PR動画（180秒）"
 msgstr "Japan Heritage \"Katsuragi Shugen\" promotional video (180 seconds)"
 
@@ -6391,7 +6405,7 @@ msgstr "Web search"
 msgid "概要"
 msgstr "Overview"
 
-#: src/components/landing/Landing.tsx:174
+#: src/components/landing/Landing.tsx:178
 msgid "構成文化財"
 msgstr "Constituent cultural properties"
 
@@ -6742,7 +6756,7 @@ msgstr "Status not checked"
 msgid "現在の場所"
 msgstr "You are here"
 
-#: src/components/map/MapScreenCanvas.tsx:667
+#: src/components/map/MapScreenCanvas.tsx:674
 msgid "現在地を真ん中にする（進む向きが上）"
 msgstr "Keep my position in the middle (direction of travel up)"
 
@@ -6861,7 +6875,7 @@ msgid "登録なしで残せるスタンプの数が、上限になりました�
 msgstr "You have reached the most stamps that can be kept without an account. Sign up to keep collecting."
 
 #: src/components/auth/RegisterFlow.tsx:177
-#: src/components/landing/Landing.tsx:124
+#: src/components/landing/Landing.tsx:128
 #: src/components/landing/LandingHero.tsx:76
 msgid "登録済みの方は"
 msgstr "Already registered?"
@@ -7029,6 +7043,10 @@ msgstr "A map of aerial photographs."
 msgid "空のままにすると、ルートの写真が使われます。日本語の欄に入れた写真は、英語の画面でも使われます。"
 msgstr "If left empty, a course's photo is used. A photo set in the Japanese box is also used on the English screen."
 
+#: src/components/admin/SiteSettingsForm.tsx:126
+msgid "立体の地図（3D）"
+msgstr "3D map"
+
 #: src/components/settings/PasskeyManager.tsx:125
 msgid "端末の名前"
 msgstr "Device name"
@@ -7046,7 +7064,7 @@ msgstr "You can skip this."
 msgid "箇条書き"
 msgstr "Bullet list"
 
-#: src/components/admin/AdminNav.tsx:67
+#: src/components/admin/AdminNav.tsx:68
 msgid "管理メニュー"
 msgstr "Admin menu"
 
@@ -7123,7 +7141,7 @@ msgid "約{n}m"
 msgstr "about {n} m"
 
 #: src/components/landing/Journey.tsx:54
-#: src/components/landing/Landing.tsx:319
+#: src/components/landing/Landing.tsx:323
 msgid "約{TRAIL_KM}km"
 msgstr "About {TRAIL_KM} km"
 
@@ -7143,13 +7161,13 @@ msgstr "End"
 #: src/components/admin/PlacePanel.tsx:44
 #: src/components/landing/DeskPanel.tsx:41
 #: src/components/landing/Journey.tsx:55
-#: src/components/landing/Landing.tsx:320
-#: src/components/map/MapScreenCanvas.tsx:612
+#: src/components/landing/Landing.tsx:324
+#: src/components/map/MapScreenCanvas.tsx:619
 #: src/components/PointKindName.tsx:9
 msgid "経塚"
 msgstr "Sutra mounds"
 
-#: src/components/map/MapScreenCanvas.tsx:513
+#: src/components/map/MapScreenCanvas.tsx:520
 msgid "経塚 {name}"
 msgstr "Sutra mound {name}"
 
@@ -7421,7 +7439,7 @@ msgstr "Write both latitude and longitude"
 msgid "縦の長さ"
 msgstr "Height"
 
-#: src/components/map/MapScreenCanvas.tsx:643
+#: src/components/map/MapScreenCanvas.tsx:650
 #: src/components/map/TrailMap.tsx:452
 msgid "縮小"
 msgstr "Zoom out"
@@ -7548,7 +7566,7 @@ msgstr "About Katsuragi Shugen"
 msgid "葛城修験の地図"
 msgstr "Map of Katsuragi Shugen"
 
-#: src/components/landing/Landing.tsx:173
+#: src/components/landing/Landing.tsx:177
 msgid "葛城修験の基礎知識"
 msgstr "Basics of Katsuragi Shugen"
 
@@ -7561,7 +7579,7 @@ msgstr "The Katsuragi Shugen Trail"
 msgid "葛城修験の道のことや、歩いた日のことをお知らせします。"
 msgstr "News about the Katsuragi Shugen trail and the days we walked it."
 
-#: src/components/landing/Landing.tsx:376
+#: src/components/landing/Landing.tsx:380
 msgid "葛城修験日本遺産活用推進協議会の公式サイト"
 msgstr "official site of the Katsuragi Shugen Japan Heritage Promotion Council"
 
@@ -7709,11 +7727,11 @@ msgstr "Heading"
 msgid "見出しは、よくあるご質問では質問、遊び方では手順の名前になります。その下に、本文を書きます。"
 msgstr "On the FAQ a heading is a question, and on How to play it is the name of a step. Write the text under it."
 
-#: src/components/map/MapScreenCanvas.tsx:633
+#: src/components/map/MapScreenCanvas.tsx:640
 msgid "見本の位置（目安です）"
 msgstr "Sample positions (rough)"
 
-#: src/components/landing/Landing.tsx:192
+#: src/components/landing/Landing.tsx:196
 msgid "観光"
 msgstr "Sightseeing"
 
@@ -7812,15 +7830,6 @@ msgstr "See details"
 #: src/components/admin/AdminItemForm.tsx:330
 msgid "詳細"
 msgstr "Details"
-
-#: src/app/(admin)/admin/settings/page.tsx:21
-#: src/components/admin/AdminNav.tsx:45
-msgid "詳細設定"
-msgstr "Advanced settings"
-
-#: src/app/(admin)/admin/settings/page.tsx:10
-msgid "詳細設定（管理）"
-msgstr "Advanced settings (admin)"
 
 #: src/components/admin/HomeTextFields.tsx:24
 #: src/components/admin/HomeTextFields.tsx:38
@@ -8048,7 +8057,7 @@ msgstr "Closures and the like will be shown here."
 msgid "遊び方"
 msgstr "How to play"
 
-#: src/components/admin/AdminNav.tsx:54
+#: src/components/admin/AdminNav.tsx:55
 msgid "運営"
 msgstr "Running the site"
 
@@ -8291,7 +8300,7 @@ msgid "金曜日"
 msgstr "Friday"
 
 #: src/components/landing/Journey.tsx:54
-#: src/components/landing/Landing.tsx:319
+#: src/components/landing/Landing.tsx:323
 msgid "長さ"
 msgstr "Length"
 

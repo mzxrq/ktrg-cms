@@ -9,7 +9,7 @@ import { confirmDialog } from "@/components/ConfirmDialog";
 import { showToast } from "@/lib/admin/toast";
 import { readJson } from "@/lib/read-json";
 
-/** 管理 > 詳細設定 > ホームページ: which optional sections visitors see. Each one is off until it is turned on here. */
+/** 管理 > ページ > ホーム: which optional sections visitors see. Each one is off until it is turned on here. */
 export function HomeSectionsForm({ initial }: { initial: { tourism: boolean } }) {
   const { t } = useLingui();
   const messages = useErrorMessages();

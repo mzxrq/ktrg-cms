@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { englishMaxZoom, gsiTileListUrl } from "@/lib/map";
+import { baseRasterLayer, englishMaxZoom, gsiTileListUrl } from "@/lib/map";
+import { defaultMapSettings, type MapSettings } from "@/lib/map-settings";
 import { rectangleRing } from "@/lib/map-screen";
 import type { RouteSummary } from "@/lib/content";
 import { buttonStyle } from "@/components/button";
@@ -25,7 +26,7 @@ const worldY = (lat: number, z: number) => {
 };
 
 /** The map of every course, edge to edge, inside the home page's 歩く道 chapter (which carries the heading). */
-export function LandingMap({ routes }: { routes: RouteSummary[] }) {
+export function LandingMap({ routes, look = defaultMapSettings }: { routes: RouteSummary[]; /** 管理 > 地図の見た目: the same base map and calming as the real map. */ look?: MapSettings }) {
   const { t, i18n } = useLingui();
   const boxes = routes.flatMap((r) => (r.area ? [{ order: r.order, ring: rectangleRing(r.area) }] : []));
   if (boxes.length === 0) return null;
@@ -40,7 +41,9 @@ export function LandingMap({ routes }: { routes: RouteSummary[] }) {
   const y = (lat: number) => worldY(lat, z);
   const [left, top] = [x(west) - PAD_X, y(north) - PAD_Y];
   const [W, H] = [Math.round(x(east) - x(west) + 2 * PAD_X), Math.round(y(south) - y(north) + 2 * PAD_Y)];
-  const layer = i18n.locale === "en" && z <= englishMaxZoom ? "english" : "pale";
+  const layer = i18n.locale === "en" && z <= englishMaxZoom && (look.base === "std" || look.base === "pale") ? "english" : baseRasterLayer(look.base);
+  // The real map's raster-saturation / raster-contrast, as near as CSS gets (0 leaves the tiles as GSI draws them).
+  const calm = look.saturation === 0 && look.contrast === 0 ? undefined : { filter: `saturate(${1 + look.saturation}) contrast(${1 + look.contrast})` };
   const tiles: { key: string; href: string; x: number; y: number }[] = [];
   for (let tx = Math.floor(left / TILE); tx <= Math.floor((left + W) / TILE); tx++)
     for (let ty = Math.floor(top / TILE); ty <= Math.floor((top + H) / TILE); ty++)
@@ -56,10 +59,13 @@ export function LandingMap({ routes }: { routes: RouteSummary[] }) {
           className="absolute left-1/2 top-1/2 w-[150%] [transform-style:preserve-3d] @[42rem]:w-[125%]"
           style={{ aspectRatio: `${W} / ${H}`, transform: `translate(-50%, -50%) rotateX(${TILT_DEG}deg)` }}
         >
-          <svg viewBox={`${left} ${top} ${W} ${H}`} aria-hidden="true" className="absolute inset-0 size-full">
+          {/* The tiles in their own svg: a CSS filter on an svg element itself works in every browser (Safari ignores it on a <g>). */}
+          <svg viewBox={`${left} ${top} ${W} ${H}`} aria-hidden="true" className="absolute inset-0 size-full" style={calm}>
             {tiles.map((tile) => (
               <image key={tile.key} href={tile.href} x={tile.x} y={tile.y} width={TILE} height={TILE} />
             ))}
+          </svg>
+          <svg viewBox={`${left} ${top} ${W} ${H}`} aria-hidden="true" className="absolute inset-0 size-full">
             {boxes.map((b) => (
               <polygon
                 key={b.order}
