@@ -4,19 +4,22 @@ import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 
 /**
- * A small "i" beside a label that opens a short explanation with a "Learn more" link. It uses the browser's own popover (it
- * opens over the page, centred, so it never runs off a narrow screen or is cut by a card; a tap outside or Escape closes it),
- * so it needs no script. Not for use inside a link.
+ * A small "i" beside a label that opens a short explanation with a "Learn more" link, just under the "i", like the photo's ©
+ * (CreditToggle). It uses the browser's own popover (above every card, so nothing cuts it; a tap outside or Escape closes it),
+ * so it needs no script. CSS anchor positioning pins it under the button and keeps it on screen; a browser
+ * without anchor positioning keeps the old centred box over a dimmed page. Not for use inside a link.
  */
 export function InfoTip({ label, href, children }: { label: string; href: string; children: ReactNode }) {
   const { t } = useLingui();
   const id = useId();
+  const anchor = `--tip-${id.replace(/[^\w-]/g, "")}`; // useId has characters a CSS name cannot hold
   return (
     <>
       <button
         type="button"
         popoverTarget={id}
         aria-label={label}
+        style={{ anchorName: anchor }}
         // The ring is 20 px; the invisible ::before makes the tap area 44 px.
         className="relative ml-1 -my-1.5 inline-flex size-5 min-h-0 min-w-0 cursor-pointer before:absolute before:-inset-3 before:content-[''] items-center justify-center rounded-full p-0 align-middle text-muted hover:text-ink"
       >
@@ -26,7 +29,13 @@ export function InfoTip({ label, href, children }: { label: string; href: string
           <circle cx="12" cy="7.4" r="0.6" fill="currentColor" />
         </svg>
       </button>
-      <div id={id} popover="auto" className="m-auto w-[min(22rem,calc(100vw-2rem))] rounded-2xl border-2 border-ink bg-paper p-5 text-base font-normal leading-7 text-ink shadow-2xl backdrop:bg-black/40">
+      <div
+        id={id}
+        popover="auto"
+        // Centred under the "i", slid back inside a 16 px gutter near a screen edge; above it when there is no room below.
+        style={{ positionAnchor: anchor, positionArea: "bottom span-all", positionTryFallbacks: "flip-block" }}
+        className="m-auto w-[min(22rem,calc(100vw-2rem))] rounded-2xl border-2 border-ink bg-paper p-5 text-base font-normal leading-7 text-ink shadow-2xl backdrop:bg-black/40 supports-[position-area:bottom]:inset-auto supports-[position-area:bottom]:mx-4 supports-[position-area:bottom]:my-1 supports-[position-area:bottom]:rounded-xl supports-[position-area:bottom]:p-4 supports-[position-area:bottom]:shadow-lg supports-[position-area:bottom]:backdrop:bg-transparent"
+      >
         <p className="mb-3">{children}</p>
         <Link href={href} className="font-bold text-accent underline underline-offset-4">
           {t`くわしく見る`}
