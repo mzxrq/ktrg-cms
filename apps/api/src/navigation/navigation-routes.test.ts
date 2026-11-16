@@ -44,9 +44,9 @@ async function setup(answer: SnapResult = { ok: true, line: [[135.09, 34.31], [1
   };
   const app = new Elysia({ prefix: "/api/v1" }).use(apiBase()).use(navigationRoutes(() => services, { secureCookies: false }));
   const cookie = `session=${(await session.create(users.get(alice.id)!)).token}`;
-  const ask = (body: Json, withCookie = true) =>
+  const ask = (body: Json, withCookie = true, path = "path") =>
     app.handle(
-      new Request("http://localhost/api/v1/navigation/path", {
+      new Request(`http://localhost/api/v1/navigation/${path}`, {
         method: "POST",
         headers: { "content-type": "application/json", ...(withCookie ? { cookie } : {}) },
         body: JSON.stringify(body),
@@ -97,6 +97,28 @@ describe("POST /navigation/path", () => {
     expect((await ask({ ...here, spotId: "nope" })).status).toBe(422);
     let last = 0;
     for (let i = 0; i < 21; i++) last = (await ask(here)).status;
+    expect(last).toBe(429);
+  });
+});
+
+// 2026-11-16 (user): a visitor with no account may walk to the course too; the screen only offers signing up.
+describe("POST /navigation/guest-path", () => {
+  test("no account needed: the same walking path to the place's own position", async () => {
+    const { ask, here, asked } = await setup();
+    const res = await ask(here, false, "guest-path");
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true, line: [[135.09, 34.31], [135.1, 34.3]], distanceM: 1400 });
+    expect(asked).toEqual([[{ lat: 34.31, lng: 135.09 }, PLACE]]);
+  });
+
+  test("a hidden place looks missing, bad input is 422, and the address is held to its own pace (429)", async () => {
+    const { ask, here, mem } = await setup();
+    mem.spots.set(SPOT_ID, spot({ published: false }));
+    expect((await ask(here, false, "guest-path")).status).toBe(404);
+    mem.spots.set(SPOT_ID, spot());
+    expect((await ask({ ...here, lng: 181 }, false, "guest-path")).status).toBe(422);
+    let last = 0;
+    for (let i = 0; i < 21; i++) last = (await ask(here, false, "guest-path")).status;
     expect(last).toBe(429);
   });
 });

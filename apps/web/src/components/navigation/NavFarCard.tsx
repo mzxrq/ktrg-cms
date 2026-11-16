@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { AccessIcon, useAccessTypeNames } from "@/components/AccessList";
@@ -23,6 +24,13 @@ export function NavFarCard() {
   const names = useAccessTypeNames();
   const dialog = useRef<HTMLDialogElement>(null);
   const [asked, setAsked] = useState(false); // shortcut: stays "asking" until the path arrives or the card goes away; add a retry if that is not enough
+  // A guest's first tap on the walking route: signing up is offered here, and skipping it walks on (2026-11-16, user).
+  const [offer, setOffer] = useState(false);
+  const walk = () => {
+    setAsked(true);
+    setOffer(false);
+    chooseWalk();
+  };
   if (!session) return null;
   const { model, snapshot, access } = session;
   const points = sortAccess(access, nearerEnd(courseEnds(model), snapshot.position ?? { lat: 0, lng: 0 }));
@@ -93,20 +101,23 @@ export function NavFarCard() {
           ) : (
             <p className="text-base leading-snug text-muted">{t`この区間の行き方は、まだ登録されていません。`}</p>
           )}
-          {signedIn ? (
-            <button
-              type="button"
-              disabled={asked}
-              onClick={() => {
-                setAsked(true);
-                chooseWalk();
-              }}
-              className={buttonStyle("secondary", "md", "flex w-full")}
-            >
+          {offer ? (
+            <section aria-labelledby="nav-far-signup" className="flex flex-col gap-2 rounded-lg bg-surface p-3">
+              <h3 id="nav-far-signup" className="text-lg font-bold">
+                {t`登録しておきませんか`}
+              </h3>
+              <p className="text-base leading-snug">{t`登録すると、スタンプや歩いた記録がアカウントに残り、ほかの端末でも見られます。登録しなくても、このまま道を見られます。`}</p>
+              <Link href="/register" className={buttonStyle("primary", "md", "flex w-full")}>
+                {t`新規登録する`}
+              </Link>
+              <button type="button" onClick={walk} className={buttonStyle("secondary", "md", "flex w-full")}>
+                {t`登録せずに道を見る`}
+              </button>
+            </section>
+          ) : (
+            <button type="button" disabled={asked} onClick={() => (signedIn ? walk() : setOffer(true))} className={buttonStyle("secondary", "md", "flex w-full")}>
               {asked ? t`歩く道を調べています…` : t`歩いて行く道を見る`}
             </button>
-          ) : (
-            <p className="text-base leading-snug text-muted">{t`歩く道を調べるには、ログインしてください。`}</p>
           )}
           <button type="button" onClick={() => dialog.current?.close()} className={buttonStyle("secondary", "md", "flex w-full")}>
             {t`とじる`}

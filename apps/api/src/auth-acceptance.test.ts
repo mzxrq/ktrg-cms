@@ -347,6 +347,8 @@ describe("user B cannot touch user A", () => {
     "GET /api/v1/guest/stamps",
     "GET /api/v1/guest/backup",
     "POST /api/v1/guest/restore",
+    // A walking path for a visitor with no account, rate limited per IP (see navigation/navigation-routes.test.ts).
+    "POST /api/v1/navigation/guest-path",
     // Published trail notices (see notices/notice-routes.test.ts).
     "GET /api/v1/notices",
     // The furigana words visitors read (see furigana/furigana-words.test.ts).

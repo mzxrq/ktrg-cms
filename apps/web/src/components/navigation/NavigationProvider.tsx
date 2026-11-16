@@ -48,7 +48,7 @@ interface NavigationApi {
   returnToPassed(): void;
   /** Voice guidance starts on for this visitor unless they have chosen (see speaksByDefault). */
   voiceByDefault: boolean;
-  /** Far from the course, the visitor chose a walking route after all (signed-in visitors only: see `signedIn`). */
+  /** Far from the course, the visitor chose a walking route after all (anyone; a guest is offered signing up first). */
   chooseWalk(): void;
   signedIn: boolean;
   /** How tall the navigation toast is (0 when hidden), so a page can keep that room free at the bottom. */
@@ -95,8 +95,8 @@ export function NavigationProvider({ children, signedIn, voiceByDefault = false 
       now: () => Date.now(),
       loadStamps: fetchMyStamps,
       loadWaiting: () => getOutbox().waitingSpots(),
-      // Signed out: no request leaves the phone (the answer says "back off", so it is not asked again soon).
-      fetchPath: (spotId, from): Promise<PathAnswer> => (signedInRef.current ? requestPath(spotId, from) : Promise.resolve({ ok: false, backOff: true })),
+      // Signed out: the guest route (the far card offers signing up first, but never requires it).
+      fetchPath: (spotId, from): Promise<PathAnswer> => requestPath(spotId, from, !signedInRef.current),
       onChange: (snapshot) => setSession((s) => (s && controller.current === c ? { ...s, snapshot } : s)),
     });
     controller.current = c;

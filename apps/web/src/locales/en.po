@@ -29,7 +29,7 @@ msgid "（名前なし）"
 msgstr "(no name)"
 
 #: src/components/AccessList.tsx:29
-#: src/components/navigation/NavFarCard.tsx:29
+#: src/components/navigation/NavFarCard.tsx:37
 msgid "（外部サイトが新しいタブで開きます）"
 msgstr "(opens an external site in a new tab)"
 
@@ -783,7 +783,7 @@ msgstr "Hold the Ctrl key to move the map"
 msgid "Google マップで開く"
 msgstr "Open in Google Maps"
 
-#: src/components/navigation/NavFarCard.tsx:56
+#: src/components/navigation/NavFarCard.tsx:64
 msgid "Googleマップ"
 msgstr "Google Maps"
 
@@ -892,7 +892,7 @@ msgstr "Website"
 msgid "WikipediaやWikimedia Commonsから探す"
 msgstr "Find on Wikipedia and Wikimedia Commons"
 
-#: src/components/navigation/NavFarCard.tsx:57
+#: src/components/navigation/NavFarCard.tsx:65
 msgid "Yahoo!マップ"
 msgstr "Yahoo! Maps"
 
@@ -1836,7 +1836,7 @@ msgstr "Navigate this course instead"
 msgid "この区間の移動"
 msgstr "How this leg is travelled"
 
-#: src/components/navigation/NavFarCard.tsx:94
+#: src/components/navigation/NavFarCard.tsx:102
 msgid "この区間の行き方は、まだ登録されていません。"
 msgstr "How to get to this section has not been added yet."
 
@@ -1845,7 +1845,7 @@ msgstr "How to get to this section has not been added yet."
 msgid "この区間は、準備中です。"
 msgstr "This course isn't ready yet."
 
-#: src/components/navigation/NavFarCard.tsx:34
+#: src/components/navigation/NavFarCard.tsx:42
 #: src/components/navigation/NavigationHud.tsx:298
 msgid "この区間は遠くにあります。電車やバスで向かいましょう。"
 msgstr "This section is far from here. Head there by train or bus."
@@ -2689,8 +2689,8 @@ msgstr "Show toilets, shops and so on as soon as the map opens."
 msgid "どこへ向かいますか？"
 msgstr "Where do you want to go?"
 
-#: src/components/navigation/NavFarCard.tsx:43
-#: src/components/navigation/NavFarCard.tsx:112
+#: src/components/navigation/NavFarCard.tsx:51
+#: src/components/navigation/NavFarCard.tsx:123
 #: src/components/navigation/NavigationHud.tsx:276
 #: src/components/navigation/NavTargetPicker.tsx:78
 #: src/components/StampProgressPopup.tsx:61
@@ -3761,7 +3761,7 @@ msgstr "Link (optional)"
 msgid "リンクで追加"
 msgstr "Add by link"
 
-#: src/components/navigation/NavFarCard.tsx:91
+#: src/components/navigation/NavFarCard.tsx:99
 msgid "リンクは別のサービスを開きます。渡すのは駅の場所だけで、あなたの位置は渡しません。"
 msgstr "Links open another service. Only the station's location is passed on, never yours."
 
@@ -6167,6 +6167,10 @@ msgstr "A Japanese name is needed to create a new one"
 msgid "新規登録"
 msgstr "Register"
 
+#: src/components/navigation/NavFarCard.tsx:111
+msgid "新規登録する"
+msgstr "Sign up"
+
 #: src/app/(admin)/admin/visits/page.tsx:113
 #: src/app/(admin)/admin/visits/page.tsx:114
 msgid "日ごとのアクセス"
@@ -6228,7 +6232,7 @@ msgstr "The Japan Heritage Katsuragi Shugen Story"
 msgid "日本遺産「葛城修験」PR動画（180秒）"
 msgstr "Japan Heritage \"Katsuragi Shugen\" promotional video (180 seconds)"
 
-#: src/components/navigation/NavFarCard.tsx:58
+#: src/components/navigation/NavFarCard.tsx:66
 msgid "時刻表"
 msgstr "Timetable"
 
@@ -6521,7 +6525,7 @@ msgstr "Walk, and collect stamps."
 msgid "歩いて約{0}分"
 msgstr "About {0} min on foot"
 
-#: src/components/navigation/NavFarCard.tsx:106
+#: src/components/navigation/NavFarCard.tsx:119
 msgid "歩いて行く道を見る"
 msgstr "Show the way on foot"
 
@@ -6551,13 +6555,9 @@ msgstr "From the walking time, distance and the height climbed and descended, we
 msgid "歩く道"
 msgstr "The path"
 
-#: src/components/navigation/NavFarCard.tsx:106
+#: src/components/navigation/NavFarCard.tsx:119
 msgid "歩く道を調べています…"
 msgstr "Finding a walking route…"
-
-#: src/components/navigation/NavFarCard.tsx:109
-msgid "歩く道を調べるには、ログインしてください。"
-msgstr "Sign in to find a walking route."
 
 #: src/app/(admin)/admin/routes/page.tsx:31
 msgid "歩く順番に並んでいます。名前を押すと、文章や地図を直せます。"
@@ -6847,6 +6847,10 @@ msgstr "Thank you for registering"
 msgid "登録した人"
 msgstr "Sign-ups"
 
+#: src/components/navigation/NavFarCard.tsx:107
+msgid "登録しておきませんか"
+msgstr "Would you like to sign up?"
+
 #: src/components/SignInPrompt.tsx:39
 msgid "登録しなくても、スタンプは押せます。"
 msgstr "You can collect stamps without signing up."
@@ -6854,6 +6858,14 @@ msgstr "You can collect stamps without signing up."
 #: src/components/auth/RegisterFlow.tsx:91
 msgid "登録する"
 msgstr "Register"
+
+#: src/components/navigation/NavFarCard.tsx:109
+msgid "登録すると、スタンプや歩いた記録がアカウントに残り、ほかの端末でも見られます。登録しなくても、このまま道を見られます。"
+msgstr "With an account your stamps and walks are kept and you can see them on other devices. You can also see the way now without signing up."
+
+#: src/components/navigation/NavFarCard.tsx:114
+msgid "登録せずに道を見る"
+msgstr "See the way without signing up"
 
 #: src/components/useErrorMessages.ts:33
 msgid "登録できませんでした。もう一度お試しください。"
@@ -7586,12 +7598,12 @@ msgstr "Out"
 msgid "行き先の近くでボタンを押すと、スタンプがたまります。位置は、押した一回だけ調べ、保存しません。"
 msgstr "Press the button near a stop and the stamp is yours. Your position is checked only once, when you press, and is not saved."
 
-#: src/components/navigation/NavFarCard.tsx:41
+#: src/components/navigation/NavFarCard.tsx:49
 #: src/components/RallyBook.tsx:173
 msgid "行き方"
 msgstr "How to get there"
 
-#: src/components/navigation/NavFarCard.tsx:36
+#: src/components/navigation/NavFarCard.tsx:44
 msgid "行き方を見る"
 msgstr "See how to get there"
 
@@ -8428,7 +8440,7 @@ msgstr "Phone"
 msgid "電車"
 msgstr "Train"
 
-#: src/components/navigation/NavFarCard.tsx:50
+#: src/components/navigation/NavFarCard.tsx:58
 msgid "電車・バスで行く"
 msgstr "By train or bus"
 
