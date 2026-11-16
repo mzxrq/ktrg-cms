@@ -72,7 +72,7 @@ The bugs were not described one by one yet, so v2 starts with a short checklist 
 3. **N2-3 Android checklist fixes**: whatever the user's phone shows from the list above (voice, resume, Huawei position).
 4. **N2-4 Arrival in the strip**: the stamp moment without a card. **Built 2026-11-16**: `ArrivalStrip` (small photo, 着きました, name, credit) takes the progress line's place, the stamp button right under it; no あとで (nothing covers the map).
 5. **N2-5 Wake lock and compass**: built first (2026-11-16, user asked why the map would not turn): heading-up from the phone's compass while following, wake lock on during navigation; browser APIs only, no library. A toggle is left for later if the compass misbehaves on a phone.
-6. **N2-6 Target picker as a sheet.**
+6. **N2-6 Target picker as a sheet.** **Built 2026-11-16**: bottom sheet on a phone (slides up; fade only fades; calm shows it at once), centred box from 768 px, closes on a tap on the dimmed map.
 
 Each slice: Android (Chrome, the Huawei), iOS (Safari and the installed app), desktop; smallest screen and largest text size.
 

@@ -33,3 +33,14 @@ test("arrival lives in the strip: no arrival card, a small photo that hides on a
   expect(hud).toContain("{far ? null : (arrivalStrip ?? progressLine)}");
   expect(hud).not.toContain("setLaterId");
 });
+
+// N2-6: the target picker is a bottom sheet on a phone, a centred box from 768 px, and closes on a tap outside it.
+test("the target picker is a bottom sheet on a phone and closes on a tap on the dimmed map", () => {
+  const src = read("NavTargetPicker.tsx");
+  expect(src).toMatch(/className="nav-sheet mx-0 mb-0 mt-auto [^"]*w-full max-w-none[^"]*rounded-t-3xl[^"]*md:m-auto/);
+  expect(src).toContain("if (e.target === e.currentTarget) dialog.current?.close();");
+  expect(src).toContain("onClick={closeOnBackdrop}");
+  expect(src).toContain("pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))]");
+  const css = readFileSync(join(import.meta.dir, "..", "app", "globals.css"), "utf8");
+  expect(css).toMatch(/@media \(prefers-reduced-motion: no-preference\) \{\s*dialog\.nav-sheet\[open\] \{\s*animation: sheet-up/);
+});
