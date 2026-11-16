@@ -118,7 +118,7 @@ export function Landing({
                     <Trans>新規登録</Trans>
                   </Link>
                   <Link href="/routes" className={buttonStyle("secondary", "lg", "flex")}>
-                    <Trans>ルートをさがす</Trans>
+                    <Trans>コースをさがす</Trans>
                   </Link>
                   <Link href="/rallies" className={buttonStyle("secondary", "lg", "flex")}>
                     <Trans>ラリーを見る</Trans>

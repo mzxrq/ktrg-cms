@@ -17,6 +17,7 @@ import { GuestClaim } from "@/components/GuestClaim";
 import { GuestNag } from "@/components/GuestNag";
 import { StampProgressPopup } from "@/components/StampProgressPopup";
 import { FuriganaLayer } from "@/components/FuriganaLayer";
+import { ScrollTopButton } from "@/components/ScrollTopButton";
 import { SiteHeader } from "@/components/SiteHeader";
 import { TabBar } from "@/components/TabBar";
 import { PrefsSync } from "@/components/settings/PrefsSync";
@@ -72,6 +73,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
       {viewer.signedIn ? (hasGuestStamps ? <GuestClaim /> : null) : <GuestNag hasStamps={hasGuestStamps} />}
       {/* Off still draws the words marked いつも表示する (very hard ones); the key restarts it when the setting changes. */}
       <FuriganaLayer key={String(prefsState.effective.furigana)} alwaysOnly={!prefsState.effective.furigana} />
+      <ScrollTopButton />
       <StampProgressPopup />
       <StampOutbox userKey={viewer.signedIn ? (viewer.publicId ?? "guest") : "guest"} />
       <NavigationToast />
