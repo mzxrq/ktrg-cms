@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { ChartIcon, ClockIcon, FlagIcon, MountainIcon, RouteIcon, RulerIcon } from "@/components/icons";
 import { InfoTip } from "@/components/InfoTip";
+import { Stars } from "@/components/Stars";
+import { physicalStars, technicalStars } from "@/lib/grading";
 import type { RouteSummary } from "@/lib/content";
 import type { WalkStyle } from "@/lib/walk-style";
 
@@ -19,9 +21,10 @@ export function RouteStats({ route, compact = false, icons = false, inline = fal
     maximumFractionDigits: 1,
   });
 
-  const items: { label: string; value: string; icon: ReactNode; short?: string; info?: "physical" | "technical" }[] = [];
-  // How the walk goes (片道, 周回 or 往復), where the page chooses to say it: it reads as one more number of the route.
-  if (walkStyle) items.push({ label: t`歩き方`, icon: <RouteIcon />, value: walkStyle === "loop" ? t`周回` : walkStyle === "out_and_back" ? t`往復` : t`片道` });
+  const items: { label: string; value: ReactNode; icon: ReactNode; short?: string; info?: "physical" | "technical" }[] = [];
+  // The shape of the walk (通り抜け, 一周 or 往復), where the page chooses to say it: it reads as one more number of the
+  // route. "歩き方: 片道" read oddly (2026-11-16, user's manager), like a ticket.
+  if (walkStyle) items.push({ label: t`コースの形`, icon: <RouteIcon />, value: walkStyle === "loop" ? t`一周` : walkStyle === "out_and_back" ? t`往復` : t`通り抜け` });
   if (route.distanceKm !== null) {
     const km = numbers.format(route.distanceKm);
     items.push({ label: t`距離`, icon: <RulerIcon />, value: t`${km}km` });
@@ -40,18 +43,19 @@ export function RouteStats({ route, compact = false, icons = false, inline = fal
     });
   }
   // The grading levels when they are set; otherwise the editor's own words.
-  if (route.physicalLevel !== null) items.push({ label: t`体力度`, short: t`体力`, icon: <ChartIcon />, value: `${route.physicalLevel}`, info: "physical" });
-  if (route.technicalLevel !== null) items.push({ label: t`技術度`, short: t`技術`, icon: <FlagIcon />, value: route.technicalLevel, info: "technical" });
+  // Shown as five stars, not 1-10 and A-E (lib/grading.ts); the exact levels are on /grading.
+  if (route.physicalLevel !== null) items.push({ label: t`体力の目安`, short: t`体力`, icon: <ChartIcon />, value: <Stars n={physicalStars(route.physicalLevel)} />, info: "physical" });
+  if (route.technicalLevel !== null) items.push({ label: t`道のけわしさ`, short: t`道`, icon: <FlagIcon />, value: <Stars n={technicalStars(route.technicalLevel)} />, info: "technical" });
   if (route.physicalLevel === null && route.technicalLevel === null && route.difficulty) items.push({ label: t`難しさ`, icon: <ChartIcon />, value: route.difficulty });
 
   const tip = (info: "physical" | "technical" | undefined) =>
     info === "physical" ? (
-      <InfoTip label={t`体力度とは`} href="/grading#physical">
-        {t`歩く時間・距離・登りと下りから、必要な体力を1（やさしい）から10（とても大変）で表した目安です。`}
+      <InfoTip label={t`体力の目安とは`} href="/grading#physical">
+        {t`歩く時間・距離・登りと下りから、必要な体力を星1つ（やさしい）から星5つ（とても大変）で表した目安です。`}
       </InfoTip>
     ) : info === "technical" ? (
-      <InfoTip label={t`技術度とは`} href="/grading#technical">
-        {t`道の険しさや迷いやすさを、A（整った道）からE（厳しい岩場や藪）で表した目安です。`}
+      <InfoTip label={t`道のけわしさとは`} href="/grading#technical">
+        {t`道の険しさや迷いやすさを、星1つ（整った歩きやすい道）から星5つ（岩場や手を使う所が多い道）で表した目安です。`}
       </InfoTip>
     ) : null;
 
@@ -67,8 +71,14 @@ export function RouteStats({ route, compact = false, icons = false, inline = fal
             <span aria-hidden="true" className="shrink-0 text-brand [&_svg]:size-5">
               {part.icon}
             </span>
-            {/* English: the short words (Fitness, Skill) so the row fits beside the photo; Japanese keeps 体力度 and 技術度. */}
-            {part.info ? (i18n.locale === "ja" ? `${part.label}${part.value}` : `${part.short ?? part.label} ${part.value}`) : part.value}
+            {/* The short words (体力, 道 / Effort, Path) so the row fits beside the photo; the stars follow. */}
+            {part.info ? (
+              <>
+                {part.short ?? part.label} {part.value}
+              </>
+            ) : (
+              part.value
+            )}
           </span>
         ))}
       </p>

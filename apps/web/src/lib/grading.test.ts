@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { courseConstant, isTechnicalLevel, physicalLevelOf, suggestPhysicalLevel } from "./grading";
+import { courseConstant, isTechnicalLevel, physicalLevelOf, physicalStars, suggestPhysicalLevel, technicalStars } from "./grading";
 
 describe("courseConstant", () => {
   test("1.8 per hour, 0.3 per km, 10 per km climbed and 0.6 per km descended", () => {
@@ -43,4 +43,9 @@ describe("descentM", () => {
     expect(descentM([...up].reverse())).toBe(climbM(up));
     expect(descentM([100])).toBe(0);
   });
+});
+
+test("visitors see five stars: two physical levels to a star, one technical letter to a star", () => {
+  expect([1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(physicalStars)).toEqual([1, 1, 2, 2, 3, 3, 4, 4, 5, 5]);
+  expect((["A", "B", "C", "D", "E"] as const).map(technicalStars)).toEqual([1, 2, 3, 4, 5]);
 });
