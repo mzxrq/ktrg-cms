@@ -4,6 +4,8 @@ import { previewRoutes } from "./landing-story";
 
 /** The scroll scene runs on any screen tall enough to hold a beat, when the visitor allows motion. */
 export const SCENE_QUERY = "(prefers-reduced-motion: no-preference) and (min-height: 38rem)";
+/** Motion allowed but the screen too short for the scene (a laptop at 125-150 % scaling, a split window, a phone on its side). */
+export const SHORT_SCREEN_QUERY = "(prefers-reduced-motion: no-preference) and (max-height: 37.99rem)";
 /** The desktop layout of the scene. Not the `wide` variant: that also matches a phone on its side, which must keep the stacked page. */
 export const DESK_QUERY = "(min-width: 1024px) and (min-height: 38rem)";
 /** How much scroll the scene is, in screen heights: a little longer on a desktop, where each beat has more to show. */
