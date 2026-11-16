@@ -85,7 +85,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
   const tabs = [
     { path: "/", label: t`ホーム`, icon: <HomeIcon /> },
     { path: "/map", label: t`マップ`, icon: <MapIcon /> },
-    { path: "/routes", label: t`ルート`, icon: <RouteIcon /> },
+    { path: "/routes", label: t`コース`, icon: <RouteIcon /> },
     { path: "/rallies", label: t`ラリー`, icon: <StampIcon /> },
   ];
 

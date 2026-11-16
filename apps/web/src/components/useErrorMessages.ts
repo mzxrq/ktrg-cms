@@ -39,9 +39,9 @@ export function useErrorMessages(): Record<ErrorKey, string> {
     // Admin: routes and places
     conflict: t`別の人が先に保存しました。読み込み直してから、もう一度お試しください。`,
     invalid_video_url: t`動画のリンクは、https:// で始まるYouTube、またはアップロードした動画（.mp4・.webm）のものだけ使えます。`,
-    invalid_line: t`ルートの線が正しくありません。日本の中に、2点以上の線を描いてください。`,
+    invalid_line: t`コースの線が正しくありません。日本の中に、2点以上の線を描いてください。`,
     invalid_photo_url: t`写真のリンクは、https:// で始まるものだけ使えます。`,
-    route_has_places: t`経由地が残っているルートは消せません。先に経由地を消してください。`,
+    route_has_places: t`経由地が残っているコースは消せません。先に経由地を消してください。`,
     // Stamping
     spot_closed: t`この場所は今、通行止めなどで閉まっているため、スタンプを押せません。`,
     too_far: t`場所から少し離れています。近くまで行って、もう一度お試しください。`,

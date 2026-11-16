@@ -86,7 +86,7 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
             </DashboardTile>
             <section className="flex flex-col gap-3 rounded-2xl bg-surface p-4 md:col-span-2 lg:row-span-2">
               <h2 className="text-xl font-bold">
-                <Trans>スタンプが多いルート</Trans>
+                <Trans>スタンプが多いコース</Trans>
               </h2>
               {data.stampsByRoute.length === 0 ? (
                 <p className="text-lg">

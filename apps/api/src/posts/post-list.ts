@@ -270,7 +270,7 @@ export const postList: ListDef<"posts", typeof POST_FIELDS, PostRow, PostService
       },
       { name: "authorPhotoUrl", kind: "image", side: true, label: { ja: "書いた人の写真", en: "Author's photo" }, hint: { ja: "空のままにすると、プロフィールの写真が使われます。", en: "Left empty, the profile photo is used." } },
       { name: "tagIds", kind: "relations", side: true, to: "tags", label: { ja: "タグ", en: "Tags" }, hint: { ja: "あてはまるものを選びます（いくつでも）。タグは「タグを管理する」でつくります。", en: "Pick any that fit. Tags are made in Manage tags." } },
-      { name: "routeId", kind: "route", side: true, label: { ja: "この記事のルート", en: "The route this post is about" }, noneLabel: { ja: "（なし）", en: "(none)" } },
+      { name: "routeId", kind: "route", side: true, label: { ja: "この記事のコース", en: "The course this post is about" }, noneLabel: { ja: "（なし）", en: "(none)" } },
       {
         name: "spotId",
         kind: "relation",

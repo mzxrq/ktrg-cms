@@ -133,7 +133,7 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
                 </span>
               ) : null}
               {p.key === firstStop && places.length >= 2 ? (
-                <button type="button" onClick={() => onAddEndAt(p.key)} className={chipToggle(false)} title={t`一周して、ここに戻るルートのとき: 同じ位置に、スタンプのない終点を追加します`}>
+                <button type="button" onClick={() => onAddEndAt(p.key)} className={chipToggle(false)} title={t`一周して、ここに戻るコースのとき: 同じ位置に、スタンプのない終点を追加します`}>
                   {t`同じ場所に終点を追加`}
                 </button>
               ) : null}

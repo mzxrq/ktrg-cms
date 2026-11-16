@@ -99,7 +99,7 @@ export function HomeTextFields({ lang, title, body, builtIn, onBody }: { lang: "
       {/* The picture panel a desktop shows beside the story's chapters; the sea is the banner photos. Empty: a course's photo is used. */}
       <fieldset className="flex flex-col gap-3 border-t border-line pt-3">
         <legend className="text-lg font-bold">{t`パソコンの画面の写真`}</legend>
-        <p className="text-base text-muted">{t`空のままにすると、ルートの写真が使われます。日本語の欄に入れた写真は、英語の画面でも使われます。`}</p>
+        <p className="text-base text-muted">{t`空のままにすると、コースの写真が使われます。日本語の欄に入れた写真は、英語の画面でも使われます。`}</p>
         {HOME_PHOTO_SLOTS.map((slot) => {
           const id = `home-${lang}-${slot}`;
           return (

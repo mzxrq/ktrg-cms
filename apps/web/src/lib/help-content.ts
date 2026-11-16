@@ -31,7 +31,7 @@ const ja: Help = {
   guideTitle: "遊び方",
   guideIntro: "歩いた場所で、スタンプを集めていくアプリです。むずかしい操作はありません。",
   steps: [
-    { title: "ルートをえらぶ", text: "「ルート」から、歩きたいコースをえらびます。地図で、道とスタンプの場所が見られます。" },
+    { title: "コースをえらぶ", text: "「コース」から、歩きたいコースをえらびます。地図で、道とスタンプの場所が見られます。" },
     { title: "着いたら、スタンプを押す", text: "スタンプの場所に着いたら、ボタンを押します。アプリがいまの場所を確かめて、近くにいればスタンプが押されます。登録しなくても押せます。" },
     { title: "ラリーで見る", text: "「ラリー」のページで、集めたスタンプと、のこりが見られます。" },
     { title: "登録して、残す", text: "登録しないと、スタンプはこの端末にしか残りません。メールか、顔・指紋（パスキー）で登録すると、ずっと残り、コンプリート証ももらえます。" },
@@ -63,7 +63,7 @@ const ja: Help = {
     },
     {
       question: "山の中で電波がつながりません",
-      answer: "電波の良い場所に着いてから、もう一度お試しください。出かける前に、ルートの情報を見ておくと安心です。",
+      answer: "電波の良い場所に着いてから、もう一度お試しください。出かける前に、コースの情報を見ておくと安心です。",
     },
     {
       question: "アカウントを消したいです",
@@ -81,7 +81,7 @@ const ja: Help = {
     { name: "地図の表示", text: "MapLibre GL JS（BSDライセンス）。" },
     {
       name: "道すじの作成",
-      text: "ルートの線を、歩ける道に沿わせるときに、OpenRouteServiceを使います。道のデータは、OpenStreetMapの協力者のもの（ODbLライセンス）です。",
+      text: "コースの線を、歩ける道に沿わせるときに、OpenRouteServiceを使います。道のデータは、OpenStreetMapの協力者のもの（ODbLライセンス）です。",
       url: "https://www.openstreetmap.org/copyright",
     },
     {
@@ -96,7 +96,7 @@ const en: Help = {
   guideTitle: "How to play",
   guideIntro: "Collect stamps as you walk. There is nothing complicated to learn.",
   steps: [
-    { title: "Choose a route", text: "Pick the course you want to walk under Routes. The map shows the path and the stamp places." },
+    { title: "Choose a course", text: "Pick the course you want to walk under Courses. The map shows the path and the stamp places." },
     { title: "Press the button when you arrive", text: "At a stamp place, press the button. The app checks where you are and, if you are close enough, gives you the stamp. You can do this without signing up." },
     { title: "See them under Rallies", text: "On the Rallies page you can see the stamps you have and how many are left." },
     { title: "Sign up to keep them", text: "Without an account, stamps stay only on this device. Sign up with your email, or with your face or fingerprint (a passkey), and they stay for good, and you can get a certificate." },
@@ -128,7 +128,7 @@ const en: Help = {
     },
     {
       question: "There is no signal in the mountains",
-      answer: "Try again when you reach a place with a good signal. It also helps to look at the route information before you leave.",
+      answer: "Try again when you reach a place with a good signal. It also helps to look at the course information before you leave.",
     },
     {
       question: "I want to delete my account",

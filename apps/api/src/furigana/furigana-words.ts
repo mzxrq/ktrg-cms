@@ -308,7 +308,7 @@ export const furiganaList: ListDef<"furigana", typeof FURIGANA_FIELDS, FuriganaR
         of: "word",
         label: { ja: "読み", en: "Reading" },
         hint: {
-          ja: "上の言葉の漢字ごとに、ひらがなで読みを入れます（ルートや経由地の名前と同じ入れ方です）。",
+          ja: "上の言葉の漢字ごとに、ひらがなで読みを入れます（コースや経由地の名前と同じ入れ方です）。",
           en: "Type the reading in hiragana under each run of kanji in the word above (the same as for route and waypoint names).",
         },
         required: true,

@@ -10,7 +10,7 @@ import type { AdminRouteSummary } from "@/lib/admin/types";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
-  return { title: i18n._(msg`新しいルート（管理）`) };
+  return { title: i18n._(msg`新しいコース（管理）`) };
 }
 
 export default async function NewRoutePage() {

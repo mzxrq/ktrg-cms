@@ -392,7 +392,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
     const live = draft.places.filter((p) => p.id && p.published);
     if (!draft.id || live.length === 0 || busyKey || saving) return;
     const count = live.length;
-    if (!(await confirmDialog({ title: t`公開をやめますか？`, body: t`公開中の${count}か所を、すべて公開をやめます。ルートは「準備中」として一覧に残ります。よろしいですか？`, yes: t`公開をやめる` }))) return;
+    if (!(await confirmDialog({ title: t`公開をやめますか？`, body: t`公開中の${count}か所を、すべて公開をやめます。コースは「準備中」として一覧に残ります。よろしいですか？`, yes: t`公開をやめる` }))) return;
     setBusyKey("all");
     setMessage(null);
     // One request: the server takes them all back in one step, so it is all or nothing.
@@ -411,7 +411,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
       places = places.map((p) => (p.key === key ? next : p));
     }
     setSavedCopy({ ...savedRef.current, places });
-    setMessage({ kind: "ok", text: t`${count}か所の公開をやめました。ルートは「準備中」として一覧に残ります。` });
+    setMessage({ kind: "ok", text: t`${count}か所の公開をやめました。コースは「準備中」として一覧に残ります。` });
     setBusyKey(null);
   }
 
@@ -433,7 +433,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
 
   async function deleteRoute() {
     if (!draft.id || saving) return;
-    if (!(await confirmDialog({ title: t`削除しますか？`, body: t`このルートを削除します。元に戻せません。よろしいですか？`, yes: t`削除する` }))) return;
+    if (!(await confirmDialog({ title: t`削除しますか？`, body: t`このコースを削除します。元に戻せません。よろしいですか？`, yes: t`削除する` }))) return;
     const res = await outcome(api.admin.routes({ id: draft.id }).delete());
     if (res.ok) router.replace(`/admin/routes`);
     else setMessage({ kind: "error", text: messages[res.key] });
@@ -482,7 +482,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
           buttons (squeezed beside them it would be one letter wide), and the saved line wraps instead of being pushed out. */}
       <div className="sticky top-0 z-20 -mx-4 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-line bg-paper px-4 py-3 lg:-mx-8 lg:px-8">
         {back}
-        <h1 className="order-last min-w-0 basis-full break-words text-2xl font-bold lg:order-none lg:basis-0 lg:flex-1">{isNew ? t`新しいルート` : draft.nameJa || t`（名前がありません）`}</h1>
+        <h1 className="order-last min-w-0 basis-full break-words text-2xl font-bold lg:order-none lg:basis-0 lg:flex-1">{isNew ? t`新しいコース` : draft.nameJa || t`（名前がありません）`}</h1>
         <p className="order-last min-w-0 basis-full text-base text-muted lg:order-none lg:basis-auto lg:flex-none" aria-live="polite">
           {dirty ? t`保存していない変更があります` : isNew ? "" : t`保存済み（更新 ${formatUpdated(locale, draft.updatedAt ?? new Date().toISOString())}）`}
         </p>
@@ -553,8 +553,8 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
             {section === "overview" ? (
               <>
                 <Section title={t`基本`}>
-                  <MultilingualField id="route-name" field="name" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`ルートの名前`} ja={draft.nameJa} en={draft.nameEn} onJa={text("nameJa")} onEn={text("nameEn")} required invalid={problemOf("route_name")} />
-                  <Field label={t`ルートの名前の読み（ふりがな）`} htmlFor="ruby-0" hint={t`読みを入れた漢字の上に、小さく表示されます（ひらがな）。`}>
+                  <MultilingualField id="route-name" field="name" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`コースの名前`} ja={draft.nameJa} en={draft.nameEn} onJa={text("nameJa")} onEn={text("nameEn")} required invalid={problemOf("route_name")} />
+                  <Field label={t`コースの名前の読み（ふりがな）`} htmlFor="ruby-0" hint={t`読みを入れた漢字の上に、小さく表示されます（ひらがな）。`}>
                     <RubyEditor name={draft.nameJa} value={draft.nameKana} onChange={text("nameKana")} />
                   </Field>
                   {problemOf("route_name") ? <p role="alert" className="text-base font-bold text-danger">{t`日本語の名前を入れてください。`}</p> : null}
@@ -602,7 +602,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                 <Section title={t`写真と動画`}>
                   <PhotoUpload onUploaded={text("photoUrl")} />
                   <PhotoLinkDetails open={problemOf("photo_link")}>
-                    <Field label={t`ルートの写真のリンク`} htmlFor="route-photo" hint={t`https:// で始まるリンクを入れます。空にすると、写真は表示されません。`}>
+                    <Field label={t`コースの写真のリンク`} htmlFor="route-photo" hint={t`https:// で始まるリンクを入れます。空にすると、写真は表示されません。`}>
                       <TextInput id="route-photo" value={draft.photoUrl} onChange={text("photoUrl")} maxLength={500} invalid={problemOf("photo_link")} />
                     </Field>
                   </PhotoLinkDetails>
@@ -635,8 +635,8 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
 
             {section === "text" ? (
               <>
-                <Section title={t`ルートの説明`}>
-                  <MultilingualField id="route-desc" field="description" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`ルートの説明`} ja={draft.descriptionJa} en={draft.descriptionEn} onJa={text("descriptionJa")} onEn={text("descriptionEn")} long="short" />
+                <Section title={t`コースの説明`}>
+                  <MultilingualField id="route-desc" field="description" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`コースの説明`} ja={draft.descriptionJa} en={draft.descriptionEn} onJa={text("descriptionJa")} onEn={text("descriptionEn")} long="short" />
                 </Section>
                 <Section title={t`歴史・由来`}>
                   <MultilingualField id="route-history" field="history" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`歴史・由来`} ja={draft.historyJa} en={draft.historyEn} onJa={text("historyJa")} onEn={text("historyEn")} long="short" />
@@ -651,7 +651,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                 </Section>
                 <Section title={t`出典`}>
                   <MultilingualField id="route-source" field="source" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`出典`} ja={draft.sourceJa} en={draft.sourceEn} onJa={text("sourceJa")} onEn={text("sourceEn")} long="short" />
-                  <p className="text-base text-muted">{t`この文章のもとにした資料や、確かめた公式サイトを書きます。ルートのページの下に表示されます。`}</p>
+                  <p className="text-base text-muted">{t`この文章のもとにした資料や、確かめた公式サイトを書きます。コースのページの下に表示されます。`}</p>
                 </Section>
               </>
             ) : null}
@@ -845,7 +845,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                     <button type="button" disabled={busyKey !== null} onClick={() => void unpublishAll()} className="tap-target rounded-full border-2 border-danger px-5 text-lg font-bold text-danger disabled:opacity-40">
                       {busyKey === "all" ? t`処理しています…` : t`すべての公開をやめる`}
                     </button>
-                    <p className="min-w-0 flex-1 text-base text-muted">{t`公開中の経由地をまとめて下書きに戻します。ルートは「準備中」として、一覧に残ります。`}</p>
+                    <p className="min-w-0 flex-1 text-base text-muted">{t`公開中の経由地をまとめて下書きに戻します。コースは「準備中」として、一覧に残ります。`}</p>
                   </div>
                 ) : null}
               </Section>
@@ -886,9 +886,9 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
           {!isNew ? (
             <div className="flex flex-col gap-2 pb-10">
               <button type="button" onClick={deleteRoute} disabled={draft.places.length > 0 || saving} className="tap-target w-fit rounded-full border-2 border-danger px-5 text-lg font-bold text-danger disabled:opacity-40">
-                {t`このルートを削除`}
+                {t`このコースを削除`}
               </button>
-              {draft.places.length > 0 ? <p className="text-base text-muted">{t`経由地が残っているルートは削除できません。`}</p> : null}
+              {draft.places.length > 0 ? <p className="text-base text-muted">{t`経由地が残っているコースは削除できません。`}</p> : null}
             </div>
           ) : null}
         </div>

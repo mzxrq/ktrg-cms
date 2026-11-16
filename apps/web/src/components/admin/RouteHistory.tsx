@@ -18,10 +18,10 @@ export function RouteHistory({ routeId, locale }: { routeId: string; locale: str
   const [entries, setEntries] = useState<Entry[] | null>(null);
   const [failed, setFailed] = useState(false);
   const words: Record<string, string> = {
-    "route.create": t`ルートを作った`,
-    "route.update": t`ルートを直した`,
-    "route.delete": t`ルートを消した`,
-    "route.reorder": t`ルートの順番を変えた`,
+    "route.create": t`コースを作った`,
+    "route.update": t`コースを直した`,
+    "route.delete": t`コースを消した`,
+    "route.reorder": t`コースの順番を変えた`,
     "spot.create": t`経由地を作った`,
     "spot.update": t`経由地を直した`,
     "spot.delete": t`経由地を消した`,

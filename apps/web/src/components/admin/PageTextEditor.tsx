@@ -104,7 +104,7 @@ export function PageTextEditor({ pageKey, saved, builtIn, locale, home }: { page
         {t`ここは、本番のサイトの文章です。保存すると、すぐにすべての訪問者の画面が変わります。`}
       </p>
       {pageKey === "home" ? (
-        <p className="rounded-2xl bg-surface p-4 text-base leading-7">{t`欄には、いまサイトに出ている文章が入っています。書きかえた欄だけが保存されます。写真はバナー、コースはルート、お知らせはお知らせの画面で変えられます。`}</p>
+        <p className="rounded-2xl bg-surface p-4 text-base leading-7">{t`欄には、いまサイトに出ている文章が入っています。書きかえた欄だけが保存されます。写真はバナー、コースはコース、お知らせはお知らせの画面で変えられます。`}</p>
       ) : (
       <div className="rounded-2xl bg-surface p-4 text-base leading-7">
         <p className="font-bold">{t`書き方`}</p>

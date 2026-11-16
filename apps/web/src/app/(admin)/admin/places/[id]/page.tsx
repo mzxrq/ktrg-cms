@@ -36,9 +36,9 @@ export default async function EditWaypointPage({ params }: { params: Promise<{ i
         <Trans>経由地の一覧へ戻る</Trans>
       </AdminBack>
       <p className="text-lg">
-        <Trans>ルート：{name}</Trans>{" "}
+        <Trans>コース：{name}</Trans>{" "}
         <Link href={`/admin/routes/${routeId}`} className="tap-target inline-flex items-center text-base underline underline-offset-4">
-          <Trans>ルートの画面で開く</Trans>
+          <Trans>コースの画面で開く</Trans>
         </Link>
       </p>
       <WaypointEditor initial={draftFromServer(route.body.route, route.body.spots)} placeId={id} deleteWarning={pick(meta.deleteWarning!, i18n.locale)} />

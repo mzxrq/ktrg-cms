@@ -21,7 +21,7 @@ export default async function SiteSettingsPage() {
         <Trans>地図の見た目</Trans>
       </h1>
       <p className="text-lg text-muted">
-        <Trans>「地図」ページ、ルートのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。</Trans>
+        <Trans>「地図」ページ、コースのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。</Trans>
       </p>
       <SiteSettingsForm initial={settings} />
     </div>

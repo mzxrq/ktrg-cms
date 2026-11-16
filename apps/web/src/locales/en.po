@@ -249,8 +249,8 @@ msgid "{city}を削除"
 msgstr "Remove {city}"
 
 #: src/components/admin/RouteEditor.tsx:414
-msgid "{count}か所の公開をやめました。ルートは「準備中」として一覧に残ります。"
-msgstr "Unpublished {count} waypoints. The route stays in the list as coming soon."
+msgid "{count}か所の公開をやめました。コースは「準備中」として一覧に残ります。"
+msgstr "Unpublished {count} waypoints. The course stays in the list as coming soon."
 
 #: src/components/admin/map-editor/MapEditor.tsx:727
 msgid "{count}つの区間を、まっすぐにつなぎました。形を確かめてから、保存してください。"
@@ -563,6 +563,11 @@ msgstr "“{name}” is also on other courses ({where}). Removing it removes it 
 msgid "「{stopName}」から近い順"
 msgstr "Nearest first, from \"{stopName}\""
 
+#. placeholder {0}: p.line
+#: src/components/admin/RouteImport.tsx:75
+msgid "「コース」シート {0} 行目"
+msgstr "Row {0} of the “ルート” sheet"
+
 #: src/components/admin/RallyEditor.tsx:177
 msgid "「コースでつくる」に変えます。えらんだコースを全部歩き終えると達成になります。いまの経由地は外れるので、入れるコースをえらんでください。"
 msgstr "This changes it to \"Made from courses\": it is complete when every chosen course is finished. The current waypoints come out, so choose the courses to put in."
@@ -575,14 +580,9 @@ msgstr "Changes how Start / Goal is shown."
 msgid "「はい」か「いいえ」で書いてください"
 msgstr "Write はい (yes) or いいえ (no)"
 
-#. placeholder {0}: p.line
-#: src/components/admin/RouteImport.tsx:75
-msgid "「ルート」シート {0} 行目"
-msgstr "Row {0} of the “ルート” sheet"
-
 #: src/app/(admin)/admin/settings/page.tsx:24
-msgid "「地図」ページ、ルートのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
-msgstr "How the maps look on the Map page, the route pages and the home page. What you change here shows on visitors' screens at once."
+msgid "「地図」ページ、コースのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
+msgstr "How the maps look on the Map page, the course pages and the home page. What you change here shows on visitors' screens at once."
 
 #: src/components/admin/SiteSettingsForm.tsx:129
 msgid "「地図」ページで、山を立体にする"
@@ -1378,14 +1378,18 @@ msgstr "Learn more"
 msgid "ゲストのまま使う"
 msgstr "Stay as a guest"
 
+#: src/app/(admin)/admin/routes/page.tsx:24
 #: src/app/(public)/blog/[id]/page.tsx:106
 #: src/app/(public)/routes/page.tsx:16
 #: src/app/(public)/sitemap/page.tsx:68
+#: src/components/admin/AdminNav.tsx:37
+#: src/components/admin/FuriganaOverview.tsx:127
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/Journey.tsx:53
 #: src/components/landing/Landing.tsx:322
 #: src/components/map/MapScreenCanvas.tsx:619
 #: src/components/places/DirectoryView.tsx:81
+#: src/components/TabBar.tsx:88
 msgid "コース"
 msgstr "Courses"
 
@@ -1396,6 +1400,20 @@ msgstr "Courses"
 msgid "コース {0}"
 msgstr "{0} courses"
 
+#. placeholder {0}: preview.routes.length
+#. placeholder {1}: preview.places.length
+#: src/components/admin/RouteImport.tsx:193
+msgid "コース {0} 行（今あるものを更新 {updating}、新しく作る {creating}）、経由地 {1} 行"
+msgstr "{0} course rows ({updating} update existing courses, {creating} create new ones), {1} waypoint rows"
+
+#: src/app/(admin)/admin/places/[id]/page.tsx:39
+msgid "コース：{name}"
+msgstr "Course: {name}"
+
+#: src/app/(admin)/admin/routes/page.tsx:12
+msgid "コース（管理）"
+msgstr "Courses (admin)"
+
 #. placeholder {0}: p.routes.join("、")
 #: src/components/places/DirectoryView.tsx:116
 msgid "コース{0}"
@@ -1404,6 +1422,14 @@ msgstr "Course {0}"
 #: src/components/RallyViews.tsx:172
 msgid "コース{order}"
 msgstr "Course {order}"
+
+#: src/components/admin/RallyMemberPicker.tsx:48
+msgid "コースがまだありません。"
+msgstr "There are no courses yet."
+
+#: src/components/admin/RouteTable.tsx:161
+msgid "コースがまだありません。「新しいコース」から作ってください。"
+msgstr "There are no courses yet. Add one with New course."
 
 #: src/components/admin/RouteEditor.tsx:645
 msgid "コースからこれより離れていると、ナビは歩く道ではなく、電車やバスでの行き方を案内します。空なら 5 km。"
@@ -1416,6 +1442,10 @@ msgstr "A rally of courses: complete when every chosen course is finished."
 #: src/components/admin/RallyCreate.tsx:70
 msgid "コースでつくる"
 msgstr "Make it from courses"
+
+#: src/components/admin/AdminNav.tsx:52
+msgid "コースとラリー"
+msgstr "Courses and rallies"
 
 #: src/app/(public)/spots/[id]/page.tsx:71
 msgid "コースにもどる"
@@ -1438,6 +1468,14 @@ msgstr "Course rally"
 msgid "コースの一覧"
 msgstr "All courses"
 
+#: src/components/admin/DirectoryPicker.tsx:167
+msgid "コースの最初の経由地に近い順です。"
+msgstr "Nearest first from the course's first waypoint."
+
+#: src/components/admin/RouteEditor.tsx:605
+msgid "コースの写真のリンク"
+msgstr "Course photo link"
+
 #: src/components/map/TrailMap.tsx:378
 msgid "コースの出発地点から近い順（まっすぐ測った距離です）"
 msgstr "Nearest first from the start of the course (straight-line distance)"
@@ -1446,6 +1484,14 @@ msgstr "Nearest first from the start of the course (straight-line distance)"
 msgid "コースの動画"
 msgstr "Course video"
 
+#: src/components/admin/RouteEditor.tsx:556
+msgid "コースの名前"
+msgstr "Course name"
+
+#: src/components/admin/RouteEditor.tsx:557
+msgid "コースの名前の読み（ふりがな）"
+msgstr "Reading of the course name (furigana)"
+
 #: src/components/RouteStats.tsx:27
 msgid "コースの形"
 msgstr "Course shape"
@@ -1453,6 +1499,10 @@ msgstr "Course shape"
 #: src/app/(public)/routes/page.tsx:53
 msgid "コースの案内は準備中です。"
 msgstr "Course guides are coming soon."
+
+#: src/app/(admin)/admin/places/[id]/page.tsx:41
+msgid "コースの画面で開く"
+msgstr "Open in the course editor"
 
 #: src/components/admin/CourseAreaEditor.tsx:178
 msgid "コースの範囲"
@@ -1466,17 +1516,57 @@ msgstr "Map of the course area"
 msgid "コースの終わりが次のコースの始まりのときは、同じ場所を二つのコースに置けます。スタンプは1つで、両方のコースに数えられます。内容を直すときは、もとのコースで直します。"
 msgstr "When one course ends where the next begins, the same place can be on both courses. There is one stamp, and it counts in both. To change the place itself, edit it on its home course."
 
+#: src/components/useErrorMessages.ts:42
+msgid "コースの線が正しくありません。日本の中に、2点以上の線を描いてください。"
+msgstr "The course line is not valid. Draw a line of at least 2 points inside Japan."
+
+#: src/components/admin/useChecklistLabels.ts:13
+msgid "コースの線を確認済み"
+msgstr "Course line checked"
+
+#: src/components/admin/RouteEditor.tsx:638
+#: src/components/admin/RouteEditor.tsx:639
+msgid "コースの説明"
+msgstr "Course description"
+
+#: src/components/admin/RouteHistory.tsx:24
+msgid "コースの順番を変えた"
+msgstr "Reordered the courses"
+
 #: src/components/BookmarkList.tsx:45
 msgid "コースやラリー、ブログの記事で、しおりのボタンを押すと、ここに保存されます。ログインしていれば、アカウントに保存されます。"
 msgstr "Press the bookmark button on a course, a rally or a blog post and it is saved here. When you are signed in, it is saved to your account."
 
+#: src/components/admin/RouteTable.tsx:127
 #: src/components/landing/Landing.tsx:121
+#: src/components/landing/LandingHero.tsx:72
 msgid "コースをさがす"
 msgstr "Find a course"
+
+#: src/components/admin/RouteHistory.tsx:21
+msgid "コースを作った"
+msgstr "Created the course"
+
+#: src/components/admin/RouteHistory.tsx:23
+msgid "コースを消した"
+msgstr "Deleted the course"
+
+#: src/components/admin/RouteHistory.tsx:22
+msgid "コースを直した"
+msgstr "Edited the course"
+
+#: src/app/(admin)/admin/routes/[id]/page.tsx:14
+msgid "コースを直す（管理）"
+msgstr "Edit course (admin)"
 
 #: src/components/RallyViews.tsx:250
 msgid "コースを見る"
 msgstr "See the courses"
+
+#: src/app/(admin)/admin/routes/[id]/page.tsx:29
+#: src/app/(admin)/admin/routes/page.tsx:37
+msgid "コースを読み込めませんでした。しばらくしてから、ページを開き直してください。"
+msgstr "Could not load the courses. Please wait a moment and reopen the page."
 
 #: src/app/(public)/grading/page.tsx:40
 #: src/app/(public)/routes/[id]/page.tsx:40
@@ -1487,6 +1577,10 @@ msgstr "All courses"
 #: src/app/(public)/routes/[id]/page.tsx:85
 msgid "コース一覧にもどる"
 msgstr "Back to all courses"
+
+#: src/components/admin/useChecklistLabels.ts:11
+msgid "コース名（日本語）"
+msgstr "Course name (Japanese)"
 
 #: src/app/(public)/grading/page.tsx:58
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
@@ -1575,9 +1669,17 @@ msgstr "About this app"
 msgid "このアプリを知ったきっかけ"
 msgstr "How did you find out about this?"
 
+#: src/components/admin/RouteImport.tsx:93
+msgid "このコースがまだありません"
+msgstr "This course does not exist yet"
+
 #: src/components/admin/SharedPlaces.tsx:167
 msgid "このコースに置く"
 msgstr "Put on this course"
+
+#: src/components/admin/DirectoryPicker.tsx:179
+msgid "このコースに追加"
+msgstr "Add to this course"
 
 #: src/app/(public)/routes/[id]/page.tsx:77
 msgid "このコースのお知らせをフィードで受け取る"
@@ -1586,6 +1688,18 @@ msgstr "Follow this course's notices in a feed reader"
 #: src/components/admin/SharedPlaces.tsx:99
 msgid "このコースの経由地で、ほかのコースにも置いているもの"
 msgstr "Waypoints of this course that other courses also hold"
+
+#: src/components/admin/RallyMemberPicker.tsx:65
+msgid "このコースの経由地をすべて"
+msgstr "All waypoints on this course"
+
+#: src/components/admin/RouteEditor.tsx:889
+msgid "このコースを削除"
+msgstr "Delete this course"
+
+#: src/components/admin/RouteEditor.tsx:436
+msgid "このコースを削除します。元に戻せません。よろしいですか？"
+msgstr "This course will be deleted and cannot be restored. Continue?"
 
 #: src/components/admin/CommentInbox.tsx:81
 msgid "このコメントを削除します。元に戻せません。"
@@ -1682,26 +1796,6 @@ msgstr "This link cannot be used"
 #: src/components/blog/ShareButtons.tsx:56
 msgid "このリンクをコピーしてください"
 msgstr "Copy this link"
-
-#: src/components/admin/RouteImport.tsx:93
-msgid "このルートがまだありません"
-msgstr "This route does not exist yet"
-
-#: src/components/admin/DirectoryPicker.tsx:179
-msgid "このルートに追加"
-msgstr "Add to this route"
-
-#: src/components/admin/RallyMemberPicker.tsx:65
-msgid "このルートの経由地をすべて"
-msgstr "All waypoints on this route"
-
-#: src/components/admin/RouteEditor.tsx:889
-msgid "このルートを削除"
-msgstr "Delete this route"
-
-#: src/components/admin/RouteEditor.tsx:436
-msgid "このルートを削除します。元に戻せません。よろしいですか？"
-msgstr "This route will be deleted and cannot be restored. Continue?"
 
 #: src/components/settings/PasskeyManager.tsx:193
 msgid "このログインは、消せません"
@@ -1817,7 +1911,7 @@ msgid "この数の経由地のあとに置く（0 = 最初）"
 msgstr "Place after this many waypoints (0 = first)"
 
 #: src/components/admin/RouteEditor.tsx:654
-msgid "この文章のもとにした資料や、確かめた公式サイトを書きます。ルートのページの下に表示されます。"
+msgid "この文章のもとにした資料や、確かめた公式サイトを書きます。コースのページの下に表示されます。"
 msgstr "Write the material this text is based on, or the official site you checked. It is shown at the bottom of the page."
 
 #: src/components/admin/PageTextEditor.tsx:67
@@ -2192,8 +2286,8 @@ msgid "スタンプ・状態・許可の設定"
 msgstr "Stamp, status and permission settings"
 
 #: src/app/(admin)/admin/page.tsx:89
-msgid "スタンプが多いルート"
-msgstr "Routes with the most stamps"
+msgid "スタンプが多いコース"
+msgstr "Courses with the most stamps"
 
 #: src/components/map/MapScreen.tsx:593
 #: src/components/map/StopCard.tsx:50
@@ -2307,8 +2401,8 @@ msgid "スタンプを押せる範囲（メートル）"
 msgstr "Stamp range (metres)"
 
 #: src/components/admin/RallyMemberPicker.tsx:48
-msgid "スタンプを押せる経由地がまだありません。ルートの画面で経由地を作ってください。"
-msgstr "There are no stamp waypoints yet. Create waypoints on a route first."
+msgid "スタンプを押せる経由地がまだありません。コースの画面で経由地を作ってください。"
+msgstr "There are no stamp waypoints yet. Create waypoints on a course first."
 
 #: src/components/RoutePill.tsx:52
 #: src/components/TrailRibbon.tsx:74
@@ -3681,106 +3775,6 @@ msgstr "Link address"
 msgid "リンク先のページが用意できてから、オンにしてください。オフの間は、ホームページに出ません。"
 msgstr "Turn this on once the pages it links to are ready. While it is off, it does not appear on the home page."
 
-#: src/app/(admin)/admin/routes/page.tsx:24
-#: src/components/admin/AdminNav.tsx:37
-#: src/components/admin/FuriganaOverview.tsx:127
-#: src/components/TabBar.tsx:88
-msgid "ルート"
-msgstr "Routes"
-
-#. placeholder {0}: preview.routes.length
-#. placeholder {1}: preview.places.length
-#: src/components/admin/RouteImport.tsx:193
-msgid "ルート {0} 行（今あるものを更新 {updating}、新しく作る {creating}）、経由地 {1} 行"
-msgstr "{0} route rows ({updating} update existing routes, {creating} create new ones), {1} waypoint rows"
-
-#: src/app/(admin)/admin/places/[id]/page.tsx:39
-msgid "ルート：{name}"
-msgstr "Route: {name}"
-
-#: src/app/(admin)/admin/routes/page.tsx:12
-msgid "ルート（管理）"
-msgstr "Routes (admin)"
-
-#: src/components/admin/RallyMemberPicker.tsx:48
-msgid "ルートがまだありません。"
-msgstr "There are no routes yet."
-
-#: src/components/admin/RouteTable.tsx:161
-msgid "ルートがまだありません。「新しいルート」から作ってください。"
-msgstr "There are no routes yet. Create one with \"New route\"."
-
-#: src/components/admin/AdminNav.tsx:52
-msgid "ルートとラリー"
-msgstr "Routes and rallies"
-
-#: src/components/admin/DirectoryPicker.tsx:167
-msgid "ルートの最初の経由地に近い順です。"
-msgstr "Nearest first from the route's first waypoint."
-
-#: src/components/admin/RouteEditor.tsx:605
-msgid "ルートの写真のリンク"
-msgstr "Route photo link"
-
-#: src/components/admin/RouteEditor.tsx:556
-msgid "ルートの名前"
-msgstr "Route name"
-
-#: src/components/admin/RouteEditor.tsx:557
-msgid "ルートの名前の読み（ふりがな）"
-msgstr "Reading of the route name (furigana)"
-
-#: src/app/(admin)/admin/places/[id]/page.tsx:41
-msgid "ルートの画面で開く"
-msgstr "Open in the route editor"
-
-#: src/components/useErrorMessages.ts:42
-msgid "ルートの線が正しくありません。日本の中に、2点以上の線を描いてください。"
-msgstr "The route line is not valid. Draw a line of at least 2 points inside Japan."
-
-#: src/components/admin/useChecklistLabels.ts:13
-msgid "ルートの線を確認済み"
-msgstr "Route line checked"
-
-#: src/components/admin/RouteEditor.tsx:638
-#: src/components/admin/RouteEditor.tsx:639
-msgid "ルートの説明"
-msgstr "Route description"
-
-#: src/components/admin/RouteHistory.tsx:24
-msgid "ルートの順番を変えた"
-msgstr "Reordered the routes"
-
-#: src/components/admin/RouteTable.tsx:127
-#: src/components/landing/LandingHero.tsx:72
-msgid "ルートをさがす"
-msgstr "Find a route"
-
-#: src/components/admin/RouteHistory.tsx:21
-msgid "ルートを作った"
-msgstr "Created the route"
-
-#: src/components/admin/RouteHistory.tsx:23
-msgid "ルートを消した"
-msgstr "Deleted the route"
-
-#: src/components/admin/RouteHistory.tsx:22
-msgid "ルートを直した"
-msgstr "Edited the route"
-
-#: src/app/(admin)/admin/routes/[id]/page.tsx:14
-msgid "ルートを直す（管理）"
-msgstr "Edit route (admin)"
-
-#: src/app/(admin)/admin/routes/[id]/page.tsx:29
-#: src/app/(admin)/admin/routes/page.tsx:37
-msgid "ルートを読み込めませんでした。しばらくしてから、ページを開き直してください。"
-msgstr "Could not load the routes. Please wait a moment and reopen the page."
-
-#: src/components/admin/useChecklistLabels.ts:11
-msgid "ルート名（日本語）"
-msgstr "Route name (Japanese)"
-
 #: src/components/SiteHeader.tsx:228
 msgid "ログアウト"
 msgstr "Log out"
@@ -3845,8 +3839,8 @@ msgid "一周"
 msgstr "Loop"
 
 #: src/components/admin/map-editor/PlaceList.tsx:136
-msgid "一周して、ここに戻るルートのとき: 同じ位置に、スタンプのない終点を追加します"
-msgstr "For a route that comes back here: adds an end point, not a stamp place, at the same position"
+msgid "一周して、ここに戻るコースのとき: 同じ位置に、スタンプのない終点を追加します"
+msgstr "For a course that comes back here: adds an end point, not a stamp place, at the same position"
 
 #: src/components/admin/RouteImport.tsx:215
 msgid "一度に取り込める数をこえています（{writes} 回の保存が必要で、上限は {IMPORT_WRITE_LIMIT} 回です）。ファイルを分けて、時間をおいて取り込んでください。"
@@ -4343,8 +4337,8 @@ msgid "先に「この経由地を保存」してください。"
 msgstr "Save this waypoint first (\"Save this waypoint\")."
 
 #: src/components/admin/PlacePanel.tsx:271
-msgid "先にルートを保存してください。"
-msgstr "Save the route first."
+msgid "先にコースを保存してください。"
+msgstr "Save the course first."
 
 #: src/app/(admin)/admin/attention/page.tsx:94
 msgid "先に直すもの"
@@ -4494,8 +4488,8 @@ msgid "公開中"
 msgstr "Published"
 
 #: src/components/admin/RouteEditor.tsx:395
-msgid "公開中の{count}か所を、すべて公開をやめます。ルートは「準備中」として一覧に残ります。よろしいですか？"
-msgstr "Unpublish all {count} published waypoints? The route stays in the list as coming soon."
+msgid "公開中の{count}か所を、すべて公開をやめます。コースは「準備中」として一覧に残ります。よろしいですか？"
+msgstr "Unpublish all {count} published waypoints? The course stays in the list as coming soon."
 
 #: src/components/admin/useChecklistLabels.ts:14
 msgid "公開中のスタンプの経由地"
@@ -4531,8 +4525,8 @@ msgid "公開中の経由地は消せません。先に「公開をやめる」�
 msgstr "A published waypoint cannot be deleted. Unpublish it first."
 
 #: src/components/admin/RouteEditor.tsx:848
-msgid "公開中の経由地をまとめて下書きに戻します。ルートは「準備中」として、一覧に残ります。"
-msgstr "Puts every published waypoint back to draft at once. The route stays in the list as coming soon."
+msgid "公開中の経由地をまとめて下書きに戻します。コースは「準備中」として、一覧に残ります。"
+msgstr "Puts every published waypoint back to draft at once. The course stays in the list as coming soon."
 
 #: src/components/admin/PublishedEditDialog.tsx:50
 msgid "公開中の経由地を編集します"
@@ -4799,8 +4793,8 @@ msgid "初期値にする"
 msgstr "Use the default"
 
 #: src/components/admin/DirectoryPicker.tsx:176
-msgid "別のルートにひもづいています"
-msgstr "Linked to another route"
+msgid "別のコースにひもづいています"
+msgstr "Linked to another course"
 
 #: src/components/useErrorMessages.ts:40
 msgid "別の人が先に保存しました。読み込み直してから、もう一度お試しください。"
@@ -4929,8 +4923,8 @@ msgid "前の場所から"
 msgstr "From the last stop"
 
 #: src/components/admin/RouteImport.tsx:91
-msgid "前の番号のルートがまだないので、作れません"
-msgstr "The route before it does not exist yet, so it cannot be created"
+msgid "前の番号のコースがまだないので、作れません"
+msgstr "The course before it does not exist yet, so it cannot be created"
 
 #: src/components/admin/RouteImport.tsx:95
 msgid "前の番号の経由地がまだないので、作れません"
@@ -5590,8 +5584,8 @@ msgid "場所一覧から追加する"
 msgstr "Add from the places directory"
 
 #: src/components/admin/DirectoryPicker.tsx:130
-msgid "場所一覧の場所を、このルートにひもづけます。ルートのページに「周辺の場所」として並び、大きな地図にもピンが出ます。変更はすぐに保存されます。"
-msgstr "Links places of the directory to this route. They are listed on the route's page as nearby places and get a pin on the big map. Changes are saved straight away."
+msgid "場所一覧の場所を、このコースにひもづけます。コースのページに「周辺の場所」として並び、大きな地図にもピンが出ます。変更はすぐに保存されます。"
+msgstr "Links places of the directory to this course. They are listed on the course's page as nearby places and get a pin on the big map. Changes are saved straight away."
 
 #: src/components/admin/RallyEditor.tsx:97
 msgid "変える"
@@ -5917,8 +5911,8 @@ msgid "手直しが必要（{needsWorkCount}）"
 msgstr "Needs work ({needsWorkCount})"
 
 #: src/components/admin/RouteTable.tsx:143
-msgid "手直しが必要なルートだけ（{needsWorkCount}）"
-msgstr "Only routes that need work ({needsWorkCount})"
+msgid "手直しが必要なコースだけ（{needsWorkCount}）"
+msgstr "Only courses that need work ({needsWorkCount})"
 
 #: src/components/admin/BlockEditor.tsx:363
 msgid "手順"
@@ -6090,6 +6084,15 @@ msgstr "Text formatting"
 msgid "斜体"
 msgstr "Italic"
 
+#: src/app/(admin)/admin/routes/page.tsx:27
+#: src/components/admin/RouteEditor.tsx:485
+msgid "新しいコース"
+msgstr "New course"
+
+#: src/app/(admin)/admin/routes/new/page.tsx:13
+msgid "新しいコース（管理）"
+msgstr "New course (admin)"
+
 #: src/components/settings/PasswordMethod.tsx:86
 msgid "新しいパスワード"
 msgstr "New password"
@@ -6102,15 +6105,6 @@ msgstr "New rally"
 #: src/app/(admin)/admin/rallies/new/page.tsx:12
 msgid "新しいラリー（管理）"
 msgstr "New rally (admin)"
-
-#: src/app/(admin)/admin/routes/page.tsx:27
-#: src/components/admin/RouteEditor.tsx:485
-msgid "新しいルート"
-msgstr "New route"
-
-#: src/app/(admin)/admin/routes/new/page.tsx:13
-msgid "新しいルート（管理）"
-msgstr "New route (admin)"
 
 #: src/components/admin/map-editor/MapEditor.tsx:908
 msgid "新しい点は、選んだ点（{chosenNo}番）のあとに入ります。もう一度クリックすると、選びなおせます。"
@@ -6349,14 +6343,14 @@ msgstr "Skip to main content"
 msgid "条件に合う{title}はありません。"
 msgstr "No {title} match the conditions."
 
+#: src/components/admin/RouteTable.tsx:189
+#: src/components/admin/RouteTable.tsx:225
+msgid "条件に合うコースがありません。"
+msgstr "No courses match."
+
 #: src/components/admin/RallyList.tsx:104
 msgid "条件に合うラリーがありません。"
 msgstr "No rallies match."
-
-#: src/components/admin/RouteTable.tsx:189
-#: src/components/admin/RouteTable.tsx:225
-msgid "条件に合うルートがありません。"
-msgstr "No routes match."
 
 #: src/components/admin/AdminListTable.tsx:246
 msgid "条件をやめる"
@@ -6435,8 +6429,8 @@ msgid "横の長さ"
 msgstr "Width"
 
 #: src/components/admin/PageTextEditor.tsx:107
-msgid "欄には、いまサイトに出ている文章が入っています。書きかえた欄だけが保存されます。写真はバナー、コースはルート、お知らせはお知らせの画面で変えられます。"
-msgstr "Each box holds the words the site shows now. Only the boxes you change are saved. Photos are changed in Banners, courses in Routes, and notices in Notices."
+msgid "欄には、いまサイトに出ている文章が入っています。書きかえた欄だけが保存されます。写真はバナー、コースはコース、お知らせはお知らせの画面で変えられます。"
+msgstr "Each box holds the words the site shows now. Only the boxes you change are saved. Photos are changed in Banners, courses in Courses, and notices in Notices."
 
 #: src/components/navigation/NavigationHud.tsx:326
 msgid "次のスタンプの場所"
@@ -7013,7 +7007,7 @@ msgid "空から撮った写真の地図です。"
 msgstr "A map of aerial photographs."
 
 #: src/components/admin/HomeTextFields.tsx:102
-msgid "空のままにすると、ルートの写真が使われます。日本語の欄に入れた写真は、英語の画面でも使われます。"
+msgid "空のままにすると、コースの写真が使われます。日本語の欄に入れた写真は、英語の画面でも使われます。"
 msgstr "If left empty, a course's photo is used. A photo set in the Japanese box is also used on the English screen."
 
 #: src/components/admin/SiteSettingsForm.tsx:126
@@ -7173,12 +7167,12 @@ msgid "経由地（{0}か所）"
 msgstr "Waypoints ({0})"
 
 #: src/components/admin/RouteEditor.tsx:891
-msgid "経由地が残っているルートは削除できません。"
-msgstr "A route that still has waypoints cannot be deleted."
+msgid "経由地が残っているコースは削除できません。"
+msgstr "A course that still has waypoints cannot be deleted."
 
 #: src/components/useErrorMessages.ts:44
-msgid "経由地が残っているルートは消せません。先に経由地を消してください。"
-msgstr "A route that still has waypoints cannot be deleted. Delete its waypoints first."
+msgid "経由地が残っているコースは消せません。先に経由地を消してください。"
+msgstr "A course that still has waypoints cannot be deleted. Delete its waypoints first."
 
 #: src/components/admin/RallyEditor.tsx:135
 msgid "経由地でつくったラリー：えらんだ経由地のスタンプを全部押すと達成。"
@@ -7773,12 +7767,12 @@ msgid "記号の大きさ"
 msgstr "Symbols"
 
 #: src/components/admin/CourseAreaEditor.tsx:179
-msgid "訪れる人の、全体の地図に出る四角です。ふだんは、確かめた線のまわりに自動で決まります。ここで手で決めると、まだ公開していないルートも、「準備中」として地図に出ます。"
+msgid "訪れる人の、全体の地図に出る四角です。ふだんは、確かめた線のまわりに自動で決まります。ここで手で決めると、まだ公開していないコースも、「準備中」として地図に出ます。"
 msgstr "The box shown for the course on the visitors' overview map. Normally it is set automatically around the checked line. Set it by hand and a course that is not open yet also appears on the map, marked as coming soon."
 
 #: src/components/admin/SiteSettingsForm.tsx:83
-msgid "訪問者が見る地図（マップ画面、ルートのページ）の見た目です。地図を作る管理画面の地図は、見やすさのため、いつも「標準」です。"
-msgstr "How the map looks to visitors (the Map screen and the route pages). The map in the admin editor is always \"Standard\", so it is easy to work on."
+msgid "訪問者が見る地図（マップ画面、コースのページ）の見た目です。地図を作る管理画面の地図は、見やすさのため、いつも「標準」です。"
+msgstr "How the map visitors see looks (the map screen and the course pages). The maps in the admin you build courses on always use Standard, so they stay easy to read."
 
 #: src/components/admin/PlacePanel.tsx:231
 msgid "許可が未確認"
@@ -7866,8 +7860,8 @@ msgid "質問と答えの一覧です。"
 msgstr "A list of questions and answers."
 
 #: src/app/(admin)/admin/attention/page.tsx:104
-msgid "赤いものは、直すまで訪問者に見えません。名前を押すと、そのルートの編集画面が開きます。"
-msgstr "Visitors cannot see the red items until they are fixed. Press a name to open that route in the editor."
+msgid "赤いものは、直すまで訪問者に見えません。名前を押すと、そのコースの編集画面が開きます。"
+msgstr "Visitors cannot see the red items until they are fixed. Press a name to open that course in the editor."
 
 #: src/components/admin/RouteTable.tsx:174
 #: src/components/admin/RouteTable.tsx:176
@@ -8352,8 +8346,8 @@ msgid "開放中"
 msgstr "Open"
 
 #: src/app/(admin)/admin/attention/page.tsx:100
-msgid "関係するルート"
-msgstr "Routes affected"
+msgid "関係するコース"
+msgstr "Courses affected"
 
 #: src/components/admin/SiteSettingsForm.tsx:47
 msgid "陰影（やわらかい影）"

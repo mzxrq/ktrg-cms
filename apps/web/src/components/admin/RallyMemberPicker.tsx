@@ -45,7 +45,7 @@ export function RallyMemberPicker({
       </div>
 
       {candidates.items.length === 0 ? (
-        <p className="text-lg">{candidates.kind === "places" ? t`スタンプを押せる経由地がまだありません。ルートの画面で経由地を作ってください。` : t`ルートがまだありません。`}</p>
+        <p className="text-lg">{candidates.kind === "places" ? t`スタンプを押せる経由地がまだありません。コースの画面で経由地を作ってください。` : t`コースがまだありません。`}</p>
       ) : candidates.kind === "places" ? (
         <div className="flex flex-col gap-3">
           {groupBy(candidates.items, (p) => p.routeId).map((group) => {
@@ -62,7 +62,7 @@ export function RallyMemberPicker({
                     disabled={disabled}
                     onChange={() => onChange(all ? selected.filter((id) => !ids.includes(id)) : tickAll(selected, ids, true))}
                   />
-                  {t`このルートの経由地をすべて`}
+                  {t`このコースの経由地をすべて`}
                 </label>
                 {group.items.map((p) => (
                   <label key={p.spotId} className="tap-target flex items-center gap-3 text-lg">

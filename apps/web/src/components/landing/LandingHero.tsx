@@ -69,7 +69,7 @@ export function LandingHero({ slides, locale, line, title, children, bare = fals
             <Trans>新規登録</Trans>
           </Link>
           <Link href="/routes" className={secondary}>
-            <Trans>ルートをさがす</Trans>
+            <Trans>コースをさがす</Trans>
           </Link>
         </div>
         <p className="text-lg opacity-80">

@@ -124,7 +124,7 @@ export function RouteTable({ initial, locale }: { initial: AdminRouteSummary[]; 
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-end gap-3">
         <label className="flex min-w-60 flex-1 flex-col gap-1 text-base font-bold">
-          {t`ルートをさがす`}
+          {t`コースをさがす`}
           <input type="search" value={query} onChange={(e) => { setQuery(e.target.value); setPage(1); }} placeholder={t`名前の一部を入力`} className="tap-target rounded-full border border-line bg-paper px-4 text-lg font-normal" />
         </label>
       </div>
@@ -140,7 +140,7 @@ export function RouteTable({ initial, locale }: { initial: AdminRouteSummary[]; 
           }}
           className={`tap-target w-fit rounded-full border-2 px-4 text-base font-bold ${needsWorkOnly ? "border-ink bg-ink text-paper" : "border-line bg-paper text-ink"}`}
         >
-          {t`手直しが必要なルートだけ（${needsWorkCount}）`}
+          {t`手直しが必要なコースだけ（${needsWorkCount}）`}
         </button>
       </div>
 
@@ -158,7 +158,7 @@ export function RouteTable({ initial, locale }: { initial: AdminRouteSummary[]; 
       ) : null}
 
       {routes.length === 0 ? (
-        <p className="rounded-2xl bg-surface p-6 text-lg">{t`ルートがまだありません。「新しいルート」から作ってください。`}</p>
+        <p className="rounded-2xl bg-surface p-6 text-lg">{t`コースがまだありません。「新しいコース」から作ってください。`}</p>
       ) : (
         <>
           <div className="relative hidden overflow-x-auto rounded-2xl border border-line md:block">
@@ -186,7 +186,7 @@ export function RouteTable({ initial, locale }: { initial: AdminRouteSummary[]; 
                 {shown.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="p-6 text-lg">
-                      {t`条件に合うルートがありません。`}
+                      {t`条件に合うコースがありません。`}
                     </td>
                   </tr>
                 ) : null}
@@ -222,7 +222,7 @@ export function RouteTable({ initial, locale }: { initial: AdminRouteSummary[]; 
               </tbody>
             </table>
           </div>
-          {shown.length === 0 ? <p className="rounded-2xl bg-surface p-6 text-lg md:hidden">{t`条件に合うルートがありません。`}</p> : null}
+          {shown.length === 0 ? <p className="rounded-2xl bg-surface p-6 text-lg md:hidden">{t`条件に合うコースがありません。`}</p> : null}
           <ol className={`flex-col divide-y divide-line rounded-2xl border border-line md:hidden ${shown.length === 0 ? "hidden" : "flex"}`}>
             {visible.map((r) => {
               const index = order.get(r.id)! - 1;

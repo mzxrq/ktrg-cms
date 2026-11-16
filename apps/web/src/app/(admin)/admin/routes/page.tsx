@@ -9,7 +9,7 @@ import type { AdminRouteSummary } from "@/lib/admin/types";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
-  return { title: i18n._(msg`ルート（管理）`) };
+  return { title: i18n._(msg`コース（管理）`) };
 }
 
 export default async function AdminRoutesPage() {
@@ -21,10 +21,10 @@ export default async function AdminRoutesPage() {
     <div className="mx-auto flex max-w-6xl flex-col gap-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-3xl font-bold">
-          <Trans>ルート</Trans>
+          <Trans>コース</Trans>
         </h1>
         <Link href="/admin/routes/new" className="tap-target inline-flex items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
-          <Trans>新しいルート</Trans>
+          <Trans>新しいコース</Trans>
         </Link>
       </div>
       <p className="text-lg text-muted">
@@ -34,7 +34,7 @@ export default async function AdminRoutesPage() {
         <RouteTable initial={routes} locale={i18n.locale} />
       ) : (
         <p role="alert" className="rounded-2xl bg-surface p-6 text-lg font-bold text-danger">
-          <Trans>ルートを読み込めませんでした。しばらくしてから、ページを開き直してください。</Trans>
+          <Trans>コースを読み込めませんでした。しばらくしてから、ページを開き直してください。</Trans>
         </p>
       )}
     </div>
