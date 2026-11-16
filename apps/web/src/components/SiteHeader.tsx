@@ -15,6 +15,7 @@ import { KatsuragiLogo } from "./KatsuragiLogo";
 import { LocaleSelect } from "./LocaleSwitcher";
 import { foundationEn, foundationJa } from "@/lib/terms-content";
 import { useMenu } from "./MenuProvider";
+import { usePresence } from "@/lib/motion";
 import { SampleNoticeButton } from "./SampleNotice";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { confirmDialog } from "@/components/ConfirmDialog";
@@ -76,10 +77,11 @@ export function SiteHeader({
   const onLanding = onMap || (!signedIn && pathname === "/");
   // The logo bar of the signed-out home page shows only while the menu is open: scrolling never brings it over the page.
   const hidden = onLanding && !onMap && !open;
-  const panelRef = useRef<HTMLDivElement>(null);
-
   // 768 px and up: the menu is a popover beside the rail button, and the page behind it may scroll.
   const wide = () => window.matchMedia("(min-width: 768px)").matches;
+  // The panel and the dimmed backdrop stay on screen while they leave (motion level permitting), then go.
+  const { mounted: panelMounted, ref: panelRef } = usePresence<HTMLDivElement>(open, () => (wide() ? "pop" : "drop"));
+  const { mounted: backdropMounted, ref: backdropRef } = usePresence<HTMLDivElement>(open, "fade");
 
   // The popover sits to the right of the rail button that opened it, as high as the button allows while staying fully
   // on screen, and grows out of the button. A resize would leave it in the wrong place, so it closes instead.
@@ -148,9 +150,9 @@ export function SiteHeader({
 
   return (
     <header className={`print:hidden site-header ${onLanding ? "sticky top-0 z-30 h-0" : "relative z-30 md:sticky md:top-0 md:h-0"}`}>
-      {open ? (
+      {backdropMounted ? (
         // Tapping outside the panel closes it. (Escape and the button do the same for the keyboard.)
-        <div aria-hidden="true" onClick={() => setOpen(false)} className="fixed inset-0 bg-black/50 md:bg-transparent" />
+        <div ref={backdropRef} aria-hidden="true" onClick={() => setOpen(false)} className="fixed inset-0 bg-black/50 md:bg-transparent" />
       ) : null}
       <div
         inert={hidden}
@@ -192,13 +194,13 @@ export function SiteHeader({
         </div>
       </div>
 
-      {open ? (
+      {panelMounted ? (
         <div
           ref={panelRef}
           id="site-menu"
           // A link to the page we are already on does not change the path, so close here to show the tap worked.
           onClick={(e) => e.target instanceof Element && e.target.closest("a") && setOpen(false)}
-          className="menu-drop fixed inset-0 overflow-y-auto overscroll-contain bg-paper pb-28 pt-[var(--top-clear)] md:inset-auto md:right-auto md:w-[26rem] md:max-h-[calc(100dvh-1.5rem)] md:rounded-2xl md:border-2 md:border-brand md:pb-0 md:pt-0 md:shadow-xl"
+          className="fixed inset-0 overflow-y-auto overscroll-contain bg-paper pb-28 pt-[var(--top-clear)] md:inset-auto md:right-auto md:w-[26rem] md:max-h-[calc(100dvh-1.5rem)] md:rounded-2xl md:border-2 md:border-brand md:pb-0 md:pt-0 md:shadow-xl"
         >
           <div className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5">
             {/* From 768 px the bar is not drawn (the rail has the menu button), so the top row of the popover holds both. */}

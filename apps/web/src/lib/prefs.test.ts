@@ -1,6 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import {
   accountPrefs,
+  motionOf,
+  withMotion,
   syncDirection,
   defaultPrefs,
   effectivePrefs,
@@ -13,7 +15,7 @@ import {
 
 describe("defaults", () => {
   test("the plain map, standard size, set-up not done", () => {
-    expect(defaultPrefs).toEqual({ size: "standard", placesOnMap: false, setupDone: false, furigana: false, contrast: false, calm: false, updatedAt: 0 });
+    expect(defaultPrefs).toEqual({ size: "standard", placesOnMap: false, setupDone: false, furigana: false, contrast: false, calm: false, fade: false, updatedAt: 0 });
   });
 
   test("each size has a percentage, growing", () => {
@@ -23,8 +25,13 @@ describe("defaults", () => {
 
 describe("sanitizePrefs", () => {
   test("a good value passes through", () => {
-    const p = { size: "large", placesOnMap: true, setupDone: true, furigana: false, contrast: false, calm: false, updatedAt: 1760000000000 } as const;
+    const p = { size: "large", placesOnMap: true, setupDone: true, furigana: false, contrast: false, calm: false, fade: false, updatedAt: 1760000000000 } as const;
     expect(sanitizePrefs(p)).toEqual(p);
+  });
+
+  test("fade is kept only when it is exactly true", () => {
+    expect(sanitizePrefs({ ...defaultPrefs, fade: true }).fade).toBe(true);
+    expect(sanitizePrefs({ ...defaultPrefs, fade: "yes" }).fade).toBe(false);
   });
 
   test("each field falls back on its own", () => {
@@ -35,6 +42,7 @@ describe("sanitizePrefs", () => {
       furigana: false,
       contrast: false,
       calm: false,
+      fade: false,
       updatedAt: 0,
     });
     expect(sanitizePrefs(null)).toEqual(defaultPrefs);
@@ -46,13 +54,13 @@ describe("sanitizePrefs", () => {
   });
 
   test("extra fields are dropped", () => {
-    expect(Object.keys(sanitizePrefs({ ...defaultPrefs, role: "admin" })).sort()).toEqual(["calm", "contrast", "furigana", "placesOnMap", "setupDone", "size", "updatedAt"]);
+    expect(Object.keys(sanitizePrefs({ ...defaultPrefs, role: "admin" })).sort()).toEqual(["calm", "contrast", "fade", "furigana", "placesOnMap", "setupDone", "size", "updatedAt"]);
   });
 });
 
 describe("the device cookie", () => {
   test("what is written can be read back", () => {
-    const p = { size: "xlarge", placesOnMap: false, setupDone: true, furigana: false, contrast: false, calm: false, updatedAt: 1760000000000 } as const;
+    const p = { size: "xlarge", placesOnMap: false, setupDone: true, furigana: false, contrast: false, calm: false, fade: false, updatedAt: 1760000000000 } as const;
     const cookie = prefsCookieString(p, false);
     expect(cookie).toContain("Max-Age=31536000");
     expect(cookie).not.toContain("Secure");
@@ -114,5 +122,18 @@ describe("keeping the two copies equal", () => {
   test("equal times, or nothing at all, need nothing", () => {
     expect(syncDirection(newer, { ...newer })).toBe("none");
     expect(syncDirection(null, null)).toBe("none");
+  });
+});
+
+describe("motion level", () => {
+  test("is read from the two flags, calm first", () => {
+    expect(motionOf({ calm: false, fade: false })).toBe("full");
+    expect(motionOf({ calm: false, fade: true })).toBe("fade");
+    expect(motionOf({ calm: true, fade: true })).toBe("off");
+  });
+  test("each level sets the flags so the others are cleared", () => {
+    expect(withMotion({ ...defaultPrefs, calm: true }, "fade")).toMatchObject({ calm: false, fade: true });
+    expect(withMotion({ ...defaultPrefs, fade: true }, "off")).toMatchObject({ calm: true, fade: false });
+    expect(withMotion({ ...defaultPrefs, calm: true }, "full")).toMatchObject({ calm: false, fade: false });
   });
 });

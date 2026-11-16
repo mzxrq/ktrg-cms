@@ -8496,3 +8496,19 @@ msgstr "Theme"
 #: src/components/ThemeSwitcher.tsx
 msgid "テーマ：{label}。押すと切り替わります。"
 msgstr "Theme: {label}. Tap to change."
+
+#: src/components/MotionSelect.tsx
+msgid "ふつうに動く"
+msgstr "Full motion"
+
+#: src/components/MotionSelect.tsx
+msgid "フェードだけ"
+msgstr "Fade only"
+
+#: src/components/MotionSelect.tsx
+msgid "動かさない"
+msgstr "No motion"
+
+#: src/components/settings/PrefsForm.tsx
+msgid "アニメーションや、ふわっと動く表示の量を選びます。"
+msgstr "Choose how much the page animates and fades."

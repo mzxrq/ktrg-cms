@@ -21,6 +21,8 @@ export interface Preferences {
   contrast?: boolean;
   /** Calm: no animation or movement. Left out = off. */
   calm?: boolean;
+  /** Fade only: fades but no movement (motion level "Fade only"). Left out = off; calm wins when both are set. */
+  fade?: boolean;
   /**
    * When the person made this choice, in milliseconds since 1970, by the clock of the phone they
    * used. The phone and the account each keep a copy and the NEWER one wins, so a change that

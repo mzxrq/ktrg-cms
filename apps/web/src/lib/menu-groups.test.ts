@@ -10,7 +10,7 @@ test("the menu is four titled groups on the paper ground, sign in is the brand b
   const header = read("components", "SiteHeader.tsx");
   for (const title of ["アカウント", "しおりと読みもの", "表示と設定", "このアプリについて"]) expect(header).toContain(`<MenuGroup title={t\`${title}\`}>`);
   expect(header).toMatch(/buttonStyle\("action", "lg", "flex w-full"\)/);
-  expect(header).toMatch(/menu-drop fixed inset-0[^"]*bg-paper/);
+  expect(header).toMatch(/fixed inset-0 overflow-y-auto[^"]*bg-paper/);
   expect(header).toMatch(/font-serif text-3xl font-bold text-accent/);
 });
 

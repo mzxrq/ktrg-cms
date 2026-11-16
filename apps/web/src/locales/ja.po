@@ -8496,3 +8496,19 @@ msgstr "テーマ"
 #: src/components/ThemeSwitcher.tsx
 msgid "テーマ：{label}。押すと切り替わります。"
 msgstr "テーマ：{label}。押すと切り替わります。"
+
+#: src/components/MotionSelect.tsx
+msgid "ふつうに動く"
+msgstr "ふつうに動く"
+
+#: src/components/MotionSelect.tsx
+msgid "フェードだけ"
+msgstr "フェードだけ"
+
+#: src/components/MotionSelect.tsx
+msgid "動かさない"
+msgstr "動かさない"
+
+#: src/components/settings/PrefsForm.tsx
+msgid "アニメーションや、ふわっと動く表示の量を選びます。"
+msgstr "アニメーションや、ふわっと動く表示の量を選びます。"

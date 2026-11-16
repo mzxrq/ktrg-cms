@@ -18,14 +18,21 @@ export interface Prefs {
   furigana: boolean;
   /** Stronger contrast: black on white and thicker lines. */
   contrast: boolean;
-  /** Calm: no animation or movement. */
+  /** Calm: no animation or movement (the motion level "Off"). */
   calm: boolean;
+  /** Fade only: things fade in and out but do not move (the motion level "Fade only"; calm wins when both are set). */
+  fade: boolean;
   /** When this choice was made (milliseconds since 1970, by the phone's clock); the newer copy wins. 0 = unknown. */
   updatedAt: number;
 }
 
 /** The plain map and standard size: the simplest choices. */
-export const defaultPrefs: Prefs = { size: "standard", placesOnMap: false, setupDone: false, furigana: false, contrast: false, calm: false, updatedAt: 0 };
+export const defaultPrefs: Prefs = { size: "standard", placesOnMap: false, setupDone: false, furigana: false, contrast: false, calm: false, fade: false, updatedAt: 0 };
+
+/** The three motion levels a visitor chooses from; stored as the two flags `calm` (off) and `fade` (fade only). */
+export type MotionPref = "full" | "fade" | "off";
+export const motionOf = (p: Pick<Prefs, "calm" | "fade">): MotionPref => (p.calm ? "off" : p.fade ? "fade" : "full");
+export const withMotion = (p: Prefs, level: MotionPref): Prefs => ({ ...p, calm: level === "off", fade: level === "fade" });
 
 export const prefsCookie = "prefs";
 
@@ -44,6 +51,7 @@ export function sanitizePrefs(value: unknown): Prefs {
     furigana: v.furigana === true,
     contrast: v.contrast === true,
     calm: v.calm === true,
+    fade: v.fade === true,
     updatedAt: Number.isSafeInteger(v.updatedAt) && (v.updatedAt as number) >= 0 ? (v.updatedAt as number) : 0,
   };
 }

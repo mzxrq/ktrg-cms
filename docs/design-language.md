@@ -109,7 +109,13 @@ lands on a colour under 4.5:1.
 - **GSAP is allowed** (agreed 2026-11-10) where it does the job better than plain CSS: drawing the ridge line on
   scroll, section ground changes, staggered reveals. Reading pages only, loaded on those pages (not in the shared
   bundle), with `gsap.matchMedia()` so reduced motion gets the final state. Plain CSS stays the choice for small things.
-- **Tools register:** only the feedback that already exists (menus, toasts, the stamp press).
+- **Tools register (amended 2026-11-16, `docs/motion-design.md`):** everything that appears or leaves may move, but
+  only briefly (150 to 300 ms) and never in the way of a tap: menus, dialogs, toasts, banners, empty and error
+  states, lists, route changes. Three motion levels apply everywhere: **Full** (move and fade), **Fade only**
+  (opacity only; also what a device's reduce-motion setting gives) and **Off** (nothing; the old "calm"). The helper
+  is `lib/motion.ts` (`usePresence`, `enter`, `leave`); GSAP is loaded on idle after first paint, not in the shared
+  bundle, and until it is ready things simply appear. The "reading pages only" limit on GSAP above no longer holds
+  for these short exits and entrances; the long reveals and scroll scenes stay on reading pages.
 
 ## Pictures
 
