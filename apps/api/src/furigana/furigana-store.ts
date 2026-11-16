@@ -64,7 +64,7 @@ export function createDrizzleFuriganaStore(db: Db): FuriganaStore {
         return true;
       });
     },
-    all: () => db.select({ word: furiganaWords.word, reading: furiganaWords.reading }).from(furiganaWords).where(eq(furiganaWords.pending, false)),
+    all: () => db.select({ word: furiganaWords.word, reading: furiganaWords.reading, always: furiganaWords.always }).from(furiganaWords).where(eq(furiganaWords.pending, false)),
     pending: () => db.select().from(furiganaWords).where(eq(furiganaWords.pending, true)).orderBy(asc(furiganaWords.word)),
     async approve(actor, ids) {
       if (ids.length === 0) return 0;
