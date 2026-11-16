@@ -11,7 +11,11 @@ export interface TrailPlace {
   descriptionEn: string | null;
 }
 
-export type TrailState = "stamped" | "next" | "todo" | "info";
+/** `closed` = not stamped but counts as done (the rally rule); never shown as stamped. */
+export type TrailState = "stamped" | "closed" | "next" | "todo" | "info";
+
+/** Stamped or closed: the walker has gone past it and it counts toward completion. */
+export const isDone = (state: TrailState) => state === "stamped" || state === "closed";
 
 export interface TrailStop extends TrailPlace {
   /** 1, 2, 3 ... among the places that offer a stamp; null for a place that does not. */
@@ -29,7 +33,8 @@ export function trailStops(places: readonly TrailPlace[], held: ReadonlySet<stri
   return places.map((p) => {
     if (p.status === "info") return { ...p, number: null, state: "info" };
     number += 1;
-    if (held.has(p.id) || p.status === "closed") return { ...p, number, state: "stamped" };
+    if (held.has(p.id)) return { ...p, number, state: "stamped" };
+    if (p.status === "closed") return { ...p, number, state: "closed" };
     if (!nextTaken) {
       nextTaken = true;
       return { ...p, number, state: "next" };
@@ -42,6 +47,5 @@ export function trailStops(places: readonly TrailPlace[], held: ReadonlySet<stri
 export function walkerAt(stops: readonly TrailStop[]): number {
   const next = stops.findIndex((s) => s.state === "next");
   if (next >= 0) return next;
-  const lastDone = stops.map((s) => s.state).lastIndexOf("stamped");
-  return Math.max(0, lastDone);
+  return Math.max(0, stops.findLastIndex((s) => isDone(s.state)));
 }

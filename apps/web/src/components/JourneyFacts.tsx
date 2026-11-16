@@ -13,16 +13,17 @@ export function JourneyFacts({ facts, compact = false }: { facts: Facts; compact
   const h = time?.hours ?? 0;
   const m = time?.minutes ?? 0;
   const timeText = time === null ? null : h > 0 && m > 0 ? t`約${h}時間${m}分` : h > 0 ? t`約${h}時間` : t`約${m}分`;
-  const tile = "rounded-xl bg-paper px-1 py-2 text-center";
-  const big = "block whitespace-nowrap text-lg font-bold leading-tight tabular-nums";
-  // The time is the longest, so it gets a wider tile; a number and its unit never split across lines.
-  const columns = [1, facts.km !== null ? 1 : 0, timeText !== null ? 1.5 : 0].filter(Boolean).map((w) => `minmax(0,${w}fr)`).join(" ");
+  // Tiles wrap onto a second line rather than squeeze: English "31 places" or "111.6 km" does not fit a third of a phone.
+  const tile = "min-w-[6.5rem] flex-1 rounded-xl bg-paper px-1 py-2 text-center";
+  // Wraps at spaces (English "About 64 h 30 min" is wider than a phone tile); a number and its unit are held together
+  // by a no-break space in the messages, so they never split across lines.
+  const big = "block text-lg font-bold leading-tight tabular-nums";
 
   return (
     <div className="flex flex-col gap-3">
-      <ul className="grid gap-2" style={{ gridTemplateColumns: columns }}>
+      <ul className="flex flex-wrap gap-2">
         <li className={tile}>
-          <b className={big}>{total}{t`か所`}</b>
+          <b className={big}>{t`${total}か所`}</b>
           <span className="text-base text-muted">{t`スタンプ`}</span>
         </li>
         {facts.km !== null ? (
@@ -32,7 +33,7 @@ export function JourneyFacts({ facts, compact = false }: { facts: Facts; compact
           </li>
         ) : null}
         {timeText !== null ? (
-          <li className={tile}>
+          <li className={`${tile} grow-[1.5]`}>
             <b className={big}>{timeText}</b>
             <span className="text-base text-muted">{t`歩く時間`}</span>
           </li>

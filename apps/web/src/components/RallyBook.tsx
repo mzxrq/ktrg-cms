@@ -9,6 +9,7 @@ import { formatUpdated } from "@/lib/format";
 import { pickText } from "@/lib/pick-text";
 import type { BookPage } from "@/lib/rally-book";
 import { moveTo, turnIn, walkSeconds } from "@/lib/rally-motion";
+import { isDone } from "@/lib/rally-trail";
 import { ChevronIcon } from "./icons";
 import { RoutePhoto } from "./RoutePhoto";
 import { StatusWord } from "./StatusWord";
@@ -221,9 +222,9 @@ function BookStrip({ state }: { state: BookPage["state"] }) {
     const w = walker.current;
     if (!b || !w) return;
     const travel = Math.max(0, b.clientWidth - w.clientWidth - 24);
-    moveTo(w, { x: state === "stamped" ? travel : 0 }, walkSeconds(travel) + 0.3, { x: 0 });
+    moveTo(w, { x: isDone(state) ? travel : 0 }, walkSeconds(travel) + 0.3, { x: 0 });
   }, [state]);
-  const walking = state === "stamped" || state === "next";
+  const walking = isDone(state) || state === "next";
   return (
     <div ref={box} aria-hidden="true" className="relative h-10">
       <span className="absolute inset-x-2 top-[34px] border-t-[3px] border-dotted border-line" />
