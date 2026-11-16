@@ -16,7 +16,7 @@ export const STORY_SECTIONS: StorySection[] = [
         en: "The Izumi Mountains run east to west along the border of Osaka and Wakayama, and the Kongō Mountains run north to south along the border of Osaka and Nara. Together these ridges are called Katsuragi, some {km} km in all, and people have long honoured them as mountains where the gods dwell.",
       },
       {
-        ja: "七世紀、いまの奈良県御所市のあたりに生まれた役行者（えんのぎょうじゃ）は、修験道を開いた人と伝えられています。その役行者が、最初に修行を重ねた山がここ、葛城でした。",
+        ja: "七世紀、いまの奈良県御所市のあたりに生まれた役行者{えんのぎょうじゃ}は、修験道を開いた人と伝えられています。その役行者が、最初に修行を重ねた山がここ、葛城でした。",
         en: "In the seventh century a man named En no Gyōja was born near what is now Gose in Nara. He is said to have founded Shugendō, and Katsuragi is where he first trained.",
       },
       {
@@ -33,7 +33,7 @@ export const STORY_SECTIONS: StorySection[] = [
     heading: { ja: "海から始まる道", en: "A path that starts at the sea" },
     paragraphs: [
       {
-        ja: "旅は海から始まります。一番目の経塚「序品窟（じょほんくつ）」は、和歌山市の加太沖に浮かぶ友ヶ島の島のひとつ、虎島にあります。",
+        ja: "旅は海から始まります。一番目の経塚「序品窟{じょほんくつ}」は、和歌山市の加太沖に浮かぶ友ヶ島の島のひとつ、虎島にあります。",
         en: "The journey begins at the sea. The first mound, Jobon-kutsu, is a cave on Tora Island, one of the Tomogashima islands off Kada in Wakayama City.",
       },
       {
@@ -54,7 +54,7 @@ export const STORY_SECTIONS: StorySection[] = [
         en: "In south-western Osaka especially, prayers for the water that feeds the fields mattered a great deal. Waterfalls and rain-calling sites became training places too, and the rain dances live on today as the Katsuragi dance in Kishiwada and the Sasa dance in Izumi.",
       },
       {
-        ja: "修験者を支えたのも里の人々でした。和歌山市加太の向井家は、代々、修験者を迎える役を務め、紀の川市の中津川には、最も大切な儀式「葛城灌頂（かつらぎかんじょう）」が行われる行所があります。",
+        ja: "修験者を支えたのも里の人々でした。和歌山市加太の向井家は、代々、修験者を迎える役を務め、紀の川市の中津川には、最も大切な儀式「葛城灌頂{かつらぎかんじょう}」が行われる行所があります。",
         en: "It was the villagers who supported the practitioners. The Mukai family of Kada in Wakayama City has for generations been the one to welcome them, and at Nakatsugawa in Kinokawa lies the site where Katsuragi Kanjō, the most important ritual, is held.",
       },
       {
@@ -75,7 +75,7 @@ export const STORY_SECTIONS: StorySection[] = [
         en: "It also lies right beside the cities. Kansai International Airport is close, and central Osaka, Kyoto and Mount Kōya are not far. The ridge paths are kept up as the Kinki Nature Trail and the Diamond Trail, and hikers walk them too.",
       },
       {
-        ja: "歩いていると、滝の音にまじって法螺貝（ほらがい）の響きが聞こえるかもしれません。木立のなかにひっそりとたたずむのは、経文が納められた経塚かもしれません。鈴懸（すずかけ）の装束の修験者と、すれちがうこともあるでしょう。",
+        ja: "歩いていると、滝の音にまじって法螺貝{ほらがい}の響きが聞こえるかもしれません。木立のなかにひっそりとたたずむのは、経文が納められた経塚かもしれません。鈴懸{すずかけ}の装束の修験者と、すれちがうこともあるでしょう。",
         en: "As you walk, the sound of a conch trumpet may drift in with the noise of a waterfall. A quiet shape among the trees may be a sutra mound. You may pass a practitioner in traditional dress.",
       },
       {

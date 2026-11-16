@@ -7,6 +7,7 @@ import { ScrollProgress } from "@/components/landing/ScrollProgress";
 import { StoryMotion } from "@/components/landing/StoryMotion";
 import { initLingui } from "@/i18n/server";
 import { TRAIL_KM } from "@/lib/rally";
+import { parseRuby } from "@/lib/ruby";
 import { STORY_SECTIONS, STORY_SOURCE_URL, storyParagraph } from "@/lib/story-text";
 
 const TITLE = { ja: "葛城修験のものがたり", en: "The story of Katsuragi Shugen" };
@@ -65,7 +66,22 @@ export default async function StoryPage() {
             >
               {section.paragraphs.map((p) => (
                 <p key={p.ja} className="text-lg leading-9">
-                  {storyParagraph(p, locale, TRAIL_KM)}
+                  {/* A reading is written after its word ("役行者{えんのぎょうじゃ}") and always shown over it, as the brackets were. */}
+                  {(() => {
+                    const text = storyParagraph(p, locale, TRAIL_KM);
+                    return (parseRuby(text) ?? [{ text, reading: null }]).map((part, i) =>
+                      part.reading ? (
+                        <ruby key={i}>
+                          {part.text}
+                          <rp>(</rp>
+                          <rt>{part.reading}</rt>
+                          <rp>)</rp>
+                        </ruby>
+                      ) : (
+                        part.text
+                      ),
+                    );
+                  })()}
                 </p>
               ))}
             </Chapter>
