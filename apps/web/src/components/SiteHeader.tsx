@@ -106,7 +106,7 @@ export function SiteHeader({
       watch.disconnect();
       window.removeEventListener("resize", close);
     };
-  }, [open, railButton, setOpen]);
+  }, [open, railButton, setOpen, panelRef]);
 
   // While the menu is open on a phone the page behind it must not scroll: only the menu does.
   useEffect(() => {
@@ -129,7 +129,7 @@ export function SiteHeader({
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [open, setOpen, railButton]);
+  }, [open, setOpen, railButton, panelRef]);
 
   // After signing in the visitor comes back to where they were (login and register pages excepted).
   const here = /\/(login|register)(\/|$)/.test(pathname) ? "" : `?next=${encodeURIComponent(pathname)}`;

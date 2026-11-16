@@ -7,6 +7,7 @@ import { buttonStyle } from "@/components/button";
 import { WarningIcon } from "@/components/icons";
 import { CreditCaption } from "@/components/PhotoCredit";
 import type { MapPhoto } from "@/lib/map-screen";
+import { useEnter } from "@/lib/motion";
 
 // The two moments a navigation stops to ask something, as cards in the middle of the screen: at a stamp place, and just past one.
 
@@ -18,14 +19,17 @@ const PASSED_WAIT_S = 20;
 /** At a stamp place: its photo, and the stamp button up front. "Later" leaves the small button at the bottom of the screen. */
 export function ArrivalPrompt({ name, nameLang, photo, onLater, children }: { name: string; nameLang: "ja" | "en"; photo: MapPhoto | null; onLater: () => void; children: (later: ReactNode) => ReactNode }) {
   const { t } = useLingui();
+  // The dimmed cover fades in and the card rises (lib/motion; none at the level Off).
+  const coverRef = useEnter<HTMLDivElement>("fade");
+  const cardRef = useEnter<HTMLElement>("rise");
   const later = (
     <button type="button" onClick={onLater} className={buttonStyle("secondary", "lg", "flex shrink-0")}>
       {t`あとで`}
     </button>
   );
   return (
-    <div className={COVER}>
-      <section role="dialog" aria-modal="true" aria-labelledby="nav-arrived" className="max-h-full w-full max-w-sm overflow-y-auto rounded-2xl bg-paper text-ink shadow-2xl">
+    <div ref={coverRef} className={COVER}>
+      <section ref={cardRef} role="dialog" aria-modal="true" aria-labelledby="nav-arrived" className="max-h-full w-full max-w-sm overflow-y-auto rounded-2xl bg-paper text-ink shadow-2xl">
         {/* With no photo the night ground with the 七宝 pattern, as on a course's banner, so every arrival looks the same. */}
         <div className="pattern-shippo pattern-on-night relative aspect-[16/9] bg-night">
           {photo ? <Image src={photo.src} alt={photo.alt} fill sizes="24rem" className="object-cover" unoptimized={photo.src.startsWith("https://")} /> : null}
@@ -78,6 +82,9 @@ export function EndPrompt({ onEnd, onKeep }: { onEnd: () => void; onKeep: () => 
 /** Just past a stamp place without stamping. Nobody has to answer: after a moment the walk simply goes on to the next one. */
 export function PassedPrompt({ name, nameLang, onGoOn, onGoBack }: { name: string; nameLang: "ja" | "en"; onGoOn: () => void; onGoBack: () => void }) {
   const { t } = useLingui();
+  // The dimmed cover fades in and the card rises (lib/motion; none at the level Off).
+  const coverRef = useEnter<HTMLDivElement>("fade");
+  const cardRef = useEnter<HTMLElement>("rise");
   const [left, setLeft] = useState(PASSED_WAIT_S);
   const goOn = useRef(onGoOn);
   useEffect(() => {
@@ -97,8 +104,8 @@ export function PassedPrompt({ name, nameLang, onGoOn, onGoBack }: { name: strin
     return () => clearInterval(id);
   }, []);
   return (
-    <div className={COVER}>
-      <section role="alertdialog" aria-modal="true" aria-labelledby="nav-passed" className={`${CARD} flex flex-col gap-3`}>
+    <div ref={coverRef} className={COVER}>
+      <section ref={cardRef} role="alertdialog" aria-modal="true" aria-labelledby="nav-passed" className={`${CARD} flex flex-col gap-3`}>
         <h2 id="nav-passed" className="text-xl font-bold leading-snug">
           <span lang={nameLang}>{name}</span>
           {t`を通りすぎました`}

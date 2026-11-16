@@ -6,6 +6,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { InstallSteps } from "@/components/InstallSteps";
 import { isInAppBrowser } from "@/lib/browser-check";
 import { installNudgeShows } from "@/lib/landing-story";
+import { usePresence } from "@/lib/motion";
 
 // Cookies, not storage: a visit counter (a year), a marker for "this visit was counted" (the session) and the day the bar
 // was dismissed. Nothing here identifies anyone.
@@ -36,6 +37,8 @@ export function InstallNudge() {
   const [asked, setAsked] = useState(false);
   const started = useRef(0); // set on mount: Date.now() is not for render
   const dialog = useRef<HTMLDialogElement>(null);
+  // The bar rises in and fades out (lib/motion), so putting it away is not a jump.
+  const { mounted: barMounted, ref: barRef } = usePresence<HTMLDivElement>(show, "rise");
 
   useEffect(() => {
     started.current = Date.now();
@@ -78,8 +81,8 @@ export function InstallNudge() {
 
   return (
     <>
-      {show ? (
-        <div role="region" aria-label={t`ホーム画面に追加`} className="fixed inset-x-3 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-30 flex items-center gap-2 rounded-2xl bg-paper px-3 py-2 shadow-2xl ring-1 ring-line/30 md:hidden">
+      {barMounted ? (
+        <div ref={barRef} role="region" aria-label={t`ホーム画面に追加`} className="fixed inset-x-3 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-30 flex items-center gap-2 rounded-2xl bg-paper px-3 py-2 shadow-2xl ring-1 ring-line/30 md:hidden">
           <p className="min-w-0 flex-1 text-base font-bold leading-snug">
             <Trans>ホーム画面に追加しましょう</Trans>
           </p>
