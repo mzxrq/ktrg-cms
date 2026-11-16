@@ -41,6 +41,11 @@ export function rallyPublicRoutes(getServices: () => { rallyAdmin: RallyAdminSer
       photoUrl: s.photoUrl,
       descriptionJa: s.descriptionJa,
       descriptionEn: s.descriptionEn,
+      nameKana: s.nameKana ?? null,
+      historyJa: s.historyJa ?? null,
+      historyEn: s.historyEn ?? null,
+      statusNoteJa: s.statusNoteJa,
+      statusNoteEn: s.statusNoteEn,
       lat: s.position ? s.position.lat : null,
       lng: s.position ? s.position.lng : null,
     });
@@ -55,6 +60,8 @@ export function rallyPublicRoutes(getServices: () => { rallyAdmin: RallyAdminSer
             })
         : [...found.courses].sort((a, b) => a.position - b.position).flatMap((c) => (routes.get(c.routeId)?.spots ?? []).map((s) => stampPlace(c.routeId, s)));
     const courses = "courses" in found ? [...found.courses].sort((a, b) => a.position - b.position).map((c) => ({ routeId: c.routeId, nameJa: c.nameJa, nameEn: c.nameEn })) : [];
+    // How to get to each course, once per course (the book page shows the course of the place it is open on).
+    const routeAccess = [...routes].map(([routeId, r]) => ({ routeId, accessJa: r.route.accessJa ?? null, accessEn: r.route.accessEn ?? null }));
     const photoUrl = routeIds.map((rid) => routes.get(rid)?.route.photoUrl ?? null).find((u) => u !== null) ?? null;
     const photoCredit = routeIds.map((rid) => routes.get(rid)?.route).find((r) => r?.photoUrl)?.photoCredit ?? null;
     return {
@@ -67,6 +74,7 @@ export function rallyPublicRoutes(getServices: () => { rallyAdmin: RallyAdminSer
       photoCredit,
       places,
       courses,
+      routes: routeAccess,
     };
   };
 

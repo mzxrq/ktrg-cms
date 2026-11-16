@@ -8540,3 +8540,15 @@ msgstr "See the first place"
 #: src/components/JourneyFacts.tsx
 msgid "か所"
 msgstr "places"
+
+#: src/components/RallyBook.tsx
+msgid "押した日時　{when}"
+msgstr "Stamped　{when}"
+
+#: src/components/RallyBook.tsx
+msgid "つぎの場所まで"
+msgstr "To the next place"
+
+#: src/components/RallyBook.tsx
+msgid "近くのトイレ"
+msgstr "Nearest toilet"

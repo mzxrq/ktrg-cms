@@ -8540,3 +8540,15 @@ msgstr "最初の場所を見る"
 #: src/components/JourneyFacts.tsx
 msgid "か所"
 msgstr "か所"
+
+#: src/components/RallyBook.tsx
+msgid "押した日時　{when}"
+msgstr "押した日時　{when}"
+
+#: src/components/RallyBook.tsx
+msgid "つぎの場所まで"
+msgstr "つぎの場所まで"
+
+#: src/components/RallyBook.tsx
+msgid "近くのトイレ"
+msgstr "近くのトイレ"
