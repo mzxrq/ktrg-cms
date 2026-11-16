@@ -80,7 +80,7 @@ export function SiteSettingsForm({ initial }: { initial: MapSettings }) {
         <h2 id="map-style" className="text-2xl font-bold">
           {t`地図の見た目`}
         </h2>
-        <p className="text-lg">{t`訪問者が見る地図（マップ画面、ルートのページ）の見た目です。地図を作る管理画面の地図は、見やすさのため、いつも「標準」です。`}</p>
+        <p className="text-lg">{t`訪問者が見る地図（マップ画面、コースのページ）の見た目です。地図を作る管理画面の地図は、見やすさのため、いつも「標準」です。`}</p>
 
         <fieldset className="flex flex-col gap-2">
           <legend className="mb-1 text-lg font-bold">{t`ベースの地図`}</legend>

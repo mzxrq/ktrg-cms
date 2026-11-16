@@ -8,9 +8,9 @@ export function useChecklistLabels(): { item: Record<ChecklistId, string>; tab: 
   const { t } = useLingui();
   return {
     item: {
-      name_ja: t`ルート名（日本語）`,
+      name_ja: t`コース名（日本語）`,
       description_ja: t`説明文（日本語）`,
-      line_checked: t`ルートの線を確認済み`,
+      line_checked: t`コースの線を確認済み`,
       places_published: t`公開中のスタンプの経由地`,
       prefecture: t`都道府県`,
       english: t`英語の名前と説明`,

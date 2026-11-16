@@ -268,7 +268,7 @@ export function PlacePanel(p: PlacePanelProps) {
               <button type="button" disabled={p.busy || !p.dirty || !p.canSave} onClick={p.onSave} className="tap-target w-fit rounded-full bg-ink px-6 text-lg font-bold text-paper disabled:opacity-40">
                 {t`この経由地を保存`}
               </button>
-              {!p.canSave ? <p className="text-base text-muted">{t`先にルートを保存してください。`}</p> : place.published && p.dirty ? <p className="text-base text-muted">{t`保存すると、この経由地は下書きに戻ります。`}</p> : null}
+              {!p.canSave ? <p className="text-base text-muted">{t`先にコースを保存してください。`}</p> : place.published && p.dirty ? <p className="text-base text-muted">{t`保存すると、この経由地は下書きに戻ります。`}</p> : null}
             </div>
             {place.published ? (
               <div className="flex flex-wrap items-center gap-3">

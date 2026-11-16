@@ -267,7 +267,7 @@ const rich: Record<number, Partial<RouteDetail>> = {
     expectedTimeMin: 210,
     farDistanceM: null,
     sketch: sketchA,
-    descriptionJa: "これは見本のルート説明です。",
+    descriptionJa: "これは見本のコース説明です。",
     descriptionEn: "This is a sample route description.",
     spotCount: 3,
     stampedCount: 1,

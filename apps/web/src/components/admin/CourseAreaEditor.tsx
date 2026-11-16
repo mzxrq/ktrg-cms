@@ -176,7 +176,7 @@ export function CourseAreaEditor({ area, line, places, onChange }: { area: Bound
   const button = "tap-target inline-flex items-center justify-center rounded-full border border-line bg-paper px-5 text-base font-bold hover:bg-surface";
   return (
     <Section title={t`コースの範囲`} id="area-section">
-      <p className="text-base text-muted">{t`訪れる人の、全体の地図に出る四角です。ふだんは、確かめた線のまわりに自動で決まります。ここで手で決めると、まだ公開していないルートも、「準備中」として地図に出ます。`}</p>
+      <p className="text-base text-muted">{t`訪れる人の、全体の地図に出る四角です。ふだんは、確かめた線のまわりに自動で決まります。ここで手で決めると、まだ公開していないコースも、「準備中」として地図に出ます。`}</p>
       {failed ? (
         <p className="text-base text-muted">{t`地図を表示できませんでした。`}</p>
       ) : (

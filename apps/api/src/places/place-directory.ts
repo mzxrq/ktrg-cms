@@ -334,7 +334,7 @@ export const placeDirectoryList: ListDef<"directory", typeof PLACE_FIELDS, Place
         hint: { ja: "地図や一覧に出る絵です。選ばなければ、種類の絵になります。", en: "The picture on the map and in lists. Left empty, it is the picture of the category." },
         options: PLACE_ICONS.map((value) => ({ value, label: { ja: value, en: value } })),
       },
-      { name: "routeId", kind: "route", label: { ja: "近いルート", en: "Nearby route" }, noneLabel: { ja: "（なし）", en: "(none)" }, inList: {} },
+      { name: "routeId", kind: "route", label: { ja: "近いコース", en: "Nearby course" }, noneLabel: { ja: "（なし）", en: "(none)" }, inList: {} },
       {
         name: "nearSpotId",
         kind: "relation",

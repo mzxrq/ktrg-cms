@@ -124,7 +124,7 @@ export function FuriganaOverview() {
 
   const toggle = (id: string) => setPicked((now) => (now.has(id) ? new Set([...now].filter((x) => x !== id)) : new Set([...now, id])));
   const editHref = (u: Unread) => (u.kind === "route" ? `/admin/routes/${u.id}` : u.kind === "spot" ? `/admin/routes/${u.routeId}?tab=places` : `/admin/directory/${u.id}`);
-  const kindName = { route: t`ルート`, spot: t`経由地`, place: t`場所` };
+  const kindName = { route: t`コース`, spot: t`経由地`, place: t`場所` };
 
   if (error) return <p role="alert" className="rounded-2xl bg-surface p-4 text-lg font-bold text-danger">{messages[error]}</p>;
   if (!pending) return <p className="text-lg text-muted">{t`読み込んでいます…`}</p>;

@@ -97,11 +97,11 @@ export default async function AttentionPage() {
               <Trans>あとで足すもの</Trans>
             </Tile>
             <Tile n={list.length}>
-              <Trans>関係するルート</Trans>
+              <Trans>関係するコース</Trans>
             </Tile>
           </div>
           <p className="text-lg text-muted">
-            <Trans>赤いものは、直すまで訪問者に見えません。名前を押すと、そのルートの編集画面が開きます。</Trans>
+            <Trans>赤いものは、直すまで訪問者に見えません。名前を押すと、そのコースの編集画面が開きます。</Trans>
           </p>
           {list.map((c) => (
             <section key={c.id} className={`flex flex-col gap-3 rounded-lg bg-surface p-4 ${urgentOf(c) > 0 ? "border-l-4 border-danger" : ""}`}>

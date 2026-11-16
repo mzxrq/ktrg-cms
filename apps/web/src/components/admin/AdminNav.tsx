@@ -34,7 +34,7 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
   const ready = [
     // The dashboard is the admin's home (an editor's home is the route list); its page and the API are for an admin only.
     ...(isAdmin ? [{ key: "dashboard", href: base, label: t`ダッシュボード`, icon: <ChartIcon /> }] : []),
-    { key: "routes", href: `${base}/routes`, label: t`ルート`, icon: <RouteIcon /> },
+    { key: "routes", href: `${base}/routes`, label: t`コース`, icon: <RouteIcon /> },
     { key: "rallies", href: `${base}/rallies`, label: t`ラリー`, icon: <FlagIcon /> },
     { key: "visits", href: `${base}/visits`, label: t`アクセス解析`, icon: <GlobeIcon /> },
     { key: "attention", href: `${base}/attention`, label: t`直すところ`, icon: <WarningIcon /> },
@@ -49,7 +49,7 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
   const SECTIONS: { title?: string; keys: string[] }[] = [
     { keys: ["attention"] },
     { keys: ["dashboard"] },
-    { title: t`ルートとラリー`, keys: ["routes", "rallies", "stamps", "places", "directory", "settings"] },
+    { title: t`コースとラリー`, keys: ["routes", "rallies", "stamps", "places", "directory", "settings"] },
     { title: t`サイトの内容`, keys: ["notices", "furigana", "pages", "posts"] },
     { title: t`コミュニティ`, keys: ["comments", "users"] },
     { title: t`運営`, keys: ["visits", "audit"] },

@@ -72,7 +72,7 @@ export function RouteImport({ routes, onImported }: { routes: AdminRoute[]; onIm
   const [report, setReport] = useState<ReportItem[] | null>(null);
 
   const files = useMemo(() => new Map(photos.map((f) => [f.name.toLowerCase(), f])), [photos]);
-  const where = (p: { sheet: "route" | "place"; line: number }) => (p.sheet === "route" ? t`「ルート」シート ${p.line} 行目` : t`「経由地」シート ${p.line} 行目`);
+  const where = (p: { sheet: "route" | "place"; line: number }) => (p.sheet === "route" ? t`「コース」シート ${p.line} 行目` : t`「経由地」シート ${p.line} 行目`);
   const problemText: Record<ProblemKind, string> = {
     whole: t`整数で書いてください`,
     number: t`数字で書いてください`,
@@ -88,9 +88,9 @@ export function RouteImport({ routes, onImported }: { routes: AdminRoute[]; onIm
     r === "name_required"
       ? t`新しく作るには、名前（日本語）が必要です`
       : r === "route_gap"
-        ? t`前の番号のルートがまだないので、作れません`
+        ? t`前の番号のコースがまだないので、作れません`
         : r === "route_missing"
-          ? t`このルートがまだありません`
+          ? t`このコースがまだありません`
           : r === "place_gap"
             ? t`前の番号の経由地がまだないので、作れません`
             : messages[r];
@@ -190,7 +190,7 @@ export function RouteImport({ routes, onImported }: { routes: AdminRoute[]; onIm
           {preview ? (
             <div className="flex flex-col gap-3" aria-live="polite">
               <p className="text-lg font-bold">
-                {t`ルート ${preview.routes.length} 行（今あるものを更新 ${updating}、新しく作る ${creating}）、経由地 ${preview.places.length} 行`}
+                {t`コース ${preview.routes.length} 行（今あるものを更新 ${updating}、新しく作る ${creating}）、経由地 ${preview.places.length} 行`}
               </p>
               {preview.photoNames.length > 0 ? (
                 <p className="text-base">{t`写真 ${preview.photoNames.length - missingPhotos.length} / ${preview.photoNames.length} 枚が、選んだファイルの中にありました。`}</p>

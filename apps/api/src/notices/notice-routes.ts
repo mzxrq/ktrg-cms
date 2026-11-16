@@ -34,8 +34,8 @@ export const noticeList: ListDef<"notices", typeof NOTICE_FIELDS, NoticeRow, Not
       {
         name: "routeId",
         kind: "route",
-        label: { ja: "ルート", en: "Route" },
-        noneLabel: { ja: "全体（ルートを決めない）", en: "Whole trail (no route)" },
+        label: { ja: "コース", en: "Course" },
+        noneLabel: { ja: "全体（コースを決めない）", en: "Whole trail (no course)" },
         inList: { empty: { ja: "全体", en: "Whole trail" } },
       },
       {

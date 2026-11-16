@@ -127,7 +127,7 @@ export function NearbyPlacesManager({ routeId, from }: { routeId: string; from: 
         {linked ? <span className="rounded-full bg-surface px-2 text-base">{linked.length}</span> : null}
       </summary>
       <div className="mt-3 flex flex-col gap-3">
-      <p className="text-base text-muted">{t`場所一覧の場所を、このルートにひもづけます。ルートのページに「周辺の場所」として並び、大きな地図にもピンが出ます。変更はすぐに保存されます。`}</p>
+      <p className="text-base text-muted">{t`場所一覧の場所を、このコースにひもづけます。コースのページに「周辺の場所」として並び、大きな地図にもピンが出ます。変更はすぐに保存されます。`}</p>
       {error ? (
         <p role="alert" className="text-base font-bold text-danger">
           {messages[error]}
@@ -164,7 +164,7 @@ export function NearbyPlacesManager({ routeId, from }: { routeId: string; from: 
             </select>
             <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t`名前で絞る`} aria-label={t`名前で絞る`} className="h-11 min-h-0 min-w-0 flex-1 rounded-full border border-line bg-paper px-3 text-sm" />
           </div>
-          <p className="text-sm text-muted">{from ? t`ルートの最初の経由地に近い順です。` : t`経由地を置くと、近い順に並びます。`}</p>
+          <p className="text-sm text-muted">{from ? t`コースの最初の経由地に近い順です。` : t`経由地を置くと、近い順に並びます。`}</p>
           {all && rows.length === 0 ? <p className="text-base">{t`該当する場所はありません。`}</p> : null}
           <ul className="flex max-h-80 flex-col gap-1 overflow-auto">
             {rows.map((p) => (
@@ -173,10 +173,10 @@ export function NearbyPlacesManager({ routeId, from }: { routeId: string; from: 
                   <span className="font-bold">{p.nameJa}</span>
                   <span className="ml-2 text-sm text-muted">{names[(placeCategories as readonly string[]).includes(p.category) ? (p.category as keyof typeof names) : "other"]}</span>
                   {distance(p.meters) ? <span className="ml-2 text-sm tabular-nums">{distance(p.meters)}</span> : null}
-                  {p.routeId ? <span className="ml-2 text-sm text-muted">{t`別のルートにひもづいています`}</span> : null}
+                  {p.routeId ? <span className="ml-2 text-sm text-muted">{t`別のコースにひもづいています`}</span> : null}
                 </span>
                 <button type="button" disabled={busy !== null} onClick={() => void link(p, routeId)} className={chip}>
-                  {t`このルートに追加`}
+                  {t`このコースに追加`}
                 </button>
               </li>
             ))}
