@@ -38,7 +38,8 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
     { key: "rallies", href: `${base}/rallies`, label: t`ラリー`, icon: <FlagIcon /> },
     { key: "visits", href: `${base}/visits`, label: t`アクセス解析`, icon: <GlobeIcon /> },
     { key: "attention", href: `${base}/attention`, label: t`直すところ`, icon: <WarningIcon /> },
-    ...lists.filter((l) => l.key !== "authors" && l.key !== "tags").map((l) => ({ key: l.key, href: `${base}/${l.key}`, label: l.title, icon: LIST_ICONS[l.key] ?? <DocumentIcon /> })),
+    // Banners live on the home page's screen (ページ > ホーム), so they have no line of their own.
+    ...lists.filter((l) => l.key !== "authors" && l.key !== "tags" && l.key !== "banners").map((l) => ({ key: l.key, href: `${base}/${l.key}`, label: l.title, icon: LIST_ICONS[l.key] ?? <DocumentIcon /> })),
     { key: "pages", href: `${base}/pages`, label: t`ページ`, icon: <DocumentIcon /> },
     // The site settings are for an admin only (the API refuses an editor).
     ...(isAdmin ? [{ key: "settings", href: `${base}/settings`, label: t`詳細設定`, icon: <GearIcon /> }] : []),
@@ -48,12 +49,19 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
     { keys: ["attention"] },
     { keys: ["dashboard"] },
     { title: t`ルートとラリー`, keys: ["routes", "rallies", "stamps", "places", "directory"] },
-    { title: t`サイトの内容`, keys: ["notices", "banners", "furigana", "pages", "posts"] },
+    { title: t`サイトの内容`, keys: ["notices", "furigana", "pages", "posts"] },
     { title: t`コミュニティ`, keys: ["comments", "users"] },
     { title: t`運営`, keys: ["visits", "audit", "settings"] },
   ];
   const known = new Set(SECTIONS.flatMap((s) => s.keys));
+  const isActive = (item: { key: string; href: string }) =>
+    item.key === "dashboard" ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`) || (item.key === "posts" && pathname.startsWith(`${base}/authors`)) || (item.key === "pages" && pathname.startsWith(`${base}/banners`));
   const sections = SECTIONS.map((s, i) => ({ title: s.title, items: [...s.keys.flatMap((k) => ready.filter((r) => r.key === k)), ...(i === 3 ? ready.filter((r) => !known.has(r.key)) : [])] })).filter((s) => s.items.length > 0);
+
+  // A titled group folds to its title, so the whole menu fits without scrolling (2026-11-16, user); the group holding
+  // the open screen starts open. The rail folded to icons shows every icon.
+  const [shut, setShut] = useState<Set<number>>(() => new Set(sections.flatMap((g, i) => (g.title && !g.items.some(isActive) ? [i] : []))));
+  const flip = (i: number) => setShut((now) => (now.has(i) ? new Set([...now].filter((x) => x !== i)) : new Set([...now, i])));
 
   return (
     <nav aria-label={t`管理メニュー`} className="flex flex-col gap-1">
@@ -70,10 +78,22 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
       <div id="admin-menu" className={`${open ? "flex" : "hidden"} flex-col gap-1 lg:flex`}>
         {sections.map((group, i) => (
           <div key={i} className={`flex flex-col gap-1 ${i > 0 ? "mt-2 border-t border-line pt-3" : ""}`}>
-            {group.title ? <p className="px-4 pb-1 text-base font-bold text-muted lg:group-data-[folded=true]:hidden">{group.title}</p> : null}
+            {group.title ? (
+              <button
+                type="button"
+                aria-expanded={!shut.has(i)}
+                aria-controls={`admin-menu-${i}`}
+                onClick={() => flip(i)}
+                className="tap-target flex items-center justify-between rounded-full px-4 text-base font-bold text-muted hover:bg-surface lg:group-data-[folded=true]:hidden"
+              >
+                {group.title}
+                {shut.has(i) ? <ChevronDownIcon size={20} /> : <ChevronUpIcon size={20} />}
+              </button>
+            ) : null}
+            <div id={`admin-menu-${i}`} className={`${shut.has(i) ? "hidden lg:group-data-[folded=true]:flex" : "flex"} flex-col gap-1`}>
             {group.items.map((item) => {
-              // 書き手 is part of the blog, so the blog stays lit there.
-              const active = item.key === "dashboard" ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`) || (item.key === "posts" && pathname.startsWith(`${base}/authors`));
+              // 書き手 is part of the blog, so the blog stays lit there; the banners are part of the home page.
+              const active = isActive(item);
               return (
                 <Link
                   key={item.href}
@@ -87,6 +107,7 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
                 </Link>
               );
             })}
+            </div>
           </div>
         ))}
         {footer}
