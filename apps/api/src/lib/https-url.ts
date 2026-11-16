@@ -30,8 +30,12 @@ export function photoHostsFor(o: { photoHosts?: string; r2PublicUrl?: string; pr
   return [new URL(o.r2PublicUrl).hostname]; // R2_PUBLIC_URL is checked as an https address at startup (parse-env)
 }
 
-/** Wikimedia Commons serves the photos the editor's photo finder picks; always allowed when photo hosts are restricted. */
-const WIKIMEDIA_HOSTS = ["upload.wikimedia.org"];
+/**
+ * Wikimedia Commons serves the photos the editor's photo finder picks; always allowed when photo hosts are restricted.
+ * Its thumbnails (the finder's `thumburl`) moved to thumb.wikimedia.org in 2026: without it every newly found photo was
+ * refused as invalid_photo_url in production.
+ */
+const WIKIMEDIA_HOSTS = ["upload.wikimedia.org", "thumb.wikimedia.org"];
 
 /** The photo hosts plus Wikimedia's; no hosts (unrestricted) stays unrestricted. */
 export const withWikimedia = (hosts: readonly string[]): readonly string[] => (hosts.length === 0 ? hosts : [...new Set([...hosts, ...WIKIMEDIA_HOSTS])]);

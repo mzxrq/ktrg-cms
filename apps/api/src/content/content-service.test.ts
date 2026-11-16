@@ -64,6 +64,8 @@ describe("photo hosts and distance", () => {
     expect(made.ok).toBe(true);
     const r = await route();
     expect((await limited.updateRoute(ADMIN, r.id, r.updatedAt, { videoUrl: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Walk.webm" })).ok).toBe(true);
+    // The finder's thumbnails come from thumb.wikimedia.org now (with Wikimedia's tracking query on the end).
+    expect((await limited.createRoute(ADMIN, { nameJa: "甲山", photoUrl: "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Koyama.jpg/1920px-Koyama.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail" })).ok).toBe(true);
     expect(await limited.createRoute(ADMIN, { nameJa: "甲山", photoUrl: "https://commons.wikimedia.org/wiki/File:Koyama.jpg" })).toEqual({ ok: false, reason: "invalid_photo_url" });
   });
 
