@@ -1312,6 +1312,25 @@ html[data-furigana] {
   }
 }
 
+/* The navigation's bottom sheet (NavTargetPicker, N2-6) slides up on a phone and rises a little in its centred box from
+   768 px; Fade only fades it; calm (html[data-calm]) and the device's reduce-motion setting show it at once. */
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  dialog.nav-sheet[open] {
+    animation: sheet-up 240ms var(--ease-enter);
+  }
+  html[data-fade] dialog.nav-sheet[open] {
+    animation-name: state-in-fade;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
+  html:not([data-fade]) dialog.nav-sheet[open] {
+    animation-name: state-in;
+  }
+}
+
 /* Lists (.list-in): the first cards of a list arrive one after another, 45 ms apart, then the rest at once (a long list never
    plays a hundred animations). Admin table rows (.rows-in) only fade, quickly: a table is for scanning. Same rules for Fade
    only, calm and the device's reduce-motion setting as the states above. */
