@@ -111,8 +111,35 @@ export function NavigationProvider({ children, signedIn, voiceByDefault = false 
   const skipPassed = useCallback(() => controller.current?.skipPassed(), []);
   const returnToPassed = useCallback(() => controller.current?.returnToPassed(), []);
 
-  // A place can close during the walk: asked once a minute and on coming back, only while the page is in view.
   const running = session !== null;
+
+  // The screen stays on while a navigation runs (2026-11-16, user: wake lock on by default), because the screen is the
+  // guidance. The browser lets the lock go whenever the page is hidden, so it is taken again on coming back; released at the
+  // end. Where the browser has no wake lock nothing happens.
+  useEffect(() => {
+    if (!running || typeof navigator === "undefined" || !("wakeLock" in navigator)) return;
+    let lock: WakeLockSentinel | null = null;
+    let gone = false;
+    const take = () => {
+      if (document.hidden || gone) return;
+      navigator.wakeLock
+        .request("screen")
+        .then((l) => {
+          if (gone) void l.release();
+          else lock = l;
+        })
+        .catch(() => {}); // refused (battery saver, no permission): the walk goes on without it
+    };
+    take();
+    document.addEventListener("visibilitychange", take);
+    return () => {
+      gone = true;
+      document.removeEventListener("visibilitychange", take);
+      void lock?.release().catch(() => {});
+    };
+  }, [running]);
+
+  // A place can close during the walk: asked once a minute and on coming back, only while the page is in view.
   useEffect(() => {
     if (!running) return;
     const poll = async () => {

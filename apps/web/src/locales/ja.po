@@ -207,7 +207,7 @@ msgstr "{0}日前"
 
 #. placeholder {0}: Math.floor(m / 60)
 #. placeholder {1}: m % 60
-#: src/components/navigation/NavigationHud.tsx:337
+#: src/components/navigation/NavigationHud.tsx:340
 msgid "{0}時間{1}分"
 msgstr "{0}時間{1}分"
 
@@ -224,7 +224,7 @@ msgstr "{added} に追加"
 msgid "{amount}{unit}"
 msgstr "{amount}{unit}"
 
-#: src/components/navigation/NavigationHud.tsx:346
+#: src/components/navigation/NavigationHud.tsx:349
 msgid "{arrival}ごろ着"
 msgstr "{arrival}ごろ着"
 
@@ -264,7 +264,7 @@ msgstr "{count}つの区間を、道に沿ってつなぎました。{straight}�
 msgid "{count}つの区間を、道に沿ってつなぎました。形を確かめてから、保存してください。「元に戻す」で、もとにもどせます。"
 msgstr "{count}つの区間を、道に沿ってつなぎました。形を確かめてから、保存してください。「元に戻す」で、もとにもどせます。"
 
-#: src/components/navigation/NavigationHud.tsx:316
+#: src/components/navigation/NavigationHud.tsx:319
 msgid "{direction} {distText}"
 msgstr "{direction} {distText}"
 
@@ -311,7 +311,7 @@ msgstr "{label}でしぼりこむ"
 msgid "{label}の言語"
 msgstr "{label}の言語"
 
-#: src/components/navigation/NavigationHud.tsx:337
+#: src/components/navigation/NavigationHud.tsx:340
 msgid "{m}分"
 msgstr "{m}分"
 
@@ -390,15 +390,15 @@ msgid "{number}番 まだ押していません"
 msgstr "{number}番 まだ押していません"
 
 #: src/components/map/MapScreen.tsx:367
-#: src/components/map/MapScreenCanvas.tsx:481
+#: src/components/map/MapScreenCanvas.tsx:507
 msgid "{order}. {name}"
 msgstr "{order}. {name}"
 
-#: src/components/map/MapScreenCanvas.tsx:481
+#: src/components/map/MapScreenCanvas.tsx:507
 msgid "{order}. {name}（スタンプ完了）"
 msgstr "{order}. {name}（スタンプ完了）"
 
-#: src/components/map/MapScreenCanvas.tsx:481
+#: src/components/map/MapScreenCanvas.tsx:507
 msgid "{order}. {name}（準備中）"
 msgstr "{order}. {name}（準備中）"
 
@@ -446,7 +446,7 @@ msgstr "{shownKm} km・歩いて約{minutes}分"
 msgid "{STAR_COUNT}段階中{n}"
 msgstr "{STAR_COUNT}段階中{n}"
 
-#: src/components/navigation/NavigationHud.tsx:316
+#: src/components/navigation/NavigationHud.tsx:319
 msgid "{steerWord} {distText}"
 msgstr "{steerWord} {distText}"
 
@@ -488,7 +488,7 @@ msgstr "{total}か所"
 msgid "{total}件"
 msgstr "{total}件"
 
-#: src/components/navigation/NavigationHud.tsx:311
+#: src/components/navigation/NavigationHud.tsx:314
 msgid "{turnIn}先 {turnWord}"
 msgstr "{turnIn}先 {turnWord}"
 
@@ -500,12 +500,12 @@ msgstr "{until} まで"
 msgid "{updated} 更新"
 msgstr "{updated} 更新"
 
-#: src/components/navigation/NavigationHud.tsx:233
+#: src/components/navigation/NavigationHud.tsx:236
 #: src/components/navigation/NavTargetPicker.tsx:29
 msgid "{v}km"
 msgstr "{v}km"
 
-#: src/components/navigation/NavigationHud.tsx:233
+#: src/components/navigation/NavigationHud.tsx:236
 #: src/components/navigation/NavTargetPicker.tsx:29
 msgid "{v}m"
 msgstr "{v}m"
@@ -791,7 +791,7 @@ msgstr "Googleマップ"
 msgid "GPSの電波が弱いようです。空の開けた場所に動いて、もう一度お試しください。"
 msgstr "GPSの電波が弱いようです。空の開けた場所に動いて、もう一度お試しください。"
 
-#: src/components/navigation/NavigationHud.tsx:302
+#: src/components/navigation/NavigationHud.tsx:305
 msgid "GPSの電波が弱いようです。空の開けた場所に動いてください。"
 msgstr "GPSの電波が弱いようです。空の開けた場所に動いてください。"
 
@@ -880,7 +880,7 @@ msgstr "Safari の下のバーで、共有ボタンを押します"
 msgid "SNS"
 msgstr "SNS"
 
-#: src/components/navigation/NavigationHud.tsx:213
+#: src/components/navigation/NavigationHud.tsx:216
 msgid "Uターン"
 msgstr "Uターン"
 
@@ -1098,7 +1098,7 @@ msgstr "いま、通信がつながっていません"
 msgid "いま、通信がつながっていません。つながると、また使えます。"
 msgstr "いま、通信がつながっていません。つながると、また使えます。"
 
-#: src/components/navigation/NavigationHud.tsx:127
+#: src/components/navigation/NavigationHud.tsx:130
 msgid "いまいる場所から、いちばん近いスタンプの場所まで案内します。位置は、この端末の中だけで使います。"
 msgstr "いまいる場所から、いちばん近いスタンプの場所まで案内します。位置は、この端末の中だけで使います。"
 
@@ -1118,7 +1118,7 @@ msgstr "いまのスタンプは、このブラウザにしか残っていませ
 msgid "いまのラリー"
 msgstr "いまのラリー"
 
-#: src/components/navigation/NavigationHud.tsx:244
+#: src/components/navigation/NavigationHud.tsx:247
 msgid "いまの位置が、わかりません。空の開けた場所で、しばらくお待ちください。"
 msgstr "いまの位置が、わかりません。空の開けた場所で、しばらくお待ちください。"
 
@@ -1126,7 +1126,7 @@ msgstr "いまの位置が、わかりません。空の開けた場所で、し
 msgid "いまの位置が、わかりません。空の開けた場所で、もう一度お試しください。"
 msgstr "いまの位置が、わかりません。空の開けた場所で、もう一度お試しください。"
 
-#: src/components/navigation/NavigationHud.tsx:203
+#: src/components/navigation/NavigationHud.tsx:206
 #: src/components/RallyNearbyStamp.tsx:93
 #: src/components/StampHere.tsx:165
 #: src/components/StampHere.tsx:205
@@ -1206,7 +1206,7 @@ msgstr "いま送る"
 msgid "いま開いているのは、ほかのアプリの中のブラウザです。Safari や Chrome で開きなおしてから、追加してください。"
 msgstr "いま開いているのは、ほかのアプリの中のブラウザです。Safari や Chrome で開きなおしてから、追加してください。"
 
-#: src/components/navigation/NavigationHud.tsx:224
+#: src/components/navigation/NavigationHud.tsx:227
 msgid "うしろ"
 msgstr "うしろ"
 
@@ -1394,7 +1394,7 @@ msgstr "ゲストのまま使う"
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/Journey.tsx:53
 #: src/components/landing/Landing.tsx:322
-#: src/components/map/MapScreenCanvas.tsx:621
+#: src/components/map/MapScreenCanvas.tsx:647
 #: src/components/places/DirectoryView.tsx:81
 #: src/components/TabBar.tsx:88
 msgid "コース"
@@ -1824,11 +1824,11 @@ msgstr "この削除は、管理者が予約したものです。プロフィー
 msgid "この動画は「ファストスタート」になっていないため、再生が始まるまで時間がかかることがあります。書き出し時に「Web向けに最適化」をオンにしてください。"
 msgstr "この動画は「ファストスタート」になっていないため、再生が始まるまで時間がかかることがあります。書き出し時に「Web向けに最適化」をオンにしてください。"
 
-#: src/components/navigation/NavigationHud.tsx:304
+#: src/components/navigation/NavigationHud.tsx:307
 msgid "この区間のスタンプは、すべて押しました。"
 msgstr "この区間のスタンプは、すべて押しました。"
 
-#: src/components/navigation/NavigationHud.tsx:124
+#: src/components/navigation/NavigationHud.tsx:127
 msgid "この区間のナビに切り替える"
 msgstr "この区間のナビに切り替える"
 
@@ -1846,7 +1846,7 @@ msgid "この区間は、準備中です。"
 msgstr "この区間は、準備中です。"
 
 #: src/components/navigation/NavFarCard.tsx:42
-#: src/components/navigation/NavigationHud.tsx:298
+#: src/components/navigation/NavigationHud.tsx:301
 msgid "この区間は遠くにあります。電車やバスで向かいましょう。"
 msgstr "この区間は遠くにあります。電車やバスで向かいましょう。"
 
@@ -1946,7 +1946,7 @@ msgstr "この条件に合う場所はありません。"
 msgid "この次に追加"
 msgstr "この次に追加"
 
-#: src/components/navigation/NavigationHud.tsx:242
+#: src/components/navigation/NavigationHud.tsx:245
 #: src/components/useStampMessages.ts:10
 msgid "この端末・ブラウザでは、位置情報を使えません。"
 msgstr "この端末・ブラウザでは、位置情報を使えません。"
@@ -1955,7 +1955,7 @@ msgstr "この端末・ブラウザでは、位置情報を使えません。"
 msgid "この端末では、30日間ログインしたままにする"
 msgstr "この端末では、30日間ログインしたままにする"
 
-#: src/components/navigation/NavigationHud.tsx:427
+#: src/components/navigation/NavigationHud.tsx:430
 msgid "この端末では、振動は使えません。"
 msgstr "この端末では、振動は使えません。"
 
@@ -1971,7 +1971,7 @@ msgstr "この端末では、顔・指紋のログインを使えません。メ
 msgid "この端末では地図の見本を表示できません。"
 msgstr "この端末では地図の見本を表示できません。"
 
-#: src/components/map/MapScreenCanvas.tsx:577
+#: src/components/map/MapScreenCanvas.tsx:603
 msgid "この端末では地図を表示できません。下の一覧から区間を選べます。"
 msgstr "この端末では地図を表示できません。下の一覧から区間を選べます。"
 
@@ -2230,7 +2230,7 @@ msgstr "しおりと読みもの"
 msgid "スキップ"
 msgstr "スキップ"
 
-#: src/components/navigation/NavigationHud.tsx:311
+#: src/components/navigation/NavigationHud.tsx:314
 msgid "すぐ{turnWord}"
 msgstr "すぐ{turnWord}"
 
@@ -2273,7 +2273,7 @@ msgstr "スタンプ"
 #. placeholder {1}: b.total
 #. placeholder {1}: progress.total
 #: src/components/BookmarkList.tsx:57
-#: src/components/navigation/NavigationHud.tsx:349
+#: src/components/navigation/NavigationHud.tsx:352
 msgid "スタンプ {0} / {1}"
 msgstr "スタンプ {0} / {1}"
 
@@ -2330,7 +2330,7 @@ msgstr "スタンプの場所は、まだ準備中です。"
 msgid "スタンプの経由地 {0}"
 msgstr "スタンプの経由地 {0}"
 
-#: src/components/navigation/NavigationHud.tsx:291
+#: src/components/navigation/NavigationHud.tsx:294
 msgid "スタンプの記録を読めませんでした。"
 msgstr "スタンプの記録を読めませんでした。"
 
@@ -2691,7 +2691,7 @@ msgstr "どこへ向かいますか？"
 
 #: src/components/navigation/NavFarCard.tsx:51
 #: src/components/navigation/NavFarCard.tsx:123
-#: src/components/navigation/NavigationHud.tsx:276
+#: src/components/navigation/NavigationHud.tsx:279
 #: src/components/navigation/NavTargetPicker.tsx:78
 #: src/components/StampProgressPopup.tsx:61
 msgid "とじる"
@@ -2747,11 +2747,11 @@ msgid "なし"
 msgstr "なし"
 
 #: src/components/map/MapScreen.tsx:280
-#: src/components/navigation/NavigationHud.tsx:423
+#: src/components/navigation/NavigationHud.tsx:426
 msgid "ナビにもどる"
 msgstr "ナビにもどる"
 
-#: src/components/navigation/NavigationHud.tsx:431
+#: src/components/navigation/NavigationHud.tsx:434
 msgid "ナビの操作"
 msgstr "ナビの操作"
 
@@ -2759,15 +2759,15 @@ msgstr "ナビの操作"
 msgid "ナビをつづける"
 msgstr "ナビをつづける"
 
-#: src/components/navigation/NavigationHud.tsx:120
+#: src/components/navigation/NavigationHud.tsx:121
 msgid "ナビをはじめます"
 msgstr "ナビをはじめます"
 
-#: src/components/navigation/NavigationHud.tsx:124
+#: src/components/navigation/NavigationHud.tsx:127
 msgid "ナビをはじめる"
 msgstr "ナビをはじめる"
 
-#: src/components/navigation/NavigationHud.tsx:124
+#: src/components/navigation/NavigationHud.tsx:127
 msgid "ナビを準備しています…"
 msgstr "ナビを準備しています…"
 
@@ -2775,14 +2775,14 @@ msgstr "ナビを準備しています…"
 msgid "ナビを終えますか？"
 msgstr "ナビを終えますか？"
 
-#: src/components/navigation/NavigationHud.tsx:447
-#: src/components/navigation/NavigationHud.tsx:473
+#: src/components/navigation/NavigationHud.tsx:450
+#: src/components/navigation/NavigationHud.tsx:476
 #: src/components/navigation/NavPrompts.tsx:75
 msgid "ナビを終える"
 msgstr "ナビを終える"
 
-#: src/components/navigation/NavigationHud.tsx:404
-#: src/components/navigation/NavigationHud.tsx:460
+#: src/components/navigation/NavigationHud.tsx:407
+#: src/components/navigation/NavigationHud.tsx:463
 msgid "ナビ中：{routeName}"
 msgstr "ナビ中：{routeName}"
 
@@ -3362,7 +3362,7 @@ msgstr "まだ写真がありません。"
 msgid "まだ言葉がありません。"
 msgstr "まだ言葉がありません。"
 
-#: src/components/navigation/NavigationHud.tsx:217
+#: src/components/navigation/NavigationHud.tsx:220
 msgid "まっすぐ"
 msgstr "まっすぐ"
 
@@ -3595,13 +3595,13 @@ msgstr "もらったバッジの数"
 msgid "やめる"
 msgstr "やめる"
 
-#: src/components/navigation/NavigationHud.tsx:210
-#: src/components/navigation/NavigationHud.tsx:221
+#: src/components/navigation/NavigationHud.tsx:213
+#: src/components/navigation/NavigationHud.tsx:224
 msgid "やや右"
 msgstr "やや右"
 
-#: src/components/navigation/NavigationHud.tsx:207
-#: src/components/navigation/NavigationHud.tsx:218
+#: src/components/navigation/NavigationHud.tsx:210
+#: src/components/navigation/NavigationHud.tsx:221
 msgid "やや左"
 msgstr "やや左"
 
@@ -4064,7 +4064,7 @@ msgstr "位置は、保存しません。保存するのは、スタンプだけ
 msgid "位置は、公式の情報から入れて、地図で確かめます。推測では入れません。"
 msgstr "位置は、公式の情報から入れて、地図で確かめます。推測では入れません。"
 
-#: src/components/navigation/NavigationHud.tsx:289
+#: src/components/navigation/NavigationHud.tsx:292
 msgid "位置は{ageS}秒前のものです。"
 msgstr "位置は{ageS}秒前のものです。"
 
@@ -4117,7 +4117,7 @@ msgstr "位置を調べるのに、時間がかかっています。空の開け
 msgid "位置情報が許可されていません。ブラウザの設定で、このサイトの位置情報を「許可」にしてから、もう一度お試しください。"
 msgstr "位置情報が許可されていません。ブラウザの設定で、このサイトの位置情報を「許可」にしてから、もう一度お試しください。"
 
-#: src/components/navigation/NavigationHud.tsx:240
+#: src/components/navigation/NavigationHud.tsx:243
 msgid "位置情報が許可されていません。ブラウザの設定で、このサイトの位置情報を「許可」にしてください。"
 msgstr "位置情報が許可されていません。ブラウザの設定で、このサイトの位置情報を「許可」にしてください。"
 
@@ -5039,11 +5039,11 @@ msgstr "動画を直接開く"
 msgid "動画を見る"
 msgstr "動画を見る"
 
-#: src/components/navigation/NavigationHud.tsx:227
+#: src/components/navigation/NavigationHud.tsx:230
 msgid "北"
 msgstr "北"
 
-#: src/components/navigation/NavigationHud.tsx:227
+#: src/components/navigation/NavigationHud.tsx:230
 msgid "北東"
 msgstr "北東"
 
@@ -5051,7 +5051,7 @@ msgstr "北東"
 msgid "北東の角"
 msgstr "北東の角"
 
-#: src/components/navigation/NavigationHud.tsx:227
+#: src/components/navigation/NavigationHud.tsx:230
 msgid "北西"
 msgstr "北西"
 
@@ -5115,11 +5115,11 @@ msgstr "区間を選ぶと、道とスタンプの場所が見えます。"
 msgid "半分"
 msgstr "半分"
 
-#: src/components/navigation/NavigationHud.tsx:227
+#: src/components/navigation/NavigationHud.tsx:230
 msgid "南"
 msgstr "南"
 
-#: src/components/navigation/NavigationHud.tsx:227
+#: src/components/navigation/NavigationHud.tsx:230
 msgid "南東"
 msgstr "南東"
 
@@ -5127,7 +5127,7 @@ msgstr "南東"
 msgid "南東の角"
 msgstr "南東の角"
 
-#: src/components/navigation/NavigationHud.tsx:227
+#: src/components/navigation/NavigationHud.tsx:230
 msgid "南西"
 msgstr "南西"
 
@@ -5186,11 +5186,11 @@ msgstr "取り込めなかった場所（{0}件）"
 msgid "古い順"
 msgstr "古い順"
 
-#: src/components/navigation/NavigationHud.tsx:222
+#: src/components/navigation/NavigationHud.tsx:225
 msgid "右"
 msgstr "右"
 
-#: src/components/navigation/NavigationHud.tsx:223
+#: src/components/navigation/NavigationHud.tsx:226
 msgid "右うしろ"
 msgstr "右うしろ"
 
@@ -5202,7 +5202,7 @@ msgstr "右上の「追加」を押します"
 msgid "右上の「追加」を押します。"
 msgstr "右上の「追加」を押します。"
 
-#: src/components/navigation/NavigationHud.tsx:211
+#: src/components/navigation/NavigationHud.tsx:214
 msgid "右折"
 msgstr "右折"
 
@@ -5381,7 +5381,7 @@ msgid "地名や記号が大きく、はっきり読める地図です。色の�
 msgstr "地名や記号が大きく、はっきり読める地図です。色の濃さとコントラストの調整は効きません。電波がないときは、名前が出ないことがあります。"
 
 #: src/components/map/TrailMap.tsx:400
-#: src/components/navigation/NavigationHud.tsx:470
+#: src/components/navigation/NavigationHud.tsx:473
 #: src/components/RouteView.tsx:126
 #: src/components/RouteView.tsx:297
 msgid "地図"
@@ -5407,7 +5407,7 @@ msgstr "地図で見る"
 msgid "地図と線"
 msgstr "地図と線"
 
-#: src/components/map/MapScreenCanvas.tsx:590
+#: src/components/map/MapScreenCanvas.tsx:616
 msgid "地図に出すもの"
 msgstr "地図に出すもの"
 
@@ -5493,7 +5493,7 @@ msgstr "地図を保存"
 msgid "地図を保存しています… {percent}%"
 msgstr "地図を保存しています… {percent}%"
 
-#: src/components/map/MapScreenCanvas.tsx:663
+#: src/components/map/MapScreenCanvas.tsx:689
 msgid "地図を傾ける"
 msgstr "地図を傾ける"
 
@@ -5501,7 +5501,7 @@ msgstr "地図を傾ける"
 msgid "地図を動かす"
 msgstr "地図を動かす"
 
-#: src/components/map/MapScreenCanvas.tsx:663
+#: src/components/map/MapScreenCanvas.tsx:689
 msgid "地図を平らにする（北が上）"
 msgstr "地図を平らにする（北が上）"
 
@@ -5516,7 +5516,7 @@ msgstr "地図を見やすくする"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1210
 #: src/components/admin/map-editor/MapEditorLoader.tsx:11
-#: src/components/map/MapScreenCanvas.tsx:586
+#: src/components/map/MapScreenCanvas.tsx:612
 #: src/components/map/MapScreenCanvasLoader.tsx:12
 #: src/components/map/TrailMap.tsx:435
 #: src/components/map/TrailMapLoader.tsx:12
@@ -5642,11 +5642,11 @@ msgstr "大きい順"
 msgid "大きくする・小さくする"
 msgstr "大きくする・小さくする"
 
-#: src/components/navigation/NavigationHud.tsx:212
+#: src/components/navigation/NavigationHud.tsx:215
 msgid "大きく右"
 msgstr "大きく右"
 
-#: src/components/navigation/NavigationHud.tsx:209
+#: src/components/navigation/NavigationHud.tsx:212
 msgid "大きく左"
 msgstr "大きく左"
 
@@ -5736,7 +5736,7 @@ msgstr "寄り道（道すじから少しはずれた、任意の立ち寄り先
 msgid "寄り道の点を選んでいます。サブコースの線（{legName}）は、右の一覧の「サブコースの線を描く」か、「線を描く」で描けます。本線の点をクリックする必要はありません。"
 msgstr "寄り道の点を選んでいます。サブコースの線（{legName}）は、右の一覧の「サブコースの線を描く」か、「線を描く」で描けます。本線の点をクリックする必要はありません。"
 
-#: src/components/map/MapScreenCanvas.tsx:621
+#: src/components/map/MapScreenCanvas.tsx:647
 msgid "寄り道の線"
 msgstr "寄り道の線"
 
@@ -5793,15 +5793,15 @@ msgstr "山道です。天気と、水や食べ物、歩きやすい靴を用意
 msgid "岩場やガレ場、手を使う急な登り下りがある。道がわかりにくい所も多い。"
 msgstr "岩場やガレ場、手を使う急な登り下りがある。道がわかりにくい所も多い。"
 
-#: src/components/navigation/NavigationHud.tsx:219
+#: src/components/navigation/NavigationHud.tsx:222
 msgid "左"
 msgstr "左"
 
-#: src/components/navigation/NavigationHud.tsx:220
+#: src/components/navigation/NavigationHud.tsx:223
 msgid "左うしろ"
 msgstr "左うしろ"
 
-#: src/components/navigation/NavigationHud.tsx:208
+#: src/components/navigation/NavigationHud.tsx:211
 msgid "左折"
 msgstr "左折"
 
@@ -5996,7 +5996,7 @@ msgstr "押せます"
 msgid "担当 {0}"
 msgstr "担当 {0}"
 
-#: src/components/map/MapScreenCanvas.tsx:652
+#: src/components/map/MapScreenCanvas.tsx:678
 #: src/components/map/TrailMap.tsx:449
 msgid "拡大"
 msgstr "拡大"
@@ -6387,7 +6387,7 @@ msgstr "条件に合うラリーがありません。"
 msgid "条件をやめる"
 msgstr "条件をやめる"
 
-#: src/components/navigation/NavigationHud.tsx:227
+#: src/components/navigation/NavigationHud.tsx:230
 msgid "東"
 msgstr "東"
 
@@ -6463,7 +6463,7 @@ msgstr "横の長さ"
 msgid "欄には、いまサイトに出ている文章が入っています。書きかえた欄だけが保存されます。写真はバナー、コースはコース、お知らせはお知らせの画面で変えられます。"
 msgstr "欄には、いまサイトに出ている文章が入っています。書きかえた欄だけが保存されます。写真はバナー、コースはコース、お知らせはお知らせの画面で変えられます。"
 
-#: src/components/navigation/NavigationHud.tsx:326
+#: src/components/navigation/NavigationHud.tsx:329
 msgid "次のスタンプの場所"
 msgstr "次のスタンプの場所"
 
@@ -6499,7 +6499,7 @@ msgid "次へ進む（{left}秒）"
 msgstr "次へ進む（{left}秒）"
 
 #. placeholder {0}: mins(progress.toNextMin)
-#: src/components/navigation/NavigationHud.tsx:345
+#: src/components/navigation/NavigationHud.tsx:348
 msgid "次まで {0}"
 msgstr "次まで {0}"
 
@@ -6583,7 +6583,7 @@ msgstr "残すのにおすすめ"
 
 #. placeholder {0}: meters(progress.leftM)
 #. placeholder {1}: mins(progress.leftMin)
-#: src/components/navigation/NavigationHud.tsx:340
+#: src/components/navigation/NavigationHud.tsx:343
 msgid "残り {0}（{1}）"
 msgstr "残り {0}（{1}）"
 
@@ -6750,11 +6750,11 @@ msgstr "状態は未確認"
 msgid "現在の場所"
 msgstr "現在の場所"
 
-#: src/components/map/MapScreenCanvas.tsx:676
+#: src/components/map/MapScreenCanvas.tsx:702
 msgid "現在地を真ん中にする（進む向きが上）"
 msgstr "現在地を真ん中にする（進む向きが上）"
 
-#: src/components/navigation/NavigationHud.tsx:302
+#: src/components/navigation/NavigationHud.tsx:305
 msgid "現在地を調べています…"
 msgstr "現在地を調べています…"
 
@@ -6791,7 +6791,7 @@ msgstr "男性"
 msgid "町・村"
 msgstr "町・村"
 
-#: src/components/navigation/NavigationHud.tsx:285
+#: src/components/navigation/NavigationHud.tsx:288
 msgid "画面が見えない間は、位置を止めています。"
 msgstr "画面が見えない間は、位置を止めています。"
 
@@ -7159,7 +7159,7 @@ msgstr "納経帳"
 msgid "終わりの日"
 msgstr "終わりの日"
 
-#: src/components/navigation/NavigationHud.tsx:474
+#: src/components/navigation/NavigationHud.tsx:477
 msgid "終了"
 msgstr "終了"
 
@@ -7168,12 +7168,12 @@ msgstr "終了"
 #: src/components/landing/DeskPanel.tsx:41
 #: src/components/landing/Journey.tsx:55
 #: src/components/landing/Landing.tsx:324
-#: src/components/map/MapScreenCanvas.tsx:621
+#: src/components/map/MapScreenCanvas.tsx:647
 #: src/components/PointKindName.tsx:9
 msgid "経塚"
 msgstr "経塚"
 
-#: src/components/map/MapScreenCanvas.tsx:522
+#: src/components/map/MapScreenCanvas.tsx:548
 msgid "経塚 {name}"
 msgstr "経塚 {name}"
 
@@ -7445,7 +7445,7 @@ msgstr "緯度と経度は、両方書いてください"
 msgid "縦の長さ"
 msgstr "縦の長さ"
 
-#: src/components/map/MapScreenCanvas.tsx:652
+#: src/components/map/MapScreenCanvas.tsx:678
 #: src/components/map/TrailMap.tsx:454
 msgid "縮小"
 msgstr "縮小"
@@ -7658,7 +7658,7 @@ msgstr "補足（English）"
 msgid "補足（日本語）"
 msgstr "補足（日本語）"
 
-#: src/components/navigation/NavigationHud.tsx:227
+#: src/components/navigation/NavigationHud.tsx:230
 msgid "西"
 msgstr "西"
 
@@ -7733,7 +7733,7 @@ msgstr "見出し"
 msgid "見出しは、よくあるご質問では質問、遊び方では手順の名前になります。その下に、本文を書きます。"
 msgstr "見出しは、よくあるご質問では質問、遊び方では手順の名前になります。その下に、本文を書きます。"
 
-#: src/components/map/MapScreenCanvas.tsx:642
+#: src/components/map/MapScreenCanvas.tsx:668
 msgid "見本の位置（目安です）"
 msgstr "見本の位置（目安です）"
 
@@ -8085,7 +8085,7 @@ msgstr "道"
 msgid "道から"
 msgstr "道から"
 
-#: src/components/navigation/NavigationHud.tsx:260
+#: src/components/navigation/NavigationHud.tsx:263
 msgid "道からはずれています"
 msgstr "道からはずれています"
 
@@ -8109,7 +8109,7 @@ msgstr "道すじ"
 msgid "道でつなぐ"
 msgstr "道でつなぐ"
 
-#: src/components/navigation/NavigationHud.tsx:316
+#: src/components/navigation/NavigationHud.tsx:319
 msgid "道なりに {distText}"
 msgstr "道なりに {distText}"
 
@@ -8142,11 +8142,11 @@ msgstr "道のけわしさは計算ではなく、道の様子から人が決め
 msgid "道のり"
 msgstr "道のり"
 
-#: src/components/navigation/NavigationHud.tsx:317
+#: src/components/navigation/NavigationHud.tsx:320
 msgid "道の外・歩ける道"
 msgstr "道の外・歩ける道"
 
-#: src/components/navigation/NavigationHud.tsx:317
+#: src/components/navigation/NavigationHud.tsx:320
 msgid "道の外・直線"
 msgstr "道の外・直線"
 
@@ -8168,13 +8168,13 @@ msgid "道の険しさや迷いやすさを、星1つ（整った歩きやすい
 msgstr "道の険しさや迷いやすさを、星1つ（整った歩きやすい道）から星5つ（岩場や手を使う所が多い道）で表した目安です。"
 
 #. placeholder {0}: meters(back.m)
-#: src/components/navigation/NavigationHud.tsx:251
+#: src/components/navigation/NavigationHud.tsx:254
 msgid "道まで {0}"
 msgstr "道まで {0}"
 
 #. placeholder {0}: meters(back.m)
 #. placeholder {1}: compass[compassPoint(back.deg)]
-#: src/components/navigation/NavigationHud.tsx:251
+#: src/components/navigation/NavigationHud.tsx:254
 msgid "道まで {0}（{1}）"
 msgstr "道まで {0}（{1}）"
 
@@ -8466,8 +8466,8 @@ msgstr "非表示にする"
 msgid "音"
 msgstr "音"
 
-#: src/components/navigation/NavigationHud.tsx:412
-#: src/components/navigation/NavigationHud.tsx:413
+#: src/components/navigation/NavigationHud.tsx:415
+#: src/components/navigation/NavigationHud.tsx:416
 msgid "音声案内"
 msgstr "音声案内"
 

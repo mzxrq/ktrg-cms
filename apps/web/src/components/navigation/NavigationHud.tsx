@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { getRouteLine } from "@/lib/navigation/line-client";
+import { askCompass } from "@/lib/navigation/compass";
 import { loadResume } from "@/lib/navigation/resume";
 import { useLingui } from "@lingui/react/macro";
 import { Medal } from "@/components/Medal";
@@ -118,6 +119,8 @@ export function NavigationStart({ route, more }: { route: MapScreenRoute; more: 
           setStarting(true);
           // Said inside the tap: an iPhone lets a page speak only after a touch, and the voice may be on without one.
           if (voiceIsOn(voiceByDefault)) say(t`ナビをはじめます`, i18n.locale);
+          // The compass, also inside the tap: an iPhone shows its permission question only then (Android needs none).
+          void askCompass();
           void beginNavigation(route, start).finally(() => setStarting(false));
         }}
       >
