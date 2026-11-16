@@ -13,7 +13,7 @@ import { initLingui } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
-  return { title: i18n._(msg`ルート`) };
+  return { title: i18n._(msg`コース`) };
 }
 
 // Route list (WBS 3.2.3): the 19 routes drawn as one trail. Content comes from the CMS
@@ -50,13 +50,13 @@ export default async function RoutesPage({
       {viewer.signedIn ? null : <SignInPrompt compact />}
 
       {all.length === 0 ? (
-        <EmptyState title={<Trans>ルートの案内は準備中です。</Trans>}>
-          <Trans>公開できるようになったら、ここにルートが表示されます。</Trans>
+        <EmptyState title={<Trans>コースの案内は準備中です。</Trans>}>
+          <Trans>公開できるようになったら、ここにコースが表示されます。</Trans>
         </EmptyState>
       ) : routes.length === 0 ? (
-        <EmptyState title={<Trans>この地域のルートはまだありません。</Trans>}>
+        <EmptyState title={<Trans>この地域のコースはまだありません。</Trans>}>
           <Link href={base} className="tap-target inline-flex items-center font-bold text-accent underline underline-offset-4">
-            <Trans>すべてのルートを見る</Trans>
+            <Trans>すべてのコースを見る</Trans>
           </Link>
         </EmptyState>
       ) : (

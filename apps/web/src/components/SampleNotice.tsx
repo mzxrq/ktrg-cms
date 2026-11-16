@@ -55,7 +55,7 @@ export function SampleNoticeHost() {
         <Trans>いま表示しているのは、見本と下書きのデータです。確認前の情報を含みます。</Trans>
       </p>
       <p className="mt-2 text-lg">
-        <Trans>地図のルートと場所は仮のものです。実際の公開情報ではありません。</Trans>
+        <Trans>地図のコースと場所は仮のものです。実際の公開情報ではありません。</Trans>
       </p>
       <form method="dialog" className="mt-5">
         <button

@@ -11,8 +11,8 @@ msgstr " (until {0})"
 msgid "（{ageText}・{0} MB）"
 msgstr "({ageText}, {0} MB)"
 
-#: src/components/landing/Landing.tsx:184
-#: src/components/landing/Landing.tsx:208
+#: src/components/landing/Landing.tsx:180
+#: src/components/landing/Landing.tsx:204
 msgid "（公式サイト、新しいタブで開きます）"
 msgstr "(official site, opens in a new tab)"
 
@@ -280,16 +280,16 @@ msgstr "Your account and all its records will be deleted on {due} (Japan time). 
 msgid "{email} に、6桁の番号を送りました。"
 msgstr "We sent a 6-digit number to {email}."
 
-#: src/components/RouteStats.tsx:42
+#: src/components/RouteStats.tsx:39
 msgid "{hours}時間"
 msgstr "{hours} h"
 
-#: src/components/RouteStats.tsx:42
+#: src/components/RouteStats.tsx:39
 msgid "{hours}時間{minutes}分"
 msgstr "{hours} h {minutes} min"
 
 #: src/components/ElevationProfile.tsx:37
-#: src/components/RouteStats.tsx:30
+#: src/components/RouteStats.tsx:27
 #: src/components/SpotStats.tsx:32
 msgid "{km}km"
 msgstr "{km} km"
@@ -310,11 +310,11 @@ msgstr "Language of {label}"
 msgid "{m}分"
 msgstr "{m} min"
 
-#: src/components/RouteStats.tsx:34
+#: src/components/RouteStats.tsx:31
 msgid "{meters}m"
 msgstr "{meters} m"
 
-#: src/components/RouteStats.tsx:42
+#: src/components/RouteStats.tsx:39
 msgid "{minutes}分"
 msgstr "{minutes} min"
 
@@ -385,15 +385,15 @@ msgid "{number}番 まだ押していません"
 msgstr "No. {number}, not stamped yet"
 
 #: src/components/map/MapScreen.tsx:367
-#: src/components/map/MapScreenCanvas.tsx:479
+#: src/components/map/MapScreenCanvas.tsx:472
 msgid "{order}. {name}"
 msgstr "{order}. {name}"
 
-#: src/components/map/MapScreenCanvas.tsx:479
+#: src/components/map/MapScreenCanvas.tsx:472
 msgid "{order}. {name}（スタンプ完了）"
 msgstr "{order}. {name} (all stamps collected)"
 
-#: src/components/map/MapScreenCanvas.tsx:479
+#: src/components/map/MapScreenCanvas.tsx:472
 msgid "{order}. {name}（準備中）"
 msgstr "{order}. {name} (coming soon)"
 
@@ -437,10 +437,6 @@ msgstr "{shownKm} km"
 msgid "{shownKm} km・歩いて約{minutes}分"
 msgstr "{shownKm} km · about {minutes} min on foot"
 
-#: src/components/Stars.tsx:8
-msgid "{STAR_COUNT}段階中{n}"
-msgstr "{n} of {STAR_COUNT}"
-
 #: src/components/navigation/NavigationHud.tsx:316
 msgid "{steerWord} {distText}"
 msgstr "{steerWord}, {distText}"
@@ -471,7 +467,7 @@ msgid "{title}を読み込めませんでした。しばらくしてから、ペ
 msgstr "{title} could not be loaded. Please reload the page in a little while."
 
 #: src/components/landing/Journey.tsx:55
-#: src/components/landing/Landing.tsx:324
+#: src/components/landing/Landing.tsx:320
 msgid "{TOTAL_STAMPS}か所"
 msgstr "{TOTAL_STAMPS} places"
 
@@ -579,14 +575,6 @@ msgstr "Write はい (yes) or いいえ (no)"
 #: src/components/admin/RouteImport.tsx:75
 msgid "「ルート」シート {0} 行目"
 msgstr "Row {0} of the “ルート” sheet"
-
-#: src/app/(admin)/admin/settings/page.tsx:24
-msgid "「地図」ページ、ルートのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
-msgstr "How the maps look on the Map page, the route pages and the home page. What you change here shows on visitors' screens at once."
-
-#: src/components/admin/SiteSettingsForm.tsx:129
-msgid "「地図」ページで、山を立体にする"
-msgstr "Raise the mountains in 3D on the Map page"
 
 #: src/components/admin/RouteEditor.tsx:803
 msgid "「地図と線」で経由地を置く"
@@ -1247,7 +1235,7 @@ msgstr "The name has characters that cannot be used, or is too long (40 characte
 msgid "お名前は未設定です"
 msgstr "No name set"
 
-#: src/components/landing/Landing.tsx:198
+#: src/components/landing/Landing.tsx:194
 msgid "お土産"
 msgstr "Souvenirs"
 
@@ -1263,7 +1251,7 @@ msgstr "Shops and food"
 #: src/app/(public)/places/page.tsx:12
 #: src/app/(public)/places/page.tsx:37
 #: src/app/(public)/sitemap/page.tsx:64
-#: src/components/SiteFooter.tsx:21
+#: src/components/SiteFooter.tsx:26
 #: src/components/SiteHeader.tsx:275
 msgid "お店と施設"
 msgstr "Shops and facilities"
@@ -1365,7 +1353,7 @@ msgstr "Bold display"
 msgid "クリックで、この点を消します"
 msgstr "Click to remove this point"
 
-#: src/components/landing/Landing.tsx:197
+#: src/components/landing/Landing.tsx:193
 msgid "グルメ"
 msgstr "Gourmet"
 
@@ -1378,16 +1366,28 @@ msgstr "Learn more"
 msgid "ゲストのまま使う"
 msgstr "Stay as a guest"
 
+#: src/app/(public)/blog/[id]/page.tsx:106
+#: src/app/(public)/routes/page.tsx:16
+#: src/app/(public)/sitemap/page.tsx:68
+#: src/components/BookmarkList.tsx:55
 #: src/components/landing/Journey.tsx:53
-#: src/components/landing/Landing.tsx:322
-#: src/components/map/MapScreenCanvas.tsx:619
+#: src/components/landing/Landing.tsx:318
+#: src/components/map/MapScreenCanvas.tsx:612
+#: src/components/places/DirectoryView.tsx:81
 msgid "コース"
 msgstr "Courses"
 
 #. placeholder {0}: r.memberCount
+#. placeholder {0}: route.order
 #: src/components/admin/RallyList.tsx:37
+#: src/components/blog/LinkedCards.tsx:22
 msgid "コース {0}"
 msgstr "{0} courses"
+
+#. placeholder {0}: p.routes.join("、")
+#: src/components/places/DirectoryView.tsx:116
+msgid "コース{0}"
+msgstr "Course {0}"
 
 #: src/components/RallyViews.tsx:172
 msgid "コース{order}"
@@ -1405,9 +1405,9 @@ msgstr "A rally of courses: complete when every chosen course is finished."
 msgid "コースでつくる"
 msgstr "Make it from courses"
 
-#: src/app/(public)/grading/page.tsx:46
-msgid "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。"
-msgstr "A course's effort and path stars show how hard it is before you go, from one star to five. Fewer stars means an easier course. They are a guide, not official information, and the weather and how you feel change how hard it is."
+#: src/app/(public)/spots/[id]/page.tsx:71
+msgid "コースにもどる"
+msgstr "Back to course"
 
 #: src/app/(public)/badges/page.tsx:39
 msgid "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
@@ -1418,13 +1418,21 @@ msgstr "Press a stamp at every place of a course to get that course's badge."
 msgid "コースのラリー"
 msgstr "Course rally"
 
+#: src/app/(public)/sitemap/page.tsx:70
+msgid "コースの一覧"
+msgstr "All courses"
+
 #: src/components/map/TrailMap.tsx:378
 msgid "コースの出発地点から近い順（まっすぐ測った距離です）"
 msgstr "Nearest first from the start of the course (straight-line distance)"
 
-#: src/components/RouteStats.tsx:27
-msgid "コースの形"
-msgstr "Course shape"
+#: src/components/RouteView.tsx:254
+msgid "コースの動画"
+msgstr "Course video"
+
+#: src/app/(public)/routes/page.tsx:53
+msgid "コースの案内は準備中です。"
+msgstr "Course guides are coming soon."
 
 #: src/components/admin/CourseAreaEditor.tsx:178
 msgid "コースの範囲"
@@ -1438,20 +1446,33 @@ msgstr "Map of the course area"
 msgid "コースの終わりが次のコースの始まりのときは、同じ場所を二つのコースに置けます。スタンプは1つで、両方のコースに数えられます。内容を直すときは、もとのコースで直します。"
 msgstr "When one course ends where the next begins, the same place can be on both courses. There is one stamp, and it counts in both. To change the place itself, edit it on its home course."
 
+#: src/components/BookmarkList.tsx:45
+msgid "コースやラリー、ブログの記事で、しおりのボタンを押すと、ここに保存されます。ログインしていれば、アカウントに保存されます。"
+msgstr "Press the bookmark button on a course, a rally or a blog post and it is saved here. When you are signed in, it is saved to your account."
+
+#: src/components/landing/Landing.tsx:117
+msgid "コースをさがす"
+msgstr "Find a course"
+
 #: src/components/RallyViews.tsx:250
 msgid "コースを見る"
 msgstr "See the courses"
 
-#: src/app/(public)/grading/page.tsx:40
+#: src/app/(public)/routes/[id]/page.tsx:40
+#: src/app/(public)/routes/[id]/page.tsx:59
 msgid "コース一覧"
 msgstr "All courses"
 
-#: src/app/(public)/grading/page.tsx:58
+#: src/app/(public)/routes/[id]/page.tsx:85
+msgid "コース一覧にもどる"
+msgstr "Back to all courses"
+
+#: src/app/(public)/grading/page.tsx:57
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 msgstr "Course constant = 1.8 × hours + 0.3 × distance (km) + 10 × climb (km) + 0.6 × descent (km)"
 
 #: src/app/(public)/map/page.tsx:199
-#: src/app/(public)/routes/[id]/page.tsx:69
+#: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/RouteJourney.tsx:34
 #: src/components/RouteJourney.tsx:97
@@ -1536,6 +1557,10 @@ msgstr "How did you find out about this?"
 #: src/components/admin/SharedPlaces.tsx:167
 msgid "このコースに置く"
 msgstr "Put on this course"
+
+#: src/app/(public)/routes/[id]/page.tsx:77
+msgid "このコースのお知らせをフィードで受け取る"
+msgstr "Follow this course's notices in a feed reader"
 
 #: src/components/admin/SharedPlaces.tsx:99
 msgid "このコースの経由地で、ほかのコースにも置いているもの"
@@ -1645,10 +1670,6 @@ msgstr "This route does not exist yet"
 msgid "このルートに追加"
 msgstr "Add to this route"
 
-#: src/app/(public)/routes/[id]/page.tsx:79
-msgid "このルートのお知らせをフィードで受け取る"
-msgstr "Follow this route's notices in a feed reader"
-
 #: src/components/admin/RallyMemberPicker.tsx:65
 msgid "このルートの経由地をすべて"
 msgstr "All waypoints on this route"
@@ -1715,8 +1736,8 @@ msgid "この区間を見る"
 msgstr "Show this leg"
 
 #: src/app/(public)/routes/page.tsx:57
-msgid "この地域のルートはまだありません。"
-msgstr "There are no routes in this area yet."
+msgid "この地域のコースはまだありません。"
+msgstr "There are no courses in this area yet."
 
 #: src/components/admin/PlacePanel.tsx:184
 msgid "この場所のスタンプの絵"
@@ -1828,7 +1849,7 @@ msgstr "This device can't use face or fingerprint login. Please try email instea
 msgid "この端末では地図の見本を表示できません。"
 msgstr "The map preview cannot be shown on this device."
 
-#: src/components/map/MapScreenCanvas.tsx:575
+#: src/components/map/MapScreenCanvas.tsx:568
 msgid "この端末では地図を表示できません。下の一覧から区間を選べます。"
 msgstr "This device can't show the map. You can choose a course from the list below."
 
@@ -1887,9 +1908,9 @@ msgstr "Delete this waypoint"
 msgid "この線は、経由地の順番や位置と合わないため、区間に分けていません。経由地の順番と位置を直してから「区間に分ける」を押すか、区間を描くと、その区間から線が置き換わります（「元に戻す」で戻せます）。"
 msgstr "This line does not match the order or positions of the waypoints, so it has not been cut into legs. Fix the order and positions and press \"Cut into legs\", or draw a leg: the line is then replaced leg by leg (Undo brings it back)."
 
-#: src/app/(public)/grading/page.tsx:103
-msgid "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。"
-msgstr "The idea follows Nagano Prefecture's Shinshu mountain grading (physical and technical levels). The descriptions are this site's own words."
+#: src/app/(public)/grading/page.tsx:101
+msgid "この考え方は、長野県の「信州 山のグレーディング」を参考にしています。説明は、このサイト独自の言葉です。"
+msgstr "The idea follows the mountain grading used in Nagano Prefecture (信州 山のグレーディング). The explanations are in this site's own words."
 
 #: src/components/admin/FuriganaWords.tsx:79
 msgid "この言葉はもう一覧にあります。"
@@ -1938,7 +1959,7 @@ msgstr "Remove this face or fingerprint login?"
 msgid "コピーしました"
 msgstr "Copied"
 
-#: src/components/admin/AdminNav.tsx:54
+#: src/components/admin/AdminNav.tsx:53
 msgid "コミュニティ"
 msgstr "Community"
 
@@ -2036,7 +2057,11 @@ msgstr "View on site"
 msgid "サイトに反映しますか？"
 msgstr "Publish this to the site?"
 
-#: src/components/admin/AdminNav.tsx:53
+#: src/app/(admin)/admin/settings/page.tsx:24
+msgid "サイトの全体に関わる設定です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
+msgstr "Settings that affect the whole site. What you change here shows on visitors' screens at once."
+
+#: src/components/admin/AdminNav.tsx:52
 msgid "サイトの内容"
 msgstr "Site content"
 
@@ -2046,7 +2071,7 @@ msgstr "Readings the dictionary worked out from the site's text. Visitors don't 
 
 #: src/app/(public)/sitemap/page.tsx:15
 #: src/app/(public)/sitemap/page.tsx:50
-#: src/components/SiteFooter.tsx:30
+#: src/components/SiteFooter.tsx:35
 #: src/components/SiteHeader.tsx:280
 msgid "サイトマップ"
 msgstr "Site map"
@@ -2096,7 +2121,7 @@ msgid "スクロール"
 msgstr "Scroll"
 
 #: src/app/(public)/map/page.tsx:199
-#: src/app/(public)/routes/[id]/page.tsx:69
+#: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/RouteJourney.tsx:31
 #: src/components/RouteJourney.tsx:93
@@ -2278,7 +2303,7 @@ msgid "スタンプ数"
 msgstr "Stamps"
 
 #: src/app/(public)/map/page.tsx:199
-#: src/app/(public)/routes/[id]/page.tsx:69
+#: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 msgid "スタンプ済み"
 msgstr "stamped"
@@ -2312,12 +2337,12 @@ msgid "すべてなめらか"
 msgstr "All smooth"
 
 #: src/components/places/DirectoryView.tsx:84
-msgid "すべてのルート"
-msgstr "All routes"
+msgid "すべてのコース"
+msgstr "All courses"
 
 #: src/app/(public)/routes/page.tsx:59
-msgid "すべてのルートを見る"
-msgstr "See all routes"
+msgid "すべてのコースを見る"
+msgstr "See all courses"
 
 #: src/components/admin/RouteEditor.tsx:846
 msgid "すべての公開をやめる"
@@ -2428,9 +2453,9 @@ msgstr "Dashboard (admin)"
 msgid "たった今"
 msgstr "Just now"
 
-#: src/app/(public)/grading/page.tsx:61
-msgid "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、星1つです。"
-msgstr "For example, 4 hours, 8 km, 500 m up and 500 m down gives 1.8×4 + 0.3×8 + 10×0.5 + 0.6×0.5 = 14.9: one star."
+#: src/app/(public)/grading/page.tsx:60
+msgid "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、体力度は2です。"
+msgstr "For example, 4 hours, 8 km, 500 m up and 500 m down gives 1.8×4 + 0.3×8 + 10×0.5 + 0.6×0.5 = 14.9, so the physical level is 2."
 
 #: src/components/admin/useChecklistLabels.ts:22
 msgid "チェック"
@@ -2449,10 +2474,6 @@ msgstr "When this is checked, \"Connect the waypoints\" skips this point. Instea
 #: src/components/StampLegend.tsx:11
 msgid "つぎ"
 msgstr "Next"
-
-#: src/app/(public)/routes/[id]/page.tsx:90
-msgid "つぎのルート"
-msgstr "Next course"
 
 #: src/components/landing/HomeProgress.tsx:65
 msgid "つぎの場所"
@@ -2648,7 +2669,7 @@ msgstr "Smooth"
 msgid "ニックネームでもかまいません。"
 msgstr "A nickname is fine."
 
-#: src/components/RouteStats.tsx:34
+#: src/components/RouteStats.tsx:31
 msgid "のぼり"
 msgstr "Climb"
 
@@ -2657,7 +2678,7 @@ msgstr "Climb"
 msgid "のぼり {0}m"
 msgstr "Climb {0} m"
 
-#: src/components/landing/Landing.tsx:382
+#: src/components/landing/Landing.tsx:378
 msgid "のものです。"
 msgstr "."
 
@@ -2925,14 +2946,14 @@ msgstr "Bookmark removed"
 msgid "ブックマーク済み"
 msgstr "Bookmarked"
 
-#: src/components/SiteFooter.tsx:16
+#: src/components/SiteFooter.tsx:21
 msgid "フッター"
 msgstr "Footer"
 
 #: src/app/(admin)/admin/pages/page.tsx:25
 #: src/app/(public)/sitemap/page.tsx:129
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:36
+#: src/components/SiteFooter.tsx:41
 #: src/components/SiteHeader.tsx:278
 msgid "プライバシーポリシー"
 msgstr "Privacy policy"
@@ -2958,7 +2979,7 @@ msgstr "Preview"
 #: src/app/(public)/sitemap/page.tsx:79
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/BlogCard.tsx:22
-#: src/components/SiteFooter.tsx:18
+#: src/components/SiteFooter.tsx:23
 #: src/components/SiteHeader.tsx:246
 msgid "ブログ"
 msgstr "Blog"
@@ -3018,6 +3039,8 @@ msgid "ページが開かれた回数を、接続元のおおよその地域（�
 msgstr "Page views counted by the approximate region of the connection (country, prefecture, city). No IP address or person is recorded. A city or town can differ from where the visitor really is."
 
 #: src/components/BackToTop.tsx:15
+#: src/components/ScrollTopButton.tsx:27
+#: src/components/ScrollTopButton.tsx:28
 msgid "ページの先頭へ"
 msgstr "Back to top"
 
@@ -3202,7 +3225,7 @@ msgid "まだスタンプはありません。"
 msgstr "No stamps yet."
 
 #: src/components/admin/HomeSectionsForm.tsx:62
-#: src/components/admin/SiteSettingsForm.tsx:145
+#: src/components/admin/SiteSettingsForm.tsx:136
 msgid "まだ保存していません。"
 msgstr "Not saved yet."
 
@@ -3228,7 +3251,7 @@ msgstr "Connect straight"
 msgid "マップ"
 msgstr "Map"
 
-#: src/components/landing/LandingMap.tsx:103
+#: src/components/landing/LandingMap.tsx:97
 msgid "マップをひらく"
 msgstr "Open the map"
 
@@ -3324,7 +3347,7 @@ msgstr "Main photo"
 msgid "めぐる場所"
 msgstr "Places to visit"
 
-#: src/components/admin/AdminNav.tsx:76
+#: src/components/admin/AdminNav.tsx:75
 #: src/components/SiteHeader.tsx:208
 #: src/components/TabBar.tsx:152
 msgid "メニュー"
@@ -3465,7 +3488,7 @@ msgstr "Redo"
 #: src/app/(admin)/admin/pages/page.tsx:22
 #: src/app/(public)/sitemap/page.tsx:123
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:24
+#: src/components/SiteFooter.tsx:29
 #: src/components/SiteHeader.tsx:276
 msgid "よくあるご質問"
 msgstr "FAQ"
@@ -3479,7 +3502,7 @@ msgid "よみ"
 msgstr "Reading"
 
 #: src/app/(public)/sitemap/page.tsx:132
-#: src/components/SiteFooter.tsx:27
+#: src/components/SiteFooter.tsx:32
 #: src/components/SiteHeader.tsx:279
 msgid "ライセンス情報"
 msgstr "Licenses"
@@ -3569,7 +3592,7 @@ msgid "ラリーを直す（管理）"
 msgstr "Edit rally (admin)"
 
 #: src/components/landing/Journey.tsx:92
-#: src/components/landing/Landing.tsx:124
+#: src/components/landing/Landing.tsx:120
 #: src/components/RestoreStamps.tsx:44
 msgid "ラリーを見る"
 msgstr "See the rallies"
@@ -3642,21 +3665,11 @@ msgid "リンク先のページが用意できてから、オンにしてくだ�
 msgstr "Turn this on once the pages it links to are ready. While it is off, it does not appear on the home page."
 
 #: src/app/(admin)/admin/routes/page.tsx:24
-#: src/app/(public)/blog/[id]/page.tsx:106
-#: src/app/(public)/routes/page.tsx:16
-#: src/app/(public)/sitemap/page.tsx:68
 #: src/components/admin/AdminNav.tsx:37
 #: src/components/admin/FuriganaOverview.tsx:127
-#: src/components/BookmarkList.tsx:55
-#: src/components/places/DirectoryView.tsx:81
 #: src/components/TabBar.tsx:88
 msgid "ルート"
 msgstr "Routes"
-
-#. placeholder {0}: route.order
-#: src/components/blog/LinkedCards.tsx:22
-msgid "ルート {0}"
-msgstr "Route {0}"
 
 #. placeholder {0}: preview.routes.length
 #. placeholder {1}: preview.places.length
@@ -3672,11 +3685,6 @@ msgstr "Route: {name}"
 msgid "ルート（管理）"
 msgstr "Routes (admin)"
 
-#. placeholder {0}: p.routes.join("、")
-#: src/components/places/DirectoryView.tsx:116
-msgid "ルート{0}"
-msgstr "Route {0}"
-
 #: src/components/admin/RallyMemberPicker.tsx:48
 msgid "ルートがまだありません。"
 msgstr "There are no routes yet."
@@ -3685,17 +3693,13 @@ msgstr "There are no routes yet."
 msgid "ルートがまだありません。「新しいルート」から作ってください。"
 msgstr "There are no routes yet. Create one with \"New route\"."
 
-#: src/components/admin/AdminNav.tsx:52
+#: src/components/admin/AdminNav.tsx:51
 msgid "ルートとラリー"
 msgstr "Routes and rallies"
 
-#: src/app/(public)/spots/[id]/page.tsx:71
-msgid "ルートにもどる"
-msgstr "Back to route"
-
-#: src/app/(public)/sitemap/page.tsx:70
-msgid "ルートの一覧"
-msgstr "All routes"
+#: src/app/(public)/grading/page.tsx:45
+msgid "ルートの「体力度」と「技術度」は、歩く前に大変さを知るための目安です。公式の情報ではありません。天気や体調で、感じ方は変わります。"
+msgstr "The physical level and technical level of a route are a guide to how hard it is before you set out. They are not official information, and how it feels changes with the weather and how you feel."
 
 #: src/components/admin/DirectoryPicker.tsx:167
 msgid "ルートの最初の経由地に近い順です。"
@@ -3705,10 +3709,6 @@ msgstr "Nearest first from the route's first waypoint."
 msgid "ルートの写真のリンク"
 msgstr "Route photo link"
 
-#: src/components/RouteView.tsx:254
-msgid "ルートの動画"
-msgstr "Route video"
-
 #: src/components/admin/RouteEditor.tsx:556
 msgid "ルートの名前"
 msgstr "Route name"
@@ -3716,10 +3716,6 @@ msgstr "Route name"
 #: src/components/admin/RouteEditor.tsx:557
 msgid "ルートの名前の読み（ふりがな）"
 msgstr "Reading of the route name (furigana)"
-
-#: src/app/(public)/routes/page.tsx:53
-msgid "ルートの案内は準備中です。"
-msgstr "Route guides are coming soon."
 
 #: src/app/(admin)/admin/places/[id]/page.tsx:41
 msgid "ルートの画面で開く"
@@ -3742,12 +3738,7 @@ msgstr "Route description"
 msgid "ルートの順番を変えた"
 msgstr "Reordered the routes"
 
-#: src/components/BookmarkList.tsx:45
-msgid "ルートやラリー、ブログの記事で、しおりのボタンを押すと、ここに保存されます。ログインしていれば、アカウントに保存されます。"
-msgstr "Press the bookmark button on a route, a rally or a blog post and it is saved here. When you are signed in, it is saved to your account."
-
 #: src/components/admin/RouteTable.tsx:127
-#: src/components/landing/Landing.tsx:121
 #: src/components/landing/LandingHero.tsx:72
 msgid "ルートをさがす"
 msgstr "Find a route"
@@ -3773,8 +3764,7 @@ msgstr "Edit route (admin)"
 msgid "ルートを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "Could not load the routes. Please wait a moment and reopen the page."
 
-#: src/app/(public)/routes/[id]/page.tsx:40
-#: src/app/(public)/routes/[id]/page.tsx:61
+#: src/app/(public)/grading/page.tsx:39
 msgid "ルート一覧"
 msgstr "All routes"
 
@@ -3803,7 +3793,7 @@ msgstr "Log out"
 #: src/components/auth/RegisterFlow.tsx:179
 #: src/components/blog/CommentSection.tsx:127
 #: src/components/GuestNag.tsx:88
-#: src/components/landing/Landing.tsx:130
+#: src/components/landing/Landing.tsx:126
 #: src/components/landing/LandingHero.tsx:78
 #: src/components/ProfileSettings.tsx:220
 #: src/components/SignInPrompt.tsx:26
@@ -3839,11 +3829,6 @@ msgstr "OK"
 #: src/components/navigation/NavPrompts.tsx:111
 msgid "を通りすぎました"
 msgstr " is behind you"
-
-#: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:27
-msgid "一周"
-msgstr "Loop"
 
 #: src/components/admin/map-editor/PlaceList.tsx:136
 msgid "一周して、ここに戻るルートのとき: 同じ位置に、スタンプのない終点を追加します"
@@ -4003,8 +3988,8 @@ msgid "今後はこの確認を表示しない"
 msgstr "Do not show this again"
 
 #: src/components/map/TrailMap.tsx:442
-msgid "仮のルート・位置（未確認）"
-msgstr "Draft route and positions (unchecked)"
+msgid "仮のコース・位置（未確認）"
+msgstr "Draft course and positions (unchecked)"
 
 #: src/components/admin/HoursInput.tsx:27
 #: src/components/map/PlacesPanel.tsx:241
@@ -4119,31 +4104,37 @@ msgstr "low"
 msgid "住所"
 msgstr "Address"
 
-#: src/components/RouteStats.tsx:47
+#: src/components/RouteStats.tsx:43
 msgid "体力"
-msgstr "Effort"
+msgstr "Fitness"
 
-#: src/components/RouteStats.tsx:47
-msgid "体力の目安"
-msgstr "Effort"
+#: src/components/RouteStats.tsx:43
+msgid "体力度"
+msgstr "Physical level"
 
-#: src/app/(public)/grading/page.tsx:52
-msgid "体力の目安（星1〜5）"
-msgstr "Effort (1 to 5 stars)"
+#. placeholder {0}: i + 1
+#: src/app/(public)/grading/page.tsx:66
+msgid "体力度 {0}"
+msgstr "Physical level {0}"
 
-#: src/components/RouteStats.tsx:53
-msgid "体力の目安とは"
-msgstr "About the effort stars"
+#: src/app/(public)/grading/page.tsx:73
+msgid "体力度 10"
+msgstr "Physical level 10"
 
-#: src/app/(public)/grading/page.tsx:43
-msgid "体力の目安と道のけわしさについて"
-msgstr "About the effort and path stars"
-
+#: src/app/(public)/grading/page.tsx:51
 #: src/components/admin/GradingFields.tsx:48
 msgid "体力度（1〜10）"
 msgstr "Physical level (1–10)"
 
-#: src/components/landing/Landing.tsx:199
+#: src/components/RouteStats.tsx:49
+msgid "体力度とは"
+msgstr "About the physical level"
+
+#: src/app/(public)/grading/page.tsx:42
+msgid "体力度と技術度について"
+msgstr "About the physical and technical levels"
+
+#: src/components/landing/Landing.tsx:195
 msgid "体験"
 msgstr "Experiences"
 
@@ -4212,7 +4203,7 @@ msgid "保存していない編集が、このブラウザに残っています�
 msgstr "Unsaved edits were kept in this browser ({offeredAt}). Restore them?"
 
 #: src/components/admin/HomeSectionsForm.tsx:60
-#: src/components/admin/SiteSettingsForm.tsx:140
+#: src/components/admin/SiteSettingsForm.tsx:131
 msgid "保存しています…"
 msgstr "Saving…"
 
@@ -4261,7 +4252,7 @@ msgstr "Saved. No more places waiting to be checked."
 #: src/components/admin/PageTextEditor.tsx:67
 #: src/components/admin/RouteEditor.tsx:490
 #: src/components/admin/SiteSettingsForm.tsx:50
-#: src/components/admin/SiteSettingsForm.tsx:140
+#: src/components/admin/SiteSettingsForm.tsx:131
 #: src/components/ProfileSettings.tsx:261
 #: src/components/settings/PasskeyManager.tsx:136
 #: src/components/settings/PrefsForm.tsx:173
@@ -4383,17 +4374,17 @@ msgstr "Edit"
 msgid "入力に、まちがいがあるようです。見直して、もう一度お試しください。"
 msgstr "Something in what you entered looks wrong. Please check it and try again."
 
-#: src/components/landing/LandingMap.tsx:58
+#: src/components/landing/LandingMap.tsx:55
 msgid "全{count}区間のある場所を示した図"
 msgstr "A diagram of where all {count} courses lie"
 
 #: src/components/landing/Journey.tsx:53
-#: src/components/landing/Landing.tsx:322
+#: src/components/landing/Landing.tsx:318
 msgid "全{TOTAL_ROUTES}区間"
 msgstr "{TOTAL_ROUTES} sections"
 
-#: src/components/landing/Landing.tsx:284
-#: src/components/landing/Landing.tsx:356
+#: src/components/landing/Landing.tsx:280
+#: src/components/landing/Landing.tsx:352
 msgid "全{TOTAL_ROUTES}区間を見る"
 msgstr "See all {TOTAL_ROUTES} sections"
 
@@ -4437,6 +4428,10 @@ msgstr "Published."
 msgid "公開する"
 msgstr "Publish"
 
+#: src/app/(public)/routes/page.tsx:54
+msgid "公開できるようになったら、ここにコースが表示されます。"
+msgstr "Courses will appear here once they are published."
+
 #: src/app/(public)/badges/page.tsx:45
 msgid "公開できるようになったら、ここにコースのバッジが表示されます。"
 msgstr "When they can be published, the course badges will show here."
@@ -4444,10 +4439,6 @@ msgstr "When they can be published, the course badges will show here."
 #: src/app/(public)/rallies/page.tsx:56
 msgid "公開できるようになったら、ここにスタンプのラリーが表示されます。"
 msgstr "When they are ready to publish, the stamp rallies will appear here."
-
-#: src/app/(public)/routes/page.tsx:54
-msgid "公開できるようになったら、ここにルートが表示されます。"
-msgstr "Routes will appear here once they are published."
 
 #: src/components/RouteView.tsx:270
 msgid "公開できるようになったら、ここに場所の一覧が表示されます。"
@@ -4639,7 +4630,7 @@ msgstr "No photo"
 msgid "写真と動画"
 msgstr "Photo and video"
 
-#: src/components/landing/Landing.tsx:378
+#: src/components/landing/Landing.tsx:374
 msgid "写真と文章の一部は、"
 msgstr "Some of the photos and text are from the "
 
@@ -4795,7 +4786,7 @@ msgstr "Back to the settings that came with the app."
 msgid "初めの設定に戻す"
 msgstr "Go back to the first settings"
 
-#: src/components/admin/SiteSettingsForm.tsx:143
+#: src/components/admin/SiteSettingsForm.tsx:134
 msgid "初期値にする"
 msgstr "Use the default"
 
@@ -4810,7 +4801,7 @@ msgstr "Someone else saved first. Reload the page and try again."
 #: src/app/(admin)/admin/pages/page.tsx:24
 #: src/app/(public)/sitemap/page.tsx:126
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:33
+#: src/components/SiteFooter.tsx:38
 #: src/components/SiteHeader.tsx:277
 msgid "利用規約"
 msgstr "Terms of use"
@@ -5278,6 +5269,11 @@ msgstr "Rename"
 msgid "名前順"
 msgstr "Name"
 
+#: src/components/RouteJourney.tsx:22
+#: src/components/RouteStats.tsx:24
+msgid "周回"
+msgstr "Round trip"
+
 #: src/components/admin/RouteEditor.tsx:567
 msgid "周回（元の場所へ）"
 msgstr "Loop (back to the start)"
@@ -5332,7 +5328,7 @@ msgstr "Country"
 msgid "国を選択してください"
 msgstr "Choose your country"
 
-#: src/components/landing/LandingMap.tsx:98
+#: src/components/landing/LandingMap.tsx:92
 msgid "国土地理院（地理院タイル）"
 msgstr "Geospatial Information Authority of Japan (GSI Tiles)"
 
@@ -5343,10 +5339,6 @@ msgstr "Takes the sizes and colours of text, symbols and lines from a JSON file 
 #: src/components/admin/LargeStyleUpload.tsx:76
 msgid "国土地理院のスタイルファイル"
 msgstr "GSI style file"
-
-#: src/components/admin/SiteSettingsForm.tsx:131
-msgid "国土地理院の標高タイルで、傾けた地図の山を高く見せます。読みこむタイルが増えるので、電波の弱い山の中では重くなります。下の見本は平らなままです。「地図」ページで確かめてください。"
-msgstr "Uses GSI elevation tiles to raise the mountains on the tilted map. It downloads more tiles, so it is heavier on a weak signal in the mountains. The preview below stays flat; check it on the Map page."
 
 #: src/components/admin/HoursInput.tsx:15
 msgid "土曜日"
@@ -5387,13 +5379,13 @@ msgstr "Show in the map"
 msgid "地図と線"
 msgstr "Map & line"
 
-#: src/components/map/MapScreenCanvas.tsx:588
+#: src/components/map/MapScreenCanvas.tsx:581
 msgid "地図に出すもの"
 msgstr "Show on the map"
 
 #: src/components/SampleNotice.tsx:58
-msgid "地図のルートと場所は仮のものです。実際の公開情報ではありません。"
-msgstr "The route and places on the map are provisional. They are not published information."
+msgid "地図のコースと場所は仮のものです。実際の公開情報ではありません。"
+msgstr "The course and places on the map are provisional. They are not published information."
 
 #: src/components/map/MapScreen.tsx:467
 msgid "地図の上の場所は、準備中です。"
@@ -5411,15 +5403,9 @@ msgstr "Map type"
 msgid "地図の見せ方"
 msgstr "How the map is shown"
 
-#: src/app/(admin)/admin/settings/page.tsx:21
-#: src/components/admin/AdminNav.tsx:46
 #: src/components/admin/SiteSettingsForm.tsx:81
 msgid "地図の見た目"
 msgstr "Map appearance"
-
-#: src/app/(admin)/admin/settings/page.tsx:10
-msgid "地図の見た目（管理）"
-msgstr "Map appearance (admin)"
 
 #: src/components/admin/HomeTextFields.tsx:31
 msgid "地図の見出し"
@@ -5473,7 +5459,7 @@ msgstr "Save map"
 msgid "地図を保存しています… {percent}%"
 msgstr "Saving the map… {percent}%"
 
-#: src/components/map/MapScreenCanvas.tsx:661
+#: src/components/map/MapScreenCanvas.tsx:654
 msgid "地図を傾ける"
 msgstr "Tilt the map"
 
@@ -5481,7 +5467,7 @@ msgstr "Tilt the map"
 msgid "地図を動かす"
 msgstr "Move the map there"
 
-#: src/components/map/MapScreenCanvas.tsx:661
+#: src/components/map/MapScreenCanvas.tsx:654
 msgid "地図を平らにする（北が上）"
 msgstr "Lay the map flat (north up)"
 
@@ -5496,7 +5482,7 @@ msgstr "Make the map easier on the eyes"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1210
 #: src/components/admin/map-editor/MapEditorLoader.tsx:11
-#: src/components/map/MapScreenCanvas.tsx:584
+#: src/components/map/MapScreenCanvas.tsx:577
 #: src/components/map/MapScreenCanvasLoader.tsx:12
 #: src/components/map/TrailMap.tsx:433
 #: src/components/map/TrailMapLoader.tsx:12
@@ -5698,7 +5684,7 @@ msgstr "Seasonal"
 msgid "完了"
 msgstr "Done"
 
-#: src/components/landing/Landing.tsx:200
+#: src/components/landing/Landing.tsx:196
 msgid "宿泊"
 msgstr "Stay"
 
@@ -5716,7 +5702,7 @@ msgstr "Side trip (an optional stop a little off the path)"
 msgid "寄り道の点を選んでいます。サブコースの線（{legName}）は、右の一覧の「サブコースの線を描く」か、「線を描く」で描けます。本線の点をクリックする必要はありません。"
 msgstr "This side trip is selected. Draw its sub-course line ({legName}) with \"Draw the sub-course line\" in the list on the right, or the Draw line tool. You do not need to click the main-route point."
 
-#: src/components/map/MapScreenCanvas.tsx:619
+#: src/components/map/MapScreenCanvas.tsx:612
 msgid "寄り道の線"
 msgstr "Side trips"
 
@@ -5823,7 +5809,7 @@ msgid "役小角（役行者）"
 msgstr "En no Ozunu (En no Gyoja)"
 
 #: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:27
+#: src/components/RouteStats.tsx:24
 msgid "往復"
 msgstr "Out and back"
 
@@ -5929,9 +5915,26 @@ msgstr "Step"
 msgid "承認"
 msgstr "Approve"
 
+#: src/components/RouteStats.tsx:44
+msgid "技術"
+msgstr "Skill"
+
+#: src/components/RouteStats.tsx:44
+msgid "技術度"
+msgstr "Technical level"
+
+#: src/app/(public)/grading/page.tsx:85
 #: src/components/admin/GradingFields.tsx:80
 msgid "技術度（A〜E）"
 msgstr "Technical level (A–E)"
+
+#: src/components/RouteStats.tsx:53
+msgid "技術度とは"
+msgstr "About the technical level"
+
+#: src/app/(public)/grading/page.tsx:88
+msgid "技術度は計算ではなく、道の様子から人が決めます。Aがいちばんやさしく、Eがいちばん難しいです。"
+msgstr "The technical level is not calculated: a person decides it from what the path is like. A is the easiest and E the hardest."
 
 #: src/components/RouteJourney.tsx:83
 #: src/components/StopList.tsx:105
@@ -5976,7 +5979,7 @@ msgstr "Available"
 msgid "担当 {0}"
 msgstr "By {0}"
 
-#: src/components/map/MapScreenCanvas.tsx:650
+#: src/components/map/MapScreenCanvas.tsx:643
 #: src/components/map/TrailMap.tsx:447
 msgid "拡大"
 msgstr "Zoom in"
@@ -6027,8 +6030,8 @@ msgid "数字の丸をドラッグすると、経由地を動かせます。道�
 msgstr "Drag a numbered circle to move a waypoint. Add the path with \"Draw line\" or a GPX file."
 
 #: src/app/(public)/grading/page.tsx:79
-msgid "数字は目安です。星の数は、コースを作った人が、この計算を見て決めています（長野県の体力度1〜10の、2段ずつが星1つです）。"
-msgstr "The numbers are a guide: the person who made the course chooses the stars after seeing this sum (each star covers two of Nagano's physical levels 1 to 10)."
+msgid "数字は目安です。保存される体力度は、ルートを作った人が、この計算を見て決めています。"
+msgstr "The numbers are a guide. The saved physical level is chosen by whoever made the route, looking at this calculation."
 
 #: src/components/admin/GoalsForm.tsx:39
 msgid "数字を空にすると、その目標はなしになります。保存すると、ページを開き直したときに反映されます。"
@@ -6091,10 +6094,6 @@ msgstr "Text formatting"
 msgid "斜体"
 msgstr "Italic"
 
-#: src/components/ServiceWorker.tsx:43
-msgid "新しいバージョンがあります。"
-msgstr "A new version is available."
-
 #: src/components/settings/PasswordMethod.tsx:86
 msgid "新しいパスワード"
 msgstr "New password"
@@ -6143,7 +6142,7 @@ msgstr "A Japanese name is needed to create a new one"
 #: src/app/(public)/sitemap/page.tsx:111
 #: src/components/auth/LoginFlow.tsx:153
 #: src/components/GuestNag.tsx:85
-#: src/components/landing/Landing.tsx:118
+#: src/components/landing/Landing.tsx:114
 #: src/components/landing/LandingHero.tsx:69
 #: src/components/SignInPrompt.tsx:23
 #: src/components/SignInPrompt.tsx:51
@@ -6204,11 +6203,11 @@ msgstr "Enter the Japanese name."
 msgid "日本語の字幕です。もう一度送ると、置き換わります。字幕は動画の横に保存され、動画を入れ替えたときは、字幕も送りなおしてください。"
 msgstr "Japanese subtitles. Sending again replaces them. They are stored beside the video, so when you replace the video, send the subtitles again."
 
-#: src/components/landing/Landing.tsx:176
+#: src/components/landing/Landing.tsx:172
 msgid "日本遺産 葛城修験ストーリー"
 msgstr "The Japan Heritage Katsuragi Shugen Story"
 
-#: src/components/landing/Landing.tsx:165
+#: src/components/landing/Landing.tsx:161
 msgid "日本遺産「葛城修験」PR動画（180秒）"
 msgstr "Japan Heritage \"Katsuragi Shugen\" promotional video (180 seconds)"
 
@@ -6218,9 +6217,9 @@ msgstr "Timetable"
 
 #: src/components/map/MapScreen.tsx:521
 #: src/components/map/PlacesPanel.tsx:240
-#: src/components/RouteStats.tsx:40
-#: src/components/RouteStats.tsx:65
-#: src/components/RouteStats.tsx:92
+#: src/components/RouteStats.tsx:37
+#: src/components/RouteStats.tsx:61
+#: src/components/RouteStats.tsx:82
 msgid "時間"
 msgstr "Time"
 
@@ -6255,10 +6254,6 @@ msgstr "Updated {0}"
 #: src/components/StatusBanner.tsx:37
 msgid "更新 {updated}（日本時間）"
 msgstr "Updated {updated} (Japan time)"
-
-#: src/components/ServiceWorker.tsx:45
-msgid "更新する"
-msgstr "Update"
 
 #: src/components/OfflinePack.tsx:119
 msgid "更新できませんでした。前に保存した地図は、そのまま使えます。"
@@ -6393,7 +6388,7 @@ msgstr "Web search"
 msgid "概要"
 msgstr "Overview"
 
-#: src/components/landing/Landing.tsx:178
+#: src/components/landing/Landing.tsx:174
 msgid "構成文化財"
 msgstr "Constituent cultural properties"
 
@@ -6514,6 +6509,7 @@ msgid "歩いて行く道を見る"
 msgstr "Show the way on foot"
 
 #: src/components/admin/RouteEditor.tsx:563
+#: src/components/RouteStats.tsx:24
 msgid "歩き方"
 msgstr "How it is walked"
 
@@ -6527,11 +6523,11 @@ msgstr "Walk"
 msgid "歩く時間"
 msgstr "Walking time"
 
-#: src/components/RouteStats.tsx:54
-msgid "歩く時間・距離・登りと下りから、必要な体力を星1つ（やさしい）から星5つ（とても大変）で表した目安です。"
-msgstr "How much stamina the walk takes, from its time, distance, climb and descent: one star (easy) to five (very hard)."
+#: src/components/RouteStats.tsx:50
+msgid "歩く時間・距離・登りと下りから、必要な体力を1（やさしい）から10（とても大変）で表した目安です。"
+msgstr "A guide to the stamina a route needs, from 1 (easy) to 10 (very demanding), worked out from walking time, distance, and climbing and descending."
 
-#: src/app/(public)/grading/page.tsx:55
+#: src/app/(public)/grading/page.tsx:54
 msgid "歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど、体力が必要です。"
 msgstr "From the walking time, distance and the height climbed and descended, we work out a number called the course constant. The bigger it is, the more stamina is needed."
 
@@ -6710,6 +6706,11 @@ msgstr "Erase points (E)"
 msgid "点を置く"
 msgstr "Add points"
 
+#: src/components/RouteJourney.tsx:22
+#: src/components/RouteStats.tsx:24
+msgid "片道"
+msgstr "One way"
+
 #: src/components/admin/RouteEditor.tsx:566
 msgid "片道（別の場所へ）"
 msgstr "One way (to another place)"
@@ -6738,7 +6739,7 @@ msgstr "Status not checked"
 msgid "現在の場所"
 msgstr "You are here"
 
-#: src/components/map/MapScreenCanvas.tsx:674
+#: src/components/map/MapScreenCanvas.tsx:667
 msgid "現在地を真ん中にする（進む向きが上）"
 msgstr "Keep my position in the middle (direction of travel up)"
 
@@ -6857,7 +6858,7 @@ msgid "登録なしで残せるスタンプの数が、上限になりました�
 msgstr "You have reached the most stamps that can be kept without an account. Sign up to keep collecting."
 
 #: src/components/auth/RegisterFlow.tsx:177
-#: src/components/landing/Landing.tsx:128
+#: src/components/landing/Landing.tsx:124
 #: src/components/landing/LandingHero.tsx:76
 msgid "登録済みの方は"
 msgstr "Already registered?"
@@ -7025,10 +7026,6 @@ msgstr "A map of aerial photographs."
 msgid "空のままにすると、ルートの写真が使われます。日本語の欄に入れた写真は、英語の画面でも使われます。"
 msgstr "If left empty, a course's photo is used. A photo set in the Japanese box is also used on the English screen."
 
-#: src/components/admin/SiteSettingsForm.tsx:126
-msgid "立体の地図（3D）"
-msgstr "3D map"
-
 #: src/components/settings/PasskeyManager.tsx:125
 msgid "端末の名前"
 msgstr "Device name"
@@ -7046,7 +7043,7 @@ msgstr "You can skip this."
 msgid "箇条書き"
 msgstr "Bullet list"
 
-#: src/components/admin/AdminNav.tsx:68
+#: src/components/admin/AdminNav.tsx:67
 msgid "管理メニュー"
 msgstr "Admin menu"
 
@@ -7123,7 +7120,7 @@ msgid "約{n}m"
 msgstr "about {n} m"
 
 #: src/components/landing/Journey.tsx:54
-#: src/components/landing/Landing.tsx:323
+#: src/components/landing/Landing.tsx:319
 msgid "約{TRAIL_KM}km"
 msgstr "About {TRAIL_KM} km"
 
@@ -7143,13 +7140,13 @@ msgstr "End"
 #: src/components/admin/PlacePanel.tsx:44
 #: src/components/landing/DeskPanel.tsx:41
 #: src/components/landing/Journey.tsx:55
-#: src/components/landing/Landing.tsx:324
-#: src/components/map/MapScreenCanvas.tsx:619
+#: src/components/landing/Landing.tsx:320
+#: src/components/map/MapScreenCanvas.tsx:612
 #: src/components/PointKindName.tsx:9
 msgid "経塚"
 msgstr "Sutra mounds"
 
-#: src/components/map/MapScreenCanvas.tsx:520
+#: src/components/map/MapScreenCanvas.tsx:513
 msgid "経塚 {name}"
 msgstr "Sutra mound {name}"
 
@@ -7421,7 +7418,7 @@ msgstr "Write both latitude and longitude"
 msgid "縦の長さ"
 msgstr "Height"
 
-#: src/components/map/MapScreenCanvas.tsx:650
+#: src/components/map/MapScreenCanvas.tsx:643
 #: src/components/map/TrailMap.tsx:452
 msgid "縮小"
 msgstr "Zoom out"
@@ -7548,7 +7545,7 @@ msgstr "About Katsuragi Shugen"
 msgid "葛城修験の地図"
 msgstr "Map of Katsuragi Shugen"
 
-#: src/components/landing/Landing.tsx:177
+#: src/components/landing/Landing.tsx:173
 msgid "葛城修験の基礎知識"
 msgstr "Basics of Katsuragi Shugen"
 
@@ -7561,7 +7558,7 @@ msgstr "The Katsuragi Shugen Trail"
 msgid "葛城修験の道のことや、歩いた日のことをお知らせします。"
 msgstr "News about the Katsuragi Shugen trail and the days we walked it."
 
-#: src/components/landing/Landing.tsx:380
+#: src/components/landing/Landing.tsx:376
 msgid "葛城修験日本遺産活用推進協議会の公式サイト"
 msgstr "official site of the Katsuragi Shugen Japan Heritage Promotion Council"
 
@@ -7709,11 +7706,11 @@ msgstr "Heading"
 msgid "見出しは、よくあるご質問では質問、遊び方では手順の名前になります。その下に、本文を書きます。"
 msgstr "On the FAQ a heading is a question, and on How to play it is the name of a step. Write the text under it."
 
-#: src/components/map/MapScreenCanvas.tsx:640
+#: src/components/map/MapScreenCanvas.tsx:633
 msgid "見本の位置（目安です）"
 msgstr "Sample positions (rough)"
 
-#: src/components/landing/Landing.tsx:196
+#: src/components/landing/Landing.tsx:192
 msgid "観光"
 msgstr "Sightseeing"
 
@@ -7813,6 +7810,15 @@ msgstr "See details"
 msgid "詳細"
 msgstr "Details"
 
+#: src/app/(admin)/admin/settings/page.tsx:21
+#: src/components/admin/AdminNav.tsx:45
+msgid "詳細設定"
+msgstr "Advanced settings"
+
+#: src/app/(admin)/admin/settings/page.tsx:10
+msgid "詳細設定（管理）"
+msgstr "Advanced settings (admin)"
+
 #: src/components/admin/HomeTextFields.tsx:24
 #: src/components/admin/HomeTextFields.tsx:38
 #: src/components/admin/InfoTip.tsx:22
@@ -7886,9 +7892,9 @@ msgid "足りないもの"
 msgstr "What is missing"
 
 #: src/components/admin/RouteEditor.tsx:576
-#: src/components/RouteStats.tsx:30
-#: src/components/RouteStats.tsx:65
-#: src/components/RouteStats.tsx:92
+#: src/components/RouteStats.tsx:27
+#: src/components/RouteStats.tsx:61
+#: src/components/RouteStats.tsx:82
 msgid "距離"
 msgstr "Distance"
 
@@ -8009,11 +8015,6 @@ msgstr "{accepted} waiting stamp(s) were accepted!"
 msgid "送信待ちのスタンプが{waiting}件あります。ログアウトすると、次にログインするまで送れません。ログアウトしますか？"
 msgstr "{waiting} stamps are waiting to be sent. If you sign out they cannot be sent until you sign in again. Sign out anyway?"
 
-#: src/components/RouteJourney.tsx:22
-#: src/components/RouteStats.tsx:27
-msgid "通り抜け"
-msgstr "Point to point"
-
 #: src/components/admin/MunicipalitiesField.tsx:67
 msgid "通る順に並べます。市・町・村は一覧から選びます。一覧にない地名は、下に入力して追加します（8つまで）。"
 msgstr "Put them in the order the course passes through. Choose cities, towns and villages from the list; type a name that is not on it below (up to 8)."
@@ -8044,7 +8045,7 @@ msgstr "Closures and the like will be shown here."
 msgid "遊び方"
 msgstr "How to play"
 
-#: src/components/admin/AdminNav.tsx:55
+#: src/components/admin/AdminNav.tsx:54
 msgid "運営"
 msgstr "Running the site"
 
@@ -8052,10 +8053,6 @@ msgstr "Running the site"
 #: src/app/(admin)/admin/visits/page.tsx:64
 msgid "過去{0}日"
 msgstr "Last {0} days"
-
-#: src/components/RouteStats.tsx:48
-msgid "道"
-msgstr "Path"
 
 #: src/components/SpotStats.tsx:42
 msgid "道から"
@@ -8097,22 +8094,6 @@ msgstr "Snap to trails"
 msgid "道に沿わせる機能が、まだ使えません。管理する人に、道案内サービスの設定を頼んでください。手で線を描くことはできます。"
 msgstr "Snapping to trails is not available yet. Ask whoever manages the site to set up the route-finding service. You can still draw the line by hand."
 
-#: src/components/RouteStats.tsx:48
-msgid "道のけわしさ"
-msgstr "Path"
-
-#: src/app/(public)/grading/page.tsx:85
-msgid "道のけわしさ（星1〜5）"
-msgstr "Path (1 to 5 stars)"
-
-#: src/components/RouteStats.tsx:57
-msgid "道のけわしさとは"
-msgstr "About the path stars"
-
-#: src/app/(public)/grading/page.tsx:88
-msgid "道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。"
-msgstr "The path stars are not worked out by a sum: a person chooses them from how the path is. One star is the easiest path, five the hardest."
-
 #: src/components/RouteView.tsx:125
 #: src/components/RouteView.tsx:277
 msgid "道のり"
@@ -8139,9 +8120,9 @@ msgstr "Choose by hand, based on the condition of the path."
 msgid "道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。"
 msgstr "Toilets, shops, stations, bus stops and more near the trail. Opening hours can change, so check before you go."
 
-#: src/components/RouteStats.tsx:58
-msgid "道の険しさや迷いやすさを、星1つ（整った歩きやすい道）から星5つ（岩場や手を使う所が多い道）で表した目安です。"
-msgstr "How rough the path is and how easy to lose: one star (a well-kept, easy path) to five (much rock, and places where you use your hands)."
+#: src/components/RouteStats.tsx:54
+msgid "道の険しさや迷いやすさを、A（整った道）からE（厳しい岩場や藪）で表した目安です。"
+msgstr "A guide to how rough a path is and how easy it is to lose, from A (a well-kept path) to E (hard rock or thick brush)."
 
 #. placeholder {0}: meters(back.m)
 #: src/components/navigation/NavigationHud.tsx:251
@@ -8307,7 +8288,7 @@ msgid "金曜日"
 msgstr "Friday"
 
 #: src/components/landing/Journey.tsx:54
-#: src/components/landing/Landing.tsx:323
+#: src/components/landing/Landing.tsx:319
 msgid "長さ"
 msgstr "Length"
 
@@ -8349,7 +8330,7 @@ msgid "閉店・撤去"
 msgstr "Closed for good"
 
 #: src/app/(public)/map/page.tsx:199
-#: src/app/(public)/routes/[id]/page.tsx:69
+#: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/navigation/NavTargetPicker.tsx:64
 #: src/components/StatusWord.tsx:13
@@ -8376,7 +8357,7 @@ msgstr "hidden"
 msgid "離れる"
 msgstr "Leave"
 
-#: src/components/RouteStats.tsx:49
+#: src/components/RouteStats.tsx:45
 msgid "難しさ"
 msgstr "Difficulty"
 
@@ -8541,3 +8522,101 @@ msgstr "Parking"
 #: src/components/map/MapSheet.tsx:182
 msgid "高い"
 msgstr "high"
+
+#: src/components/Stars.tsx:8
+msgid "{STAR_COUNT}段階中{n}"
+msgstr "{n} of {STAR_COUNT}"
+
+#: src/app/(admin)/admin/settings/page.tsx:24
+msgid "「地図」ページ、ルートのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。"
+msgstr "How the maps look on the Map page, the route pages and the home page. What you change here shows on visitors' screens at once."
+
+#: src/components/admin/SiteSettingsForm.tsx:129
+msgid "「地図」ページで、山を立体にする"
+msgstr "Raise the mountains in 3D on the Map page"
+
+#: src/app/(public)/grading/page.tsx:46
+msgid "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。"
+msgstr "A course's effort and path stars show how hard it is before you go, from one star to five. Fewer stars means an easier course. They are a guide, not official information, and the weather and how you feel change how hard it is."
+
+#: src/components/RouteStats.tsx:27
+msgid "コースの形"
+msgstr "Course shape"
+
+#: src/app/(public)/grading/page.tsx:103
+msgid "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。"
+msgstr "The idea follows Nagano Prefecture's Shinshu mountain grading (physical and technical levels). The descriptions are this site's own words."
+
+#: src/app/(public)/grading/page.tsx:61
+msgid "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、星1つです。"
+msgstr "For example, 4 hours, 8 km, 500 m up and 500 m down gives 1.8×4 + 0.3×8 + 10×0.5 + 0.6×0.5 = 14.9: one star."
+
+#: src/components/RouteJourney.tsx:22
+#: src/components/RouteStats.tsx:27
+msgid "一周"
+msgstr "Loop"
+
+#: src/components/RouteStats.tsx:47
+msgid "体力の目安"
+msgstr "Effort"
+
+#: src/app/(public)/grading/page.tsx:52
+msgid "体力の目安（星1〜5）"
+msgstr "Effort (1 to 5 stars)"
+
+#: src/components/RouteStats.tsx:53
+msgid "体力の目安とは"
+msgstr "About the effort stars"
+
+#: src/app/(public)/grading/page.tsx:43
+msgid "体力の目安と道のけわしさについて"
+msgstr "About the effort and path stars"
+
+#: src/components/admin/SiteSettingsForm.tsx:131
+msgid "国土地理院の標高タイルで、傾けた地図の山を高く見せます。読みこむタイルが増えるので、電波の弱い山の中では重くなります。下の見本は平らなままです。「地図」ページで確かめてください。"
+msgstr "Uses GSI elevation tiles to raise the mountains on the tilted map. It downloads more tiles, so it is heavier on a weak signal in the mountains. The preview below stays flat; check it on the Map page."
+
+#: src/app/(admin)/admin/settings/page.tsx:10
+msgid "地図の見た目（管理）"
+msgstr "Map appearance (admin)"
+
+#: src/app/(public)/grading/page.tsx:79
+msgid "数字は目安です。星の数は、コースを作った人が、この計算を見て決めています（長野県の体力度1〜10の、2段ずつが星1つです）。"
+msgstr "The numbers are a guide: the person who made the course chooses the stars after seeing this sum (each star covers two of Nagano's physical levels 1 to 10)."
+
+#: src/components/RouteStats.tsx:54
+msgid "歩く時間・距離・登りと下りから、必要な体力を星1つ（やさしい）から星5つ（とても大変）で表した目安です。"
+msgstr "How much stamina the walk takes, from its time, distance, climb and descent: one star (easy) to five (very hard)."
+
+#: src/components/admin/SiteSettingsForm.tsx:126
+msgid "立体の地図（3D）"
+msgstr "3D map"
+
+#: src/components/RouteJourney.tsx:22
+#: src/components/RouteStats.tsx:27
+msgid "通り抜け"
+msgstr "Point to point"
+
+#: src/components/RouteStats.tsx:48
+msgid "道"
+msgstr "Path"
+
+#: src/components/RouteStats.tsx:48
+msgid "道のけわしさ"
+msgstr "Path"
+
+#: src/app/(public)/grading/page.tsx:85
+msgid "道のけわしさ（星1〜5）"
+msgstr "Path (1 to 5 stars)"
+
+#: src/components/RouteStats.tsx:57
+msgid "道のけわしさとは"
+msgstr "About the path stars"
+
+#: src/app/(public)/grading/page.tsx:88
+msgid "道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。"
+msgstr "The path stars are not worked out by a sum: a person chooses them from how the path is. One star is the easiest path, five the hardest."
+
+#: src/components/RouteStats.tsx:58
+msgid "道の険しさや迷いやすさを、星1つ（整った歩きやすい道）から星5つ（岩場や手を使う所が多い道）で表した目安です。"
+msgstr "How rough the path is and how easy to lose: one star (a well-kept, easy path) to five (much rock, and places where you use your hands)."

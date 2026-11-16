@@ -65,9 +65,9 @@ export default async function SitemapPage() {
         </LinkRow>
       </Group>
 
-      <Group title={<Trans>ルート</Trans>}>
+      <Group title={<Trans>コース</Trans>}>
         <LinkRow href="/routes">
-          <Trans>ルートの一覧</Trans>
+          <Trans>コースの一覧</Trans>
         </LinkRow>
         {routes.filter((route) => route.status === "ready").map((route) => (
           <LinkRow key={route.id} href={`/routes/${route.id}`}>

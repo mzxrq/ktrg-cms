@@ -42,7 +42,7 @@ export function BookmarkList({
   if (saved.length === 0) {
     return (
       <EmptyState title={t`ブックマークは、まだありません。`}>
-        {t`ルートやラリー、ブログの記事で、しおりのボタンを押すと、ここに保存されます。ログインしていれば、アカウントに保存されます。`}
+        {t`コースやラリー、ブログの記事で、しおりのボタンを押すと、ここに保存されます。ログインしていれば、アカウントに保存されます。`}
       </EmptyState>
     );
   }
@@ -52,7 +52,7 @@ export function BookmarkList({
         <li key={b.id} className="flex items-center gap-2 rounded-[1.75rem] bg-surface">
           <Link href={b.href} className="tap-target flex min-w-0 flex-1 items-center justify-between gap-3 px-5 py-3 text-xl font-bold text-accent">
             <span className="min-w-0">
-              <span className="block text-base font-normal text-muted">{b.kind === "rally" ? t`ラリー` : b.kind === "post" ? t`ブログ` : t`ルート`}</span>
+              <span className="block text-base font-normal text-muted">{b.kind === "rally" ? t`ラリー` : b.kind === "post" ? t`ブログ` : t`コース`}</span>
               <span className="block break-words">{b.name}</span>
               <span className="block text-base font-normal text-muted">{b.detail ?? (b.soon ? t`準備中` : t`スタンプ ${b.stamped} / ${b.total}`)}</span>
             </span>

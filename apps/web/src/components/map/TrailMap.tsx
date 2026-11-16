@@ -439,7 +439,7 @@ export function TrailMap({
             <span className="text-caution">
               <WarningIcon />
             </span>
-            {t`仮のルート・位置（未確認）`}
+            {t`仮のコース・位置（未確認）`}
           </p>
         ) : null}
 
