@@ -4,6 +4,10 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { pickText } from "@/lib/content";
 import { formatUpdated } from "@/lib/format";
 import { isSoon, nextSlot, sealName, stampedNumbers, type RallyItem } from "@/lib/rally-model";
+import { journeyFacts, type JourneyRoute } from "@/lib/rally-journey";
+import { JourneyFacts } from "./JourneyFacts";
+import { RoutePhoto } from "./RoutePhoto";
+import { CreditCaption } from "./PhotoCredit";
 import { CertificateButton } from "./CertificateButton";
 import { ChevronIcon } from "./icons";
 import { SectionBanner } from "./SectionBanner";
@@ -33,13 +37,37 @@ export function Bar({ stamped, total, label }: { stamped: number; total: number;
 
 /** The rally the visitor stamped in most recently: big progress, what is left, and the stamp grid. */
 /** `account`: signed in. Stamps and progress show for everyone (a guest's are kept in the browser); the certificate is an account's. */
-export function FeaturedRally({ rally, locale, account }: { rally: RallyItem; locale: string; account: boolean }) {
+export function FeaturedRally({ rally, locale, account, routes = [] }: { rally: RallyItem; locale: string; account: boolean; routes?: readonly JourneyRoute[] }) {
   const { t } = useLingui();
   const stamped = rally.stamped ?? 0;
   const remaining = rally.total - stamped;
   const next = nextSlot(rally);
   const nextName = next ? nameOf(locale, next.nameJa, next.nameEn) : "";
   const when = rally.lastStampedAt ? formatUpdated(locale, rally.lastStampedAt) : "";
+
+  // Nobody has started it: the journey ahead (the photo, how big the walk is, an invitation), not "0 / N".
+  if (stamped === 0 && rally.total > 0) {
+    const name = nameOf(locale, rally.nameJa, rally.nameEn);
+    const facts = journeyFacts(rally, routes);
+    return (
+      <section className="flex flex-col gap-3 px-4">
+        <SectionBanner>{t`はじめのラリー`}</SectionBanner>
+        <div className="pattern-shippo overflow-hidden rounded-[1.75rem] bg-surface">
+          <div className="relative aspect-[16/9]">
+            <RoutePhoto src={facts.photoUrl} alt={name} />
+          </div>
+          <div className="flex flex-col gap-3 p-5">
+            <CreditCaption credit={facts.photoCredit} />
+            <h2 className="text-2xl font-bold leading-snug">{name}</h2>
+            <JourneyFacts facts={facts} />
+            <Link href={`/rallies/${rally.id}`} className={buttonStyle("primary", "lg", "flex w-full")}>
+              <Trans>最初の場所を見る</Trans>
+            </Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="flex flex-col gap-3 px-4">

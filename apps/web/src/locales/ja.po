@@ -8512,3 +8512,31 @@ msgstr "動かさない"
 #: src/components/settings/PrefsForm.tsx
 msgid "アニメーションや、ふわっと動く表示の量を選びます。"
 msgstr "アニメーションや、ふわっと動く表示の量を選びます。"
+
+#: src/components/JourneyFacts.tsx
+msgid "約{h}時間{m}分"
+msgstr "約{h}時間{m}分"
+
+#: src/components/JourneyFacts.tsx
+msgid "約{h}時間"
+msgstr "約{h}時間"
+
+#: src/components/JourneyFacts.tsx
+msgid "約{m}分"
+msgstr "約{m}分"
+
+#: src/components/JourneyFacts.tsx
+msgid "の道のり"
+msgstr "の道のり"
+
+#: src/components/JourneyFacts.tsx
+msgid "さあ、最初の一歩へ。{total}か所のスタンプが待っています。"
+msgstr "さあ、最初の一歩へ。{total}か所のスタンプが待っています。"
+
+#: src/components/RallyViews.tsx
+msgid "最初の場所を見る"
+msgstr "最初の場所を見る"
+
+#: src/components/JourneyFacts.tsx
+msgid "か所"
+msgstr "か所"
