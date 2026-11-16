@@ -35,13 +35,13 @@ export interface MapSettings {
   terrain3d: boolean;
 }
 
-/** The look until an admin chooses one: the quieter pale map. */
+/** The look until an admin chooses one: the quieter pale map, calmed further (2026-11-16, user: GSI's tiles read too bright and colourful). */
 export const defaultMapSettings: MapSettings = {
   base: "pale",
   terrain: "hillshade",
   terrainOpacity: 0.5,
-  saturation: 0,
-  contrast: 0,
+  saturation: -0.5,
+  contrast: -0.1,
   labelScale: 1,
   iconScale: 1,
   lineScale: 1,

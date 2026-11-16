@@ -68,7 +68,9 @@ describe("GSI tiles", () => {
     expect(photoBase && "tiles" in photoBase ? photoBase.tiles?.[0] : "").toBe("https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg");
     const blank = mapStyle({ ...defaultMapSettings, base: "blank" }).sources["gsi-base"];
     expect(blank && "maxzoom" in blank ? blank.maxzoom : 0).toBe(14);
-    expect(mapStyle(defaultMapSettings).layers.find((l) => l.id === "gsi-base")?.paint).toEqual({});
+    expect(mapStyle({ ...defaultMapSettings, saturation: 0, contrast: 0 }).layers.find((l) => l.id === "gsi-base")?.paint).toEqual({});
+    // The built-in look is calmed (2026-11-16): less colour and contrast than GSI draws.
+    expect(mapStyle(defaultMapSettings).layers.find((l) => l.id === "gsi-base")?.paint).toEqual({ "raster-saturation": -0.5, "raster-contrast": -0.1 });
     const calm = mapStyle({ ...defaultMapSettings, saturation: -0.4, contrast: -0.1 });
     expect(calm.layers.find((l) => l.id === "gsi-base")?.paint).toEqual({ "raster-saturation": -0.4, "raster-contrast": -0.1 });
   });
@@ -142,7 +144,11 @@ describe("editor base maps", () => {
 });
 
 describe("side trips and pin size", () => {
-  const width = (layer: { paint?: unknown } | undefined) => (layer!.paint as { "line-width": number })["line-width"];
+  // A width is a number or a zoom interpolation ["interpolate", ["linear"], ["zoom"], z1, w1, z2, w2, ...]: then its thinnest.
+  const width = (layer: { paint?: unknown } | undefined) => {
+    const w = (layer!.paint as { "line-width": number | unknown[] })["line-width"];
+    return typeof w === "number" ? w : Math.min(...(w.slice(3).filter((_, i) => i % 2 === 1) as number[]));
+  };
 
   test("a side trip is a thinner dashed blue line than the route's own", () => {
     const [casing, line] = sideLineLayers("side");
@@ -171,4 +177,12 @@ test("the English map lies over the standard map, up to GSI's last English zoom"
   expect(en.layers.find((l) => l.id === "gsi-english")?.maxzoom).toBe(englishMaxZoom + 1);
   expect(ids(mapStyle({ ...defaultMapSettings, base: "std" }, "ja"))).not.toContain("gsi-english");
   expect(ids(mapStyle({ ...defaultMapSettings, base: "photo" }, "en"))).not.toContain("gsi-english");
+});
+
+test("the course line is a colour GSI's maps do not use, and thickens as the map zooms in", () => {
+  const [casing, line] = routeLineLayers("route", false);
+  expect(line!.paint).toMatchObject({ "line-color": "#c2185b" });
+  const stops = (l: typeof line) => ((l!.paint as { "line-width": unknown[] })["line-width"].slice(3) as number[]).filter((_, i) => i % 2 === 1);
+  expect(stops(line)).toEqual([4, 6, 9]);
+  for (const [i, w] of stops(casing).entries()) expect(w).toBeGreaterThan(stops(line)[i]!);
 });

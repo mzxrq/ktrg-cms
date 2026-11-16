@@ -78,7 +78,13 @@ Each slice: Android (Chrome, the Huawei), iOS (Safari and the installed app), de
 
 ## Open questions for the user
 
-- **Q1:** which Android bugs did you see? (a list or screenshots; this decides N2-3)
-- **Q2:** should the arrival keep a photo at all, or only the name and the stamp button?
-- **Q3:** compass heading-up: wanted, or keep north-up only?
-- **Q4:** wake lock on by default in navigation, or off?
+- **Q1:** which Android bugs did you see? (a list or screenshots; this decides N2-3) — open.
+
+## Answered (user, 2026-11-16)
+
+- **Q2 photo on arrival:** keep the photo (it still gives way to the buttons on a short screen, rule 1).
+- **Q3 compass:** yes, heading-up with the compass (N2-5 is no longer optional; north button stays).
+- **Q4 wake lock:** on by default in navigation.
+- **Also asked:** the map comes to where the walker is (done with the map-look PR: far from the course the frame holds the
+  walker and the course); the course line was barely visible (now deep magenta, thicker when zoomed in); GSI's tiles read
+  too bright and colourful (calmer built-in look; a calmer tile style would be a new provider, needs a yes).

@@ -390,15 +390,15 @@ msgid "{number}番 まだ押していません"
 msgstr "{number}番 まだ押していません"
 
 #: src/components/map/MapScreen.tsx:367
-#: src/components/map/MapScreenCanvas.tsx:479
+#: src/components/map/MapScreenCanvas.tsx:481
 msgid "{order}. {name}"
 msgstr "{order}. {name}"
 
-#: src/components/map/MapScreenCanvas.tsx:479
+#: src/components/map/MapScreenCanvas.tsx:481
 msgid "{order}. {name}（スタンプ完了）"
 msgstr "{order}. {name}（スタンプ完了）"
 
-#: src/components/map/MapScreenCanvas.tsx:479
+#: src/components/map/MapScreenCanvas.tsx:481
 msgid "{order}. {name}（準備中）"
 msgstr "{order}. {name}（準備中）"
 
@@ -1394,7 +1394,7 @@ msgstr "ゲストのまま使う"
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/Journey.tsx:53
 #: src/components/landing/Landing.tsx:322
-#: src/components/map/MapScreenCanvas.tsx:619
+#: src/components/map/MapScreenCanvas.tsx:621
 #: src/components/places/DirectoryView.tsx:81
 #: src/components/TabBar.tsx:88
 msgid "コース"
@@ -1971,7 +1971,7 @@ msgstr "この端末では、顔・指紋のログインを使えません。メ
 msgid "この端末では地図の見本を表示できません。"
 msgstr "この端末では地図の見本を表示できません。"
 
-#: src/components/map/MapScreenCanvas.tsx:575
+#: src/components/map/MapScreenCanvas.tsx:577
 msgid "この端末では地図を表示できません。下の一覧から区間を選べます。"
 msgstr "この端末では地図を表示できません。下の一覧から区間を選べます。"
 
@@ -5407,7 +5407,7 @@ msgstr "地図で見る"
 msgid "地図と線"
 msgstr "地図と線"
 
-#: src/components/map/MapScreenCanvas.tsx:588
+#: src/components/map/MapScreenCanvas.tsx:590
 msgid "地図に出すもの"
 msgstr "地図に出すもの"
 
@@ -5493,7 +5493,7 @@ msgstr "地図を保存"
 msgid "地図を保存しています… {percent}%"
 msgstr "地図を保存しています… {percent}%"
 
-#: src/components/map/MapScreenCanvas.tsx:661
+#: src/components/map/MapScreenCanvas.tsx:663
 msgid "地図を傾ける"
 msgstr "地図を傾ける"
 
@@ -5501,7 +5501,7 @@ msgstr "地図を傾ける"
 msgid "地図を動かす"
 msgstr "地図を動かす"
 
-#: src/components/map/MapScreenCanvas.tsx:661
+#: src/components/map/MapScreenCanvas.tsx:663
 msgid "地図を平らにする（北が上）"
 msgstr "地図を平らにする（北が上）"
 
@@ -5516,7 +5516,7 @@ msgstr "地図を見やすくする"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1210
 #: src/components/admin/map-editor/MapEditorLoader.tsx:11
-#: src/components/map/MapScreenCanvas.tsx:584
+#: src/components/map/MapScreenCanvas.tsx:586
 #: src/components/map/MapScreenCanvasLoader.tsx:12
 #: src/components/map/TrailMap.tsx:435
 #: src/components/map/TrailMapLoader.tsx:12
@@ -5736,7 +5736,7 @@ msgstr "寄り道（道すじから少しはずれた、任意の立ち寄り先
 msgid "寄り道の点を選んでいます。サブコースの線（{legName}）は、右の一覧の「サブコースの線を描く」か、「線を描く」で描けます。本線の点をクリックする必要はありません。"
 msgstr "寄り道の点を選んでいます。サブコースの線（{legName}）は、右の一覧の「サブコースの線を描く」か、「線を描く」で描けます。本線の点をクリックする必要はありません。"
 
-#: src/components/map/MapScreenCanvas.tsx:619
+#: src/components/map/MapScreenCanvas.tsx:621
 msgid "寄り道の線"
 msgstr "寄り道の線"
 
@@ -5996,7 +5996,7 @@ msgstr "押せます"
 msgid "担当 {0}"
 msgstr "担当 {0}"
 
-#: src/components/map/MapScreenCanvas.tsx:650
+#: src/components/map/MapScreenCanvas.tsx:652
 #: src/components/map/TrailMap.tsx:449
 msgid "拡大"
 msgstr "拡大"
@@ -6750,7 +6750,7 @@ msgstr "状態は未確認"
 msgid "現在の場所"
 msgstr "現在の場所"
 
-#: src/components/map/MapScreenCanvas.tsx:674
+#: src/components/map/MapScreenCanvas.tsx:676
 msgid "現在地を真ん中にする（進む向きが上）"
 msgstr "現在地を真ん中にする（進む向きが上）"
 
@@ -7156,12 +7156,12 @@ msgstr "終了"
 #: src/components/landing/DeskPanel.tsx:41
 #: src/components/landing/Journey.tsx:55
 #: src/components/landing/Landing.tsx:324
-#: src/components/map/MapScreenCanvas.tsx:619
+#: src/components/map/MapScreenCanvas.tsx:621
 #: src/components/PointKindName.tsx:9
 msgid "経塚"
 msgstr "経塚"
 
-#: src/components/map/MapScreenCanvas.tsx:520
+#: src/components/map/MapScreenCanvas.tsx:522
 msgid "経塚 {name}"
 msgstr "経塚 {name}"
 
@@ -7433,7 +7433,7 @@ msgstr "緯度と経度は、両方書いてください"
 msgid "縦の長さ"
 msgstr "縦の長さ"
 
-#: src/components/map/MapScreenCanvas.tsx:650
+#: src/components/map/MapScreenCanvas.tsx:652
 #: src/components/map/TrailMap.tsx:454
 msgid "縮小"
 msgstr "縮小"
@@ -7721,7 +7721,7 @@ msgstr "見出し"
 msgid "見出しは、よくあるご質問では質問、遊び方では手順の名前になります。その下に、本文を書きます。"
 msgstr "見出しは、よくあるご質問では質問、遊び方では手順の名前になります。その下に、本文を書きます。"
 
-#: src/components/map/MapScreenCanvas.tsx:640
+#: src/components/map/MapScreenCanvas.tsx:642
 msgid "見本の位置（目安です）"
 msgstr "見本の位置（目安です）"
 

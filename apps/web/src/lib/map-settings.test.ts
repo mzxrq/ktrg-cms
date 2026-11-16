@@ -2,8 +2,8 @@ import { describe, expect, test } from "bun:test";
 import { defaultMapSettings, sanitizeMapSettings } from "./map-settings";
 
 describe("map settings", () => {
-  test("the defaults: the quiet pale map, hillshade terrain, tiles as GSI draws them", () => {
-    expect(defaultMapSettings).toEqual({ base: "pale", terrain: "hillshade", terrainOpacity: 0.5, saturation: 0, contrast: 0, labelScale: 1, iconScale: 1, lineScale: 1, terrain3d: false });
+  test("the defaults: the quiet pale map, hillshade terrain, colour and contrast calmed", () => {
+    expect(defaultMapSettings).toEqual({ base: "pale", terrain: "hillshade", terrainOpacity: 0.5, saturation: -0.5, contrast: -0.1, labelScale: 1, iconScale: 1, lineScale: 1, terrain3d: false });
   });
 
   test("each field falls back on its own, and the numbers are kept in range", () => {
