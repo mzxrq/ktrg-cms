@@ -39,8 +39,8 @@ export function RallyTrail({ places, held, locale }: { places: readonly TrailPla
         return (
           <li key={s.id} className="relative flex gap-3">
             <div className="relative z-10 flex w-11 shrink-0 flex-col items-center">
-              {i === at && !allDone ? <Walker className="mb-1 h-9 text-moss" /> : null}
-              <span aria-hidden="true" className={`flex size-11 items-center justify-center rounded-full text-lg font-bold tabular-nums ${marker}`}>
+              {i === at && !allDone ? <Walker data-trail-walker="" className="mb-1 h-9 text-moss" /> : null}
+              <span aria-hidden="true" data-marker="" className={`flex size-11 items-center justify-center rounded-full text-lg font-bold tabular-nums ${marker}`}>
                 {s.number ?? "i"}
               </span>
             </div>
