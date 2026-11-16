@@ -19,4 +19,6 @@ test("smoothing goes the short way round north, a share at a time", () => {
   expect(smoothHeading(null, 123)).toBe(123);
   expect(smoothHeading(350, 10, 0.5)).toBe(0);
   expect(smoothHeading(0, 90, 0.5)).toBe(45);
+  expect(smoothHeading(350, 10)).toBe(355); // the example in compass.ts
+  expect(turnBetween(0, 180)).toBe(-180);
 });

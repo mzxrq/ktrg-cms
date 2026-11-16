@@ -3,22 +3,33 @@
 // sends `deviceorientation` with `webkitCompassHeading` (clockwise from north) after a permission asked inside a tap.
 // The pure parts (reading an event, smoothing) are tested; the listeners are thin.
 
+/** An angle brought back into 0 to 359.9…°: 370 → 10, -10 → 350. (`%` alone would give -10 for -10, hence the + 360.) */
+const wrap360 = (deg: number) => ((deg % 360) + 360) % 360;
+
 /** Degrees clockwise from north for one orientation event, corrected for how the screen is turned; null when the event has none. */
 export function headingOf(e: { alpha?: number | null; absolute?: boolean; webkitCompassHeading?: number }, screenAngle: number, fromAbsoluteEvent: boolean): number | null {
   let h: number | null = null;
   if (typeof e.webkitCompassHeading === "number" && Number.isFinite(e.webkitCompassHeading)) h = e.webkitCompassHeading;
   else if (fromAbsoluteEvent && typeof e.alpha === "number" && Number.isFinite(e.alpha)) h = 360 - e.alpha;
   if (h === null) return null;
-  return (((h + screenAngle) % 360) + 360) % 360;
+  return wrap360(h + screenAngle);
 }
 
-/** The shortest turn from `a` to `b`, in degrees (-180 to 180). */
-export const turnBetween = (a: number, b: number) => ((((b - a) % 360) + 540) % 360) - 180;
+/**
+ * The shortest turn from `a` to `b`, in degrees: positive = turn right (clockwise), negative = turn left, never more than 180.
+ * From 350° to 10° is +20 (right, through north), not -340.
+ */
+export const turnBetween = (a: number, b: number) => wrap360(b - a + 180) - 180;
 
-/** A calm heading: moves `share` of the way to the new reading, the short way round (a compass needle jitters). */
+/**
+ * A calm heading. A compass needle jitters, so each new reading moves the map only `share` (a quarter) of the way there.
+ * Example: the map shows 350°, the compass says 10°. The short turn is +20°, a quarter of it is +5°, so the map goes to 355°
+ * (and on the next readings 359°, 2°, …), instead of jumping, or spinning 340° the long way round.
+ */
 export function smoothHeading(prev: number | null, next: number, share = 0.25): number {
-  if (prev === null) return next;
-  return (((prev + turnBetween(prev, next) * share) % 360) + 360) % 360;
+  if (prev === null) return next; // the first reading: nothing to smooth yet
+  const step = turnBetween(prev, next) * share;
+  return wrap360(prev + step);
 }
 
 type OrientationCtor = { requestPermission?: () => Promise<"granted" | "denied"> };
