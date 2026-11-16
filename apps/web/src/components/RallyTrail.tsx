@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useLingui } from "@lingui/react/macro";
 import { pickText } from "@/lib/content";
-import { trailStops, walkerAt, type TrailPlace } from "@/lib/rally-trail";
+import { isDone, trailStops, walkerAt, type TrailPlace } from "@/lib/rally-trail";
 import { RoutePhoto } from "./RoutePhoto";
 import { StatusWord } from "./StatusWord";
 import { Walker } from "./Walker";
@@ -17,7 +17,7 @@ export function RallyTrail({ places, held, locale }: { places: readonly TrailPla
   const { t } = useLingui();
   const stops = trailStops(places, held);
   const at = walkerAt(stops);
-  const allDone = stops.length > 0 && stops.every((s) => s.state === "stamped" || s.state === "info");
+  const allDone = stops.length > 0 && stops.every((s) => isDone(s.state) || s.state === "info");
 
   return (
     <ol className="relative flex flex-col gap-4">
@@ -30,12 +30,13 @@ export function RallyTrail({ places, held, locale }: { places: readonly TrailPla
         const marker =
           s.state === "stamped"
             ? "bg-shu text-on-shu"
-            : s.state === "info"
+            : s.state === "info" || s.state === "closed"
               ? "border-2 border-line bg-paper text-muted"
               : next
                 ? "border-[3px] border-accent bg-paper text-accent"
                 : "border-2 border-dashed border-line bg-paper text-muted";
-        const stateWord = s.state === "stamped" ? t`押した` : next ? t`つぎ` : s.state === "info" ? null : t`まだ`;
+        // A closed place has no word here: its status line below already says 通行止め.
+        const stateWord = s.state === "stamped" ? t`押した` : next ? t`つぎ` : s.state === "todo" ? t`まだ` : null;
         return (
           <li key={s.id} className="relative flex gap-3">
             <div className="relative z-10 flex w-11 shrink-0 flex-col items-center">

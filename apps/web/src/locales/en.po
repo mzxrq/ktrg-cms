@@ -101,7 +101,7 @@ msgstr "{0} m · {1} km · {slopeWords}"
 #. placeholder {0}: rally.total
 #: src/app/(public)/rallies/[id]/page.tsx:87
 msgid "{0}か所、すべてそろいました。"
-msgstr "All {0} stamps collected."
+msgstr "Every stamp collected."
 
 #. placeholder {0}: waypoints.length
 #: src/components/admin/map-editor/MapEditor.tsx:801
@@ -2596,7 +2596,7 @@ msgstr "Bookmarked"
 #: src/components/BookmarkButton.tsx:18
 #: src/components/RallyBookmark.tsx:21
 msgid "ブックマークする"
-msgstr "Bookmark this route"
+msgstr "Bookmark"
 
 #: src/components/BookmarkList.tsx:36
 msgid "ブックマークは、まだありません。"
@@ -8515,15 +8515,15 @@ msgstr "Choose how much the page animates and fades."
 
 #: src/components/JourneyFacts.tsx
 msgid "約{h}時間{m}分"
-msgstr "About {h} h {m} min"
+msgstr "About {h} h {m} min"
 
 #: src/components/JourneyFacts.tsx
 msgid "約{h}時間"
-msgstr "About {h} h"
+msgstr "About {h} h"
 
 #: src/components/JourneyFacts.tsx
 msgid "約{m}分"
-msgstr "About {m} min"
+msgstr "About {m} min"
 
 #: src/components/JourneyFacts.tsx
 msgid "の道のり"
@@ -8552,3 +8552,7 @@ msgstr "To the next place"
 #: src/components/RallyBook.tsx
 msgid "近くのトイレ"
 msgstr "Nearest toilet"
+
+#: src/components/JourneyFacts.tsx:27
+msgid "{total}か所"
+msgstr "{total} places"

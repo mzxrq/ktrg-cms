@@ -18,9 +18,14 @@ describe("trailStops", () => {
     expect(stops.map((s) => [s.number, s.state])).toEqual([[1, "stamped"], [null, "info"], [2, "next"]]);
   });
 
-  test("a closed place counts as done, so the walker moves past it", () => {
+  test("a closed place counts as done, so the walker moves past it, but it is never called stamped", () => {
     const stops = trailStops([place("a", "closed"), place("b")], new Set());
-    expect(stops.map((s) => s.state)).toEqual(["stamped", "next"]);
+    expect(stops.map((s) => s.state)).toEqual(["closed", "next"]);
+    expect(walkerAt(trailStops([place("a"), place("b", "closed")], new Set(["a"])))).toBe(1);
+  });
+
+  test("a closed place stamped before it closed stays stamped", () => {
+    expect(trailStops([place("a", "closed")], new Set(["a"]))[0]!.state).toBe("stamped");
   });
 
   test("everything stamped: no next", () => {
