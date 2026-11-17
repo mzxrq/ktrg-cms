@@ -86,6 +86,9 @@ export interface RouteDraft {
   translations: Translations;
   photoUrl: string;
   photoCredit: string;
+  /** What the course photo shows (empty when not given). */
+  photoNameJa: string;
+  photoNameEn: string;
   sourceJa: string;
   sourceEn: string;
   prefecture: Prefecture | null;
@@ -130,7 +133,7 @@ export interface RouteDraft {
 
 export const emptyDraft = (): RouteDraft => ({
   id: null, updatedAt: null, nameJa: "", nameEn: "", descriptionJa: "", descriptionEn: "", historyJa: "", historyEn: "",
-  accessJa: "", accessEn: "", translations: {}, photoUrl: "", photoCredit: "", sourceJa: "", sourceEn: "", prefecture: null, walkStyle: null, municipalities: [],
+  accessJa: "", accessEn: "", translations: {}, photoUrl: "", photoCredit: "", photoNameJa: "", photoNameEn: "", sourceJa: "", sourceEn: "", prefecture: null, walkStyle: null, municipalities: [],
   distanceKm: null, distanceManual: false, elevationGainM: null, climbManual: false, expectedTimeMin: null, timeManual: false,
   difficulty: "", nameKana: "", accessPoints: [], farDistanceM: null, area: null, physicalLevel: null, technicalLevel: null, videoUrl: "", videoUrlEn: "", videoSubtitlesEn: false, videoSubtitles: false, line: [], legs: [], lineVerified: false, lineSource: "", places: [],
 });
@@ -176,7 +179,7 @@ export function draftFromServer(route: AdminRoute, spots: AdminSpot[]): RouteDra
     id: route.id, updatedAt: route.updatedAt, nameJa: route.nameJa, nameEn: s(route.nameEn), descriptionJa: s(route.descriptionJa),
     descriptionEn: s(route.descriptionEn), historyJa: s(route.historyJa), historyEn: s(route.historyEn),
     accessJa: s(route.accessJa), accessEn: s(route.accessEn), translations: route.translations ?? {}, photoUrl: s(route.photoUrl),
-    photoCredit: s(route.photoCredit), sourceJa: s(route.sourceJa), sourceEn: s(route.sourceEn),
+    photoCredit: s(route.photoCredit), photoNameJa: s(route.photoNameJa), photoNameEn: s(route.photoNameEn), sourceJa: s(route.sourceJa), sourceEn: s(route.sourceEn),
     prefecture: route.prefecture, walkStyle: route.walkStyle, municipalities: [...route.municipalities],
     distanceKm: route.distanceKm,
     // A saved distance that is not the line's own length was typed by hand: keep it when the line changes.
@@ -225,6 +228,8 @@ export type TextField =
   | "accessEn"
   | "photoUrl"
   | "photoCredit"
+  | "photoNameJa"
+  | "photoNameEn"
   | "sourceJa"
   | "sourceEn"
   | "difficulty"

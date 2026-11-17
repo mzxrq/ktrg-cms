@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { parseBlocks, parseRich, plainBody, plainRich, type Block } from "./rich-text";
+import { parseBlocks, parseRich, photosOf, plainBody, plainRich, type Block } from "./rich-text";
 
 describe("rich text", () => {
   test("a link keeps its words and only http(s) addresses become links", () => {
@@ -150,4 +150,13 @@ describe("places and tables in a long text", () => {
   test("table words count for the summary; a place has none", () => {
     expect(plainBody(`| A | B |\n| c | d |\n::place ${id}`)).toBe("A B c d");
   });
+});
+
+test("the photo view lists every photo of a text in reading order, those inside cards too", () => {
+  const { blocks } = parseBlocks("![a](https://x.test/a.jpg)\n\ntext\n\n:::card Box\n![b](https://x.test/b.jpg)\n:::\n\n![c](https://x.test/c.jpg)");
+  expect(photosOf(blocks)).toEqual([
+    { src: "https://x.test/a.jpg", alt: "a" },
+    { src: "https://x.test/b.jpg", alt: "b" },
+    { src: "https://x.test/c.jpg", alt: "c" },
+  ]);
 });

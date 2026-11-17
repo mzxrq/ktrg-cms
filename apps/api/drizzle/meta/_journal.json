@@ -512,6 +512,13 @@
       "when": 1794887486419,
       "tag": "0072_detached_waypoint",
       "breakpoints": true
+    },
+    {
+      "idx": 73,
+      "version": "7",
+      "when": 1794893529093,
+      "tag": "0073_route_photo_name",
+      "breakpoints": true
     }
   ]
 }

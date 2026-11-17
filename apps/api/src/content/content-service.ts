@@ -96,6 +96,8 @@ export interface PublicRoute {
   sourceEn: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
+  photoNameJa: string | null;
+  photoNameEn: string | null;
   sortOrder: number;
   /** "soon" until at least one place is published. */
   status: "ready" | "soon";
@@ -192,6 +194,8 @@ function toPublicRoute(r: RouteRow, publishedSpotCount: number, withLine: boolea
     sourceEn: r.sourceEn,
     photoUrl: r.photoUrl,
     photoCredit: r.photoCredit,
+    photoNameJa: r.photoNameJa,
+    photoNameEn: r.photoNameEn,
     sortOrder: r.sortOrder,
     status: publishedSpotCount > 0 ? "ready" : "soon",
     publishedSpotCount,
@@ -304,7 +308,7 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       if (!n) return bad("validation_failed");
       out.nameJa = n;
     }
-    for (const k of ["nameEn", "descriptionJa", "descriptionEn", "difficulty", "nameKana", "historyJa", "historyEn", "accessJa", "accessEn", "sourceJa", "sourceEn", "photoCredit"] as const) {
+    for (const k of ["nameEn", "descriptionJa", "descriptionEn", "difficulty", "nameKana", "historyJa", "historyEn", "accessJa", "accessEn", "sourceJa", "sourceEn", "photoCredit", "photoNameJa", "photoNameEn"] as const) {
       const v = text(input[k]);
       if (v !== undefined) out[k] = v;
     }

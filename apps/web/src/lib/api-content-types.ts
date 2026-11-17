@@ -41,6 +41,8 @@ export interface PublicRoute {
   sourceEn?: string | null;
   photoUrl: string | null;
   photoCredit?: string | null;
+  photoNameJa?: string | null;
+  photoNameEn?: string | null;
   sortOrder: number;
   status: "ready" | "soon";
   publishedSpotCount: number;

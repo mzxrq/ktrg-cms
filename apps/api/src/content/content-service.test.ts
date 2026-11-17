@@ -398,10 +398,12 @@ describe("history, access and photo", () => {
       photoCredit: "  撮影：山田 [Commons](https://commons.wikimedia.org/)  ",
       sourceJa: "葛城修験日本遺産",
       sourceEn: "   ",
+      photoNameJa: " 金剛山の山頂 ",
+      photoNameEn: "  ",
     });
-    expect(saved.ok && saved.value).toMatchObject({ photoCredit: "撮影：山田 [Commons](https://commons.wikimedia.org/)", sourceJa: "葛城修験日本遺産", sourceEn: null });
+    expect(saved.ok && saved.value).toMatchObject({ photoCredit: "撮影：山田 [Commons](https://commons.wikimedia.org/)", sourceJa: "葛城修験日本遺産", sourceEn: null, photoNameJa: "金剛山の山頂", photoNameEn: null });
     await open(r.id);
-    expect((await svc.publicRoute(r.id))?.route).toMatchObject({ photoCredit: "撮影：山田 [Commons](https://commons.wikimedia.org/)", sourceJa: "葛城修験日本遺産" });
+    expect((await svc.publicRoute(r.id))?.route).toMatchObject({ photoCredit: "撮影：山田 [Commons](https://commons.wikimedia.org/)", sourceJa: "葛城修験日本遺産", photoNameJa: "金剛山の山頂" });
   });
 });
 

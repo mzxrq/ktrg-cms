@@ -170,6 +170,8 @@ export function routeDetailFromApi(
     updatedAt: r.updatedAt ?? null,
     photoUrl: r.photoUrl,
     photoCredit: r.photoCredit ?? null,
+    photoNameJa: r.photoNameJa ?? null,
+    photoNameEn: r.photoNameEn ?? null,
     walkStyle: walkStyleOf(r.walkStyle),
   };
 }

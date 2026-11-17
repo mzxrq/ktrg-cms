@@ -5,10 +5,11 @@ import { useLingui } from "@lingui/react/macro";
 import { ChevronIcon, ChevronLeftIcon, MinusIcon, PlusIcon, XIcon } from "@/components/icons";
 import { CreditWords } from "@/components/PhotoCredit";
 
-/** One photo in the large view: `alt` is also its caption; `credit` is who took it (rich text), `sourceUrl` where it is from. */
+/** One photo in the large view: `caption` is what it shows (an editor's words), `credit` who took it (rich text), `sourceUrl` where it is from. */
 export interface ViewerPhoto {
   src: string;
   alt: string;
+  caption?: string | null;
   credit?: string | null;
   sourceUrl?: string | null;
 }
@@ -26,6 +27,8 @@ export function Zoomable({ photos, index = 0, children }: { photos: ViewerPhoto[
   const dialog = useRef<HTMLDialogElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const swipeFrom = useRef<number | null>(null);
+  // The photo's size when it just fits its box (measured when zooming starts): zoom grows the picture, not black bands.
+  const [fit, setFit] = useState({ w: 0, h: 0 });
   const [at, setAt] = useState(index);
   const [zoom, setZoom] = useState(0);
   const many = photos.length > 1;
@@ -47,6 +50,12 @@ export function Zoomable({ photos, index = 0, children }: { photos: ViewerPhoto[
     const s = stage.current;
     const z = Math.max(0, Math.min(ZOOMS.length - 1, next));
     if (!s || z === zoom) return;
+    const img = s.querySelector("img");
+    if (zoom === 0) {
+      if (!img?.naturalWidth) return; // not loaded yet: nothing to grow
+      const k = Math.min(s.clientWidth / img.naturalWidth, s.clientHeight / img.naturalHeight);
+      setFit({ w: img.naturalWidth * k, h: img.naturalHeight * k });
+    }
     const fx = (s.scrollLeft + s.clientWidth / 2) / s.scrollWidth;
     const fy = (s.scrollTop + s.clientHeight / 2) / s.scrollHeight;
     setZoom(z);
@@ -90,7 +99,7 @@ export function Zoomable({ photos, index = 0, children }: { photos: ViewerPhoto[
         onKeyDown={onKey}
         aria-label={photo.alt || t`写真`}
         // Black and white in both themes, not colour tokens: a photo reads best on black, and dark mode would swap paper and ink.
-        className="m-0 h-dvh max-h-none w-screen max-w-none bg-black p-0 text-white"
+        className="m-0 h-dvh max-h-none w-full max-w-none bg-black p-0 text-white"
       >
         {/* Under the status strip of an installed iPhone app a tap is taken by the system, so the top row starts below it (--top-clear). */}
         <div data-close className="flex h-full flex-col gap-2 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-[calc(0.75rem+var(--top-clear))]">
@@ -112,14 +121,14 @@ export function Zoomable({ photos, index = 0, children }: { photos: ViewerPhoto[
           </div>
           <div className="relative min-h-0 flex-1" onTouchStart={touchStart} onTouchEnd={touchEnd}>
             {/* margin:auto (not justify-center) centres the photo yet lets every edge of a zoomed one scroll into view. */}
-            <div ref={stage} data-close className="flex size-full overflow-auto">
+            <div ref={stage} data-close className={`flex size-full overflow-auto ${many ? "wide:px-16" : ""}`}>
               {/* eslint-disable-next-line @next/next/no-img-element -- the same address as the photo on the page, shown whole */}
               <img
                 key={photo.src}
                 src={photo.src}
                 alt={photo.alt}
                 data-close={zoom === 0 ? "" : undefined}
-                style={zoom === 0 ? undefined : { width: `${scale * 100}%`, height: `${scale * 100}%` }}
+                style={zoom === 0 ? undefined : { width: fit.w * scale, height: fit.h * scale }}
                 className={`m-auto shrink-0 object-contain ${zoom === 0 ? "size-full" : "max-w-none"}`}
               />
             </div>
@@ -134,10 +143,10 @@ export function Zoomable({ photos, index = 0, children }: { photos: ViewerPhoto[
               </>
             ) : null}
           </div>
-          {photo.alt || photo.credit ? (
-            <p data-close className="mx-auto max-w-prose text-center text-base leading-snug">
-              {photo.alt}
-              {photo.alt && photo.credit ? " ・ " : null}
+          {photo.caption || photo.credit ? (
+            <p data-close className="mx-auto max-h-[25dvh] max-w-prose shrink-0 overflow-y-auto text-center text-base leading-snug">
+              {photo.caption}
+              {photo.caption && photo.credit ? " ・ " : null}
               {photo.credit ? (
                 photo.sourceUrl ? (
                   <a href={photo.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">

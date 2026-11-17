@@ -56,6 +56,9 @@ export interface AdminRoute {
   photoUrl: string | null;
   /** Who took the photo / where it is from, shown with it; may hold links. */
   photoCredit?: string | null;
+  /** What the photo shows. */
+  photoNameJa?: string | null;
+  photoNameEn?: string | null;
   sortOrder: number;
   createdAt: string;
   updatedAt: string;

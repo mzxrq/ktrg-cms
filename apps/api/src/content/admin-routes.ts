@@ -127,6 +127,8 @@ const routeProps = {
   translations: translationsSchema({ name: 200, description: 20000, history: 20000, access: 20000, source: 2000 }),
   photoUrl: nullable(t.String({ maxLength: 500 })),
   photoCredit: nullable(t.String({ maxLength: 500 })),
+  photoNameJa: nullable(t.String({ maxLength: 200 })),
+  photoNameEn: nullable(t.String({ maxLength: 200 })),
 };
 const spotProps = {
   nameJa: t.String({ minLength: 1, maxLength: 200 }),

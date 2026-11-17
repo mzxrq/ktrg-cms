@@ -52,6 +52,8 @@ export interface RouteBody {
   sourceEn: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
+  photoNameJa: string | null;
+  photoNameEn: string | null;
   geometry: RouteLine | null;
   lineVerified: boolean;
   lineSource: string | null;
@@ -142,6 +144,8 @@ export function routeBody(d: RouteDraft): RouteBody {
     sourceEn: nullIfEmpty(d.sourceEn),
     photoUrl: nullIfEmpty(d.photoUrl),
     photoCredit: nullIfEmpty(d.photoCredit),
+    photoNameJa: nullIfEmpty(d.photoNameJa),
+    photoNameEn: nullIfEmpty(d.photoNameEn),
     geometry: d.line.length >= 2 ? { type: "LineString", coordinates: d.line.map(coordinate), ...(d.legs.length > 0 ? { legs: d.legs.map((l) => ({ from: l.from, to: l.to, coordinates: l.points.map(coordinate), ...(l.side ? { side: true as const } : {}), ...(l.back ? { back: true as const } : {}), ...(l.ride ? { ride: l.ride } : {}), ...(l.via && l.via.length > 0 ? { via: l.via } : {}) })) } : {}) } : null,
     // "Checked" needs a named source (the server refuses it otherwise): without one the line is saved as not checked yet.
     lineVerified: d.lineVerified && d.lineSource.trim() !== "",

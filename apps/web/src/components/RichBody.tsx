@@ -1,7 +1,7 @@
 import { Zoomable, type ViewerPhoto } from "@/components/Zoomable";
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { parseBlocks, type Block } from "@/lib/rich-text";
+import { parseBlocks, photosOf, type Block } from "@/lib/rich-text";
 import { FaqCard, StepCard } from "./pages/Cards";
 import { PlaceInline, type InlinePlace } from "./places/PlaceInline";
 import { Inlines } from "./RichText";
@@ -18,7 +18,8 @@ import { Inlines } from "./RichText";
  */
 export function RichBody({ text, lang, anchor, places = {} }: { text: string; lang?: string; anchor: string; places?: Record<string, InlinePlace> }) {
   const { blocks, notes } = parseBlocks(text);
-  const photos = photosOf(blocks);
+  // A photo line's words (`![these words](…)`) are what readers see under it in the large view.
+  const photos = photosOf(blocks).map((p) => ({ ...p, caption: p.alt }));
   return (
     <div lang={lang} className="flex flex-col gap-5">
       <Blocks blocks={blocks} anchor={anchor} places={places} photos={photos} />
@@ -34,9 +35,6 @@ export function RichBody({ text, lang, anchor, places = {} }: { text: string; la
     </div>
   );
 }
-
-/** Every photo of the text, cards included, in reading order: the large view steps through them all. */
-const photosOf = (blocks: Block[]): ViewerPhoto[] => blocks.flatMap((b) => (b.kind === "photo" ? [{ src: b.src, alt: b.alt }] : b.kind === "card" ? photosOf(b.blocks) : []));
 
 type CardBlock = Extract<Block, { kind: "card" }>;
 const isStep = (b: Block | undefined): b is CardBlock => b?.kind === "card" && b.style === "step";

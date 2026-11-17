@@ -11,7 +11,7 @@ export function SpotGallery({ photos, alt, locale }: { photos: GalleryPhoto[]; a
   const { t } = useLingui();
   const names = photos.map((p) => pickText(locale, p.nameJa ?? null, p.nameEn ?? null));
   // The large view steps through every photo of the place, each with what it shows and who took it.
-  const viewer = photos.map((p, i) => ({ src: p.url, alt: names[i]?.text ?? alt, credit: p.credit, sourceUrl: p.sourceUrl }));
+  const viewer = photos.map((p, i) => ({ src: p.url, alt: names[i]?.text ?? alt, caption: names[i]?.text, credit: p.credit, sourceUrl: p.sourceUrl }));
   return (
     <ul aria-label={t`写真`} className="-mx-0 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2" tabIndex={0}>
       {photos.map((p, i) => {

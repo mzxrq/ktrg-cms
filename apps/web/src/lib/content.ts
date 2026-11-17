@@ -60,6 +60,9 @@ export interface RouteSummary {
   photoUrl: string | null;
   /** Who took it / where it is from, shown with the photo (may hold links). */
   photoCredit?: string | null;
+  /** What the photo shows, shown with its credit in the large view. */
+  photoNameJa?: string | null;
+  photoNameEn?: string | null;
 }
 
 /** Where a stop is. `verified` is false for draft positions (for example clicked on Navivi's map). */
