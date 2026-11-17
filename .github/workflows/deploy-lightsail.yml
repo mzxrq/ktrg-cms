@@ -102,7 +102,14 @@ jobs:
           mkdir -p ~/.ssh
           printf '%s\n' "${{ secrets.LIGHTSAIL_DEPLOY_KEY }}" > ~/.ssh/id_deploy
           chmod 600 ~/.ssh/id_deploy
-          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          # Best-effort: if keyscan can't reach the host (a blip, DNS, whatever), don't fail the whole step over
+          # it -- StrictHostKeyChecking=no on the actual connections below is the real fallback.
+          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+          cat >> ~/.ssh/config <<EOF
+          Host $HOST
+            StrictHostKeyChecking accept-new
+            UserKnownHostsFile ~/.ssh/known_hosts
+          EOF
 
       - name: Upload images and deploy scripts
         run: |
