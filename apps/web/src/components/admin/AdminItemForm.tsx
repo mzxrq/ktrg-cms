@@ -39,6 +39,7 @@ export function AdminItemForm({
   onCreated,
   onSaved,
   onRemoved,
+  onDirtyChange,
 }: {
   meta: ListMeta;
   initial: ListItem | null;
@@ -50,6 +51,8 @@ export function AdminItemForm({
   onSaved?: (item: ListItem) => void;
   /** Editing in place: told after a delete, instead of going to the list's own page. */
   onRemoved?: () => void;
+  /** Opened in place: told when there come to be (or stop being) unsaved changes, so closing the form can ask first. */
+  onDirtyChange?: (dirty: boolean) => void;
 }) {
   // Opened in place in a card, not on a page of its own.
   const inPlace = Boolean(onCreated || onSaved);
@@ -77,6 +80,8 @@ export function AdminItemForm({
   const routeName = (id: string, field: string) => choices[field]?.find((r) => r.id === id)?.name ?? null;
 
   useUnsavedGuard(dirty);
+  // The page guard only asks when the page is left; a form folded away in place asks through its owner.
+  useEffect(() => onDirtyChange?.(dirty), [dirty, onDirtyChange]);
 
   // Ctrl+S / ⌘S saves, even from inside a box. The latest save is kept in a ref so the listener is added once.
   const saveNow = useRef<() => void>(() => {});

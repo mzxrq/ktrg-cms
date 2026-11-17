@@ -12,6 +12,7 @@ import { moveId } from "@/lib/admin/route-list";
 import { showToast } from "@/lib/admin/toast";
 import { AdminItemForm } from "./AdminItemForm";
 import { Chip } from "./Chip";
+import { useDiscardCheck } from "./useDiscardCheck";
 import { MoveButtons, OrderBadge } from "./list-parts";
 
 export type BannerItem = { id: string; imageUrl: string; altJa: string; altEn: string | null; published: boolean };
@@ -28,6 +29,7 @@ export function BannerOrder({ initial, meta, locale }: { initial: BannerItem[]; 
   const [busy, setBusy] = useState(false);
   // The banner being edited: its id at once, its whole row once loaded.
   const [open, setOpen] = useState<{ id: string; item: ListItem | null } | null>(null);
+  const { onDirtyChange, okToClose } = useDiscardCheck();
 
   async function move(id: string, step: -1 | 1) {
     if (busy) return;
@@ -44,7 +46,12 @@ export function BannerOrder({ initial, meta, locale }: { initial: BannerItem[]; 
     setBusy(false);
   }
 
+  async function close() {
+    if (await okToClose()) setOpen(null);
+  }
+
   async function toggle(id: string) {
+    if (!(await okToClose())) return; // closing this one, or opening another, would drop its unsaved changes
     if (open?.id === id) return setOpen(null);
     setOpen({ id, item: null });
     const res = await listRequest<OneItem>("GET", `${meta.key}/${encodeURIComponent(id)}`);
@@ -101,12 +108,12 @@ export function BannerOrder({ initial, meta, locale }: { initial: BannerItem[]; 
             {editing ? (
               <div className="basis-full rounded-2xl border-2 border-line bg-paper p-4 sm:p-5">
                 <div className="mb-3 flex justify-end">
-                  <button type="button" onClick={() => setOpen(null)} className="tap-target rounded-full border border-line px-5 text-lg font-bold">
+                  <button type="button" onClick={() => void close()} className="tap-target rounded-full border border-line px-5 text-lg font-bold">
                     {t`閉じる`}
                   </button>
                 </div>
                 {open.item ? (
-                  <AdminItemForm meta={meta} initial={open.item} locale={locale} choices={{}} onSaved={saved} onRemoved={() => removed(b.id)} />
+                  <AdminItemForm meta={meta} initial={open.item} locale={locale} choices={{}} onSaved={saved} onRemoved={() => removed(b.id)} onDirtyChange={onDirtyChange} />
                 ) : (
                   <p role="status" className="text-lg">
                     {t`読み込んでいます…`}
