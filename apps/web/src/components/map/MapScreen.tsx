@@ -504,7 +504,7 @@ function RoutePanel({
         <p className="rounded-2xl bg-surface p-4 text-lg">{t`スタンプの場所は、まだ準備中です。`}</p>
       ) : null}
 
-      {route.elevations ? <ElevationProfile elevations={route.elevations} distanceKm={route.distanceKm} routeLine={fetched?.line} lineElevations={fetched?.elevations} /> : null}
+      {route.elevations ? <ElevationProfile elevations={route.elevations} distanceKm={route.distanceKm} routeLine={fetched?.line} lineElevations={fetched?.elevations} rides={route.rides} /> : null}
     </div>
   );
 }

@@ -159,6 +159,7 @@ export function routeDetailFromApi(
     }),
     points: points.flatMap((p) => routePointFromApi(p) ?? []),
     line: line ? line.map(([lng, lat]) => ({ lat, lng })) : null,
+    lineRides: (r.rides ?? []).flatMap((x) => (x.start && x.end ? [{ from: { lng: x.start[0], lat: x.start[1] }, to: { lng: x.end[0], lat: x.end[1] }, mode: x.mode }] : [])),
     lineElevations: line && line.some((p) => typeof p[2] === "number") ? line.map((p) => (typeof p[2] === "number" ? p[2] : null)) : null,
     sideLines: (r.sideLines ?? []).map((s) => ({ spotId: s.spotId, line: s.coordinates.map(([lng, lat]) => ({ lat, lng })) })),
     videoUrl: r.videoUrl,

@@ -1,4 +1,5 @@
 import type { WalkStyle } from "@/lib/walk-style";
+import type { RideSpan } from "./elevation-profile";
 import type { AccessPoint } from "./access-points";
 import type { SpotStatus } from "./content";
 import type { Position } from "./map";
@@ -125,6 +126,8 @@ export interface MapScreenRoute {
   stampedCount: number | null;
   area: RouteArea | null;
   elevations: number[] | null;
+  /** Stretches that are ridden (a ferry ...): the elevation chart leaves them out. */
+  rides?: RideSpan[];
   /** The course page, with the locale. */
   href: string;
   description: string | null;

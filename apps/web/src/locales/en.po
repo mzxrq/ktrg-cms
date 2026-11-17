@@ -45,6 +45,12 @@ msgstr "(reached)"
 msgid "（題名なし）"
 msgstr "(No title)"
 
+#. placeholder {0}: rideName[riding]
+#. placeholder {1}: here.k
+#: src/components/ElevationChart.tsx:76
+msgid "{0} · {1}km"
+msgstr "{0} · {1} km"
+
 #. placeholder {0}: itemName(meta, group[0]!, locale)
 #. placeholder {1}: group.length
 #: src/components/admin/DuplicateFinder.tsx:64
@@ -55,14 +61,14 @@ msgstr "{0} ({1})"
 #. placeholder {0}: km(totalM)
 #. placeholder {0}: route.distanceKm
 #: src/components/blog/LinkedCards.tsx:28
-#: src/components/ElevationChart.tsx:125
-#: src/components/ElevationChart.tsx:126
+#: src/components/ElevationChart.tsx:145
+#: src/components/ElevationChart.tsx:146
 msgid "{0}km"
 msgstr "{0} km"
 
 #. placeholder {0}: here.e
 #. placeholder {1}: here.k
-#: src/components/ElevationChart.tsx:119
+#: src/components/ElevationChart.tsx:76
 msgid "{0}m · {1}km · {slopeWords}"
 msgstr "{0} m · {1} km · {slopeWords}"
 
@@ -293,7 +299,7 @@ msgstr "{hours} h"
 msgid "{hours}時間{minutes}分"
 msgstr "{hours} h {minutes} min"
 
-#: src/components/ElevationProfile.tsx:37
+#: src/components/ElevationProfile.tsx:41
 #: src/components/RouteStats.tsx:30
 #: src/components/SpotStats.tsx:33
 msgid "{km}km"
@@ -1592,7 +1598,7 @@ msgstr "Course name (Japanese)"
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 msgstr "Course constant = 1.8 × hours + 0.3 × distance (km) + 10 × climb (km) + 0.6 × descent (km)"
 
-#: src/app/(public)/map/page.tsx:199
+#: src/app/(public)/map/page.tsx:203
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/RouteJourney.tsx:34
@@ -2238,7 +2244,7 @@ msgstr "{turnWord} now"
 msgid "スクロール"
 msgstr "Scroll"
 
-#: src/app/(public)/map/page.tsx:199
+#: src/app/(public)/map/page.tsx:203
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/RouteJourney.tsx:31
@@ -2420,7 +2426,7 @@ msgstr "{spotCount} stamp locations"
 msgid "スタンプ数"
 msgstr "Stamps"
 
-#: src/app/(public)/map/page.tsx:199
+#: src/app/(public)/map/page.tsx:203
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 msgid "スタンプ済み"
@@ -2846,6 +2852,7 @@ msgstr "Shall we walk the first route?"
 
 #: src/components/AccessList.tsx:9
 #: src/components/admin/map-editor/MapEditor.tsx:859
+#: src/components/ElevationChart.tsx:44
 msgid "バス"
 msgstr "Bus"
 
@@ -3284,6 +3291,7 @@ msgid "ほかのコースの経由地を加える"
 msgstr "Add a waypoint from another course"
 
 #: src/components/admin/map-editor/MapEditor.tsx:859
+#: src/components/ElevationChart.tsx:44
 msgid "ほかの乗り物"
 msgstr "Other vehicle"
 
@@ -3303,7 +3311,7 @@ msgstr "Visitors in other languages (such as German) see the English text."
 msgid "ほかの記事"
 msgstr "More posts"
 
-#: src/components/ElevationChart.tsx:63
+#: src/components/ElevationChart.tsx:73
 msgid "ほぼ平ら"
 msgstr "Almost flat"
 
@@ -3378,7 +3386,7 @@ msgstr "Straight ahead"
 msgid "まっすぐつなぐ"
 msgstr "Connect straight"
 
-#: src/app/(public)/map/page.tsx:16
+#: src/app/(public)/map/page.tsx:17
 #: src/app/(public)/sitemap/page.tsx:59
 #: src/components/TabBar.tsx:87
 msgid "マップ"
@@ -3903,16 +3911,16 @@ msgstr "Note below"
 msgid "下へ"
 msgstr "Move down"
 
-#: src/components/ElevationChart.tsx:129
+#: src/components/ElevationChart.tsx:149
 msgid "下り"
 msgstr "Down"
 
 #. placeholder {0}: nf.format(Math.abs(pct))
-#: src/components/ElevationChart.tsx:63
+#: src/components/ElevationChart.tsx:73
 msgid "下り {0}%"
 msgstr "Down {0}%"
 
-#: src/components/ElevationChart.tsx:78
+#: src/components/ElevationChart.tsx:90
 msgid "下り {down}m"
 msgstr "Down {down} m"
 
@@ -4589,8 +4597,8 @@ msgstr "Content"
 msgid "内容を確認する"
 msgstr "Check the contents"
 
-#: src/components/ElevationChart.tsx:76
-#: src/components/ElevationProfile.tsx:48
+#: src/components/ElevationChart.tsx:88
+#: src/components/ElevationProfile.tsx:52
 msgid "最低 {lowest}m"
 msgstr "Lowest {lowest}m"
 
@@ -4619,8 +4627,8 @@ msgstr "Last updated"
 msgid "最終更新：{day}"
 msgstr "Last updated: {day}"
 
-#: src/components/ElevationChart.tsx:75
-#: src/components/ElevationProfile.tsx:47
+#: src/components/ElevationChart.tsx:87
+#: src/components/ElevationProfile.tsx:51
 msgid "最高 {highest}m"
 msgstr "Highest {highest}m"
 
@@ -6472,12 +6480,12 @@ msgstr "Elevation could not be found for some points."
 msgid "標高だけ取り込む（線は変えない）"
 msgstr "Take only the elevation (the line stays)"
 
-#: src/components/ElevationChart.tsx:84
+#: src/components/ElevationChart.tsx:96
 msgid "標高のグラフ。左右の矢印キーで、場所を動かせます。"
 msgstr "Elevation graph. Move along it with the left and right arrow keys."
 
-#: src/components/ElevationChart.tsx:73
-#: src/components/ElevationProfile.tsx:45
+#: src/components/ElevationChart.tsx:85
+#: src/components/ElevationProfile.tsx:49
 msgid "標高のようす"
 msgstr "Elevation"
 
@@ -6489,7 +6497,7 @@ msgstr "Hide elevation colours"
 msgid "標高の色を見る"
 msgstr "Show elevation colours"
 
-#: src/components/ElevationProfile.tsx:51
+#: src/components/ElevationProfile.tsx:55
 msgid "標高は{lowest}mから{highest}mまで"
 msgstr "Elevation from {lowest}m to {highest}m"
 
@@ -6870,7 +6878,7 @@ msgstr "The number is wrong or has expired. Please try again."
 msgid "番号をもう一度送る"
 msgstr "Send the number again"
 
-#: src/components/ElevationChart.tsx:131
+#: src/components/ElevationChart.tsx:151
 msgid "登り"
 msgstr "Up"
 
@@ -6880,11 +6888,11 @@ msgid "登り {0} m"
 msgstr "Climb {0} m"
 
 #. placeholder {0}: nf.format(Math.abs(pct))
-#: src/components/ElevationChart.tsx:63
+#: src/components/ElevationChart.tsx:73
 msgid "登り {0}%"
 msgstr "Up {0}%"
 
-#: src/components/ElevationChart.tsx:77
+#: src/components/ElevationChart.tsx:89
 msgid "登り {up}m"
 msgstr "Up {up} m"
 
@@ -7559,6 +7567,7 @@ msgid "自動販売機"
 msgstr "Vending machines"
 
 #: src/components/admin/map-editor/MapEditor.tsx:859
+#: src/components/ElevationChart.tsx:44
 msgid "船"
 msgstr "Ferry"
 
@@ -7988,8 +7997,14 @@ msgid "距離"
 msgstr "Distance"
 
 #. placeholder {0}: here.k
+#. placeholder {1}: rideName[riding]
+#: src/components/ElevationChart.tsx:100
+msgid "距離 {0}km、{1}"
+msgstr "Distance {0} km, {1}"
+
+#. placeholder {0}: here.k
 #. placeholder {1}: here.e
-#: src/components/ElevationChart.tsx:88
+#: src/components/ElevationChart.tsx:100
 msgid "距離 {0}km、標高 {1}m、{slopeWords}"
 msgstr "Distance {0} km, elevation {1} m, {slopeWords}"
 
@@ -8463,7 +8478,7 @@ msgstr "A period closes before it opens. For hours past midnight, enter one peri
 msgid "閉店・撤去"
 msgstr "Closed for good"
 
-#: src/app/(public)/map/page.tsx:199
+#: src/app/(public)/map/page.tsx:203
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/navigation/NavTargetPicker.tsx:76
@@ -8528,6 +8543,7 @@ msgstr "Phone"
 
 #: src/components/AccessList.tsx:9
 #: src/components/admin/map-editor/MapEditor.tsx:859
+#: src/components/ElevationChart.tsx:44
 msgid "電車"
 msgstr "Train"
 

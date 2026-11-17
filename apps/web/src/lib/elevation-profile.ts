@@ -6,6 +6,13 @@ import { distanceM, type LatLng } from "./navigation/geometry";
 
 export type MaybeEle = number | null | undefined;
 
+/** A stretch that is ridden, not walked (a ferry across the water ...): where it starts and ends along the line. */
+export interface RideSpan {
+  from: LatLng;
+  to: LatLng;
+  mode: "ferry" | "bus" | "train" | "other";
+}
+
 /** Recorded elevation is only good to a few metres, so it is averaged over this distance before use. */
 export const SMOOTH_WINDOW_M = 60;
 /** A slope is measured over at least this far, so two close points with a 1 m reading gap do not become a wall. */
@@ -114,18 +121,48 @@ export interface Profile {
   totalM: number;
   min: number;
   max: number;
-  /** Total climb and descent in metres, from the smoothed elevations. */
+  /** Total climb and descent in metres, from the smoothed elevations, of the walked parts only. */
   gain: number;
   loss: number;
+  /** The ridden stretches, in metres along the line: no height is drawn or read there. */
+  rides: { from: number; to: number; mode: RideSpan["mode"] }[];
+}
+
+/** The index of the line point nearest to `p`, searching from `start` on. */
+function nearestPoint(line: readonly LatLng[], p: LatLng, start: number): number {
+  let best = start;
+  let bestD = Infinity;
+  for (let i = start; i < line.length; i++) {
+    const d = distanceM(line[i]!, p);
+    if (d < bestD) [best, bestD] = [i, d];
+  }
+  return best;
+}
+
+/** Where each ride lies on the line, as point indices (rides taken in order along the line; one that does not fit is dropped). */
+function rideIndexes(line: readonly LatLng[], rides: readonly RideSpan[]): { i0: number; i1: number; mode: RideSpan["mode"] }[] {
+  const out: { i0: number; i1: number; mode: RideSpan["mode"] }[] = [];
+  let from = 0;
+  for (const r of rides) {
+    const i0 = nearestPoint(line, r.from, from);
+    const i1 = nearestPoint(line, r.to, i0);
+    if (i1 <= i0) continue;
+    out.push({ i0, i1, mode: r.mode });
+    from = i1;
+  }
+  return out;
 }
 
 /**
  * The profile of a line: `ele[i]` is the elevation of `line[i]` (null where unknown, filled between its neighbours).
- * Null when the line has fewer than two points or no elevation at all.
+ * A ridden stretch (`rides`) has no height of its own: what the line carries there (often about 0 m over the sea) is
+ * dropped, and its climb is not counted. Null when the line has fewer than two points or no elevation at all.
  */
-export function buildProfile(line: readonly LatLng[], ele: readonly MaybeEle[], maxPoints = MAX_POINTS): Profile | null {
+export function buildProfile(line: readonly LatLng[], ele: readonly MaybeEle[], maxPoints = MAX_POINTS, rides: readonly RideSpan[] = []): Profile | null {
   if (line.length < 2 || line.length !== ele.length) return null;
-  const filled = fillGaps(ele);
+  const spans = rideIndexes(line, rides);
+  const ridden = (i: number) => spans.some((s) => i > s.i0 && i < s.i1); // a point inside a ride (its ends are on land)
+  const filled = fillGaps(ele.map((v, i) => (ridden(i) ? null : v)));
   if (!filled) return null;
   const cum = [0];
   for (let i = 1; i < line.length; i++) cum.push(cum[i - 1]! + distanceM(line[i - 1]!, line[i]!));
@@ -134,30 +171,39 @@ export function buildProfile(line: readonly LatLng[], ele: readonly MaybeEle[], 
   let gain = 0;
   let loss = 0;
   for (let i = 1; i < smooth.length; i++) {
+    if (spans.some((s) => i > s.i0 && i <= s.i1)) continue; // the segment i-1 → i is ridden
     const d = smooth[i]! - smooth[i - 1]!;
     if (d > 0) gain += d;
     else loss -= d;
   }
 
-  // Drawn points: every step-th, and always the last.
+  // Drawn points: every step-th, always the last, and the ends of each ride (so its band starts and stops where it does).
   const step = Math.max(1, Math.ceil(line.length / maxPoints));
-  const keep: number[] = [];
-  for (let i = 0; i < line.length; i += step) keep.push(i);
-  if (keep[keep.length - 1] !== line.length - 1) keep.push(line.length - 1);
+  const picked = new Set<number>();
+  for (let i = 0; i < line.length; i += step) picked.add(i);
+  picked.add(line.length - 1);
+  for (const s of spans) picked.add(s.i0).add(s.i1);
+  const keep = [...picked].sort((a, b) => a - b);
   const dist = keep.map((i) => cum[i]!);
   const e = keep.map((i) => smooth[i]!);
+  const walkedE = keep.flatMap((i, k) => (ridden(i) ? [] : [e[k]!]));
+  const range = walkedE.length > 0 ? walkedE : e;
   return {
     dist,
     ele: e,
     points: keep.map((i) => line[i]!),
     slopes: segmentGradients(dist, e),
     totalM: cum[cum.length - 1]!,
-    min: Math.min(...e),
-    max: Math.max(...e),
+    min: Math.min(...range),
+    max: Math.max(...range),
     gain,
     loss,
+    rides: spans.map((s) => ({ from: cum[s.i0]!, to: cum[s.i1]!, mode: s.mode })),
   };
 }
+
+/** The ride the point at `meters` along the line is on, if any (its ends count as walked). */
+export const rideAt = (rides: Profile["rides"], meters: number): RideSpan["mode"] | null => rides.find((r) => meters > r.from && meters < r.to)?.mode ?? null;
 
 /** The index of the drawn point nearest to `meters` along the line (binary search). */
 export function nearestIndex(dist: readonly number[], meters: number): number {

@@ -45,6 +45,12 @@ msgstr "（達成）"
 msgid "（題名なし）"
 msgstr "（題名なし）"
 
+#. placeholder {0}: rideName[riding]
+#. placeholder {1}: here.k
+#: src/components/ElevationChart.tsx:76
+msgid "{0} · {1}km"
+msgstr "{0} · {1}km"
+
 #. placeholder {0}: itemName(meta, group[0]!, locale)
 #. placeholder {1}: group.length
 #: src/components/admin/DuplicateFinder.tsx:64
@@ -55,14 +61,14 @@ msgstr "{0}（{1}件）"
 #. placeholder {0}: km(totalM)
 #. placeholder {0}: route.distanceKm
 #: src/components/blog/LinkedCards.tsx:28
-#: src/components/ElevationChart.tsx:125
-#: src/components/ElevationChart.tsx:126
+#: src/components/ElevationChart.tsx:145
+#: src/components/ElevationChart.tsx:146
 msgid "{0}km"
 msgstr "{0}km"
 
 #. placeholder {0}: here.e
 #. placeholder {1}: here.k
-#: src/components/ElevationChart.tsx:119
+#: src/components/ElevationChart.tsx:76
 msgid "{0}m · {1}km · {slopeWords}"
 msgstr "{0}m · {1}km · {slopeWords}"
 
@@ -293,7 +299,7 @@ msgstr "{hours}時間"
 msgid "{hours}時間{minutes}分"
 msgstr "{hours}時間{minutes}分"
 
-#: src/components/ElevationProfile.tsx:37
+#: src/components/ElevationProfile.tsx:41
 #: src/components/RouteStats.tsx:30
 #: src/components/SpotStats.tsx:33
 msgid "{km}km"
@@ -1592,7 +1598,7 @@ msgstr "コース名（日本語）"
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 msgstr "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 
-#: src/app/(public)/map/page.tsx:199
+#: src/app/(public)/map/page.tsx:203
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/RouteJourney.tsx:34
@@ -2238,7 +2244,7 @@ msgstr "すぐ{turnWord}"
 msgid "スクロール"
 msgstr "スクロール"
 
-#: src/app/(public)/map/page.tsx:199
+#: src/app/(public)/map/page.tsx:203
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/RouteJourney.tsx:31
@@ -2420,7 +2426,7 @@ msgstr "スタンプ場所 {spotCount}か所"
 msgid "スタンプ数"
 msgstr "スタンプ数"
 
-#: src/app/(public)/map/page.tsx:199
+#: src/app/(public)/map/page.tsx:203
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 msgid "スタンプ済み"
@@ -2846,6 +2852,7 @@ msgstr "はじめの道を歩きませんか？"
 
 #: src/components/AccessList.tsx:9
 #: src/components/admin/map-editor/MapEditor.tsx:859
+#: src/components/ElevationChart.tsx:44
 msgid "バス"
 msgstr "バス"
 
@@ -3284,6 +3291,7 @@ msgid "ほかのコースの経由地を加える"
 msgstr "ほかのコースの経由地を加える"
 
 #: src/components/admin/map-editor/MapEditor.tsx:859
+#: src/components/ElevationChart.tsx:44
 msgid "ほかの乗り物"
 msgstr "ほかの乗り物"
 
@@ -3303,7 +3311,7 @@ msgstr "ほかの言語（ドイツ語など）の訪問者には、English の�
 msgid "ほかの記事"
 msgstr "ほかの記事"
 
-#: src/components/ElevationChart.tsx:63
+#: src/components/ElevationChart.tsx:73
 msgid "ほぼ平ら"
 msgstr "ほぼ平ら"
 
@@ -3378,7 +3386,7 @@ msgstr "まっすぐ"
 msgid "まっすぐつなぐ"
 msgstr "まっすぐつなぐ"
 
-#: src/app/(public)/map/page.tsx:16
+#: src/app/(public)/map/page.tsx:17
 #: src/app/(public)/sitemap/page.tsx:59
 #: src/components/TabBar.tsx:87
 msgid "マップ"
@@ -3903,16 +3911,16 @@ msgstr "下の注意書き"
 msgid "下へ"
 msgstr "下へ"
 
-#: src/components/ElevationChart.tsx:129
+#: src/components/ElevationChart.tsx:149
 msgid "下り"
 msgstr "下り"
 
 #. placeholder {0}: nf.format(Math.abs(pct))
-#: src/components/ElevationChart.tsx:63
+#: src/components/ElevationChart.tsx:73
 msgid "下り {0}%"
 msgstr "下り {0}%"
 
-#: src/components/ElevationChart.tsx:78
+#: src/components/ElevationChart.tsx:90
 msgid "下り {down}m"
 msgstr "下り {down}m"
 
@@ -4589,8 +4597,8 @@ msgstr "内容"
 msgid "内容を確認する"
 msgstr "内容を確認する"
 
-#: src/components/ElevationChart.tsx:76
-#: src/components/ElevationProfile.tsx:48
+#: src/components/ElevationChart.tsx:88
+#: src/components/ElevationProfile.tsx:52
 msgid "最低 {lowest}m"
 msgstr "最低 {lowest}m"
 
@@ -4619,8 +4627,8 @@ msgstr "最終更新"
 msgid "最終更新：{day}"
 msgstr "最終更新：{day}"
 
-#: src/components/ElevationChart.tsx:75
-#: src/components/ElevationProfile.tsx:47
+#: src/components/ElevationChart.tsx:87
+#: src/components/ElevationProfile.tsx:51
 msgid "最高 {highest}m"
 msgstr "最高 {highest}m"
 
@@ -6472,12 +6480,12 @@ msgstr "標高が調べられない場所があります。"
 msgid "標高だけ取り込む（線は変えない）"
 msgstr "標高だけ取り込む（線は変えない）"
 
-#: src/components/ElevationChart.tsx:84
+#: src/components/ElevationChart.tsx:96
 msgid "標高のグラフ。左右の矢印キーで、場所を動かせます。"
 msgstr "標高のグラフ。左右の矢印キーで、場所を動かせます。"
 
-#: src/components/ElevationChart.tsx:73
-#: src/components/ElevationProfile.tsx:45
+#: src/components/ElevationChart.tsx:85
+#: src/components/ElevationProfile.tsx:49
 msgid "標高のようす"
 msgstr "標高のようす"
 
@@ -6489,7 +6497,7 @@ msgstr "標高の色を消す"
 msgid "標高の色を見る"
 msgstr "標高の色を見る"
 
-#: src/components/ElevationProfile.tsx:51
+#: src/components/ElevationProfile.tsx:55
 msgid "標高は{lowest}mから{highest}mまで"
 msgstr "標高は{lowest}mから{highest}mまで"
 
@@ -6870,7 +6878,7 @@ msgstr "番号が違うか、期限が切れています。もう一度お試し
 msgid "番号をもう一度送る"
 msgstr "番号をもう一度送る"
 
-#: src/components/ElevationChart.tsx:131
+#: src/components/ElevationChart.tsx:151
 msgid "登り"
 msgstr "登り"
 
@@ -6880,11 +6888,11 @@ msgid "登り {0} m"
 msgstr "登り {0} m"
 
 #. placeholder {0}: nf.format(Math.abs(pct))
-#: src/components/ElevationChart.tsx:63
+#: src/components/ElevationChart.tsx:73
 msgid "登り {0}%"
 msgstr "登り {0}%"
 
-#: src/components/ElevationChart.tsx:77
+#: src/components/ElevationChart.tsx:89
 msgid "登り {up}m"
 msgstr "登り {up}m"
 
@@ -7559,6 +7567,7 @@ msgid "自動販売機"
 msgstr "自動販売機"
 
 #: src/components/admin/map-editor/MapEditor.tsx:859
+#: src/components/ElevationChart.tsx:44
 msgid "船"
 msgstr "船"
 
@@ -7988,8 +7997,14 @@ msgid "距離"
 msgstr "距離"
 
 #. placeholder {0}: here.k
+#. placeholder {1}: rideName[riding]
+#: src/components/ElevationChart.tsx:100
+msgid "距離 {0}km、{1}"
+msgstr "距離 {0}km、{1}"
+
+#. placeholder {0}: here.k
 #. placeholder {1}: here.e
-#: src/components/ElevationChart.tsx:88
+#: src/components/ElevationChart.tsx:100
 msgid "距離 {0}km、標高 {1}m、{slopeWords}"
 msgstr "距離 {0}km、標高 {1}m、{slopeWords}"
 
@@ -8463,7 +8478,7 @@ msgstr "閉まる時間が開く時間より前になっている行がありま
 msgid "閉店・撤去"
 msgstr "閉店・撤去"
 
-#: src/app/(public)/map/page.tsx:199
+#: src/app/(public)/map/page.tsx:203
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
 #: src/components/navigation/NavTargetPicker.tsx:76
@@ -8528,6 +8543,7 @@ msgstr "電話番号"
 
 #: src/components/AccessList.tsx:9
 #: src/components/admin/map-editor/MapEditor.tsx:859
+#: src/components/ElevationChart.tsx:44
 msgid "電車"
 msgstr "電車"
 

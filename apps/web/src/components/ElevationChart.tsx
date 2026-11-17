@@ -3,7 +3,7 @@
 import { useEffect, useId, useMemo, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { setElevationCursor } from "@/lib/elevation-cursor";
-import { buildProfile, gradientColor, GRADIENT_STOPS, nearestIndex, type MaybeEle } from "@/lib/elevation-profile";
+import { buildProfile, gradientColor, GRADIENT_STOPS, nearestIndex, rideAt, type MaybeEle, type RideSpan } from "@/lib/elevation-profile";
 import type { LatLng } from "@/lib/navigation/geometry";
 
 const W = 300;
@@ -18,10 +18,10 @@ const legend = `linear-gradient(to right, ${GRADIENT_STOPS.map((s, i) => `${s.co
  * the arrow keys) to read the elevation, distance and slope at that point. One gradient and two paths are drawn, whatever
  * the length of the route (at most 300 points), so it stays light. The colour is never the only cue: the slope is in words.
  */
-export function ElevationChart({ line, elevations, onHover }: { line: readonly LatLng[]; elevations: readonly MaybeEle[]; onHover?: (point: LatLng | null) => void }) {
+export function ElevationChart({ line, elevations, rides = [], onHover }: { line: readonly LatLng[]; elevations: readonly MaybeEle[]; rides?: readonly RideSpan[]; onHover?: (point: LatLng | null) => void }) {
   const { t, i18n } = useLingui();
   const gid = useId().replace(/:/g, "");
-  const profile = useMemo(() => buildProfile(line, elevations), [line, elevations]);
+  const profile = useMemo(() => buildProfile(line, elevations, undefined, rides), [line, elevations, rides]);
   const [index, setIndex] = useState<number | null>(null);
   // Leaving the page (or the chart) takes the dot off the map.
   useEffect(() => () => setElevationCursor(null), []);
@@ -30,9 +30,18 @@ export function ElevationChart({ line, elevations, onHover }: { line: readonly L
   const { dist, ele, slopes, totalM, min, max, gain, loss } = profile;
   const range = Math.max(max - min, 10);
   const x = (d: number) => (totalM > 0 ? (d / totalM) * W : 0);
-  const y = (e: number) => PAD + (1 - (e - min) / range) * (H - 2 * PAD);
-  const top = dist.map((d, i) => `${i === 0 ? "M" : "L"}${x(d).toFixed(1)} ${y(ele[i]!).toFixed(1)}`).join(" ");
-  const area = `${top} L${W} ${H - PAD} L0 ${H - PAD} Z`;
+  const y = (e: number) => PAD + (Math.min(1, Math.max(0, 1 - (e - min) / range))) * (H - 2 * PAD);
+  // The walked parts, each drawn on its own: a ridden stretch (a ferry ...) has no height line and no fill.
+  const runs: number[][] = [[]];
+  dist.forEach((_, i) => {
+    runs.at(-1)!.push(i);
+    if (i < dist.length - 1 && rideAt(profile.rides, (dist[i]! + dist[i + 1]!) / 2)) runs.push([]);
+  });
+  const walked = runs.filter((r) => r.length >= 2);
+  const pathOf = (r: number[]) => r.map((i, k) => `${k === 0 ? "M" : "L"}${x(dist[i]!).toFixed(1)} ${y(ele[i]!).toFixed(1)}`).join(" ");
+  const top = walked.map(pathOf).join(" ");
+  const area = walked.map((r) => `${pathOf(r)} L${x(dist[r.at(-1)!]!).toFixed(1)} ${H - PAD} L${x(dist[r[0]!]!).toFixed(1)} ${H - PAD} Z`).join(" ");
+  const rideName: Record<RideSpan["mode"], string> = { ferry: t`船`, bus: t`バス`, train: t`電車`, other: t`ほかの乗り物` };
   // One colour per stretch, placed at its middle: the browser blends between them.
   const stops = slopes.map((pct, i) => ({ at: totalM > 0 ? (dist[i]! + dist[i + 1]!) / 2 / totalM : 0, color: gradientColor(pct) }));
 
@@ -59,9 +68,12 @@ export function ElevationChart({ line, elevations, onHover }: { line: readonly L
   };
 
   const at100 = index === null ? 0 : (x(dist[index]!) / W) * 100;
+  const riding = index === null ? null : rideAt(profile.rides, dist[index]!);
   const pct = index === null ? null : slopes[Math.min(index, slopes.length - 1)]!;
   const slopeWords = pct === null ? "" : Math.abs(pct) < 1 ? t`ほぼ平ら` : pct > 0 ? t`登り ${nf.format(Math.abs(pct))}%` : t`下り ${nf.format(Math.abs(pct))}%`;
   const here = index === null ? null : { e: Math.round(ele[index]!), k: km(dist[index]!) };
+  // On a ridden stretch the place is read as the ride, never as a height.
+  const reading = here === null ? null : riding ? t`${rideName[riding]} · ${here.k}km` : t`${here.e}m · ${here.k}km · ${slopeWords}`;
   const lowest = Math.round(min);
   const highest = Math.round(max);
   const up = Math.round(gain);
@@ -85,7 +97,7 @@ export function ElevationChart({ line, elevations, onHover }: { line: readonly L
         aria-valuemin={0}
         aria-valuemax={Math.round(totalM)}
         aria-valuenow={index === null ? undefined : Math.round(dist[index]!)}
-        aria-valuetext={here ? t`距離 ${here.k}km、標高 ${here.e}m、${slopeWords}` : undefined}
+        aria-valuetext={here ? (riding ? t`距離 ${here.k}km、${rideName[riding]}` : t`距離 ${here.k}km、標高 ${here.e}m、${slopeWords}`) : undefined}
         onPointerDown={at}
         onPointerMove={at}
         onPointerLeave={() => set(null)}
@@ -104,19 +116,27 @@ export function ElevationChart({ line, elevations, onHover }: { line: readonly L
             </linearGradient>
           </defs>
           <line x1={PAD} x2={W - PAD} y1={H - PAD} y2={H - PAD} className="stroke-line" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+          {profile.rides.map((r, i) => (
+            <rect key={i} x={x(r.from)} y={0} width={Math.max(0, x(r.to) - x(r.from))} height={H - PAD} className="fill-ink/5" />
+          ))}
           <path d={area} className="fill-ink/10" />
           <path d={top} fill="none" stroke={`url(#g${gid})`} strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
         </svg>
+        {profile.rides.map((r, i) => (
+          <span key={i} aria-hidden="true" className="pointer-events-none absolute bottom-2 -translate-x-1/2 whitespace-nowrap text-base font-bold text-muted" style={{ left: `${((x(r.from) + x(r.to)) / 2 / W) * 100}%` }}>
+            {rideName[r.mode]}
+          </span>
+        ))}
         {index !== null && here ? (
           <>
             <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 border-l-2 border-dashed border-ink/60" style={{ left: `${at100}%` }} />
-            <div aria-hidden="true" className="pointer-events-none absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-paper bg-ink" style={{ left: `${at100}%`, top: `${(y(ele[index]!) / H) * 100}%` }} />
+            {riding ? null : <div aria-hidden="true" className="pointer-events-none absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-paper bg-ink" style={{ left: `${at100}%`, top: `${(y(ele[index]!) / H) * 100}%` }} />}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute top-1 whitespace-nowrap rounded-lg bg-ink px-2 py-1 text-base font-bold tabular-nums text-paper"
               style={{ left: `${Math.min(80, Math.max(20, at100))}%`, transform: "translateX(-50%)" }}
             >
-              {t`${here.e}m · ${here.k}km · ${slopeWords}`}
+              {reading}
             </div>
           </>
         ) : null}
