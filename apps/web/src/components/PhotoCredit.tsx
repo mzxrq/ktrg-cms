@@ -4,7 +4,7 @@ import { Inlines } from "@/components/RichText";
 import { parseRich } from "@/lib/rich-text";
 
 /** The credit as one line of words and links (a note in a credit is not supported: they are ignored). */
-function Words({ credit, linkClass }: { credit: string; linkClass?: string }) {
+export function CreditWords({ credit, linkClass }: { credit: string; linkClass?: string }) {
   return <Inlines parts={parseRich(credit).body} linkClass={linkClass} />;
 }
 
@@ -17,7 +17,7 @@ export function CreditCaption({ credit, className = "" }: { credit: string | nul
         <InfoIcon />
       </span>
       <span className="min-w-0 break-words">
-        <Words credit={credit} linkClass="underline underline-offset-4" />
+        <CreditWords credit={credit} linkClass="underline underline-offset-4" />
       </span>
     </p>
   );
@@ -35,7 +35,7 @@ export function CreditBadge({ credit }: { credit: string | null | undefined }) {
         <InfoIcon />
       </span>
       <span className="line-clamp-2 min-w-0 break-words">
-        <Words credit={credit} linkClass="underline underline-offset-4" />
+        <CreditWords credit={credit} linkClass="underline underline-offset-4" />
       </span>
     </p>
   );
@@ -60,7 +60,7 @@ export function CreditToggle({ credit }: { credit: string | null | undefined }) 
         </span>
       </summary>
       <p className="mt-1 rounded-lg bg-black/75 px-2 py-1 text-base leading-snug text-white">
-        <Words credit={credit} linkClass="underline underline-offset-4" />
+        <CreditWords credit={credit} linkClass="underline underline-offset-4" />
       </p>
     </details>
   );

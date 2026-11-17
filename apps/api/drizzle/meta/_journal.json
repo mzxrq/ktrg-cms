@@ -519,6 +519,13 @@
       "when": 1794893319933,
       "tag": "0073_course_photo_focus",
       "breakpoints": true
+    },
+    {
+      "idx": 74,
+      "version": "7",
+      "when": 1794894898957,
+      "tag": "0074_route_photo_name",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "route_translations" ADD COLUMN "photo_name" text;
