@@ -34,10 +34,11 @@ export function InfoTip({ label, href, children }: { label: string; href: string
         popover="auto"
         // Centred under the "i", slid back inside a 16 px gutter near a screen edge; above it when there is no room below.
         style={{ positionAnchor: anchor, positionArea: "bottom span-all", positionTryFallbacks: "flip-block" }}
-        className="m-auto w-[min(22rem,calc(100vw-2rem))] rounded-2xl border-2 border-ink bg-paper p-5 text-base font-normal leading-7 text-ink shadow-2xl backdrop:bg-black/40 supports-[position-area:bottom]:inset-auto supports-[position-area:bottom]:mx-4 supports-[position-area:bottom]:my-1 supports-[position-area:bottom]:rounded-xl supports-[position-area:bottom]:p-4 supports-[position-area:bottom]:shadow-lg supports-[position-area:bottom]:backdrop:bg-transparent"
+        // The ©'s dark tag (CreditToggle), a little more solid so the page's words do not show through several lines of text.
+        className="m-auto w-[min(22rem,calc(100vw-2rem))] rounded-lg bg-black/85 p-4 text-base font-normal leading-7 text-white shadow-lg backdrop:bg-black/40 supports-[position-area:bottom]:inset-auto supports-[position-area:bottom]:mx-4 supports-[position-area:bottom]:my-1 supports-[position-area:bottom]:backdrop:bg-transparent"
       >
         <p className="mb-3">{children}</p>
-        <Link href={href} className="font-bold text-accent underline underline-offset-4">
+        <Link href={href} className="font-bold text-white underline underline-offset-4">
           {t`くわしく見る`}
         </Link>
       </div>
