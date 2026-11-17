@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, between, desc, eq, inArray, sql } from "drizzle-orm";
 import { afterCursor, newestFirst, sameInstant } from "../admin-lists/list-sql";
 import { writeAudit } from "../audit/audit-store";
 import type { Db } from "../db/client";
@@ -76,6 +76,15 @@ export function createDrizzlePlaceStore(db: Db): PlaceStore {
     },
     async listPublic() {
       return withTexts(db, await db.select().from(places).where(eq(places.published, true)).orderBy(desc(places.createdAt)));
+    },
+    async inBox(box, limit) {
+      const rows = await db
+        .select()
+        .from(places)
+        .where(and(between(places.lat, box.south, box.north), between(places.lng, box.west, box.east)))
+        .orderBy(asc(places.id))
+        .limit(limit);
+      return withTexts(db, rows);
     },
   };
 }
