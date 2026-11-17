@@ -1,8 +1,9 @@
 name: Migrate production database
 
-# Applies apps/api/drizzle migrations to the hosted database (Supabase), from GitHub's servers.
+# Applies apps/api/drizzle migrations to the hosted database, from GitHub's servers.
 # Runs by itself when a merge to main changes apps/api/drizzle (see `on:` below), or by hand. Needs the repository
-# secret PRODUCTION_DATABASE_URL (Supabase session pooler, port 5432, ?sslmode=require).
+# secret PRODUCTION_DATABASE_URL: the URL of the database the LIVE site uses (it moved with the AWS change, 2026-11-17),
+# pasted alone (no quotes, no DATABASE_URL= in front), password characters like # / ? @ encoded, with ?sslmode=require.
 # Use this instead of migrating from a laptop: some networks block the Postgres port.
 # ORDER: Vercel deploys main on every merge too. A build takes a minute or two and this job under one, so the database is
 # normally ready before the new pages go live. If this job fails (see its log) the new pages answer 500 where they read the
@@ -45,7 +46,10 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Check the secret is set
+      # Before anything connects: says in plain words what is wrong with the secret (quotes, a name in front, a password
+      # character that needs encoding ...) and which kind of database it points at, never the URL itself. The database can
+      # move (it did with the AWS change): check that the kind shown is the one the live site uses.
+      - name: Check the secret
         env:
           DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
         run: |
@@ -53,6 +57,7 @@ jobs:
             echo "::error::Add the repository secret PRODUCTION_DATABASE_URL first."
             exit 1
           fi
+          bun apps/api/scripts/db-url-check.ts
 
       - name: Show what is waiting
         env:
