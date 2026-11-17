@@ -591,7 +591,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                   <details className="rounded-xl border border-line bg-paper px-4 py-2" open={draft.difficulty !== ""}>
                     <summary className="cursor-pointer text-base font-bold">{t`むずかしさを、ひとことで書く（任意）`}</summary>
                     <div className="mt-2">
-                      <Field label={t`むずかしさ（ひとこと）`} htmlFor="route-difficulty" hint={t`入れた文字が、そのまま表示されます。体力度・技術度を選んだときは、そちらを先に表示します。`}>
+                      <Field label={t`むずかしさ（ひとこと）`} htmlFor="route-difficulty" hint={t`入れた文字が、そのまま表示されます。体力の目安・道のけわしさを選んだときは、そちらを先に表示します。`}>
                         <TextInput id="route-difficulty" value={draft.difficulty} onChange={text("difficulty")} maxLength={100} />
                       </Field>
                     </div>
