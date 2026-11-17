@@ -26,3 +26,9 @@ test("the signed-in branch: courses with the kuzu vine, the map as its own chapt
 test("the signed-in home has no scroll scene: it keeps the hero and skips the journey", () => {
   expect(topBranch).not.toContain("<Journey");
 });
+
+// 2026-11-17 (user): a signed-in visitor had no way to /story; the story chapter links to it as the first-time beat does.
+test("the signed-in story chapter links to /story", () => {
+  const story = topBranch.slice(topBranch.indexOf('id="story-title"'));
+  expect(story).toMatch(/<Link href="\/story"/);
+});
