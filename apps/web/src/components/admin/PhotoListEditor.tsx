@@ -10,19 +10,8 @@ import { PhotoUpload } from "./PhotoUpload";
 import { ArrowDownIcon, ArrowUpIcon } from "@/components/icons";
 import { TextInput } from "./fields";
 import { addPhoto, fromList, makeMain, MAX_PHOTOS, movePhoto, patchPhoto, removePhoto, toList, type ListPhoto, type StoredPhotos } from "@/lib/admin/photo-list";
+import { photoName } from "./PhotoField";
 
-/** A short name for a photo link: the file's name (decoded), not the whole address. */
-function photoName(url: string): string {
-  try {
-    const parts = new URL(url).pathname.split("/").filter(Boolean);
-    const last = parts.at(-1) ?? "";
-    // A Wikimedia thumbnail ends in "<width>px-<file>"; the file's own name is the segment before it.
-    const file = /^\d+px-/.test(last) && parts.length > 1 ? parts.at(-2)! : last;
-    return decodeURIComponent(file).replace(/_/g, " ");
-  } catch {
-    return url;
-  }
-}
 const smallButton = "tap-target rounded-full border border-line px-4 text-base font-bold disabled:opacity-40";
 
 /**

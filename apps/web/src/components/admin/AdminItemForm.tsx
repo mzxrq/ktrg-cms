@@ -14,9 +14,7 @@ import { RubyEditor } from "./RubyEditor";
 import { TickIcon } from "@/components/icons";
 import { adminTab, adminTabRow, Check, Field, inputClass, MultilingualField, NumberInput, Section, TextInput } from "./fields";
 import { HoursInput } from "./HoursInput";
-import { PhotoSlot } from "./PhotoSlot";
-import { PhotoLinkDetails } from "./PhotoLinkDetails";
-import { PhotoUpload } from "./PhotoUpload";
+import { PhotoField } from "./PhotoField";
 import { IconPicker } from "./IconPicker";
 import { PositionMap } from "./PositionMap";
 import { RelationPicker } from "./RelationPicker";
@@ -275,13 +273,7 @@ export function AdminItemForm({
       case "image":
         return (
           <Field key={f.name} label={label} hint={hint} htmlFor={id} required={f.required}>
-            <PhotoUpload onUploaded={set(f.name)} disabled={busy} />
-            <div className="mt-2">
-              <PhotoLinkDetails open={missing.includes(f.name)}>
-                <TextInput id={id} value={text(f.name)} onChange={set(f.name)} maxLength={500} placeholder="https://" invalid={missing.includes(f.name)} />
-              </PhotoLinkDetails>
-            </div>
-            <PhotoSlot url={text(f.name)} className="mt-2 max-w-md" />
+            <PhotoField id={id} url={text(f.name)} onChange={set(f.name)} invalid={missing.includes(f.name)} disabled={busy} />
           </Field>
         );
       default:
@@ -297,7 +289,9 @@ export function AdminItemForm({
     <div className="flex flex-col gap-5">
       {/* The save button stays in reach, and its answer is a toast over the page (like the route editor's). */}
       {editable ? (
-        <div className="sticky top-0 z-20 -mx-4 flex flex-wrap items-center justify-end gap-3 border-b border-line bg-paper px-4 py-3 lg:-mx-8 lg:px-8">
+        // On its own page the bar runs to the page's edges; opened in place in a card (a list's add form, onCreated), it stays
+        // inside the card: the page's margins would push it past the card's border.
+        <div className={`sticky top-0 z-20 flex flex-wrap items-center justify-end gap-3 border-b border-line bg-paper py-3 ${onCreated ? "" : "-mx-4 px-4 lg:-mx-8 lg:px-8"}`}>
           <p className="mr-auto text-base text-muted" aria-live="polite">
             {dirty ? t`保存していない変更があります` : saved ? t`保存済み` : ""}
           </p>
