@@ -1,12 +1,18 @@
 #!/bin/bash
 # Deploys a version: settings → images → start → certificate → check. Run ON THE SERVER as root, in /opt/ktrg-lightsail:
 #
-#   ./deploy.sh                   # builds whatever is in ./src right now
+#   ./deploy.sh                   # builds whatever is in ./src, or uses already-docker-load'ed images if there's no ./src
 #   ./deploy.sh mylabel           # same, but records "mylabel" (e.g. a commit hash) in .tag for your own reference
 #
-# No ECR here (this host is amd64, EC2's images are ARM64-only, and anupap has no push rights) -- web/api are built
-# straight from ./src each deploy; db/nginx/certbot/pgadmin/backup_s3 pull their official multi-arch images as-is.
-# Before running this, refresh ./src from the latest commit (see move-files.sh-style step in the chat history):
+# No ECR here (this host is amd64, EC2's images are ARM64-only, and anupap has no push rights). Two ways web/api's
+# images get here: built straight from ./src on this box (the manual flow -- slow, this host leans on swap for
+# Next.js's TypeScript check), or docker load'ed from tarballs built on a GitHub-hosted runner and scp'ed over
+# (the deploy-lightsail.yml CI flow -- fast, no ./src needed at all). This script picks whichever applies:
+#   has ./src  -> `docker compose build` from it (manual flow)
+#   no ./src   -> images already exist locally (tagged ktrg-lightsail-cms:local / -web:local) -- just use them
+# db/nginx/certbot/pgadmin/backup_s3 always pull their official multi-arch images as-is, either way.
+#
+# Manual flow: refresh ./src from the latest commit first (see move-files.sh-style step in the chat history):
 #   rm -rf src && mkdir src && aws s3 cp s3://dev-ktrg-lightsail-backups-712723095627/deploy/ktrg-src.tar.gz - | tar -xz -C src
 #
 # Get the newest compose file, nginx config and scripts first:
@@ -15,7 +21,6 @@ set -euo pipefail
 cd /opt/ktrg-lightsail
 SSM_REGION=ap-northeast-1   # where /ktrg/lightsail/env lives (Tokyo, same as this server)
 chmod +x ./*.sh nginx/*.sh
-[ -d src ] || { echo "no ./src -- see the comment at the top of this file"; exit 1; }
 
 # ---- 1. A label for this build (just bookkeeping -- there's no registry tag to roll back to on this host) --------
 TAG="${1:-$(date -u +%Y%m%dT%H%M%SZ)}"
@@ -37,7 +42,12 @@ setting() { grep -m1 "^$1=" .env | cut -d= -f2-; }
 DOMAIN="$(setting DOMAIN)"
 
 # ---- 3. Images ----------------------------------------------------------------------------------------------------
-docker compose build --pull api web
+if [ -d src ]; then
+  docker compose build --pull api web
+else
+  echo "== no ./src: using already-loaded images (docker load'ed by the CI deploy)"
+  docker image inspect ktrg-lightsail-cms:local ktrg-lightsail-web:local >/dev/null
+fi
 docker compose pull db nginx certbot pgadmin backup_s3 --quiet
 
 # ---- 4. Start -----------------------------------------------------------------------------------------------------

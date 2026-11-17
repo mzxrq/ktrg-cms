@@ -1,10 +1,12 @@
 name: Deploy to Lightsail
 
-# Manual only, for now (see docs/lightsail-setup-guide.md): deploys the committed code and deploy/lightsail/ to
-# the Lightsail server over SSH, then runs ./deploy.sh there. No AWS credentials are needed in GitHub -- the
-# server already has its own (anupap's key) for everything deploy.sh itself touches (Parameter Store, S3
-# backups). One-time setup: a dedicated key pair added to ec2-user's authorized_keys on the server, its private
-# half stored as the LIGHTSAIL_DEPLOY_KEY secret.
+# Manual only, for now (see docs/lightsail-setup-guide.md): builds api/web on a standard GitHub-hosted runner
+# (fast -- the Lightsail server itself leans on slow disk swap for Next.js's TypeScript check, confirmed by the
+# build-lightsail-images.yml test: ~1m40s here vs. 12+ minutes and still going there), saves them as tarballs,
+# scp's them plus deploy/lightsail/ to the server, then docker load + ./deploy.sh there. No AWS credentials are
+# needed in GitHub -- the server already has its own (anupap's key) for everything deploy.sh itself touches
+# (Parameter Store, S3 backups). One-time setup: a dedicated key pair added to ec2-user's authorized_keys on the
+# server, its private half stored as the LIGHTSAIL_DEPLOY_KEY secret.
 on:
   workflow_dispatch:
     inputs:
@@ -22,7 +24,7 @@ env:
   SSH_USER: ec2-user
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -30,10 +32,70 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
-      - name: Package source and deploy/lightsail
+      # docker-compose.yml requires these vars just to parse (the ${VAR:?...} syntax), even though a build
+      # only needs the api/web services. Dummy values are fine: none of these are used at build time.
+      - name: Dummy .env (build only needs the file to exist and parse)
         run: |
-          git archive --format=tar.gz -o ktrg-src.tar.gz HEAD
-          tar -czf deploy-lightsail.tar.gz -C deploy/lightsail .
+          cat > deploy/lightsail/.env <<'EOF'
+          DOMAIN=build.invalid
+          POSTGRES_USER=build
+          POSTGRES_PASSWORD=build
+          POSTGRES_DB=build
+          PGADMIN_EMAIL=build@build.invalid
+          PGADMIN_PASSWORD=build
+          AWS_ACCESS_KEY_ID=build
+          AWS_SECRET_ACCESS_KEY=build
+          S3_BUCKET_NAME=build
+          EOF
+
+      - uses: docker/setup-buildx-action@v3
+
+      # docker-compose.yml's build context is ./src -- on the real server that's the extracted git archive;
+      # here the checked-out repo root IS that source tree, so override just the build context rather than
+      # symlinking src/ back into the repo (self-referential: deploy/lightsail/src would then contain
+      # deploy/lightsail itself).
+      - name: Override the build context to the checked-out repo root
+        run: |
+          cat > deploy/lightsail/docker-compose.override.yml <<'EOF'
+          services:
+            api:
+              build:
+                context: ../..
+            web:
+              build:
+                context: ../..
+          EOF
+
+      - name: docker compose build api web
+        working-directory: deploy/lightsail
+        run: docker compose -f docker-compose.yml -f docker-compose.override.yml build api web
+
+      - name: Save images to tarballs
+        run: |
+          docker save ktrg-lightsail-cms:local | gzip > ktrg-lightsail-cms.tar.gz
+          docker save ktrg-lightsail-web:local | gzip > ktrg-lightsail-web.tar.gz
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lightsail-images
+          path: ktrg-lightsail-*.tar.gz
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: lightsail-images
+
+      - name: Package deploy/lightsail scripts
+        run: tar -czf deploy-lightsail.tar.gz -C deploy/lightsail .
 
       - name: Set up SSH
         run: |
@@ -42,22 +104,25 @@ jobs:
           chmod 600 ~/.ssh/id_deploy
           ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null
 
-      - name: Upload source and deploy scripts
-        run: scp -i ~/.ssh/id_deploy ktrg-src.tar.gz deploy-lightsail.tar.gz "$SSH_USER@$HOST:/tmp/"
+      - name: Upload images and deploy scripts
+        run: |
+          scp -i ~/.ssh/id_deploy ktrg-lightsail-cms.tar.gz ktrg-lightsail-web.tar.gz deploy-lightsail.tar.gz \
+            "$SSH_USER@$HOST:/tmp/"
 
-      # Plain tar+scp, not rsync: Amazon Linux 2023's base image doesn't ship rsync. Extracting
+      # Plain tar+scp, not rsync (Amazon Linux 2023's base image doesn't ship it). Extracting
       # deploy-lightsail.tar.gz over /opt/ktrg-lightsail only adds/overwrites the scripts and nginx/ config it
-      # contains -- it never touches certbot/, .env, or the storage_data/db_data Docker volumes, since none of
-      # those paths are part of deploy/lightsail/'s own tree.
+      # contains -- it never touches certbot/, .env, or the Docker volumes. No ./src is sent or created here,
+      # so deploy.sh's image step uses the two docker load'ed images directly instead of rebuilding.
       - name: Deploy on the server
         run: |
           ssh -i ~/.ssh/id_deploy "$SSH_USER@$HOST" sudo bash -s -- "${{ github.sha }}" <<'REMOTE'
             set -euo pipefail
             TAG="$1"
+            docker load < /tmp/ktrg-lightsail-cms.tar.gz
+            docker load < /tmp/ktrg-lightsail-web.tar.gz
             tar -xzf /tmp/deploy-lightsail.tar.gz -C /opt/ktrg-lightsail
             chmod +x /opt/ktrg-lightsail/*.sh /opt/ktrg-lightsail/nginx/*.sh
-            rm -rf /opt/ktrg-lightsail/src && mkdir -p /opt/ktrg-lightsail/src
-            tar -xzf /tmp/ktrg-src.tar.gz -C /opt/ktrg-lightsail/src
-            rm -f /tmp/ktrg-src.tar.gz /tmp/deploy-lightsail.tar.gz
+            rm -rf /opt/ktrg-lightsail/src
+            rm -f /tmp/ktrg-lightsail-cms.tar.gz /tmp/ktrg-lightsail-web.tar.gz /tmp/deploy-lightsail.tar.gz
             cd /opt/ktrg-lightsail && ./deploy.sh "$TAG"
           REMOTE
