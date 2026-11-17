@@ -15,7 +15,7 @@ export function CoverPhoto({ photo, className = "", flat = false }: { photo: { s
     // installed app it also runs behind the Dynamic Island (globals.css).
     <div data-cover className={`relative aspect-[4/3] w-full overflow-hidden bg-surface ${flat ? "" : "@4xl:aspect-video @4xl:rounded-2xl"} ${className}`}>
       <CoverWatch />
-      <Zoomable src={photo.src} alt={photo.alt}>
+      <Zoomable photos={[photo]}>
         <Image src={photo.src} alt={photo.alt} fill priority sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" unoptimized={photo.src.startsWith("https://")} />
       </Zoomable>
       <span aria-hidden="true" className={`pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-b from-transparent to-paper ${flat ? "" : "@4xl:hidden"}`} />

@@ -4639,9 +4639,9 @@ msgstr "最高 {highest}m"
 #: src/components/admin/SiteSettingsForm.tsx:44
 #: src/components/admin/useChecklistLabels.ts:19
 #: src/components/landing/HeroSlides.tsx:68
-#: src/components/SpotGallery.tsx:13
+#: src/components/SpotGallery.tsx:16
 #: src/components/SpotSheet.tsx:150
-#: src/components/Zoomable.tsx:25
+#: src/components/Zoomable.tsx:91
 msgid "写真"
 msgstr "写真"
 
@@ -4744,7 +4744,7 @@ msgstr "写真を保存できませんでした。しばらくしてからもう
 msgid "写真を外す"
 msgstr "写真を外す"
 
-#: src/components/Zoomable.tsx:19
+#: src/components/Zoomable.tsx:85
 msgid "写真を大きく見る"
 msgstr "写真を大きく見る"
 
@@ -4963,6 +4963,7 @@ msgid "前のリンクは、まだありません。"
 msgstr "前のリンクは、まだありません。"
 
 #: src/components/landing/HeroSlides.tsx:87
+#: src/components/Zoomable.tsx:128
 msgid "前の写真"
 msgstr "前の写真"
 
@@ -6047,6 +6048,10 @@ msgstr "担当 {0}"
 msgid "拡大"
 msgstr "拡大"
 
+#: src/components/Zoomable.tsx:103
+msgid "拡大する"
+msgstr "拡大する"
+
 #: src/components/admin/AccessPointsEditor.tsx:83
 msgid "指定しない"
 msgstr "指定しない"
@@ -6522,6 +6527,7 @@ msgid "次のスタンプの場所"
 msgstr "次のスタンプの場所"
 
 #: src/components/landing/HeroSlides.tsx:92
+#: src/components/Zoomable.tsx:131
 msgid "次の写真"
 msgstr "次の写真"
 
@@ -7519,6 +7525,10 @@ msgstr "縦の長さ"
 msgid "縮小"
 msgstr "縮小"
 
+#: src/components/Zoomable.tsx:106
+msgid "縮小する"
+msgstr "縮小する"
+
 #: src/components/admin/BlockEditor.tsx:497
 msgid "脚注"
 msgstr "脚注"
@@ -8466,7 +8476,7 @@ msgstr "長さ"
 #: src/components/SampleNotice.tsx:65
 #: src/components/SiteHeader.tsx:212
 #: src/components/StampOutbox.tsx:156
-#: src/components/Zoomable.tsx:32
+#: src/components/Zoomable.tsx:109
 msgid "閉じる"
 msgstr "閉じる"
 
