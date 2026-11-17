@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { Pager } from "@/components/Pager";
 import { useErrorMessages } from "@/components/useErrorMessages";
 import { Chip } from "./Chip";
-import { FilterGroup, SortHeader } from "./list-parts";
+import { FilterGroup, HeaderFilter, SortHeader } from "./list-parts";
 import { DuplicateFinder } from "./DuplicateFinder";
 import { PlaceImport } from "./PlaceImport";
 import { AdminItemForm } from "./AdminItemForm";
@@ -20,10 +20,27 @@ import { confirmDialog } from "@/components/ConfirmDialog";
 // A soft shadow on the right edge while more columns wait to be scrolled to (the cover is `local`, so it moves away at the end).
 const edgeShadow = { background: "linear-gradient(to left, var(--color-paper) 30%, transparent) right / 2.5rem 100% local no-repeat, linear-gradient(to left, rgb(0 0 0 / 0.18), transparent) right / 0.9rem 100% scroll no-repeat" };
 
-// Any generic admin list, drawn from its description (GET /admin/lists) like the rally list: a button for a new row,
-// then a table (a card per row on a phone) with each row's name (a link to its form) and one column per `inList` field.
+// Quiet text buttons on the count row (as the course list's ひな形 / 取り込む).
+const quiet = "tap-target inline-flex items-center px-2 text-base underline underline-offset-4";
+
+// Any generic admin list, drawn from its description (GET /admin/lists), laid out like the course list (RouteTable,
+// 2026-11-17, user): the title with its "new" button, a search box that searches as you type, the count with the list's
+// own tools as quiet links, and a table whose column headers sort and filter (a card per row on a phone).
 // Newest first, 50 to a page; the pager goes to the next or previous page or to a page typed in.
-export function AdminListTable({ meta: config, initial, locale, choices }: { meta: ListMeta; initial: ListPage; locale: string; choices: Record<string, { id: string; name: string; detail?: string }[]> }) {
+export function AdminListTable({
+  meta: config,
+  initial,
+  locale,
+  choices,
+  children,
+}: {
+  meta: ListMeta;
+  initial: ListPage;
+  locale: string;
+  choices: Record<string, { id: string; name: string; detail?: string }[]>;
+  /** Shown under the intro (the blog's links to its writers and tags). */
+  children?: ReactNode;
+}) {
   const { t } = useLingui();
   const messages = useErrorMessages();
   const [items, setItems] = useState(initial.items);
@@ -39,12 +56,10 @@ export function AdminListTable({ meta: config, initial, locale, choices }: { met
   const [q, setQ] = useState("");
   const [picked, setPicked] = useState<Record<string, string>>({});
   const [applied, setApplied] = useState("");
-  const filterFields = config.fields.filter((f) => f.kind === "select" || f.kind === "boolean" || f.kind === "route" || f.kind === "relation");
-  // The filters on a column are shown as buttons above the list; the rest wait behind "more filters".
-  const shownFilters = filterFields.filter((f) => f.inList && f.kind !== "route" && f.kind !== "relation" && filterChoices(f, locale).length <= 6);
-  const moreFilters = filterFields.filter((f) => !shownFilters.includes(f));
   // The order of the rows on the page: the list's own (newest first) until a column header is pressed.
   const [sort, setSort] = useState<Sort>(null);
+  // The directory's own tools, opened from the count row.
+  const [tool, setTool] = useState<"import" | "duplicates" | null>(null);
   const base = `/admin/${config.key}`;
   // A short form (a notice, a banner, a tag) opens above the list instead of on its own page (2026-11-16, user); a long one
   // (a post with its editor, a directory place with its map) keeps its page.
@@ -56,6 +71,16 @@ export function AdminListTable({ meta: config, initial, locale, choices }: { met
   const lookup = (id: string, field: string) => choices[field]?.find((c) => c.id === id)?.name ?? null;
   const rows = useMemo(() => sortItems(items, config, sort, locale, lookup), [items, config, sort, locale]); // eslint-disable-line react-hooks/exhaustive-deps -- lookup only reads `choices`
 
+  const filterFields = config.fields.filter((f) => f.kind === "select" || f.kind === "boolean" || f.kind === "route" || f.kind === "relation");
+  const isFilter = (f: FieldUi) => filterFields.some((x) => x.name === f.name);
+  // On a wide screen a column's filter sits in its header; a filter with no column waits behind "other filters".
+  const otherFilters = filterFields.filter((f) => !columns.some((c) => c.name === f.name));
+  // On a phone (no table) the short ones are rows of buttons and the rest lists, all in one fold.
+  const buttonFilters = filterFields.filter((f) => f.inList && f.kind !== "route" && f.kind !== "relation" && filterChoices(f, locale).length <= 6);
+  const listFilters = filterFields.filter((f) => !buttonFilters.includes(f));
+  const pickedCount = filterFields.filter((f) => (picked[f.name] ?? "") !== "").length;
+  const otherPicked = otherFilters.filter((f) => (picked[f.name] ?? "") !== "").length;
+
   const queryOf = (words: string, choices: Record<string, string>) => {
     const params = new URLSearchParams();
     if (words.trim()) params.set("q", words.trim());
@@ -63,19 +88,40 @@ export function AdminListTable({ meta: config, initial, locale, choices }: { met
     return params.toString();
   };
 
-  /** Read the first page again with the search words and choices. */
+  /**
+   * Read the first page again with the search words and choices. It runs as the words are typed, so a newer search wins:
+   * an answer that comes back after a later search started is dropped.
+   */
+  const latestSearch = useRef(0);
   async function search(words: string, choices: Record<string, string>) {
-    if (busy) return;
+    const mine = ++latestSearch.current;
     setBusy(true);
     setError(null);
     setTicked(new Set()); // what was ticked may no longer be on the page
     const query = queryOf(words, choices);
     const res = await listRequest<ListPage>("GET", `${config.key}?${query ? `${query}&` : ""}page=1`);
+    if (mine !== latestSearch.current) return;
     setBusy(false);
     if (!res.ok) return setError(messages[res.key]);
     show(res.data);
     setApplied(query);
   }
+
+  // Search as the words are typed (like the course list), a moment after the last key, not on every key.
+  const typed = useRef(false);
+  useEffect(() => {
+    if (!typed.current) return;
+    const timer = setTimeout(() => void search(q, picked), 400);
+    return () => clearTimeout(timer);
+  }, [q]); // eslint-disable-line react-hooks/exhaustive-deps -- only the words start a search here; a filter starts its own
+
+  const setFilter = (field: string, value: string) => {
+    const next = { ...picked, [field]: value };
+    setPicked(next);
+    void search(q, next);
+  };
+  /** The choices a filter offers: a select's or yes/no's own words, or the rows a route or relation field can point to. */
+  const optionsOf = (f: FieldUi) => (f.kind === "select" || f.kind === "boolean" ? filterChoices(f, locale) : (choices[f.name] ?? []).map((c) => ({ value: c.id, text: c.name })));
 
   /** Put a page the API sent on the screen. */
   function show(data: ListPage) {
@@ -125,6 +171,7 @@ export function AdminListTable({ meta: config, initial, locale, choices }: { met
 
   const canDelete = config.ops.delete;
   const allTicked = items.length > 0 && items.every((i) => ticked.has(i.id));
+  const tickAll = () => setTicked(allTicked ? new Set() : new Set(items.map((i) => i.id)));
   const toggle = (id: string) =>
     setTicked((now) => {
       const next = new Set(now);
@@ -132,171 +179,144 @@ export function AdminListTable({ meta: config, initial, locale, choices }: { met
       return next;
     });
 
-  const shownFilterGroups = shownFilters.map((f) => (
-    <FilterGroup
-      key={f.name}
-      label={pick(f.label, locale)}
-      options={filterChoices(f, locale)}
-      value={picked[f.name] ?? ""}
-      disabled={busy}
-      onChange={(value) => {
-        const next = { ...picked, [f.name]: value };
-        setPicked(next);
-        void search(q, next);
-      }}
-    />
-  ));
-
-  const moreGrid = (
-    <div className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-3">
-      {moreFilters.map((f) => (
-        <label key={f.name} className="flex flex-col gap-1 text-sm font-bold">
-          {pick(f.label, locale)}
-          <select
-            value={picked[f.name] ?? ""}
-            onChange={(e) => {
-              const next = { ...picked, [f.name]: e.target.value };
-              setPicked(next);
-              void search(q, next);
-            }}
-            className={inputClass}
-          >
-            <option value="">{t`すべて`}</option>
-            {f.kind === "select" || f.kind === "boolean"
-              ? filterChoices(f, locale).map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {o.text}
-                  </option>
-                ))
-              : (choices[f.name] ?? []).map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-          </select>
-        </label>
-      ))}
-    </div>
+  /** A list of choices for one filter (used beside the table, where buttons would not fit). */
+  const filterSelect = (f: FieldUi) => (
+    <label key={f.name} className="flex flex-col gap-1 text-base font-bold">
+      {pick(f.label, locale)}
+      <select value={picked[f.name] ?? ""} onChange={(e) => setFilter(f.name, e.target.value)} className={inputClass}>
+        <option value="">{t`すべて`}</option>
+        {optionsOf(f).map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.text}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 
-  const pickedCount = [...shownFilters, ...moreFilters].filter((f) => (picked[f.name] ?? "") !== "").length;
+  const newButton = config.ops.create && config.newLabel ? (
+    inlineNew ? (
+      <button type="button" onClick={() => setAdding(!adding)} aria-expanded={adding} className="tap-target inline-flex items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
+        {adding ? t`閉じる` : pick(config.newLabel, locale)}
+      </button>
+    ) : (
+      <Link href={`${base}/new`} className="tap-target inline-flex items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
+        {pick(config.newLabel, locale)}
+      </Link>
+    )
+  ) : null;
 
   return (
     <div className="flex flex-col gap-4">
-      {config.ops.create && config.newLabel ? (
-        inlineNew ? (
-          adding ? (
-            <section aria-label={pick(config.newLabel, locale)} className="flex flex-col gap-3 rounded-2xl border-2 border-line p-4 sm:p-5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <h2 className="text-2xl font-bold">{pick(config.newLabel, locale)}</h2>
-                <button type="button" onClick={() => setAdding(false)} className="tap-target rounded-full border border-line px-5 text-lg font-bold">
-                  {t`閉じる`}
-                </button>
-              </div>
-              <AdminItemForm
-                meta={config}
-                initial={null}
-                locale={locale}
-                choices={choices}
-                onCreated={(item) => {
-                  setItems((all) => [item, ...all]);
-                  setTotal((n) => n + 1);
-                  setAdding(false);
-                  showToast({ kind: "ok", text: t`加えました。` });
-                }}
-              />
-            </section>
-          ) : (
-            <button type="button" onClick={() => setAdding(true)} className="tap-target inline-flex w-fit items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
-              {pick(config.newLabel, locale)}
-            </button>
-          )
-        ) : (
-          <Link href={`${base}/new`} className="tap-target inline-flex w-fit items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
-            {pick(config.newLabel, locale)}
-          </Link>
-        )
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-3xl font-bold">{title}</h1>
+        {newButton}
+      </div>
+      <p className="text-lg text-muted">{pick(config.intro, locale)}</p>
+      {children}
+
+      {inlineNew && adding && config.newLabel ? (
+        <section aria-label={pick(config.newLabel, locale)} className="flex flex-col gap-3 rounded-2xl border-2 border-line p-4 sm:p-5">
+          <h2 className="text-2xl font-bold">{pick(config.newLabel, locale)}</h2>
+          <AdminItemForm
+            meta={config}
+            initial={null}
+            locale={locale}
+            choices={choices}
+            onCreated={(item) => {
+              setItems((all) => [item, ...all]);
+              setTotal((n) => n + 1);
+              setAdding(false);
+              showToast({ kind: "ok", text: t`加えました。` });
+            }}
+          />
+        </section>
       ) : null}
-      {config.key === "directory" ? <PlaceImport onDone={() => void search(q, picked)} /> : null}
-      {config.key === "directory" ? <DuplicateFinder meta={config} locale={locale} choices={choices} onChanged={() => void search(q, picked)} /> : null}
-      <form
-        role="search"
-        onSubmit={(e) => {
-          e.preventDefault();
-          void search(q, picked);
-        }}
-        className="flex flex-col gap-3 rounded-2xl bg-surface p-3"
-      >
-        <div className="flex flex-wrap items-center gap-3">
-          <input type="search" aria-label={t`さがす`} placeholder={t`さがす`} value={q} maxLength={100} onChange={(e) => setQ(e.target.value)} className={`${inputClass} min-w-48 flex-1`} />
-          <button type="submit" disabled={busy} className="tap-target rounded-full bg-ink px-5 text-lg font-bold text-paper disabled:opacity-50">
-            {t`探す`}
+
+      <div role="search" className="flex flex-wrap items-end gap-3">
+        <label className="flex min-w-60 flex-1 flex-col gap-1 text-base font-bold">
+          {t`さがす`}
+          <input
+            type="search"
+            value={q}
+            maxLength={100}
+            onChange={(e) => {
+              typed.current = true;
+              setQ(e.target.value);
+            }}
+            placeholder={t`名前やことばの一部を入力`}
+            className="tap-target rounded-full border border-line bg-paper px-4 text-lg font-normal"
+          />
+        </label>
+        {applied ? (
+          <button
+            type="button"
+            onClick={() => {
+              setQ("");
+              setPicked({});
+              void search("", {});
+            }}
+            className="tap-target rounded-full px-3 text-lg font-bold text-accent underline underline-offset-4"
+          >
+            {t`条件をやめる`}
           </button>
-          {applied ? (
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => {
-                setQ("");
-                setPicked({});
-                void search("", {});
-              }}
-              className="tap-target rounded-full px-3 text-lg font-bold text-accent underline underline-offset-4"
-            >
-              {t`条件をやめる`}
+        ) : null}
+      </div>
+
+      {/* On a phone the table is hidden, so its header filters are here: buttons for the short ones, lists for the rest. */}
+      {filterFields.length > 0 ? (
+        <details className="group md:hidden" open={pickedCount > 0 || undefined}>
+          <summary className="tap-target flex w-fit cursor-pointer list-none items-center gap-2 text-base font-bold text-accent [&::-webkit-details-marker]:hidden">
+            <span aria-hidden="true" className="transition-transform group-open:rotate-90">▸</span>
+            {t`絞りこみ`}
+            {pickedCount > 0 ? <span className="rounded-full bg-ink px-2 text-sm text-paper">{pickedCount}</span> : null}
+          </summary>
+          <div className="mt-2 flex flex-col gap-3 rounded-2xl bg-surface p-3">
+            {buttonFilters.map((f) => (
+              <FilterGroup key={f.name} label={pick(f.label, locale)} options={filterChoices(f, locale)} value={picked[f.name] ?? ""} disabled={busy} onChange={(value) => setFilter(f.name, value)} />
+            ))}
+            {listFilters.length > 0 ? <div className="grid grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-3">{listFilters.map(filterSelect)}</div> : null}
+          </div>
+        </details>
+      ) : null}
+      {/* On a wide screen, a filter with no column of its own. */}
+      {otherFilters.length > 0 ? (
+        <details className="group hidden md:block" open={otherPicked > 0 || undefined}>
+          <summary className="tap-target flex w-fit cursor-pointer list-none items-center gap-2 text-base font-bold text-accent [&::-webkit-details-marker]:hidden">
+            <span aria-hidden="true" className="transition-transform group-open:rotate-90">▸</span>
+            {t`ほかの絞りこみ`}
+            {otherPicked > 0 ? <span className="rounded-full bg-ink px-2 text-sm text-paper">{otherPicked}</span> : null}
+          </summary>
+          <div className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-3">{otherFilters.map(filterSelect)}</div>
+        </details>
+      ) : null}
+
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <p className="text-base font-bold text-muted" aria-live="polite">
+          {capped ? t`先頭の${total}件を表示しています。` : t`${total}件`}
+        </p>
+        {canDelete && ticked.size > 0 ? (
+          <button type="button" disabled={busy} onClick={() => void removeRows([...ticked])} className="tap-target rounded-full border-2 border-danger px-4 text-base font-bold text-danger disabled:opacity-50">
+            {t`選んだ${ticked.size}件を削除`}
+          </button>
+        ) : null}
+        {config.key === "directory" ? (
+          <div className="flex min-w-0 flex-1 flex-wrap items-center justify-end gap-x-2">
+            <button type="button" aria-expanded={tool === "import"} onClick={() => setTool(tool === "import" ? null : "import")} className={quiet}>
+              {t`シート（CSV）から取り込む`}
             </button>
-          ) : null}
-        </div>
-        {shownFilters.length > 2 ? (
-          // One fold for every filter: the buttons, then the lists.
-          <details className="group" open={pickedCount > 0 || undefined}>
-            <summary className="tap-target flex w-fit cursor-pointer list-none items-center gap-2 text-base font-bold text-accent [&::-webkit-details-marker]:hidden">
-              <span aria-hidden="true" className="transition-transform group-open:rotate-90">▸</span>
-              {t`絞りこみ`}
-              {pickedCount > 0 ? <span className="rounded-full bg-ink px-2 text-sm text-paper">{pickedCount}</span> : null}
-            </summary>
-            <div className="mt-2 flex flex-col gap-3">
-              {shownFilterGroups}
-              {moreFilters.length > 0 ? moreGrid : null}
-            </div>
-          </details>
-        ) : (
-          <>
-            {shownFilterGroups}
-            {moreFilters.length > 0 ? (
-              <details className="group" open={moreFilters.some((f) => (picked[f.name] ?? "") !== "") || undefined}>
-                <summary className="tap-target flex w-fit cursor-pointer list-none items-center gap-2 text-base font-bold text-accent [&::-webkit-details-marker]:hidden">
-                  <span aria-hidden="true" className="transition-transform group-open:rotate-90">▸</span>
-                  {t`ほかの絞りこみ`}
-                  {moreFilters.filter((f) => (picked[f.name] ?? "") !== "").length > 0 ? <span className="rounded-full bg-ink px-2 text-sm text-paper">{moreFilters.filter((f) => (picked[f.name] ?? "") !== "").length}</span> : null}
-                </summary>
-                {moreGrid}
-              </details>
-            ) : null}
-          </>
-        )}
-      </form>
+            <button type="button" aria-expanded={tool === "duplicates"} onClick={() => setTool(tool === "duplicates" ? null : "duplicates")} className={quiet}>
+              {t`重複している場所をさがす`}
+            </button>
+          </div>
+        ) : null}
+      </div>
+      {tool === "import" ? <PlaceImport onDone={() => void search(q, picked)} /> : null}
+      {tool === "duplicates" ? <DuplicateFinder meta={config} locale={locale} choices={choices} onChanged={() => void search(q, picked)} /> : null}
+
       {error ? (
         <p role="alert" className="rounded-xl bg-surface p-4 text-lg font-bold text-danger">
           {error}
-        </p>
-      ) : null}
-      {canDelete && items.length > 0 ? (
-        <div className="flex flex-wrap items-center gap-3">
-          <label className="tap-target flex items-center gap-2 text-base font-bold">
-            <input type="checkbox" checked={allTicked} onChange={() => setTicked(allTicked ? new Set() : new Set(items.map((i) => i.id)))} className="size-5" />
-            {t`このページをすべて選ぶ`}
-          </label>
-          {ticked.size > 0 ? (
-            <button type="button" disabled={busy} onClick={() => void removeRows([...ticked])} className="tap-target rounded-full border-2 border-danger px-4 text-base font-bold text-danger disabled:opacity-50">
-              {t`選んだ${ticked.size}件を削除`}
-            </button>
-          ) : null}
-        </div>
-      ) : null}
-      {items.length > 0 ? (
-        <p className="text-base font-bold text-muted" aria-live="polite">
-          {capped ? t`先頭の${total}件を表示しています。` : t`${total}件`}
         </p>
       ) : null}
       {items.length === 0 ? (
@@ -306,12 +326,23 @@ export function AdminListTable({ meta: config, initial, locale, choices }: { met
           {/* A table on a wide screen: one column per fact, so a column can be read from top to bottom. */}
           <div className="relative hidden overflow-x-auto rounded-2xl border border-line md:block" style={edgeShadow}>
             <table className="w-full border-collapse text-left">
-              <thead className="bg-surface text-base">
+              <thead className="bg-surface align-top text-base">
                 <tr>
-                  {canDelete ? <th scope="col" className="w-12 p-3"><span className="sr-only">{t`選ぶ`}</span></th> : null}
+                  {canDelete ? (
+                    <th scope="col" className="w-12 p-3">
+                      <input type="checkbox" aria-label={t`このページをすべて選ぶ`} checked={allTicked} onChange={tickAll} className="mt-3 size-5" />
+                    </th>
+                  ) : null}
                   <SortHeader label={t`名前`} sortKey="name" sort={sort} onSort={(key) => setSort(nextSort(sort, key))} />
                   {columns.map((f) => (
-                    <SortHeader key={f.name} label={pick(f.label, locale)} sortKey={f.name} sort={sort} onSort={(key) => setSort(nextSort(sort, key))} />
+                    <SortHeader
+                      key={f.name}
+                      label={pick(f.label, locale)}
+                      sortKey={f.name}
+                      sort={sort}
+                      onSort={(key) => setSort(nextSort(sort, key))}
+                      filter={isFilter(f) ? <HeaderFilter label={pick(f.label, locale)} options={optionsOf(f)} value={picked[f.name] ?? ""} onChange={(value) => setFilter(f.name, value)} /> : undefined}
+                    />
                   ))}
                   {canDelete ? <th scope="col" className="w-24 p-3"><span className="sr-only">{t`削除`}</span></th> : null}
                 </tr>
@@ -357,23 +388,31 @@ export function AdminListTable({ meta: config, initial, locale, choices }: { met
               </tbody>
             </table>
           </div>
-          <label className="flex items-center gap-2 text-base font-bold md:hidden">
-            {t`並べかえ`}
-            <select
-              value={sort ? `${sort.key}:${sort.dir}` : ""}
-              onChange={(e) => {
-                const [key, dir] = e.target.value.split(":");
-                setSort(key ? { key, dir: dir === "desc" ? "desc" : "asc" } : null);
-              }}
-              className={`${inputClass} max-w-64`}
-            >
-              <option value="">{t`新しい順`}</option>
-              {[{ key: "name", label: t`名前` }, ...columns.map((f) => ({ key: f.name, label: pick(f.label, locale) }))].flatMap((c) => [
-                <option key={`${c.key}:asc`} value={`${c.key}:asc`}>{`${c.label} ↑`}</option>,
-                <option key={`${c.key}:desc`} value={`${c.key}:desc`}>{`${c.label} ↓`}</option>,
-              ])}
-            </select>
-          </label>
+          <div className="flex flex-wrap items-center gap-3 md:hidden">
+            <label className="flex items-center gap-2 text-base font-bold">
+              {t`並べかえ`}
+              <select
+                value={sort ? `${sort.key}:${sort.dir}` : ""}
+                onChange={(e) => {
+                  const [key, dir] = e.target.value.split(":");
+                  setSort(key ? { key, dir: dir === "desc" ? "desc" : "asc" } : null);
+                }}
+                className={`${inputClass} max-w-64`}
+              >
+                <option value="">{t`新しい順`}</option>
+                {[{ key: "name", label: t`名前` }, ...columns.map((f) => ({ key: f.name, label: pick(f.label, locale) }))].flatMap((c) => [
+                  <option key={`${c.key}:asc`} value={`${c.key}:asc`}>{`${c.label} ↑`}</option>,
+                  <option key={`${c.key}:desc`} value={`${c.key}:desc`}>{`${c.label} ↓`}</option>,
+                ])}
+              </select>
+            </label>
+            {canDelete ? (
+              <label className="tap-target flex items-center gap-2 text-base font-bold">
+                <input type="checkbox" checked={allTicked} onChange={tickAll} className="size-5" />
+                {t`このページをすべて選ぶ`}
+              </label>
+            ) : null}
+          </div>
           {/* A card per row on a phone: the name, then the facts as labelled chips and lines. */}
           <ul className="flex flex-col divide-y divide-line rounded-2xl border border-line md:hidden">
             {rows.map((item) => {

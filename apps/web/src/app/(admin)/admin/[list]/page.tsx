@@ -28,24 +28,20 @@ export default async function AdminListPage({ params }: { params: Promise<{ list
   const title = pick(meta.title, i18n.locale);
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-5">
+    // As wide as the course list, so the columns (dates, chips) do not wrap.
+    <div className="mx-auto flex max-w-6xl flex-col gap-5">
       {meta.key === "authors" || meta.key === "tags" ? (
         <AdminBack href="/admin/posts">
           <Trans>ブログへ戻る</Trans>
         </AdminBack>
       ) : null}
-      <h1 className="text-3xl font-bold">{title}</h1>
-      <p className="text-lg text-muted">{pick(meta.intro, i18n.locale)}</p>
-      {meta.key === "posts" ? (
-        <div className="flex flex-wrap gap-x-6">
-          <Link href="/admin/authors" className="tap-target inline-flex w-fit items-center text-base underline underline-offset-4">
-            <Trans>書き手を管理する</Trans>
-          </Link>
-          <Link href="/admin/tags" className="tap-target inline-flex w-fit items-center text-base underline underline-offset-4">
-            <Trans>タグを管理する</Trans>
-          </Link>
-        </div>
-      ) : null}
+      {/* The list draws its own title, beside its "new" button (like the course list); the others need it here. */}
+      {page && meta.key !== "furigana" ? null : (
+        <>
+          <h1 className="text-3xl font-bold">{title}</h1>
+          <p className="text-lg text-muted">{pick(meta.intro, i18n.locale)}</p>
+        </>
+      )}
       {meta.key === "furigana" ? (
         <>
           <FuriganaOverview />
@@ -58,7 +54,18 @@ export default async function AdminListPage({ params }: { params: Promise<{ list
         // Readings are edited in place (no page per word); drawn afresh when approving above changes the server's first page.
         <FuriganaWords key={`${page.total ?? ""}:${page.items[0]?.id ?? ""}`} initial={page} />
       ) : page ? (
-        <AdminListTable meta={meta} initial={page} locale={i18n.locale} choices={choices} />
+        <AdminListTable meta={meta} initial={page} locale={i18n.locale} choices={choices}>
+          {meta.key === "posts" ? (
+            <div className="flex flex-wrap gap-x-6">
+              <Link href="/admin/authors" className="tap-target inline-flex w-fit items-center text-base underline underline-offset-4">
+                <Trans>書き手を管理する</Trans>
+              </Link>
+              <Link href="/admin/tags" className="tap-target inline-flex w-fit items-center text-base underline underline-offset-4">
+                <Trans>タグを管理する</Trans>
+              </Link>
+            </div>
+          ) : null}
+        </AdminListTable>
       ) : (
         <p role="alert" className="rounded-2xl bg-surface p-6 text-lg font-bold text-danger">
           <Trans>{title}を読み込めませんでした。しばらくしてから、ページを開き直してください。</Trans>
