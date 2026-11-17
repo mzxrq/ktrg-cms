@@ -2,7 +2,7 @@ import type { GalleryPhoto, RouteDetail, RoutePoint } from "../content";
 import { stampableByDefault, type PointKind } from "../point-kinds";
 import { areaFromBounds, sketchFromPoints } from "../route-geometry";
 import { climbM, descentM, elevationsOf, lengthKm, type LngLatEle } from "./line";
-import { capLegs, joinLegs, legsFromJoined, pathStops, reconcileLegs, sidePairs, splitLine, type Leg } from "./legs";
+import { capLegs, joinLegs, legsFromJoined, offLineKeys, pathStops, reconcileLegs, sidePairs, splitLine, type Leg } from "./legs";
 import type { Translations } from "./content-locales";
 import type { AccessPoint } from "../access-points";
 import type { TechnicalLevel } from "../grading";
@@ -163,7 +163,7 @@ function legsFromServer(route: AdminRoute, places: PlaceDraft[], line: LngLatEle
     ...(l.ride ? { ride: l.ride } : {}),
     ...(l.via && l.via.length > 0 ? { via: l.via } : {}),
   }));
-  const kept = reconcileLegs(stops, saved, sidePairs(places));
+  const kept = reconcileLegs(stops, saved, sidePairs(places), offLineKeys(places));
   return kept.length > 0 ? kept : splitLine(stops, line);
 }
 
@@ -315,7 +315,7 @@ function withLine(d: RouteDraft, points: LngLatEle[], legs: readonly Leg[] = d.l
 /** The legs as the line: the legs are made to fit the stops, thinned to the point budget and joined. */
 function withLegs(d: RouteDraft, legs: readonly Leg[]): RouteDraft {
   const stops = pathStops(d.places);
-  const fitted = capLegs(reconcileLegs(stops, legs, sidePairs(d.places)));
+  const fitted = capLegs(reconcileLegs(stops, legs, sidePairs(d.places), offLineKeys(d.places)));
   return { ...withLine(d, fitted.length > 0 ? joinLegs(stops, fitted).line : [], fitted), legs: fitted };
 }
 
@@ -330,7 +330,7 @@ function syncLegs(d: RouteDraft): RouteDraft {
     const cut = splitLine(stops, d.line); // none when the stops do not follow the line: it stays as it is
     return cut.length > 0 ? withLegs(d, cut) : d;
   }
-  const fitted = reconcileLegs(stops, d.legs, sidePairs(d.places));
+  const fitted = reconcileLegs(stops, d.legs, sidePairs(d.places), offLineKeys(d.places));
   return fitted === d.legs ? d : withLegs(d, fitted);
 }
 

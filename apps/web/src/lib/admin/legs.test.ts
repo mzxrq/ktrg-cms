@@ -318,3 +318,27 @@ describe("a place not connected to the route", () => {
     expect(pairs.map((p) => `${p.from.key}>${p.to.key}`)).toEqual(["a>side"]);
   });
 });
+
+// 2026-11-17, user: a waypoint switched to 寄り道 kept the main line running through it (2 -> side -> 3). Its two legs were
+// glued into one 2 -> 3 leg; for a side trip they must not be.
+describe("a waypoint on the line that becomes a side trip", () => {
+  const was = [
+    { key: "a", lat: 34.0, lng: 135.0, stopBy: false },
+    { key: "mid", lat: 33.99, lng: 134.99, stopBy: false },
+    { key: "b", lat: 34.01, lng: 135.01, stopBy: false },
+  ];
+  const toMid: Leg = { from: "a", to: "mid", points: [[135.0, 34.0], [134.99, 33.99]] };
+  const fromMid: Leg = { from: "mid", to: "b", points: [[134.99, 33.99], [135.01, 34.01]] };
+  const now = was.map((p) => (p.key === "mid" ? { ...p, stopBy: true } : p));
+
+  test("leaves the main line: its first leg becomes its side trip, and the route leg is left to draw", () => {
+    const kept = reconcileLegs(pathStops(now), [toMid, fromMid], sidePairs(now));
+    expect(kept.map((l) => [l.from, l.to, !!l.side])).toEqual([["a", "mid", true]]);
+  });
+
+  test("a waypoint that is removed (not made a side trip) still has its two legs joined into one", () => {
+    const gone = was.filter((p) => p.key !== "mid");
+    const kept = reconcileLegs(pathStops(gone), [toMid, fromMid], sidePairs(gone));
+    expect(kept.map((l) => [l.from, l.to])).toEqual([["a", "b"]]);
+  });
+});
