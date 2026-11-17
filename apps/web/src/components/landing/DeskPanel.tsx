@@ -3,6 +3,7 @@ import { Trans } from "@lingui/react/macro";
 import { Waves } from "@/components/landing/Decor";
 import { CreditBadge } from "@/components/PhotoCredit";
 import type { PanelPhoto } from "@/lib/landing-desktop";
+import { focusStyle } from "@/lib/photo-focus";
 
 /**
  * What a desktop adds to the journey's stage (docs/landing-desktop-design.md): the picture panel on the right (a course photo
@@ -17,7 +18,7 @@ export function DeskPanel({ photos }: { photos: PanelPhoto[] }) {
       <div data-picture="" aria-hidden="true">
         {photos.map((p, i) => (
           <div key={i} data-photo={i}>
-            <Image src={p.src} alt="" fill sizes="60vw" className="object-cover" unoptimized={p.src.startsWith("http")} />
+            <Image src={p.src} alt="" fill sizes="60vw" className="object-cover" style={focusStyle(p.focus)} unoptimized={p.src.startsWith("http")} />
           </div>
         ))}
         <div data-veil="" />

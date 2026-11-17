@@ -61,6 +61,9 @@ export interface RouteRow {
   photoUrl: string | null;
   /** Who took the photo / where it is from, shown on it. */
   photoCredit: string | null;
+  /** Where the middle of the photo is, in percent from the left and the top (null: the middle); both or neither. */
+  photoFocusX: number | null;
+  photoFocusY: number | null;
   sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
@@ -168,6 +171,9 @@ export interface RouteFields {
   translations: RouteTranslations;
   photoUrl: string | null;
   photoCredit: string | null;
+  /** Where the middle of the photo is, in percent from the left and the top (null: the middle); both or neither. */
+  photoFocusX: number | null;
+  photoFocusY: number | null;
 }
 
 export interface SpotFields {

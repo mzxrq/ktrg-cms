@@ -56,6 +56,9 @@ export interface AdminRoute {
   photoUrl: string | null;
   /** Who took the photo / where it is from, shown with it; may hold links. */
   photoCredit?: string | null;
+  /** Where the middle of the photo is, in percent; both or neither. */
+  photoFocusX?: number | null;
+  photoFocusY?: number | null;
   sortOrder: number;
   createdAt: string;
   updatedAt: string;

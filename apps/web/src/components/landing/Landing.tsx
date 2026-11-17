@@ -414,6 +414,7 @@ function CourseCapsules({ list, locale, reveal = false }: { list: RouteSummary[]
             name={<NameRuby title={pickText(locale, route.nameJa, route.nameEn)} reading={route.nameKana} />}
             place={route.prefecture || route.municipalities.length > 0 ? <PlaceLine prefecture={route.prefecture} place={municipalityName(locale, route.municipalities)} locale={locale} /> : null}
             photo={route.photoUrl}
+            focus={route.photoFocus}
           />
         );
         return (

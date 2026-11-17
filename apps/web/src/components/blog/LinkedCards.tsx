@@ -15,7 +15,7 @@ export function RouteCard({ route, locale }: { route: RouteSummary; locale: stri
   return (
     <Link href={`/routes/${route.id}`} className={card}>
       <span className="relative block w-28 shrink-0 sm:w-40">
-        <RoutePhoto src={route.photoUrl} alt={name?.text ?? ""} />
+        <RoutePhoto src={route.photoUrl} alt={name?.text ?? ""} focus={route.photoFocus} />
       </span>
       <span className="flex min-w-0 flex-1 flex-col gap-1 p-4">
         <span className="text-base text-muted">

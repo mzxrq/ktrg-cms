@@ -66,7 +66,7 @@ async function mapRoutes(routes: RouteSummary[], places: PlaceItem[], viewer: Vi
                 ? [{ id: p.id, category: categoryOfKind(p.kind), name: pointName.text, nameLang: pointName.lang, position: { lat: p.position.lat, lng: p.position.lng } }]
                 : [];
             });
-            photo = detail.photoUrl ? { src: detail.photoUrl, alt: name?.text ?? detail.nameJa, credit: detail.photoCredit ?? null } : null;
+            photo = detail.photoUrl ? { src: detail.photoUrl, alt: name?.text ?? detail.nameJa, credit: detail.photoCredit ?? null, focus: detail.photoFocus ?? null } : null;
             const numbers = stopNumbers(detail);
             spots = detail.spots.flatMap((s): MapScreenSpot[] => {
               const spotName = pickText(locale, s.nameJa, s.nameEn);

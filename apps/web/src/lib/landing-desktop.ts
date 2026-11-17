@@ -1,5 +1,6 @@
 // The rules of the desktop journey (docs/landing-desktop-design.md): which screens get which scene, which photos stand in
 // the picture panel, and whether the beats fit the stage. Pure: no React, no DOM, so they are unit-tested.
+import type { PhotoFocus } from "./photo-focus";
 import { previewRoutes } from "./landing-story";
 
 /** The scroll scene runs on any screen tall enough to hold a beat, when the visitor allows motion. */
@@ -17,14 +18,14 @@ export const RIDGE_ROOM_PX = 96;
 /** On a phone the ridge lies under the words (its drawing, caption and padding are about this tall), so a beat must leave all of it. */
 export const PHONE_RIDGE_ROOM_PX = 232;
 
-export type PanelPhoto = { src: string; credit: string | null };
+export type PanelPhoto = { src: string; credit: string | null; focus?: PhotoFocus | null };
 
 /**
  * The photos behind the picture panel: course photos (published courses first, in course order, no repeated picture), then
  * the first banner photo, then `fallback`, so there are always `count` photos and none is empty. The input is not changed.
  */
 export function panelPhotos(
-  routes: readonly { status: string; order: number; photoUrl: string | null; photoCredit?: string | null }[],
+  routes: readonly { status: string; order: number; photoUrl: string | null; photoCredit?: string | null; photoFocus?: PhotoFocus | null }[],
   banner: string | null,
   fallback: string,
   count = 2,
@@ -32,10 +33,10 @@ export function panelPhotos(
   chosen: readonly (string | null)[] = [],
 ): PanelPhoto[] {
   const out: PanelPhoto[] = [];
-  const add = (src: string | null | undefined, credit: string | null) => {
-    if (src && out.length < count && !out.some((p) => p.src === src)) out.push({ src, credit });
+  const add = (src: string | null | undefined, credit: string | null, focus: PhotoFocus | null = null) => {
+    if (src && out.length < count && !out.some((p) => p.src === src)) out.push({ src, credit, ...(focus ? { focus } : {}) });
   };
-  for (const r of previewRoutes(routes, routes.length)) add(r.photoUrl, r.photoCredit ?? null);
+  for (const r of previewRoutes(routes, routes.length)) add(r.photoUrl, r.photoCredit ?? null, r.photoFocus ?? null);
   add(banner, null);
   add(fallback, null);
   while (out.length < count) out.push({ src: fallback, credit: null }); // the same fallback twice rather than an empty panel
