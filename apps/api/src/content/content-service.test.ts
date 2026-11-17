@@ -341,7 +341,7 @@ describe("what visitors see", () => {
 
     expect((await svc.publicRoute(r.id))?.route.rides).toEqual([]);
     await svc.publishSpot(ADMIN, port.id);
-    expect((await svc.publicRoute(r.id))?.route.rides).toEqual([{ spotId: port.id, mode: "ferry", minutes: 20 }]);
+    expect((await svc.publicRoute(r.id))?.route.rides).toEqual([{ spotId: port.id, mode: "ferry", minutes: 20, start: [135, 34], end: [135.01, 34.01] }]);
     for (const bad of [{ mode: "rocket", minutes: 20 }, { mode: "ferry", minutes: 0 }, { mode: "ferry", minutes: 1.5 }, "ferry"]) {
       expect(await svc.updateRoute(ADMIN, r.id, saved.value.updatedAt, line(bad) as never)).toEqual({ ok: false, reason: "invalid_line" });
     }

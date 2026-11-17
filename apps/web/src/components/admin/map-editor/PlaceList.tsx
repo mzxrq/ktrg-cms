@@ -121,8 +121,13 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
               <button type="button" aria-pressed={p.stampable} onClick={() => onPatchPlace(p.key, { stampable: !p.stampable })} className={chipToggle(p.stampable)}>
                 {t`スタンプ`}
               </button>
-              <button type="button" aria-pressed={p.stopBy} onClick={() => onPatchPlace(p.key, p.stopBy ? { stopBy: false, detached: false } : { stopBy: true })} className={chipToggle(p.stopBy)}>
+              {/* 寄り道 and 道とつながらない are one choice of three (on the way / side trip / not connected): a detached place is
+                  stored as a side trip, so 寄り道 lights only for a plain one, and pressing it on a detached place makes it plain. */}
+              <button type="button" aria-pressed={p.stopBy && !p.detached} onClick={() => onPatchPlace(p.key, p.stopBy && !p.detached ? { stopBy: false, detached: false } : { stopBy: true, detached: false })} className={chipToggle(p.stopBy && !p.detached)}>
                 {t`寄り道`}
+              </button>
+              <button type="button" aria-pressed={!!p.detached} onClick={() => onPatchPlace(p.key, p.detached ? { stopBy: false, detached: false } : { stopBy: true, detached: true })} className={chipToggle(!!p.detached)} title={t`行けない場所（遠くから拝む経塚など）。地図には出ますが、番号も線もつきません。利用者に見せる言葉は、経由地のタブで変えられます。`}>
+                {t`道とつながらない`}
               </button>
               <button type="button" aria-pressed={!!p.info} onClick={() => onPatchPlace(p.key, { info: !p.info })} className={chipToggle(!!p.info)} title={t`見せるだけの場所です。スタンプは押せません。「現在、立ち入りできません」などを書けます。`}>
                 {t`案内のみ`}
