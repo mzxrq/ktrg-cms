@@ -1,8 +1,8 @@
 # Running on Lightsail (amd64, built from source)
 
-A second, independent deployment of ktrg-cms, alongside the EC2 one (`deploy/aws/`). Own database, own uploaded
-files, own domain — nothing here is shared with EC2 except the AWS account and (read-only) Supabase/R2 as the
-original data sources. Full write-up of how this was built: [docs/lightsail-setup-guide.md](../../docs/lightsail-setup-guide.md).
+**The production backend.** Originally built as a second environment alongside an EC2 server; that EC2 instance
+was terminated on 2026-11-17 and this is now the real deployment. Full write-up of how it was built (including why
+it differs from the old EC2 setup): [docs/lightsail-setup-guide.md](../../docs/lightsail-setup-guide.md).
 
 ```
 visitor ─https─> nginx ─/api/*───> api:3001 (ktrg-api) ──> db:5432 (ktrg-db, PostgreSQL 18, official image)

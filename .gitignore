@@ -88,7 +88,6 @@ Desktop.ini
 !COMMANDS.md
 !docs/
 !docs/*.md
-!deploy/aws/README.md
 !deploy/lightsail/README.md
 
 # Database dumps

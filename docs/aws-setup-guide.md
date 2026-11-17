@@ -1,8 +1,13 @@
 # AWS setup guide: step by step
 
+**Historical — this EC2 server was terminated on 2026-11-17.** `deploy/aws/` and `.github/workflows/deploy-aws.yml`
+were removed with it. The production backend now runs on Lightsail instead — see
+[docs/lightsail-setup-guide.md](lightsail-setup-guide.md) and [deploy/lightsail/README.md](../deploy/lightsail/README.md).
+This guide is kept for reference: the overall pattern (ECR, Parameter Store, S3 backups, systemd timers, Docker
+Compose) is the same one Lightsail reuses, just adapted for a host with no instance role and no Session Manager.
+
 How the ktrg site was moved onto one EC2 server, in the order it was done, with what each command does and why.
-Plan: 葛城修験観光アプリ_設計書 (AWS デプロイメント手順書). Day-to-day operation (deploying, settings, backups) is in
-[deploy/aws/README.md](../deploy/aws/README.md); this guide is for learning how the pieces fit, or for doing it all again.
+Plan: 葛城修験観光アプリ_設計書 (AWS デプロイメント手順書).
 
 ```
 visitor ─https─> nginx ─/api/*───> api:3001 ──> db:5432 (PostgreSQL 18)

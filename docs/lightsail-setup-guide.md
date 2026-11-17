@@ -1,5 +1,19 @@
 # Lightsail setup guide: step by step
 
+**Note on what's actually live vs. what this guide describes.** This is a general reference plan, written before
+(and independently of) the server that actually got built. The live server at `52.199.244.32` differs from this
+guide in a few concrete ways: it uses IAM user **`anupap`**'s own access key (not a new `ktrg-server` user — root
+access to create new IAM users wasn't available), files live in **`/opt/ktrg-lightsail`** (not `/opt/ktrg`), the
+deploy scripts are a fork at **[deploy/lightsail/](../deploy/lightsail/)** (not `deploy/aws/` reused in place),
+the backup bucket is **`dev-ktrg-lightsail-backups-712723095627`** (not `ktrg-backups-712723095627` — `anupap`'s
+policy only allows bucket names starting `dev-`/`backend-`), and `web`/`api` images build from source on each
+deploy rather than being pushed to ECR (this host turned out to be amd64; the EC2 images were ARM64-only).
+`deploy/aws/` and EC2 itself no longer exist (EC2 was terminated 2026-11-17) — see
+[deploy/lightsail/README.md](../deploy/lightsail/README.md) for how the live server is actually operated.
+The alarms section below (Lightsail's own `put-alarm`) was never actually set up; the CloudWatch-agent path was
+attempted instead and left unresolved — see that guide's own lessons-learned for specifics. Treat everything below
+as a clean-slate plan for doing this again, not as a description of the current server.
+
 How to put the same ktrg site on **one Amazon Lightsail instance** instead of one EC2 instance, in the order to do
 it, with what each command does and why. The containers, the nginx config, the database and almost every script in
 [deploy/aws/](../deploy/aws/) stay the same; what changes is the machine around them (region, architecture, how the
@@ -7,7 +21,8 @@ server gets AWS permissions, how you log in, and how a deploy is triggered).
 
 Read [aws-setup-guide.md](aws-setup-guide.md) first if you want the reasoning behind the parts that are unchanged;
 this guide repeats only what Lightsail does differently, and gives every command in full. Day-to-day operation is in
-[deploy/aws/README.md](../deploy/aws/README.md).
+[deploy/lightsail/README.md](../deploy/lightsail/README.md) for the live server; `deploy/aws/` referenced throughout
+below no longer exists (EC2 was terminated).
 
 ```
 visitor ─https─> nginx ─/api/*───> api:3001 ──> db:5432 (PostgreSQL 18)
