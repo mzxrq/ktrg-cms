@@ -318,6 +318,10 @@ export function Landing({
             >
               {/* Our own wording of well-known facts. */}
               <p className="text-lg leading-9">{w.storyText}</p>
+              {/* The same way into /story as the first-time beat (Journey.tsx). */}
+              <Link href="/story" className="tap-target inline-flex items-center text-lg font-bold underline underline-offset-4">
+                <Trans>ストーリーを読む</Trans>
+              </Link>
               <dl>
                 <Fact term={<Trans>コース</Trans>} value={<Trans>全{TOTAL_ROUTES}区間</Trans>} />
                 <Fact term={<Trans>長さ</Trans>} value={<Trans>約{TRAIL_KM}km</Trans>} />

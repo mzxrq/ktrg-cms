@@ -54,6 +54,9 @@ export default async function SitemapPage() {
         <LinkRow href="/">
           <Trans>ホーム</Trans>
         </LinkRow>
+        <LinkRow href="/story">
+          <Trans>葛城修験のものがたり</Trans>
+        </LinkRow>
       </Group>
 
       <Group title={<Trans>マップ</Trans>}>
