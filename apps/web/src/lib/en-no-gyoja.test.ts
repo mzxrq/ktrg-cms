@@ -24,3 +24,10 @@ test("the story chapter shows the drawing, not the council's composite, and the 
   expect(landing).not.toContain("story_img");
   expect(existsSync(join(src, "..", "public", "home", "story_img.png"))).toBe(false);
 });
+
+// 2026-11-17 (user): the first-time home shows the drawing too, beside the facts of the "what it is" beat (beside, not under,
+// so the beat still fits the screen and the scroll scene stays).
+test("the first-time journey shows the drawing beside the facts", () => {
+  const journey = read("components", "landing", "Journey.tsx");
+  expect(journey).toMatch(/<\/dl>\s*<figure[^>]*>\s*<EnNoGyoja /);
+});

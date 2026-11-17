@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
 import { buttonStyle } from "@/components/button";
 import { Chapter } from "@/components/landing/Chapter";
-import { SutraScroll, StaffAndWaves } from "@/components/landing/Decor";
+import { EnNoGyoja, SutraScroll, StaffAndWaves } from "@/components/landing/Decor";
 import { DeskPanel } from "@/components/landing/DeskPanel";
 import { JourneyScene } from "@/components/landing/JourneyScene";
 import { LandingHero } from "@/components/landing/LandingHero";
@@ -48,12 +48,20 @@ export function Journey({ slides, routes, locale, w, chapterPhotos = [] }: { sli
             <Link href="/story" className="tap-target inline-flex items-center text-lg font-bold underline underline-offset-4">
               <Trans>ストーリーを読む</Trans>
             </Link>
-            {/* One ruled row per fact on a phone (English values are longer), three columns from a wider box. */}
-            <dl className="grid grid-cols-1 gap-3 @[34rem]:grid-cols-3 @[34rem]:text-center">
-              <Fact term={<Trans>コース</Trans>} value={<Trans>全{TOTAL_ROUTES}区間</Trans>} />
-              <Fact term={<Trans>長さ</Trans>} value={<Trans>約{TRAIL_KM}km</Trans>} />
-              <Fact term={<Trans>経塚</Trans>} value={<Trans>{TOTAL_STAMPS}か所</Trans>} />
-            </dl>
+            {/* The drawing stands beside the facts, not under them: a taller beat would not fit the screen and the scene would
+                fall back to the stacked page (JourneyScene's beatsFit). */}
+            <div className="flex items-end gap-4">
+              {/* One ruled row per fact on a phone (English values are longer), three columns from a wider box. */}
+              <dl className="grid min-w-0 flex-1 grid-cols-1 gap-3 @[34rem]:grid-cols-3 @[34rem]:text-center">
+                <Fact term={<Trans>コース</Trans>} value={<Trans>全{TOTAL_ROUTES}区間</Trans>} />
+                <Fact term={<Trans>長さ</Trans>} value={<Trans>約{TRAIL_KM}km</Trans>} />
+                <Fact term={<Trans>経塚</Trans>} value={<Trans>{TOTAL_STAMPS}か所</Trans>} />
+              </dl>
+              <figure className="flex w-28 shrink-0 flex-col gap-1 @[34rem]:w-36">
+                <EnNoGyoja className="h-auto w-full" />
+                <figcaption className="text-base opacity-90">{w.storyCaption}</figcaption>
+              </figure>
+            </div>
           </Chapter>
         </div>
 

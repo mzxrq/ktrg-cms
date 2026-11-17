@@ -479,8 +479,8 @@ msgstr "{title}を直す（管理）"
 msgid "{title}を読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "{title}を読み込めませんでした。しばらくしてから、ページを開き直してください。"
 
-#: src/components/landing/Journey.tsx:55
-#: src/components/landing/Landing.tsx:324
+#: src/components/landing/Journey.tsx:58
+#: src/components/landing/Landing.tsx:328
 msgid "{TOTAL_STAMPS}か所"
 msgstr "{TOTAL_STAMPS}か所"
 
@@ -905,7 +905,7 @@ msgstr "YouTube、またはアップロードした動画の、https:// で始�
 msgid "アウトドア"
 msgstr "アウトドア"
 
-#: src/app/(public)/sitemap/page.tsx:100
+#: src/app/(public)/sitemap/page.tsx:103
 #: src/components/SiteHeader.tsx:216
 msgid "アカウント"
 msgstr "アカウント"
@@ -1268,7 +1268,7 @@ msgstr "お店・食事"
 #: src/app/(public)/places/[id]/page.tsx:45
 #: src/app/(public)/places/page.tsx:12
 #: src/app/(public)/places/page.tsx:37
-#: src/app/(public)/sitemap/page.tsx:64
+#: src/app/(public)/sitemap/page.tsx:67
 #: src/components/SiteFooter.tsx:26
 #: src/components/SiteHeader.tsx:275
 msgid "お店と施設"
@@ -1280,7 +1280,7 @@ msgstr "お探しのものは、見つかりませんでした。"
 
 #: src/app/(public)/notices/page.tsx:12
 #: src/app/(public)/notices/page.tsx:26
-#: src/app/(public)/sitemap/page.tsx:84
+#: src/app/(public)/sitemap/page.tsx:87
 #: src/components/landing/TrailNotices.tsx:89
 msgid "お知らせ"
 msgstr "お知らせ"
@@ -1387,12 +1387,12 @@ msgstr "ゲストのまま使う"
 #: src/app/(admin)/admin/routes/page.tsx:24
 #: src/app/(public)/blog/[id]/page.tsx:106
 #: src/app/(public)/routes/page.tsx:16
-#: src/app/(public)/sitemap/page.tsx:68
+#: src/app/(public)/sitemap/page.tsx:71
 #: src/components/admin/AdminNav.tsx:37
 #: src/components/admin/FuriganaOverview.tsx:127
 #: src/components/BookmarkList.tsx:55
-#: src/components/landing/Journey.tsx:53
-#: src/components/landing/Landing.tsx:322
+#: src/components/landing/Journey.tsx:56
+#: src/components/landing/Landing.tsx:326
 #: src/components/map/MapScreenCanvas.tsx:647
 #: src/components/places/DirectoryView.tsx:81
 #: src/components/TabBar.tsx:88
@@ -1470,7 +1470,7 @@ msgstr "コースのすべての場所でスタンプを押すと、そのコー
 msgid "コースのラリー"
 msgstr "コースのラリー"
 
-#: src/app/(public)/sitemap/page.tsx:70
+#: src/app/(public)/sitemap/page.tsx:73
 msgid "コースの一覧"
 msgstr "コースの一覧"
 
@@ -2148,7 +2148,7 @@ msgstr "コンプリート証"
 msgid "コンプリート証を保存・共有"
 msgstr "コンプリート証を保存・共有"
 
-#: src/app/(public)/sitemap/page.tsx:121
+#: src/app/(public)/sitemap/page.tsx:124
 msgid "ご案内"
 msgstr "ご案内"
 
@@ -2431,6 +2431,7 @@ msgid "すでに公開をやめた経由地があります（{names}）。「経
 msgstr "すでに公開をやめた経由地があります（{names}）。「経由地」タブで確かめてください。"
 
 #: src/components/landing/Journey.tsx:49
+#: src/components/landing/Landing.tsx:323
 msgid "ストーリーを読む"
 msgstr "ストーリーを読む"
 
@@ -2807,7 +2808,7 @@ msgstr "のぼり"
 msgid "のぼり {0}m"
 msgstr "のぼり {0}m"
 
-#: src/components/landing/Landing.tsx:382
+#: src/components/landing/Landing.tsx:386
 msgid "のものです。"
 msgstr "のものです。"
 
@@ -2965,7 +2966,7 @@ msgstr "パソコン幅"
 #: src/app/(public)/badges/page.tsx:16
 #: src/app/(public)/badges/page.tsx:41
 #: src/app/(public)/rallies/page.tsx:38
-#: src/app/(public)/sitemap/page.tsx:93
+#: src/app/(public)/sitemap/page.tsx:96
 #: src/components/landing/HomeProgress.tsx:113
 msgid "バッジ"
 msgstr "バッジ"
@@ -3051,7 +3052,7 @@ msgstr "ふつうは、7日後に削除する方法を使います。本人に�
 
 #: src/app/(public)/bookmarks/page.tsx:11
 #: src/app/(public)/bookmarks/page.tsx:20
-#: src/app/(public)/sitemap/page.tsx:105
+#: src/app/(public)/sitemap/page.tsx:108
 #: src/components/landing/HomeProgress.tsx:116
 #: src/components/SiteHeader.tsx:245
 msgid "ブックマーク"
@@ -3084,7 +3085,7 @@ msgid "フッター"
 msgstr "フッター"
 
 #: src/app/(admin)/admin/pages/page.tsx:25
-#: src/app/(public)/sitemap/page.tsx:129
+#: src/app/(public)/sitemap/page.tsx:132
 #: src/components/admin/PageTextEditor.tsx:60
 #: src/components/SiteFooter.tsx:41
 #: src/components/SiteHeader.tsx:278
@@ -3109,7 +3110,7 @@ msgstr "プレビュー"
 #: src/app/(public)/blog/[id]/page.tsx:100
 #: src/app/(public)/blog/page.tsx:16
 #: src/app/(public)/blog/page.tsx:53
-#: src/app/(public)/sitemap/page.tsx:79
+#: src/app/(public)/sitemap/page.tsx:82
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/BlogCard.tsx:22
 #: src/components/SiteFooter.tsx:23
@@ -3117,7 +3118,7 @@ msgstr "プレビュー"
 msgid "ブログ"
 msgstr "ブログ"
 
-#: src/app/(public)/sitemap/page.tsx:81
+#: src/app/(public)/sitemap/page.tsx:84
 msgid "ブログの一覧"
 msgstr "ブログの一覧"
 
@@ -3137,7 +3138,7 @@ msgstr "ブログをすべて見る"
 #: src/app/(public)/profile/page.tsx:15
 #: src/app/(public)/profile/page.tsx:26
 #: src/app/(public)/settings/passkeys/page.tsx:23
-#: src/app/(public)/sitemap/page.tsx:102
+#: src/app/(public)/sitemap/page.tsx:105
 #: src/components/ProfileCard.tsx:40
 #: src/components/ProfileSettings.tsx:190
 msgid "プロフィール"
@@ -3379,7 +3380,7 @@ msgid "まっすぐつなぐ"
 msgstr "まっすぐつなぐ"
 
 #: src/app/(public)/map/page.tsx:16
-#: src/app/(public)/sitemap/page.tsx:59
+#: src/app/(public)/sitemap/page.tsx:62
 #: src/components/TabBar.tsx:87
 msgid "マップ"
 msgstr "マップ"
@@ -3623,7 +3624,7 @@ msgid "やり直す"
 msgstr "やり直す"
 
 #: src/app/(admin)/admin/pages/page.tsx:22
-#: src/app/(public)/sitemap/page.tsx:123
+#: src/app/(public)/sitemap/page.tsx:126
 #: src/components/admin/PageTextEditor.tsx:60
 #: src/components/SiteFooter.tsx:29
 #: src/components/SiteHeader.tsx:276
@@ -3638,7 +3639,7 @@ msgstr "よく見られたページ"
 msgid "よみ"
 msgstr "よみ"
 
-#: src/app/(public)/sitemap/page.tsx:132
+#: src/app/(public)/sitemap/page.tsx:135
 #: src/components/SiteFooter.tsx:32
 #: src/components/SiteHeader.tsx:279
 msgid "ライセンス情報"
@@ -3653,7 +3654,7 @@ msgstr "ライト"
 #: src/app/(public)/rallies/[id]/page.tsx:95
 #: src/app/(public)/rallies/page.tsx:20
 #: src/app/(public)/rallies/page.tsx:35
-#: src/app/(public)/sitemap/page.tsx:88
+#: src/app/(public)/sitemap/page.tsx:91
 #: src/components/admin/AdminNav.tsx:38
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/HomeProgress.tsx:110
@@ -3671,7 +3672,7 @@ msgstr "ラリー（管理）"
 msgid "ラリーがまだありません。「新しいラリー」から作ってください。"
 msgstr "ラリーがまだありません。「新しいラリー」から作ってください。"
 
-#: src/app/(public)/sitemap/page.tsx:90
+#: src/app/(public)/sitemap/page.tsx:93
 msgid "ラリーとスタンプ"
 msgstr "ラリーとスタンプ"
 
@@ -3728,7 +3729,7 @@ msgstr "ラリーを削除しても、スタンプやコースの達成は消え
 msgid "ラリーを直す（管理）"
 msgstr "ラリーを直す（管理）"
 
-#: src/components/landing/Journey.tsx:92
+#: src/components/landing/Journey.tsx:100
 #: src/components/landing/Landing.tsx:124
 #: src/components/RestoreStamps.tsx:44
 msgid "ラリーを見る"
@@ -3815,7 +3816,7 @@ msgstr "ログアウトする"
 
 #: src/app/(public)/login/page.tsx:15
 #: src/app/(public)/login/page.tsx:32
-#: src/app/(public)/sitemap/page.tsx:108
+#: src/app/(public)/sitemap/page.tsx:111
 #: src/components/auth/LoginFlow.tsx:84
 #: src/components/auth/LoginFlow.tsx:103
 #: src/components/auth/PasswordUndo.tsx:35
@@ -3846,7 +3847,7 @@ msgstr "ログインできませんでした。この端末で顔・指紋のロ
 
 #: src/app/(public)/settings/passkeys/page.tsx:12
 #: src/app/(public)/settings/passkeys/page.tsx:26
-#: src/app/(public)/sitemap/page.tsx:117
+#: src/app/(public)/sitemap/page.tsx:120
 #: src/components/ProfileSettings.tsx:222
 msgid "ログインの方法"
 msgstr "ログインの方法"
@@ -4413,13 +4414,13 @@ msgstr "入力に、まちがいがあるようです。見直して、もう一
 msgid "全{count}区間のある場所を示した図"
 msgstr "全{count}区間のある場所を示した図"
 
-#: src/components/landing/Journey.tsx:53
-#: src/components/landing/Landing.tsx:322
+#: src/components/landing/Journey.tsx:56
+#: src/components/landing/Landing.tsx:326
 msgid "全{TOTAL_ROUTES}区間"
 msgstr "全{TOTAL_ROUTES}区間"
 
 #: src/components/landing/Landing.tsx:284
-#: src/components/landing/Landing.tsx:356
+#: src/components/landing/Landing.tsx:360
 msgid "全{TOTAL_ROUTES}区間を見る"
 msgstr "全{TOTAL_ROUTES}区間を見る"
 
@@ -4665,7 +4666,7 @@ msgstr "写真がない"
 msgid "写真と動画"
 msgstr "写真と動画"
 
-#: src/components/landing/Landing.tsx:378
+#: src/components/landing/Landing.tsx:382
 msgid "写真と文章の一部は、"
 msgstr "写真と文章の一部は、"
 
@@ -4850,7 +4851,7 @@ msgid "利用者に見せる言葉"
 msgstr "利用者に見せる言葉"
 
 #: src/app/(admin)/admin/pages/page.tsx:24
-#: src/app/(public)/sitemap/page.tsx:126
+#: src/app/(public)/sitemap/page.tsx:129
 #: src/components/admin/PageTextEditor.tsx:60
 #: src/components/SiteFooter.tsx:38
 #: src/components/SiteHeader.tsx:277
@@ -6194,7 +6195,7 @@ msgstr "新しく作るには、名前（日本語）が必要です"
 
 #: src/app/(public)/register/page.tsx:15
 #: src/app/(public)/register/page.tsx:31
-#: src/app/(public)/sitemap/page.tsx:111
+#: src/app/(public)/sitemap/page.tsx:114
 #: src/components/auth/LoginFlow.tsx:153
 #: src/components/GuestNag.tsx:85
 #: src/components/landing/Landing.tsx:118
@@ -6671,7 +6672,7 @@ msgstr "海"
 
 #. placeholder {0}: ridge.courses
 #. placeholder {1}: ridge.topM
-#: src/components/landing/Journey.tsx:80
+#: src/components/landing/Journey.tsx:88
 msgid "海から山へ。{0}区間の道の高さを、順につなげた線です。いちばん高いところは約{1}m。"
 msgstr "海から山へ。{0}区間の道の高さを、順につなげた線です。いちばん高いところは約{1}m。"
 
@@ -7206,8 +7207,8 @@ msgstr "約{n}km"
 msgid "約{n}m"
 msgstr "約{n}m"
 
-#: src/components/landing/Journey.tsx:54
-#: src/components/landing/Landing.tsx:323
+#: src/components/landing/Journey.tsx:57
+#: src/components/landing/Landing.tsx:327
 msgid "約{TRAIL_KM}km"
 msgstr "約{TRAIL_KM}km"
 
@@ -7226,8 +7227,8 @@ msgstr "終了"
 #: src/components/admin/HomeTextFields.tsx:60
 #: src/components/admin/PlacePanel.tsx:44
 #: src/components/landing/DeskPanel.tsx:41
-#: src/components/landing/Journey.tsx:55
-#: src/components/landing/Landing.tsx:324
+#: src/components/landing/Journey.tsx:58
+#: src/components/landing/Landing.tsx:328
 #: src/components/map/MapScreenCanvas.tsx:647
 #: src/components/PointKindName.tsx:9
 msgid "経塚"
@@ -7634,7 +7635,11 @@ msgstr "葛城修験"
 msgid "葛城修験とは"
 msgstr "葛城修験とは"
 
-#: src/app/(public)/sitemap/page.tsx:61
+#: src/app/(public)/sitemap/page.tsx:58
+msgid "葛城修験のものがたり"
+msgstr "葛城修験のものがたり"
+
+#: src/app/(public)/sitemap/page.tsx:64
 msgid "葛城修験の地図"
 msgstr "葛城修験の地図"
 
@@ -7651,7 +7656,7 @@ msgstr "葛城修験の道"
 msgid "葛城修験の道のことや、歩いた日のことをお知らせします。"
 msgstr "葛城修験の道のことや、歩いた日のことをお知らせします。"
 
-#: src/components/landing/Landing.tsx:380
+#: src/components/landing/Landing.tsx:384
 msgid "葛城修験日本遺産活用推進協議会の公式サイト"
 msgstr "葛城修験日本遺産活用推進協議会の公式サイト"
 
@@ -7771,7 +7776,7 @@ msgstr "見やすさ"
 
 #: src/app/(public)/settings/page.tsx:12
 #: src/app/(public)/settings/page.tsx:28
-#: src/app/(public)/sitemap/page.tsx:114
+#: src/app/(public)/sitemap/page.tsx:117
 #: src/components/SiteHeader.tsx:265
 msgid "見やすさの設定"
 msgstr "見やすさの設定"
@@ -8135,7 +8140,7 @@ msgstr "通行止めなどがあれば、ここに表示されます。"
 
 #: src/app/(admin)/admin/pages/page.tsx:23
 #: src/app/(public)/rallies/page.tsx:42
-#: src/app/(public)/sitemap/page.tsx:96
+#: src/app/(public)/sitemap/page.tsx:99
 #: src/components/admin/PageTextEditor.tsx:60
 #: src/components/pages/PageViews.tsx:63
 msgid "遊び方"
@@ -8412,8 +8417,8 @@ msgstr "重複している場所をさがす"
 msgid "金曜日"
 msgstr "金曜日"
 
-#: src/components/landing/Journey.tsx:54
-#: src/components/landing/Landing.tsx:323
+#: src/components/landing/Journey.tsx:57
+#: src/components/landing/Landing.tsx:327
 msgid "長さ"
 msgstr "長さ"
 
