@@ -33,7 +33,7 @@ export function LandingHero({ slides, locale, line, title, children, bare = fals
       <div className={`relative ${bare ? "h-[min(78svh,44rem)]" : "h-80 tall:h-[min(78svh,44rem)]"} @[34rem]:h-96 @[42rem]:h-[30rem]`}>
         <HeroSlides slides={photos.length > 0 ? photos : [FALLBACK]}>
           <div className="absolute inset-0 bg-black/40" />
-          <div className={`absolute inset-0 mx-auto flex max-w-6xl flex-col items-center justify-center gap-5 px-12 py-6 ${bare ? "pt-12 pb-[calc(8rem+env(safe-area-inset-bottom))] md:pt-6 md:pb-24" : ""} text-center`}>
+          <div className={`absolute inset-0 mx-auto flex max-w-6xl flex-col items-center justify-center gap-5 px-12 py-6 ${bare ? "pb-[calc(9.5rem+env(safe-area-inset-bottom))] md:pb-24 pt-[4.5rem] md:pt-6" : ""} text-center`}>
             {/* The line and the title are one block: set vertically on a tall screen (the line to the right of the title, as
                 columns run right to left), across and centred on a low one. Signed in or not. */}
             {/* A greeting holds the visitor's name, of any length, so it is set across: a vertical column is capped at the picture's height
