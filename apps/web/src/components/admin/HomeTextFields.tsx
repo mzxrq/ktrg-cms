@@ -4,9 +4,7 @@ import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { HOME_PHOTO_SLOTS, parseHomeText, writeHomeText, type HomePhotoSlot, type HomeSlot } from "@/lib/home-text";
 import { Field, Section, TextArea, TextInput } from "./fields";
-import { PhotoLinkDetails } from "./PhotoLinkDetails";
-import { PhotoSlot } from "./PhotoSlot";
-import { PhotoUpload } from "./PhotoUpload";
+import { PhotoField } from "./PhotoField";
 
 const LONG: readonly HomeSlot[] = ["rallyText", "storyText"];
 
@@ -104,13 +102,7 @@ export function HomeTextFields({ lang, title, body, builtIn, onBody }: { lang: "
           const id = `home-${lang}-${slot}`;
           return (
             <Field key={slot} label={photoLabel[slot]} htmlFor={id}>
-              <PhotoUpload onUploaded={(url) => edit(slot, url)} />
-              <div className="mt-2">
-                <PhotoLinkDetails open={false}>
-                  <TextInput id={id} value={text[slot] ?? ""} onChange={(v) => edit(slot, v)} maxLength={500} placeholder="https://" />
-                </PhotoLinkDetails>
-              </div>
-              <PhotoSlot url={text[slot] ?? ""} className="mt-2 max-w-md" />
+              <PhotoField id={id} url={text[slot] ?? ""} onChange={(url) => edit(slot, url)} />
             </Field>
           );
         })}
