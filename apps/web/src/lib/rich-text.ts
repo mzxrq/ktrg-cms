@@ -202,6 +202,10 @@ const blockWords = (b: Block): string[] =>
   b.kind === "photo" || b.kind === "rule" || b.kind === "place" ? [] : b.kind === "table" ? [...b.head, ...b.rows.flat()].map(words) : b.kind === "ul" ? b.items.map(words) : b.kind === "card" ? [b.title, ...b.blocks.flatMap(blockWords)] : [words(b.parts)];
 
 /** The words of a long text, for a card that shows the beginning of a post: headings and list items included, photos not. */
+/** Every photo of a text, cards included, in reading order: the large photo view steps through them all. */
+export const photosOf = (blocks: Block[]): { src: string; alt: string }[] =>
+  blocks.flatMap((b) => (b.kind === "photo" ? [{ src: b.src, alt: b.alt }] : b.kind === "card" ? photosOf(b.blocks) : []));
+
 export function plainBody(text: string): string {
   return parseBlocks(text)
     .blocks.flatMap(blockWords)

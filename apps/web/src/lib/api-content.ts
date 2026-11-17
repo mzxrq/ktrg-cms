@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { focusFromApi } from "./photo-focus";
 import type { PublicPlace, PublicRally, PublicRallyDetail, PublicRoute, PublicSpot } from "./api-content-types";
 import type { RallyItem } from "./rally-model";
 import type { TrailNotice } from "./notices";
@@ -52,6 +53,7 @@ export function routeSummaryFromApi(r: PublicRoute, order: number, stampedCount 
     stampedCount,
     photoUrl: r.photoUrl,
     photoCredit: r.photoCredit ?? null,
+    photoFocus: focusFromApi(r.photoFocusX, r.photoFocusY),
   };
 }
 
@@ -170,6 +172,8 @@ export function routeDetailFromApi(
     updatedAt: r.updatedAt ?? null,
     photoUrl: r.photoUrl,
     photoCredit: r.photoCredit ?? null,
+    photoNameJa: r.photoNameJa ?? null,
+    photoNameEn: r.photoNameEn ?? null,
     walkStyle: walkStyleOf(r.walkStyle),
   };
 }

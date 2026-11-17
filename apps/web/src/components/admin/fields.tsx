@@ -265,6 +265,7 @@ export function NumberInput({
   integer = false,
   wide = false,
   ariaLabel,
+  readOnly = false,
 }: {
   id: string;
   value: number | null;
@@ -278,6 +279,8 @@ export function NumberInput({
   wide?: boolean;
   /** For a box with no visible label of its own (a table cell). */
   ariaLabel?: string;
+  /** Shown but not typed into (a number made automatically); it can still be focused and read. */
+  readOnly?: boolean;
 }) {
   const [typing, setTyping] = useState<string | null>(null);
   const shown = typing ?? (value === null ? "" : String(value));
@@ -292,6 +295,7 @@ export function NumberInput({
         max={max}
         step={step ?? (integer ? 1 : "any")}
         value={shown}
+        readOnly={readOnly}
         onFocus={() => setTyping(value === null ? "" : String(value))}
         onBlur={() => setTyping(null)}
         onChange={(e) => {
@@ -299,7 +303,7 @@ export function NumberInput({
           const n = e.target.value === "" ? null : Number(e.target.value);
           if (n === null || Number.isFinite(n)) onChange(n === null ? null : integer ? Math.round(n) : n);
         }}
-        className={`${inputClass} ${wide ? "max-w-56" : "max-w-40"}`}
+        className={`${inputClass} ${wide ? "max-w-56" : "max-w-40"} ${readOnly ? "cursor-default border-dashed bg-surface text-muted" : ""}`}
       />
       {suffix ? <span className="text-lg">{suffix}</span> : null}
     </div>

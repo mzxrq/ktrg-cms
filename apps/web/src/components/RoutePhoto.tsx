@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { focusStyle, type PhotoFocus } from "@/lib/photo-focus";
 import { Trans } from "@lingui/react/macro";
 import { CameraOffIcon } from "./icons";
 
@@ -7,9 +8,9 @@ import { CameraOffIcon } from "./icons";
  * with a crossed-out camera in the middle, so a card never looks broken while photos are still being collected.
  * An outside address is shown as it is (`unoptimized`), like the other photos: it may be on any host.
  */
-export function RoutePhoto({ src, alt }: { src: string | null; alt: string }) {
+export function RoutePhoto({ src, alt, focus }: { src: string | null; alt: string; /** The middle the editor chose. */ focus?: PhotoFocus | null }) {
   if (src) {
-    return <Image src={src} alt={alt} fill sizes="(min-width: 768px) 36rem, 100vw" className="object-cover" unoptimized={src.startsWith("https://")} />;
+    return <Image src={src} alt={alt} fill sizes="(min-width: 768px) 36rem, 100vw" className="object-cover" style={focusStyle(focus)} unoptimized={src.startsWith("https://")} />;
   }
   return (
     <span

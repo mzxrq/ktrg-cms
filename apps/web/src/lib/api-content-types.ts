@@ -41,6 +41,11 @@ export interface PublicRoute {
   sourceEn?: string | null;
   photoUrl: string | null;
   photoCredit?: string | null;
+  photoNameJa?: string | null;
+  photoNameEn?: string | null;
+  /** Where the middle of the photo is, in percent; both or neither. */
+  photoFocusX?: number | null;
+  photoFocusY?: number | null;
   sortOrder: number;
   status: "ready" | "soon";
   publishedSpotCount: number;

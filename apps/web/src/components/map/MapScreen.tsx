@@ -398,6 +398,7 @@ function CourseList({ routes, onChoose, locale }: { routes: MapScreenRoute[]; on
               name={r.nameKana ? <NameRuby title={{ text: r.name, lang: r.nameLang, fallback: false }} reading={r.nameKana} /> : <span lang={r.nameLang}>{r.name}</span>}
               place={r.prefecture || r.municipality ? <PlaceLine prefecture={r.prefecture} place={r.municipality} locale={locale} /> : null}
               photo={r.photo?.src ?? null}
+              focus={r.photo?.focus}
             />
           </button>
         </li>

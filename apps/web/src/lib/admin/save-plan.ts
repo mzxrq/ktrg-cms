@@ -52,6 +52,10 @@ export interface RouteBody {
   sourceEn: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
+  photoNameJa: string | null;
+  photoNameEn: string | null;
+  photoFocusX: number | null;
+  photoFocusY: number | null;
   geometry: RouteLine | null;
   lineVerified: boolean;
   lineSource: string | null;
@@ -142,6 +146,10 @@ export function routeBody(d: RouteDraft): RouteBody {
     sourceEn: nullIfEmpty(d.sourceEn),
     photoUrl: nullIfEmpty(d.photoUrl),
     photoCredit: nullIfEmpty(d.photoCredit),
+    photoNameJa: nullIfEmpty(d.photoNameJa),
+    photoNameEn: nullIfEmpty(d.photoNameEn),
+    photoFocusX: d.photoFocus?.x ?? null,
+    photoFocusY: d.photoFocus?.y ?? null,
     geometry: d.line.length >= 2 ? { type: "LineString", coordinates: d.line.map(coordinate), ...(d.legs.length > 0 ? { legs: d.legs.map((l) => ({ from: l.from, to: l.to, coordinates: l.points.map(coordinate), ...(l.side ? { side: true as const } : {}), ...(l.back ? { back: true as const } : {}), ...(l.ride ? { ride: l.ride } : {}), ...(l.via && l.via.length > 0 ? { via: l.via } : {}) })) } : {}) } : null,
     // "Checked" needs a named source (the server refuses it otherwise): without one the line is saved as not checked yet.
     lineVerified: d.lineVerified && d.lineSource.trim() !== "",
@@ -239,6 +247,11 @@ export function planSave(draft: RouteDraft, saved: RouteDraft | null): SaveStep[
     if (lateLine) after = { geometry: routeBody(draft).geometry, lineVerified: routeBody(draft).lineVerified, lineSource: nullIfEmpty(draft.lineSource) };
   } else {
     const diff = changed(routeBody(draft), saved ? routeBody(saved) : null);
+    // The photo's middle is one value in two numbers: the server takes them only together.
+    if ("photoFocusX" in diff || "photoFocusY" in diff) {
+      diff.photoFocusX = routeBody(draft).photoFocusX;
+      diff.photoFocusY = routeBody(draft).photoFocusY;
+    }
     // Redrawing the line cancels its check on the server; never send the line without saying what its check is.
     if ("geometry" in diff) {
       diff.lineVerified = routeBody(draft).lineVerified;
