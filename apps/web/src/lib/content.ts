@@ -61,6 +61,9 @@ export interface RouteSummary {
   photoUrl: string | null;
   /** Who took it / where it is from, shown with the photo (may hold links). */
   photoCredit?: string | null;
+  /** What the photo shows, shown with its credit in the large view. */
+  photoNameJa?: string | null;
+  photoNameEn?: string | null;
   /** Where the middle of the photo is: every crop keeps it in view (null: the middle). */
   photoFocus?: PhotoFocus | null;
 }

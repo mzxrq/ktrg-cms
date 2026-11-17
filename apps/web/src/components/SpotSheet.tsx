@@ -57,7 +57,7 @@ export function SpotSheet({
   // The main photo's name (what it shows) leads its credit in the cover's © tag, and describes it for screen readers.
   const photoName = pickText(locale, spot.photoNameJa ?? null, spot.photoNameEn ?? null)?.text;
   const photo = spot.photoUrl
-    ? { src: spot.photoUrl, alt: photoName ?? pickText(locale, spot.nameJa, spot.nameEn)?.text ?? spot.nameJa, credit: [photoName, spot.photoCredit].filter(Boolean).join(" — ") || null }
+    ? { src: spot.photoUrl, alt: photoName ?? pickText(locale, spot.nameJa, spot.nameEn)?.text ?? spot.nameJa, caption: photoName, credit: spot.photoCredit }
     : null;
 
   return (

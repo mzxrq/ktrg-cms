@@ -256,6 +256,12 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                 <Section title={t`写真`}>
                   <Field label={t`コースの写真`} htmlFor="route-photo">
                     <PhotoField id="route-photo" url={draft.photoUrl} onChange={text("photoUrl")} invalid={problemOf("photo_link")}>
+                      <Field label={t`名前（写っているもの）`} htmlFor="route-photo-name" hint={t`大きな写真の下に、出どころと一緒に表示されます。`}>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                          <TextInput id="route-photo-name" value={draft.photoNameJa} onChange={text("photoNameJa")} maxLength={200} placeholder={t`例：金剛山の山頂`} />
+                          <TextInput id="route-photo-name-en" lang="en" value={draft.photoNameEn} onChange={text("photoNameEn")} maxLength={200} placeholder={t`英語（なくてもよい）`} ariaLabel={t`名前（英語）`} />
+                        </div>
+                      </Field>
                       <Field label={t`写真の出どころ`} htmlFor="route-photo-credit" hint={t`写真の上や下に ℹ︎ と一緒に表示されます。左に撮った人や使用条件を、右に写真を載せているページのリンク（なくてもよい）を入れます。`}>
                         <CreditInput id="route-photo-credit" value={draft.photoCredit} onChange={text("photoCredit")} placeholder={t`例：山田太郎, CC BY-SA 4.0`} />
                       </Field>

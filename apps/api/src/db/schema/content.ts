@@ -587,6 +587,8 @@ export const routeTranslations = pgTable(
     videoUrl: text("video_url"),
     // Subtitles were uploaded beside this language's video (a .vtt named like it); the player asks for them only then. Used by the English row; the Japanese video's flag is routes.video_subtitles.
     videoSubtitles: boolean("video_subtitles").notNull().default(false),
+    // What the cover photo shows (金剛山の山頂, 友ヶ島の灯台), shown with its credit in the large photo view.
+    photoName: text("photo_name"),
   },
   (t) => [primaryKey({ columns: [t.routeId, t.locale] }), check("route_translations_ja_name", jaRequires(t, t.name))],
 );

@@ -1,7 +1,7 @@
-import { Zoomable } from "@/components/Zoomable";
+import { Zoomable, type ViewerPhoto } from "@/components/Zoomable";
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { parseBlocks, type Block } from "@/lib/rich-text";
+import { parseBlocks, photosOf, type Block } from "@/lib/rich-text";
 import { FaqCard, StepCard } from "./pages/Cards";
 import { PlaceInline, type InlinePlace } from "./places/PlaceInline";
 import { Inlines } from "./RichText";
@@ -18,9 +18,11 @@ import { Inlines } from "./RichText";
  */
 export function RichBody({ text, lang, anchor, places = {} }: { text: string; lang?: string; anchor: string; places?: Record<string, InlinePlace> }) {
   const { blocks, notes } = parseBlocks(text);
+  // A photo line's words (`![these words](…)`) are what readers see under it in the large view.
+  const photos = photosOf(blocks).map((p) => ({ ...p, caption: p.alt }));
   return (
     <div lang={lang} className="flex flex-col gap-5">
-      <Blocks blocks={blocks} anchor={anchor} places={places} />
+      <Blocks blocks={blocks} anchor={anchor} places={places} photos={photos} />
       {notes.length > 0 ? (
         <ol className="mt-2 max-w-prose list-decimal space-y-1 pl-6 text-base text-muted">
           {notes.map((n) => (
@@ -37,7 +39,7 @@ export function RichBody({ text, lang, anchor, places = {} }: { text: string; la
 type CardBlock = Extract<Block, { kind: "card" }>;
 const isStep = (b: Block | undefined): b is CardBlock => b?.kind === "card" && b.style === "step";
 
-function Blocks({ blocks, anchor, places }: { blocks: Block[]; anchor: string; places: Record<string, InlinePlace> }) {
+function Blocks({ blocks, anchor, places, photos }: { blocks: Block[]; anchor: string; places: Record<string, InlinePlace>; photos: ViewerPhoto[] }) {
   const out: ReactNode[] = [];
   for (let i = 0; i < blocks.length; i++) {
     const block = blocks[i]!;
@@ -49,24 +51,24 @@ function Blocks({ blocks, anchor, places }: { blocks: Block[]; anchor: string; p
         <ol key={i} className="flex flex-col gap-4">
           {run.map((step, n) => (
             <StepCard key={n} n={n + 1} title={step.title} heading="h3">
-              <Inside blocks={step.blocks} anchor={anchor} places={places} />
+              <Inside blocks={step.blocks} anchor={anchor} places={places} photos={photos} />
             </StepCard>
           ))}
         </ol>,
       );
       i += run.length - 1;
-    } else out.push(<OneBlock key={i} block={block} anchor={anchor} places={places} />);
+    } else out.push(<OneBlock key={i} block={block} anchor={anchor} places={places} photos={photos} />);
   }
   return out;
 }
 
-const Inside = ({ blocks, anchor, places }: { blocks: Block[]; anchor: string; places: Record<string, InlinePlace> }) => (
+const Inside = ({ blocks, anchor, places, photos }: { blocks: Block[]; anchor: string; places: Record<string, InlinePlace>; photos: ViewerPhoto[] }) => (
   <div className="flex flex-col gap-3">
-    <Blocks blocks={blocks} anchor={anchor} places={places} />
+    <Blocks blocks={blocks} anchor={anchor} places={places} photos={photos} />
   </div>
 );
 
-function OneBlock({ block, anchor, places }: { block: Block; anchor: string; places: Record<string, InlinePlace> }) {
+function OneBlock({ block, anchor, places, photos }: { block: Block; anchor: string; places: Record<string, InlinePlace>; photos: ViewerPhoto[] }) {
   if (block.kind === "place") {
     const place = places[block.id];
     return place ? <PlaceInline place={place} /> : null;
@@ -106,14 +108,14 @@ function OneBlock({ block, anchor, places }: { block: Block; anchor: string; pla
     if (block.style === "faq") {
       return (
         <FaqCard question={block.title}>
-          <Inside blocks={block.blocks} anchor={anchor} places={places} />
+          <Inside blocks={block.blocks} anchor={anchor} places={places} photos={photos} />
         </FaqCard>
       );
     }
     return (
       <section className="flex flex-col gap-1 rounded-[1.75rem] bg-surface p-5">
         {block.title ? <h3 className="text-xl font-bold leading-snug text-accent">{block.title}</h3> : null}
-        <Inside blocks={block.blocks} anchor={anchor} places={places} />
+        <Inside blocks={block.blocks} anchor={anchor} places={places} photos={photos} />
       </section>
     );
   }
@@ -140,7 +142,7 @@ function OneBlock({ block, anchor, places }: { block: Block; anchor: string; pla
   if (block.kind === "photo") {
     return (
       <figure className="relative aspect-[4/3] overflow-hidden rounded-xl bg-surface">
-        <Zoomable src={block.src} alt={block.alt}>
+        <Zoomable photos={photos} index={Math.max(0, photos.findIndex((p) => p.src === block.src && p.alt === block.alt))}>
           <Image src={block.src} alt={block.alt} fill sizes="(min-width: 768px) 36rem, 100vw" className="object-cover" unoptimized />
         </Zoomable>
       </figure>

@@ -9,15 +9,18 @@ import { pickText, type GalleryPhoto } from "@/lib/content";
  */
 export function SpotGallery({ photos, alt, locale }: { photos: GalleryPhoto[]; alt: string; locale: string }) {
   const { t } = useLingui();
+  const names = photos.map((p) => pickText(locale, p.nameJa ?? null, p.nameEn ?? null));
+  // The large view steps through every photo of the place, each with what it shows and who took it.
+  const viewer = photos.map((p, i) => ({ src: p.url, alt: names[i]?.text ?? alt, caption: names[i]?.text, credit: p.credit, sourceUrl: p.sourceUrl }));
   return (
     <ul aria-label={t`写真`} className="-mx-0 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2" tabIndex={0}>
-      {photos.map((p) => {
-        const name = pickText(locale, p.nameJa ?? null, p.nameEn ?? null);
+      {photos.map((p, i) => {
+        const name = names[i];
         return (
           <li key={p.url} className="w-72 shrink-0 snap-start">
             <figure className="flex flex-col gap-1">
               <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-surface">
-                <Zoomable src={p.url} alt={name?.text ?? alt}>
+                <Zoomable photos={viewer} index={i}>
                   <Image src={p.url} alt={name?.text ?? alt} fill sizes="18rem" className="object-cover" unoptimized />
                 </Zoomable>
               </div>
