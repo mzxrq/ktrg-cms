@@ -121,6 +121,9 @@ export function routePointFromApi(s: PublicSpot): RoutePoint | null {
     photoCredit: s.photoCredit ?? null,
     sortOrder: s.sortOrder,
     ...(s.stopBy ? { stopBy: true } : {}),
+    status: s.status,
+    statusNoteJa: s.statusNoteJa ?? null,
+    statusNoteEn: s.statusNoteEn ?? null,
     position: s.position ? { lat: s.position.lat, lng: s.position.lng, verified: true } : null,
   };
 }

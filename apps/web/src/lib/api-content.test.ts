@@ -8,6 +8,7 @@ import {
   isEmptyRoute,
   placeItemFromApi,
   routeDetailFromApi,
+  routePointFromApi,
   routeSummaryFromApi,
   sketchFromPoints,
   spotDetailFromApi,
@@ -204,5 +205,14 @@ describe("ralliesFromApi", () => {
     const closed = { ...courses, courses: [{ routeId: "c1", nameJa: "道1", nameEn: null, spots: [{ id: "s1", status: "open" }, { id: "s2", status: "closed" }] }] };
     expect(ralliesFromApi([closed], new Set(["s1"]))[0]!.slots[0]!.stamped).toBe(true);
     expect(ralliesFromApi([closed], new Set(["s2"]))[0]!.slots[0]!.stamped).toBe(false);
+  });
+});
+
+// 2026-11-17, user: a sutra mound set to 案内のみ (no stamp) read "Open" on the map, because a waypoint without a stamp
+// lost its status on the way to the page and every map filled in "open".
+describe("a waypoint without a stamp keeps its status", () => {
+  test("案内のみ and its note reach the page", () => {
+    const p = routePointFromApi(spot({ stampable: false, status: "info", statusNoteJa: "立ち入りできません。", statusNoteEn: null }));
+    expect(p).toMatchObject({ status: "info", statusNoteJa: "立ち入りできません。", statusNoteEn: null });
   });
 });
