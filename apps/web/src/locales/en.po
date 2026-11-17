@@ -888,7 +888,7 @@ msgstr "Make a U-turn"
 msgid "Webサイト"
 msgstr "Website"
 
-#: src/components/admin/PhotoListEditor.tsx:123
+#: src/components/admin/PhotoListEditor.tsx:130
 msgid "WikipediaやWikimedia Commonsから探す"
 msgstr "Find on Wikipedia and Wikimedia Commons"
 
@@ -1375,7 +1375,7 @@ msgstr "Click to remove this point"
 msgid "グルメ"
 msgstr "Gourmet"
 
-#: src/components/InfoTip.tsx:32
+#: src/components/InfoTip.tsx:42
 #: src/components/map/MapScreen.tsx:532
 msgid "くわしく見る"
 msgstr "Learn more"
@@ -2058,8 +2058,8 @@ msgstr "This goes live at once and changes the map for every visitor. Save it?"
 msgid "この設定は、本番のサイトにすぐ反映されます。保存しますか？"
 msgstr "This setting takes effect on the live site at once. Save it?"
 
-#: src/components/SpotSheet.tsx:110
-#: src/components/SpotSheet.tsx:126
+#: src/components/SpotSheet.tsx:114
+#: src/components/SpotSheet.tsx:130
 msgid "この説明は日本語のみです。"
 msgstr "This description is in Japanese only."
 
@@ -2310,7 +2310,7 @@ msgid "スタンプのバックアップリンク"
 msgstr "Stamp backup link"
 
 #: src/components/map/MapScreen.tsx:420
-#: src/components/SpotSheet.tsx:90
+#: src/components/SpotSheet.tsx:94
 msgid "スタンプの場所"
 msgstr "Stamp locations"
 
@@ -3383,7 +3383,7 @@ msgstr "Map"
 msgid "マップをひらく"
 msgstr "Open the map"
 
-#: src/components/SpotSheet.tsx:156
+#: src/components/SpotSheet.tsx:160
 msgid "まわりにあるもの"
 msgstr "Around here"
 
@@ -3467,7 +3467,7 @@ msgstr "After you open the email and see the number, come back to this screen an
 msgid "メインメニュー"
 msgstr "Main menu"
 
-#: src/components/admin/PhotoListEditor.tsx:98
+#: src/components/admin/PhotoListEditor.tsx:105
 msgid "メイン写真"
 msgstr "Main photo"
 
@@ -3760,7 +3760,7 @@ msgstr "Link"
 msgid "リンク（任意）"
 msgstr "Link (optional)"
 
-#: src/components/admin/PhotoListEditor.tsx:120
+#: src/components/admin/PhotoListEditor.tsx:127
 msgid "リンクで追加"
 msgstr "Add by link"
 
@@ -4177,10 +4177,14 @@ msgstr "No usable photos were found."
 msgid "例：がしんしょうたん"
 msgstr "e.g. がしんしょうたん"
 
-#: src/components/admin/PhotoListEditor.tsx:85
+#: src/components/admin/PhotoListEditor.tsx:92
 #: src/components/admin/RouteEditor.tsx:611
 msgid "例：山田太郎, CC BY-SA 4.0"
 msgstr "e.g. Jane Doe, CC BY-SA 4.0"
+
+#: src/components/admin/PhotoListEditor.tsx:86
+msgid "例：本殿"
+msgstr "e.g. Main hall"
 
 #: src/components/admin/HoursInput.tsx:67
 msgid "例：祝日は休み／ラストオーダーは閉店30分前"
@@ -4341,7 +4345,7 @@ msgid "元に戻す"
 msgstr "Undo"
 
 #: src/components/admin/PhotoListEditor.tsx:79
-#: src/components/admin/PhotoListEditor.tsx:141
+#: src/components/admin/PhotoListEditor.tsx:148
 msgid "元のページ"
 msgstr "Original page"
 
@@ -4588,7 +4592,7 @@ msgid "最初の場所を見る"
 msgstr "See the first place"
 
 #: src/components/NearestPlaces.tsx:37
-#: src/components/SpotSheet.tsx:167
+#: src/components/SpotSheet.tsx:171
 msgid "最寄り"
 msgstr "Nearest"
 
@@ -4621,7 +4625,7 @@ msgstr "Highest {highest}m"
 #: src/components/admin/useChecklistLabels.ts:19
 #: src/components/landing/HeroSlides.tsx:68
 #: src/components/SpotGallery.tsx:13
-#: src/components/SpotSheet.tsx:146
+#: src/components/SpotSheet.tsx:150
 #: src/components/Zoomable.tsx:25
 msgid "写真"
 msgstr "Photos"
@@ -4693,11 +4697,11 @@ msgstr "Photo description (read aloud for people who cannot see it)"
 msgid "写真は、まだありません"
 msgstr "No photo yet"
 
-#: src/components/admin/PhotoListEditor.tsx:106
+#: src/components/admin/PhotoListEditor.tsx:113
 msgid "写真は、まだありません。"
 msgstr "There are no photos yet."
 
-#: src/components/admin/PhotoListEditor.tsx:127
+#: src/components/admin/PhotoListEditor.tsx:134
 msgid "写真は{MAX_PHOTOS}枚までです。"
 msgstr "Up to {MAX_PHOTOS} photos."
 
@@ -4752,11 +4756,11 @@ msgstr "Before you go"
 #: src/components/landing/TrailNotices.tsx:66
 #: src/components/landing/useHomeWords.ts:24
 #: src/components/RouteView.tsx:306
-#: src/components/SpotSheet.tsx:176
+#: src/components/SpotSheet.tsx:180
 msgid "出かける前に、公式の最新情報を確認してください。"
 msgstr "Check official sources before you go."
 
-#: src/components/admin/PhotoListEditor.tsx:83
+#: src/components/admin/PhotoListEditor.tsx:90
 msgid "出どころ（撮った人、使用条件）"
 msgstr "Credit (who took it, terms of use)"
 
@@ -4772,7 +4776,7 @@ msgstr "Credit text"
 #: src/components/admin/RouteEditor.tsx:653
 #: src/components/admin/RouteEditor.tsx:654
 #: src/components/RouteView.tsx:215
-#: src/components/SpotSheet.tsx:135
+#: src/components/SpotSheet.tsx:139
 msgid "出典"
 msgstr "Source"
 
@@ -4966,7 +4970,7 @@ msgstr "Previous post"
 
 #: src/app/(public)/blog/page.tsx:92
 #: src/components/admin/CommentInbox.tsx:209
-#: src/components/admin/PhotoListEditor.tsx:87
+#: src/components/admin/PhotoListEditor.tsx:94
 #: src/components/admin/RallyMemberPicker.tsx:110
 #: src/components/Pager.tsx:21
 msgid "前へ"
@@ -5241,9 +5245,17 @@ msgstr "You go out along the same path and come back the same way."
 msgid "名前"
 msgstr "Name"
 
+#: src/components/admin/PhotoListEditor.tsx:83
+msgid "名前（写っているもの）"
+msgstr "Name (what it shows)"
+
 #: src/components/admin/PlaceTable.tsx:136
 msgid "名前（日本語）"
 msgstr "Name (Japanese)"
+
+#: src/components/admin/PhotoListEditor.tsx:87
+msgid "名前（英語）"
+msgstr "Name (English)"
 
 #: src/components/admin/PhotoLibrary.tsx:134
 #: src/components/admin/PhotoLibrary.tsx:134
@@ -5401,7 +5413,7 @@ msgstr "See the position on the map (new tab)"
 #: src/app/(public)/blog/[id]/page.tsx:189
 #: src/app/(public)/places/[id]/page.tsx:80
 #: src/components/PlaceDialog.tsx:30
-#: src/components/SpotSheet.tsx:75
+#: src/components/SpotSheet.tsx:79
 msgid "地図で見る"
 msgstr "Show in the map"
 
@@ -5625,7 +5637,7 @@ msgstr "Change"
 msgid "変更の履歴"
 msgstr "Change history"
 
-#: src/components/admin/PhotoListEditor.tsx:94
+#: src/components/admin/PhotoListEditor.tsx:101
 msgid "外す"
 msgstr "Remove"
 
@@ -5854,7 +5866,7 @@ msgstr "Out and back"
 msgid "往復（同じ道）"
 msgstr "Out and back (same path)"
 
-#: src/components/admin/PhotoListEditor.tsx:90
+#: src/components/admin/PhotoListEditor.tsx:97
 #: src/components/admin/RallyMemberPicker.tsx:113
 msgid "後ろへ"
 msgstr "Later"
@@ -5982,7 +5994,7 @@ msgstr "Stamped　{when}"
 msgid "押しました"
 msgstr "Collected"
 
-#: src/components/SpotSheet.tsx:93
+#: src/components/SpotSheet.tsx:97
 msgid "押し方: 場所の近くで、ボタンを押します（位置情報）"
 msgstr "How: press the button near the place (uses your location)"
 
@@ -6014,7 +6026,7 @@ msgstr "Discard"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1055
 #: src/components/admin/map-editor/MapEditor.tsx:1139
-#: src/components/admin/PhotoListEditor.tsx:123
+#: src/components/admin/PhotoListEditor.tsx:130
 #: src/components/admin/RelationPicker.tsx:139
 msgid "探しています…"
 msgstr "Searching…"
@@ -6576,7 +6588,7 @@ msgstr "History"
 #: src/components/admin/RouteEditor.tsx:643
 #: src/components/admin/useChecklistLabels.ts:17
 #: src/components/RouteView.tsx:199
-#: src/components/SpotSheet.tsx:119
+#: src/components/SpotSheet.tsx:123
 msgid "歴史・由来"
 msgstr "History and background"
 
@@ -7537,6 +7549,10 @@ msgstr "Fading the colours makes the route and the markers stand out. Strength 1
 msgid "色別標高図（緑〜茶）"
 msgstr "Elevation colours (green to brown)"
 
+#: src/components/admin/PhotoListEditor.tsx:87
+msgid "英語（なくてもよい）"
+msgstr "English (optional)"
+
 #: src/components/admin/RouteEditor.tsx:625
 msgid "英語でサイトを見ている人に、日本語の動画のかわりに表示されます。空にすると、日本語の動画がそのまま表示されます。"
 msgstr "Shown instead of the Japanese video to people viewing the site in English. If left empty, the Japanese video is shown as it is."
@@ -7686,7 +7702,7 @@ msgstr "A place that is only shown. No stamp can be taken there. You can write t
 msgid "見せるだけの場所です。立ち入りできない場所などに使います。スタンプは押せず、コースやラリーの数にも入りません。「状態のひとこと」に、「現在、立ち入りできません」などを書きます。公開には、現地の許可の確認は要りません。"
 msgstr "A place that is only shown, for example one visitors cannot enter. No stamp can be taken there and it is not counted in courses or rallies. Write a note such as that it is currently closed to entry in the status note. Publishing does not need the on-site permission."
 
-#: src/components/admin/PhotoListEditor.tsx:131
+#: src/components/admin/PhotoListEditor.tsx:138
 msgid "見つかった写真"
 msgstr "Photos found"
 
@@ -7853,7 +7869,7 @@ msgstr "Details"
 #: src/components/admin/HomeTextFields.tsx:38
 #: src/components/admin/InfoTip.tsx:22
 #: src/components/admin/PlacePanel.tsx:126
-#: src/components/SpotSheet.tsx:102
+#: src/components/SpotSheet.tsx:106
 msgid "説明"
 msgstr "About this place"
 
@@ -7997,12 +8013,12 @@ msgstr "Add"
 msgid "追加しない"
 msgstr "Do not add"
 
-#: src/components/admin/PhotoListEditor.tsx:138
+#: src/components/admin/PhotoListEditor.tsx:145
 msgid "追加しました"
 msgstr "Added"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1094
-#: src/components/admin/PhotoListEditor.tsx:138
+#: src/components/admin/PhotoListEditor.tsx:145
 msgid "追加する"
 msgstr "Add"
 

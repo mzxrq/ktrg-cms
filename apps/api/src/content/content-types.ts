@@ -106,6 +106,8 @@ export interface SpotRow {
   photoCredit: string | null;
   /** The page the main photo was found on. */
   photoSourceUrl: string | null;
+  photoNameJa: string | null;
+  photoNameEn: string | null;
   /** More photos of the place, in order. */
   photos: SpotPhoto[];
   status: SpotStatus;
@@ -188,6 +190,8 @@ export interface SpotFields {
   photoCredit: string | null;
   /** The page the main photo was found on. */
   photoSourceUrl: string | null;
+  photoNameJa: string | null;
+  photoNameEn: string | null;
   /** More photos of the place, in order. */
   photos: SpotPhoto[];
   status: SpotStatus;

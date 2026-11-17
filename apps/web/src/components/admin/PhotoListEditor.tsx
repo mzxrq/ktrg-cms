@@ -27,7 +27,7 @@ const smallButton = "tap-target rounded-full border border-line px-4 text-base f
 
 /**
  * The photos of one waypoint, in the order visitors see them: the first is the main photo (the one on the place's card and
- * on maps), the rest follow it on the place's page. Each shows the credit that goes under it, and the page it was found on
+ * on maps), the rest follow it on the place's page. Each shows its name (what it shows, JA and EN) and the credit that goes under it, and the page it was found on
  * when there is one. Photos are added by uploading a file, by choosing one already uploaded, by link, or by finding one on
  * Wikipedia and Wikimedia Commons (free licenses only, with the photographer and license written into the credit).
  * They are saved with the place.
@@ -79,6 +79,13 @@ export function PhotoListEditor({ stored, onChange, name, lat, lng }: { stored: 
                     {t`元のページ`}
                   </a>
                 ) : null}
+                <label htmlFor={`${groupName}-name-${i}`} className="text-base text-muted">
+                  {t`名前（写っているもの）`}
+                </label>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <TextInput id={`${groupName}-name-${i}`} value={p.nameJa ?? ""} onChange={(v) => set(patchPhoto(photos, i, { nameJa: v }))} maxLength={200} placeholder={t`例：本殿`} />
+                  <TextInput id={`${groupName}-name-en-${i}`} lang="en" value={p.nameEn ?? ""} onChange={(v) => set(patchPhoto(photos, i, { nameEn: v }))} maxLength={200} placeholder={t`英語（なくてもよい）`} ariaLabel={t`名前（英語）`} />
+                </div>
                 <label htmlFor={`${groupName}-credit-${i}`} className="text-base text-muted">
                   {t`出どころ（撮った人、使用条件）`}
                 </label>

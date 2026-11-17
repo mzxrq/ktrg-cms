@@ -196,7 +196,7 @@ export function PlacePanel(p: PlacePanelProps) {
 
           <Group title={t`写真`}>
             <PhotoListEditor
-              stored={{ photoUrl: place.photoUrl, photoCredit: place.photoCredit, photoSourceUrl: place.photoSourceUrl, photos: place.photos }}
+              stored={{ photoUrl: place.photoUrl, photoCredit: place.photoCredit, photoSourceUrl: place.photoSourceUrl, photoNameJa: place.photoNameJa, photoNameEn: place.photoNameEn, photos: place.photos }}
               onChange={(next) => p.onChange(next)}
               name={place.nameJa}
               lat={place.lat}

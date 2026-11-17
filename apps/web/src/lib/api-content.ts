@@ -187,6 +187,8 @@ export function spotDetailFromApi(s: PublicSpot, route: Pick<PublicRoute, "id" |
     photoCredit: s.photoCredit ?? null,
     sourceJa: s.sourceJa ?? null,
     sourceEn: s.sourceEn ?? null,
+    photoNameJa: s.photoNameJa ?? null,
+    photoNameEn: s.photoNameEn ?? null,
     gallery: s.photos ?? [],
   };
 }

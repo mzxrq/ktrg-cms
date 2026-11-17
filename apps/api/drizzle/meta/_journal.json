@@ -498,6 +498,13 @@
       "when": 1794805291856,
       "tag": "0070_furigana_always",
       "breakpoints": true
+    },
+    {
+      "idx": 71,
+      "version": "7",
+      "when": 1794874732082,
+      "tag": "0071_photo_names",
+      "breakpoints": true
     }
   ]
 }

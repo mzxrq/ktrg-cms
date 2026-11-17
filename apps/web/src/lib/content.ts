@@ -156,6 +156,9 @@ export interface GalleryPhoto {
   url: string;
   credit: string | null;
   sourceUrl: string | null;
+  /** What the photo shows (本殿, 鳥居); English falls back to Japanese. Left out on photos saved before it existed. */
+  nameJa?: string | null;
+  nameEn?: string | null;
 }
 
 export interface SpotDetail extends SpotListItem {
@@ -179,6 +182,9 @@ export interface SpotDetail extends SpotListItem {
   updatedAt?: string | null;
   /** A photo of the place, shown at the top of its card; null when none. */
   photoUrl: string | null;
+  /** What the main photo shows, shown with its credit. */
+  photoNameJa?: string | null;
+  photoNameEn?: string | null;
   /** More photos, in order. */
   gallery?: GalleryPhoto[];
 }

@@ -54,7 +54,11 @@ export function SpotSheet({
   const history = pickText(locale, spot.historyJa ?? null, spot.historyEn ?? null);
   const source = pickText(locale, spot.sourceJa ?? null, spot.sourceEn ?? null);
   const gallery = spot.gallery ?? [];
-  const photo = spot.photoUrl ? { src: spot.photoUrl, alt: pickText(locale, spot.nameJa, spot.nameEn)?.text ?? spot.nameJa, credit: spot.photoCredit ?? null } : null;
+  // The main photo's name (what it shows) leads its credit in the cover's © tag, and describes it for screen readers.
+  const photoName = pickText(locale, spot.photoNameJa ?? null, spot.photoNameEn ?? null)?.text;
+  const photo = spot.photoUrl
+    ? { src: spot.photoUrl, alt: photoName ?? pickText(locale, spot.nameJa, spot.nameEn)?.text ?? spot.nameJa, credit: [photoName, spot.photoCredit].filter(Boolean).join(" — ") || null }
+    : null;
 
   return (
     <article className="flex flex-col gap-6">
@@ -145,7 +149,7 @@ export function SpotSheet({
           <h2 className="mb-2 border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
             <Trans>写真</Trans>
           </h2>
-          <SpotGallery photos={gallery} alt={pickText(locale, spot.nameJa, spot.nameEn)?.text ?? spot.nameJa} />
+          <SpotGallery photos={gallery} alt={pickText(locale, spot.nameJa, spot.nameEn)?.text ?? spot.nameJa} locale={locale} />
         </section>
       ) : null}
 

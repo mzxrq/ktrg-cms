@@ -150,10 +150,12 @@ const spotProps = {
   photoUrl: nullable(t.String({ maxLength: 500 })),
   photoCredit: nullable(t.String({ maxLength: 500 })),
   photoSourceUrl: nullable(t.String({ maxLength: 500 })),
+  photoNameJa: nullable(t.String({ maxLength: 200 })),
+  photoNameEn: nullable(t.String({ maxLength: 200 })),
   sourceJa: nullable(t.String({ maxLength: 2000 })),
   sourceEn: nullable(t.String({ maxLength: 2000 })),
   // The gallery: up to 12 photos; the credit says who took one that is not ours.
-  photos: t.Array(t.Object({ url: t.String({ maxLength: 500 }), credit: nullable(t.String({ maxLength: 300 })), sourceUrl: nullable(t.String({ maxLength: 500 })) }), { maxItems: 12 }),
+  photos: t.Array(t.Object({ url: t.String({ maxLength: 500 }), credit: nullable(t.String({ maxLength: 300 })), sourceUrl: nullable(t.String({ maxLength: 500 })), nameJa: t.Optional(nullable(t.String({ maxLength: 200 }))), nameEn: t.Optional(nullable(t.String({ maxLength: 200 }))) }), { maxItems: 12 }),
   status,
   statusNoteJa: nullable(t.String({ maxLength: 1000 })),
   statusNoteEn: nullable(t.String({ maxLength: 1000 })),

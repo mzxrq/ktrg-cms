@@ -489,17 +489,18 @@ describe("audit", () => {
 
 describe("a place's story and gallery", () => {
   const photos = [
-    { url: " https://upload.wikimedia.org/a.jpg ", credit: " Taro Yamada, CC BY-SA 4.0 ", sourceUrl: "https://commons.wikimedia.org/wiki/File:A.jpg" },
+    { url: " https://upload.wikimedia.org/a.jpg ", credit: " Taro Yamada, CC BY-SA 4.0 ", sourceUrl: "https://commons.wikimedia.org/wiki/File:A.jpg", nameJa: " 鳥居 ", nameEn: "  " },
+    // Saved before photos had names: no name fields at all.
     { url: "https://photos.example.com/b.jpg", credit: "  ", sourceUrl: null },
   ];
 
   test("the history and the photos are saved cleaned, and visitors get them", async () => {
     const r = await route();
-    const s = await spot(r.id, { historyJa: " 役行者が開いたと伝わる。 ", historyEn: "  ", photos });
-    expect(s).toMatchObject({ historyJa: "役行者が開いたと伝わる。", historyEn: null });
+    const s = await spot(r.id, { historyJa: " 役行者が開いたと伝わる。 ", historyEn: "  ", photos, photoNameJa: " 本殿 ", photoNameEn: " Main hall " });
+    expect(s).toMatchObject({ historyJa: "役行者が開いたと伝わる。", historyEn: null, photoNameJa: "本殿", photoNameEn: "Main hall" });
     expect(s.photos).toEqual([
-      { url: "https://upload.wikimedia.org/a.jpg", credit: "Taro Yamada, CC BY-SA 4.0", sourceUrl: "https://commons.wikimedia.org/wiki/File:A.jpg" },
-      { url: "https://photos.example.com/b.jpg", credit: null, sourceUrl: null },
+      { url: "https://upload.wikimedia.org/a.jpg", credit: "Taro Yamada, CC BY-SA 4.0", sourceUrl: "https://commons.wikimedia.org/wiki/File:A.jpg", nameJa: "鳥居", nameEn: null },
+      { url: "https://photos.example.com/b.jpg", credit: null, sourceUrl: null, nameJa: null, nameEn: null },
     ]);
   });
 
