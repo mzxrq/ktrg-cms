@@ -106,7 +106,7 @@ export interface PublicRoute {
   /** Side trips (寄り道) to published places, each a stretch out from the route (the detail only). */
   sideLines: { spotId: string; coordinates: LineString["coordinates"] }[];
   /** Stretches that are ridden (ferry, bus ...), with the minutes the editor gave: they replace the walking estimate to that place. */
-  rides: { spotId: string; mode: Ride["mode"]; minutes: number }[];
+  rides: { spotId: string; mode: Ride["mode"]; minutes: number; start: [number, number]; end: [number, number] }[];
   /** Corners of the box around the line, for the overview map. */
   bounds: { west: number; south: number; east: number; north: number } | null;
 }

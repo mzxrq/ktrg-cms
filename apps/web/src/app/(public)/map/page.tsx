@@ -10,6 +10,7 @@ import { municipalityName } from "@/lib/municipalities";
 import { isStampMock } from "@/lib/stamp-flow";
 import { getViewer, type Viewer } from "@/lib/viewer";
 import { initLingui } from "@/i18n/server";
+import type { RideSpan } from "@/lib/elevation-profile";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
@@ -46,6 +47,7 @@ async function mapRoutes(routes: RouteSummary[], places: PlaceItem[], viewer: Vi
         let access: string | null = null;
         let source: string | null = null;
         let points: MapScreenPoint[] = [];
+        let rides: RideSpan[] = [];
 
         if (r.status === "ready" && r.spotCount > 0) {
           const found = await getRoute(r.id);
@@ -56,6 +58,7 @@ async function mapRoutes(routes: RouteSummary[], places: PlaceItem[], viewer: Vi
             history = pickText(locale, detail.historyJa, detail.historyEn)?.text ?? null;
             access = pickText(locale, detail.accessJa, detail.accessEn)?.text ?? null;
             source = pickText(locale, detail.sourceJa ?? null, detail.sourceEn ?? null)?.text ?? null;
+            rides = detail.lineRides ?? [];
             // The places to visit are pins of their own (below); only the guiding points stay among the small place marks.
             points = detail.points.filter((p) => isGuidanceOnly(p.kind)).flatMap((p): MapScreenPoint[] => {
               const pointName = pickText(locale, p.nameJa, p.nameEn);
@@ -166,6 +169,7 @@ async function mapRoutes(routes: RouteSummary[], places: PlaceItem[], viewer: Vi
           stampedCount: r.stampedCount,
           area: r.area,
           elevations: r.sketch?.elevations ?? null,
+          rides,
           description,
           history,
           access,

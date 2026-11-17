@@ -96,9 +96,14 @@ export function parseLine(input: unknown): { ok: true; line: LineString } | { ok
 /** The line without the editor's extras: what visitors and the maps get. */
 export const plainLine = (line: LineString): LineString => ({ type: "LineString", coordinates: line.coordinates });
 
-/** The stretches that are ridden, not walked, each named by the place it leads to; only those whose place is in `visible`. */
-export const ridesOf = (line: LineString, visible: ReadonlySet<string>): { spotId: string; mode: Ride["mode"]; minutes: number }[] =>
-  (line.legs ?? []).filter((l) => l.ride && !l.side && !l.back && visible.has(l.to)).map((l) => ({ spotId: l.to, ...l.ride! }));
+/**
+ * The stretches that are ridden, not walked, each named by the place it leads to; only those whose place is in `visible`.
+ * `start` and `end` are where the stretch begins and ends ([lng, lat]), so a chart can leave the crossing out.
+ */
+export const ridesOf = (line: LineString, visible: ReadonlySet<string>): { spotId: string; mode: Ride["mode"]; minutes: number; start: [number, number]; end: [number, number] }[] =>
+  (line.legs ?? [])
+    .filter((l) => l.ride && !l.side && !l.back && visible.has(l.to) && l.coordinates.length >= 2)
+    .map((l) => ({ spotId: l.to, ...l.ride!, start: [l.coordinates[0]![0], l.coordinates[0]![1]], end: [l.coordinates.at(-1)![0], l.coordinates.at(-1)![1]] }));
 
 /** The side-trip stretches of a line, each named by the place it leads to; only those whose place is in `visible`. */
 export const sideLinesOf = (line: LineString, visible: ReadonlySet<string>): { spotId: string; coordinates: Coordinates }[] =>
