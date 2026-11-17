@@ -126,7 +126,7 @@ export function RouteView({ route, locale, places, settings, placesFirst, labels
     stops.length > 0 ? { id: "map", label: <Trans>地図</Trans> } : null,
     video || videoFile ? { id: "video", label: <Trans>動画</Trans> } : null,
   ].filter((j) => j !== null);
-  const photo = route.photoUrl ? { src: route.photoUrl, alt: pickText(locale, route.nameJa, route.nameEn)?.text ?? route.nameJa, credit: route.photoCredit ?? null } : null;
+  const photo = route.photoUrl ? { src: route.photoUrl, alt: pickText(locale, route.nameJa, route.nameEn)?.text ?? route.nameJa, credit: route.photoCredit ?? null, focus: route.photoFocus ?? null } : null;
 
   // One column (the phone, and the admin's narrow preview). When the box this sits in is wide (a desktop page), two
   // columns: the photo, the name and the numbers, the story and the access on the left; the elevation, the video, the map

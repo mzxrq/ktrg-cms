@@ -1,5 +1,6 @@
 "use client";
 
+import { focusStyle } from "@/lib/photo-focus";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { ChevronLeftIcon } from "@/components/icons";
@@ -36,7 +37,7 @@ export function SheetHero({
         // With no photo: the night ground with the 七宝 pattern, in both themes.
         className={`pattern-shippo pattern-on-night relative flex flex-col justify-end bg-night pt-[calc(7.25rem+var(--sheet-top,0px))] wide:pt-16 ${short ? "aspect-[2/1]" : "aspect-[4/3]"}`}
       >
-        {photo ? <Image src={photo.src} alt="" fill sizes="(min-width: 1024px) 26rem, 100vw" className="object-cover" unoptimized={photo.src.startsWith("https://")} /> : null}
+        {photo ? <Image src={photo.src} alt="" fill sizes="(min-width: 1024px) 26rem, 100vw" className="object-cover" style={focusStyle(photo.focus)} unoptimized={photo.src.startsWith("https://")} /> : null}
         {/* Dark under the words, so white reads on any photo. */}
         <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-3/4 bg-linear-to-b from-transparent to-black/80" />
         {/* Below the sheet's handle on a phone; a desktop panel has none. */}

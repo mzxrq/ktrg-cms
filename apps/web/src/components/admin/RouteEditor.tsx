@@ -30,6 +30,7 @@ import { AccessPointsEditor } from "./AccessPointsEditor";
 import { GradingFields } from "./GradingFields";
 import { MunicipalitiesField } from "./MunicipalitiesField";
 import { PhotoField } from "./PhotoField";
+import { PhotoFocusPicker } from "./PhotoFocusPicker";
 import { RouteHistory } from "./RouteHistory";
 import { NearbyPlacesManager } from "./DirectoryPicker";
 import { SubtitleUpload } from "./SubtitleUpload";
@@ -251,6 +252,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                         <CreditInput id="route-photo-credit" value={draft.photoCredit} onChange={text("photoCredit")} placeholder={t`例：山田太郎, CC BY-SA 4.0`} />
                       </Field>
                     </PhotoField>
+                    <PhotoFocusPicker url={draft.photoUrl} focus={draft.photoFocus} onChange={(value) => dispatch({ type: "photoFocus", value })} />
                   </Field>
                   {problemOf("photo_link") ? <p role="alert" className="text-base font-bold text-danger">{t`写真のリンクは、https:// で始まるものだけ使えます。`}</p> : null}
                   <Field label={t`動画のリンク（YouTube、またはアップロードした動画）`} htmlFor="route-video" hint={t`https:// で始まるリンクを入れます。空にすると、動画は表示されません。`}>

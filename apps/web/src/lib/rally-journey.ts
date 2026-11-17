@@ -1,3 +1,4 @@
+import type { PhotoFocus } from "./photo-focus";
 // What a visitor who has not started a rally wants to know first: how big the walk is. Pure functions, unit-tested; the
 // numbers come from the courses the rally runs through (the rally record itself holds none).
 
@@ -10,6 +11,7 @@ export interface JourneyRoute {
   expectedTimeMin: number | null;
   photoUrl: string | null;
   photoCredit?: string | null;
+  photoFocus?: PhotoFocus | null;
 }
 
 export interface JourneyFacts {
@@ -22,6 +24,7 @@ export interface JourneyFacts {
   /** A photo of the first course that has one. */
   photoUrl: string | null;
   photoCredit: string | null;
+  photoFocus?: PhotoFocus | null;
 }
 
 const sum = (values: readonly (number | null)[]): number | null => {
@@ -41,6 +44,7 @@ export function journeyFacts(rally: Pick<RallyItem, "total" | "routeIds">, route
     minutes: min === null ? null : Math.round(min / 5) * 5,
     photoUrl: withPhoto?.photoUrl ?? null,
     photoCredit: withPhoto?.photoCredit ?? null,
+    photoFocus: withPhoto?.photoFocus ?? null,
   };
 }
 

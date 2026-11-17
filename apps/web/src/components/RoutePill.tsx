@@ -1,3 +1,4 @@
+import type { PhotoFocus } from "@/lib/photo-focus";
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import type { RouteSummary } from "@/lib/content";
@@ -16,7 +17,7 @@ type PillRoute = Pick<
  * in from the right, with its number at the top right and its stamps at the bottom right, on the photo. Narrow, it keeps only
  * distance and time; `brief` drops the place too, for the map's list (not for a course not ready, which has no numbers).
  */
-export function RoutePill({ route, name, place, photo, brief = false }: { route: PillRoute; name: ReactNode; place: ReactNode; photo: string | null; brief?: boolean }) {
+export function RoutePill({ route, name, place, photo, focus, brief = false }: { route: PillRoute; name: ReactNode; place: ReactNode; photo: string | null; /** The photo's middle, chosen by the editor. */ focus?: PhotoFocus | null; brief?: boolean }) {
   const { t } = useLingui();
   const { order, spotCount, stampedCount } = route;
   const soon = route.status === "soon";
@@ -26,7 +27,7 @@ export function RoutePill({ route, name, place, photo, brief = false }: { route:
       <span className="absolute inset-y-0 right-0 block w-2/5 overflow-hidden @2xl:w-1/2">
         {/* A course that is not ready shows its photo blurred (the scale hides the soft edge), as in the course list. */}
         <span className={`absolute inset-0 block ${soon ? "scale-110 blur-[6px] saturate-50" : ""}`}>
-          <RoutePhoto src={photo} alt="" />
+          <RoutePhoto src={photo} alt="" focus={focus} />
         </span>
         <span aria-hidden="true" className="absolute inset-0 bg-linear-to-r from-surface from-20% to-transparent to-85%" />
       </span>

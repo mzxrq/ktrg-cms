@@ -73,7 +73,7 @@ export function FeaturedRally({ rally, locale, account, routes = [] }: { rally: 
         <SectionBanner>{t`はじめのラリー`}</SectionBanner>
         <div className="pattern-shippo overflow-hidden rounded-[1.75rem] bg-surface">
           <div className="relative aspect-[16/9]">
-            <RoutePhoto src={facts.photoUrl} alt={name} />
+            <RoutePhoto src={facts.photoUrl} alt={name} focus={facts.photoFocus} />
             {/* The © button over the photo, as on the course page, not a line of small print on the tile (2026-11-16, user). */}
             <CreditToggle credit={facts.photoCredit} />
           </div>

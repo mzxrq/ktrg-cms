@@ -96,6 +96,9 @@ export interface PublicRoute {
   sourceEn: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
+  /** Where the middle of the photo is, in percent from the left and the top (null: the middle); both or neither. */
+  photoFocusX: number | null;
+  photoFocusY: number | null;
   sortOrder: number;
   /** "soon" until at least one place is published. */
   status: "ready" | "soon";
@@ -192,6 +195,8 @@ function toPublicRoute(r: RouteRow, publishedSpotCount: number, withLine: boolea
     sourceEn: r.sourceEn,
     photoUrl: r.photoUrl,
     photoCredit: r.photoCredit,
+    photoFocusX: r.photoFocusX,
+    photoFocusY: r.photoFocusY,
     sortOrder: r.sortOrder,
     status: publishedSpotCount > 0 ? "ready" : "soon",
     publishedSpotCount,
@@ -362,6 +367,13 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       const v = text(input.photoUrl);
       if (v && !isPhotoUrl(v, photoHosts)) return bad("invalid_photo_url");
       out.photoUrl = v;
+    }
+    // The photo's middle: both numbers or neither, sent together.
+    if (input.photoFocusX !== undefined || input.photoFocusY !== undefined) {
+      const [x, y] = [input.photoFocusX, input.photoFocusY];
+      if (x === undefined || y === undefined || (x === null) !== (y === null)) return bad("validation_failed");
+      out.photoFocusX = x;
+      out.photoFocusY = y;
     }
     if (input.lineVerified !== undefined) out.lineVerified = input.lineVerified;
     {
