@@ -11,7 +11,7 @@ import { BannerOrder, type BannerItem } from "./BannerOrder";
 
 /**
  * The home page's photos, on the home page's own screen (2026-11-16, user: banners are only the home carousel, so no
- * page of their own): their order, and a new one added in place. Editing one still opens its form.
+ * page of their own): their order, a new one added in place, and one edited in place (BannerOrder, 2026-11-17).
  */
 export function HomeBanners({ meta, items, locale }: { meta: ListMeta; items: BannerItem[]; locale: string }) {
   const { t } = useLingui();
@@ -44,7 +44,7 @@ export function HomeBanners({ meta, items, locale }: { meta: ListMeta; items: Ba
         </div>
       ) : null}
       {/* Drawn afresh when the server's list changes (a banner added above). */}
-      <BannerOrder key={items.map((b) => b.id).join()} initial={items} locale={locale} />
+      <BannerOrder key={items.map((b) => b.id).join()} initial={items} meta={meta} locale={locale} />
     </section>
   );
 }

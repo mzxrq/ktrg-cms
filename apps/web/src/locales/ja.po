@@ -613,7 +613,7 @@ msgstr "「地形」ボタンを押した状態で見る"
 msgid "「大きい文字」の大きさ"
 msgstr "「大きい文字」の大きさ"
 
-#: src/components/admin/AdminItemForm.tsx:336
+#: src/components/admin/AdminItemForm.tsx:346
 msgid "「必須」の欄をすべて入れると保存できます。"
 msgstr "「必須」の欄をすべて入れると保存できます。"
 
@@ -2814,7 +2814,7 @@ msgstr "のものです。"
 msgid "の道のり"
 msgstr "の道のり"
 
-#: src/components/admin/AdminItemForm.tsx:146
+#: src/components/admin/AdminItemForm.tsx:156
 msgid "はい"
 msgstr "はい"
 
@@ -2973,9 +2973,13 @@ msgstr "バッジ"
 msgid "バッジは、まだ準備中です。"
 msgstr "バッジは、まだ準備中です。"
 
-#: src/components/admin/BannerOrder.tsx:38
+#: src/components/admin/BannerOrder.tsx:78
 msgid "バナーがまだありません。「新しいバナー」から作ってください。"
 msgstr "バナーがまだありません。「新しいバナー」から作ってください。"
+
+#: src/components/admin/BannerOrder.tsx:74
+msgid "バナーを削除しました。"
+msgstr "バナーを削除しました。"
 
 #: src/components/admin/HomeBanners.tsx:40
 msgid "バナーを加えました。"
@@ -3314,7 +3318,7 @@ msgstr "まず、GPXファイルをここにドラッグするか「GPXファイ
 msgid "まだ"
 msgstr "まだ"
 
-#: src/components/admin/AdminItemForm.tsx:200
+#: src/components/admin/AdminItemForm.tsx:210
 msgid "まだ、ありません。"
 msgstr "まだ、ありません。"
 
@@ -3912,7 +3916,7 @@ msgid "下り {down}m"
 msgstr "下り {down}m"
 
 #: src/app/(admin)/admin/attention/page.tsx:126
-#: src/components/admin/BannerOrder.tsx:52
+#: src/components/admin/BannerOrder.tsx:98
 #: src/components/admin/DirectoryPicker.tsx:144
 #: src/components/admin/PlacePanel.tsx:112
 #: src/components/admin/RallyEditor.tsx:124
@@ -4162,7 +4166,7 @@ msgstr "体験"
 msgid "作っています…"
 msgstr "作っています…"
 
-#: src/components/admin/AdminItemForm.tsx:304
+#: src/components/admin/AdminItemForm.tsx:314
 msgid "作成"
 msgstr "作成"
 
@@ -4191,7 +4195,7 @@ msgstr "例：祝日は休み／ラストオーダーは閉店30分前"
 msgid "例：臥薪嘗胆"
 msgstr "例：臥薪嘗胆"
 
-#: src/components/admin/AdminItemForm.tsx:304
+#: src/components/admin/AdminItemForm.tsx:314
 #: src/components/admin/FuriganaWords.tsx:146
 #: src/components/admin/PageTextEditor.tsx:99
 msgid "保存"
@@ -4205,7 +4209,7 @@ msgstr "保存した地図を開く"
 msgid "保存していない内容も含めて調べています。"
 msgstr "保存していない内容も含めて調べています。"
 
-#: src/components/admin/AdminItemForm.tsx:296
+#: src/components/admin/AdminItemForm.tsx:306
 #: src/components/admin/PageTextEditor.tsx:93
 #: src/components/admin/RouteEditor.tsx:486
 msgid "保存していない変更があります"
@@ -4232,11 +4236,11 @@ msgstr "保存していない編集が、このブラウザに残っています
 msgid "保存しています…"
 msgstr "保存しています…"
 
-#: src/components/admin/AdminItemForm.tsx:300
+#: src/components/admin/AdminItemForm.tsx:310
 msgid "保存して次へ"
 msgstr "保存して次へ"
 
-#: src/components/admin/AdminItemForm.tsx:116
+#: src/components/admin/AdminItemForm.tsx:124
 #: src/components/admin/GoalsForm.tsx:24
 #: src/components/admin/HomeSectionsForm.tsx:36
 #: src/components/admin/RallyEditor.tsx:75
@@ -4268,7 +4272,7 @@ msgstr "保存しました。ただし、情報源が空のため、線は「確
 msgid "保存しました。ただし、未完成の経由地が{heldCount}件あり、まだ保存していません（赤く示した項目）。"
 msgstr "保存しました。ただし、未完成の経由地が{heldCount}件あり、まだ保存していません（赤く示した項目）。"
 
-#: src/components/admin/AdminItemForm.tsx:93
+#: src/components/admin/AdminItemForm.tsx:101
 msgid "保存しました。次に確認する場所はありません。"
 msgstr "保存しました。次に確認する場所はありません。"
 
@@ -4312,13 +4316,13 @@ msgstr "保存できませんでした。もう一度お試しください。"
 msgid "保存できませんでした。電波の良い場所でもう一度お試しください。"
 msgstr "保存できませんでした。電波の良い場所でもう一度お試しください。"
 
-#: src/components/admin/AdminItemForm.tsx:304
+#: src/components/admin/AdminItemForm.tsx:314
 #: src/components/admin/PageTextEditor.tsx:99
 #: src/components/admin/RouteEditor.tsx:489
 msgid "保存中…"
 msgstr "保存中…"
 
-#: src/components/admin/AdminItemForm.tsx:296
+#: src/components/admin/AdminItemForm.tsx:306
 #: src/components/admin/PageTextEditor.tsx:93
 #: src/components/OfflinePack.tsx:96
 msgid "保存済み"
@@ -4469,7 +4473,7 @@ msgstr "公開できるようになったら、ここにスタンプのラリー
 msgid "公開できるようになったら、ここに場所の一覧が表示されます。"
 msgstr "公開できるようになったら、ここに場所の一覧が表示されます。"
 
-#: src/components/admin/AdminItemForm.tsx:341
+#: src/components/admin/AdminItemForm.tsx:351
 msgid "公開と記事の情報"
 msgstr "公開と記事の情報"
 
@@ -4498,7 +4502,7 @@ msgstr "公開をやめますか？"
 msgid "公開をやめる"
 msgstr "公開をやめる"
 
-#: src/components/admin/BannerOrder.tsx:52
+#: src/components/admin/BannerOrder.tsx:98
 #: src/components/admin/CommentInbox.tsx:30
 #: src/components/admin/CommentInbox.tsx:31
 #: src/components/admin/map-editor/PlaceList.tsx:132
@@ -4571,7 +4575,7 @@ msgstr "共有"
 msgid "共有する"
 msgstr "共有する"
 
-#: src/components/admin/AdminItemForm.tsx:334
+#: src/components/admin/AdminItemForm.tsx:344
 msgid "内容"
 msgstr "内容"
 
@@ -4872,7 +4876,7 @@ msgid "制限中"
 msgstr "制限中"
 
 #: src/components/admin/AccessPointsEditor.tsx:53
-#: src/components/admin/AdminItemForm.tsx:346
+#: src/components/admin/AdminItemForm.tsx:356
 #: src/components/admin/AdminListTable.tsx:316
 #: src/components/admin/AdminListTable.tsx:350
 #: src/components/admin/AdminListTable.tsx:414
@@ -4898,7 +4902,7 @@ msgstr "削除が予約されています。3日たつと、アカウントと�
 msgid "削除しました。"
 msgstr "削除しました。"
 
-#: src/components/admin/AdminItemForm.tsx:121
+#: src/components/admin/AdminItemForm.tsx:130
 #: src/components/admin/AdminListTable.tsx:110
 #: src/components/admin/CommentInbox.tsx:82
 #: src/components/admin/DuplicateFinder.tsx:32
@@ -4908,8 +4912,8 @@ msgstr "削除しました。"
 msgid "削除しますか？"
 msgstr "削除しますか？"
 
-#: src/components/admin/AdminItemForm.tsx:121
-#: src/components/admin/AdminItemForm.tsx:348
+#: src/components/admin/AdminItemForm.tsx:130
+#: src/components/admin/AdminItemForm.tsx:358
 #: src/components/admin/AdminListTable.tsx:110
 #: src/components/admin/CommentInbox.tsx:82
 #: src/components/admin/DuplicateFinder.tsx:32
@@ -6376,7 +6380,7 @@ msgstr "本人かどうか、確認します"
 msgid "本人からの異議"
 msgstr "本人からの異議"
 
-#: src/components/admin/AdminItemForm.tsx:324
+#: src/components/admin/AdminItemForm.tsx:334
 #: src/components/admin/BlockEditor.tsx:354
 #: src/components/admin/PageTextEditor.tsx:152
 #: src/components/admin/PageTextEditor.tsx:153
@@ -7436,7 +7440,7 @@ msgstr "線を道に沿わせました。形を確かめてから、保存して
 msgid "編集して下書きに戻す"
 msgstr "編集して下書きに戻す"
 
-#: src/components/admin/AdminItemForm.tsx:310
+#: src/components/admin/AdminItemForm.tsx:320
 #: src/components/admin/RouteEditor.tsx:532
 msgid "編集する内容"
 msgstr "編集する内容"
@@ -7868,7 +7872,7 @@ msgstr "該当する場所はありません。"
 msgid "詳しく見る"
 msgstr "詳しく見る"
 
-#: src/components/admin/AdminItemForm.tsx:324
+#: src/components/admin/AdminItemForm.tsx:334
 msgid "詳細"
 msgstr "詳細"
 
@@ -7919,6 +7923,7 @@ msgstr "読み込めませんでした。"
 msgid "読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "読み込めませんでした。しばらくしてから、ページを開き直してください。"
 
+#: src/components/admin/BannerOrder.tsx:112
 #: src/components/admin/BlockEditor.tsx:131
 #: src/components/admin/FuriganaOverview.tsx:130
 #: src/components/admin/PhotoLibrary.tsx:163
@@ -8378,6 +8383,7 @@ msgid "長さ"
 msgstr "長さ"
 
 #: src/components/admin/AdminListTable.tsx:193
+#: src/components/admin/BannerOrder.tsx:105
 #: src/components/admin/BlockEditor.tsx:561
 #: src/components/admin/BlockEditor.tsx:599
 #: src/components/admin/BlockEditor.tsx:612
