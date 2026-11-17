@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { useErrorMessages } from "@/components/useErrorMessages";
 import { errorKeyFromApi, isServerCode, type ErrorKey } from "@/lib/api-error";
@@ -53,36 +53,68 @@ export async function uploadPhoto(original: File): Promise<{ ok: true; url: stri
 /**
  * A "choose a photo" button for the box next to it: the file goes to the photo storage and `onUploaded` gets its https link.
  * Beside it, a button for the photo library: a photo uploaded before can be picked again instead of uploaded twice.
+ *
+ * With `onUploadedMany`, several files can be chosen at once (a waypoint's photo list). They are sent one after another (each
+ * is shrunk in the browser first, and the host refuses big bodies) and the links come back together, once, in the order chosen,
+ * so the caller adds them in one change. A file that fails is left out and its error shown; the others still come back. Only
+ * the first `limit` files are sent.
  */
-export function PhotoUpload({ onUploaded, disabled = false }: { onUploaded: (url: string) => void; disabled?: boolean }) {
+export function PhotoUpload({
+  onUploaded,
+  onUploadedMany,
+  limit = Infinity,
+  disabled = false,
+}: {
+  onUploaded: (url: string) => void;
+  onUploadedMany?: (urls: string[]) => void;
+  limit?: number;
+  disabled?: boolean;
+}) {
   const { t } = useLingui();
   const messages = useErrorMessages();
-  const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const [error, setError] = useState<ErrorKey | null>(null);
+  const [skipped, setSkipped] = useState(0);
+  const busy = progress !== null;
+  // The links go to the newest callback, not the one from when the files were chosen: the list may change while they upload.
+  const latest = useRef({ onUploaded, onUploadedMany });
+  useEffect(() => {
+    latest.current = { onUploaded, onUploadedMany };
+  });
 
-  async function send(file: File | undefined) {
-    if (!file) return;
-    setBusy(true);
+  async function send(chosen: File[]) {
+    const files = chosen.slice(0, Math.max(0, limit));
+    setSkipped(chosen.length - files.length);
+    if (files.length === 0) return;
     setError(null);
-    const res = await uploadPhoto(file);
-    setBusy(false);
-    if (res.ok) onUploaded(res.url);
-    else setError(res.key);
+    const urls: string[] = [];
+    for (const [i, file] of files.entries()) {
+      setProgress({ done: i, total: files.length });
+      const res = await uploadPhoto(file);
+      if (res.ok) urls.push(res.url);
+      else setError(res.key);
+    }
+    setProgress(null);
+    const { onUploaded: one, onUploadedMany: many } = latest.current;
+    if (many) {
+      if (urls.length > 0) many(urls);
+    } else if (urls[0]) one(urls[0]);
   }
 
   return (
     <div className="flex flex-col gap-1">
       <div className="flex flex-wrap gap-2">
         <label className="tap-target inline-flex w-fit cursor-pointer items-center rounded-full border border-line px-5 text-lg font-bold has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:outline-accent has-[:disabled]:opacity-40">
-          {busy ? t`送っています…` : t`写真をアップロード`}
+          {progress ? (progress.total > 1 ? t`送っています… ${progress.done + 1}/${progress.total}` : t`送っています…`) : onUploadedMany ? t`写真をアップロード（まとめて選べます）` : t`写真をアップロード`}
           <input
             type="file"
             accept="image/jpeg,image/png,image/webp"
+            multiple={onUploadedMany !== undefined}
             disabled={busy || disabled}
             onChange={(e) => {
-              const file = e.target.files?.[0];
-              e.target.value = ""; // the same file can be chosen again
-              void send(file);
+              const files = Array.from(e.target.files ?? []);
+              e.target.value = ""; // the same files can be chosen again
+              void send(files);
             }}
             className="sr-only"
           />
@@ -92,6 +124,11 @@ export function PhotoUpload({ onUploaded, disabled = false }: { onUploaded: (url
       {error ? (
         <p role="alert" className="text-base font-bold text-danger">
           {messages[error]}
+        </p>
+      ) : null}
+      {skipped > 0 ? (
+        <p role="status" className="text-base font-bold">
+          {t`${skipped}枚は、写真の数の上限を超えるので送りませんでした。`}
         </p>
       ) : null}
     </div>

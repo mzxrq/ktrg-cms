@@ -130,7 +130,13 @@ export function PhotoListEditor({ stored, onChange, name, lat, lng }: { stored: 
           {searching ? t`探しています…` : t`WikipediaやWikimedia Commonsから探す`}
         </button>
       </div>
-      <PhotoUpload onUploaded={(url) => add({ url, credit: null, sourceUrl: null })} disabled={full} />
+      <PhotoUpload
+        onUploaded={(url) => add({ url, credit: null, sourceUrl: null })}
+        // Several at once: added in one change, in the order chosen (one add per link would each start from the same old list).
+        onUploadedMany={(urls) => set(urls.reduce((list, url) => addPhoto(list, { url, credit: null, sourceUrl: null }), photos))}
+        limit={MAX_PHOTOS - photos.length}
+        disabled={full}
+      />
       {full ? <p className="text-base text-muted">{t`写真は${MAX_PHOTOS}枚までです。`}</p> : null}
       {note ? <p role="status" className="text-base font-bold">{note}</p> : null}
 
