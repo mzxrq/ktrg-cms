@@ -84,7 +84,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Generous: transferring the ~230MB of saved images to the Lightsail box over scp has taken longer than
+    # expected in testing (15 minutes wasn't enough and the job hit its own timeout mid-transfer).
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v7
         with:
