@@ -44,8 +44,8 @@ export function RouteHistory({ routeId, locale }: { routeId: string; locale: str
   }
 
   return (
-    <details onToggle={(e) => e.currentTarget.open && void load()} className="rounded-xl border border-line bg-paper px-4 py-2">
-      <summary className="cursor-pointer text-base font-bold">{t`変更の履歴`}</summary>
+    <details onToggle={(e) => e.currentTarget.open && void load()} className="rounded-2xl bg-surface p-4 sm:p-5">
+      <summary className="cursor-pointer text-xl font-bold text-accent">{t`変更の履歴`}</summary>
       <div className="mt-3">
         {failed ? <p role="alert" className="text-base font-bold text-danger">{t`履歴を読み込めませんでした。`}</p> : null}
         {entries && entries.length === 0 ? <p className="text-base">{t`まだ、履歴はありません。`}</p> : null}

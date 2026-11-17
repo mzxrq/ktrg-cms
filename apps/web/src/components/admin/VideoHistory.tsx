@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
+import { ClockIcon } from "@/components/icons";
 
 // The video links a route had before (kept each time the link is replaced or removed), so a mistake can be put back.
 // Putting one back only fills the field: the editor still saves it like any other change.
@@ -23,9 +24,12 @@ export function VideoHistory({ routeId, onPick }: { routeId: string; onPick: (ur
   }
 
   return (
-    <details onToggle={(e) => e.currentTarget.open && void load()} className="rounded-xl border border-line bg-paper px-4 py-2">
-      <summary className="cursor-pointer text-base font-bold">{t`前の動画のリンク`}</summary>
-      <div className="mt-2">
+    <details onToggle={(e) => e.currentTarget.open && void load()}>
+      <summary className="tap-target inline-flex cursor-pointer items-center gap-2 text-base font-bold underline underline-offset-4">
+        <ClockIcon />
+        {t`前の動画のリンク`}
+      </summary>
+      <div className="ml-3 mt-1 border-l-2 border-line pl-4">
         {failed ? <p role="alert" className="text-base font-bold text-danger">{t`読み込めませんでした。`}</p> : null}
         {urls === null && !failed ? <p className="text-base text-muted">{t`読み込み中…`}</p> : null}
         {urls?.length === 0 ? <p className="text-base text-muted">{t`前のリンクは、まだありません。`}</p> : null}
