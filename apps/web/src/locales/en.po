@@ -47,7 +47,7 @@ msgstr "(No title)"
 
 #. placeholder {0}: itemName(meta, group[0]!, locale)
 #. placeholder {1}: group.length
-#: src/components/admin/DuplicateFinder.tsx:65
+#: src/components/admin/DuplicateFinder.tsx:64
 msgid "{0}（{1}件）"
 msgstr "{0} ({1})"
 
@@ -107,8 +107,8 @@ msgid "{0}を消す"
 msgstr "Delete {0}"
 
 #. placeholder {0}: name(item)
-#: src/components/admin/AdminListTable.tsx:326
-#: src/components/admin/AdminListTable.tsx:383
+#: src/components/admin/AdminListTable.tsx:364
+#: src/components/admin/AdminListTable.tsx:429
 msgid "{0}を選ぶ"
 msgstr "Select {0}"
 
@@ -148,7 +148,7 @@ msgid "{0}件を削除しました。"
 msgstr "{0} deleted."
 
 #. placeholder {0}: gone.size
-#: src/components/admin/AdminListTable.tsx:123
+#: src/components/admin/AdminListTable.tsx:171
 msgid "{0}件を削除しました。残りは削除できませんでした：{failure}"
 msgstr "{0} deleted. The rest could not be deleted: {failure}"
 
@@ -158,12 +158,12 @@ msgid "{0}件を削除します。元に戻せません。よろしいですか�
 msgstr "Delete {0}? This cannot be undone."
 
 #. placeholder {0}: done.added
-#: src/components/admin/PlaceImport.tsx:86
+#: src/components/admin/PlaceImport.tsx:85
 msgid "{0}件を取り込みました（下書き）。"
 msgstr "{0} places imported (as drafts)."
 
 #. placeholder {0}: preview.added
-#: src/components/admin/PlaceImport.tsx:80
+#: src/components/admin/PlaceImport.tsx:79
 msgid "{0}件を取り込む"
 msgstr "Import {0} places"
 
@@ -175,7 +175,7 @@ msgstr "{0} set back to waiting."
 #. placeholder {0}: preview.read
 #. placeholder {1}: preview.added
 #. placeholder {2}: preview.skipped
-#: src/components/admin/PlaceImport.tsx:77
+#: src/components/admin/PlaceImport.tsx:76
 msgid "{0}件を読みました。新しい場所：{1}件、すでにある場所：{2}件"
 msgstr "{0} rows read. New places: {1}. Already there: {2}"
 
@@ -466,7 +466,7 @@ msgstr "Move {text} down"
 msgid "{title}（管理）"
 msgstr "{title} (admin)"
 
-#: src/components/admin/AdminListTable.tsx:303
+#: src/components/admin/AdminListTable.tsx:330
 msgid "{title}はまだありません。"
 msgstr "No {title} yet."
 
@@ -475,7 +475,7 @@ msgid "{title}を直す（管理）"
 msgstr "Edit {title} (admin)"
 
 #: src/app/(admin)/admin/[list]/[id]/page.tsx:39
-#: src/app/(admin)/admin/[list]/page.tsx:64
+#: src/app/(admin)/admin/[list]/page.tsx:71
 msgid "{title}を読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "{title} could not be loaded. Please reload the page in a little while."
 
@@ -488,7 +488,7 @@ msgstr "{TOTAL_STAMPS} places"
 msgid "{total}か所"
 msgstr "{total} places"
 
-#: src/components/admin/AdminListTable.tsx:299
+#: src/components/admin/AdminListTable.tsx:303
 msgid "{total}件"
 msgstr "{total} items"
 
@@ -552,7 +552,7 @@ msgid "「{0}」を保存しました。"
 msgstr "Saved “{0}”."
 
 #. placeholder {0}: name(one)
-#: src/components/admin/AdminListTable.tsx:109
+#: src/components/admin/AdminListTable.tsx:157
 msgid "「{0}」を削除します。元に戻せません。よろしいですか？"
 msgstr "Delete \"{0}\"? This cannot be undone."
 
@@ -1749,7 +1749,8 @@ msgstr "Your stamps may be lost in this browser."
 msgid "このページの項目"
 msgstr "On this page"
 
-#: src/components/admin/AdminListTable.tsx:288
+#: src/components/admin/AdminListTable.tsx:340
+#: src/components/admin/AdminListTable.tsx:419
 msgid "このページをすべて選ぶ"
 msgstr "Select everything on this page"
 
@@ -2193,13 +2194,12 @@ msgstr "Readings the dictionary worked out from the site's text. Visitors don't 
 msgid "サイトマップ"
 msgstr "Site map"
 
-#: src/components/admin/DuplicateFinder.tsx:54
+#: src/components/admin/DuplicateFinder.tsx:53
 msgid "さがしています…"
 msgstr "Searching…"
 
-#: src/components/admin/AdminListTable.tsx:231
-#: src/components/admin/AdminListTable.tsx:231
-#: src/components/admin/DuplicateFinder.tsx:54
+#: src/components/admin/AdminListTable.tsx:245
+#: src/components/admin/DuplicateFinder.tsx:53
 #: src/components/admin/FuriganaWords.tsx:120
 msgid "さがす"
 msgstr "Search"
@@ -2212,7 +2212,8 @@ msgstr "Sub-course branches from (to this side trip)"
 msgid "サブコースの線を描く"
 msgstr "Draw the sub-course line"
 
-#: src/components/admin/PlaceImport.tsx:71
+#: src/components/admin/AdminListTable.tsx:313
+#: src/components/admin/PlaceImport.tsx:70
 msgid "シート（CSV）から取り込む"
 msgstr "Import from a sheet (CSV)"
 
@@ -2434,7 +2435,7 @@ msgid "ストーリーを読む"
 msgstr "Read the story"
 
 #: src/app/(public)/blog/page.tsx:63
-#: src/components/admin/AdminListTable.tsx:164
+#: src/components/admin/AdminListTable.tsx:189
 #: src/components/admin/CommentInbox.tsx:30
 #: src/components/admin/DirectoryPicker.tsx:158
 #: src/components/admin/list-parts.tsx:31
@@ -2540,7 +2541,7 @@ msgstr "Tiles"
 msgid "タグ"
 msgstr "Tags"
 
-#: src/app/(admin)/admin/[list]/page.tsx:45
+#: src/app/(admin)/admin/[list]/page.tsx:64
 msgid "タグを管理する"
 msgstr "Manage tags"
 
@@ -3124,7 +3125,7 @@ msgstr "All posts"
 msgid "ブログの記事の、書いた人のところに表示されます。"
 msgstr "Shown by the author's name on the blog posts you write."
 
-#: src/app/(admin)/admin/[list]/page.tsx:34
+#: src/app/(admin)/admin/[list]/page.tsx:35
 msgid "ブログへ戻る"
 msgstr "Back to the blog"
 
@@ -3290,7 +3291,7 @@ msgstr "Other vehicle"
 msgid "ほかの場所へ"
 msgstr "Another place"
 
-#: src/components/admin/AdminListTable.tsx:270
+#: src/components/admin/AdminListTable.tsx:294
 msgid "ほかの絞りこみ"
 msgstr "More filters"
 
@@ -3947,7 +3948,7 @@ msgstr "Unknown"
 msgid "両方を合わせる（おすすめ）"
 msgstr "Combine both (recommended)"
 
-#: src/components/admin/AdminListTable.tsx:361
+#: src/components/admin/AdminListTable.tsx:400
 msgid "並べかえ"
 msgstr "Sort"
 
@@ -4372,11 +4373,11 @@ msgstr "Save the course first."
 msgid "先に直すもの"
 msgstr "Fix first"
 
-#: src/components/admin/DuplicateFinder.tsx:67
+#: src/components/admin/DuplicateFinder.tsx:66
 msgid "先頭だけ残して、ほかを削除"
 msgstr "Keep the first, delete the others"
 
-#: src/components/admin/AdminListTable.tsx:299
+#: src/components/admin/AdminListTable.tsx:303
 msgid "先頭の{total}件を表示しています。"
 msgstr "Showing the first {total} only."
 
@@ -4878,12 +4879,12 @@ msgstr "Restricted"
 
 #: src/components/admin/AccessPointsEditor.tsx:53
 #: src/components/admin/AdminItemForm.tsx:361
-#: src/components/admin/AdminListTable.tsx:316
-#: src/components/admin/AdminListTable.tsx:350
-#: src/components/admin/AdminListTable.tsx:414
+#: src/components/admin/AdminListTable.tsx:354
+#: src/components/admin/AdminListTable.tsx:388
+#: src/components/admin/AdminListTable.tsx:460
 #: src/components/admin/CommentInbox.tsx:143
 #: src/components/admin/CommentInbox.tsx:184
-#: src/components/admin/DuplicateFinder.tsx:86
+#: src/components/admin/DuplicateFinder.tsx:85
 #: src/components/admin/fields.tsx:157
 #: src/components/admin/FuriganaWords.tsx:155
 #: src/components/admin/HoursInput.tsx:36
@@ -4904,7 +4905,7 @@ msgid "削除しました。"
 msgstr "Deleted."
 
 #: src/components/admin/AdminItemForm.tsx:135
-#: src/components/admin/AdminListTable.tsx:110
+#: src/components/admin/AdminListTable.tsx:158
 #: src/components/admin/CommentInbox.tsx:82
 #: src/components/admin/DuplicateFinder.tsx:32
 #: src/components/admin/RallyEditor.tsx:111
@@ -4915,7 +4916,7 @@ msgstr "Delete this?"
 
 #: src/components/admin/AdminItemForm.tsx:135
 #: src/components/admin/AdminItemForm.tsx:363
-#: src/components/admin/AdminListTable.tsx:110
+#: src/components/admin/AdminListTable.tsx:158
 #: src/components/admin/CommentInbox.tsx:82
 #: src/components/admin/DuplicateFinder.tsx:32
 #: src/components/admin/FuriganaWords.tsx:64
@@ -4986,7 +4987,7 @@ msgstr "Earlier"
 msgid "前後の記事"
 msgstr "Earlier and later posts"
 
-#: src/components/admin/AdminListTable.tsx:205
+#: src/components/admin/AdminListTable.tsx:237
 msgid "加えました。"
 msgstr "Added."
 
@@ -5186,12 +5187,12 @@ msgstr "Imported: {0} created, {1} updated, {2} rows not imported"
 msgid "取り込み中… {0} / {1}"
 msgstr "Importing… {0} / {1}"
 
-#: src/components/admin/PlaceImport.tsx:74
+#: src/components/admin/PlaceImport.tsx:73
 msgid "取り込むCSVファイル"
 msgstr "CSV file to import"
 
 #. placeholder {0}: items.length
-#: src/components/admin/PlaceImport.tsx:104
+#: src/components/admin/PlaceImport.tsx:103
 msgid "取り込めなかった場所（{0}件）"
 msgstr "Places that could not be imported ({0})"
 
@@ -5223,7 +5224,7 @@ msgstr "Right"
 msgid "合計"
 msgstr "Total"
 
-#: src/components/admin/DuplicateFinder.tsx:52
+#: src/components/admin/DuplicateFinder.tsx:51
 msgid "同じ名前で、位置が近い（150m以内、または位置が未入力）場所を、グループにして出します。各グループの先頭が、いちばん情報がそろっている場所です（残すのにおすすめ）。"
 msgstr "Places with the same name that are near each other (within 150 m, or with no position) are shown in groups. The first of each group is the most complete one (the one to keep)."
 
@@ -5239,8 +5240,8 @@ msgstr "An earlier row has the same number"
 msgid "同じ道を行って、同じ道を戻ります。"
 msgstr "You go out along the same path and come back the same way."
 
-#: src/components/admin/AdminListTable.tsx:312
-#: src/components/admin/AdminListTable.tsx:371
+#: src/components/admin/AdminListTable.tsx:343
+#: src/components/admin/AdminListTable.tsx:410
 #: src/components/admin/map-editor/PlaceList.tsx:95
 #: src/components/admin/PhotoLibrary.tsx:175
 #: src/components/admin/RallyCreate.tsx:76
@@ -5306,6 +5307,10 @@ msgstr "Part of the name"
 #: src/components/admin/PlacePanel.tsx:123
 msgid "名前の読み"
 msgstr "Reading of the name"
+
+#: src/components/admin/AdminListTable.tsx:254
+msgid "名前やことばの一部を入力"
+msgstr "Type part of a name or word"
 
 #: src/components/admin/RallyEditor.tsx:158
 msgid "名前を保存"
@@ -6039,7 +6044,6 @@ msgstr "Discard"
 msgid "探しています…"
 msgstr "Searching…"
 
-#: src/components/admin/AdminListTable.tsx:233
 #: src/components/admin/CommentInbox.tsx:120
 #: src/components/admin/map-editor/MapEditor.tsx:1055
 msgid "探す"
@@ -6168,7 +6172,7 @@ msgstr "No new words."
 msgid "新しい記事"
 msgstr "Newest posts"
 
-#: src/components/admin/AdminListTable.tsx:370
+#: src/components/admin/AdminListTable.tsx:409
 #: src/components/admin/PhotoLibrary.tsx:145
 msgid "新しい順"
 msgstr "Newest first"
@@ -6327,7 +6331,7 @@ msgstr "Once rewritten, the \"this is a draft\" notice and the updated date are 
 msgid "書きかえ済み"
 msgstr "Rewritten"
 
-#: src/app/(admin)/admin/[list]/page.tsx:42
+#: src/app/(admin)/admin/[list]/page.tsx:61
 msgid "書き手を管理する"
 msgstr "Manage writers"
 
@@ -6401,7 +6405,7 @@ msgstr "Not used in the text"
 msgid "本文へ移動"
 msgstr "Skip to main content"
 
-#: src/components/admin/AdminListTable.tsx:303
+#: src/components/admin/AdminListTable.tsx:330
 msgid "条件に合う{title}はありません。"
 msgstr "No {title} match the conditions."
 
@@ -6414,7 +6418,7 @@ msgstr "No courses match."
 msgid "条件に合うラリーがありません。"
 msgstr "No rallies match."
 
-#: src/components/admin/AdminListTable.tsx:246
+#: src/components/admin/AdminListTable.tsx:268
 msgid "条件をやめる"
 msgstr "Clear the conditions"
 
@@ -6608,7 +6612,7 @@ msgstr "History"
 msgid "歴史・由来"
 msgstr "History and background"
 
-#: src/components/admin/DuplicateFinder.tsx:76
+#: src/components/admin/DuplicateFinder.tsx:75
 msgid "残すのにおすすめ"
 msgstr "Best to keep"
 
@@ -6801,7 +6805,7 @@ msgstr "Permission from the site has not been confirmed yet. Once you have it, t
 msgid "現地の許可を確認し、「許可確認済み」にチェックを入れてください。"
 msgstr "Confirm permission from the site and tick \"Permission confirmed\"."
 
-#: src/components/admin/PlaceImport.tsx:73
+#: src/components/admin/PlaceImport.tsx:72
 msgid "現地調査のシート（CSV）を選ぶと、まず件数を表示します。取り込んだ場所はすべて下書きで、位置は「未確認」のままです。すでにある場所は追加しません。"
 msgstr "Choose the field survey sheet (CSV) and the counts are shown first. Every imported place is a draft and its position stays \"not checked\". Places already there are not added again."
 
@@ -7335,7 +7339,7 @@ msgstr "Place a waypoint"
 msgid "経由地を置くと、近い順に並びます。"
 msgstr "Once there is a waypoint, they are listed nearest first."
 
-#: src/components/admin/AdminListTable.tsx:255
+#: src/components/admin/AdminListTable.tsx:278
 msgid "絞りこみ"
 msgstr "Filters"
 
@@ -7680,7 +7684,7 @@ msgstr "Delete table"
 msgid "表示"
 msgstr "View"
 
-#: src/app/(admin)/admin/[list]/page.tsx:53
+#: src/app/(admin)/admin/[list]/page.tsx:49
 msgid "表示している読み"
 msgstr "Readings shown to visitors"
 
@@ -8290,7 +8294,6 @@ msgstr "Not set"
 msgid "選びなおす"
 msgstr "Choose again"
 
-#: src/components/admin/AdminListTable.tsx:311
 #: src/components/admin/map-editor/PlaceList.tsx:71
 msgid "選ぶ"
 msgstr "Choose"
@@ -8304,12 +8307,12 @@ msgid "選ぶのをやめる"
 msgstr "Clear the selection"
 
 #. placeholder {0}: ticked.size
-#: src/components/admin/AdminListTable.tsx:292
+#: src/components/admin/AdminListTable.tsx:307
 msgid "選んだ{0}件を削除"
 msgstr "Delete the {0} selected"
 
 #. placeholder {0}: ids.length
-#: src/components/admin/AdminListTable.tsx:109
+#: src/components/admin/AdminListTable.tsx:157
 msgid "選んだ{0}件を削除します。元に戻せません。よろしいですか？"
 msgstr "Delete the {0} selected? This cannot be undone."
 
@@ -8372,11 +8375,12 @@ msgstr "Prefecture not set"
 msgid "都道府県を選択してください"
 msgstr "Choose your prefecture"
 
-#: src/components/admin/DuplicateFinder.tsx:61
+#: src/components/admin/DuplicateFinder.tsx:60
 msgid "重複しているように見える場所はありません。"
 msgstr "No places look duplicated."
 
-#: src/components/admin/DuplicateFinder.tsx:50
+#: src/components/admin/AdminListTable.tsx:316
+#: src/components/admin/DuplicateFinder.tsx:49
 msgid "重複している場所をさがす"
 msgstr "Find duplicate places"
 
@@ -8389,7 +8393,7 @@ msgstr "Friday"
 msgid "長さ"
 msgstr "Length"
 
-#: src/components/admin/AdminListTable.tsx:193
+#: src/components/admin/AdminListTable.tsx:206
 #: src/components/admin/BannerOrder.tsx:112
 #: src/components/admin/BlockEditor.tsx:561
 #: src/components/admin/BlockEditor.tsx:599
@@ -8620,7 +8624,3 @@ msgstr "Parking"
 #: src/components/map/MapSheet.tsx:182
 msgid "高い"
 msgstr "high"
-
-#: src/components/admin/AdminListTable.tsx:247
-msgid "名前やことばの一部を入力"
-msgstr "Type part of a name or word"

@@ -10,6 +10,7 @@ import { FilterGroup, HeaderFilter, SortHeader } from "./list-parts";
 import { DuplicateFinder } from "./DuplicateFinder";
 import { PlaceImport } from "./PlaceImport";
 import { AdminItemForm } from "./AdminItemForm";
+import { useDiscardCheck } from "./useDiscardCheck";
 import { showToast } from "@/lib/admin/toast";
 import { inputClass } from "./fields";
 import { cellOf, itemHref, itemName, listColumns, nameIsFallback, pick, type FieldUi, type ListMeta } from "@/lib/admin/lists/config";
@@ -65,6 +66,7 @@ export function AdminListTable({
   // (a post with its editor, a directory place with its map) keeps its page.
   const inlineNew = config.fields.length <= 8 && !config.fields.some((f) => f.kind === "bilingual-long" || f.kind === "decimal");
   const [adding, setAdding] = useState(false);
+  const { onDirtyChange, okToClose } = useDiscardCheck();
   const name = (item: (typeof items)[number]) => itemName(config, item, locale);
   const title = pick(config.title, locale);
   const columns = listColumns(config);
@@ -196,7 +198,11 @@ export function AdminListTable({
 
   const newButton = config.ops.create && config.newLabel ? (
     inlineNew ? (
-      <button type="button" onClick={() => setAdding(!adding)} aria-expanded={adding} className="tap-target inline-flex items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
+      <button type="button" onClick={async () => {
+          // Closing a half-filled new row asks first (the page guard only asks when the page is left).
+          if (!adding || (await okToClose())) setAdding(!adding);
+        }}
+        aria-expanded={adding} className="tap-target inline-flex items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
         {adding ? t`閉じる` : pick(config.newLabel, locale)}
       </button>
     ) : (
@@ -223,6 +229,7 @@ export function AdminListTable({
             initial={null}
             locale={locale}
             choices={choices}
+            onDirtyChange={onDirtyChange}
             onCreated={(item) => {
               setItems((all) => [item, ...all]);
               setTotal((n) => n + 1);
