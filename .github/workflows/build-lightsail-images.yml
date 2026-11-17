@@ -33,9 +33,26 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
 
+      # docker-compose.yml's build context is ./src -- on the real server that's the extracted git archive
+      # (deploy.sh / the deploy workflow's remote step create it). Here, after actions/checkout, the repo root
+      # itself IS that source tree, so override just the build context to point two levels up instead of
+      # symlinking src/ back into the repo (which would be self-referential: deploy/lightsail/src would then
+      # contain deploy/lightsail itself).
+      - name: Override the build context to the checked-out repo root
+        run: |
+          cat > deploy/lightsail/docker-compose.override.yml <<'EOF'
+          services:
+            api:
+              build:
+                context: ../..
+            web:
+              build:
+                context: ../..
+          EOF
+
       - name: docker compose build api web
         working-directory: deploy/lightsail
-        run: docker compose build api web
+        run: docker compose -f docker-compose.yml -f docker-compose.override.yml build api web
 
       - name: Show the built images
         run: docker images --filter "reference=ktrg-lightsail-*"
