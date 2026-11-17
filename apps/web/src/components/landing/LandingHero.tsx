@@ -5,7 +5,7 @@ import { HeroSlides, type HeroSlide } from "@/components/landing/HeroSlides";
 import type { BannerSlide } from "@/lib/banners";
 import { buttonStyle } from "@/components/button";
 import { KatsuragiLogo } from "@/components/KatsuragiLogo";
-import { LocaleSwitcher } from "@/components/LocaleSwitcher";
+import { LocaleSelect } from "@/components/LocaleSwitcher";
 import { ScrollCue } from "@/components/landing/ScrollCue";
 
 // The first screen of the landing page: the admin's banner photos run from edge to edge of the page, with the line over them,
@@ -33,7 +33,7 @@ export function LandingHero({ slides, locale, line, title, children, bare = fals
       <div className={`relative ${bare ? "h-[min(78svh,44rem)]" : "h-80 tall:h-[min(78svh,44rem)]"} @[34rem]:h-96 @[42rem]:h-[30rem]`}>
         <HeroSlides slides={photos.length > 0 ? photos : [FALLBACK]}>
           <div className="absolute inset-0 bg-black/40" />
-          <div className={`absolute inset-0 mx-auto flex max-w-6xl flex-col items-center justify-center gap-5 px-12 py-6 ${bare ? "pb-[calc(9.5rem+env(safe-area-inset-bottom))] md:pb-24" : ""} text-center`}>
+          <div className={`absolute inset-0 mx-auto flex max-w-6xl flex-col items-center justify-center gap-5 px-12 py-6 ${bare ? "pb-[calc(9.5rem+env(safe-area-inset-bottom))] md:pb-24 pt-[4.5rem] md:pt-6" : ""} text-center`}>
             {/* The line and the title are one block: set vertically on a tall screen (the line to the right of the title, as
                 columns run right to left), across and centred on a low one. Signed in or not. */}
             {/* A greeting holds the visitor's name, of any length, so it is set across: a vertical column is capped at the picture's height
@@ -54,10 +54,11 @@ export function LandingHero({ slides, locale, line, title, children, bare = fals
           </div>
         </HeroSlides>
         {bare ? <ScrollCue /> : null}
-        {/* The first screen has no language question any more: the two languages sit at the top left of the photo (the photo's progress dots are top right). */}
+        {/* The first screen has no language question any more: the language sits at the top left of the photo (the photo's progress
+            dots are top right), as one drop-down rather than two buttons so it keeps clear of the vertical line (2026-11-17). */}
         {bare ? (
           <div className="absolute left-3 top-[calc(0.75rem+var(--top-clear))] z-10">
-            <LocaleSwitcher />
+            <LocaleSelect />
           </div>
         ) : null}
       </div>

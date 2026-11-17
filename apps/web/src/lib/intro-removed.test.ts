@@ -50,8 +50,9 @@ test("the home page's logo bar is not shown just because the visitor scrolled", 
 });
 
 // 2026-11-12, real iPhone: in Japanese the vertical line is tall, so the logo under it sank onto the "スクロール" cue. The first
-// photo keeps the cue's zone free, so the line and the logo are centred above it.
+// photo keeps the cue's zone free, so the line and the logo are centred above it. 2026-11-17: the line sits 1.5rem lower on a phone
+// (more room above it, the cue's zone unchanged) so it keeps clear of the language drop-down.
 test("the first photo keeps room for the scroll cue under the logo", () => {
   const hero = readFileSync(join(src, "components", "landing", "LandingHero.tsx"), "utf8");
-  expect(hero).toMatch(/bare \? "pb-\[calc\(9\.5rem\+env\(safe-area-inset-bottom\)\)\] md:pb-24"/);
+  expect(hero).toMatch(/bare \? "pb-\[calc\(9\.5rem\+env\(safe-area-inset-bottom\)\)\] md:pb-24 pt-\[4\.5rem\] md:pt-6"/);
 });
