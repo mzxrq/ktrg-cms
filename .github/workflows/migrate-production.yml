@@ -64,10 +64,12 @@ jobs:
           DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
         run: bun run ktrg db status
 
+      # The same migrator and journal table as drizzle-kit (and as the Lightsail stack's ktrg-migrate), but it says why a
+      # migration failed; drizzle-kit only exited with code 1 behind its spinner.
       - name: Apply migrations
         env:
           DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
-        run: bun run --cwd apps/api db:migrate:ci
+        run: bun apps/api/scripts/migrate.ts
 
       - name: Show the result
         env:

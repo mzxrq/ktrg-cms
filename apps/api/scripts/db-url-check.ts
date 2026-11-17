@@ -11,10 +11,11 @@ export type DbUrlProblem =
   | "password_needs_encoding"
   | "bad_percent"
   | "no_host"
+  | "supabase_direct"
   | "unreadable";
 
 /** Which kind of database the URL points at; enough to tell a moved database apart, without printing the address. */
-export type DbHostKind = "supabase-pooler" | "supabase" | "aws-rds" | "aws-other" | "local" | "other";
+export type DbHostKind = "supabase-pooler" | "supabase-direct" | "supabase" | "aws-rds" | "aws-other" | "local" | "other";
 
 export type DbUrlCheck = { ok: true; kind: DbHostKind; port: string; ssl: boolean } | { ok: false; problem: DbUrlProblem };
 
@@ -29,12 +30,15 @@ export const PROBLEM_TEXT: Record<DbUrlProblem, string> = {
     "The password holds a character that must be encoded in a URL: write # as %23, / as %2F, ? as %3F, @ as %40, [ as %5B and ] as %5D.",
   bad_percent: "The URL has a % that is not followed by two hex digits (a % in the password is written %25).",
   no_host: "The URL has no host after the @.",
+  supabase_direct:
+    "This is Supabase's Direct connection (db.<project>.supabase.co), which GitHub cannot reach (it is IPv6 only). In Supabase, open Connect and copy the Session pooler URI instead (host ...pooler.supabase.com, port 5432).",
   unreadable: "The URL cannot be read. Copy it again from the database provider's connection page.",
 };
 
 function hostKind(host: string): DbHostKind {
   const h = host.toLowerCase();
   if (h.endsWith(".pooler.supabase.com")) return "supabase-pooler";
+  if (h.startsWith("db.") && h.endsWith(".supabase.co")) return "supabase-direct";
   if (h.endsWith(".supabase.co") || h.endsWith(".supabase.com")) return "supabase";
   if (h.endsWith(".rds.amazonaws.com")) return "aws-rds";
   if (h.endsWith(".amazonaws.com")) return "aws-other";
@@ -70,7 +74,27 @@ export function checkDbUrl(raw: string | undefined): DbUrlCheck {
     return { ok: false, problem: "unreadable" };
   }
   if (!url.hostname) return { ok: false, problem: "no_host" };
+  if (hostKind(url.hostname) === "supabase-direct") return { ok: false, problem: "supabase_direct" };
   return { ok: true, kind: hostKind(url.hostname), port: url.port || "5432", ssl: /sslmode=(require|verify-ca|verify-full)/i.test(url.search) };
+}
+
+/** The migrations table is not there yet (a new, empty database): the only error that means "nothing applied". */
+export const isMissingJournal = (e: unknown): boolean => {
+  const err = e as { errno?: unknown; code?: unknown } | null;
+  return ["42P01", "3F000"].includes(String(err?.errno ?? err?.code ?? ""));
+};
+
+/** A database error in plain words, from its code only (a message can hold an address; it is not printed). */
+export function dbErrorText(e: unknown): string {
+  const err = e as { errno?: unknown; code?: unknown } | null;
+  const code = String(err?.code ?? "");
+  // Bun's driver puts the SQL state in errno; postgres-js (the migrator) puts it in code.
+  const state = String(err?.errno ?? (/^[0-9A-Z]{5}$/.test(code) ? code : ""));
+  if (/TIMEOUT|REFUSED|ENOTFOUND|EAI_AGAIN|ECONNRESET|CONNECTION_CLOSED|ETIMEDOUT|EHOSTUNREACH|ENETUNREACH/i.test(code))
+    return `Could not reach the database (${code}). Check that the host is the one the live site uses, that it is reachable from the internet (for Supabase: the Session pooler URI), and that the project is not paused.`;
+  if (state === "28P01" || state === "28000" || /AUTH/i.test(code)) return `The database refused the user name or password (${state || code}).`;
+  if (state === "3D000") return "The database name at the end of the URL does not exist on that server.";
+  return `The database answered with an error (${[code, state].filter(Boolean).join(" ") || "no code"}).`;
 }
 
 // `bun apps/api/scripts/db-url-check.ts`: checks DATABASE_URL; prints only the verdict and the kind of host, never the URL.

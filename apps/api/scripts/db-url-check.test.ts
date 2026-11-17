@@ -1,5 +1,24 @@
 import { describe, expect, test } from "bun:test";
-import { checkDbUrl } from "./db-url-check";
+import { checkDbUrl, dbErrorText, isMissingJournal } from "./db-url-check";
+
+describe("database errors", () => {
+  test("only a missing migrations table means 'nothing applied yet'", () => {
+    expect(isMissingJournal({ code: "ERR_POSTGRES_SERVER_ERROR", errno: "42P01" })).toBe(true); // Bun
+    expect(isMissingJournal({ code: "3F000" })).toBe(true); // postgres-js: the drizzle schema is not there
+    expect(isMissingJournal({ code: "ERR_POSTGRES_CONNECTION_TIMEOUT" })).toBe(false);
+    expect(isMissingJournal({ code: "28P01" })).toBe(false);
+  });
+
+  test("each kind of failure is said in plain words, from both drivers", () => {
+    expect(dbErrorText({ code: "ERR_POSTGRES_CONNECTION_TIMEOUT" })).toContain("Could not reach the database");
+    expect(dbErrorText({ code: "CONNECT_TIMEOUT" })).toContain("Could not reach the database");
+    expect(dbErrorText({ code: "ECONNREFUSED" })).toContain("Could not reach the database");
+    expect(dbErrorText({ code: "ERR_POSTGRES_SERVER_ERROR", errno: "28P01" })).toContain("user name or password");
+    expect(dbErrorText({ code: "28P01" })).toContain("user name or password");
+    expect(dbErrorText({ code: "3D000" })).toContain("does not exist");
+    expect(dbErrorText({ code: "42703" })).toContain("42703");
+  });
+});
 
 const good = "postgresql://postgres.abc:secretpw@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres?sslmode=require";
 
@@ -27,6 +46,11 @@ describe("checkDbUrl", () => {
       expect(checkDbUrl(`postgresql://postgres.abc:${pw}@h.pooler.supabase.com:5432/postgres`)).toEqual({ ok: false, problem: "password_needs_encoding" });
     }
     expect(checkDbUrl("postgresql://u:50%off@h/db")).toEqual({ ok: false, problem: "bad_percent" });
+  });
+
+  test("Supabase's direct connection is named (GitHub cannot reach it); the pooler is fine", () => {
+    expect(checkDbUrl("postgresql://postgres:pw@db.abcdefghijk.supabase.co:5432/postgres")).toEqual({ ok: false, problem: "supabase_direct" });
+    expect(checkDbUrl(good)).toMatchObject({ ok: true, kind: "supabase-pooler" });
   });
 
   test("the answer never holds the URL or the password", () => {
