@@ -92,3 +92,4 @@ Desktop.ini
 
 # Database dumps
 sql/
+lightsail-deploy*
