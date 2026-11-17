@@ -182,6 +182,14 @@ function issuesOf(error: ValidationError): ValidationIssue[] {
 }
 
 function describe(error: unknown): string {
-  if (error instanceof Error) return error.stack ?? `${error.name}: ${error.message}`;
-  return String(error);
+  if (!(error instanceof Error)) return String(error);
+  const own = error.stack ?? `${error.name}: ${error.message}`;
+  // drizzle wraps the driver's error in "Failed query: ..."; the reason (a refused password, a timeout, a missing column)
+  // is its cause, which the stack above leaves out (2026-11-17: a reset database password logged only "Failed query").
+  const cause = (error as { cause?: unknown }).cause;
+  if (cause === undefined || cause === null) return own;
+  const c = cause as { code?: unknown; message?: unknown };
+  const code = typeof c.code === "string" || typeof c.code === "number" ? ` [${c.code}]` : "";
+  const message = typeof c.message === "string" ? c.message.split("\n")[0] : String(cause);
+  return `${own}\n  caused by${code}: ${message}`;
 }
