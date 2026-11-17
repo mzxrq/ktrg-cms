@@ -1,0 +1,63 @@
+name: Deploy to Lightsail
+
+# Manual only, for now (see docs/lightsail-setup-guide.md): deploys the committed code and deploy/lightsail/ to
+# the Lightsail server over SSH, then runs ./deploy.sh there. No AWS credentials are needed in GitHub -- the
+# server already has its own (anupap's key) for everything deploy.sh itself touches (Parameter Store, S3
+# backups). One-time setup: a dedicated key pair added to ec2-user's authorized_keys on the server, its private
+# half stored as the LIGHTSAIL_DEPLOY_KEY secret.
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch or commit to deploy"
+        default: main
+        required: false
+
+concurrency:
+  group: deploy-lightsail
+  cancel-in-progress: false
+
+env:
+  HOST: 52.199.244.32
+  SSH_USER: ec2-user
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Package source and deploy/lightsail
+        run: |
+          git archive --format=tar.gz -o ktrg-src.tar.gz HEAD
+          tar -czf deploy-lightsail.tar.gz -C deploy/lightsail .
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.LIGHTSAIL_DEPLOY_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Upload source and deploy scripts
+        run: scp -i ~/.ssh/id_deploy ktrg-src.tar.gz deploy-lightsail.tar.gz "$SSH_USER@$HOST:/tmp/"
+
+      # Plain tar+scp, not rsync: Amazon Linux 2023's base image doesn't ship rsync. Extracting
+      # deploy-lightsail.tar.gz over /opt/ktrg-lightsail only adds/overwrites the scripts and nginx/ config it
+      # contains -- it never touches certbot/, .env, or the storage_data/db_data Docker volumes, since none of
+      # those paths are part of deploy/lightsail/'s own tree.
+      - name: Deploy on the server
+        run: |
+          ssh -i ~/.ssh/id_deploy "$SSH_USER@$HOST" sudo bash -s -- "${{ github.sha }}" <<'REMOTE'
+            set -euo pipefail
+            TAG="$1"
+            tar -xzf /tmp/deploy-lightsail.tar.gz -C /opt/ktrg-lightsail
+            chmod +x /opt/ktrg-lightsail/*.sh /opt/ktrg-lightsail/nginx/*.sh
+            rm -rf /opt/ktrg-lightsail/src && mkdir -p /opt/ktrg-lightsail/src
+            tar -xzf /tmp/ktrg-src.tar.gz -C /opt/ktrg-lightsail/src
+            rm -f /tmp/ktrg-src.tar.gz /tmp/deploy-lightsail.tar.gz
+            cd /opt/ktrg-lightsail && ./deploy.sh "$TAG"
+          REMOTE
