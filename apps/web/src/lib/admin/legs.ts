@@ -95,6 +95,9 @@ const LEG_MAX = 1500;
 export const stopOf = (p: { key: string; lat: number | null; lng: number | null; stopBy: boolean }): Stop | null =>
   p.stopBy || p.lat === null || p.lng === null ? null : { key: p.key, lat: p.lat, lng: p.lng };
 
+/** The waypoints that are off the line (every side trip): a leg is never joined through one of them (reconcileLegs). */
+export const offLineKeys = (places: readonly { key: string; stopBy: boolean }[]): Set<string> => new Set(places.flatMap((p) => (p.stopBy ? [p.key] : [])));
+
 /** The stops of a route in order: placed waypoints, side trips left out. */
 export const pathStops = (places: readonly { key: string; lat: number | null; lng: number | null; stopBy: boolean }[]): Stop[] =>
   places.flatMap((p) => {
@@ -106,16 +109,17 @@ export const pairsOf = (stops: readonly Stop[]): { from: Stop; to: Stop }[] => s
 
 /**
  * The side trips: for each placed stop-by waypoint, a pair from the stop before it in the list (a junction waypoint put just
- * before it in the list is how the branch point is chosen) to the stop-by place. One before the first stop has none.
+ * before it in the list is how the branch point is chosen) to the stop-by place. One before the first stop has none. A place not
+ * connected to the route (detached, 遥拝) has none: nobody walks to it.
  */
-export function sidePairs(places: readonly { key: string; lat: number | null; lng: number | null; stopBy: boolean }[]): { from: Stop; to: Stop }[] {
+export function sidePairs(places: readonly { key: string; lat: number | null; lng: number | null; stopBy: boolean; detached?: boolean }[]): { from: Stop; to: Stop }[] {
   const out: { from: Stop; to: Stop }[] = [];
   let last: Stop | null = null;
   for (const p of places) {
     if (p.lat === null || p.lng === null) continue;
     const here = { key: p.key, lat: p.lat, lng: p.lng };
     if (p.stopBy) {
-      if (last) out.push({ from: last, to: here });
+      if (last && !p.detached) out.push({ from: last, to: here });
     } else last = here;
   }
   return out;
@@ -226,9 +230,11 @@ function refit(leg: Leg, from: Stop, to: Stop): Leg {
 
 /**
  * The legs that still fit the stops: a leg stays while both its stops are neighbours, with its ends on the stops. When a stop
- * was taken out between two neighbours, their two legs are joined into one.
+ * was taken out between two neighbours, their two legs are joined into one. Not when it became a side trip (`offLine`):
+ * the walk does not pass through a side trip, so its first leg stays as its own stretch (a side trip) and the route leg between
+ * the neighbours is left to draw (2026-11-17, user: the main line ran 2 -> side trip -> 3).
  */
-export function reconcileLegs(stops: readonly Stop[], legs: readonly Leg[], sides: readonly { from: Stop; to: Stop }[] = []): Leg[] {
+export function reconcileLegs(stops: readonly Stop[], legs: readonly Leg[], sides: readonly { from: Stop; to: Stop }[] = [], offLine: ReadonlySet<string> = new Set(sides.map((s) => s.to.key))): Leg[] {
   const keys = new Set(stops.map((s) => s.key));
   const out: Leg[] = [];
   for (const { from, to } of pairsOf(stops)) {
@@ -239,7 +245,8 @@ export function reconcileLegs(stops: readonly Stop[], legs: readonly Leg[], side
       out.push(fitted.side ? { from: fitted.from, to: fitted.to, points: fitted.points, anchors: fitted.anchors, curves: fitted.curves } : fitted);
       continue;
     }
-    const first = legs.find((l) => l.from === from.key && !l.side && !l.back && !keys.has(l.to));
+    // Joined through a waypoint that is gone, never through one that became a side trip (the walk does not pass it).
+    const first = legs.find((l) => l.from === from.key && !l.side && !l.back && !keys.has(l.to) && !offLine.has(l.to));
     const second = first && legs.find((l) => l.from === first.to && l.to === to.key);
     if (first && second) out.push({ from: from.key, to: to.key, points: capPoints([...first.points, ...second.points.slice(1)]) });
   }

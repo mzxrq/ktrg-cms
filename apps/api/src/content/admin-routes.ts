@@ -146,6 +146,10 @@ const spotProps = {
   stampable: t.Boolean(),
   // An optional visit beside the way (寄り道): the route's line need not pass through it.
   stopBy: t.Boolean(),
+  // Not connected to the route (遥拝): no path is drawn to it; it is a side trip in every other way.
+  detached: t.Boolean(),
+  detachedLabelJa: nullable(t.String({ maxLength: 100 })),
+  detachedLabelEn: nullable(t.String({ maxLength: 100 })),
   stampImageUrl: nullable(t.String({ maxLength: 500 })),
   photoUrl: nullable(t.String({ maxLength: 500 })),
   photoCredit: nullable(t.String({ maxLength: 500 })),

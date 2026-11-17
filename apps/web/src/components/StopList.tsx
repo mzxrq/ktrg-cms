@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useId, type ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
-import type { SpotListItem } from "@/lib/content";
+import type { RoutePoint, SpotListItem } from "@/lib/content";
 import { pickText } from "@/lib/pick-text";
 import { plainRich } from "@/lib/rich-text";
 import type { NodeState } from "@/lib/ribbon";
@@ -11,6 +11,7 @@ import { Localized } from "./Localized";
 import { PointKindName } from "./PointKindName";
 import { RoutePhoto } from "./RoutePhoto";
 import { StatusWord } from "./StatusWord";
+import { SideWord } from "@/components/SideWord";
 import { TrailNode } from "./TrailNode";
 import { offersNoStamp } from "@/lib/spot-status";
 
@@ -122,7 +123,7 @@ export function StopList({ rows, hrefFor, locale }: { rows: WalkRow[]; hrefFor: 
                     ) : null}
                     {sideTrip ? (
                       <span className={chip}>
-                        <Trans>寄り道</Trans>
+                        <SideWord item={item} locale={locale} />
                       </span>
                     ) : null}
                   </span>
@@ -134,7 +135,7 @@ export function StopList({ rows, hrefFor, locale }: { rows: WalkRow[]; hrefFor: 
                     <span lang={description.lang}>{plainRich(description.text)}</span>
                   </span>
                 ) : null}
-                {stop.type === "stamp" ? <StampMeta spot={stop.spot} locale={locale} /> : null}
+                {stop.type === "stamp" ? <StampMeta spot={stop.spot} locale={locale} /> : <PointMeta point={stop.point} locale={locale} />}
               </Card>
             </Link>
           </li>
@@ -172,6 +173,28 @@ function Leg({ km, spot }: { km: number | null; spot: SpotListItem | null }) {
         <Trans>{shownKm} km</Trans>
       )}
     </p>
+  );
+}
+
+/**
+ * A place without a stamp says its status only when it is not simply open (案内のみ, 閉鎖中, 注意), with the editor's note:
+ * an open toilet or turn needs no "開放中" (2026-11-17, user: an 案内のみ place read as open on the map).
+ */
+function PointMeta({ point, locale }: { point: RoutePoint; locale: string }) {
+  const status = point.status ?? "open";
+  if (status === "open") return null;
+  const note = pickText(locale, point.statusNoteJa ?? null, point.statusNoteEn ?? null);
+  return (
+    <>
+      <span className="mt-1 flex text-lg">
+        <StatusWord status={status} />
+      </span>
+      {note && note.text.trim() ? (
+        <span lang={note.lang} className="mt-2 block rounded-xl bg-paper p-3 text-lg leading-7">
+          {note.text}
+        </span>
+      ) : null}
+    </>
   );
 }
 

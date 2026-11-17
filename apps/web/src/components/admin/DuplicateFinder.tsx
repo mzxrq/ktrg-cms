@@ -46,9 +46,8 @@ export function DuplicateFinder({ meta, locale, choices, onChanged }: { meta: Li
   }
 
   return (
-    <details className="rounded-2xl border border-line p-4">
-      <summary className="cursor-pointer text-lg font-bold">{t`重複している場所をさがす`}</summary>
-      <div className="mt-3 flex flex-col gap-3">
+    <section aria-label={t`重複している場所をさがす`} className="rounded-2xl bg-surface p-5">
+      <div className="flex flex-col gap-3">
         <p className="text-base text-muted">{t`同じ名前で、位置が近い（150m以内、または位置が未入力）場所を、グループにして出します。各グループの先頭が、いちばん情報がそろっている場所です（残すのにおすすめ）。`}</p>
         <button type="button" disabled={busy} onClick={() => void find()} className="tap-target w-fit rounded-full bg-ink px-5 text-lg font-bold text-paper disabled:opacity-50">
           {busy && groups === null ? t`さがしています…` : t`さがす`}
@@ -92,6 +91,6 @@ export function DuplicateFinder({ meta, locale, choices, onChanged }: { meta: Li
           </div>
         ))}
       </div>
-    </details>
+    </section>
   );
 }

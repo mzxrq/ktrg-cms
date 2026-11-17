@@ -2,7 +2,7 @@ import type { GalleryPhoto, RouteDetail, RoutePoint } from "../content";
 import { stampableByDefault, type PointKind } from "../point-kinds";
 import { areaFromBounds, sketchFromPoints } from "../route-geometry";
 import { climbM, descentM, elevationsOf, lengthKm, type LngLatEle } from "./line";
-import { capLegs, joinLegs, legsFromJoined, pathStops, reconcileLegs, sidePairs, splitLine, type Leg } from "./legs";
+import { capLegs, joinLegs, legsFromJoined, offLineKeys, pathStops, reconcileLegs, sidePairs, splitLine, type Leg } from "./legs";
 import type { Translations } from "./content-locales";
 import type { AccessPoint } from "../access-points";
 import type { TechnicalLevel } from "../grading";
@@ -29,6 +29,11 @@ export interface PlaceDraft {
   stampable: boolean;
   /** An optional visit beside the way (寄り道): the line of the route need not pass through it. */
   stopBy: boolean;
+  /** Not connected to the route (遥拝): no path is drawn to it; always also stopBy. */
+  detached: boolean;
+  /** What visitors read on it (empty: the default, 道からはなれた場所). */
+  detachedLabelJa: string;
+  detachedLabelEn: string;
   nameJa: string;
   nameEn: string;
   /** How the Japanese name is read, typed by a person ("" = none). */
@@ -134,7 +139,7 @@ const s = (v: string | null | undefined) => v ?? "";
 
 export function placeFromServer(p: AdminSpot): PlaceDraft {
   return {
-    key: p.id, id: p.id, updatedAt: p.updatedAt, published: p.published, kind: p.kind, stampable: p.stampable, stopBy: p.stopBy,
+    key: p.id, id: p.id, updatedAt: p.updatedAt, published: p.published, kind: p.kind, stampable: p.stampable, stopBy: p.stopBy, detached: p.detached ?? false, detachedLabelJa: s(p.detachedLabelJa), detachedLabelEn: s(p.detachedLabelEn),
     nameJa: p.nameJa, nameEn: s(p.nameEn), nameKana: s(p.nameKana), descriptionJa: s(p.descriptionJa), descriptionEn: s(p.descriptionEn), historyJa: s(p.historyJa), historyEn: s(p.historyEn), translations: p.translations ?? {}, stampImageUrl: s(p.stampImageUrl), photoUrl: s(p.photoUrl), photoCredit: s(p.photoCredit), photoSourceUrl: s(p.photoSourceUrl), photoNameJa: s(p.photoNameJa), photoNameEn: s(p.photoNameEn), sourceJa: s(p.sourceJa), sourceEn: s(p.sourceEn), photos: p.photos ?? [],
     lat: p.lat, lng: p.lng, positionVerified: p.positionVerified, positionSource: s(p.positionSource), radiusM: p.radiusM,
     status: p.status, statusNoteJa: s(p.statusNoteJa), statusNoteEn: s(p.statusNoteEn),
@@ -158,7 +163,7 @@ function legsFromServer(route: AdminRoute, places: PlaceDraft[], line: LngLatEle
     ...(l.ride ? { ride: l.ride } : {}),
     ...(l.via && l.via.length > 0 ? { via: l.via } : {}),
   }));
-  const kept = reconcileLegs(stops, saved, sidePairs(places));
+  const kept = reconcileLegs(stops, saved, sidePairs(places), offLineKeys(places));
   return kept.length > 0 ? kept : splitLine(stops, line);
 }
 
@@ -188,7 +193,7 @@ export function draftFromServer(route: AdminRoute, spots: AdminSpot[]): RouteDra
 }
 
 export const newPlace = (key: string, lat: number | null, lng: number | null, n: number, kind: PointKind = "other"): PlaceDraft => ({
-  key, id: null, updatedAt: null, published: false, kind, stampable: stampableByDefault(kind), stopBy: false,
+  key, id: null, updatedAt: null, published: false, kind, stampable: stampableByDefault(kind), stopBy: false, detached: false, detachedLabelJa: "", detachedLabelEn: "",
   nameJa: stampableByDefault(kind) ? `経由地${n}` : "", nameEn: "", nameKana: "", descriptionJa: "", descriptionEn: "", historyJa: "", historyEn: "",
   translations: {}, stampImageUrl: "", photoUrl: "", photoCredit: "", photoSourceUrl: "", photoNameJa: "", photoNameEn: "", sourceJa: "", sourceEn: "", photos: [], lat, lng, positionVerified: false, positionSource: "", radiusM: 50, status: "open", statusNoteJa: "", statusNoteEn: "",
   permissionConfirmed: false, permissionNote: "",
@@ -310,7 +315,7 @@ function withLine(d: RouteDraft, points: LngLatEle[], legs: readonly Leg[] = d.l
 /** The legs as the line: the legs are made to fit the stops, thinned to the point budget and joined. */
 function withLegs(d: RouteDraft, legs: readonly Leg[]): RouteDraft {
   const stops = pathStops(d.places);
-  const fitted = capLegs(reconcileLegs(stops, legs, sidePairs(d.places)));
+  const fitted = capLegs(reconcileLegs(stops, legs, sidePairs(d.places), offLineKeys(d.places)));
   return { ...withLine(d, fitted.length > 0 ? joinLegs(stops, fitted).line : [], fitted), legs: fitted };
 }
 
@@ -325,7 +330,7 @@ function syncLegs(d: RouteDraft): RouteDraft {
     const cut = splitLine(stops, d.line); // none when the stops do not follow the line: it stays as it is
     return cut.length > 0 ? withLegs(d, cut) : d;
   }
-  const fitted = reconcileLegs(stops, d.legs, sidePairs(d.places));
+  const fitted = reconcileLegs(stops, d.legs, sidePairs(d.places), offLineKeys(d.places));
   return fitted === d.legs ? d : withLegs(d, fitted);
 }
 
@@ -533,11 +538,15 @@ const pointOf = (p: PlaceDraft, d: Pick<RouteDraft, "places">): RoutePoint => ({
   photoUrl: nz(p.photoUrl),
   photoCredit: nz(p.photoCredit),
   ...(p.stopBy ? { stopBy: true } : {}),
+  ...(p.detached ? { detached: true, detachedLabelJa: nz(p.detachedLabelJa), detachedLabelEn: nz(p.detachedLabelEn) } : {}),
   kind: p.kind,
   nameJa: p.nameJa,
   nameEn: nz(p.nameEn),
   descriptionJa: nz(p.descriptionJa),
   descriptionEn: nz(p.descriptionEn),
+  status: p.status,
+  statusNoteJa: nz(p.statusNoteJa),
+  statusNoteEn: nz(p.statusNoteEn),
   position: p.lat !== null && p.lng !== null ? { lat: p.lat, lng: p.lng, verified: p.positionVerified } : null,
 });
 
@@ -593,6 +602,7 @@ export function previewRoute(d: RouteDraft, order: number): RouteDetail {
       photoUrl: nz(p.photoUrl),
       photoCredit: nz(p.photoCredit),
       ...(p.stopBy ? { stopBy: true } : {}),
+      ...(p.detached ? { detached: true, detachedLabelJa: nz(p.detachedLabelJa), detachedLabelEn: nz(p.detachedLabelEn) } : {}),
       ...(times.get(p.id ?? p.key) ? { fromPrev: times.get(p.id ?? p.key) } : {}),
       position: p.lat !== null && p.lng !== null ? { lat: p.lat, lng: p.lng, verified: p.positionVerified } : null,
     })),

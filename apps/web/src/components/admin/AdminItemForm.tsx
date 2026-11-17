@@ -14,9 +14,7 @@ import { RubyEditor } from "./RubyEditor";
 import { TickIcon } from "@/components/icons";
 import { adminTab, adminTabRow, Check, Field, inputClass, MultilingualField, NumberInput, Section, TextInput } from "./fields";
 import { HoursInput } from "./HoursInput";
-import { PhotoSlot } from "./PhotoSlot";
-import { PhotoLinkDetails } from "./PhotoLinkDetails";
-import { PhotoUpload } from "./PhotoUpload";
+import { PhotoField } from "./PhotoField";
 import { IconPicker } from "./IconPicker";
 import { PositionMap } from "./PositionMap";
 import { RelationPicker } from "./RelationPicker";
@@ -39,6 +37,9 @@ export function AdminItemForm({
   locale,
   choices,
   onCreated,
+  onSaved,
+  onRemoved,
+  onDirtyChange,
 }: {
   meta: ListMeta;
   initial: ListItem | null;
@@ -46,7 +47,15 @@ export function AdminItemForm({
   choices: Record<string, { id: string; name: string; detail?: string }[]>;
   /** Shown in place above a list: a new row is handed back instead of opening its own page. */
   onCreated?: (item: ListItem) => void;
+  /** Editing in place inside a list (the home banners): told after a save, so the list can close the form and refresh. */
+  onSaved?: (item: ListItem) => void;
+  /** Editing in place: told after a delete, instead of going to the list's own page. */
+  onRemoved?: () => void;
+  /** Opened in place: told when there come to be (or stop being) unsaved changes, so closing the form can ask first. */
+  onDirtyChange?: (dirty: boolean) => void;
 }) {
+  // Opened in place in a card, not on a page of its own.
+  const inPlace = Boolean(onCreated || onSaved);
   const { t } = useLingui();
   const messages = useErrorMessages();
   const router = useRouter();
@@ -71,6 +80,8 @@ export function AdminItemForm({
   const routeName = (id: string, field: string) => choices[field]?.find((r) => r.id === id)?.name ?? null;
 
   useUnsavedGuard(dirty);
+  // The page guard only asks when the page is left; a form folded away in place asks through its owner.
+  useEffect(() => onDirtyChange?.(dirty), [dirty, onDirtyChange]);
 
   // Ctrl+S / ⌘S saves, even from inside a box. The latest save is kept in a ref so the listener is added once.
   const saveNow = useRef<() => void>(() => {});
@@ -116,6 +127,7 @@ export function AdminItemForm({
     setValues(formValues(config, item));
     setWords((item.translations ?? {}) as Translations);
     showToast({ kind: "ok", text: t`保存しました。` });
+    if (onSaved) return onSaved(item);
     if (andNext) await openNext(item.id);
   }
 
@@ -125,6 +137,7 @@ export function AdminItemForm({
     const res = await listRequest("DELETE", `${config.key}/${saved.id}`);
     setBusy(false);
     if (!res.ok) return showToast({ kind: "error", text: messages[res.key] });
+    if (onRemoved) return onRemoved();
     router.push(`/admin/${config.key}`);
   }
 
@@ -275,13 +288,7 @@ export function AdminItemForm({
       case "image":
         return (
           <Field key={f.name} label={label} hint={hint} htmlFor={id} required={f.required}>
-            <PhotoUpload onUploaded={set(f.name)} disabled={busy} />
-            <div className="mt-2">
-              <PhotoLinkDetails open={missing.includes(f.name)}>
-                <TextInput id={id} value={text(f.name)} onChange={set(f.name)} maxLength={500} placeholder="https://" invalid={missing.includes(f.name)} />
-              </PhotoLinkDetails>
-            </div>
-            <PhotoSlot url={text(f.name)} className="mt-2 max-w-md" />
+            <PhotoField id={id} url={text(f.name)} onChange={set(f.name)} invalid={missing.includes(f.name)} disabled={busy} />
           </Field>
         );
       default:
@@ -297,7 +304,9 @@ export function AdminItemForm({
     <div className="flex flex-col gap-5">
       {/* The save button stays in reach, and its answer is a toast over the page (like the route editor's). */}
       {editable ? (
-        <div className="sticky top-0 z-20 -mx-4 flex flex-wrap items-center justify-end gap-3 border-b border-line bg-paper px-4 py-3 lg:-mx-8 lg:px-8">
+        // On its own page the bar runs to the page's edges; opened in place in a card (a list's add form, a banner edited in
+        // place), it stays inside the card: the page's margins would push it past the card's border.
+        <div className={`sticky top-0 z-20 flex flex-wrap items-center justify-end gap-3 border-b border-line bg-paper py-3 ${inPlace ? "" : "-mx-4 px-4 lg:-mx-8 lg:px-8"}`}>
           <p className="mr-auto text-base text-muted" aria-live="polite">
             {dirty ? t`保存していない変更があります` : saved ? t`保存済み` : ""}
           </p>

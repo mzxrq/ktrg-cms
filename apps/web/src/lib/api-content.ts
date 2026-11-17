@@ -63,6 +63,7 @@ export function spotListItemFromApi(s: PublicSpot, stamped = false): SpotListIte
     status: s.status,
     ...(isPointKind(s.kind) ? { kind: s.kind } : {}),
     ...(s.stopBy ? { stopBy: true } : {}),
+    ...(s.detached ? { detached: true, detachedLabelJa: s.detachedLabelJa ?? null, detachedLabelEn: s.detachedLabelEn ?? null } : {}),
     stampable: s.stampable,
     stamped,
     position: s.position ? { lat: s.position.lat, lng: s.position.lng, verified: true } : null,
@@ -121,6 +122,10 @@ export function routePointFromApi(s: PublicSpot): RoutePoint | null {
     photoCredit: s.photoCredit ?? null,
     sortOrder: s.sortOrder,
     ...(s.stopBy ? { stopBy: true } : {}),
+    ...(s.detached ? { detached: true, detachedLabelJa: s.detachedLabelJa ?? null, detachedLabelEn: s.detachedLabelEn ?? null } : {}),
+    status: s.status,
+    statusNoteJa: s.statusNoteJa ?? null,
+    statusNoteEn: s.statusNoteEn ?? null,
     position: s.position ? { lat: s.position.lat, lng: s.position.lng, verified: true } : null,
   };
 }

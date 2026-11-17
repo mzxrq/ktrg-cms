@@ -89,6 +89,10 @@ export interface SpotListItem {
   kind?: PointKind;
   /** An optional visit beside the way (寄り道): drawn apart from the route. */
   stopBy?: boolean;
+  /** Not connected to the route (遥拝): no path to it; always also stopBy. Left out when false. */
+  detached?: boolean;
+  detachedLabelJa?: string | null;
+  detachedLabelEn?: string | null;
   /** A stamp can be collected here; false (or left out for sample data it is true) for a place with no stamp. */
   stampable?: boolean;
   /** The walk from the stop before this one: left out for the first stop or when the line does not fit the stops. */
@@ -113,7 +117,15 @@ export interface RoutePoint {
   sortOrder?: number;
   /** An optional visit beside the way (寄り道): not numbered. */
   stopBy?: boolean;
+  /** Not connected to the route (遥拝): no path to it; always also stopBy. Left out when false. */
+  detached?: boolean;
+  detachedLabelJa?: string | null;
+  detachedLabelEn?: string | null;
   position: SpotPosition | null;
+  /** Its status (案内のみ, 閉鎖中 ...) and the editor's note; left out on old data, which means open. */
+  status?: SpotStatus;
+  statusNoteJa?: string | null;
+  statusNoteEn?: string | null;
 }
 
 export interface RouteDetail extends RouteSummary {

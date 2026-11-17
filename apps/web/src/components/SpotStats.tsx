@@ -3,6 +3,7 @@ import { useLingui } from "@lingui/react/macro";
 import { ClockIcon, FlagIcon, PinIcon, RouteIcon, RulerIcon, StampIcon } from "@/components/icons";
 import { PointKindName } from "@/components/PointKindName";
 import { StatusWord } from "@/components/StatusWord";
+import { SideWord } from "@/components/SideWord";
 import type { SpotDetail } from "@/lib/content";
 
 /** Where a stop sits on its course: its number among the stamp places, and the walk from the stop before. */
@@ -39,7 +40,7 @@ export function SpotStats({ spot, place }: { spot: SpotDetail; place?: StopPlace
     value: !stampable ? t`なし` : spot.stamped ? t`押しました` : t`押せます`,
   });
   items.push({ label: t`いまの状態`, icon: <FlagIcon />, value: <StatusWord status={spot.status} /> });
-  if (spot.stopBy) items.push({ label: t`道から`, icon: <RouteIcon />, value: t`寄り道` });
+  if (spot.stopBy) items.push({ label: t`道から`, icon: <RouteIcon />, value: <SideWord item={spot} locale={i18n.locale} /> });
 
   return (
     <dl className="grid grid-cols-2 gap-x-4 gap-y-3">

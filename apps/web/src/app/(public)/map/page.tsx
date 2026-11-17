@@ -90,13 +90,13 @@ async function mapRoutes(routes: RouteSummary[], places: PlaceItem[], viewer: Vi
                 const spotName = pickText(locale, item.nameJa, item.nameEn);
                 if (!spotName) return null;
                 const stamped = t.type === "stamp" ? t.spot.stamped : null;
-                const status = t.type === "stamp" ? t.spot.status : "open";
+                const status = t.type === "stamp" ? t.spot.status : (t.point.status ?? "open");
                 const parts = [t.number === null ? spotName.text : `${t.number}. ${spotName.text}`];
                 const roleWord = roleLabel(roles.get(item.id), words);
                 if (roleWord) parts.push(roleWord);
                 if (stamped) parts.push(words.stamped);
                 if (status === "closed") parts.push(words.closed);
-                const note = t.type === "stamp" ? pickText(locale, t.spot.statusNoteJa ?? null, t.spot.statusNoteEn ?? null) : null;
+                const note = pickText(locale, item.statusNoteJa ?? null, item.statusNoteEn ?? null);
                 return {
                   id: item.id,
                   order: t.number,

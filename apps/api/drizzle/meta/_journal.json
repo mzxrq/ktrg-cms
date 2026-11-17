@@ -505,6 +505,13 @@
       "when": 1794874732082,
       "tag": "0071_photo_names",
       "breakpoints": true
+    },
+    {
+      "idx": 72,
+      "version": "7",
+      "when": 1794887486419,
+      "tag": "0072_detached_waypoint",
+      "breakpoints": true
     }
   ]
 }
