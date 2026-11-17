@@ -6,6 +6,7 @@ import {
   doublePrecision,
   index,
   integer,
+  smallint,
   jsonb,
   numeric,
   pgEnum,
@@ -145,6 +146,10 @@ export const routes = pgTable(
     photoUrl: text("photo_url"),
     // Who took the picture / where it comes from. Shown on it; may hold links (see the web app's rich-text format).
     photoCredit: text("photo_credit"),
+    // Where the middle of the photo is (percent from the left, from the top), so each place that crops it keeps that part
+    // in view; null = the middle. Both or neither.
+    photoFocusX: smallint("photo_focus_x"),
+    photoFocusY: smallint("photo_focus_y"),
     sortOrder: integer("sort_order").notNull().default(0),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
@@ -153,6 +158,10 @@ export const routes = pgTable(
     check("routes_distance_nonneg", sql`${t.distanceKm} is null or ${t.distanceKm} >= 0`),
     check("routes_far_range", sql`${t.farDistanceM} is null or (${t.farDistanceM} >= 500 and ${t.farDistanceM} <= 200000)`),
     check("routes_time_nonneg", sql`${t.expectedTimeMin} is null or ${t.expectedTimeMin} >= 0`),
+    check(
+      "routes_photo_focus_range",
+      sql`(${t.photoFocusX} is null and ${t.photoFocusY} is null) or (${t.photoFocusX} between 0 and 100 and ${t.photoFocusY} between 0 and 100)`,
+    ),
   ],
 );
 

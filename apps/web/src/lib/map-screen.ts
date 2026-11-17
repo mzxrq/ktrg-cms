@@ -1,5 +1,6 @@
 import type { WalkStyle } from "@/lib/walk-style";
 import type { RideSpan } from "./elevation-profile";
+import type { PhotoFocus } from "./photo-focus";
 import type { AccessPoint } from "./access-points";
 import type { SpotStatus } from "./content";
 import type { Position } from "./map";
@@ -29,6 +30,8 @@ export interface MapPhoto {
   alt: string;
   /** Who took it / where it is from (may hold links), shown under the photo. */
   credit?: string | null;
+  /** Where its middle is (a course photo the editor centred); null: the middle. */
+  focus?: PhotoFocus | null;
 }
 
 /** One stamp place of a course, as a row in its list (with or without a position on the map). */

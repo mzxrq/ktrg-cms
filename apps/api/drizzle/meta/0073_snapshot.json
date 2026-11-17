@@ -1,5 +1,5 @@
 {
-  "id": "192a7a1f-76ed-4432-9f4e-1fd2fa63a479",
+  "id": "0c4cd55d-a940-4ce7-ad29-3987e165d7e5",
   "prevId": "06fbef42-e951-433e-9532-65ff067b027b",
   "version": "7",
   "dialect": "postgresql",
@@ -2334,12 +2334,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": false
-        },
-        "photo_name": {
-          "name": "photo_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
@@ -2593,6 +2587,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "photo_focus_x": {
+          "name": "photo_focus_x",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "photo_focus_y": {
+          "name": "photo_focus_y",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
         "sort_order": {
           "name": "sort_order",
           "type": "integer",
@@ -2632,6 +2638,10 @@
         "routes_time_nonneg": {
           "name": "routes_time_nonneg",
           "value": "\"routes\".\"expected_time_min\" is null or \"routes\".\"expected_time_min\" >= 0"
+        },
+        "routes_photo_focus_range": {
+          "name": "routes_photo_focus_range",
+          "value": "(\"routes\".\"photo_focus_x\" is null and \"routes\".\"photo_focus_y\" is null) or (\"routes\".\"photo_focus_x\" between 0 and 100 and \"routes\".\"photo_focus_y\" between 0 and 100)"
         }
       },
       "isRLSEnabled": false

@@ -129,6 +129,9 @@ const routeProps = {
   photoCredit: nullable(t.String({ maxLength: 500 })),
   photoNameJa: nullable(t.String({ maxLength: 200 })),
   photoNameEn: nullable(t.String({ maxLength: 200 })),
+  // The middle of the photo in percent; sent together (the service refuses one without the other).
+  photoFocusX: nullable(t.Integer({ minimum: 0, maximum: 100 })),
+  photoFocusY: nullable(t.Integer({ minimum: 0, maximum: 100 })),
 };
 const spotProps = {
   nameJa: t.String({ minLength: 1, maxLength: 200 }),

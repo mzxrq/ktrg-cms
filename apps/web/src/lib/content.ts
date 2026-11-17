@@ -13,6 +13,7 @@ import type { Sketch } from "./sketch";
 import type { WalkStyle } from "./walk-style";
 import type { TechnicalLevel } from "./grading";
 import type { AccessPoint } from "./access-points";
+import type { PhotoFocus } from "./photo-focus";
 import type { RideSpan } from "./elevation-profile";
 
 // View-models for the public content screens (WBS 3.2.3, 3.2.4, 3.2.5). Each field
@@ -63,6 +64,8 @@ export interface RouteSummary {
   /** What the photo shows, shown with its credit in the large view. */
   photoNameJa?: string | null;
   photoNameEn?: string | null;
+  /** Where the middle of the photo is: every crop keeps it in view (null: the middle). */
+  photoFocus?: PhotoFocus | null;
 }
 
 /** Where a stop is. `verified` is false for draft positions (for example clicked on Navivi's map). */

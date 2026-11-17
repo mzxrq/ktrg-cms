@@ -1,0 +1,3 @@
+ALTER TABLE "routes" ADD COLUMN "photo_focus_x" smallint;--> statement-breakpoint
+ALTER TABLE "routes" ADD COLUMN "photo_focus_y" smallint;--> statement-breakpoint
+ALTER TABLE "routes" ADD CONSTRAINT "routes_photo_focus_range" CHECK (("routes"."photo_focus_x" is null and "routes"."photo_focus_y" is null) or ("routes"."photo_focus_x" between 0 and 100 and "routes"."photo_focus_y" between 0 and 100));

@@ -392,6 +392,21 @@ describe("history, access and photo", () => {
     expect((await svc.publicRoute(r.id))?.route).toMatchObject({ historyJa: "役行者が修行した道", photoUrl: "https://example.com/koyama.jpg" });
   });
 
+  test("the photo's middle is set as a pair, cleared as a pair, and visitors get it", async () => {
+    const r = await route();
+    const saved = await svc.updateRoute(ADMIN, r.id, r.updatedAt, { photoUrl: "https://example.com/koyama.jpg", photoFocusX: 30, photoFocusY: 75 });
+    expect(saved.ok && saved.value).toMatchObject({ photoFocusX: 30, photoFocusY: 75 });
+    const cur = saved.ok ? saved.value : r;
+    // One without the other, or one cleared and one kept, is refused.
+    for (const half of [{ photoFocusX: 10 }, { photoFocusY: 10 }, { photoFocusX: null, photoFocusY: 10 }]) {
+      expect(await svc.updateRoute(ADMIN, r.id, cur.updatedAt, half)).toEqual({ ok: false, reason: "validation_failed" });
+    }
+    await open(r.id);
+    expect((await svc.publicRoute(r.id))?.route).toMatchObject({ photoFocusX: 30, photoFocusY: 75 });
+    const cleared = await svc.updateRoute(ADMIN, r.id, cur.updatedAt, { photoFocusX: null, photoFocusY: null });
+    expect(cleared.ok && cleared.value).toMatchObject({ photoFocusX: null, photoFocusY: null });
+  });
+
   test("the photo credit and the source are trimmed, blank clears them, and visitors get them", async () => {
     const r = await route();
     const saved = await svc.updateRoute(ADMIN, r.id, r.updatedAt, {

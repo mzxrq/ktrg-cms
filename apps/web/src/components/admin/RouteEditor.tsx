@@ -30,11 +30,13 @@ import { AccessPointsEditor } from "./AccessPointsEditor";
 import { GradingFields } from "./GradingFields";
 import { MunicipalitiesField } from "./MunicipalitiesField";
 import { PhotoField } from "./PhotoField";
+import { PhotoFocusPicker } from "./PhotoFocusPicker";
 import { RouteHistory } from "./RouteHistory";
 import { NearbyPlacesManager } from "./DirectoryPicker";
 import { SubtitleUpload } from "./SubtitleUpload";
 import { VideoUpload } from "./VideoUpload";
 import { VideoHistory } from "./VideoHistory";
+import { VideoPreview } from "./VideoPreview";
 import { parseVideoFile } from "@/lib/video";
 import { PlacePanel } from "./PlacePanel";
 import { PlaceTable } from "./PlaceTable";
@@ -110,6 +112,10 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
     return draft.places.map((p) => ({ key: p.key, lat: p.lat, lng: p.lng, number: p.stampable ? ++stamp : null, name: p.nameJa, stampable: p.stampable, stopBy: p.stopBy, detached: p.detached, kind: p.kind, published: p.published, role: roleOf(p.key), info: p.status === "info" }));
   })();
   const text = (field: TextField) => (value: string) => dispatch({ type: "text", field, value });
+  // A number that comes from the line is shown, not typed; one that was typed (or has nothing to come from) stays typeable.
+  const distanceAuto = !draft.distanceManual && draft.line.length >= 2;
+  const climbAuto = !draft.climbManual && draft.elevationGainM !== null;
+  const timeAuto = !draft.timeManual && draft.expectedTimeMin !== null;
   const checks = useMemo(() => checklist(factsFromDraft(draft)), [draft]);
   const missingRequired = progress(checks).requiredTotal - progress(checks).requiredDone;
 
@@ -218,14 +224,14 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
 
                 <Section title={t`数字`}>
                   <div className="grid gap-4 sm:grid-cols-3">
-                    <Field label={t`距離`} htmlFor="route-distance" hint={draft.distanceManual ? t`手入力（空にすると、線から自動）` : t`線から自動で計算`}>
-                      <NumberInput id="route-distance" value={draft.distanceKm} min={0} max={2000} suffix="km" onChange={(v) => dispatch({ type: "distance", value: v })} />
+                    <Field label={t`距離`} htmlFor="route-distance" hint={distanceAuto ? t`線から自動で作られます。ここでは変えられません。` : draft.distanceManual ? t`手入力（空にすると、線から自動）` : t`線を引くと、自動で入ります。`}>
+                      <NumberInput id="route-distance" value={draft.distanceKm} min={0} max={2000} suffix="km" readOnly={distanceAuto} onChange={(v) => dispatch({ type: "distance", value: v })} />
                     </Field>
-                    <Field label={t`登り（獲得標高）`} htmlFor="route-climb" hint={draft.climbManual ? t`手入力（空にすると、標高から自動）` : t`線の標高から自動で計算`}>
-                      <NumberInput id="route-climb" value={draft.elevationGainM} min={0} max={10000} integer suffix="m" onChange={(v) => dispatch({ type: "climb", value: v })} />
+                    <Field label={t`登り（獲得標高）`} htmlFor="route-climb" hint={climbAuto ? t`線の標高から自動で作られます。ここでは変えられません。` : draft.climbManual ? t`手入力（空にすると、標高から自動）` : t`線を引くと、標高から自動で入ります。`}>
+                      <NumberInput id="route-climb" value={draft.elevationGainM} min={0} max={10000} integer suffix="m" readOnly={climbAuto} onChange={(v) => dispatch({ type: "climb", value: v })} />
                     </Field>
-                    <Field label={t`歩く時間`} htmlFor="route-time" hint={draft.timeManual ? t`手入力（空にすると、距離と登りから自動）` : t`距離と登りから自動で計算`}>
-                      <NumberInput id="route-time" value={draft.expectedTimeMin} min={0} max={20000} integer suffix={t`分`} onChange={(v) => dispatch({ type: "time", value: v })} />
+                    <Field label={t`歩く時間`} htmlFor="route-time" hint={timeAuto ? t`距離と登りから自動で作られます。ここでは変えられません。` : draft.timeManual ? t`手入力（空にすると、距離と登りから自動）` : t`距離と登りから自動で計算`}>
+                      <NumberInput id="route-time" value={draft.expectedTimeMin} min={0} max={20000} integer suffix={t`分`} readOnly={timeAuto} onChange={(v) => dispatch({ type: "time", value: v })} />
                     </Field>
                   </div>
                   <GradingFields
@@ -234,7 +240,9 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                     onPhysical={(value) => dispatch({ type: "physicalLevel", value })}
                     onTechnical={(value) => dispatch({ type: "technicalLevel", value })}
                   />
-                  <details className="rounded-xl border border-line bg-paper px-4 py-2" open={draft.difficulty !== ""}>
+                  {/* Kept only while a course still has old text here, so it can be cleared; the stars replace it. */}
+                  {draft.difficulty !== "" || saved.difficulty !== "" ? (
+                  <details className="rounded-xl border border-line bg-paper px-4 py-2" open>
                     <summary className="cursor-pointer text-base font-bold">{t`むずかしさを、ひとことで書く（任意）`}</summary>
                     <div className="mt-2">
                       <Field label={t`むずかしさ（ひとこと）`} htmlFor="route-difficulty" hint={t`入れた文字が、そのまま表示されます。体力の目安・道のけわしさを選んだときは、そちらを先に表示します。`}>
@@ -242,9 +250,10 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                       </Field>
                     </div>
                   </details>
+                  ) : null}
                 </Section>
 
-                <Section title={t`写真と動画`}>
+                <Section title={t`写真`}>
                   <Field label={t`コースの写真`} htmlFor="route-photo">
                     <PhotoField id="route-photo" url={draft.photoUrl} onChange={text("photoUrl")} invalid={problemOf("photo_link")}>
                       <Field label={t`名前（写っているもの）`} htmlFor="route-photo-name" hint={t`大きな写真の下に、出どころと一緒に表示されます。`}>
@@ -257,24 +266,30 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                         <CreditInput id="route-photo-credit" value={draft.photoCredit} onChange={text("photoCredit")} placeholder={t`例：山田太郎, CC BY-SA 4.0`} />
                       </Field>
                     </PhotoField>
+                    <PhotoFocusPicker url={draft.photoUrl} focus={draft.photoFocus} onChange={(value) => dispatch({ type: "photoFocus", value })} />
                   </Field>
                   {problemOf("photo_link") ? <p role="alert" className="text-base font-bold text-danger">{t`写真のリンクは、https:// で始まるものだけ使えます。`}</p> : null}
+                </Section>
+
+                <Section title={t`動画`}>
                   <Field label={t`動画のリンク（YouTube、またはアップロードした動画）`} htmlFor="route-video" hint={t`https:// で始まるリンクを入れます。空にすると、動画は表示されません。`}>
                     <TextInput id="route-video" value={draft.videoUrl} onChange={text("videoUrl")} maxLength={500} invalid={problemOf("video_link")} />
                   </Field>
-                  <VideoUpload onUploaded={text("videoUrl")} />
-                  {draft.id ? <VideoHistory routeId={draft.id} onPick={text("videoUrl")} /> : null}
-                  {parseVideoFile(draft.videoUrl) ? <SubtitleUpload videoUrl={draft.videoUrl} uploaded={draft.videoSubtitles} onUploaded={() => dispatch({ type: "videoSubtitles", value: true })} /> : null}
                   {problemOf("video_link") ? <p role="alert" className="text-base font-bold text-danger">{t`YouTube、またはアップロードした動画の、https:// で始まるリンクにしてください。`}</p> : null}
+                  <VideoUpload onUploaded={text("videoUrl")} />
+                  {parseVideoFile(draft.videoUrl) ? <SubtitleUpload videoUrl={draft.videoUrl} uploaded={draft.videoSubtitles} onUploaded={() => dispatch({ type: "videoSubtitles", value: true })} /> : null}
+                  <VideoPreview url={draft.videoUrl} title={draft.nameJa} subtitles={draft.videoSubtitles} language="ja" />
+                  {draft.id ? <VideoHistory routeId={draft.id} onPick={text("videoUrl")} /> : null}
                 </Section>
 
                 <Section title={t`英語版の動画`}>
                   <Field label={t`英語版の動画のリンク（YouTube、またはアップロードした動画）`} htmlFor="route-video-en" hint={t`英語でサイトを見ている人に、日本語の動画のかわりに表示されます。空にすると、日本語の動画がそのまま表示されます。`}>
                     <TextInput id="route-video-en" value={draft.videoUrlEn} onChange={text("videoUrlEn")} maxLength={500} invalid={problemOf("video_link_en")} />
                   </Field>
+                  {problemOf("video_link_en") ? <p role="alert" className="text-base font-bold text-danger">{t`YouTube、またはアップロードした動画の、https:// で始まるリンクにしてください。`}</p> : null}
                   <VideoUpload onUploaded={text("videoUrlEn")} />
                   {parseVideoFile(draft.videoUrlEn) ? <SubtitleUpload language="en" videoUrl={draft.videoUrlEn} uploaded={draft.videoSubtitlesEn} onUploaded={() => dispatch({ type: "videoSubtitlesEn", value: true })} /> : null}
-                  {problemOf("video_link_en") ? <p role="alert" className="text-base font-bold text-danger">{t`YouTube、またはアップロードした動画の、https:// で始まるリンクにしてください。`}</p> : null}
+                  <VideoPreview url={draft.videoUrlEn} title={draft.nameEn || draft.nameJa} subtitles={draft.videoSubtitlesEn} language="en" />
                 </Section>
 
                 {draft.id ? <RouteHistory routeId={draft.id} locale={locale} /> : null}

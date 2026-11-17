@@ -1,5 +1,6 @@
 "use client";
 
+import { focusStyle } from "@/lib/photo-focus";
 import Image from "next/image";
 import { useLingui } from "@lingui/react/macro";
 import { CreditCaption } from "@/components/PhotoCredit";
@@ -19,7 +20,7 @@ export function HeroPhoto({ photo, placeholder }: { photo: MapPhoto | null; plac
     <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-surface">
       {photo ? (
         // An address typed in the admin can be on any host, which next/image would refuse; those are shown as they are.
-        <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 1280px) 21rem, 100vw" className="object-cover" unoptimized={photo.src.startsWith("https://")} />
+        <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 1280px) 21rem, 100vw" className="object-cover" style={focusStyle(photo.focus)} unoptimized={photo.src.startsWith("https://")} />
       ) : (
         <p className="absolute inset-0 grid place-items-center text-lg text-muted">{t`写真（準備中）`}</p>
       )}

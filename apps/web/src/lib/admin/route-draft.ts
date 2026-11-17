@@ -89,6 +89,7 @@ export interface RouteDraft {
   /** What the course photo shows (empty when not given). */
   photoNameJa: string;
   photoNameEn: string;
+  photoFocus: { x: number; y: number } | null;
   sourceJa: string;
   sourceEn: string;
   prefecture: Prefecture | null;
@@ -133,7 +134,7 @@ export interface RouteDraft {
 
 export const emptyDraft = (): RouteDraft => ({
   id: null, updatedAt: null, nameJa: "", nameEn: "", descriptionJa: "", descriptionEn: "", historyJa: "", historyEn: "",
-  accessJa: "", accessEn: "", translations: {}, photoUrl: "", photoCredit: "", photoNameJa: "", photoNameEn: "", sourceJa: "", sourceEn: "", prefecture: null, walkStyle: null, municipalities: [],
+  accessJa: "", accessEn: "", translations: {}, photoUrl: "", photoCredit: "", photoNameJa: "", photoNameEn: "", photoFocus: null, sourceJa: "", sourceEn: "", prefecture: null, walkStyle: null, municipalities: [],
   distanceKm: null, distanceManual: false, elevationGainM: null, climbManual: false, expectedTimeMin: null, timeManual: false,
   difficulty: "", nameKana: "", accessPoints: [], farDistanceM: null, area: null, physicalLevel: null, technicalLevel: null, videoUrl: "", videoUrlEn: "", videoSubtitlesEn: false, videoSubtitles: false, line: [], legs: [], lineVerified: false, lineSource: "", places: [],
 });
@@ -180,6 +181,7 @@ export function draftFromServer(route: AdminRoute, spots: AdminSpot[]): RouteDra
     descriptionEn: s(route.descriptionEn), historyJa: s(route.historyJa), historyEn: s(route.historyEn),
     accessJa: s(route.accessJa), accessEn: s(route.accessEn), translations: route.translations ?? {}, photoUrl: s(route.photoUrl),
     photoCredit: s(route.photoCredit), photoNameJa: s(route.photoNameJa), photoNameEn: s(route.photoNameEn), sourceJa: s(route.sourceJa), sourceEn: s(route.sourceEn),
+    photoFocus: route.photoFocusX != null && route.photoFocusY != null ? { x: route.photoFocusX, y: route.photoFocusY } : null,
     prefecture: route.prefecture, walkStyle: route.walkStyle, municipalities: [...route.municipalities],
     distanceKm: route.distanceKm,
     // A saved distance that is not the line's own length was typed by hand: keep it when the line changes.
@@ -249,6 +251,7 @@ export type DraftAction =
   | { type: "physicalLevel"; value: number | null }
   | { type: "farDistanceM"; value: number | null }
   | { type: "area"; value: { west: number; south: number; east: number; north: number } | null }
+  | { type: "photoFocus"; value: { x: number; y: number } | null }
   | { type: "technicalLevel"; value: TechnicalLevel | null }
   | { type: "distance"; value: number | null }
   | { type: "climb"; value: number | null }
@@ -359,7 +362,8 @@ function apply(d: RouteDraft, a: DraftAction): RouteDraft {
   switch (a.type) {
     case "text":
       // Another video has no subtitles until they are uploaded for it.
-      return { ...d, [a.field]: a.value, ...(a.field === "videoUrl" && a.value !== d.videoUrl ? { videoSubtitles: false } : {}), ...(a.field === "videoUrlEn" && a.value !== d.videoUrlEn ? { videoSubtitlesEn: false } : {}) };
+      // A new photo starts from its own middle.
+      return { ...d, [a.field]: a.value, ...(a.field === "videoUrl" && a.value !== d.videoUrl ? { videoSubtitles: false } : {}), ...(a.field === "videoUrlEn" && a.value !== d.videoUrlEn ? { videoSubtitlesEn: false } : {}), ...(a.field === "photoUrl" && a.value !== d.photoUrl ? { photoFocus: null } : {}) };
     case "videoSubtitles":
       return { ...d, videoSubtitles: a.value };
     case "videoSubtitlesEn":
@@ -379,6 +383,8 @@ function apply(d: RouteDraft, a: DraftAction): RouteDraft {
       return { ...d, farDistanceM: a.value };
     case "area":
       return { ...d, area: a.value };
+    case "photoFocus":
+      return { ...d, photoFocus: a.value };
     case "physicalLevel":
       return { ...d, physicalLevel: a.value };
     case "technicalLevel":
@@ -620,5 +626,6 @@ export function previewRoute(d: RouteDraft, order: number): RouteDetail {
     videoSubtitles: d.videoSubtitles,
     photoUrl: nz(d.photoUrl),
     photoCredit: nz(d.photoCredit),
+    photoFocus: d.photoFocus,
   };
 }

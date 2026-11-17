@@ -562,3 +562,19 @@ describe("what is on the screen when a save finishes", () => {
     expect(s.present.places[0]).toMatchObject({ id: "spot-a", lat: 34.41 });
   });
 });
+
+describe("the course photo's middle", () => {
+  test("read as a pair, sent as a pair when only one number moved, and cleared by a new photo", () => {
+    const saved = draftFromServer(serverRoute({ photoUrl: "https://example.com/a.jpg", photoFocusX: 40, photoFocusY: 60 }), []);
+    expect(saved.photoFocus).toEqual({ x: 40, y: 60 });
+    expect(draftFromServer(serverRoute(), []).photoFocus).toBeNull();
+
+    let s = run(initialState(saved), { type: "photoFocus", value: { x: 70, y: 60 } });
+    const step = planSave(s.present, saved).find((x) => x.op === "updateRoute") as { body: Record<string, unknown> } | undefined;
+    expect(step?.body).toMatchObject({ photoFocusX: 70, photoFocusY: 60 }); // y did not change but goes with x
+
+    s = run(s, { type: "text", field: "photoUrl", value: "https://example.com/b.jpg" });
+    expect(s.present.photoFocus).toBeNull();
+    expect(routeBody(s.present)).toMatchObject({ photoFocusX: null, photoFocusY: null });
+  });
+});
