@@ -1,0 +1,41 @@
+name: Build Lightsail images (test)
+
+# Step 1 of moving the build off the Lightsail box itself: just prove `docker compose build` for api/web works
+# on a standard GitHub-hosted runner (plenty of RAM/CPU, unlike the 2GB Lightsail server which leans on slow
+# disk swap for Next.js's TypeScript check). Nothing is pushed or deployed anywhere yet -- that's a follow-up
+# once this step is confirmed working.
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      # docker-compose.yml requires these vars just to parse (the ${VAR:?...} syntax), even though a build
+      # only needs the api/web services -- compose validates the whole file before picking which services to
+      # act on. Dummy values are fine: none of these are used at build time, only at container runtime.
+      - name: Dummy .env (build only needs the file to exist and parse)
+        run: |
+          cat > deploy/lightsail/.env <<'EOF'
+          DOMAIN=build-test.invalid
+          POSTGRES_USER=build
+          POSTGRES_PASSWORD=build
+          POSTGRES_DB=build
+          PGADMIN_EMAIL=build@build.invalid
+          PGADMIN_PASSWORD=build
+          AWS_ACCESS_KEY_ID=build
+          AWS_SECRET_ACCESS_KEY=build
+          S3_BUCKET_NAME=build
+          EOF
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: docker compose build api web
+        working-directory: deploy/lightsail
+        run: docker compose build api web
+
+      - name: Show the built images
+        run: docker images --filter "reference=ktrg-lightsail-*"
