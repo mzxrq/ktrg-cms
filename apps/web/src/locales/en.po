@@ -4137,6 +4137,7 @@ msgstr "Address"
 msgid "体力"
 msgstr "Effort"
 
+#: src/components/admin/GradingFields.tsx:52
 #: src/components/RouteStats.tsx:47
 msgid "体力の目安"
 msgstr "Effort"
@@ -4152,10 +4153,6 @@ msgstr "About the effort stars"
 #: src/app/(public)/grading/page.tsx:43
 msgid "体力の目安と道のけわしさについて"
 msgstr "About the effort and path stars"
-
-#: src/components/admin/GradingFields.tsx:48
-msgid "体力度（1〜10）"
-msgstr "Physical level (1–10)"
 
 #: src/components/landing/Landing.tsx:199
 msgid "体験"
@@ -4383,8 +4380,8 @@ msgid "先頭の写真が、この経由地のメイン写真です。ほかの�
 msgstr "The first photo is the main photo of this waypoint. The others are shown in order on its page. For a photo taken by someone else, write who took it and its license under \"Credit\"."
 
 #: src/components/admin/RouteEditor.tsx:594
-msgid "入れた文字が、そのまま表示されます。体力度・技術度を選んだときは、そちらを先に表示します。"
-msgstr "Shown exactly as typed. When a physical or technical level is chosen, those are shown instead."
+msgid "入れた文字が、そのまま表示されます。体力の目安・道のけわしさを選んだときは、そちらを先に表示します。"
+msgstr "Shown exactly as typed. When Effort or Path is chosen, those are shown first."
 
 #: src/components/admin/BlockEditor.tsx:584
 msgid "入れる"
@@ -5150,7 +5147,7 @@ msgstr "South-west corner"
 msgid "危険な所"
 msgstr "Danger spot"
 
-#: src/components/admin/GradingFields.tsx:42
+#: src/components/admin/GradingFields.tsx:46
 msgid "厳しい岩場や藪こぎが続く。道を自分で見つける技術と、高い判断力が必要。"
 msgstr "Long stretches of hard rock and thick undergrowth. Needs route-finding skill and sound judgement."
 
@@ -5809,7 +5806,7 @@ msgstr "Mobile signal can be weak in the mountains."
 msgid "山道です。天気と、水や食べ物、歩きやすい靴を用意してください。"
 msgstr "These are mountain paths. Check the weather and bring water, food and sturdy shoes."
 
-#: src/components/admin/GradingFields.tsx:41
+#: src/components/admin/GradingFields.tsx:45
 msgid "岩場やガレ場、手を使う急な登り下りがある。道がわかりにくい所も多い。"
 msgstr "Rocky ground, loose scree and steep sections that need your hands. The path is often hard to follow."
 
@@ -5894,7 +5891,7 @@ msgstr "Required"
 msgid "必須"
 msgstr "Required"
 
-#: src/components/admin/GradingFields.tsx:39
+#: src/components/admin/GradingFields.tsx:43
 msgid "急な登り下りや、わかりにくい所がある。はしごやくさりが出ることもある。"
 msgstr "Steep climbs and descents and some hard-to-follow places. There may be ladders or chains."
 
@@ -5968,10 +5965,6 @@ msgstr "Step"
 #: src/components/admin/FuriganaOverview.tsx:191
 msgid "承認"
 msgstr "Approve"
-
-#: src/components/admin/GradingFields.tsx:80
-msgid "技術度（A〜E）"
-msgstr "Technical level (A–E)"
 
 #: src/components/RouteJourney.tsx:83
 #: src/components/StopList.tsx:105
@@ -6074,7 +6067,7 @@ msgstr "The numbers are a guide: the person who made the course chooses the star
 msgid "数字を空にすると、その目標はなしになります。保存すると、ページを開き直したときに反映されます。"
 msgstr "Leave a number empty for no goal. Saved goals show when the page is opened again."
 
-#: src/components/admin/GradingFields.tsx:38
+#: src/components/admin/GradingFields.tsx:42
 msgid "整備された道で、迷いにくく、転んでも大きな事故になりにくい。"
 msgstr "A well-kept path that is hard to lose, where a fall is unlikely to cause a serious accident."
 
@@ -6251,6 +6244,14 @@ msgstr "The Japan Heritage Katsuragi Shugen Story"
 #: src/components/landing/Landing.tsx:165
 msgid "日本遺産「葛城修験」PR動画（180秒）"
 msgstr "Japan Heritage \"Katsuragi Shugen\" promotional video (180 seconds)"
+
+#: src/components/admin/GradingFields.tsx:102
+msgid "星{stars}つ"
+msgstr "{stars, plural, one {# star} other {# stars}}"
+
+#: src/components/admin/GradingFields.tsx:72
+msgid "星{stars}つ（{n}）"
+msgstr "{stars, plural, one {# star} other {# stars}} ({n})"
 
 #: src/components/navigation/NavFarCard.tsx:67
 msgid "時刻表"
@@ -6919,11 +6920,12 @@ msgstr "Already registered?"
 msgid "白地図"
 msgstr "Blank map"
 
-#: src/components/admin/GradingFields.tsx:52
-msgid "目安：コース定数 {constant} → {level}"
-msgstr "Guide: course constant {constant} → {level}"
+#. placeholder {0}: starText(physicalStars(level))
+#: src/components/admin/GradingFields.tsx:56
+msgid "目安：コース定数 {constant} → {0}（{level}）"
+msgstr "Suggested: course constant {constant} → {0} ({level})"
 
-#: src/components/admin/GradingFields.tsx:72
+#: src/components/admin/GradingFields.tsx:79
 msgid "目安を使う"
 msgstr "Use guide"
 
@@ -7955,7 +7957,7 @@ msgstr "Distance"
 msgid "距離 {0}km、標高 {1}m、{slopeWords}"
 msgstr "Distance {0} km, elevation {1} m, {slopeWords}"
 
-#: src/components/admin/GradingFields.tsx:53
+#: src/components/admin/GradingFields.tsx:57
 msgid "距離と時間を入れると、目安が出ます"
 msgstr "Enter distance and time to get a guide"
 
@@ -7967,7 +7969,7 @@ msgstr "Calculated from distance and climb"
 msgid "車"
 msgstr "Car"
 
-#: src/components/admin/GradingFields.tsx:40
+#: src/components/admin/GradingFields.tsx:44
 msgid "転落・滑落の危険がある所がある。地図を読む力と、ミスをしない注意が必要。"
 msgstr "Some places where a fall is dangerous. Needs map-reading skill and care not to slip up."
 
@@ -8160,6 +8162,7 @@ msgstr "Snap to trails"
 msgid "道に沿わせる機能が、まだ使えません。管理する人に、道案内サービスの設定を頼んでください。手で線を描くことはできます。"
 msgstr "Snapping to trails is not available yet. Ask whoever manages the site to set up the route-finding service. You can still draw the line by hand."
 
+#: src/components/admin/GradingFields.tsx:87
 #: src/components/RouteStats.tsx:48
 msgid "道のけわしさ"
 msgstr "Path"
@@ -8194,7 +8197,7 @@ msgstr "Off the course, in a straight line"
 msgid "道の探索サービスが使えなかったため、地図の道（国土地理院）で探しました。いつもと違う道になることがあります。形をよく確かめてください。「元に戻す」で、もとの線にもどせます。"
 msgstr "The route service could not be used, so the way was found on GSI's trail map instead. It can choose a different way. Check the shape carefully. Undo brings back the old line."
 
-#: src/components/admin/GradingFields.tsx:82
+#: src/components/admin/GradingFields.tsx:89
 msgid "道の状態から、手で選びます。"
 msgstr "Choose by hand, based on the condition of the path."
 
@@ -8266,8 +8269,8 @@ msgstr "Completed on"
 msgid "遠いとみなす距離"
 msgstr "Distance that counts as far"
 
-#: src/components/admin/GradingFields.tsx:63
-#: src/components/admin/GradingFields.tsx:90
+#: src/components/admin/GradingFields.tsx:67
+#: src/components/admin/GradingFields.tsx:97
 msgid "選ばない"
 msgstr "Not set"
 
@@ -8604,20 +8607,3 @@ msgstr "Parking"
 #: src/components/map/MapSheet.tsx:182
 msgid "高い"
 msgstr "high"
-
-#: src/components/admin/RouteEditor.tsx:596
-msgid "入れた文字が、そのまま表示されます。体力の目安・道のけわしさを選んだときは、そちらを先に表示します。"
-msgstr "Shown exactly as typed. When Effort or Path is chosen, those are shown first."
-
-#: src/components/admin/GradingFields.tsx:102
-msgid "星{stars}つ"
-msgstr "{stars, plural, one {# star} other {# stars}}"
-
-#: src/components/admin/GradingFields.tsx:72
-msgid "星{stars}つ（{n}）"
-msgstr "{stars, plural, one {# star} other {# stars}} ({n})"
-
-#. placeholder {0}: starText(physicalStars(level))
-#: src/components/admin/GradingFields.tsx:56
-msgid "目安：コース定数 {constant} → {0}（{level}）"
-msgstr "Suggested: course constant {constant} → {0} ({level})"
