@@ -309,3 +309,12 @@ describe("return legs (a route that goes back over its own way)", () => {
     expect(pairId({ from: stops[2]!, to: stops[1]!, back: true })).not.toBe(pairId({ from: stops[0]!, to: stops[1]! }));
   });
 });
+
+// 2026-11-17, user: a place nobody walks to (a mound worshipped from afar) gets no side-trip line.
+describe("a place not connected to the route", () => {
+  test("has no side-trip pair, and the next side trip still branches from the last stop on the way", () => {
+    const at = (key: string, lat: number, stopBy = false, detached = false) => ({ key, lat, lng: 135, stopBy, detached });
+    const pairs = sidePairs([at("a", 34), at("afar", 34.1, true, true), at("side", 34.2, true)]);
+    expect(pairs.map((p) => `${p.from.key}>${p.to.key}`)).toEqual(["a>side"]);
+  });
+});

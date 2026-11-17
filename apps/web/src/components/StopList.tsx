@@ -11,6 +11,7 @@ import { Localized } from "./Localized";
 import { PointKindName } from "./PointKindName";
 import { RoutePhoto } from "./RoutePhoto";
 import { StatusWord } from "./StatusWord";
+import { SideWord } from "@/components/SideWord";
 import { TrailNode } from "./TrailNode";
 import { offersNoStamp } from "@/lib/spot-status";
 
@@ -122,7 +123,7 @@ export function StopList({ rows, hrefFor, locale }: { rows: WalkRow[]; hrefFor: 
                     ) : null}
                     {sideTrip ? (
                       <span className={chip}>
-                        <Trans>寄り道</Trans>
+                        <SideWord item={item} locale={locale} />
                       </span>
                     ) : null}
                   </span>

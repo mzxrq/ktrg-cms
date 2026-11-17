@@ -62,6 +62,9 @@ export interface PlaceBody {
   kind: PointKind;
   stampable: boolean;
   stopBy: boolean;
+  detached: boolean;
+  detachedLabelJa: string | null;
+  detachedLabelEn: string | null;
   stampImageUrl: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
@@ -152,6 +155,9 @@ export function placeBody(p: PlaceDraft): PlaceBody {
     kind: p.kind,
     stampable: p.stampable,
     stopBy: p.stopBy,
+    detached: p.detached,
+    detachedLabelJa: nullIfEmpty(p.detachedLabelJa),
+    detachedLabelEn: nullIfEmpty(p.detachedLabelEn),
     stampImageUrl: nullIfEmpty(p.stampImageUrl),
     photoUrl: nullIfEmpty(p.photoUrl),
     photoCredit: nullIfEmpty(p.photoCredit),

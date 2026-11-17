@@ -162,12 +162,34 @@ export function PlacePanel(p: PlacePanelProps) {
           <InfoTip
             indent
             label={
-              <Check id={`${id}-stopby`} checked={place.stopBy} onChange={(v) => p.onChange({ stopBy: v })}>
+              <Check id={`${id}-stopby`} checked={place.stopBy && !place.detached} onChange={(v) => p.onChange(v ? { stopBy: true, detached: false } : { stopBy: false, detached: false })}>
                 {t`寄り道（道すじから少しはずれた、任意の立ち寄り先）`}
               </Check>
             }
             hint={t`チェックを入れると、「経由地をつないで道をつくる」で、この点は通りません。代わりに、一つ前の経由地から、この場所までの寄り道の線（青い細い点線）を、地図で描けます。分かれ道に経由地を置き、その次にこの場所を並べてください。`}
           />
+
+          {/* 2026-11-17, user: a place nobody can walk to (a mound worshipped from afar) is not a side trip. Stored as a side trip
+              that is also detached, so it is left out of the walk the same way, but no path is drawn to it. */}
+          <InfoTip
+            indent
+            label={
+              <Check id={`${id}-detached`} checked={place.detached} onChange={(v) => p.onChange(v ? { stopBy: true, detached: true } : { stopBy: false, detached: false })}>
+                {t`道とつながらない（行けない場所。遠くから拝む経塚など）`}
+              </Check>
+            }
+            hint={t`地図には出ますが、番号はつかず、道の線も寄り道の線も引きません。距離や時間にも入りません。利用者には、下に入れた言葉が「寄り道」の代わりに表示されます。`}
+          />
+          {place.detached ? (
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field label={t`利用者に見せる言葉`} htmlFor={`${id}-detached-ja`} hint={t`空のままなら「道からはなれた場所」と表示します。`}>
+                <TextInput id={`${id}-detached-ja`} value={place.detachedLabelJa} onChange={(v) => p.onChange({ detachedLabelJa: v })} maxLength={100} placeholder={t`例：遠くから拝む場所`} />
+              </Field>
+              <Field label={t`英語（なくてもよい）`} htmlFor={`${id}-detached-en`}>
+                <TextInput id={`${id}-detached-en`} lang="en" value={place.detachedLabelEn} onChange={(v) => p.onChange({ detachedLabelEn: v })} maxLength={100} placeholder="Worshipped from afar" />
+              </Field>
+            </div>
+          ) : null}
 
           <InfoTip
             indent

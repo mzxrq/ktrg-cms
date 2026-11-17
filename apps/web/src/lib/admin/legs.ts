@@ -106,16 +106,17 @@ export const pairsOf = (stops: readonly Stop[]): { from: Stop; to: Stop }[] => s
 
 /**
  * The side trips: for each placed stop-by waypoint, a pair from the stop before it in the list (a junction waypoint put just
- * before it in the list is how the branch point is chosen) to the stop-by place. One before the first stop has none.
+ * before it in the list is how the branch point is chosen) to the stop-by place. One before the first stop has none. A place not
+ * connected to the route (detached, 遥拝) has none: nobody walks to it.
  */
-export function sidePairs(places: readonly { key: string; lat: number | null; lng: number | null; stopBy: boolean }[]): { from: Stop; to: Stop }[] {
+export function sidePairs(places: readonly { key: string; lat: number | null; lng: number | null; stopBy: boolean; detached?: boolean }[]): { from: Stop; to: Stop }[] {
   const out: { from: Stop; to: Stop }[] = [];
   let last: Stop | null = null;
   for (const p of places) {
     if (p.lat === null || p.lng === null) continue;
     const here = { key: p.key, lat: p.lat, lng: p.lng };
     if (p.stopBy) {
-      if (last) out.push({ from: last, to: here });
+      if (last && !p.detached) out.push({ from: last, to: here });
     } else last = here;
   }
   return out;
