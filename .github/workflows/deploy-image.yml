@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write   # Required for AWS OIDC authentication
+  id-token: write
   contents: read
 
 env:
@@ -24,7 +24,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-        - name: Diagnose OIDC Token & Role ARN
+      - name: Diagnose OIDC Token & Role ARN
         run: |
           echo "Target Role ARN: ${{ secrets.AWS_ROLE_ARN }}"
           JWT=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r '.value')
