@@ -32,6 +32,8 @@ export interface EditorPlace {
   /** An optional visit beside the way (寄り道): the line need not pass through it. */
   stopBy: boolean;
   kind: PointKind;
+  /** Not connected to the route (遥拝): no path is drawn to it. */
+  detached?: boolean;
   /** Visitors can see it: it cannot be deleted, and editing it turns it back into a draft. */
   published: boolean;
   /** Where the walk starts and ends (blue and orange pins), as visitors see it. */
@@ -46,6 +48,8 @@ export interface PlacePatch {
   kind?: PointKind;
   stampable?: boolean;
   stopBy?: boolean;
+  /** Not connected to the route (遥拝); turned off with stopBy. */
+  detached?: boolean;
   /** 案内のみ on or off (the editor fills in the status and the ready-made note). */
   info?: boolean;
 }
@@ -556,7 +560,7 @@ export function MapEditor(props: MapEditorProps) {
     }
     for (const p of wanted) {
       // The same pins visitors see. A pin is drawn from its number, kind, role and shape, so it is made again when one changes.
-      const shape = `${p.number}|${p.stampable}|${p.stopBy}|${p.role ?? ""}|${p.kind}|${p.name}`;
+      const shape = `${p.number}|${p.stampable}|${p.stopBy}|${p.detached ?? false}|${p.role ?? ""}|${p.kind}|${p.name}`;
       let entry = markers.current.get(p.key);
       if (entry && entry.shape !== shape) {
         entry.marker.remove();

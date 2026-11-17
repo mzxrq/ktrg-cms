@@ -43,6 +43,9 @@ export interface PublicSpot {
   stampable: boolean;
   /** An optional visit beside the way (寄り道). */
   stopBy: boolean;
+  detached: boolean;
+  detachedLabelJa: string | null;
+  detachedLabelEn: string | null;
   stampImageUrl: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
@@ -233,6 +236,9 @@ function toPublicSpot(s: SpotRow): PublicSpot {
     kind: s.kind,
     stampable: s.stampable,
     stopBy: s.stopBy,
+    detached: s.detached,
+    detachedLabelJa: s.detachedLabelJa,
+    detachedLabelEn: s.detachedLabelEn,
     stampImageUrl: s.stampImageUrl,
     photoUrl: s.photoUrl,
     photoCredit: s.photoCredit,
@@ -384,7 +390,7 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       if (!n) return bad("validation_failed");
       out.nameJa = n;
     }
-    for (const k of ["nameEn", "nameKana", "descriptionJa", "descriptionEn", "historyJa", "historyEn", "statusNoteJa", "statusNoteEn", "permissionNote", "positionSource", "sourceJa", "sourceEn", "photoCredit", "photoNameJa", "photoNameEn"] as const) {
+    for (const k of ["nameEn", "nameKana", "descriptionJa", "descriptionEn", "historyJa", "historyEn", "statusNoteJa", "statusNoteEn", "permissionNote", "positionSource", "sourceJa", "sourceEn", "photoCredit", "photoNameJa", "photoNameEn", "detachedLabelJa", "detachedLabelEn"] as const) {
       const v = text(input[k]);
       if (v !== undefined) out[k] = v;
     }
@@ -396,6 +402,10 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
     if (input.kind !== undefined) out.kind = input.kind;
     if (input.stampable !== undefined) out.stampable = input.stampable;
     if (input.stopBy !== undefined) out.stopBy = input.stopBy;
+    if (input.detached !== undefined) out.detached = input.detached;
+    // A place not connected to the route is always a side trip; one that is no longer a side trip is not detached either.
+    if (out.detached === true) out.stopBy = true;
+    if (out.stopBy === false) out.detached = false;
     if (input.photoUrl !== undefined) {
       const v = text(input.photoUrl);
       if (v && !isPhotoUrl(v, photoHosts)) return bad("invalid_photo_url");

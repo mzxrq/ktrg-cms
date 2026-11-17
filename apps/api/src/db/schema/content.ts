@@ -184,6 +184,9 @@ export const spots = pgTable(
     stampable: boolean("stampable").notNull().default(false),
     // An optional visit beside the way (寄り道): the line of the route does not have to pass through it.
     stopBy: boolean("stop_by").notNull().default(false),
+    // Not connected to the route at all (a mound worshipped from afar, 遥拝): shown on the map, no path drawn to it. Always also
+    // stopBy, so everything that leaves a side trip out of the walk (numbers, distance, start and goal) leaves this out too.
+    detached: boolean("detached").notNull().default(false),
     photoUrl: text("photo_url"),
     photoCredit: text("photo_credit"),
     // The page the main photo was found on (Wikimedia Commons, a site), when it is not our own.
@@ -591,6 +594,8 @@ export const spotTranslations = pgTable(
     // Its story: where the name comes from, what happened there.
     history: text("history"),
     statusNote: text("status_note"),
+    // What visitors read on a place not connected to the route (empty: a default, 道からはなれた場所).
+    detachedLabel: text("detached_label"),
     source: text("source"),
     // What the main photo shows (本殿, 鳥居), shown with its credit.
     photoName: text("photo_name"),

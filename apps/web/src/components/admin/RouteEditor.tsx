@@ -461,7 +461,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
     const startOnly = comesBack;
     const roleOf = (key: string): StopRole | undefined =>
       key === along[0]?.key ? (startOnly ? "both" : "start") : !startOnly && along.length > 1 && key === along.at(-1)!.key ? "goal" : undefined;
-    return draft.places.map((p) => ({ key: p.key, lat: p.lat, lng: p.lng, number: p.stampable ? ++stamp : null, name: p.nameJa, stampable: p.stampable, stopBy: p.stopBy, kind: p.kind, published: p.published, role: roleOf(p.key), info: p.status === "info" }));
+    return draft.places.map((p) => ({ key: p.key, lat: p.lat, lng: p.lng, number: p.stampable ? ++stamp : null, name: p.nameJa, stampable: p.stampable, stopBy: p.stopBy, detached: p.detached, kind: p.kind, published: p.published, role: roleOf(p.key), info: p.status === "info" }));
   })();
   const text = (field: TextField) => (value: string) => dispatch({ type: "text", field, value });
   const checks = useMemo(() => checklist(factsFromDraft(draft)), [draft]);

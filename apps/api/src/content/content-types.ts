@@ -100,6 +100,10 @@ export interface SpotRow {
   stampable: boolean;
   /** An optional visit beside the way (寄り道). */
   stopBy: boolean;
+  /** Not connected to the route (遥拝): no path drawn to it; always also stopBy. */
+  detached: boolean;
+  detachedLabelJa: string | null;
+  detachedLabelEn: string | null;
   /** A picture used as this place's stamp. */
   stampImageUrl: string | null;
   photoUrl: string | null;
@@ -184,6 +188,10 @@ export interface SpotFields {
   stampable: boolean;
   /** An optional visit beside the way (寄り道). */
   stopBy: boolean;
+  /** Not connected to the route (遥拝): no path drawn to it; always also stopBy. */
+  detached: boolean;
+  detachedLabelJa: string | null;
+  detachedLabelEn: string | null;
   /** A picture used as this place's stamp. */
   stampImageUrl: string | null;
   photoUrl: string | null;

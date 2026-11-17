@@ -575,3 +575,14 @@ describe("a place on two courses", () => {
     expect((await svc.getRoute(next.id))!.shared).toEqual([]);
   });
 });
+
+// 2026-11-17, user: a mound worshipped from afar (遥拝) is not a side trip, since nobody walks to it.
+describe("a place not connected to the route", () => {
+  test("is always also a side trip, keeps its label, and stops being detached when it stops being a side trip", async () => {
+    const r = await route();
+    const s = await spot(r.id, { detached: true, stopBy: false, detachedLabelJa: " 遠くから拝む場所 ", detachedLabelEn: "  " });
+    expect(s).toMatchObject({ detached: true, stopBy: true, detachedLabelJa: "遠くから拝む場所", detachedLabelEn: null });
+    const back = await svc.updateSpot(ADMIN, s.id, s.updatedAt, { stopBy: false });
+    expect(back.ok && back.value).toMatchObject({ stopBy: false, detached: false });
+  });
+});

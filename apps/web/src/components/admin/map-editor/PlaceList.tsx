@@ -62,7 +62,7 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
             onClick={() => onSelectPlace(p.key)}
             className={`grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 rounded-xl border bg-paper p-3 ${p.key === selectedKey ? "border-ink ring-2 ring-ink" : "border-line"}`}
           >
-            {p.stopBy && mains.length > 0 ? (
+            {p.stopBy && !p.detached && mains.length > 0 ? (
               <div className="col-span-3 flex flex-col gap-2 rounded-lg bg-surface p-2" onClick={(e) => e.stopPropagation()}>
                 <label className="flex min-w-0 flex-col gap-1 text-sm font-bold">
                   {t`サブコースの分岐点（ここから、この寄り道へ）`}
@@ -121,7 +121,7 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
               <button type="button" aria-pressed={p.stampable} onClick={() => onPatchPlace(p.key, { stampable: !p.stampable })} className={chipToggle(p.stampable)}>
                 {t`スタンプ`}
               </button>
-              <button type="button" aria-pressed={p.stopBy} onClick={() => onPatchPlace(p.key, { stopBy: !p.stopBy })} className={chipToggle(p.stopBy)}>
+              <button type="button" aria-pressed={p.stopBy} onClick={() => onPatchPlace(p.key, p.stopBy ? { stopBy: false, detached: false } : { stopBy: true })} className={chipToggle(p.stopBy)}>
                 {t`寄り道`}
               </button>
               <button type="button" aria-pressed={!!p.info} onClick={() => onPatchPlace(p.key, { info: !p.info })} className={chipToggle(!!p.info)} title={t`見せるだけの場所です。スタンプは押せません。「現在、立ち入りできません」などを書けます。`}>
