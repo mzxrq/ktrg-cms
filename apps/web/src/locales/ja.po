@@ -442,6 +442,10 @@ msgstr "{shownKm} km"
 msgid "{shownKm} km・歩いて約{minutes}分"
 msgstr "{shownKm} km・歩いて約{minutes}分"
 
+#: src/components/admin/PhotoUpload.tsx:131
+msgid "{skipped}枚は、写真の数の上限を超えるので送りませんでした。"
+msgstr "{skipped}枚は、写真の数の上限を超えるので送りませんでした。"
+
 #: src/components/Stars.tsx:8
 msgid "{STAR_COUNT}段階中{n}"
 msgstr "{STAR_COUNT}段階中{n}"
@@ -1545,7 +1549,7 @@ msgstr "コースやラリー、ブログの記事で、しおりのボタンを
 
 #: src/components/admin/RouteTable.tsx:127
 #: src/components/landing/Landing.tsx:121
-#: src/components/landing/LandingHero.tsx:72
+#: src/components/landing/LandingHero.tsx:73
 msgid "コースをさがす"
 msgstr "コースをさがす"
 
@@ -3818,7 +3822,7 @@ msgstr "ログアウトする"
 #: src/components/blog/CommentSection.tsx:127
 #: src/components/GuestNag.tsx:88
 #: src/components/landing/Landing.tsx:130
-#: src/components/landing/LandingHero.tsx:78
+#: src/components/landing/LandingHero.tsx:79
 #: src/components/ProfileSettings.tsx:220
 #: src/components/SignInPrompt.tsx:26
 #: src/components/SignInPrompt.tsx:57
@@ -4345,7 +4349,7 @@ msgid "元に戻す"
 msgstr "元に戻す"
 
 #: src/components/admin/PhotoListEditor.tsx:79
-#: src/components/admin/PhotoListEditor.tsx:148
+#: src/components/admin/PhotoListEditor.tsx:154
 msgid "元のページ"
 msgstr "元のページ"
 
@@ -4701,7 +4705,7 @@ msgstr "写真は、まだありません"
 msgid "写真は、まだありません。"
 msgstr "写真は、まだありません。"
 
-#: src/components/admin/PhotoListEditor.tsx:134
+#: src/components/admin/PhotoListEditor.tsx:140
 msgid "写真は{MAX_PHOTOS}枚までです。"
 msgstr "写真は{MAX_PHOTOS}枚までです。"
 
@@ -4713,9 +4717,13 @@ msgstr "写真はまだありません"
 msgid "写真ライブラリ"
 msgstr "写真ライブラリ"
 
-#: src/components/admin/PhotoUpload.tsx:77
+#: src/components/admin/PhotoUpload.tsx:108
 msgid "写真をアップロード"
 msgstr "写真をアップロード"
+
+#: src/components/admin/PhotoUpload.tsx:108
+msgid "写真をアップロード（まとめて選べます）"
+msgstr "写真をアップロード（まとめて選べます）"
 
 #: src/components/useErrorMessages.ts:72
 msgid "写真を保存できませんでした。しばらくしてからもう一度お試しください。"
@@ -6175,7 +6183,7 @@ msgstr "新しく作るには、名前（日本語）が必要です"
 #: src/components/auth/LoginFlow.tsx:153
 #: src/components/GuestNag.tsx:85
 #: src/components/landing/Landing.tsx:118
-#: src/components/landing/LandingHero.tsx:69
+#: src/components/landing/LandingHero.tsx:70
 #: src/components/SignInPrompt.tsx:23
 #: src/components/SignInPrompt.tsx:51
 #: src/components/SiteHeader.tsx:237
@@ -6906,7 +6914,7 @@ msgstr "登録なしで残せるスタンプの数が、上限になりました
 
 #: src/components/auth/RegisterFlow.tsx:177
 #: src/components/landing/Landing.tsx:128
-#: src/components/landing/LandingHero.tsx:76
+#: src/components/landing/LandingHero.tsx:77
 msgid "登録済みの方は"
 msgstr "登録済みの方は"
 
@@ -7702,7 +7710,7 @@ msgstr "見せるだけの場所です。スタンプは押せません。「現
 msgid "見せるだけの場所です。立ち入りできない場所などに使います。スタンプは押せず、コースやラリーの数にも入りません。「状態のひとこと」に、「現在、立ち入りできません」などを書きます。公開には、現地の許可の確認は要りません。"
 msgstr "見せるだけの場所です。立ち入りできない場所などに使います。スタンプは押せず、コースやラリーの数にも入りません。「状態のひとこと」に、「現在、立ち入りできません」などを書きます。公開には、現地の許可の確認は要りません。"
 
-#: src/components/admin/PhotoListEditor.tsx:138
+#: src/components/admin/PhotoListEditor.tsx:144
 msgid "見つかった写真"
 msgstr "見つかった写真"
 
@@ -8013,12 +8021,12 @@ msgstr "追加"
 msgid "追加しない"
 msgstr "追加しない"
 
-#: src/components/admin/PhotoListEditor.tsx:145
+#: src/components/admin/PhotoListEditor.tsx:151
 msgid "追加しました"
 msgstr "追加しました"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1094
-#: src/components/admin/PhotoListEditor.tsx:145
+#: src/components/admin/PhotoListEditor.tsx:151
 msgid "追加する"
 msgstr "追加する"
 
@@ -8034,12 +8042,18 @@ msgstr "追加のしかた"
 msgid "送った内容が、読み取れませんでした。もう一度お試しください。"
 msgstr "送った内容が、読み取れませんでした。もう一度お試しください。"
 
-#: src/components/admin/PhotoUpload.tsx:77
+#: src/components/admin/PhotoUpload.tsx:108
 #: src/components/admin/SubtitleUpload.tsx:62
 #: src/components/blog/CommentSection.tsx:113
 #: src/components/StampOutbox.tsx:173
 msgid "送っています…"
 msgstr "送っています…"
+
+#. placeholder {0}: progress.done + 1
+#. placeholder {1}: progress.total
+#: src/components/admin/PhotoUpload.tsx:108
+msgid "送っています… {0}/{1}"
+msgstr "送っています… {0}/{1}"
 
 #: src/components/admin/VideoUpload.tsx:82
 msgid "送っています… {percent}%"
