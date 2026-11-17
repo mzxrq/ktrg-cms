@@ -5990,7 +5990,7 @@ msgstr "Turnaround"
 #: src/components/RallyTrail.tsx:39
 #: src/components/RallyViews.tsx:159
 #: src/components/StampLegend.tsx:9
-#: src/components/StopList.tsx:187
+#: src/components/StopList.tsx:209
 msgid "押した"
 msgstr "Stamped"
 

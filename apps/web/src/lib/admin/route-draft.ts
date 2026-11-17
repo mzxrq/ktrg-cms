@@ -538,6 +538,9 @@ const pointOf = (p: PlaceDraft, d: Pick<RouteDraft, "places">): RoutePoint => ({
   nameEn: nz(p.nameEn),
   descriptionJa: nz(p.descriptionJa),
   descriptionEn: nz(p.descriptionEn),
+  status: p.status,
+  statusNoteJa: nz(p.statusNoteJa),
+  statusNoteEn: nz(p.statusNoteEn),
   position: p.lat !== null && p.lng !== null ? { lat: p.lat, lng: p.lng, verified: p.positionVerified } : null,
 });
 

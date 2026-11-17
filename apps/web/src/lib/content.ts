@@ -114,6 +114,10 @@ export interface RoutePoint {
   /** An optional visit beside the way (寄り道): not numbered. */
   stopBy?: boolean;
   position: SpotPosition | null;
+  /** Its status (案内のみ, 閉鎖中 ...) and the editor's note; left out on old data, which means open. */
+  status?: SpotStatus;
+  statusNoteJa?: string | null;
+  statusNoteEn?: string | null;
 }
 
 export interface RouteDetail extends RouteSummary {

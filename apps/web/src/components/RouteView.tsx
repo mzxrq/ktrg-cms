@@ -46,7 +46,7 @@ export function buildStops(
     const name = pickText(locale, item.nameJa, item.nameEn);
     if (!name) return [];
     const stamped = stop.type === "stamp" ? stop.spot.stamped : null;
-    const status = stop.type === "stamp" ? stop.spot.status : "open";
+    const status = stop.type === "stamp" ? stop.spot.status : (stop.point.status ?? "open");
     const parts = [stop.number === null ? name.text : `${stop.number}. ${name.text}`];
     const roleWord = roleLabel(roles.get(item.id), labels);
     if (roleWord) parts.push(roleWord);
