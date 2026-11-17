@@ -94,6 +94,8 @@ export interface AdminSpot {
   photoUrl: string | null;
   photoCredit?: string | null;
   photoSourceUrl?: string | null;
+  photoNameJa?: string | null;
+  photoNameEn?: string | null;
   sourceJa?: string | null;
   sourceEn?: string | null;
   /** More photos of the place, in order. */

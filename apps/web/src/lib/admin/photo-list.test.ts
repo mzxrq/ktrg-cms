@@ -2,17 +2,17 @@ import { describe, expect, test } from "bun:test";
 import { addPhoto, fromList, makeMain, MAX_PHOTOS, movePhoto, patchPhoto, removePhoto, toList, type ListPhoto } from "./photo-list";
 
 const p = (n: string, over: Partial<ListPhoto> = {}): ListPhoto => ({ url: `https://photos.example.com/${n}.jpg`, credit: null, sourceUrl: null, ...over });
-const place = { photoUrl: "https://photos.example.com/a.jpg", photoCredit: "Taro", photoSourceUrl: "https://commons.example.org/a", photos: [p("b"), p("c")] };
+const place = { photoUrl: "https://photos.example.com/a.jpg", photoCredit: "Taro", photoSourceUrl: "https://commons.example.org/a", photoNameJa: "本殿", photoNameEn: "", photos: [p("b"), p("c")] };
 
 describe("the photos of a waypoint as one list (the first is the main photo)", () => {
   test("the main photo comes first, then the gallery; an empty main photo is not an item", () => {
     expect(toList(place).map((x) => x.url.slice(-5))).toEqual(["a.jpg", "b.jpg", "c.jpg"]);
-    expect(toList(place)[0]).toEqual({ url: place.photoUrl, credit: "Taro", sourceUrl: "https://commons.example.org/a" });
-    expect(toList({ photoUrl: "", photoCredit: "", photoSourceUrl: "", photos: [p("b")] })).toEqual([p("b")]);
+    expect(toList(place)[0]).toEqual({ url: place.photoUrl, credit: "Taro", sourceUrl: "https://commons.example.org/a", nameJa: "本殿", nameEn: null });
+    expect(toList({ photoUrl: "", photoCredit: "", photoSourceUrl: "", photoNameJa: "", photoNameEn: "", photos: [p("b")] })).toEqual([p("b")]);
   });
   test("saving a list gives back the same fields", () => {
     expect(fromList(toList(place))).toEqual(place);
-    expect(fromList([])).toEqual({ photoUrl: "", photoCredit: "", photoSourceUrl: "", photos: [] });
+    expect(fromList([])).toEqual({ photoUrl: "", photoCredit: "", photoSourceUrl: "", photoNameJa: "", photoNameEn: "", photos: [] });
   });
   test("a main photo that is also in the gallery is listed once", () => {
     expect(toList({ ...place, photos: [p("a"), p("b")] }).map((x) => x.url.slice(-5))).toEqual(["a.jpg", "b.jpg"]);
@@ -46,5 +46,12 @@ describe("the photos of a waypoint as one list (the first is the main photo)", (
     expect(list[1]).toMatchObject({ credit: "Hanako", sourceUrl: "https://commons.example.org/b" });
     expect(list[0]!.credit).toBe("Taro");
     expect(patchPhoto(list, 1, { credit: "  " })[1]!.credit).toBeNull();
+  });
+  test("a name is changed on its own photo, and goes with it when it becomes the main photo or leaves it", () => {
+    const named = patchPhoto(toList(place), 2, { nameJa: "鳥居", nameEn: "Torii gate" });
+    expect(named[2]).toMatchObject({ nameJa: "鳥居", nameEn: "Torii gate" });
+    expect(patchPhoto(named, 2, { nameEn: " " })[2]).toMatchObject({ nameJa: "鳥居", nameEn: null });
+    expect(fromList(makeMain(named, 2))).toMatchObject({ photoNameJa: "鳥居", photoNameEn: "Torii gate" });
+    expect(fromList(makeMain(named, 2)).photos[0]).toMatchObject({ url: place.photoUrl, nameJa: "本殿", nameEn: null });
   });
 });

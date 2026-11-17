@@ -1,0 +1,1 @@
+ALTER TABLE "spot_translations" ADD COLUMN "photo_name" text;

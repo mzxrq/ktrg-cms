@@ -102,10 +102,12 @@ export interface PublicSpot {
   stopBy?: boolean;
   stampImageUrl?: string | null;
   photoUrl: string | null;
+  photoNameJa?: string | null;
+  photoNameEn?: string | null;
   photoCredit?: string | null;
   sourceJa?: string | null;
   sourceEn?: string | null;
-  photos?: { url: string; credit: string | null; sourceUrl: string | null }[];
+  photos?: { url: string; credit: string | null; sourceUrl: string | null; nameJa?: string | null; nameEn?: string | null }[];
   status: "open" | "caution" | "closed" | "info";
   statusNoteJa: string | null;
   statusNoteEn: string | null;

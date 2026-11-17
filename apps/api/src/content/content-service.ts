@@ -47,6 +47,8 @@ export interface PublicSpot {
   photoUrl: string | null;
   photoCredit: string | null;
   photoSourceUrl: string | null;
+  photoNameJa: string | null;
+  photoNameEn: string | null;
   sourceJa: string | null;
   sourceEn: string | null;
   /** More photos of the place, in order, each with who took it when that is known. */
@@ -235,6 +237,8 @@ function toPublicSpot(s: SpotRow): PublicSpot {
     photoUrl: s.photoUrl,
     photoCredit: s.photoCredit,
     photoSourceUrl: s.photoSourceUrl,
+    photoNameJa: s.photoNameJa,
+    photoNameEn: s.photoNameEn,
     sourceJa: s.sourceJa,
     sourceEn: s.sourceEn,
     photos: s.photos,
@@ -380,7 +384,7 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       if (!n) return bad("validation_failed");
       out.nameJa = n;
     }
-    for (const k of ["nameEn", "nameKana", "descriptionJa", "descriptionEn", "historyJa", "historyEn", "statusNoteJa", "statusNoteEn", "permissionNote", "positionSource", "sourceJa", "sourceEn", "photoCredit"] as const) {
+    for (const k of ["nameEn", "nameKana", "descriptionJa", "descriptionEn", "historyJa", "historyEn", "statusNoteJa", "statusNoteEn", "permissionNote", "positionSource", "sourceJa", "sourceEn", "photoCredit", "photoNameJa", "photoNameEn"] as const) {
       const v = text(input[k]);
       if (v !== undefined) out[k] = v;
     }
@@ -413,7 +417,7 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
         const url = p.url.trim();
         const sourceUrl = text(p.sourceUrl) ?? null;
         if (!isPhotoUrl(url, photoHosts) || (sourceUrl !== null && !isHttpsUrl(sourceUrl))) return bad("invalid_photo_url");
-        photos.push({ url, credit: text(p.credit) ?? null, sourceUrl });
+        photos.push({ url, credit: text(p.credit) ?? null, sourceUrl, nameJa: text(p.nameJa) ?? null, nameEn: text(p.nameEn) ?? null });
       }
       out.photos = photos;
     }

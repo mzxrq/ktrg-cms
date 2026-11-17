@@ -86,6 +86,9 @@ export interface SpotPhoto {
   url: string;
   credit: string | null;
   sourceUrl: string | null;
+  // What the photo shows (本殿, 鳥居), shown above the credit; English falls back to Japanese. Missing on photos saved before 2026-11-17.
+  nameJa?: string | null;
+  nameEn?: string | null;
 }
 
 /** The switch a new waypoint starts with: on for a temple, a sutra mound, a viewpoint or "other"; off for the practical ones. */
@@ -589,6 +592,8 @@ export const spotTranslations = pgTable(
     history: text("history"),
     statusNote: text("status_note"),
     source: text("source"),
+    // What the main photo shows (本殿, 鳥居), shown with its credit.
+    photoName: text("photo_name"),
   },
   (t) => [primaryKey({ columns: [t.spotId, t.locale] }), check("spot_translations_ja_name", jaRequires(t, t.name))],
 );
