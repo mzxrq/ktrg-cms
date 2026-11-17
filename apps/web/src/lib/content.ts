@@ -13,6 +13,7 @@ import type { Sketch } from "./sketch";
 import type { WalkStyle } from "./walk-style";
 import type { TechnicalLevel } from "./grading";
 import type { AccessPoint } from "./access-points";
+import type { RideSpan } from "./elevation-profile";
 
 // View-models for the public content screens (WBS 3.2.3, 3.2.4, 3.2.5). Each field
 // mirrors a CMS column in apps/api/src/db/schema/content.ts, so what an editor types
@@ -146,6 +147,8 @@ export interface RouteDetail extends RouteSummary {
   line: { lat: number; lng: number }[] | null;
   /** The elevation of each point of `line` in metres (null where unknown); null when the line carries none. */
   lineElevations?: (number | null)[] | null;
+  /** The stretches of `line` that are ridden (a ferry ...), from where they start to where they end. */
+  lineRides?: RideSpan[];
   /** Side trips (寄り道): the stretch out to a stop-by place, apart from the main line. */
   sideLines?: { spotId: string; line: { lat: number; lng: number }[] }[];
   /** The guidance video's address (the CMS `video_url`); only YouTube links are shown (`parseVideoUrl`). */

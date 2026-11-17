@@ -1,6 +1,7 @@
 import { useLingui } from "@lingui/react/macro";
 import { elevationArea } from "@/lib/sketch";
 import { ElevationChart } from "./ElevationChart";
+import type { RideSpan } from "@/lib/elevation-profile";
 
 const W = 300;
 const H = 120;
@@ -17,15 +18,18 @@ export function ElevationProfile({
   distanceKm,
   routeLine,
   lineElevations,
+  rides,
 }: {
   elevations: readonly number[];
   distanceKm: number | null;
   /** The route's own line with an elevation for each point: the interactive chart is drawn from it when it is there. */
   routeLine?: readonly { lat: number; lng: number }[] | null;
   lineElevations?: readonly (number | null)[] | null;
+  /** Stretches that are ridden (a ferry ...): the chart leaves them out. */
+  rides?: readonly RideSpan[];
 }) {
   const { t, i18n } = useLingui();
-  if (routeLine && lineElevations && routeLine.length === lineElevations.length) return <ElevationChart line={routeLine} elevations={lineElevations} />;
+  if (routeLine && lineElevations && routeLine.length === lineElevations.length) return <ElevationChart line={routeLine} elevations={lineElevations} rides={rides} />;
   const area = elevationArea(elevations, W, H, PAD);
   if (!area) return null;
 
