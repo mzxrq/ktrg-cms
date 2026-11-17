@@ -92,12 +92,12 @@ msgid "{0}を削除"
 msgstr "{0}を削除"
 
 #. placeholder {0}: p.name || p.number
-#: src/components/admin/map-editor/PlaceList.tsx:150
+#: src/components/admin/map-editor/PlaceList.tsx:155
 msgid "{0}を前へ"
 msgstr "{0}を前へ"
 
 #. placeholder {0}: p.name || p.number
-#: src/components/admin/map-editor/PlaceList.tsx:153
+#: src/components/admin/map-editor/PlaceList.tsx:158
 msgid "{0}を後ろへ"
 msgstr "{0}を後ろへ"
 
@@ -1072,8 +1072,8 @@ msgstr "いちばん多い地域"
 msgid "いちばん多い日"
 msgstr "いちばん多い日"
 
-#: src/components/admin/map-editor/PlaceList.tsx:176
-#: src/components/admin/map-editor/PlaceList.tsx:176
+#: src/components/admin/map-editor/PlaceList.tsx:181
+#: src/components/admin/map-editor/PlaceList.tsx:181
 msgid "いちばん後ろの戻りの線を消す"
 msgstr "いちばん後ろの戻りの線を消す"
 
@@ -1942,7 +1942,7 @@ msgstr "この期間の記録は、まだありません。"
 msgid "この条件に合う場所はありません。"
 msgstr "この条件に合う場所はありません。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:157
+#: src/components/admin/map-editor/PlaceList.tsx:162
 msgid "この次に追加"
 msgstr "この次に追加"
 
@@ -3864,7 +3864,7 @@ msgstr "を通りすぎました"
 msgid "一周"
 msgstr "一周"
 
-#: src/components/admin/map-editor/PlaceList.tsx:136
+#: src/components/admin/map-editor/PlaceList.tsx:141
 msgid "一周して、ここに戻るコースのとき: 同じ位置に、スタンプのない終点を追加します"
 msgstr "一周して、ここに戻るコースのとき: 同じ位置に、スタンプのない終点を追加します"
 
@@ -4051,7 +4051,7 @@ msgstr "休業日"
 msgid "位置"
 msgstr "位置"
 
-#: src/components/admin/map-editor/PlaceList.tsx:142
+#: src/components/admin/map-editor/PlaceList.tsx:147
 msgid "位置なし"
 msgstr "位置なし"
 
@@ -4511,7 +4511,7 @@ msgstr "公開をやめる"
 #: src/components/admin/BannerOrder.tsx:105
 #: src/components/admin/CommentInbox.tsx:30
 #: src/components/admin/CommentInbox.tsx:31
-#: src/components/admin/map-editor/PlaceList.tsx:132
+#: src/components/admin/map-editor/PlaceList.tsx:137
 #: src/components/admin/PlacePanel.tsx:112
 #: src/components/admin/RallyEditor.tsx:124
 #: src/components/admin/RallyList.tsx:62
@@ -4549,7 +4549,7 @@ msgstr "公開中の経由地は、先に「公開をやめる」と、削除で
 msgid "公開中の経由地は削除できません。先に「経由地」タブで「公開をやめる」を押してください。"
 msgstr "公開中の経由地は削除できません。先に「経由地」タブで「公開をやめる」を押してください。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:131
+#: src/components/admin/map-editor/PlaceList.tsx:136
 msgid "公開中の経由地は削除できません。編集すると下書きに戻ります。"
 msgstr "公開中の経由地は削除できません。編集すると下書きに戻ります。"
 
@@ -4607,7 +4607,7 @@ msgstr "最寄り"
 msgid "最後に押した日時　{when}"
 msgstr "最後に押した日時　{when}"
 
-#: src/components/admin/map-editor/PlaceList.tsx:166
+#: src/components/admin/map-editor/PlaceList.tsx:171
 msgid "最後の経由地から、通った経由地をたどって戻る線です。戻る先を選んで、線を足していきます（例：14 → 5 → 4 → 1）。"
 msgstr "最後の経由地から、通った経由地をたどって戻る線です。戻る先を選んで、線を足していきます（例：14 → 5 → 4 → 1）。"
 
@@ -5236,7 +5236,7 @@ msgstr "合計"
 msgid "同じ名前で、位置が近い（150m以内、または位置が未入力）場所を、グループにして出します。各グループの先頭が、いちばん情報がそろっている場所です（残すのにおすすめ）。"
 msgstr "同じ名前で、位置が近い（150m以内、または位置が未入力）場所を、グループにして出します。各グループの先頭が、いちばん情報がそろっている場所です（残すのにおすすめ）。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:137
+#: src/components/admin/map-editor/PlaceList.tsx:142
 msgid "同じ場所に終点を追加"
 msgstr "同じ場所に終点を追加"
 
@@ -5421,7 +5421,7 @@ msgstr "地名や記号が大きく、はっきり読める地図です。色の
 msgid "地図"
 msgstr "地図"
 
-#: src/components/admin/map-editor/PlaceList.tsx:144
+#: src/components/admin/map-editor/PlaceList.tsx:149
 msgid "地図で位置を決める"
 msgstr "地図で位置を決める"
 
@@ -5495,11 +5495,11 @@ msgstr "地図の道具"
 msgid "地図をクリックして、この区間に点を置いていきます。点はドラッグで動かせます。ダブルクリックで、なめらかな点と角の点が切り替わります。"
 msgstr "地図をクリックして、この区間に点を置いていきます。点はドラッグで動かせます。ダブルクリックで、なめらかな点と角の点が切り替わります。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:156
+#: src/components/admin/map-editor/PlaceList.tsx:161
 msgid "地図をクリックして、この経由地のすぐ次に新しい経由地を入れます"
 msgstr "地図をクリックして、この経由地のすぐ次に新しい経由地を入れます"
 
-#: src/components/admin/map-editor/PlaceList.tsx:144
+#: src/components/admin/map-editor/PlaceList.tsx:149
 msgid "地図をクリックしてください（やめる）"
 msgstr "地図をクリックしてください（やめる）"
 
@@ -5765,7 +5765,7 @@ msgstr "完了"
 msgid "宿泊"
 msgstr "宿泊"
 
-#: src/components/admin/map-editor/PlaceList.tsx:125
+#: src/components/admin/map-editor/PlaceList.tsx:127
 #: src/components/SideWord.tsx:9
 msgid "寄り道"
 msgstr "寄り道"
@@ -5933,7 +5933,7 @@ msgstr "情報"
 msgid "情報源を入れないと、「確認した」は保存されません。"
 msgstr "情報源を入れないと、「確認した」は保存されません。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:203
+#: src/components/admin/map-editor/PlaceList.tsx:208
 msgid "戻りの線を足す"
 msgstr "戻りの線を足す"
 
@@ -5947,15 +5947,15 @@ msgstr "戻りの線を足す"
 msgid "戻る"
 msgstr "戻る"
 
-#: src/components/admin/map-editor/PlaceList.tsx:186
+#: src/components/admin/map-editor/PlaceList.tsx:191
 msgid "戻る先"
 msgstr "戻る先"
 
-#: src/components/admin/map-editor/PlaceList.tsx:187
+#: src/components/admin/map-editor/PlaceList.tsx:192
 msgid "戻る先を選ぶ"
 msgstr "戻る先を選ぶ"
 
-#: src/components/admin/map-editor/PlaceList.tsx:165
+#: src/components/admin/map-editor/PlaceList.tsx:170
 msgid "戻る道"
 msgstr "戻る道"
 
@@ -6437,7 +6437,7 @@ msgstr "条件をやめる"
 msgid "東"
 msgstr "東"
 
-#: src/components/admin/map-editor/PlaceList.tsx:128
+#: src/components/admin/map-editor/PlaceList.tsx:133
 #: src/components/admin/PlacePanel.tsx:90
 #: src/components/StatusWord.tsx:21
 msgid "案内のみ"
@@ -7441,7 +7441,7 @@ msgid "線をすべて消す"
 msgstr "線をすべて消す"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1123
-#: src/components/admin/map-editor/PlaceList.tsx:173
+#: src/components/admin/map-editor/PlaceList.tsx:178
 msgid "線を描く"
 msgstr "線を描く"
 
@@ -7673,6 +7673,10 @@ msgstr "行き方"
 msgid "行き方を見る"
 msgstr "行き方を見る"
 
+#: src/components/admin/map-editor/PlaceList.tsx:129
+msgid "行けない場所（遠くから拝む経塚など）。地図には出ますが、番号も線もつきません。利用者に見せる言葉は、経由地のタブで変えられます。"
+msgstr "行けない場所（遠くから拝む経塚など）。地図には出ますが、番号も線もつきません。利用者に見せる言葉は、経由地のタブで変えられます。"
+
 #: src/components/admin/BlockEditor.tsx:532
 msgid "行を消す"
 msgstr "行を消す"
@@ -7732,7 +7736,7 @@ msgstr "西"
 msgid "見え方"
 msgstr "見え方"
 
-#: src/components/admin/map-editor/PlaceList.tsx:127
+#: src/components/admin/map-editor/PlaceList.tsx:132
 msgid "見せるだけの場所です。スタンプは押せません。「現在、立ち入りできません」などを書けます。"
 msgstr "見せるだけの場所です。スタンプは押せません。「現在、立ち入りできません」などを書けます。"
 
@@ -8186,6 +8190,10 @@ msgstr "道すじ"
 msgid "道でつなぐ"
 msgstr "道でつなぐ"
 
+#: src/components/admin/map-editor/PlaceList.tsx:130
+msgid "道とつながらない"
+msgstr "道とつながらない"
+
 #: src/components/admin/PlacePanel.tsx:178
 msgid "道とつながらない（行けない場所。遠くから拝む経塚など）"
 msgstr "道とつながらない（行けない場所。遠くから拝む経塚など）"
@@ -8567,12 +8575,12 @@ msgstr "順"
 msgid "順番"
 msgstr "順番"
 
-#: src/components/admin/map-editor/PlaceList.tsx:150
+#: src/components/admin/map-editor/PlaceList.tsx:155
 #: src/components/admin/PlacePanel.tsx:333
 msgid "順番を前へ"
 msgstr "順番を前へ"
 
-#: src/components/admin/map-editor/PlaceList.tsx:153
+#: src/components/admin/map-editor/PlaceList.tsx:158
 #: src/components/admin/PlacePanel.tsx:336
 msgid "順番を後ろへ"
 msgstr "順番を後ろへ"
