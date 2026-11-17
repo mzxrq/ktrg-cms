@@ -19,6 +19,7 @@ import { todayInJapan } from "./notices/notice-service";
 import { createBannerService, type BannerServices, type BannerStore } from "./banners/banner-list";
 import type { PlaceListRow, PlaceListServices } from "./content/place-list";
 import { createPlaceService, type PlaceServices, type PlaceStore } from "./places/place-directory";
+import { createMapOverviewService, type MapOverviewServices } from "./map-overview/map-overview";
 import { createDashboardService, type DashboardServices, type DashboardStore } from "./dashboard/dashboard";
 import { createVisitService, type VisitServices, type VisitStore } from "./visits/visits";
 import { createSiteSettingsService, type SiteSettingsServices, type SiteSettingsStore } from "./site-settings/site-settings";
@@ -49,7 +50,7 @@ import { createUploadService } from "./uploads/upload-service";
 import type { FileStorage } from "./uploads/upload-storage";
 
 /** Everything the routes use. */
-export type Services = AuthServices & PasskeyServices & PasswordServices & MeServices & ContentServices & UploadServices & RallyAdminServices & StampServices & StampListServices & NoticeServices & PostServices & CommentServices & AuthorServices & TagServices & BannerServices & PlaceServices & SiteSettingsServices & VisitServices & DashboardServices & AuditListServices & PlaceListServices & UserListServices & GuestServices & FuriganaServices & NavigationServices;
+export type Services = AuthServices & PasskeyServices & PasswordServices & MeServices & ContentServices & UploadServices & RallyAdminServices & StampServices & StampListServices & NoticeServices & PostServices & CommentServices & AuthorServices & TagServices & BannerServices & PlaceServices & SiteSettingsServices & VisitServices & DashboardServices & AuditListServices & PlaceListServices & UserListServices & GuestServices & FuriganaServices & NavigationServices & MapOverviewServices;
 
 /** What the services are built from: the storage (database or in-memory) and the outside world. */
 export interface ServiceDeps {
@@ -157,6 +158,8 @@ export function createServices(deps: ServiceDeps): Services {
     tags: createTagService({ store: stores.tags }),
     comments: createCommentService({ store: stores.comments, postVisible: async (id) => (await posts.publicPost(id)) !== null }),
     places: createPlaceService({ store: stores.places, photoHosts: deps.photoHosts, routeExists: async (id) => (await stores.content.getRoute(id)) !== null, spotExists: async (id) => (await stores.content.getSpot(id)) !== null, routeSpots: async (id) => (await stores.content.getRoute(id))?.spots ?? [], routeIds: async () => (await stores.content.listRoutes()).map((r) => r.id) }),
+    // The admin's one map: every course, waypoint and directory place in an area.
+    mapOverview: createMapOverviewService({ routes: () => stores.content.listRoutes(), spotsInBox: (box, limit) => stores.content.spotsInBox(box, limit), placesInBox: (box, limit) => stores.places.inBox(box, limit) }),
     siteSettings: settings,
     visits,
     dashboard: createDashboardService({ store: stores.dashboard, visits, settings, now }),

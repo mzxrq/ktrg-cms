@@ -1984,6 +1984,28 @@ describe.skipIf(!url)("list and report stores on real PostgreSQL", () => {
     });
   });
 
+  test("one map: waypoints and places inside the box only, drafts too, at most the limit", async () => {
+    await inRollback(async (tx) => {
+      const actor = await admin(tx);
+      const content = createDrizzleContentStore(asDb(tx));
+      const placeStore = createDrizzlePlaceStore(asDb(tx));
+      const box = { west: 134.9, south: 34.2, east: 135.2, north: 34.4 };
+      const route = await content.createRoute(actor, { nameJa: "箱のテスト" });
+      const inSpot = await content.createSpot(actor, route.id, { nameJa: "中", lat: 34.3, lng: 135.0 });
+      const outSpot = await content.createSpot(actor, route.id, { nameJa: "外", lat: 34.6, lng: 135.8 });
+      const inPlace = await placeStore.create(actor, { nameJa: "中の店", category: "cafe", lat: 34.25, lng: 135.1 } as never);
+      const outPlace = await placeStore.create(actor, { nameJa: "外の店", category: "cafe", lat: 34.6, lng: 135.8 } as never);
+      const spotIds = (await content.spotsInBox(box, 1000)).map((s) => s.id);
+      expect(spotIds).toContain(inSpot!.id);
+      expect(spotIds).not.toContain(outSpot!.id);
+      expect((await content.spotsInBox(box, 1000)).find((s) => s.id === inSpot!.id)?.nameJa).toBe("中");
+      const placeIds = (await placeStore.inBox(box, 1000)).map((p) => p.id);
+      expect(placeIds).toContain(inPlace.id);
+      expect(placeIds).not.toContain(outPlace.id);
+      expect(await content.spotsInBox(box, 1)).toHaveLength(1);
+    });
+  });
+
   test("tags: a stale save is a conflict, delete says whether anything went, and every change is audited", async () => {
     await inRollback(async (tx) => {
       await tx.delete(blogTags);
