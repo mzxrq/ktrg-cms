@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import type { ReactNode } from "react";
-import { ArticleIcon, BellIcon, ChartIcon, ChevronDownIcon, ChevronUpIcon, ClockIcon, CommentIcon, DocumentIcon, FlagIcon, FuriganaIcon, GearIcon, GlobeIcon, ImageIcon, PencilIcon, PinIcon, RouteIcon, ShopIcon, StampIcon, UserIcon, WarningIcon } from "@/components/icons";
+import { ArticleIcon, BellIcon, ChartIcon, ChevronDownIcon, ChevronUpIcon, ClockIcon, CommentIcon, DocumentIcon, FlagIcon, FuriganaIcon, GearIcon, GlobeIcon, ImageIcon, MapIcon, PencilIcon, PinIcon, RouteIcon, ShopIcon, StampIcon, UserIcon, WarningIcon } from "@/components/icons";
 
 /** The picture beside each list in the menu; a list the app does not know yet gets a plain document. */
 const LIST_ICONS: Record<string, ReactNode> = {
@@ -34,6 +34,8 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
   const ready = [
     // The dashboard is the admin's home (an editor's home is the route list); its page and the API are for an admin only.
     ...(isAdmin ? [{ key: "dashboard", href: base, label: t`ダッシュボード`, icon: <ChartIcon /> }] : []),
+    // Every course and place on one map (docs/one-map-editor-design.md).
+    { key: "map", href: `${base}/map`, label: t`地図`, icon: <MapIcon /> },
     { key: "routes", href: `${base}/routes`, label: t`コース`, icon: <RouteIcon /> },
     { key: "rallies", href: `${base}/rallies`, label: t`ラリー`, icon: <FlagIcon /> },
     { key: "visits", href: `${base}/visits`, label: t`アクセス解析`, icon: <GlobeIcon /> },
@@ -49,7 +51,7 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
   const SECTIONS: { title?: string; keys: string[] }[] = [
     { keys: ["attention"] },
     { keys: ["dashboard"] },
-    { title: t`コースとラリー`, keys: ["routes", "rallies", "stamps", "places", "directory", "settings"] },
+    { title: t`コースとラリー`, keys: ["map", "routes", "rallies", "stamps", "places", "directory", "settings"] },
     { title: t`サイトの内容`, keys: ["notices", "furigana", "pages", "posts"] },
     { title: t`コミュニティ`, keys: ["comments", "users"] },
     { title: t`運営`, keys: ["visits", "audit"] },
