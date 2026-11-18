@@ -44,3 +44,18 @@ export function writeBackup(store: Store, draft: RouteDraft, base: string | null
 /** Whether a stored copy is worth offering: it started from this saved version and differs from it. */
 export const worthRestoring = (b: Backup | null, saved: RouteDraft): b is Backup =>
   b !== null && b.base === saved.updatedAt && JSON.stringify(b.draft) !== JSON.stringify(saved);
+
+/** Reads the stored copy the first time only: what was there when the editor opened, never the copy this visit writes a second later. */
+export function firstRead(read: () => string | null): () => string | null {
+  let seen: string | null | undefined;
+  return () => {
+    if (seen === undefined) {
+      try {
+        seen = read();
+      } catch {
+        seen = null; // storage blocked (private window, for example)
+      }
+    }
+    return seen;
+  };
+}

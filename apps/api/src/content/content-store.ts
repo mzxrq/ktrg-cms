@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq, getTableColumns, inArray, isNotNull, isNull, max, ne, or, sql } from "drizzle-orm";
+import { and, asc, between, count, desc, eq, getTableColumns, inArray, isNotNull, isNull, max, ne, or, sql } from "drizzle-orm";
 import { writeAudit } from "../audit/audit-store";
 import type { Db } from "../db/client";
 import { auditLog, rallies, rallyCompletions, rallyRoutes, rallySpots, rallyTranslations, routeSpots, routes, routeTranslations, routeVideoHistory, spots, spotRoutes, spotTranslations, stamps } from "../db/schema";
@@ -191,6 +191,18 @@ export function createDrizzleContentStore(db: Db): ContentStore {
 
     async listPublishedSpots() {
       return withSpotTexts(db, await db.select().from(spots).where(eq(spots.published, true)));
+    },
+
+    async spotsInBox(box, limit) {
+      const rows = await db
+        .select()
+        .from(spots)
+        .where(and(between(spots.lat, box.south, box.north), between(spots.lng, box.west, box.east)))
+        .orderBy(asc(spots.id))
+        .limit(limit);
+      if (rows.length === 0) return [];
+      const links = await db.select({ spotId: spotRoutes.spotId, routeId: spotRoutes.routeId }).from(spotRoutes).where(inArray(spotRoutes.spotId, rows.map((r) => r.id)));
+      return (await withSpotTexts(db, rows)).map((s) => ({ ...s, alsoOn: links.filter((l) => l.spotId === s.id).map((l) => l.routeId) }));
     },
 
     async createRoute(actor, input) {

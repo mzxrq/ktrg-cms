@@ -10,7 +10,7 @@ import type { KitServices } from "../auth/route-kit";
 import { parseFacilities, planPlaces, type ExistingPlace } from "../import/field-sheets";
 import { routeKit, type RouteOptions } from "../auth/route-kit";
 import { cleanTranslations } from "../db/translations";
-import { placeCategories, spotKinds } from "../db/schema";
+import { placeCategories, spotKinds, type CourseArea } from "../db/schema";
 import { cleanHours, closedDaysText, hasBackwardPeriod, hoursText, OPENING_HOURS } from "./opening-hours";
 import { isPhotoUrl } from "../lib/https-url";
 import { oneOf, translationsSchema } from "../lib/schemas";
@@ -67,6 +67,8 @@ export type PlaceRow = ListRow & PlaceFields;
 export interface PlaceStore extends ListStore<PlaceRow, PlaceFields> {
   /** Published places, newest first (the caller drops the ones without a position). */
   listPublic(): Promise<PlaceRow[]>;
+  /** Places (drafts too) with a position inside the box, at most `limit` (the admin's one map). */
+  inBox(box: CourseArea, limit: number): Promise<PlaceRow[]>;
 }
 
 export const PLACE_AUDIT = { create: "place.create", update: "place.update", delete: "place.delete" } as const;
@@ -272,6 +274,10 @@ export function createMemoryPlaceStore(audit: AuditWriter, opts: { now?: () => D
     ...list.store,
     async listPublic() {
       return [...list.rows.values()].filter((p) => p.published).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    },
+    async inBox(box, limit) {
+      const inside = (lat: number | null, lng: number | null) => lat !== null && lng !== null && lat >= box.south && lat <= box.north && lng >= box.west && lng <= box.east;
+      return [...list.rows.values()].filter((p) => inside(p.lat, p.lng)).sort((a, b) => a.id.localeCompare(b.id)).slice(0, limit);
     },
   };
   return { store, rows: list.rows };

@@ -13,7 +13,7 @@ import type { AdminRally } from "@/lib/admin/types";
 import { formatUpdated } from "@/lib/format";
 import { pageCount, pageSlice } from "@/lib/pager";
 import { Chip } from "./Chip";
-import { FilterGroup, MoveButtons, OrderBadge, SortHeader } from "./list-parts";
+import { FilterGroup, HeaderFilter, MoveButtons, OrderBadge, SortHeader } from "./list-parts";
 
 // How many rallies fit on one page; the pager is hidden while they all do.
 const PAGE = 25;
@@ -27,6 +27,7 @@ export function RallyList({ initial, locale }: { initial: AdminRally[]; locale: 
   const [rallies, setRallies] = useState(initial);
   const [kind, setKind] = useState("");
   const [published, setPublished] = useState("");
+  const [query, setQuery] = useState("");
   const [sort, setSort] = useState<Sort>(null);
   const [page, setPage] = useState(1);
   const [busy, setBusy] = useState(false);
@@ -36,7 +37,8 @@ export function RallyList({ initial, locale }: { initial: AdminRally[]; locale: 
   const kindLabel = (r: AdminRally) => (r.kind === "places" ? t`経由地のラリー` : t`コースのラリー`);
   const memberLabel = (r: AdminRally) => (r.kind === "places" ? t`経由地 ${r.memberCount}` : t`コース ${r.memberCount}`);
 
-  const filtered = rallies.filter((r) => (kind === "" || r.kind === kind) && (published === "" || String(r.published) === published));
+  const words = query.trim().toLowerCase();
+  const filtered = rallies.filter((r) => (kind === "" || r.kind === kind) && (published === "" || String(r.published) === published) && (words === "" || `${r.nameJa} ${r.nameEn ?? ""}`.toLowerCase().includes(words)));
   const shown = useMemo(() => {
     if (sort === null) return filtered;
     const value: Record<string, (r: AdminRally) => string | number | null> = {
@@ -51,7 +53,18 @@ export function RallyList({ initial, locale }: { initial: AdminRally[]; locale: 
     return sortBy(filtered, sort.dir, value[sort.key] ?? (() => null), locale);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- `name` only reads the locale
   }, [filtered, sort, order, locale]);
-  const canMove = kind === "" && published === "" && sort === null;
+  const canMove = kind === "" && published === "" && words === "" && sort === null;
+  // The same filters as the course list: in the column headings on a wide screen, as rows of choices on a phone.
+  const kindOptions = [{ value: "places", text: t`経由地のラリー` }, { value: "course", text: t`コースのラリー` }];
+  const stateOptions = [{ value: "true", text: t`公開中` }, { value: "false", text: t`下書き` }];
+  const pickKind = (v: string) => {
+    setKind(v);
+    setPage(1);
+  };
+  const pickState = (v: string) => {
+    setPublished(v);
+    setPage(1);
+  };
   const pages = pageCount(shown.length, PAGE);
   const here = Math.min(page, pages); // a filter can leave fewer pages than the one we were on
   const visible = pageSlice(shown, here, PAGE);
@@ -88,10 +101,16 @@ export function RallyList({ initial, locale }: { initial: AdminRally[]; locale: 
         {t`新しいラリー`}
       </Link>
       {rallies.length > 1 ? (
-        <div className="flex flex-col gap-3 rounded-2xl bg-surface p-3">
-          <FilterGroup label={t`種類`} options={[{ value: "places", text: t`経由地のラリー` }, { value: "course", text: t`コースのラリー` }]} value={kind} onChange={(v) => { setKind(v); setPage(1); }} />
-          <FilterGroup label={t`状態`} options={[{ value: "true", text: t`公開中` }, { value: "false", text: t`下書き` }]} value={published} onChange={(v) => { setPublished(v); setPage(1); }} />
-        </div>
+        <>
+          <label className="flex min-w-60 flex-col gap-1 text-base font-bold">
+            {t`ラリーをさがす`}
+            <input type="search" value={query} onChange={(e) => { setQuery(e.target.value); setPage(1); }} placeholder={t`名前の一部を入力`} className="tap-target rounded-full border border-line bg-paper px-4 text-lg font-normal" />
+          </label>
+          <div className="flex flex-col gap-3 rounded-2xl bg-surface p-3 md:hidden">
+            <FilterGroup label={t`種類`} options={kindOptions} value={kind} onChange={pickKind} />
+            <FilterGroup label={t`状態`} options={stateOptions} value={published} onChange={pickState} />
+          </div>
+        </>
       ) : null}
       {error ? (
         <p role="alert" className="rounded-xl bg-surface p-4 text-lg font-bold text-danger">
@@ -113,9 +132,9 @@ export function RallyList({ initial, locale }: { initial: AdminRally[]; locale: 
                 <tr>
                   <SortHeader label={t`順`} sortKey="order" sort={sort} onSort={onSort} />
                   <SortHeader label={t`名前`} sortKey="name" sort={sort} onSort={onSort} />
-                  <SortHeader label={t`種類`} sortKey="kind" sort={sort} onSort={onSort} />
+                  <SortHeader label={t`種類`} sortKey="kind" sort={sort} onSort={onSort} filter={<HeaderFilter label={t`種類`} options={kindOptions} value={kind} onChange={pickKind} />} />
                   <SortHeader label={t`中身`} sortKey="members" sort={sort} onSort={onSort} />
-                  <SortHeader label={t`状態`} sortKey="state" sort={sort} onSort={onSort} />
+                  <SortHeader label={t`状態`} sortKey="state" sort={sort} onSort={onSort} filter={<HeaderFilter label={t`状態`} options={stateOptions} value={published} onChange={pickState} />} />
                   <SortHeader label={t`達成した人`} sortKey="completions" sort={sort} onSort={onSort} />
                   <SortHeader label={t`更新`} sortKey="updated" sort={sort} onSort={onSort} />
                   <th scope="col" className="w-40 p-3">

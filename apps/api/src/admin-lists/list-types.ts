@@ -93,6 +93,8 @@ export interface FieldUi {
   options?: { value: string; label: Label; tone?: Tone }[];
   /** Shown on the form but never sent (the API does not take it). */
   readOnly?: boolean;
+  /** A datetime shown to the second (the change log). */
+  seconds?: boolean;
   /** Goes in the form's side panel, beside the writing (below it on a narrow screen). */
   side?: boolean;
   /**

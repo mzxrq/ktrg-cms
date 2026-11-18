@@ -2,6 +2,7 @@ import { readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { SQL } from "bun";
 import { databaseUrlFrom } from "../src/parse-env";
+import { dbErrorText, isMissingJournal } from "./db-url-check";
 import { HELP, newFiles, parseJournal, pendingMigrations } from "./ktrg-lib";
 
 // The project's command line: `bun run ktrg <command>` from the repo root (see HELP in ktrg-lib.ts).
@@ -27,8 +28,13 @@ async function status(): Promise<number> {
   let applied: number[] = [];
   try {
     applied = (await db`select created_at from drizzle.__drizzle_migrations`).map((r: { created_at: string | number }) => Number(r.created_at));
-  } catch {
-    // No migrations table yet: nothing has been applied.
+  } catch (e) {
+    // No migrations table yet: nothing has been applied. Anything else (no connection, a refused password) is said as
+    // such, never read as "everything is waiting" (2026-11-17: a timeout showed all 75 migrations as waiting).
+    if (!isMissingJournal(e)) {
+      console.error(dbErrorText(e));
+      return 1; // (the connection is closed in finally)
+    }
   } finally {
     await db.close();
   }

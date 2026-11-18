@@ -922,8 +922,8 @@ export function MapEditor(props: MapEditorProps) {
               : t`まず、GPXファイルをここにドラッグするか「GPXファイルから読み込む」を押してください。手で入れるときは「経由地を置く」で経由地を入れ、「線を描く」で区間ごとに道すじを描きます。`;
 
   return (
-    // From 1280 px the waypoint list sits beside the map (and scrolls on its own); below that it is under it.
-    <div className={`flex flex-col gap-3 ${props.places.length > 0 ? "xl:grid xl:grid-cols-[minmax(0,1fr)_25rem] xl:items-start xl:gap-x-5" : ""}`}>
+    // The map takes the full width; the waypoint list follows under it (beside it, both were cramped; user, 2026-11-17).
+    <div className="flex flex-col gap-3">
       <div className="flex min-w-0 flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t`道すじ`}>
         {/* One button for the GPX file; its arrow offers the other thing to do with one (take only the heights). */}

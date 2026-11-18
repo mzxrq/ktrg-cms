@@ -10,13 +10,15 @@ import { outcome } from "@/lib/admin/admin-client";
 import { fillElevations } from "@/lib/admin/dem";
 import { loadDemTile } from "@/lib/admin/dem-client";
 import { draftFromServer, draftReducer, initialState, isDirty, placeFromServer, type DraftAction, type PlaceDraft, type RouteDraft } from "@/lib/admin/route-draft";
-import { backupKey, parseBackup, worthRestoring, writeBackup } from "@/lib/admin/draft-backup";
+import { backupKey, firstRead, parseBackup, worthRestoring, writeBackup } from "@/lib/admin/draft-backup";
 import { draftProblems, keepLaterEdits, planSave, restoreHeld, withLegIds, type DraftProblem } from "@/lib/admin/save-plan";
 import type { ElevationStatus } from "./map-editor/MapEditor";
 import { confirmDialog } from "@/components/ConfirmDialog";
 import { showToast } from "@/lib/admin/toast";
 
-const isTyping = (target: EventTarget | null) => target instanceof HTMLElement && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
+const noSubscribe = () => () => {};
+
+const isTyping =(target: EventTarget | null) => target instanceof HTMLElement && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
 
 /** A short fingerprint of where a line's points are (not their heights), to tell whether it has changed. */
 const lineSignature = (line: RouteDraft["line"]) => `${line.length}:${line.reduce((s, p, i) => s + (p[0] * 31 + p[1] * 17) * ((i % 7) + 1), 0).toFixed(6)}`;
@@ -71,17 +73,9 @@ export function useRouteDraft(
 
   // ---- a copy of unsaved work, kept in this browser -------------------------------------------------------------
   // The stored copy is read in the browser only (the server render has none), as text so the snapshot stays the same between renders.
-  const storedCopy = useSyncExternalStore(
-    () => () => {},
-    () => {
-      try {
-        return localStorage.getItem(backupKey(initial.id));
-      } catch {
-        return null;
-      }
-    },
-    () => null,
-  );
+  // Read once per visit: reading again would find the copy this visit just wrote and offer it back mid-edit.
+  const readStored = useMemo(() => firstRead(() => localStorage.getItem(backupKey(initial.id))), [initial.id]);
+  const storedCopy = useSyncExternalStore(noSubscribe, readStored, () => null);
   const offered = useMemo(() => {
     const b = parseBackup(storedCopy);
     return worthRestoring(b, initial) ? b : null;

@@ -14,6 +14,10 @@ function setup() {
     .get("/boom", () => {
       throw new Error("db at 10.0.0.5 refused user secret-db-user");
     })
+    .get("/wrapped", () => {
+      // What drizzle throws: its own error, with the driver's as the cause.
+      throw new Error("Failed query: select 1", { cause: Object.assign(new Error("password authentication failed for user \"app\""), { code: "28P01" }) });
+    })
     .get("/bad-response", () => ({ count: "many" }) as unknown as { count: number }, {
       response: t.Object({ count: t.Number() }),
     })
@@ -97,6 +101,16 @@ describe("request ids", () => {
 });
 
 describe("one error shape", () => {
+  test("a wrapped database error logs its cause (the real reason), and the caller still sees only internal_error", async () => {
+    const { call, logs } = setup();
+    const res = await call("GET", "/wrapped");
+    expect(res.status).toBe(500);
+    expect(await res.json()).toEqual({ ok: false, error: "internal_error" });
+    const line = logs.find((l) => l.includes("/api/v1/wrapped"))!;
+    expect(line).toContain("Failed query: select 1");
+    expect(line).toContain("caused by [28P01]: password authentication failed");
+  });
+
   test("routes' own errors pass through untouched", async () => {
     const { call } = setup();
     const res = await call("GET", "/conflict");

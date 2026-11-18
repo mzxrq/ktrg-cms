@@ -43,6 +43,7 @@ import { adminFuriganaRoutes, furiganaList, publicFuriganaRoutes } from "./furig
 import { bannerList, bannerOrderRoutes, publicBannerRoutes } from "./banners/banner-list";
 import { createDrizzleBannerStore } from "./banners/banner-store";
 import { placeDirectoryList, placeImportRoutes, publicPlaceRoutes } from "./places/place-directory";
+import { mapOverviewRoutes } from "./map-overview/map-overview";
 import { publicSettingsRoutes, siteSettingsRoutes } from "./site-settings/site-settings";
 import { createDrizzleDashboardStore } from "./dashboard/dashboard-store";
 import { dashboardRoutes } from "./dashboard/dashboard";
@@ -165,6 +166,7 @@ export function createApp(
     .use(passwordRoutes(getServices, opts))
     .use(meRoutes(getServices, opts))
     .use(adminContentRoutes(getServices, opts))
+    .use(mapOverviewRoutes(getServices, opts))
     .use(publicContentRoutes(() => getServices().content))
     .use(gpxExportRoutes(getServices, opts))
     .use(uploadRoutes(getServices, opts))

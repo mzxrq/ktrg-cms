@@ -8,6 +8,7 @@ import { commentPageOf, inboxQuery } from "@/lib/admin/comment-inbox";
 import { pick } from "@/lib/admin/lists/config";
 import type { ListPage } from "@/lib/admin/lists/list-client";
 import { listMetaOr404 } from "@/lib/admin/lists/server";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
@@ -21,8 +22,7 @@ export default async function AdminCommentsPage() {
   const { status, body } = await adminGet<{ ok: true } & ListPage>(`/lists/comments?${inboxQuery("pending", "", 1)}`);
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-5">
-      <h1 className="text-3xl font-bold">{pick(meta.title, i18n.locale)}</h1>
-      <p className="text-lg text-muted">{pick(meta.intro, i18n.locale)}</p>
+      <AdminPageHeader title={pick(meta.title, i18n.locale)} intro={pick(meta.intro, i18n.locale)} />
       {status === 200 && body?.ok ? (
         <CommentInbox initial={commentPageOf(body)} locale={i18n.locale} />
       ) : (

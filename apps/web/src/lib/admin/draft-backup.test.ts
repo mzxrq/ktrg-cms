@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { backupKey, parseBackup, worthRestoring, writeBackup } from "./draft-backup";
+import { backupKey, firstRead, parseBackup, worthRestoring, writeBackup } from "./draft-backup";
 import { emptyDraft } from "./route-draft";
 
 const memory = () => {
@@ -35,5 +35,26 @@ describe("the unsaved-work backup", () => {
     const broken = { getItem: () => null, setItem: () => { throw new Error("quota"); }, removeItem: () => { throw new Error("blocked"); } };
     expect(() => writeBackup(broken, saved, saved.updatedAt, true)).not.toThrow();
     expect(() => writeBackup(broken, saved, saved.updatedAt, false)).not.toThrow();
+  });
+});
+
+describe("firstRead", () => {
+  test("keeps what was stored when the editor opened, even after this visit writes a new copy", () => {
+    const m = new Map<string, string>([["k", "old"]]);
+    const read = firstRead(() => m.get("k") ?? null);
+    expect(read()).toBe("old");
+    m.set("k", "written this visit");
+    expect(read()).toBe("old");
+  });
+  test("nothing stored, or storage blocked: null, and it stays null", () => {
+    const m = new Map<string, string>();
+    const read = firstRead(() => m.get("k") ?? null);
+    expect(read()).toBeNull();
+    m.set("k", "later");
+    expect(read()).toBeNull();
+    const blocked = firstRead(() => {
+      throw new Error("blocked");
+    });
+    expect(blocked()).toBeNull();
   });
 });

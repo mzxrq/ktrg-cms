@@ -242,6 +242,8 @@ export interface ContentStore {
   getSpot(id: string): Promise<SpotRow | null>;
   /** Every published place of every route (for the status poll). */
   listPublishedSpots(): Promise<SpotRow[]>;
+  /** Waypoints (drafts too) with a position inside the box, at most `limit` (the admin's one map); `alsoOn`: the other courses holding each. */
+  spotsInBox(box: CourseArea, limit: number): Promise<(SpotRow & { alsoOn: string[] })[]>;
 
   createRoute(actor: string, fields: Partial<StoredRouteFields> & { nameJa: string }): Promise<RouteRow>;
   /** `expected` is the updatedAt the editor loaded: a different value means someone saved first. */

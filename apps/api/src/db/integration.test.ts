@@ -1984,6 +1984,31 @@ describe.skipIf(!url)("list and report stores on real PostgreSQL", () => {
     });
   });
 
+  test("one map: waypoints and places inside the box only, drafts too, at most the limit", async () => {
+    await inRollback(async (tx) => {
+      const actor = await admin(tx);
+      const content = createDrizzleContentStore(asDb(tx));
+      const placeStore = createDrizzlePlaceStore(asDb(tx));
+      const box = { west: 134.9, south: 34.2, east: 135.2, north: 34.4 };
+      const route = await content.createRoute(actor, { nameJa: "箱のテスト" });
+      const inSpot = await content.createSpot(actor, route.id, { nameJa: "中", lat: 34.3, lng: 135.0 });
+      const outSpot = await content.createSpot(actor, route.id, { nameJa: "外", lat: 34.6, lng: 135.8 });
+      const inPlace = await placeStore.create(actor, { nameJa: "中の店", category: "cafe", lat: 34.25, lng: 135.1 } as never);
+      const outPlace = await placeStore.create(actor, { nameJa: "外の店", category: "cafe", lat: 34.6, lng: 135.8 } as never);
+      const spotIds = (await content.spotsInBox(box, 1000)).map((s) => s.id);
+      expect(spotIds).toContain(inSpot!.id);
+      expect(spotIds).not.toContain(outSpot!.id);
+      expect((await content.spotsInBox(box, 1000)).find((s) => s.id === inSpot!.id)?.nameJa).toBe("中");
+      const second = await content.createRoute(actor, { nameJa: "箱のテスト2" });
+      expect(await content.shareSpot(actor, inSpot!.id, second.id, 0)).toBe("ok");
+      expect((await content.spotsInBox(box, 1000)).find((s) => s.id === inSpot!.id)?.alsoOn).toEqual([second.id]);
+      const placeIds = (await placeStore.inBox(box, 1000)).map((p) => p.id);
+      expect(placeIds).toContain(inPlace.id);
+      expect(placeIds).not.toContain(outPlace.id);
+      expect(await content.spotsInBox(box, 1)).toHaveLength(1);
+    });
+  });
+
   test("tags: a stale save is a conflict, delete says whether anything went, and every change is audited", async () => {
     await inRollback(async (tx) => {
       await tx.delete(blogTags);
@@ -2067,6 +2092,12 @@ describe.skipIf(!url)("list and report stores on real PostgreSQL", () => {
       expect(new Set(mine.map((e) => e.id)).size).toBe(3);
       expect(await store.get(first[0]!.id)).toMatchObject({ id: first[0]!.id, actorName: "管理者" });
       expect(await store.get(randomUUID())).toBeNull();
+      // The item's current name is read when shown (here a tag); a target that is gone has none.
+      const [tag] = await tx.insert(blogTags).values({ nameJa: "季節のタグ" }).returning({ id: blogTags.id });
+      await writeAudit(tx, { actorUserId: actor!.id, action: TAG_AUDIT.update, targetId: tag!.id });
+      const named = (await store.list(null, 10)).find((e) => e.targetId === tag!.id);
+      expect(named?.targetName).toBe("季節のタグ");
+      expect(mine.every((e) => e.targetName === null)).toBe(true);
     });
   });
 });
