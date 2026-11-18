@@ -9,21 +9,16 @@ import { CheckIcon, DocumentIcon, ListIcon, MapIcon, PinIcon } from "@/component
 import { api } from "@/lib/api";
 import { outcome } from "@/lib/admin/admin-client";
 import { checklist, factsFromDraft, progress, type EditorTab } from "@/lib/admin/checklist";
-import type { LngLatEle } from "@/lib/admin/line";
 import { walkedStats, type TextField, type RouteDraft } from "@/lib/admin/route-draft";
-import { infoPatch } from "@/lib/admin/route-draft";
 import { RubyEditor } from "./RubyEditor";
-import { editorPlacesOf } from "@/lib/admin/editor-places";
-import { writeBackup } from "@/lib/admin/draft-backup";
 import { placeChanged, type DraftProblem } from "@/lib/admin/save-plan";
 import { useRouteDraft } from "./useRouteDraft";
+import { CourseMapEditor, RestoreOffer } from "./CourseMapEditor";
 import type { AdminSharedSpot } from "@/lib/admin/types";
 import { formatUpdated } from "@/lib/format";
 import { adminTab, adminTabRow, Check, Field, inputClass, MultilingualField, NumberInput, Section, TextInput } from "./fields";
 import { LivePreview } from "./LivePreview";
 import { CourseAreaEditor } from "./CourseAreaEditor";
-import { MapEditorLoader } from "./map-editor/MapEditorLoader";
-import { stampableByDefault } from "@/lib/point-kinds";
 import { walkStyleOf } from "@/lib/walk-style";
 import { PublishedEditDialog } from "./PublishedEditDialog";
 import { AccessPointsEditor } from "./AccessPointsEditor";
@@ -68,15 +63,15 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
     url.searchParams.set("tab", next);
     window.history.replaceState(null, "", url.href); // a string: the service worker library forwards this value, and a URL object cannot be sent
   };
-  const {
-    state, dispatch, draft, saved, dirty, saving, busyKey, problems, setMessage, selectedKey, setSelectedKey,
-    pendingEdit, setPendingEdit, guarded, offered, offerOpen, setOfferClosed, heightsState, save, savePlace, unpublishAll, setPublished,
-  } = useRouteDraft(initial, {
+  const d = useRouteDraft(initial, {
     onShowProblem: (kind) => setSection(kind.startsWith("place_") ? "places" : "overview"),
     onCreated: (id) => router.replace(`/admin/routes/${id}`),
   });
+  const {
+    dispatch, draft, saved, dirty, saving, busyKey, problems, setMessage, selectedKey, setSelectedKey,
+    pendingEdit, setPendingEdit, guarded, save, savePlace, unpublishAll, setPublished,
+  } = d;
   const isNew = draft.id === null;
-  const offeredAt = offered ? formatUpdated(locale, offered.at) : "";
 
   async function deleteRoute() {
     if (!draft.id || saving) return;
@@ -101,7 +96,6 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
   // A walk that comes back to where it began (周回 or 往復); its first waypoint on the way is the start and the goal.
   const comesBack = draft.walkStyle === "loop" || draft.walkStyle === "out_and_back";
   const firstAlong = draft.places.find((p) => !p.stopBy) ?? null;
-  const editorPlaces = editorPlacesOf(draft);
   const text = (field: TextField) => (value: string) => dispatch({ type: "text", field, value });
   // A number that comes from the line is shown, not typed; one that was typed (or has nothing to come from) stays typeable.
   const distanceAuto = !draft.distanceManual && draft.line.length >= 2;
@@ -133,32 +127,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
         </button>
       </div>
 
-      {offerOpen && offered ? (
-        <div role="alert" className="flex flex-wrap items-center gap-3 rounded-xl border-2 border-caution bg-surface p-4">
-          <p className="min-w-0 flex-1 text-lg font-bold">{t`保存していない編集が、このブラウザに残っています（${offeredAt}）。戻しますか？`}</p>
-          <button
-            type="button"
-            onClick={() => {
-              dispatch({ type: "loaded", draft: offered.draft });
-              setOfferClosed(true);
-              setMessage({ kind: "ok", text: t`編集を戻しました。内容を確かめて、「保存する」を押してください。` });
-            }}
-            className="tap-target rounded-full bg-ink px-5 text-lg font-bold text-paper"
-          >
-            {t`編集を戻す`}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              writeBackup(localStorage, initial, initial.updatedAt, false);
-              setOfferClosed(true);
-            }}
-            className="tap-target rounded-full border border-line px-5 text-lg font-bold"
-          >
-            {t`捨てる`}
-          </button>
-        </div>
-      ) : null}
+      <RestoreOffer d={d} initial={initial} locale={locale} />
 
       {/* Narrower than 2xl: one thing at a time (the form needs the room; beside a 27rem preview it is under 500 px wide at 1280). */}
       <div className={`${adminTabRow} 2xl:hidden`} role="tablist" aria-label={t`表示の切り替え`}>
@@ -322,87 +291,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                     })()}
                   />
                 ) : null}
-                <MapEditorLoader
-                  line={draft.line}
-                  legs={draft.legs}
-                  places={editorPlaces}
-                  selectedKey={selectedKey}
-                  distanceKm={draft.distanceKm}
-                  climbM={draft.elevationGainM}
-                  elevationStatus={heightsState}
-                  canUndo={state.past.length > 0}
-                  canRedo={state.future.length > 0}
-                  onUndo={() => dispatch({ type: "undo" })}
-                  onRedo={() => dispatch({ type: "redo" })}
-                  onLine={(points) => dispatch({ type: "line", points })}
-                  onHeights={(points) => dispatch({ type: "elevations", points })}
-                  onSetLeg={(leg) => dispatch({ type: "setLeg", leg })}
-                  onSetLegs={(legs) => dispatch({ type: "setLegs", legs })}
-                  onClearLeg={(from, to) => dispatch({ type: "clearLeg", from, to })}
-                  onClearLegs={() => dispatch({ type: "clearLegs" })}
-                  onSplitLine={() => dispatch({ type: "splitLine" })}
-                  onReorderPlaces={(keys) => dispatch({ type: "reorderPlaces", keys })}
-                  onAddPlace={(lat, lng, after) => {
-                    const key = crypto.randomUUID();
-                    dispatch({ type: "addPlace", key, lat, lng, after });
-                    setSelectedKey(key);
-                  }}
-                  onAddEndAt={(from) => {
-                    const start = draft.places.find((p) => p.key === from);
-                    if (!start || start.lat === null || start.lng === null) return;
-                    const key = crypto.randomUUID();
-                    const name = start.nameJa.trim() || t`出発点`;
-                    const nameEn = start.nameEn.trim();
-                    // Not a stamp place (the start already is one, and a stamp is once per place); the position and what checked it are the start's own.
-                    dispatch({
-                      type: "addPlace",
-                      key,
-                      lat: start.lat,
-                      lng: start.lng,
-                      kind: start.kind,
-                      patch: {
-                        stampable: false,
-                        nameJa: t`${name}（終点）`,
-                        nameEn: nameEn ? t`${nameEn} (end)` : "",
-                        positionVerified: start.positionVerified,
-                        positionSource: start.positionSource,
-                      },
-                    });
-                    setSelectedKey(key);
-                  }}
-                  onAddPlaces={(list) => dispatch({ type: "addPlaces", places: list })}
-                  onMovePlace={(key, lat, lng) => guarded(key, { type: "movePlace", key, lat, lng })}
-                  onRemovePlace={(key) => {
-                    const p = draft.places.find((x) => x.key === key);
-                    if (p?.published) setMessage({ kind: "error", text: t`公開中の経由地は消せません。先に「公開をやめる」を押してください。` });
-                    else void confirmRemoval(key).then((yes) => yes && dispatch({ type: "removePlace", key }));
-                  }}
-                  onSelectPlace={setSelectedKey}
-                  onPatchPlace={(key, patch) => {
-                    const p = draft.places.find((x) => x.key === key);
-                    // A new waypoint's stamp switch follows its kind; a saved one keeps what was chosen for it.
-                    if (!p) return;
-                    const { info, ...rest } = patch;
-                    const base = rest.kind && p.id === null ? { ...rest, stampable: stampableByDefault(rest.kind) } : rest;
-                    guarded(key, { type: "place", key, patch: info === undefined ? base : { ...base, ...infoPatch(info, p) } });
-                  }}
-                  onSnap={async (points) => {
-                    const res = await outcome(api.admin["route-snap"].post({ points }));
-                    return res.ok ? { ok: true, line: res.data.line as LngLatEle[] } : { ok: false, message: messages[res.key] };
-                  }}
-                />
-
-                <fieldset className="flex flex-col gap-3 rounded-xl bg-paper p-4">
-                  <legend className="px-1 text-base font-bold">{t`線の確認`}</legend>
-                  <p className="text-base text-muted">{t`確認していない線は、利用者には表示されません。公式の地図などと見比べてから、チェックを入れてください。`}</p>
-                  <Check id="route-line-verified" checked={draft.lineVerified} disabled={draft.line.length < 2} onChange={(v) => dispatch({ type: "lineVerified", value: v })}>
-                    {t`線を確認した`}
-                  </Check>
-                  <Field label={t`確認した情報源（サイト名やリンク）`} htmlFor="route-line-source">
-                    <TextInput id="route-line-source" value={draft.lineSource} onChange={text("lineSource")} maxLength={500} invalid={draft.lineVerified && draft.lineSource.trim() === ""} />
-                  </Field>
-                  {draft.lineVerified && draft.lineSource.trim() === "" ? <p role="alert" className="text-base font-bold text-danger">{t`情報源を入れないと、「確認した」は保存されません。`}</p> : null}
-                </fieldset>
+                <CourseMapEditor d={d} confirmRemoval={confirmRemoval} />
               </Section>
               <CourseAreaEditor
                 area={draft.area}

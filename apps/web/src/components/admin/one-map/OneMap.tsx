@@ -2,8 +2,11 @@
 
 import "maplibre-gl/dist/maplibre-gl.css";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
+import { useDiscardCheck } from "../useDiscardCheck";
+import { OneMapCourseEditor } from "./OneMapCourseEditor";
 import type { GeoJSONSource, Map as MapLibreMap, Marker } from "maplibre-gl";
 import type { EditorPlace } from "@/components/admin/map-editor/MapEditor";
 import { createMarkerElement } from "@/components/map/MapMarker";
@@ -24,12 +27,17 @@ const draftTag = "rounded-md border border-dashed border-line px-1.5 text-base t
 type Picked = { what: "spot" | "place"; id: string } | null;
 
 /**
- * The admin's one map, read only (docs/one-map-editor-design.md, step 3): every course, waypoint and directory place in
- * view. Choosing a course raises it (its waypoints become the editor's pins, the rest turns faint) and moves the map to it.
- * Each thing links to the screen that edits it.
+ * The admin's one map (docs/one-map-editor-design.md, steps 3 and 4): every course, waypoint and directory place in view.
+ * Choosing a course raises it (its waypoints become the editor's pins, the rest turns faint) and moves the map to it; the
+ * chosen course can be edited in place. Each thing also links to the screen that edits it.
  */
-export function OneMap({ courses, initialChosen }: { courses: CourseChoice[]; initialChosen: string | null }) {
+export function OneMap({ courses, initialChosen, locale }: { courses: CourseChoice[]; initialChosen: string | null; locale: string }) {
   const { t } = useLingui();
+  const router = useRouter();
+  const { onDirtyChange, okToClose } = useDiscardCheck();
+  // Editing the chosen course in place. The overview map is hidden (not removed) meanwhile: it is made once.
+  const [editing, setEditing] = useState(false);
+  const [ownRev, setOwnRev] = useState(0);
   const messages = useErrorMessages();
   // Read through a ref: the messages are a new object each render, and a dependency on them would fetch again every render.
   const latestMessages = useRef(messages);
@@ -45,12 +53,16 @@ export function OneMap({ courses, initialChosen }: { courses: CourseChoice[]; in
   const [own, setOwn] = useState<{ id: string; places: EditorPlace[] } | { id: string; error: string } | null>(null);
   const [picked, setPicked] = useState<Picked>(null);
   // What the map's own listeners (made once) need from the latest render.
-  const latest = useRef<{ chosen: string | null; choose: (id: string | null) => void; load: () => Promise<void> }>({ chosen, choose: () => {}, load: async () => {} });
+  const latest = useRef<{ chosen: string | null; choose: (id: string | null) => Promise<void>; load: () => Promise<void> }>({ chosen, choose: async () => {}, load: async () => {} });
 
   const choice = courses.find((c) => c.id === chosen) ?? null;
   const ownPlaces = own && own.id === chosen && "places" in own ? own.places : null;
 
-  const choose = (id: string | null) => {
+  const choose = async (id: string | null) => {
+    if (editing) {
+      if (!(await okToClose())) return;
+      setEditing(false); // the effect below fits the map once it is shown again
+    }
     setChosen(id);
     setPicked(null);
     const url = new URL(window.location.href);
@@ -58,8 +70,30 @@ export function OneMap({ courses, initialChosen }: { courses: CourseChoice[]; in
     else url.searchParams.delete("course");
     window.history.replaceState(null, "", url.href); // a string: the service worker library forwards this value, and a URL object cannot be sent
     const to = courses.find((c) => c.id === id)?.bounds;
-    if (to) mapRef.current?.fitBounds(to, FIT);
+    if (to && !editing) mapRef.current?.fitBounds(to, FIT);
   };
+  const stopEditing = async () => {
+    if (await okToClose()) setEditing(false);
+  };
+  // A save changes the course's line, waypoints and maybe its name: read its pins and the course list again. The faint layers
+  // are read when editing ends (the hidden map has no size now, so its area would be wrong).
+  const onSaved = useCallback(() => {
+    setOwnRev((n) => n + 1);
+    router.refresh();
+  }, [router]);
+
+  // Back from editing: the hidden map had no size, so it is measured again before it moves.
+  const wasEditing = useRef(false);
+  useEffect(() => {
+    const map = mapRef.current;
+    if (wasEditing.current && !editing && map) {
+      map.resize();
+      const to = courses.find((c) => c.id === chosen)?.bounds;
+      if (to) map.fitBounds(to, { ...FIT, animate: false });
+      void latest.current.load(); // the faint layers, with what was saved meanwhile
+    }
+    wasEditing.current = editing;
+  }, [editing, chosen, courses]);
 
   // Only the answer for the newest view is drawn: panning fast can bring an older answer back after a newer one.
   const asked = useRef(0);
@@ -137,7 +171,7 @@ export function OneMap({ courses, initialChosen }: { courses: CourseChoice[]; in
         const dot = hit.find((f) => f.layer.id === POINT_HIT);
         const line = hit.find((f) => f.layer.id === COURSE_HIT);
         if (dot) setPicked({ what: dot.properties.what === "place" ? "place" : "spot", id: String(dot.properties.id) });
-        else if (line && line.properties.id !== latest.current.chosen) latest.current.choose(String(line.properties.id));
+        else if (line && line.properties.id !== latest.current.chosen) void latest.current.choose(String(line.properties.id));
       });
       for (const layer of [POINT_HIT, COURSE_HIT]) {
         map.on("mouseenter", layer, () => (map!.getCanvas().style.cursor = "pointer"));
@@ -179,7 +213,7 @@ export function OneMap({ courses, initialChosen }: { courses: CourseChoice[]; in
     return () => {
       cancelled = true;
     };
-  }, [chosen]);
+  }, [chosen, ownRev]);
 
   // ---- their pins: the course editor's own pins ----------------------------------------------------------------
   useEffect(() => {
@@ -223,12 +257,23 @@ export function OneMap({ courses, initialChosen }: { courses: CourseChoice[]; in
             ))}
           </select>
         </label>
-        {chosen ? (
-          <Link href={`/admin/routes/${chosen}?tab=map`} className="tap-target inline-flex items-center justify-center rounded-full border border-line px-5 text-lg font-bold underline-offset-4 hover:underline">
+        {chosen && !editing ? (
+          <button type="button" onClick={() => setEditing(true)} className="tap-target rounded-full border border-line px-5 text-lg font-bold">
             {t`このコースを編集する`}
+          </button>
+        ) : null}
+        {chosen ? (
+          <Link href={`/admin/routes/${chosen}`} className="tap-target inline-flex items-center text-lg font-bold underline underline-offset-4">
+            {t`コースのページを開く`}
           </Link>
         ) : null}
       </div>
+
+      {editing && chosen ? (
+        <OneMapCourseEditor key={chosen} courseId={chosen} routeNames={Object.fromEntries(courses.map((c) => [c.id, c.nameJa]))} locale={locale} onDirtyChange={onDirtyChange} onSaved={onSaved} onClose={() => void stopEditing()} />
+      ) : null}
+
+      <div className={`flex flex-col gap-4 ${editing ? "hidden" : ""}`}>
       {choice && !choice.bounds ? <p className="text-lg text-muted">{t`このコースには、まだ線も範囲もないので、地図を動かせません。`}</p> : null}
 
       <div className="relative">
@@ -321,6 +366,7 @@ export function OneMap({ courses, initialChosen }: { courses: CourseChoice[]; in
           </ul>
         </section>
       ) : null}
+      </div>
     </div>
   );
 }
