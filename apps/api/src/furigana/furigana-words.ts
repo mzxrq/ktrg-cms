@@ -141,7 +141,9 @@ export async function siteTexts(sources: {
   posts: () => Promise<object[]>;
   notices: () => Promise<object[]>;
 }): Promise<string[]> {
-  const [routes, ...rest] = await Promise.all([sources.routes(), sources.spots(), sources.places(), sources.posts(), sources.notices()]);
+  // One after another: many queries at once hang the database pooler (it froze the whole API, 2026-11-18).
+  const routes = await sources.routes();
+  const rest = [await sources.spots(), await sources.places(), await sources.posts(), await sources.notices()];
   return [...routes.flatMap((r) => (r.publishedSpotCount > 0 ? jaLines(r) : [r.nameJa])), ...rest.flat().flatMap(jaLines)];
 }
 
@@ -150,7 +152,9 @@ export async function unreadNames(
   content: { listRoutes(): Promise<(Named & { id: string })[]>; listPublishedSpots(): Promise<(Named & { id: string; routeId: string })[]> },
   places: { listPublic(): Promise<(Named & { id: string })[]> },
 ): Promise<UnreadName[]> {
-  const [routes, spots, listed] = await Promise.all([content.listRoutes(), content.listPublishedSpots(), places.listPublic()]);
+  const routes = await content.listRoutes();
+  const spots = await content.listPublishedSpots();
+  const listed = await places.listPublic();
   const needs = (n: Named) => !n.nameKana && hasHardKanji(n.nameJa);
   return [
     ...routes.filter(needs).map((r) => ({ kind: "route" as const, id: r.id, nameJa: r.nameJa })),
@@ -164,7 +168,9 @@ export async function nameReadings(
   content: { listRoutes(): Promise<Named[]>; listPublishedSpots(): Promise<Named[]> },
   places: { listPublic(): Promise<Named[]> },
 ): Promise<{ word: string; reading: string }[]> {
-  const [routes, spots, listed] = await Promise.all([content.listRoutes(), content.listPublishedSpots(), places.listPublic()]);
+  const routes = await content.listRoutes();
+  const spots = await content.listPublishedSpots();
+  const listed = await places.listPublic();
   return [...routes, ...spots, ...listed].flatMap((r) => (r.nameKana ? [{ word: r.nameJa, reading: r.nameKana }] : []));
 }
 
@@ -185,7 +191,11 @@ export function createFuriganaService(deps: {
      */
     async refresh(actor: string | null): Promise<{ added: number; removed: number }> {
       if (!deps.texts || !deps.tokenizer) return { added: 0, removed: 0 };
-      const [texts, tokenizer, words, names] = await Promise.all([deps.texts(), deps.tokenizer(), deps.store.all(), deps.names?.() ?? []]);
+      // One after another (see above); the dictionary loads while no query is waiting.
+      const texts = await deps.texts();
+      const words = await deps.store.all();
+      const names = (await deps.names?.()) ?? [];
+      const tokenizer = await deps.tokenizer();
       const known = new Set([...words.map((w) => w.word), ...names.map((n) => n.word.trim())]);
       const found = dictionaryWords(tokenizer, texts, (w) => known.has(w));
       const suggestions = [...found].flatMap(([word, reading]) => {
@@ -207,7 +217,8 @@ export function createFuriganaService(deps: {
      * here, so neither reading is shown for the other.
      */
     async words(): Promise<Record<string, string>> {
-      const [names, words] = await Promise.all([deps.names?.() ?? [], deps.store.all()]);
+      const names = (await deps.names?.()) ?? [];
+      const words = await deps.store.all();
       const found = new Map<string, Set<string>>();
       for (const n of names) {
         const word = n.word.trim();
