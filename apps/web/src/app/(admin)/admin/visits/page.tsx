@@ -5,6 +5,7 @@ import { initLingui } from "@/i18n/server";
 import { adminGet } from "@/lib/admin/admin-fetch";
 import { DailyChart, Kpi, RankedRows, ShareBar } from "@/components/admin/VisitCharts";
 import { countryName, fillDays, regionName, shortPath, sharePercent, type VisitSummary } from "@/lib/admin/visits";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
@@ -48,14 +49,7 @@ export default async function VisitsPage({ searchParams }: { searchParams: Promi
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <h1 className="font-serif text-3xl font-bold">
-          <Trans>アクセス解析</Trans>
-        </h1>
-        <p className="max-w-3xl text-lg text-muted">
-          <Trans>ページが開かれた回数を、接続元のおおよその地域（国・都道府県・市）ごとに数えています。IPアドレスや個人は記録しません。市や町の位置は、実際の場所とずれることがあります。</Trans>
-        </p>
-      </div>
+      <AdminPageHeader title={<Trans>アクセス解析</Trans>} intro={i18n._(msg`ページが開かれた回数を、接続元のおおよその地域（国・都道府県・市）ごとに数えています。IPアドレスや個人は記録しません。市や町の位置は、実際の場所とずれることがあります。`)} />
 
       {data ? (
         <nav aria-label={i18n._(msg`期間`)} className="flex flex-wrap items-center gap-2">

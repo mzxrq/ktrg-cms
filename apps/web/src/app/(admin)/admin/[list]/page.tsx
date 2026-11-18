@@ -11,6 +11,7 @@ import { adminGet } from "@/lib/admin/admin-fetch";
 import { pick } from "@/lib/admin/lists/config";
 import type { ListPage } from "@/lib/admin/lists/list-client";
 import { listMetaOr404, relationChoices } from "@/lib/admin/lists/server";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 export async function generateMetadata({ params }: { params: Promise<{ list: string }> }): Promise<Metadata> {
   const i18n = await initLingui();
@@ -38,8 +39,7 @@ export default async function AdminListPage({ params }: { params: Promise<{ list
       {/* The list draws its own title, beside its "new" button (like the course list); the others need it here. */}
       {page && meta.key !== "furigana" ? null : (
         <>
-          <h1 className="text-3xl font-bold">{title}</h1>
-          <p className="text-lg text-muted">{pick(meta.intro, i18n.locale)}</p>
+          <AdminPageHeader title={title} intro={pick(meta.intro, i18n.locale)} />
         </>
       )}
       {meta.key === "furigana" ? (

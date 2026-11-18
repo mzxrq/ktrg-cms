@@ -13,7 +13,7 @@ import type { LngLatEle } from "@/lib/admin/line";
 import { walkedStats, type TextField, type RouteDraft } from "@/lib/admin/route-draft";
 import { infoPatch } from "@/lib/admin/route-draft";
 import { RubyEditor } from "./RubyEditor";
-import type { StopRole } from "@/lib/route-stops";
+import { editorPlacesOf } from "@/lib/admin/editor-places";
 import { writeBackup } from "@/lib/admin/draft-backup";
 import { placeChanged, type DraftProblem } from "@/lib/admin/save-plan";
 import { useRouteDraft } from "./useRouteDraft";
@@ -101,16 +101,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
   // A walk that comes back to where it began (周回 or 往復); its first waypoint on the way is the start and the goal.
   const comesBack = draft.walkStyle === "loop" || draft.walkStyle === "out_and_back";
   const firstAlong = draft.places.find((p) => !p.stopBy) ?? null;
-  // The numbers on the map are the stamp numbers visitors see; a waypoint without a stamp has none.
-  const editorPlaces = (() => {
-    let stamp = 0;
-    // Where the walk starts and ends, by the same rule as the public map (a round trip or an out-and-back has one start and goal place).
-    const along = draft.places.filter((p) => !p.stopBy && p.lat !== null && p.lng !== null);
-    const startOnly = comesBack;
-    const roleOf = (key: string): StopRole | undefined =>
-      key === along[0]?.key ? (startOnly ? "both" : "start") : !startOnly && along.length > 1 && key === along.at(-1)!.key ? "goal" : undefined;
-    return draft.places.map((p) => ({ key: p.key, lat: p.lat, lng: p.lng, number: p.stampable ? ++stamp : null, name: p.nameJa, stampable: p.stampable, stopBy: p.stopBy, detached: p.detached, kind: p.kind, published: p.published, role: roleOf(p.key), info: p.status === "info" }));
-  })();
+  const editorPlaces = editorPlacesOf(draft);
   const text = (field: TextField) => (value: string) => dispatch({ type: "text", field, value });
   // A number that comes from the line is shown, not typed; one that was typed (or has nothing to come from) stays typeable.
   const distanceAuto = !draft.distanceManual && draft.line.length >= 2;

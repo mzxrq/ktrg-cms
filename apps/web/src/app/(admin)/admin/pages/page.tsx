@@ -6,6 +6,7 @@ import { initLingui } from "@/i18n/server";
 import { adminGet } from "@/lib/admin/admin-fetch";
 import { ChevronIcon } from "@/components/icons";
 import type { PageKey, PageText } from "@/lib/page-text";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
@@ -26,12 +27,7 @@ export default async function PageTextList() {
   };
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-5">
-      <h1 className="text-3xl font-bold">
-        <Trans>ページ</Trans>
-      </h1>
-      <p className="text-lg text-muted">
-        <Trans>アプリにもともと入っている固定のページの文章を、ここで書きかえられます。何も書かなければ、もとの文章が表示されます。</Trans>
-      </p>
+      <AdminPageHeader title={<Trans>ページ</Trans>} intro={i18n._(msg`アプリにもともと入っている固定のページの文章を、ここで書きかえられます。何も書かなければ、もとの文章が表示されます。`)} />
       <ul className="flex flex-col gap-3">
         {(Object.keys(pages) as PageKey[]).map((key) => {
           const mine = pages[key];

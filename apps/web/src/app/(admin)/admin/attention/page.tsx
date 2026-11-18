@@ -5,6 +5,7 @@ import { Trans } from "@lingui/react/macro";
 import { WarningIcon } from "@/components/icons";
 import { initLingui } from "@/i18n/server";
 import { adminGet } from "@/lib/admin/admin-fetch";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
@@ -76,9 +77,7 @@ export default async function AttentionPage() {
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-5">
-      <h1 className="text-3xl font-bold">
-        <Trans>直すところ</Trans>
-      </h1>
+      <AdminPageHeader title={<Trans>直すところ</Trans>} intro={i18n._(msg`赤いものは、直すまで訪問者に見えません。名前を押すと、そのコースの編集画面が開きます。`)} />
       {!found ? (
         <p role="alert" className="rounded-lg border-l-4 border-danger bg-surface p-6 text-lg font-bold text-danger">
           <Trans>読み込めませんでした。しばらくしてから、ページを開き直してください。</Trans>
@@ -100,9 +99,6 @@ export default async function AttentionPage() {
               <Trans>関係するコース</Trans>
             </Tile>
           </div>
-          <p className="text-lg text-muted">
-            <Trans>赤いものは、直すまで訪問者に見えません。名前を押すと、そのコースの編集画面が開きます。</Trans>
-          </p>
           {list.map((c) => (
             <section key={c.id} className={`flex flex-col gap-3 rounded-lg bg-surface p-4 ${urgentOf(c) > 0 ? "border-l-4 border-danger" : ""}`}>
               <h2 className="text-xl font-bold">
