@@ -52,6 +52,11 @@ msgstr "(No title)"
 msgid "{0} · {1}km"
 msgstr "{0} · {1} km"
 
+#. placeholder {0}: nameOfKey(l.from)
+#: src/components/admin/map-editor/PlaceList.tsx:230
+msgid "{0} から、来た道を戻ります"
+msgstr "Back the way it came, from {0}"
+
 #. placeholder {0}: itemName(meta, group[0]!, locale)
 #. placeholder {1}: group.length
 #: src/components/admin/DuplicateFinder.tsx:64
@@ -1090,8 +1095,8 @@ msgstr "Top region"
 msgid "いちばん多い日"
 msgstr "Busiest day"
 
-#: src/components/admin/map-editor/PlaceList.tsx:227
-#: src/components/admin/map-editor/PlaceList.tsx:227
+#: src/components/admin/map-editor/PlaceList.tsx:237
+#: src/components/admin/map-editor/PlaceList.tsx:237
 msgid "いちばん後ろの戻りの線を消す"
 msgstr "Remove the last return line"
 
@@ -4778,9 +4783,9 @@ msgstr "Nearest"
 msgid "最後に押した日時　{when}"
 msgstr "Last stamped: {when}"
 
-#: src/components/admin/map-editor/PlaceList.tsx:217
-msgid "最後の経由地から、通った経由地をたどって戻る線です。戻る先を選んで、線を足していきます（例：14 → 5 → 4 → 1）。"
-msgstr "A line that goes back from the last waypoint over the waypoints already passed. Pick where it returns to and add lines one by one (for example 14 → 5 → 4 → 1)."
+#: src/components/admin/map-editor/PlaceList.tsx:248
+msgid "最後の経由地から、来た道を戻るときは、戻る先を選びます（例：14 → 5 → 4 → 1）。線はコースの道をそのまま使います。"
+msgstr "To walk back the way the course came from the last waypoint, choose where to go back to (e.g. 14 → 5 → 4 → 1). The line reuses the course's own path."
 
 #: src/components/pages/PageViews.tsx:158
 msgid "最終更新"
@@ -6144,10 +6149,6 @@ msgstr "Information"
 msgid "情報源を入れないと、「確認した」は保存されません。"
 msgstr "\"Checked\" is not saved without a source."
 
-#: src/components/admin/map-editor/PlaceList.tsx:254
-msgid "戻りの線を足す"
-msgstr "Add a return line"
-
 #: src/components/auth/LoginFlow.tsx:91
 #: src/components/auth/LoginFlow.tsx:137
 #: src/components/auth/RegisterFlow.tsx:144
@@ -6158,17 +6159,21 @@ msgstr "Add a return line"
 msgid "戻る"
 msgstr "Back"
 
-#: src/components/admin/map-editor/PlaceList.tsx:237
+#: src/components/admin/map-editor/PlaceList.tsx:229
+msgid "戻る：{to}"
+msgstr "Back to: {to}"
+
+#: src/components/admin/map-editor/PlaceList.tsx:250
 msgid "戻る先"
 msgstr "Return to"
 
-#: src/components/admin/map-editor/PlaceList.tsx:238
+#: src/components/admin/map-editor/PlaceList.tsx:251
 msgid "戻る先を選ぶ"
 msgstr "Choose where to return to"
 
-#: src/components/admin/map-editor/PlaceList.tsx:216
-msgid "戻る道"
-msgstr "Way back"
+#: src/components/admin/map-editor/PlaceList.tsx:267
+msgid "戻る道を足す"
+msgstr "Add the way back"
 
 #: src/components/admin/CourseAreaEditor.tsx:192
 msgid "手で決める"
@@ -7695,7 +7700,7 @@ msgid "線を引くと、自動で入ります。"
 msgstr "Filled in automatically once a line is drawn."
 
 #: src/components/admin/map-editor/MapEditor.tsx:1123
-#: src/components/admin/map-editor/PlaceList.tsx:224
+#: src/components/admin/map-editor/PlaceList.tsx:234
 msgid "線を描く"
 msgstr "Draw line"
 

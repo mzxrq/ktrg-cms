@@ -1227,6 +1227,7 @@ export function MapEditor(props: MapEditorProps) {
           insertAfter={insertAfter}
           back={{
             legs: pairs.filter((p) => p.back).map((p) => ({ from: p.from.key, to: p.to.key })),
+            activeIndex: pairs.filter((p) => p.back).findIndex((p) => pairId(p) === activeId),
             options: backChoices(stops, props.legs).options.map((st) => st.key),
             onAdd: (toKey) => {
               const { end, options } = backChoices(stops, props.legs);
