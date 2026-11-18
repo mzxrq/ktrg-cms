@@ -60,6 +60,15 @@ describe("GET /admin/map/overview", () => {
     expect(body.places.map((p: { nameJa: string }) => p.nameJa)).toEqual(["売店"]);
   });
 
+  test("a waypoint on two courses lists both, its home course first", async () => {
+    const { call, login, content, near } = await setup();
+    const other = await content.createRoute(admin.id, { nameJa: "加太" });
+    const [mound] = (await content.spotsInBox({ west: 134.9, south: 34.2, east: 135.2, north: 34.4 }, 10)).filter((s) => s.nameJa === "序品窟");
+    expect(await content.shareSpot(admin.id, mound!.id, other.id, 0)).toBe("ok");
+    const body = await (await call(`/admin/map/overview?${BOX}`, await login(admin))).json();
+    expect(body.spots.find((s: { id: string }) => s.id === mound!.id).routeIds).toEqual([near.id, other.id]);
+  });
+
   test("a box that is upside down or off the globe is refused", async () => {
     const { call, login } = await setup();
     const cookie = await login(admin);

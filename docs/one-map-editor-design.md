@@ -16,7 +16,7 @@ Status: **step 1 built** (PR #577, `useRouteDraft`); the rest is design (updated
 4. **Menu name: 地図** (コースとラリー > 地図).
 5. **Other courses while one is edited: faint** (thin, muted lines; their waypoints hidden or tiny), never hidden.
 6. **Draft and unchecked places are shown**, with the same draft look as the course editor.
-7. **Creating a new course from the map: to confirm.** Asked "out of scope for now?", the user answered "no"; read here as "not now" (new courses keep coming from コース > 新しいコース) until confirmed.
+7. **A new course can be made from the map** (2026-11-18; the earlier "no" answered "out of scope?", so it is in scope). A 新しいコース button on the map starts an empty course in place: draw or snap its line there, give it a name, save; it then opens like any course. コース > 新しいコース stays too.
 8. **A course selector**: too many waypoints on one map is confusing, so choosing a course raises its waypoints above everything else and moves the map to that course's area, ready to edit.
 
 ## What exists today, and what we reuse
@@ -106,12 +106,13 @@ Next, the fixes the user asked for on the same day (they help the course page no
 
 Then the one map:
 
-2. **Overview endpoint** with its authorization tests (a participant gets 403; bbox validation; row cap).
+2. **Overview endpoint** with its authorization tests (a participant gets 403; bbox validation; row cap). Done: #587; a waypoint on two courses lists both (`routeIds`, home first).
 3. **`/admin/map`, read only**: every course and place drawn, the course selector (raise and fly to), the list under the map, links to the existing pages.
 4. **Edit a course in place**: the switch, `MapEditor` with `useRouteDraft`, the save bar, the unsaved check on switching.
 5. **Edit a directory place in place**: its form under the map, dragging its marker.
+6. **A new course from the map** (decided 7): 新しいコース on the map opens an empty `useRouteDraft` in place; the first save creates it (`POST /admin/routes`, then the usual saves) and the selector switches to it.
 
 ## Open questions
 
-1. **A new course from the map** (decided 7): confirm "not now".
-2. **The icon table above**: approve, or name the chips that should keep their words.
+1. ~~A new course from the map~~: decided (7), built as step 6.
+2. ~~The icon table above~~: approved 2026-11-17, built in #584.

@@ -1999,6 +1999,9 @@ describe.skipIf(!url)("list and report stores on real PostgreSQL", () => {
       expect(spotIds).toContain(inSpot!.id);
       expect(spotIds).not.toContain(outSpot!.id);
       expect((await content.spotsInBox(box, 1000)).find((s) => s.id === inSpot!.id)?.nameJa).toBe("中");
+      const second = await content.createRoute(actor, { nameJa: "箱のテスト2" });
+      expect(await content.shareSpot(actor, inSpot!.id, second.id, 0)).toBe("ok");
+      expect((await content.spotsInBox(box, 1000)).find((s) => s.id === inSpot!.id)?.alsoOn).toEqual([second.id]);
       const placeIds = (await placeStore.inBox(box, 1000)).map((p) => p.id);
       expect(placeIds).toContain(inPlace.id);
       expect(placeIds).not.toContain(outPlace.id);
