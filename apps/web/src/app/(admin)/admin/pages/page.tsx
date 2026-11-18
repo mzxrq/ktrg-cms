@@ -26,7 +26,7 @@ export default async function PageTextList() {
     privacy: { name: i18n._(msg`プライバシーポリシー`), hint: i18n._(msg`法的な文章です。管理者だけが直せます。`) },
   };
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-5">
+    <div className="flex max-w-4xl flex-col gap-5">
       <AdminPageHeader title={<Trans>ページ</Trans>} intro={i18n._(msg`アプリにもともと入っている固定のページの文章を、ここで書きかえられます。何も書かなければ、もとの文章が表示されます。`)} />
       <ul className="flex flex-col gap-3">
         {(Object.keys(pages) as PageKey[]).map((key) => {

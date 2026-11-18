@@ -50,6 +50,8 @@
   --color-brand: #cc6256; /* the brand red: action buttons, icons, the bar beside headings. Not for text on white, not for a selected state (that is ink) */
   --color-on-brand: #ffffff; /* the words on the brand red (large bold text only) */
   --color-brand-strong: #983a30; /* the red behind words and numbers (course and stop numbers): white on it is 7:1 */
+  --color-create: #166534; /* the admin's green 新しい… (create) buttons (2026-11-18): white on it is 7:1 */
+  --color-on-create: #ffffff;
   --color-on-brand-strong: #ffffff; /* the words on brand-strong */
   --color-selected: #1f1b1a; /* a selected or active control (active tab, toggle on, saved): ink. Selected is ink, doing is red */
   --color-on-selected: #fcfaf5; /* the words and icons on a selected control */
@@ -214,6 +216,8 @@
     --color-brand: #cc6256; /* the same brand red */
     --color-on-brand: #ffffff;
     --color-brand-strong: #e0837a; /* lighter on dark, with dark words: 7:1 */
+    --color-create: #166534; /* the admin's green 新しい… (create) buttons (2026-11-18): white on it is 7:1 */
+    --color-on-create: #ffffff;
     --color-on-brand-strong: #0b0908;
     --color-selected: #ebe2d0; /* the ink colour of the dark palette */
     --color-on-selected: #1e1a17;
@@ -251,6 +255,8 @@
   --color-brand: #cc6256; /* the same brand red */
   --color-on-brand: #ffffff;
   --color-brand-strong: #e0837a; /* lighter on dark, with dark words: 7:1 */
+  --color-create: #166534; /* the admin's green 新しい… (create) buttons (2026-11-18): white on it is 7:1 */
+  --color-on-create: #ffffff;
   --color-on-brand-strong: #0b0908;
   --color-selected: #ebe2d0; /* the ink colour of the dark palette */
   --color-on-selected: #1e1a17;
@@ -282,6 +288,8 @@
   --color-brand: #cc6256; /* the brand red: action buttons, icons, the bar beside headings. Not for text on white, not for a selected state (that is ink) */
   --color-on-brand: #ffffff; /* the words on the brand red (large bold text only) */
   --color-brand-strong: #983a30; /* the red behind words and numbers (course and stop numbers): white on it is 7:1 */
+  --color-create: #166534; /* the admin's green 新しい… (create) buttons (2026-11-18): white on it is 7:1 */
+  --color-on-create: #ffffff;
   --color-on-brand-strong: #ffffff; /* the words on brand-strong */
   --color-selected: #1f1b1a; /* a selected or active control (active tab, toggle on, saved): ink. Selected is ink, doing is red */
   --color-on-selected: #fcfaf5; /* the words and icons on a selected control */

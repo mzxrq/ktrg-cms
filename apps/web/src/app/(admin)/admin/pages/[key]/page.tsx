@@ -54,7 +54,7 @@ export default async function EditPageText({ params }: { params: Promise<{ key: 
         }))
       : undefined;
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-4">
+    <div className="flex max-w-6xl flex-col gap-4">
       <AdminBack href="/admin/pages">
         <Trans>ページへ戻る</Trans>
       </AdminBack>

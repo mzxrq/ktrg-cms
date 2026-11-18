@@ -19,9 +19,9 @@ export default async function AdminRoutesPage() {
   const routes = status === 200 && body?.ok ? body.routes : null;
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-5">
+    <div className="flex max-w-6xl flex-col gap-5">
       <AdminPageHeader title={<Trans>コース</Trans>} intro={i18n._(msg`歩く順番に並んでいます。名前を押すと、文章や地図を直せます。`)}>
-        <Link href="/admin/routes/new" className="tap-target inline-flex items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
+        <Link href="/admin/routes/new" className="tap-target inline-flex items-center rounded-full bg-create px-5 text-lg font-bold text-on-create">
           <Trans>新しいコース</Trans>
         </Link>
       </AdminPageHeader>

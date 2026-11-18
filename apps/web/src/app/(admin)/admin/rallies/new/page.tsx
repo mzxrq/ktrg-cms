@@ -31,7 +31,7 @@ export default async function NewRallyPage() {
   const routeNames = Object.fromEntries(routes.body.routes.map((r) => [r.id, i18n.locale === "en" && r.nameEn ? r.nameEn : r.nameJa]));
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-4">
+    <div className="flex max-w-4xl flex-col gap-4">
       <AdminBack href="/admin/rallies">
         <Trans>ラリー一覧にもどる</Trans>
       </AdminBack>

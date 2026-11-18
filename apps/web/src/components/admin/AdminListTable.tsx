@@ -206,11 +206,11 @@ export function AdminListTable({
           // Closing a half-filled new row asks first (the page guard only asks when the page is left).
           if (!adding || (await okToClose())) setAdding(!adding);
         }}
-        aria-expanded={adding} className="tap-target inline-flex items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
+        aria-expanded={adding} className="tap-target inline-flex items-center rounded-full bg-create px-5 text-lg font-bold text-on-create">
         {adding ? t`閉じる` : pick(config.newLabel, locale)}
       </button>
     ) : (
-      <Link href={`${base}/new`} className="tap-target inline-flex items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
+      <Link href={`${base}/new`} className="tap-target inline-flex items-center rounded-full bg-create px-5 text-lg font-bold text-on-create">
         {pick(config.newLabel, locale)}
       </Link>
     )

@@ -47,7 +47,7 @@ export default async function EditRallyPage({ params }: { params: Promise<{ id: 
     : { kind: "places" as const, items: places.body?.ok ? places.body.candidates : [] };
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-4">
+    <div className="flex max-w-4xl flex-col gap-4">
       <AdminBack href="/admin/rallies">
         <Trans>ラリー一覧にもどる</Trans>
       </AdminBack>

@@ -21,7 +21,7 @@ export default async function AdminCommentsPage() {
   const meta = await listMetaOr404("comments"); // also checks the permission
   const { status, body } = await adminGet<{ ok: true } & ListPage>(`/lists/comments?${inboxQuery("pending", "", 1)}`);
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-5">
+    <div className="flex max-w-6xl flex-col gap-5">
       <AdminPageHeader title={pick(meta.title, i18n.locale)} intro={pick(meta.intro, i18n.locale)} />
       {status === 200 && body?.ok ? (
         <CommentInbox initial={commentPageOf(body)} locale={i18n.locale} />
