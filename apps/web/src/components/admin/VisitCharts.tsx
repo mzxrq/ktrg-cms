@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { areaGeometry, barPercent, sharePercent } from "@/lib/admin/visits";
+import { areaGeometry, axisTicks, barPercent, sharePercent } from "@/lib/admin/visits";
 
 // The charts of the visits screen, drawn as plain SVG and HTML (no script, no library): a daily area chart, a stacked share bar
 // with its legend, and ranked rows. Colours are the site's tokens. Server-rendered; nothing here reads or stores anything.
@@ -15,7 +15,7 @@ export function DailyChart({ days, label }: { days: { day: string; views: number
   const H = 220;
   const g = areaGeometry(days.map((d) => d.views), W, H);
   const mid = days[Math.floor((days.length - 1) / 2)];
-  const ticks = [1, 0.75, 0.5, 0.25, 0];
+  const ticks = axisTicks(g.max).map((v) => v / g.max);
   return (
     <figure className="flex flex-col gap-2">
       <div className="flex gap-3">

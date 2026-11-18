@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { areaGeometry, barPercent, countryName, fillDays, niceMax, regionName, sharePercent, shortPath } from "./visits";
+import { areaGeometry, axisTicks, barPercent, countryName, fillDays, niceMax, regionName, sharePercent, shortPath } from "./visits";
 
 describe("visit places", () => {
   test("Japanese regions are prefectures; others keep the host's code", () => {
@@ -37,6 +37,19 @@ describe("the charts' numbers", () => {
 
   test("niceMax rounds up to 1, 2, 5 or 10 times a power of ten, never below 1", () => {
     expect([0, 1, 3, 7, 12, 48, 101, 487, 1458].map(niceMax)).toEqual([1, 1, 5, 10, 20, 50, 200, 500, 2000]);
+  });
+
+  test("axisTicks: whole, distinct numbers for every scale top, even a tiny one", () => {
+    expect(axisTicks(1)).toEqual([1, 0]);
+    expect(axisTicks(2)).toEqual([2, 1, 0]);
+    expect(axisTicks(5)).toEqual([5, 4, 3, 2, 1, 0]);
+    expect(axisTicks(10)).toEqual([10, 8, 6, 4, 2, 0]);
+    expect(axisTicks(20)).toEqual([20, 15, 10, 5, 0]);
+    for (const top of [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]) {
+      const ticks = axisTicks(top);
+      expect(new Set(ticks).size).toBe(ticks.length);
+      expect(ticks.every(Number.isInteger)).toBe(true);
+    }
   });
 
   test("shortPath shortens an id inside a path and keeps readable words", () => {
