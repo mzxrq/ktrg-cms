@@ -31,6 +31,9 @@ export function SiteFooter({ locale, variant = "page" }: { locale: string; varia
         <Link prefetch={false} href="/licenses" className={link}>
           <Trans>ライセンス情報</Trans>
         </Link>
+        <Link prefetch={false} href="/status" className={link}>
+          <Trans>サイトの状態</Trans>
+        </Link>
         <Link prefetch={false} href="/sitemap" className={link}>
           <Trans>サイトマップ</Trans>
         </Link>

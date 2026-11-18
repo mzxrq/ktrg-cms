@@ -1809,6 +1809,10 @@ msgstr "Select everything on this page"
 msgid "このページを見る権限がありません"
 msgstr "You do not have permission to view this page"
 
+#: src/app/(public)/status/page.tsx:24
+msgid "このページを開いたときに、サイトが動いているかを確かめます。スタンプが押せない、ログインできないときは、ここを見てください。"
+msgstr "This page checks whether the site is working when you open it. If you cannot stamp or sign in, look here."
+
 #: src/components/useErrorMessages.ts:23
 msgid "このボタンは、もう使えません。7日を過ぎたか、すでに使われています。メールの番号でログインして、ログインの方法を確認してください。"
 msgstr "This button no longer works: it is over 7 days old or was already used. Log in with an emailed number and check your ways to log in."
@@ -2239,6 +2243,10 @@ msgstr "Website"
 msgid "サイトで見る"
 msgstr "View on site"
 
+#: src/components/StatusChecks.tsx:47
+msgid "サイトとサーバー"
+msgstr "Site and server"
+
 #: src/components/admin/HomeSectionsForm.tsx:23
 #: src/components/admin/LargeStyleUpload.tsx:55
 #: src/components/admin/PageTextEditor.tsx:67
@@ -2258,9 +2266,15 @@ msgstr "Site content"
 msgid "サイトの文章を辞書が読んで、読みを考えたものです。人が確かめて承認するまで、訪れる人には表示されません。同じ字でも読み方が変わる言葉は、文に合う読みか確かめてください。1時間ごとにも読み直します。"
 msgstr "Readings the dictionary worked out from the site's text. Visitors don't see them until a person checks and approves them. For a word that can be read more than one way, check the reading fits the sentence. The dictionary also reads the site again every hour."
 
+#: src/app/(public)/status/page.tsx:10
+#: src/app/(public)/status/page.tsx:21
+#: src/components/SiteFooter.tsx:35
+msgid "サイトの状態"
+msgstr "Site status"
+
 #: src/app/(public)/sitemap/page.tsx:15
 #: src/app/(public)/sitemap/page.tsx:50
-#: src/components/SiteFooter.tsx:35
+#: src/components/SiteFooter.tsx:38
 #: src/components/SiteHeader.tsx:280
 msgid "サイトマップ"
 msgstr "Site map"
@@ -2741,6 +2755,10 @@ msgstr "It is sent automatically once connected. The server checks it then, so i
 msgid "つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。"
 msgstr "It is sent automatically once connected. When the signal is weak, it tries again every 30 seconds."
 
+#: src/components/StatusChecks.tsx:48
+msgid "データベース（スタンプ、ログイン、内容）"
+msgstr "Database (stamps, sign-in, content)"
+
 #: src/components/SiteHeader.tsx:256
 msgid "テーマ"
 msgstr "Theme"
@@ -3173,7 +3191,7 @@ msgstr "Footer"
 #: src/app/(admin)/admin/pages/page.tsx:26
 #: src/app/(public)/sitemap/page.tsx:132
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:41
+#: src/components/SiteFooter.tsx:44
 #: src/components/SiteHeader.tsx:278
 msgid "プライバシーポリシー"
 msgstr "Privacy policy"
@@ -3307,6 +3325,7 @@ msgstr "Base map"
 #: src/app/(public)/sitemap/page.tsx:48
 #: src/app/(public)/sitemap/page.tsx:53
 #: src/app/(public)/sitemap/page.tsx:55
+#: src/app/(public)/status/page.tsx:18
 #: src/app/(public)/story/page.tsx:41
 #: src/components/admin/PageTextEditor.tsx:60
 #: src/components/pages/PageViews.tsx:88
@@ -3644,6 +3663,10 @@ msgstr "Open it again"
 #: src/components/admin/PublishedEditDialog.tsx:53
 msgid "もう一度公開するときは、「経由地」タブで「公開する」を押してください。"
 msgstr "To publish it again, press \"Publish\" in the Waypoints tab."
+
+#: src/components/StatusChecks.tsx:66
+msgid "もう一度確認する"
+msgstr "Check again"
 
 #: src/components/StampHere.tsx:209
 msgid "もう一度試す"
@@ -5011,7 +5034,7 @@ msgstr "Words visitors see"
 #: src/app/(admin)/admin/pages/page.tsx:25
 #: src/app/(public)/sitemap/page.tsx:129
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:38
+#: src/components/SiteFooter.tsx:41
 #: src/components/SiteHeader.tsx:277
 msgid "利用規約"
 msgstr "Terms of use"
@@ -5162,6 +5185,10 @@ msgstr "Added."
 #: src/components/admin/FuriganaWords.tsx:103
 msgid "加える"
 msgstr "Add"
+
+#: src/components/StatusChecks.tsx:44
+msgid "動いています"
+msgstr "Working"
 
 #: src/components/MotionSelect.tsx:18
 msgid "動かさない"
@@ -6747,6 +6774,10 @@ msgstr "Next stop: {up} m up"
 msgid "次まで 登り{up}m・下り{down}m"
 msgstr "Next stop: {up} m up, {down} m down"
 
+#: src/components/StatusChecks.tsx:44
+msgid "止まっています"
+msgstr "Not working"
+
 #: src/components/landing/useHomeWords.ts:10
 #: src/components/RallyViews.tsx:266
 msgid "歩いて、スタンプを集めよう。"
@@ -7210,6 +7241,11 @@ msgstr "Source checked (site name or link)"
 msgid "確認した日：{checkedOn}"
 msgstr "Checked on: {checkedOn}"
 
+#. placeholder {0}: at.toLocaleTimeString("ja-JP", { timeZone: "Asia/Tokyo" })
+#: src/components/StatusChecks.tsx:64
+msgid "確認した時刻：{0}（日本時間）"
+msgstr "Checked at {0} (Japan time)"
+
 #: src/components/admin/CourseMapEditor.tsx:98
 msgid "確認していない線は、利用者には表示されません。公式の地図などと見比べてから、チェックを入れてください。"
 msgstr "A line that has not been checked is not shown to visitors. Compare it with an official map, then tick the box."
@@ -7217,6 +7253,10 @@ msgstr "A line that has not been checked is not shown to visitors. Compare it wi
 #: src/components/auth/ReauthDialog.tsx:91
 msgid "確認する"
 msgstr "Confirm"
+
+#: src/components/StatusChecks.tsx:44
+msgid "確認できません（この端末がインターネットにつながっていません）"
+msgstr "Cannot check (this device is not connected to the internet)"
 
 #: src/components/useErrorMessages.ts:30
 msgid "確認できませんでした。もう一度お試しください。"
@@ -7229,6 +7269,10 @@ msgstr "To confirm, enter the member ID ({memberId})"
 #: src/components/settings/LoginMethods.tsx:78
 msgid "確認の番号を送る"
 msgstr "Send a confirmation code"
+
+#: src/components/StatusChecks.tsx:44
+msgid "確認中…"
+msgstr "Checking…"
 
 #: src/components/admin/CommentInbox.tsx:30
 #: src/components/admin/CommentInbox.tsx:31
