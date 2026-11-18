@@ -26,7 +26,7 @@ describe("every admin list describes its screens completely", () => {
       if (def.ops.create) expect(def.ui.newLabel?.ja).toBeTruthy();
       if (def.ops.delete) expect(def.ui.deleteWarning?.ja).toBeTruthy();
       const title = def.ui.fields.find((f) => f.name === def.ui.titleField);
-      expect(title && (BILINGUAL.has(title.kind) || title.kind === "text")).toBe(true);
+      expect(title && (BILINGUAL.has(title.kind) || title.kind === "text" || (title.kind === "select" && (title.options?.length ?? 0) > 0))).toBe(true);
       for (const f of def.ui.fields) if (f.kind === "select") expect((f.options ?? []).length).toBeGreaterThan(0);
       for (const f of def.ui.fields) {
         expect(f.label.ja.trim().length > 0 && f.label.en.trim().length > 0).toBe(true);
