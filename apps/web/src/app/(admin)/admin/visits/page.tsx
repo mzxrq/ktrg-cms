@@ -67,11 +67,8 @@ export default async function VisitsPage({ searchParams }: { searchParams: Promi
         </nav>
       ) : null}
 
-      <details className="rounded-3xl bg-surface p-5" open={Boolean(q.path)}>
-        <summary className="cursor-pointer text-lg font-bold">
-          <Trans>期間とページをえらぶ</Trans>
-        </summary>
-        <form method="get" className="mt-4 flex flex-wrap items-end gap-3">
+      {/* Always shown, like the course list's search and filters (it used to fold away). */}
+      <form method="get" className="flex flex-wrap items-end gap-3">
           <label className="flex flex-col gap-1 text-base font-bold">
             <Trans>はじめの日</Trans>
             <input type="date" name="from" defaultValue={data?.from ?? ""} className="tap-target rounded-full border border-line bg-paper px-3 text-lg font-normal" />
@@ -87,8 +84,7 @@ export default async function VisitsPage({ searchParams }: { searchParams: Promi
           <button type="submit" className="tap-target rounded-full bg-ink px-6 text-lg font-bold text-paper">
             <Trans>表示する</Trans>
           </button>
-        </form>
-      </details>
+      </form>
 
       {!data ? (
         <p role="alert" className="rounded-3xl bg-surface p-6 text-lg font-bold text-danger">
