@@ -362,10 +362,6 @@ msgstr "{name} {0}つ目の閉まる時間"
 msgid "{name} {0}つ目の開く時間"
 msgstr "{name} {0}つ目の開く時間"
 
-#: src/components/admin/AdminShell.tsx:26
-msgid "{name} さんでログイン中"
-msgstr "{name} さんでログイン中"
-
 #: src/components/admin/list-parts.tsx:63
 msgid "{name} を1つ前へ"
 msgstr "{name} を1つ前へ"
@@ -948,6 +944,10 @@ msgstr "アカウントの制限・削除"
 #: src/components/ProfileSettings.tsx:229
 msgid "アカウントの削除"
 msgstr "アカウントの削除"
+
+#: src/components/admin/AdminProfileMenu.tsx:74
+msgid "アカウントの設定"
+msgstr "アカウントの設定"
 
 #: src/components/ProfileSettings.tsx:181
 msgid "アカウントを削除します"
@@ -2238,6 +2238,10 @@ msgstr "サイトで見る"
 msgid "サイトに反映しますか？"
 msgstr "サイトに反映しますか？"
 
+#: src/components/admin/AdminProfileMenu.tsx:71
+msgid "サイトのトップへ"
+msgstr "サイトのトップへ"
+
 #: src/components/admin/AdminNav.tsx:90
 msgid "サイトの内容"
 msgstr "サイトの内容"
@@ -2597,6 +2601,7 @@ msgstr "その他"
 msgid "その名前の場所は見つかりませんでした。"
 msgstr "その名前の場所は見つかりませんでした。"
 
+#: src/components/admin/AdminProfileMenu.tsx:94
 #: src/components/ThemeSwitcher.tsx:30
 msgid "ダーク"
 msgstr "ダーク"
@@ -3217,6 +3222,10 @@ msgstr "ブログをすべて見る"
 msgid "プロフィール"
 msgstr "プロフィール"
 
+#: src/components/admin/AdminProfileMenu.tsx:80
+msgid "プロフィール（名前・写真）"
+msgstr "プロフィール（名前・写真）"
+
 #: src/components/ProfilePhoto.tsx:34
 msgid "プロフィール写真"
 msgstr "プロフィール写真"
@@ -3735,6 +3744,7 @@ msgstr "よみ"
 msgid "ライセンス情報"
 msgstr "ライセンス情報"
 
+#: src/components/admin/AdminProfileMenu.tsx:94
 #: src/components/ThemeSwitcher.tsx:30
 msgid "ライト"
 msgstr "ライト"
@@ -3896,6 +3906,7 @@ msgstr "リンク先のアドレス"
 msgid "リンク先のページが用意できてから、オンにしてください。オフの間は、ホームページに出ません。"
 msgstr "リンク先のページが用意できてから、オンにしてください。オフの間は、ホームページに出ません。"
 
+#: src/components/admin/AdminProfileMenu.tsx:98
 #: src/components/SiteHeader.tsx:228
 msgid "ログアウト"
 msgstr "ログアウト"
@@ -7304,6 +7315,11 @@ msgstr "管理画面は、管理者だけが使えます。権限が必要な場
 msgid "管理画面を開く"
 msgstr "管理画面を開く"
 
+#: src/components/admin/AdminProfileMenu.tsx:53
+#: src/components/admin/AdminProfileMenu.tsx:64
+msgid "管理者"
+msgstr "管理者"
+
 #: src/components/ProfileSettings.tsx:167
 msgid "管理者が、アカウントの削除を予約しました"
 msgstr "管理者が、アカウントの削除を予約しました"
@@ -7315,10 +7331,6 @@ msgstr "管理者が予約した削除は、ありません。"
 #: src/components/admin/UserActions.tsx:100
 msgid "管理者が削除を予約しました。7日たつと、アカウントとスタンプが消えます。"
 msgstr "管理者が削除を予約しました。7日たつと、アカウントとスタンプが消えます。"
-
-#: src/components/admin/AdminShell.tsx:26
-msgid "管理者としてログイン中"
-msgstr "管理者としてログイン中"
 
 #: src/components/useErrorMessages.ts:65
 msgid "管理者のアカウントは、制限したり削除したりできません。先に権限を変えてください。"
@@ -7659,6 +7671,11 @@ msgstr "編集を戻しました。内容を確かめて、「保存する」を
 msgid "編集を戻す"
 msgstr "編集を戻す"
 
+#: src/components/admin/AdminProfileMenu.tsx:53
+#: src/components/admin/AdminProfileMenu.tsx:64
+msgid "編集者"
+msgstr "編集者"
+
 #: src/components/admin/AccessPointsEditor.tsx:75
 #: src/components/admin/CourseAreaEditor.tsx:233
 #: src/components/admin/PlacePanel.tsx:232
@@ -7962,6 +7979,7 @@ msgstr "見やすさ"
 #: src/app/(public)/settings/page.tsx:12
 #: src/app/(public)/settings/page.tsx:28
 #: src/app/(public)/sitemap/page.tsx:117
+#: src/components/admin/AdminProfileMenu.tsx:83
 #: src/components/SiteHeader.tsx:265
 msgid "見やすさの設定"
 msgstr "見やすさの設定"
@@ -8830,6 +8848,10 @@ msgstr "顔・指紋で登録"
 #: src/components/auth/RegisterFlow.tsx:162
 msgid "顔・指紋で登録する"
 msgstr "顔・指紋で登録する"
+
+#: src/components/admin/AdminProfileMenu.tsx:86
+msgid "顔・指紋のログイン"
+msgstr "顔・指紋のログイン"
 
 #: src/components/settings/PasskeyManager.tsx:146
 msgid "顔・指紋のログイン {number}"
