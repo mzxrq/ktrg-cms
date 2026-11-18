@@ -1763,6 +1763,10 @@ msgstr "このスタンプは、もう押してあります。"
 msgid "このスタンプは、押してから時間がたちすぎているため、受け付けられませんでした（48時間まで）。"
 msgstr "このスタンプは、押してから時間がたちすぎているため、受け付けられませんでした（48時間まで）。"
 
+#: src/components/SpotSheet.tsx:96
+msgid "このスタンプは押しました"
+msgstr "このスタンプは押しました"
+
 #: src/components/SampleNotice.tsx:52
 #: src/components/SampleNotice.tsx:79
 msgid "このデータについて"
@@ -2118,8 +2122,8 @@ msgstr "この設定は、本番のサイトにすぐ反映されます。すべ
 msgid "この設定は、本番のサイトにすぐ反映されます。保存しますか？"
 msgstr "この設定は、本番のサイトにすぐ反映されます。保存しますか？"
 
-#: src/components/SpotSheet.tsx:114
-#: src/components/SpotSheet.tsx:130
+#: src/components/SpotSheet.tsx:126
+#: src/components/SpotSheet.tsx:142
 msgid "この説明は日本語のみです。"
 msgstr "この説明は日本語のみです。"
 
@@ -2375,7 +2379,7 @@ msgid "スタンプのバックアップリンク"
 msgstr "スタンプのバックアップリンク"
 
 #: src/components/map/MapScreen.tsx:421
-#: src/components/SpotSheet.tsx:94
+#: src/components/SpotSheet.tsx:105
 msgid "スタンプの場所"
 msgstr "スタンプの場所"
 
@@ -2479,6 +2483,10 @@ msgstr "スタンプを押せる経由地がまだありません。コースの
 #: src/components/TrailRibbon.tsx:74
 msgid "スタンプ場所 {spotCount}か所"
 msgstr "スタンプ場所 {spotCount}か所"
+
+#: src/components/SpotSheet.tsx:99
+msgid "スタンプ帳に入っています。"
+msgstr "スタンプ帳に入っています。"
 
 #: src/components/admin/GoalsForm.tsx:16
 msgid "スタンプ数"
@@ -3480,7 +3488,7 @@ msgstr "マップ"
 msgid "マップをひらく"
 msgstr "マップをひらく"
 
-#: src/components/SpotSheet.tsx:160
+#: src/components/SpotSheet.tsx:172
 msgid "まわりにあるもの"
 msgstr "まわりにあるもの"
 
@@ -4727,7 +4735,7 @@ msgid "最初の場所を見る"
 msgstr "最初の場所を見る"
 
 #: src/components/NearestPlaces.tsx:37
-#: src/components/SpotSheet.tsx:171
+#: src/components/SpotSheet.tsx:183
 msgid "最寄り"
 msgstr "最寄り"
 
@@ -4761,7 +4769,7 @@ msgstr "最高 {highest}m"
 #: src/components/admin/useChecklistLabels.ts:19
 #: src/components/landing/HeroSlides.tsx:68
 #: src/components/SpotGallery.tsx:16
-#: src/components/SpotSheet.tsx:150
+#: src/components/SpotSheet.tsx:162
 #: src/components/Zoomable.tsx:100
 msgid "写真"
 msgstr "写真"
@@ -4902,7 +4910,7 @@ msgstr "出かける前に"
 #: src/components/landing/TrailNotices.tsx:66
 #: src/components/landing/useHomeWords.ts:24
 #: src/components/RouteView.tsx:307
-#: src/components/SpotSheet.tsx:180
+#: src/components/SpotSheet.tsx:192
 msgid "出かける前に、公式の最新情報を確認してください。"
 msgstr "出かける前に、公式の最新情報を確認してください。"
 
@@ -4922,7 +4930,7 @@ msgstr "出どころの文字"
 #: src/components/admin/RouteEditor.tsx:306
 #: src/components/admin/RouteEditor.tsx:307
 #: src/components/RouteView.tsx:216
-#: src/components/SpotSheet.tsx:139
+#: src/components/SpotSheet.tsx:151
 msgid "出典"
 msgstr "出典"
 
@@ -6180,7 +6188,7 @@ msgstr "押した日時　{when}"
 msgid "押しました"
 msgstr "押しました"
 
-#: src/components/SpotSheet.tsx:97
+#: src/components/SpotSheet.tsx:108
 msgid "押し方: 場所の近くで、ボタンを押します（位置情報）"
 msgstr "押し方: 場所の近くで、ボタンを押します（位置情報）"
 
@@ -6784,7 +6792,7 @@ msgstr "歴史"
 #: src/components/admin/RouteEditor.tsx:296
 #: src/components/admin/useChecklistLabels.ts:17
 #: src/components/RouteView.tsx:200
-#: src/components/SpotSheet.tsx:123
+#: src/components/SpotSheet.tsx:135
 msgid "歴史・由来"
 msgstr "歴史・由来"
 
@@ -8119,7 +8127,7 @@ msgstr "詳細"
 #: src/components/admin/HomeTextFields.tsx:36
 #: src/components/admin/InfoTip.tsx:22
 #: src/components/admin/PlacePanel.tsx:126
-#: src/components/SpotSheet.tsx:106
+#: src/components/SpotSheet.tsx:118
 msgid "説明"
 msgstr "説明"
 

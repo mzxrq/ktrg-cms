@@ -1440,6 +1440,7 @@ describe.skipIf(!url)("seed on real PostgreSQL", () => {
           const withStamps = list.filter((r) => r.kind === "course").flatMap((r) => r.courses.flatMap((c) => c.spots));
           expect(withStamps.length).toBeGreaterThan(0);
           expect(withStamps.filter((s) => s.status === "closed")).toHaveLength(1);
+          expect(withStamps.every((s) => s.nameJa.length > 0)).toBe(true); // named, so a rally of courses can list its places
           expect(list.every((r) => (r.kind === "places" ? r.courses.length === 0 : r.places.length === 0))).toBe(true);
         });
       });

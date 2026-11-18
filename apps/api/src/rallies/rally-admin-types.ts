@@ -35,7 +35,7 @@ export interface PublicRally {
   nameEn: string | null;
   sortOrder: number;
   places: { id: string; routeId: string; nameJa: string; nameEn: string | null }[];
-  courses: { routeId: string; nameJa: string; nameEn: string | null; spots: { id: string; status: "open" | "caution" | "closed" | "info" }[] }[];
+  courses: { routeId: string; nameJa: string; nameEn: string | null; spots: { id: string; status: "open" | "caution" | "closed" | "info"; nameJa: string; nameEn: string | null }[] }[];
 }
 
 /** A stamp place that is, or could be, in a rally of places. */

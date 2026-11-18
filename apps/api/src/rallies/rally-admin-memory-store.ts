@@ -63,7 +63,7 @@ export function createMemoryRallyAdminStore(audit: AuditWriter, opts: { now?: ()
           }
           const courses = ids.map((c) => {
             const stamps = [...places.values()].filter((p) => p.routeId === c && p.stampable && p.published).sort((a, b) => a.sortOrder - b.sortOrder);
-            return { routeId: c, nameJa: routes.get(c)!.nameJa, nameEn: routes.get(c)!.nameEn, spots: stamps.map((p) => ({ id: p.spotId, status: p.status ?? ("open" as const) })) };
+            return { routeId: c, nameJa: routes.get(c)!.nameJa, nameEn: routes.get(c)!.nameEn, spots: stamps.map((p) => ({ id: p.spotId, status: p.status ?? ("open" as const), nameJa: p.nameJa, nameEn: p.nameEn })) };
           });
           return { ...base, places: [], courses };
         });
