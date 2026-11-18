@@ -68,6 +68,7 @@ export function FuriganaOverview() {
   const [unread, setUnread] = useState<Unread[]>([]);
   const [picked, setPicked] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const [error, setError] = useState<ErrorKey | null>(null);
   // The suggestion being corrected in place, and the reading typed for it.
   const [fixing, setFixing] = useState<{ id: string; reading: string } | null>(null);
@@ -98,11 +99,26 @@ export function FuriganaOverview() {
     router.refresh(); // the list of shown readings below now holds them
   }
 
+  /** In short steps (each a fraction of a second), so the site keeps answering meanwhile; then the gathered words at once. */
   async function refresh() {
     if (busy) return;
     setBusy(true);
-    const r = await call<{ added: number; removed: number }>("POST", "refresh");
+    const words: { word: string; reading: string }[] = [];
+    for (let from: number | null = 0; from !== null; ) {
+      const b: Answer<{ words: typeof words; next: number | null; total: number }> = await call("POST", "refresh/read", { from });
+      // A failed step stops here: applying part of the words would drop waiting suggestions that are still right.
+      if (!b.ok || (b.data.next !== null && b.data.next <= from)) {
+        setBusy(false);
+        setProgress(null);
+        return showToast({ kind: "error", text: messages[b.ok ? "failed" : b.key] });
+      }
+      words.push(...b.data.words);
+      from = b.data.next;
+      setProgress({ done: from ?? b.data.total, total: b.data.total });
+    }
+    const r = await call<{ added: number; removed: number }>("POST", "refresh/apply", { words });
     setBusy(false);
+    setProgress(null);
     if (!r.ok) return showToast({ kind: "error", text: messages[r.key] });
     const n = r.data.added;
     showToast({ kind: "ok", text: n > 0 ? t`辞書の読みが${n}件ふえました。確認してください。` : t`新しい言葉はありませんでした。` });
@@ -161,6 +177,9 @@ export function FuriganaOverview() {
             {t`辞書で読み直す`}
           </button>
         </div>
+        <p aria-live="polite" className="text-lg tabular-nums empty:hidden">
+          {progress ? t`読み直しています… ${progress.done} / ${progress.total} 件の文章` : ""}
+        </p>
         <p className="text-base text-muted">{t`サイトの文章を辞書が読んで、読みを考えたものです。人が確かめて承認するまで、訪れる人には表示されません。同じ字でも読み方が変わる言葉は、文に合う読みか確かめてください。1時間ごとにも読み直します。`}</p>
         {pending.length === 0 ? (
           <p className="text-lg">{t`確認待ちの読みはありません。`}</p>

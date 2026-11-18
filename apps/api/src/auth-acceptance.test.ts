@@ -387,6 +387,8 @@ describe("user B cannot touch user A", () => {
   /** A well-formed body for each logged-in route that needs one (validation runs before the guard). */
   const BODIES: Record<string, () => unknown> = {
     "POST /api/v1/admin/furigana/approve": () => ({ ids: [crypto.randomUUID()] }),
+    "POST /api/v1/admin/furigana/refresh/read": () => ({ from: 0 }),
+    "POST /api/v1/admin/furigana/refresh/apply": () => ({ words: [] }),
     "PATCH /api/v1/auth/passkeys/:id": () => ({ label: "x" }),
     "PUT /api/v1/auth/password": () => ({ password: "yamabushi-walk" }),
     "PUT /api/v1/admin/routes/:id/shared-spots/:spotId": () => ({ position: 0 }),

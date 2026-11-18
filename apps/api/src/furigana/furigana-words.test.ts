@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import { createMemoryAuditWriter } from "../audit/audit-log";
 import { createMemoryContentStore } from "../content/content-memory-store";
-import { alignReading, createFuriganaService, createMemoryFuriganaStore, nameReadings, publicFuriganaRoutes, siteTexts, unreadNames } from "./furigana-words";
-import type { Tokenizer } from "./dictionary";
+import { alignReading, BATCH_CHARS, createFuriganaService, createMemoryFuriganaStore, nameReadings, publicFuriganaRoutes, siteTexts, unreadNames } from "./furigana-words";
+import { dictionaryWords, type Tokenizer } from "./dictionary";
 
 describe("alignReading", () => {
   test("a whole-word reading goes over the kanji it belongs to", () => {
@@ -153,6 +153,43 @@ describe("dictionary suggestions", () => {
     expect(await s.refresh(null)).toEqual({ added: 0, removed: 1 });
     expect(await s.pending()).toEqual([]);
     expect(await s.words()).toEqual({ 祠: "祠{ほこら}", 鎖場: "鎖場{くさりば}" });
+  });
+
+  test("batches: a text longer than a batch is a batch of its own, and every batch together finds what one pass does", async () => {
+    const long = "祠".repeat(BATCH_CHARS + 5);
+    const texts = ["渓谷", long, "鎖場", "渓谷"];
+    const { s } = setup(texts);
+    const batches: { words: { word: string }[]; next: number | null }[] = [];
+    for (let from: number | null = 0; from !== null; ) {
+      const b = await s.readBatch(from);
+      expect(b.next === null || b.next > from).toBe(true); // always moves on
+      batches.push(b);
+      from = b.next;
+    }
+    expect(batches.length).toBeGreaterThan(1);
+    const gathered = batches.flatMap((b) => b.words.map((w) => w.word)).sort();
+    const onePass = [...dictionaryWords(tokenizer, texts, () => false).keys()].sort();
+    expect(gathered).toEqual(onePass);
+  });
+
+  test("apply checks every pair again: a known word, a bad reading, a plain-kana word or a repeat is left out", async () => {
+    const { s } = setup([], [{ word: "祠", reading: "ほこら" }]);
+    const r = await s.applySuggestions(null, [
+      { word: "渓谷", reading: "渓谷{けいこく}" },
+      { word: "渓谷", reading: "渓谷{べつ}" },
+      { word: "祠", reading: "祠{ほこら}" },
+      { word: "鎖場", reading: "別{くさりば}" },
+      { word: "かな", reading: "かな" },
+    ]);
+    expect(r).toEqual({ added: 1, removed: 0 });
+    expect((await s.pending()).map((p) => [p.word, p.reading])).toEqual([["渓谷", "渓谷{けいこく}"]]);
+  });
+
+  test("every pair a batch returns passes apply's check", async () => {
+    const { s } = setup(["渓谷", "鎖場", "祠"]);
+    const { words } = await s.readBatch(0);
+    expect(words.length).toBe(3);
+    expect(await s.applySuggestions(null, words)).toEqual({ added: 3, removed: 0 });
   });
 
   test("the admin table lists only a person's words", async () => {
