@@ -52,6 +52,11 @@ msgstr "（題名なし）"
 msgid "{0} · {1}km"
 msgstr "{0} · {1}km"
 
+#. placeholder {0}: nameOfKey(l.from)
+#: src/components/admin/map-editor/PlaceList.tsx:230
+msgid "{0} から、来た道を戻ります"
+msgstr "{0} から、来た道を戻ります"
+
 #. placeholder {0}: itemName(meta, group[0]!, locale)
 #. placeholder {1}: group.length
 #: src/components/admin/DuplicateFinder.tsx:64
@@ -1090,8 +1095,8 @@ msgstr "いちばん多い地域"
 msgid "いちばん多い日"
 msgstr "いちばん多い日"
 
-#: src/components/admin/map-editor/PlaceList.tsx:227
-#: src/components/admin/map-editor/PlaceList.tsx:227
+#: src/components/admin/map-editor/PlaceList.tsx:237
+#: src/components/admin/map-editor/PlaceList.tsx:237
 msgid "いちばん後ろの戻りの線を消す"
 msgstr "いちばん後ろの戻りの線を消す"
 
@@ -4778,9 +4783,9 @@ msgstr "最寄り"
 msgid "最後に押した日時　{when}"
 msgstr "最後に押した日時　{when}"
 
-#: src/components/admin/map-editor/PlaceList.tsx:217
-msgid "最後の経由地から、通った経由地をたどって戻る線です。戻る先を選んで、線を足していきます（例：14 → 5 → 4 → 1）。"
-msgstr "最後の経由地から、通った経由地をたどって戻る線です。戻る先を選んで、線を足していきます（例：14 → 5 → 4 → 1）。"
+#: src/components/admin/map-editor/PlaceList.tsx:248
+msgid "最後の経由地から、来た道を戻るときは、戻る先を選びます（例：14 → 5 → 4 → 1）。線はコースの道をそのまま使います。"
+msgstr "最後の経由地から、来た道を戻るときは、戻る先を選びます（例：14 → 5 → 4 → 1）。線はコースの道をそのまま使います。"
 
 #: src/components/pages/PageViews.tsx:158
 msgid "最終更新"
@@ -6144,10 +6149,6 @@ msgstr "情報"
 msgid "情報源を入れないと、「確認した」は保存されません。"
 msgstr "情報源を入れないと、「確認した」は保存されません。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:254
-msgid "戻りの線を足す"
-msgstr "戻りの線を足す"
-
 #: src/components/auth/LoginFlow.tsx:91
 #: src/components/auth/LoginFlow.tsx:137
 #: src/components/auth/RegisterFlow.tsx:144
@@ -6158,17 +6159,21 @@ msgstr "戻りの線を足す"
 msgid "戻る"
 msgstr "戻る"
 
-#: src/components/admin/map-editor/PlaceList.tsx:237
+#: src/components/admin/map-editor/PlaceList.tsx:229
+msgid "戻る：{to}"
+msgstr "戻る：{to}"
+
+#: src/components/admin/map-editor/PlaceList.tsx:250
 msgid "戻る先"
 msgstr "戻る先"
 
-#: src/components/admin/map-editor/PlaceList.tsx:238
+#: src/components/admin/map-editor/PlaceList.tsx:251
 msgid "戻る先を選ぶ"
 msgstr "戻る先を選ぶ"
 
-#: src/components/admin/map-editor/PlaceList.tsx:216
-msgid "戻る道"
-msgstr "戻る道"
+#: src/components/admin/map-editor/PlaceList.tsx:267
+msgid "戻る道を足す"
+msgstr "戻る道を足す"
 
 #: src/components/admin/CourseAreaEditor.tsx:192
 msgid "手で決める"
@@ -7695,7 +7700,7 @@ msgid "線を引くと、自動で入ります。"
 msgstr "線を引くと、自動で入ります。"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1123
-#: src/components/admin/map-editor/PlaceList.tsx:224
+#: src/components/admin/map-editor/PlaceList.tsx:234
 msgid "線を描く"
 msgstr "線を描く"
 

@@ -148,7 +148,29 @@ export function backChoices(stops: readonly Stop[], legs: readonly Leg[]): { end
 }
 
 /** A new return leg: a straight stretch between two stops, to be drawn. */
-export const backLeg = (from: Stop, to: Stop): Leg => ({ from: from.key, to: to.key, points: [[from.lng, from.lat], [to.lng, to.lat]], back: true });
+/**
+ * A return leg from `from` back to an earlier stop `to`: the route's own way between them, walked backwards (each leg on the way
+ * reversed; a stretch with no leg drawn is straight). Covering exactly one ridden leg (a ferry), it is ridden too. A stop not on
+ * the route, or `to` not before `from`, gives a straight line.
+ */
+export function backLeg(from: Stop, to: Stop, stops: readonly Stop[] = [], legs: readonly Leg[] = []): Leg {
+  const a = stops.findIndex((s) => s.key === to.key);
+  const b = stops.findIndex((s) => s.key === from.key);
+  const straight: Leg = { from: from.key, to: to.key, points: [at(from), at(to)], back: true };
+  if (a < 0 || b <= a) return straight;
+  const ahead: LngLatEle[] = [];
+  const own: Leg[] = [];
+  for (let i = a + 1; i <= b; i++) {
+    const leg = legs.find((l) => l.from === stops[i - 1]!.key && l.to === stops[i]!.key && !l.back && !l.side);
+    if (leg) own.push(leg);
+    for (const p of leg && leg.points.length >= 2 ? leg.points : [at(stops[i - 1]!), at(stops[i]!)]) if (!ahead.length || !sameSpot(ahead.at(-1)!, p)) ahead.push(p);
+  }
+  const ride = b - a === 1 ? own[0]?.ride : undefined;
+  return { ...straight, points: ahead.reverse().map((p) => [...p] as LngLatEle), ...(ride ? { ride } : {}) };
+}
+
+/** A return leg that is still the straight line it started as (nothing drawn on it yet). */
+export const isStraightBack = (leg: Leg | undefined): boolean => leg?.back === true && leg.points.length === 2 && !leg.anchors?.length && !leg.via?.length;
 
 const at = (s: Stop): LngLatEle => [s.lng, s.lat];
 const sameSpot = (a: readonly (number | undefined)[], b: readonly (number | undefined)[]) => a[0] === b[0] && a[1] === b[1];

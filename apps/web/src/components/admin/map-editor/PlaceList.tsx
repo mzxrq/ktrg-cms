@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { pointKinds, type PointKind } from "@/lib/point-kinds";
 import { useKindLabels } from "../PlacePanel";
-import { TrashIcon } from "./icons";
+import { TrashIcon, UndoIcon } from "./icons";
 import { ArrowDownIcon, ArrowUpIcon, ChevronDownIcon, ChevronUpIcon, InfoIcon, MountainIcon, PlusIcon, RouteIcon, StampIcon } from "@/components/icons";
 import { PinIcon } from "./icons";
 import type { MapEditorProps } from "./MapEditor";
@@ -36,7 +36,7 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
   locating: string | null;
   onLocate: (key: string) => void;
   /** The way back over earlier stops (戻る道): its legs so far (stop keys), the stops it may go back to next, and what to do. */
-  back: { legs: { from: string; to: string }[]; options: string[]; onAdd: (toKey: string) => void; onRemoveLast: () => void; onDraw: (index: number) => void };
+  back: { legs: { from: string; to: string }[]; activeIndex: number; options: string[]; onAdd: (toKey: string) => void; onRemoveLast: () => void; onDraw: (index: number) => void };
 }) {
   const { t } = useLingui();
   const kindName = useKindLabels();
@@ -210,29 +210,42 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
             </li>
           );
         })}
-      </ol>
-      {back.legs.length > 0 || back.options.length > 0 ? (
-        <div className="mt-4 flex flex-col gap-2 rounded-lg bg-paper p-3">
-          <h3 className="text-base font-bold">{t`戻る道`}</h3>
-          <p className="text-base text-muted">{t`最後の経由地から、通った経由地をたどって戻る線です。戻る先を選んで、線を足していきます（例：14 → 5 → 4 → 1）。`}</p>
-          {back.legs.length > 0 ? (
-            <ol className="flex flex-col gap-1">
-              {back.legs.map((l, i) => (
-                <li key={`${l.from}>${l.to}`} className="flex flex-wrap items-center gap-2 text-base">
-                  <span className="min-w-0 flex-1">{`${nameOfKey(l.from)} → ${nameOfKey(l.to)}`}</span>
-                  <button type="button" onClick={() => back.onDraw(i)} className={chipToggle(false)}>
+        {/* The way back (戻る道) goes on in the same list, a row per return leg, after the last waypoint: the stop it returns to,
+            in the order walked (14 → 5 → 4 → 1). Choosing a row picks its line on the map, as choosing a waypoint does. */}
+        {back.legs.map((l, i) => {
+          const open = i === back.activeIndex;
+          const to = nameOfKey(l.to);
+          return (
+            <li
+              key={`back-${l.from}>${l.to}`}
+              onClick={() => back.onDraw(i)}
+              className={`flex min-w-0 flex-col gap-1 rounded-xl border bg-paper p-3 ${open ? "border-ink ring-2 ring-ink" : "border-line"}`}
+            >
+              <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3">
+                <span aria-hidden="true" className="flex size-9 shrink-0 items-center justify-center rounded-full border-2 border-dashed border-ink bg-paper">
+                  <UndoIcon />
+                </span>
+                <p className="min-w-0 text-lg font-bold">
+                  {t`戻る：${to}`}
+                  <span className="block text-base font-normal text-muted">{t`${nameOfKey(l.from)} から、来た道を戻ります`}</span>
+                </p>
+                <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                  <button type="button" onClick={() => back.onDraw(i)} className={chipToggle(open)}>
                     {t`線を描く`}
                   </button>
                   {i === back.legs.length - 1 ? (
-                    <button type="button" onClick={back.onRemoveLast} aria-label={t`いちばん後ろの戻りの線を消す`} title={t`いちばん後ろの戻りの線を消す`} className={chipToggle(false)}>
+                    <button type="button" onClick={back.onRemoveLast} aria-label={t`いちばん後ろの戻りの線を消す`} title={t`いちばん後ろの戻りの線を消す`} className={`${iconButton(false)} text-danger`}>
                       <TrashIcon />
                     </button>
                   ) : null}
-                </li>
-              ))}
-            </ol>
-          ) : null}
-          {back.options.length > 0 ? (
+                </div>
+              </div>
+            </li>
+          );
+        })}
+        {back.options.length > 0 ? (
+          <li className="flex min-w-0 flex-col gap-2 rounded-xl border-2 border-dashed border-line p-3">
+            <p className="text-base text-muted">{t`最後の経由地から、来た道を戻るときは、戻る先を選びます（例：14 → 5 → 4 → 1）。線はコースの道をそのまま使います。`}</p>
             <div className="flex flex-wrap items-center gap-2">
               <select aria-label={t`戻る先`} value={backTo} onChange={(e) => setBackTo(e.target.value)} className={fieldClass}>
                 <option value="">{t`戻る先を選ぶ`}</option>
@@ -251,12 +264,12 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
                 }}
                 className={chipToggle(backTo !== "")}
               >
-                {t`戻りの線を足す`}
+                <UndoIcon /> {t`戻る道を足す`}
               </button>
             </div>
-          ) : null}
-        </div>
-      ) : null}
+          </li>
+        ) : null}
+      </ol>
     </section>
   );
 }

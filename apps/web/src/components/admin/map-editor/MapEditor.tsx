@@ -8,7 +8,7 @@ import { isAllSmooth } from "@/lib/admin/drawn-path";
 import { parseGpx, type GpxWaypoint } from "@/lib/admin/gpx";
 import { applyGpxElevations } from "@/lib/admin/gpx-elevation";
 import { LEG_HIT, LEG_SOURCE, legFeatures, legLayers } from "@/lib/admin/leg-map";
-import { backChoices, backLeg, backPairs, guideRoute, insertAnchor, insertGuidePoint, legFromPath, legOf, MAX_GUIDE_POINTS, moveAnchor, moveGuidePoint, pairId, pairsOf, pathOfLeg, pathStops, pointsFromAnchors, removeAnchors, removeGuidePoint, RIDE_MODES, setAllCurves, sidePairs, toggleAnchorCurve, type GuidePoint, type Leg, type Path, type RideMode, type Stop } from "@/lib/admin/legs";
+import { backChoices, backLeg, backPairs, isStraightBack, guideRoute, insertAnchor, insertGuidePoint, legFromPath, legOf, MAX_GUIDE_POINTS, moveAnchor, moveGuidePoint, pairId, pairsOf, pathOfLeg, pathStops, pointsFromAnchors, removeAnchors, removeGuidePoint, RIDE_MODES, setAllCurves, sidePairs, toggleAnchorCurve, type GuidePoint, type Leg, type Path, type RideMode, type Stop } from "@/lib/admin/legs";
 import { simplify, type LngLatEle } from "@/lib/admin/line";
 import { legTime } from "@/lib/leg-times";
 import { searchPlaces, type PlaceHit } from "@/lib/admin/place-search";
@@ -1227,12 +1227,13 @@ export function MapEditor(props: MapEditorProps) {
           insertAfter={insertAfter}
           back={{
             legs: pairs.filter((p) => p.back).map((p) => ({ from: p.from.key, to: p.to.key })),
+            activeIndex: pairs.filter((p) => p.back).findIndex((p) => pairId(p) === activeId),
             options: backChoices(stops, props.legs).options.map((st) => st.key),
             onAdd: (toKey) => {
               const { end, options } = backChoices(stops, props.legs);
               const to = options.find((st) => st.key === toKey);
               if (!end || !to) return;
-              setLeg(backLeg(end, to));
+              setLeg(backLeg(end, to, stops, props.legs));
               setActiveId(pairId({ from: end, to, back: true }));
               setAfterOff(false);
               setNote(null);
@@ -1245,6 +1246,8 @@ export function MapEditor(props: MapEditorProps) {
             onDraw: (index) => {
               const pair = pairs.filter((p) => p.back)[index];
               if (!pair) return;
+              // A return leg still straight (made before it followed the route, or nothing drawn yet) starts on the route's own way back.
+              if (isStraightBack(legOf(props.legs, pair.from.key, pair.to.key))) setLeg(backLeg(pair.from, pair.to, stops, props.legs));
               setActiveId(pairId(pair));
               setAfterOff(false);
               setNote(null);
