@@ -14,7 +14,7 @@ export function AdminShell({ name, role, lists, children }: { name: string | nul
       aside={
         <>
           {/* The site link left of the fold button; folded, they stack. */}
-          <div className="mb-3 flex items-center gap-2 lg:group-data-[folded=true]:flex-col">
+          <div className="flex items-center gap-2 lg:mb-3 lg:group-data-[folded=true]:flex-col">
             <PublicSiteLink />
             <SidebarToggle />
           </div>

@@ -985,7 +985,7 @@ msgid "アクセス数"
 msgstr "Visits"
 
 #: src/app/(admin)/admin/visits/page.tsx:52
-#: src/components/admin/AdminNav.tsx:41
+#: src/components/admin/AdminNav.tsx:76
 msgid "アクセス解析"
 msgstr "Analytics"
 
@@ -1415,7 +1415,7 @@ msgstr "Stay as a guest"
 #: src/app/(public)/blog/[id]/page.tsx:106
 #: src/app/(public)/routes/page.tsx:16
 #: src/app/(public)/sitemap/page.tsx:71
-#: src/components/admin/AdminNav.tsx:39
+#: src/components/admin/AdminNav.tsx:74
 #: src/components/admin/FuriganaOverview.tsx:127
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/Journey.tsx:56
@@ -1476,7 +1476,7 @@ msgstr "A rally of courses: complete when every chosen course is finished."
 msgid "コースでつくる"
 msgstr "Make it from courses"
 
-#: src/components/admin/AdminNav.tsx:54
+#: src/components/admin/AdminNav.tsx:89
 msgid "コースとラリー"
 msgstr "Courses and rallies"
 
@@ -2140,7 +2140,7 @@ msgstr "Remove this face or fingerprint login?"
 msgid "コピーしました"
 msgstr "Copied"
 
-#: src/components/admin/AdminNav.tsx:56
+#: src/components/admin/AdminNav.tsx:91
 msgid "コミュニティ"
 msgstr "Community"
 
@@ -2238,7 +2238,7 @@ msgstr "View on site"
 msgid "サイトに反映しますか？"
 msgstr "Publish this to the site?"
 
-#: src/components/admin/AdminNav.tsx:55
+#: src/components/admin/AdminNav.tsx:90
 msgid "サイトの内容"
 msgstr "Site content"
 
@@ -2628,7 +2628,7 @@ msgid "たたむ質問"
 msgstr "Folding question"
 
 #: src/app/(admin)/admin/page.tsx:47
-#: src/components/admin/AdminNav.tsx:36
+#: src/components/admin/AdminNav.tsx:71
 msgid "ダッシュボード"
 msgstr "Dashboard"
 
@@ -3223,7 +3223,7 @@ msgstr "Profile photo"
 
 #: src/app/(admin)/admin/pages/page.tsx:30
 #: src/app/(public)/blog/page.tsx:88
-#: src/components/admin/AdminNav.tsx:45
+#: src/components/admin/AdminNav.tsx:80
 #: src/components/Pager.tsx:19
 msgid "ページ"
 msgstr "Pages"
@@ -3567,7 +3567,7 @@ msgstr "Main photo"
 msgid "めぐる場所"
 msgstr "Places to visit"
 
-#: src/components/admin/AdminNav.tsx:78
+#: src/components/admin/AdminNav.tsx:115
 #: src/components/SiteHeader.tsx:208
 #: src/components/TabBar.tsx:152
 msgid "メニュー"
@@ -3594,6 +3594,10 @@ msgstr "Scroll down the menu and tap \"Add to Home Screen\"."
 #: src/components/admin/AdminFrame.tsx:67
 msgid "メニューを出す"
 msgstr "Show menu"
+
+#: src/components/admin/AdminNav.tsx:128
+msgid "メニューを閉じる"
+msgstr "Close menu"
 
 #: src/components/admin/AdminFrame.tsx:67
 msgid "メニューを隠す"
@@ -3741,7 +3745,7 @@ msgstr "Light"
 #: src/app/(public)/rallies/page.tsx:20
 #: src/app/(public)/rallies/page.tsx:35
 #: src/app/(public)/sitemap/page.tsx:91
-#: src/components/admin/AdminNav.tsx:40
+#: src/components/admin/AdminNav.tsx:75
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/HomeProgress.tsx:110
 #: src/components/pages/PageViews.tsx:33
@@ -5539,7 +5543,7 @@ msgid "地名や記号が大きく、はっきり読める地図です。色の�
 msgstr "A map with large, clear place names and symbols. The colour and contrast sliders do not apply to it. Names may be missing when there is no signal."
 
 #: src/app/(admin)/admin/map/page.tsx:26
-#: src/components/admin/AdminNav.tsx:38
+#: src/components/admin/AdminNav.tsx:73
 #: src/components/map/TrailMap.tsx:400
 #: src/components/navigation/NavigationHud.tsx:486
 #: src/components/RouteView.tsx:126
@@ -5604,7 +5608,7 @@ msgid "地図の見せ方"
 msgstr "How the map is shown"
 
 #: src/app/(admin)/admin/settings/page.tsx:21
-#: src/components/admin/AdminNav.tsx:48
+#: src/components/admin/AdminNav.tsx:83
 #: src/components/admin/SiteSettingsForm.tsx:81
 msgid "地図の見た目"
 msgstr "Map appearance"
@@ -7130,7 +7134,7 @@ msgid "直す"
 msgstr "Correct"
 
 #: src/app/(admin)/admin/attention/page.tsx:80
-#: src/components/admin/AdminNav.tsx:42
+#: src/components/admin/AdminNav.tsx:77
 msgid "直すところ"
 msgstr "To fix"
 
@@ -7281,7 +7285,8 @@ msgstr "You can skip this."
 msgid "箇条書き"
 msgstr "Bullet list"
 
-#: src/components/admin/AdminNav.tsx:70
+#: src/components/admin/AdminNav.tsx:105
+#: src/components/admin/AdminNav.tsx:123
 msgid "管理メニュー"
 msgstr "Admin menu"
 
@@ -8341,7 +8346,7 @@ msgstr "Closures and the like will be shown here."
 msgid "遊び方"
 msgstr "How to play"
 
-#: src/components/admin/AdminNav.tsx:57
+#: src/components/admin/AdminNav.tsx:92
 msgid "運営"
 msgstr "Running the site"
 

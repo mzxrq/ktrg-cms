@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import type { ReactNode } from "react";
-import { ArticleIcon, BellIcon, ChartIcon, ChevronDownIcon, ChevronUpIcon, ClockIcon, CommentIcon, DocumentIcon, FlagIcon, FuriganaIcon, GearIcon, GlobeIcon, ImageIcon, MapIcon, PencilIcon, PinIcon, RouteIcon, ShopIcon, StampIcon, UserIcon, WarningIcon } from "@/components/icons";
+import { ArticleIcon, BellIcon, ChartIcon, ChevronDownIcon, ChevronUpIcon, ClockIcon, CloseIcon, CommentIcon, DocumentIcon, FlagIcon, FuriganaIcon, GearIcon, GlobeIcon, ImageIcon, MapIcon, MenuIcon, PencilIcon, PinIcon, RouteIcon, ShopIcon, StampIcon, UserIcon, WarningIcon } from "@/components/icons";
 
 /** The picture beside each list in the menu; a list the app does not know yet gets a plain document. */
 const LIST_ICONS: Record<string, ReactNode> = {
@@ -24,12 +24,47 @@ const LIST_ICONS: Record<string, ReactNode> = {
 
 // The side menu of the admin area. The screens that exist are links (the generic lists come from the API, see
 // lib/admin/lists); the others are listed so the editors can see what is coming, and are not links yet. On a narrow
-// screen the list folds behind a button, so it does not push the page down.
+// screen it is a panel that slides over the page from the left (2026-11-18, user: opening it used to push the page down),
+// closed by ✕, a tap beside it, Escape or following a link.
 export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; title: string }[]; isAdmin: boolean; footer: ReactNode }) {
   const { t } = useLingui();
   const pathname = usePathname() ?? "";
   const base = "/admin";
   const [open, setOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const closeButton = useRef<HTMLButtonElement>(null);
+  // Following a link closes the panel (adjusted while rendering, the way React recommends).
+  const [seenPath, setSeenPath] = useState(pathname);
+  if (seenPath !== pathname) {
+    setSeenPath(pathname);
+    setOpen(false);
+  }
+  // While open: focus in the panel, Escape closes, the page behind neither scrolls nor takes focus; a wide screen closes it.
+  useEffect(() => {
+    if (!open) return;
+    closeButton.current?.focus();
+    const page = document.getElementById("main");
+    page?.setAttribute("inert", "");
+    const scroll = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const wide = window.matchMedia("(min-width: 64rem)");
+    const onWide = () => {
+      if (wide.matches) setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    wide.addEventListener("change", onWide);
+    const button = menuButton.current;
+    return () => {
+      page?.removeAttribute("inert");
+      document.body.style.overflow = scroll;
+      document.removeEventListener("keydown", onKey);
+      wide.removeEventListener("change", onWide);
+      button?.focus();
+    };
+  }, [open]);
 
   const ready = [
     // The dashboard is the admin's home (an editor's home is the route list); its page and the API are for an admin only.
@@ -69,16 +104,32 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
   return (
     <nav aria-label={t`管理メニュー`} className="flex flex-col gap-1">
       <button
+        ref={menuButton}
         type="button"
         aria-expanded={open}
         aria-controls="admin-menu"
-        onClick={() => setOpen((v) => !v)}
-        className="tap-target flex items-center justify-between rounded-full border border-line px-4 text-lg font-bold lg:hidden"
+        onClick={() => setOpen(true)}
+        className="tap-target flex w-fit items-center gap-2 rounded-full border border-line px-4 text-lg font-bold lg:hidden"
       >
+        <MenuIcon />
         {t`メニュー`}
-        {open ? <ChevronUpIcon size={22} /> : <ChevronDownIcon size={22} />}
       </button>
-      <div id="admin-menu" className={`${open ? "flex" : "hidden"} flex-col gap-1 lg:flex`}>
+      {/* The dimmed page beside the open panel: a tap there closes it (the ✕ is the keyboard's way). */}
+      {open ? <button type="button" tabIndex={-1} aria-hidden onClick={() => setOpen(false)} className="fixed inset-0 z-40 bg-black/50 lg:hidden" /> : null}
+      <div
+        id="admin-menu"
+        role={open ? "dialog" : undefined}
+        aria-modal={open || undefined}
+        aria-label={open ? t`管理メニュー` : undefined}
+        className={`${open ? "fixed inset-y-0 left-0 z-50 flex w-80 max-w-[85vw] overflow-y-auto overscroll-contain bg-paper p-4 shadow-xl" : "hidden"} flex-col gap-1 lg:static lg:z-auto lg:flex lg:w-auto lg:max-w-none lg:overflow-visible lg:bg-transparent lg:p-0 lg:shadow-none`}
+      >
+        {open ? (
+          <div className="mb-2 flex justify-end lg:hidden">
+            <button ref={closeButton} type="button" onClick={() => setOpen(false)} aria-label={t`メニューを閉じる`} className="tap-target inline-flex items-center justify-center rounded-full border border-line text-ink hover:bg-surface">
+              <CloseIcon />
+            </button>
+          </div>
+        ) : null}
         {sections.map((group, i) => (
           <div key={i} className={`flex flex-col gap-1 ${i > 0 ? "mt-2 border-t border-line pt-3" : ""}`}>
             {group.title ? (
@@ -87,7 +138,7 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
                 aria-expanded={!shut.has(i)}
                 aria-controls={`admin-menu-${i}`}
                 onClick={() => flip(i)}
-                className="tap-target flex items-center justify-between rounded-full px-4 text-base font-bold text-muted hover:bg-surface lg:group-data-[folded=true]:hidden"
+                className="tap-target flex items-center justify-between gap-2 rounded-full px-4 text-left text-base font-bold text-muted hover:bg-surface lg:group-data-[folded=true]:hidden"
               >
                 {group.title}
                 {shut.has(i) ? <ChevronDownIcon size={20} /> : <ChevronUpIcon size={20} />}
