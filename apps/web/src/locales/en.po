@@ -239,7 +239,7 @@ msgstr "Move {city} down"
 msgid "{city}を削除"
 msgstr "Remove {city}"
 
-#: src/components/admin/useRouteDraft.ts:356
+#: src/components/admin/useRouteDraft.ts:350
 msgid "{count}か所の公開をやめました。コースは「準備中」として一覧に残ります。"
 msgstr "Unpublished {count} waypoints. The course stays in the list as coming soon."
 
@@ -974,7 +974,7 @@ msgid "アクセス数"
 msgstr "Visits"
 
 #: src/app/(admin)/admin/visits/page.tsx:53
-#: src/components/admin/AdminNav.tsx:39
+#: src/components/admin/AdminNav.tsx:75
 msgid "アクセス解析"
 msgstr "Analytics"
 
@@ -1399,7 +1399,7 @@ msgstr "Stay as a guest"
 #: src/app/(public)/blog/[id]/page.tsx:106
 #: src/app/(public)/routes/page.tsx:16
 #: src/app/(public)/sitemap/page.tsx:71
-#: src/components/admin/AdminNav.tsx:37
+#: src/components/admin/AdminNav.tsx:73
 #: src/components/admin/FuriganaOverview.tsx:127
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/Journey.tsx:56
@@ -1460,7 +1460,7 @@ msgstr "A rally of courses: complete when every chosen course is finished."
 msgid "コースでつくる"
 msgstr "Make it from courses"
 
-#: src/components/admin/AdminNav.tsx:52
+#: src/components/admin/AdminNav.tsx:88
 msgid "コースとラリー"
 msgstr "Courses and rallies"
 
@@ -2016,7 +2016,7 @@ msgstr "This waypoint has no position yet. Set it on the map."
 msgid "この経由地は公開されています。"
 msgstr "This waypoint is published."
 
-#: src/components/admin/useRouteDraft.ts:327
+#: src/components/admin/useRouteDraft.ts:321
 #: src/components/admin/WaypointEditor.tsx:69
 msgid "この経由地は公開をやめました。"
 msgstr "This waypoint was taken off the site."
@@ -2025,7 +2025,7 @@ msgstr "This waypoint was taken off the site."
 msgid "この経由地を保存"
 msgstr "Save this waypoint"
 
-#: src/components/admin/useRouteDraft.ts:328
+#: src/components/admin/useRouteDraft.ts:322
 msgid "この経由地を保存しました。"
 msgstr "This waypoint was saved."
 
@@ -2088,7 +2088,7 @@ msgstr "Remove this face or fingerprint login?"
 msgid "コピーしました"
 msgstr "Copied"
 
-#: src/components/admin/AdminNav.tsx:54
+#: src/components/admin/AdminNav.tsx:90
 msgid "コミュニティ"
 msgstr "Community"
 
@@ -2186,7 +2186,7 @@ msgstr "View on site"
 msgid "サイトに反映しますか？"
 msgstr "Publish this to the site?"
 
-#: src/components/admin/AdminNav.tsx:53
+#: src/components/admin/AdminNav.tsx:89
 msgid "サイトの内容"
 msgstr "Site content"
 
@@ -2434,7 +2434,7 @@ msgstr "Stamps"
 msgid "スタンプ済み"
 msgstr "stamped"
 
-#: src/components/admin/useRouteDraft.ts:256
+#: src/components/admin/useRouteDraft.ts:250
 msgid "すでに公開をやめた経由地があります（{names}）。「経由地」タブで確かめてください。"
 msgstr "These waypoints were already unpublished: {names}. Check them in the Waypoints tab."
 
@@ -2568,7 +2568,7 @@ msgid "たたむ質問"
 msgstr "Folding question"
 
 #: src/app/(admin)/admin/page.tsx:47
-#: src/components/admin/AdminNav.tsx:36
+#: src/components/admin/AdminNav.tsx:72
 msgid "ダッシュボード"
 msgstr "Dashboard"
 
@@ -3163,7 +3163,7 @@ msgstr "Profile photo"
 
 #: src/app/(admin)/admin/pages/page.tsx:30
 #: src/app/(public)/blog/page.tsx:88
-#: src/components/admin/AdminNav.tsx:43
+#: src/components/admin/AdminNav.tsx:79
 #: src/components/Pager.tsx:19
 msgid "ページ"
 msgstr "Pages"
@@ -3499,7 +3499,7 @@ msgstr "Main photo"
 msgid "めぐる場所"
 msgstr "Places to visit"
 
-#: src/components/admin/AdminNav.tsx:76
+#: src/components/admin/AdminNav.tsx:114
 #: src/components/SiteHeader.tsx:208
 #: src/components/TabBar.tsx:152
 msgid "メニュー"
@@ -3526,6 +3526,10 @@ msgstr "Scroll down the menu and tap \"Add to Home Screen\"."
 #: src/components/admin/AdminFrame.tsx:67
 msgid "メニューを出す"
 msgstr "Show menu"
+
+#: src/components/admin/AdminNav.tsx:127
+msgid "メニューを閉じる"
+msgstr "Close menu"
 
 #: src/components/admin/AdminFrame.tsx:67
 msgid "メニューを隠す"
@@ -3673,7 +3677,7 @@ msgstr "Light"
 #: src/app/(public)/rallies/page.tsx:20
 #: src/app/(public)/rallies/page.tsx:35
 #: src/app/(public)/sitemap/page.tsx:91
-#: src/components/admin/AdminNav.tsx:38
+#: src/components/admin/AdminNav.tsx:74
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/HomeProgress.tsx:110
 #: src/components/pages/PageViews.tsx:33
@@ -4283,14 +4287,14 @@ msgstr "Save and next"
 #: src/components/admin/GoalsForm.tsx:24
 #: src/components/admin/HomeSectionsForm.tsx:36
 #: src/components/admin/RallyEditor.tsx:75
-#: src/components/admin/useRouteDraft.ts:274
+#: src/components/admin/useRouteDraft.ts:268
 #: src/components/admin/WaypointEditor.tsx:72
 #: src/components/ProfileSettings.tsx:213
 #: src/components/settings/PrefsForm.tsx:72
 msgid "保存しました。"
 msgstr "Saved."
 
-#: src/components/admin/useRouteDraft.ts:328
+#: src/components/admin/useRouteDraft.ts:322
 #: src/components/admin/WaypointEditor.tsx:72
 msgid "保存しました。この経由地は下書きに戻っています。もう一度「公開する」を押してください。"
 msgstr "Saved. This waypoint is back to a draft. Press \"Publish\" again."
@@ -4303,11 +4307,11 @@ msgstr "Saved. It is live on the site."
 msgid "保存しました。サイトの地図に反映されています。"
 msgstr "Saved. The site's map now uses it."
 
-#: src/components/admin/useRouteDraft.ts:274
+#: src/components/admin/useRouteDraft.ts:268
 msgid "保存しました。ただし、情報源が空のため、線は「確認していない」状態で保存しました。情報源を入れて、もう一度保存してください。"
 msgstr "Saved. The source was empty, so the line was saved as not checked. Enter a source and save again."
 
-#: src/components/admin/useRouteDraft.ts:275
+#: src/components/admin/useRouteDraft.ts:269
 msgid "保存しました。ただし、未完成の経由地が{heldCount}件あり、まだ保存していません（赤く示した項目）。"
 msgstr "Saved. {heldCount} unfinished waypoint(s) were not saved yet (the red items)."
 
@@ -4331,8 +4335,8 @@ msgstr "Save"
 msgid "保存すると、この経由地は下書きに戻ります。"
 msgstr "Saving turns this waypoint back into a draft."
 
-#: src/components/admin/useRouteDraft.ts:153
-#: src/components/admin/useRouteDraft.ts:294
+#: src/components/admin/useRouteDraft.ts:147
+#: src/components/admin/useRouteDraft.ts:288
 #: src/components/admin/WaypointEditor.tsx:48
 msgid "保存できません。赤く示した項目を直してください。"
 msgstr "Cannot save. Fix the items marked in red."
@@ -4484,7 +4488,7 @@ msgid "公開サイトで見る"
 msgstr "View this page on the public site"
 
 #: src/components/admin/RallyEditor.tsx:81
-#: src/components/admin/useRouteDraft.ts:371
+#: src/components/admin/useRouteDraft.ts:365
 #: src/components/admin/WaypointEditor.tsx:84
 msgid "公開しました。"
 msgstr "Published."
@@ -4526,18 +4530,18 @@ msgid "公開まで、あと{0}つ"
 msgstr "{0} more to do before it can be published"
 
 #: src/components/admin/RallyEditor.tsx:81
-#: src/components/admin/useRouteDraft.ts:371
+#: src/components/admin/useRouteDraft.ts:365
 #: src/components/admin/WaypointEditor.tsx:84
 msgid "公開をやめました。"
 msgstr "Unpublished."
 
-#: src/components/admin/useRouteDraft.ts:337
+#: src/components/admin/useRouteDraft.ts:331
 msgid "公開をやめますか？"
 msgstr "Unpublish these?"
 
 #: src/components/admin/PlacePanel.tsx:299
 #: src/components/admin/RallyEditor.tsx:131
-#: src/components/admin/useRouteDraft.ts:337
+#: src/components/admin/useRouteDraft.ts:331
 msgid "公開をやめる"
 msgstr "Unpublish"
 
@@ -4553,7 +4557,7 @@ msgstr "Unpublish"
 msgid "公開中"
 msgstr "Published"
 
-#: src/components/admin/useRouteDraft.ts:337
+#: src/components/admin/useRouteDraft.ts:331
 msgid "公開中の{count}か所を、すべて公開をやめます。コースは「準備中」として一覧に残ります。よろしいですか？"
 msgstr "Unpublish all {count} published waypoints? The course stays in the list as coming soon."
 
@@ -5347,7 +5351,7 @@ msgid "名前のついた地点が{0}か所ありました。経由地として�
 msgstr "Found {0} named points. Add them as waypoints?"
 
 #: src/components/admin/RouteEditor.tsx:125
-#: src/components/admin/useRouteDraft.ts:186
+#: src/components/admin/useRouteDraft.ts:180
 #: src/components/admin/WaypointEditor.tsx:102
 msgid "名前のない経由地"
 msgstr "Unnamed waypoint"
@@ -5518,7 +5522,7 @@ msgid "地図の見せ方"
 msgstr "How the map is shown"
 
 #: src/app/(admin)/admin/settings/page.tsx:21
-#: src/components/admin/AdminNav.tsx:46
+#: src/components/admin/AdminNav.tsx:82
 #: src/components/admin/SiteSettingsForm.tsx:81
 msgid "地図の見た目"
 msgstr "Map appearance"
@@ -7042,7 +7046,7 @@ msgid "直す"
 msgstr "Correct"
 
 #: src/app/(admin)/admin/attention/page.tsx:80
-#: src/components/admin/AdminNav.tsx:40
+#: src/components/admin/AdminNav.tsx:76
 msgid "直すところ"
 msgstr "To fix"
 
@@ -7054,7 +7058,7 @@ msgstr "To fix (admin)"
 msgid "直すところは、ありません。"
 msgstr "Nothing to fix."
 
-#: src/components/admin/useRouteDraft.ts:46
+#: src/components/admin/useRouteDraft.ts:48
 msgid "直す場所を見る"
 msgstr "Show me what to fix"
 
@@ -7193,7 +7197,8 @@ msgstr "You can skip this."
 msgid "箇条書き"
 msgstr "Bullet list"
 
-#: src/components/admin/AdminNav.tsx:68
+#: src/components/admin/AdminNav.tsx:104
+#: src/components/admin/AdminNav.tsx:122
 msgid "管理メニュー"
 msgstr "Admin menu"
 
@@ -8240,7 +8245,7 @@ msgstr "Closures and the like will be shown here."
 msgid "遊び方"
 msgstr "How to play"
 
-#: src/components/admin/AdminNav.tsx:55
+#: src/components/admin/AdminNav.tsx:91
 msgid "運営"
 msgstr "Running the site"
 
