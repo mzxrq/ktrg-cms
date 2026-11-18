@@ -118,7 +118,7 @@ msgstr "Open {0}"
 #. placeholder {0}: rows.length
 #. placeholder {0}: shown.length
 #: src/components/admin/CommentInbox.tsx:147
-#: src/components/admin/RallyList.tsx:108
+#: src/components/admin/RallyList.tsx:127
 #: src/components/admin/RouteTable.tsx:149
 #: src/components/places/DirectoryView.tsx:99
 msgid "{0}件"
@@ -193,7 +193,7 @@ msgstr "{0} views"
 
 #. placeholder {0}: data.minCityViews
 #. placeholder {1}: data.hiddenCityViews
-#: src/app/(admin)/admin/visits/page.tsx:121
+#: src/app/(admin)/admin/visits/page.tsx:117
 msgid "{0}回に満たない市・町は、名前を出さず合計だけにしています（{1}回）。"
 msgstr "Cities and towns with fewer than {0} views are not named, only counted in total ({1} views)."
 
@@ -704,7 +704,7 @@ msgstr "Per kanji"
 msgid "1文字ずつ、別の読みを入れます"
 msgstr "Type a separate reading for each kanji"
 
-#: src/app/(admin)/admin/visits/page.tsx:102
+#: src/app/(admin)/admin/visits/page.tsx:98
 msgid "1日あたり"
 msgstr "Per day"
 
@@ -1090,7 +1090,7 @@ msgstr "Bottom (above sign up)"
 msgid "いちばん多い地域"
 msgstr "Top region"
 
-#: src/app/(admin)/admin/visits/page.tsx:103
+#: src/app/(admin)/admin/visits/page.tsx:99
 msgid "いちばん多い日"
 msgstr "Busiest day"
 
@@ -1428,7 +1428,7 @@ msgstr "Courses"
 
 #. placeholder {0}: r.memberCount
 #. placeholder {0}: route.order
-#: src/components/admin/RallyList.tsx:37
+#: src/components/admin/RallyList.tsx:38
 #: src/components/blog/LinkedCards.tsx:22
 msgid "コース {0}"
 msgstr "{0} courses"
@@ -1492,8 +1492,8 @@ msgstr "A course's effort and path stars show how hard it is before you go, from
 msgid "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
 msgstr "Press a stamp at every place of a course to get that course's badge."
 
-#: src/components/admin/RallyList.tsx:36
-#: src/components/admin/RallyList.tsx:92
+#: src/components/admin/RallyList.tsx:37
+#: src/components/admin/RallyList.tsx:58
 msgid "コースのラリー"
 msgstr "Course rally"
 
@@ -1981,7 +1981,7 @@ msgstr "This text is only available in Japanese."
 msgid "この期間のスタンプは、まだありません。"
 msgstr "There are no stamps in this period yet."
 
-#: src/app/(admin)/admin/visits/page.tsx:93
+#: src/app/(admin)/admin/visits/page.tsx:89
 msgid "この期間の記録は、まだありません。"
 msgstr "There are no records for this period yet."
 
@@ -2582,7 +2582,7 @@ msgstr "Other headings"
 msgid "そのまま"
 msgstr "As is"
 
-#: src/app/(admin)/admin/visits/page.tsx:113
+#: src/app/(admin)/admin/visits/page.tsx:109
 #: src/components/AccessList.tsx:9
 #: src/components/admin/PlacePanel.tsx:57
 #: src/components/auth/AboutYou.tsx:34
@@ -2901,7 +2901,7 @@ msgstr "First-time set-up"
 msgid "はじめのラリー"
 msgstr "First rally"
 
-#: src/app/(admin)/admin/visits/page.tsx:70
+#: src/app/(admin)/admin/visits/page.tsx:67
 msgid "はじめの日"
 msgstr "From"
 
@@ -3228,7 +3228,7 @@ msgstr "Profile photo"
 msgid "ページ"
 msgstr "Pages"
 
-#: src/app/(admin)/admin/visits/page.tsx:78
+#: src/app/(admin)/admin/visits/page.tsx:75
 msgid "ページ（例：/routes や /rallies。空なら全部）"
 msgstr "Page (e.g. /routes or /rallies; empty for all)"
 
@@ -3636,9 +3636,9 @@ msgstr "Sent again. If it does not arrive, wait about a minute and try again."
 msgid "もっと広げる"
 msgstr "Show more"
 
-#: src/app/(admin)/admin/visits/page.tsx:116
-#: src/app/(admin)/admin/visits/page.tsx:119
-#: src/app/(admin)/admin/visits/page.tsx:122
+#: src/app/(admin)/admin/visits/page.tsx:112
+#: src/app/(admin)/admin/visits/page.tsx:115
+#: src/app/(admin)/admin/visits/page.tsx:118
 msgid "もっと見る"
 msgstr "Show more"
 
@@ -3721,7 +3721,7 @@ msgstr "Redo"
 msgid "よくあるご質問"
 msgstr "FAQ"
 
-#: src/app/(admin)/admin/visits/page.tsx:115
+#: src/app/(admin)/admin/visits/page.tsx:111
 msgid "よく見られたページ"
 msgstr "Most viewed pages"
 
@@ -3758,7 +3758,7 @@ msgstr "Rallies"
 msgid "ラリー（管理）"
 msgstr "Rallies (admin)"
 
-#: src/components/admin/RallyList.tsx:102
+#: src/components/admin/RallyList.tsx:121
 msgid "ラリーがまだありません。「新しいラリー」から作ってください。"
 msgstr "There are no rallies yet. Create one with \"New rally\"."
 
@@ -3810,6 +3810,10 @@ msgstr "A rally is made from courses or from stamp waypoints. Open one to change
 #: src/app/(public)/rallies/page.tsx:60
 msgid "ラリーは、まだ準備中です。"
 msgstr "The rallies are not ready yet."
+
+#: src/components/admin/RallyList.tsx:106
+msgid "ラリーをさがす"
+msgstr "Find a rally"
 
 #: src/components/admin/RallyEditor.tsx:206
 msgid "ラリーを削除しても、スタンプやコースの達成は消えません。このラリーの達成記録だけが消えます。"
@@ -4015,8 +4019,8 @@ msgstr "Down {down} m"
 #: src/components/admin/one-map/OneMap.tsx:301
 #: src/components/admin/PlacePanel.tsx:112
 #: src/components/admin/RallyEditor.tsx:124
-#: src/components/admin/RallyList.tsx:62
-#: src/components/admin/RallyList.tsx:93
+#: src/components/admin/RallyList.tsx:59
+#: src/components/admin/RallyList.tsx:75
 #: src/components/admin/RallyMemberPicker.tsx:72
 #: src/components/admin/RouteTable.tsx:43
 msgid "下書き"
@@ -4050,7 +4054,7 @@ msgstr "Sort"
 msgid "並べ方"
 msgstr "Sort by"
 
-#: src/components/admin/RallyList.tsx:122
+#: src/components/admin/RallyList.tsx:141
 #: src/components/admin/RouteTable.tsx:181
 msgid "並べ替え"
 msgstr "Reorder"
@@ -4059,7 +4063,7 @@ msgstr "Reorder"
 msgid "並べ替えは、検索・絞り込み・並べかえを外してからできます。"
 msgstr "Reordering is possible only with no search, filter or sort on."
 
-#: src/components/admin/RallyList.tsx:172
+#: src/components/admin/RallyList.tsx:191
 msgid "並べ替えは、絞り込み・並べかえを外してからできます。"
 msgstr "Reordering is possible only with no filter or sort on."
 
@@ -4085,7 +4089,7 @@ msgstr "Centre longitude"
 msgid "中心の緯度"
 msgstr "Centre latitude"
 
-#: src/components/admin/RallyList.tsx:117
+#: src/components/admin/RallyList.tsx:136
 msgid "中身"
 msgstr "Contents"
 
@@ -4627,8 +4631,8 @@ msgstr "Unpublish"
 #: src/components/admin/map-editor/PlaceList.tsx:137
 #: src/components/admin/PlacePanel.tsx:112
 #: src/components/admin/RallyEditor.tsx:124
-#: src/components/admin/RallyList.tsx:62
-#: src/components/admin/RallyList.tsx:93
+#: src/components/admin/RallyList.tsx:59
+#: src/components/admin/RallyList.tsx:75
 #: src/components/admin/RouteTable.tsx:43
 msgid "公開中"
 msgstr "Published"
@@ -5354,7 +5358,7 @@ msgstr "Tap \"Add\" at the top right."
 msgid "右折"
 msgstr "Right"
 
-#: src/app/(admin)/admin/visits/page.tsx:101
+#: src/app/(admin)/admin/visits/page.tsx:97
 msgid "合計"
 msgstr "Total"
 
@@ -5379,7 +5383,7 @@ msgstr "You go out along the same path and come back the same way."
 #: src/components/admin/PhotoLibrary.tsx:175
 #: src/components/admin/RallyCreate.tsx:76
 #: src/components/admin/RallyEditor.tsx:142
-#: src/components/admin/RallyList.tsx:115
+#: src/components/admin/RallyList.tsx:134
 #: src/components/admin/RouteTable.tsx:169
 #: src/components/PlaceFacts.tsx:28
 msgid "名前"
@@ -5435,6 +5439,7 @@ msgstr "Unnamed waypoint"
 msgid "名前の一部を入れて探す"
 msgstr "Type part of a name to search"
 
+#: src/components/admin/RallyList.tsx:107
 #: src/components/admin/RouteTable.tsx:128
 msgid "名前の一部を入力"
 msgstr "Part of the name"
@@ -5500,12 +5505,12 @@ msgstr "Opening hours"
 msgid "四すみの四角をドラッグすると大きさが、まん中の丸をドラッグすると位置が変わります。"
 msgstr "Drag a square at a corner to resize the box, or the circle in the middle to move it."
 
-#: src/app/(admin)/admin/visits/page.tsx:101
-#: src/app/(admin)/admin/visits/page.tsx:102
+#: src/app/(admin)/admin/visits/page.tsx:97
+#: src/app/(admin)/admin/visits/page.tsx:98
 msgid "回"
 msgstr "views"
 
-#: src/app/(admin)/admin/visits/page.tsx:112
+#: src/app/(admin)/admin/visits/page.tsx:108
 msgid "国"
 msgstr "Country"
 
@@ -5703,7 +5708,7 @@ msgstr "Make the map easier on the eyes"
 msgid "地図を読み込み中…"
 msgstr "Loading the map…"
 
-#: src/app/(admin)/admin/visits/page.tsx:118
+#: src/app/(admin)/admin/visits/page.tsx:114
 msgid "地域（日本は都道府県）"
 msgstr "Region (prefecture in Japan)"
 
@@ -5998,7 +6003,7 @@ msgstr "Left"
 msgid "市"
 msgstr "City"
 
-#: src/app/(admin)/admin/visits/page.tsx:121
+#: src/app/(admin)/admin/visits/page.tsx:117
 msgid "市・町"
 msgstr "City or town"
 
@@ -6314,7 +6319,7 @@ msgid "新しいパスワード"
 msgstr "New password"
 
 #: src/components/admin/RallyCreate.tsx:61
-#: src/components/admin/RallyList.tsx:88
+#: src/components/admin/RallyList.tsx:101
 msgid "新しいラリー"
 msgstr "New rally"
 
@@ -6360,8 +6365,8 @@ msgstr "Register"
 msgid "新規登録する"
 msgstr "Sign up"
 
-#: src/app/(admin)/admin/visits/page.tsx:107
-#: src/app/(admin)/admin/visits/page.tsx:108
+#: src/app/(admin)/admin/visits/page.tsx:103
+#: src/app/(admin)/admin/visits/page.tsx:104
 msgid "日ごとのアクセス"
 msgstr "Views per day"
 
@@ -6385,7 +6390,7 @@ msgstr "Sunday"
 msgid "日本"
 msgstr "Japan"
 
-#: src/app/(admin)/admin/visits/page.tsx:104
+#: src/app/(admin)/admin/visits/page.tsx:100
 msgid "日本から"
 msgstr "From Japan"
 
@@ -6458,7 +6463,7 @@ msgstr "Add hours (e.g. a lunch break)"
 msgid "曲がり角"
 msgstr "Turn"
 
-#: src/components/admin/RallyList.tsx:120
+#: src/components/admin/RallyList.tsx:139
 #: src/components/admin/RouteTable.tsx:179
 #: src/components/OfflinePack.tsx:102
 msgid "更新"
@@ -6513,10 +6518,6 @@ msgstr "Monday"
 #: src/app/(admin)/admin/visits/page.tsx:55
 msgid "期間"
 msgstr "Period"
-
-#: src/app/(admin)/admin/visits/page.tsx:66
-msgid "期間とページをえらぶ"
-msgstr "Choose the dates and page"
 
 #: src/components/admin/HoursInput.tsx:15
 msgid "木曜日"
@@ -6576,7 +6577,7 @@ msgstr "No {title} match the conditions."
 msgid "条件に合うコースがありません。"
 msgstr "No courses match."
 
-#: src/components/admin/RallyList.tsx:104
+#: src/components/admin/RallyList.tsx:123
 msgid "条件に合うラリーがありません。"
 msgstr "No rallies match."
 
@@ -6926,8 +6927,9 @@ msgstr "Add points"
 msgid "片道（別の場所へ）"
 msgstr "One way (to another place)"
 
-#: src/components/admin/RallyList.tsx:93
-#: src/components/admin/RallyList.tsx:118
+#: src/components/admin/RallyList.tsx:111
+#: src/components/admin/RallyList.tsx:137
+#: src/components/admin/RallyList.tsx:137
 #: src/components/admin/RouteTable.tsx:133
 #: src/components/admin/RouteTable.tsx:171
 #: src/components/admin/RouteTable.tsx:171
@@ -7235,8 +7237,9 @@ msgstr "Ridge"
 #: src/components/admin/map-editor/PlaceList.tsx:158
 #: src/components/admin/PlacePanel.tsx:133
 #: src/components/admin/PlaceTable.tsx:137
-#: src/components/admin/RallyList.tsx:92
-#: src/components/admin/RallyList.tsx:116
+#: src/components/admin/RallyList.tsx:110
+#: src/components/admin/RallyList.tsx:135
+#: src/components/admin/RallyList.tsx:135
 #: src/components/PlaceFacts.tsx:29
 #: src/components/places/DirectoryView.tsx:58
 #: src/components/SpotStats.tsx:25
@@ -7370,7 +7373,7 @@ msgstr "About {TRAIL_KM} km"
 msgid "納経帳"
 msgstr "Pilgrim’s stamp book"
 
-#: src/app/(admin)/admin/visits/page.tsx:74
+#: src/app/(admin)/admin/visits/page.tsx:71
 msgid "終わりの日"
 msgstr "To"
 
@@ -7409,7 +7412,7 @@ msgid "経由地"
 msgstr "Waypoints"
 
 #. placeholder {0}: r.memberCount
-#: src/components/admin/RallyList.tsx:37
+#: src/components/admin/RallyList.tsx:38
 msgid "経由地 {0}"
 msgstr "{0} waypoints"
 
@@ -7453,8 +7456,8 @@ msgstr "Connect the waypoints with straight lines"
 msgid "経由地のあいだを、地図の道でつなぎます（寄り道は通りません）"
 msgstr "Connect the waypoints along map trails (side trips are skipped)"
 
-#: src/components/admin/RallyList.tsx:36
-#: src/components/admin/RallyList.tsx:92
+#: src/components/admin/RallyList.tsx:37
+#: src/components/admin/RallyList.tsx:58
 msgid "経由地のラリー"
 msgstr "Waypoint rally"
 
@@ -7891,7 +7894,7 @@ msgstr "View"
 msgid "表示している読み"
 msgstr "Readings shown to visitors"
 
-#: src/app/(admin)/admin/visits/page.tsx:82
+#: src/app/(admin)/admin/visits/page.tsx:79
 msgid "表示する"
 msgstr "Show"
 
@@ -8140,7 +8143,7 @@ msgstr "Could not load."
 #: src/app/(admin)/admin/attention/page.tsx:83
 #: src/app/(admin)/admin/map/page.tsx:31
 #: src/app/(admin)/admin/page.tsx:58
-#: src/app/(admin)/admin/visits/page.tsx:89
+#: src/app/(admin)/admin/visits/page.tsx:85
 msgid "読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "Could not load. Please reload the page in a moment."
 
@@ -8495,14 +8498,14 @@ msgstr "Could not look up the paths. Please try again in a little while."
 msgid "達成した {0} 人の記録は残ります。"
 msgstr "The records of the {0} people who finished stay. "
 
-#: src/components/admin/RallyList.tsx:119
+#: src/components/admin/RallyList.tsx:138
 msgid "達成した人"
 msgstr "Finished by"
 
 #. placeholder {0}: r.completionCount
 #. placeholder {0}: saved.completionCount
 #: src/components/admin/RallyEditor.tsx:137
-#: src/components/admin/RallyList.tsx:163
+#: src/components/admin/RallyList.tsx:182
 msgid "達成した人 {0}"
 msgstr "{0} finished"
 
@@ -8781,7 +8784,7 @@ msgstr "Voice guidance"
 msgid "音声案内をオンにしました"
 msgstr "Voice guidance is on"
 
-#: src/components/admin/RallyList.tsx:114
+#: src/components/admin/RallyList.tsx:133
 #: src/components/admin/RouteTable.tsx:168
 msgid "順"
 msgstr "No."
@@ -8871,7 +8874,3 @@ msgstr "Parking"
 #: src/components/map/MapSheet.tsx:182
 msgid "高い"
 msgstr "high"
-
-#: src/components/admin/RallyList.tsx:106
-msgid "ラリーをさがす"
-msgstr "Find a rally"
