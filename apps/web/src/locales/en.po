@@ -98,8 +98,8 @@ msgid "{0}を削除"
 msgstr "Remove {0}"
 
 #. placeholder {0}: name(item)
-#: src/components/admin/AdminListTable.tsx:364
-#: src/components/admin/AdminListTable.tsx:429
+#: src/components/admin/AdminListTable.tsx:367
+#: src/components/admin/AdminListTable.tsx:432
 msgid "{0}を選ぶ"
 msgstr "Select {0}"
 
@@ -139,7 +139,7 @@ msgid "{0}件を削除しました。"
 msgstr "{0} deleted."
 
 #. placeholder {0}: gone.size
-#: src/components/admin/AdminListTable.tsx:171
+#: src/components/admin/AdminListTable.tsx:174
 msgid "{0}件を削除しました。残りは削除できませんでした：{failure}"
 msgstr "{0} deleted. The rest could not be deleted: {failure}"
 
@@ -239,7 +239,7 @@ msgstr "Move {city} down"
 msgid "{city}を削除"
 msgstr "Remove {city}"
 
-#: src/components/admin/useRouteDraft.ts:356
+#: src/components/admin/useRouteDraft.ts:350
 msgid "{count}か所の公開をやめました。コースは「準備中」として一覧に残ります。"
 msgstr "Unpublished {count} waypoints. The course stays in the list as coming soon."
 
@@ -477,7 +477,7 @@ msgstr "Move {text} down"
 msgid "{title}（管理）"
 msgstr "{title} (admin)"
 
-#: src/components/admin/AdminListTable.tsx:330
+#: src/components/admin/AdminListTable.tsx:333
 msgid "{title}はまだありません。"
 msgstr "No {title} yet."
 
@@ -499,7 +499,7 @@ msgstr "{TOTAL_STAMPS} places"
 msgid "{total}か所"
 msgstr "{total} places"
 
-#: src/components/admin/AdminListTable.tsx:303
+#: src/components/admin/AdminListTable.tsx:306
 msgid "{total}件"
 msgstr "{total} items"
 
@@ -563,7 +563,7 @@ msgid "「{0}」を保存しました。"
 msgstr "Saved “{0}”."
 
 #. placeholder {0}: name(one)
-#: src/components/admin/AdminListTable.tsx:157
+#: src/components/admin/AdminListTable.tsx:160
 msgid "「{0}」を削除します。元に戻せません。よろしいですか？"
 msgstr "Delete \"{0}\"? This cannot be undone."
 
@@ -1760,8 +1760,8 @@ msgstr "Your stamps may be lost in this browser."
 msgid "このページの項目"
 msgstr "On this page"
 
-#: src/components/admin/AdminListTable.tsx:340
-#: src/components/admin/AdminListTable.tsx:419
+#: src/components/admin/AdminListTable.tsx:343
+#: src/components/admin/AdminListTable.tsx:422
 msgid "このページをすべて選ぶ"
 msgstr "Select everything on this page"
 
@@ -2016,7 +2016,7 @@ msgstr "This waypoint has no position yet. Set it on the map."
 msgid "この経由地は公開されています。"
 msgstr "This waypoint is published."
 
-#: src/components/admin/useRouteDraft.ts:327
+#: src/components/admin/useRouteDraft.ts:321
 #: src/components/admin/WaypointEditor.tsx:69
 msgid "この経由地は公開をやめました。"
 msgstr "This waypoint was taken off the site."
@@ -2025,7 +2025,7 @@ msgstr "This waypoint was taken off the site."
 msgid "この経由地を保存"
 msgstr "Save this waypoint"
 
-#: src/components/admin/useRouteDraft.ts:328
+#: src/components/admin/useRouteDraft.ts:322
 msgid "この経由地を保存しました。"
 msgstr "This waypoint was saved."
 
@@ -2205,7 +2205,7 @@ msgstr "Site map"
 msgid "さがしています…"
 msgstr "Searching…"
 
-#: src/components/admin/AdminListTable.tsx:245
+#: src/components/admin/AdminListTable.tsx:248
 #: src/components/admin/DuplicateFinder.tsx:53
 #: src/components/admin/FuriganaWords.tsx:120
 msgid "さがす"
@@ -2219,7 +2219,7 @@ msgstr "Sub-course branches from (to this side trip)"
 msgid "サブコースの線を描く"
 msgstr "Draw the sub-course line"
 
-#: src/components/admin/AdminListTable.tsx:313
+#: src/components/admin/AdminListTable.tsx:316
 #: src/components/admin/PlaceImport.tsx:70
 msgid "シート（CSV）から取り込む"
 msgstr "Import from a sheet (CSV)"
@@ -2434,7 +2434,7 @@ msgstr "Stamps"
 msgid "スタンプ済み"
 msgstr "stamped"
 
-#: src/components/admin/useRouteDraft.ts:256
+#: src/components/admin/useRouteDraft.ts:250
 msgid "すでに公開をやめた経由地があります（{names}）。「経由地」タブで確かめてください。"
 msgstr "These waypoints were already unpublished: {names}. Check them in the Waypoints tab."
 
@@ -2444,7 +2444,7 @@ msgid "ストーリーを読む"
 msgstr "Read the story"
 
 #: src/app/(public)/blog/page.tsx:63
-#: src/components/admin/AdminListTable.tsx:189
+#: src/components/admin/AdminListTable.tsx:192
 #: src/components/admin/CommentInbox.tsx:30
 #: src/components/admin/DirectoryPicker.tsx:158
 #: src/components/admin/list-parts.tsx:31
@@ -3306,7 +3306,7 @@ msgstr "Other vehicle"
 msgid "ほかの場所へ"
 msgstr "Another place"
 
-#: src/components/admin/AdminListTable.tsx:294
+#: src/components/admin/AdminListTable.tsx:297
 msgid "ほかの絞りこみ"
 msgstr "More filters"
 
@@ -3967,7 +3967,7 @@ msgstr "Unknown"
 msgid "両方を合わせる（おすすめ）"
 msgstr "Combine both (recommended)"
 
-#: src/components/admin/AdminListTable.tsx:400
+#: src/components/admin/AdminListTable.tsx:403
 msgid "並べかえ"
 msgstr "Sort"
 
@@ -4283,14 +4283,14 @@ msgstr "Save and next"
 #: src/components/admin/GoalsForm.tsx:24
 #: src/components/admin/HomeSectionsForm.tsx:36
 #: src/components/admin/RallyEditor.tsx:75
-#: src/components/admin/useRouteDraft.ts:274
+#: src/components/admin/useRouteDraft.ts:268
 #: src/components/admin/WaypointEditor.tsx:72
 #: src/components/ProfileSettings.tsx:213
 #: src/components/settings/PrefsForm.tsx:72
 msgid "保存しました。"
 msgstr "Saved."
 
-#: src/components/admin/useRouteDraft.ts:328
+#: src/components/admin/useRouteDraft.ts:322
 #: src/components/admin/WaypointEditor.tsx:72
 msgid "保存しました。この経由地は下書きに戻っています。もう一度「公開する」を押してください。"
 msgstr "Saved. This waypoint is back to a draft. Press \"Publish\" again."
@@ -4303,11 +4303,11 @@ msgstr "Saved. It is live on the site."
 msgid "保存しました。サイトの地図に反映されています。"
 msgstr "Saved. The site's map now uses it."
 
-#: src/components/admin/useRouteDraft.ts:274
+#: src/components/admin/useRouteDraft.ts:268
 msgid "保存しました。ただし、情報源が空のため、線は「確認していない」状態で保存しました。情報源を入れて、もう一度保存してください。"
 msgstr "Saved. The source was empty, so the line was saved as not checked. Enter a source and save again."
 
-#: src/components/admin/useRouteDraft.ts:275
+#: src/components/admin/useRouteDraft.ts:269
 msgid "保存しました。ただし、未完成の経由地が{heldCount}件あり、まだ保存していません（赤く示した項目）。"
 msgstr "Saved. {heldCount} unfinished waypoint(s) were not saved yet (the red items)."
 
@@ -4331,8 +4331,8 @@ msgstr "Save"
 msgid "保存すると、この経由地は下書きに戻ります。"
 msgstr "Saving turns this waypoint back into a draft."
 
-#: src/components/admin/useRouteDraft.ts:153
-#: src/components/admin/useRouteDraft.ts:294
+#: src/components/admin/useRouteDraft.ts:147
+#: src/components/admin/useRouteDraft.ts:288
 #: src/components/admin/WaypointEditor.tsx:48
 msgid "保存できません。赤く示した項目を直してください。"
 msgstr "Cannot save. Fix the items marked in red."
@@ -4414,7 +4414,7 @@ msgstr "Fix first"
 msgid "先頭だけ残して、ほかを削除"
 msgstr "Keep the first, delete the others"
 
-#: src/components/admin/AdminListTable.tsx:303
+#: src/components/admin/AdminListTable.tsx:306
 msgid "先頭の{total}件を表示しています。"
 msgstr "Showing the first {total} only."
 
@@ -4484,7 +4484,7 @@ msgid "公開サイトで見る"
 msgstr "View this page on the public site"
 
 #: src/components/admin/RallyEditor.tsx:81
-#: src/components/admin/useRouteDraft.ts:371
+#: src/components/admin/useRouteDraft.ts:365
 #: src/components/admin/WaypointEditor.tsx:84
 msgid "公開しました。"
 msgstr "Published."
@@ -4526,18 +4526,18 @@ msgid "公開まで、あと{0}つ"
 msgstr "{0} more to do before it can be published"
 
 #: src/components/admin/RallyEditor.tsx:81
-#: src/components/admin/useRouteDraft.ts:371
+#: src/components/admin/useRouteDraft.ts:365
 #: src/components/admin/WaypointEditor.tsx:84
 msgid "公開をやめました。"
 msgstr "Unpublished."
 
-#: src/components/admin/useRouteDraft.ts:337
+#: src/components/admin/useRouteDraft.ts:331
 msgid "公開をやめますか？"
 msgstr "Unpublish these?"
 
 #: src/components/admin/PlacePanel.tsx:299
 #: src/components/admin/RallyEditor.tsx:131
-#: src/components/admin/useRouteDraft.ts:337
+#: src/components/admin/useRouteDraft.ts:331
 msgid "公開をやめる"
 msgstr "Unpublish"
 
@@ -4553,7 +4553,7 @@ msgstr "Unpublish"
 msgid "公開中"
 msgstr "Published"
 
-#: src/components/admin/useRouteDraft.ts:337
+#: src/components/admin/useRouteDraft.ts:331
 msgid "公開中の{count}か所を、すべて公開をやめます。コースは「準備中」として一覧に残ります。よろしいですか？"
 msgstr "Unpublish all {count} published waypoints? The course stays in the list as coming soon."
 
@@ -4931,9 +4931,9 @@ msgstr "Restricted"
 
 #: src/components/admin/AccessPointsEditor.tsx:53
 #: src/components/admin/AdminItemForm.tsx:361
-#: src/components/admin/AdminListTable.tsx:354
-#: src/components/admin/AdminListTable.tsx:388
-#: src/components/admin/AdminListTable.tsx:460
+#: src/components/admin/AdminListTable.tsx:357
+#: src/components/admin/AdminListTable.tsx:391
+#: src/components/admin/AdminListTable.tsx:463
 #: src/components/admin/CommentInbox.tsx:143
 #: src/components/admin/CommentInbox.tsx:184
 #: src/components/admin/DuplicateFinder.tsx:85
@@ -4957,7 +4957,7 @@ msgid "削除しました。"
 msgstr "Deleted."
 
 #: src/components/admin/AdminItemForm.tsx:135
-#: src/components/admin/AdminListTable.tsx:158
+#: src/components/admin/AdminListTable.tsx:161
 #: src/components/admin/CommentInbox.tsx:82
 #: src/components/admin/DuplicateFinder.tsx:32
 #: src/components/admin/RallyEditor.tsx:111
@@ -4968,7 +4968,7 @@ msgstr "Delete this?"
 
 #: src/components/admin/AdminItemForm.tsx:135
 #: src/components/admin/AdminItemForm.tsx:363
-#: src/components/admin/AdminListTable.tsx:158
+#: src/components/admin/AdminListTable.tsx:161
 #: src/components/admin/CommentInbox.tsx:82
 #: src/components/admin/DuplicateFinder.tsx:32
 #: src/components/admin/FuriganaWords.tsx:64
@@ -5040,7 +5040,7 @@ msgstr "Earlier"
 msgid "前後の記事"
 msgstr "Earlier and later posts"
 
-#: src/components/admin/AdminListTable.tsx:237
+#: src/components/admin/AdminListTable.tsx:240
 msgid "加えました。"
 msgstr "Added."
 
@@ -5294,8 +5294,7 @@ msgstr "An earlier row has the same number"
 msgid "同じ道を行って、同じ道を戻ります。"
 msgstr "You go out along the same path and come back the same way."
 
-#: src/components/admin/AdminListTable.tsx:343
-#: src/components/admin/AdminListTable.tsx:410
+#: src/components/admin/AdminListTable.tsx:75
 #: src/components/admin/map-editor/PlaceList.tsx:96
 #: src/components/admin/PhotoLibrary.tsx:175
 #: src/components/admin/RallyCreate.tsx:76
@@ -5347,7 +5346,7 @@ msgid "名前のついた地点が{0}か所ありました。経由地として�
 msgstr "Found {0} named points. Add them as waypoints?"
 
 #: src/components/admin/RouteEditor.tsx:125
-#: src/components/admin/useRouteDraft.ts:186
+#: src/components/admin/useRouteDraft.ts:180
 #: src/components/admin/WaypointEditor.tsx:102
 msgid "名前のない経由地"
 msgstr "Unnamed waypoint"
@@ -5364,7 +5363,7 @@ msgstr "Part of the name"
 msgid "名前の読み"
 msgstr "Reading of the name"
 
-#: src/components/admin/AdminListTable.tsx:254
+#: src/components/admin/AdminListTable.tsx:257
 msgid "名前やことばの一部を入力"
 msgstr "Type part of a name or word"
 
@@ -6244,7 +6243,7 @@ msgstr "No new words."
 msgid "新しい記事"
 msgstr "Newest posts"
 
-#: src/components/admin/AdminListTable.tsx:409
+#: src/components/admin/AdminListTable.tsx:412
 #: src/components/admin/PhotoLibrary.tsx:145
 msgid "新しい順"
 msgstr "Newest first"
@@ -6477,7 +6476,7 @@ msgstr "Not used in the text"
 msgid "本文へ移動"
 msgstr "Skip to main content"
 
-#: src/components/admin/AdminListTable.tsx:330
+#: src/components/admin/AdminListTable.tsx:333
 msgid "条件に合う{title}はありません。"
 msgstr "No {title} match the conditions."
 
@@ -6490,7 +6489,7 @@ msgstr "No courses match."
 msgid "条件に合うラリーがありません。"
 msgstr "No rallies match."
 
-#: src/components/admin/AdminListTable.tsx:268
+#: src/components/admin/AdminListTable.tsx:271
 msgid "条件をやめる"
 msgstr "Clear the conditions"
 
@@ -7054,7 +7053,7 @@ msgstr "To fix (admin)"
 msgid "直すところは、ありません。"
 msgstr "Nothing to fix."
 
-#: src/components/admin/useRouteDraft.ts:46
+#: src/components/admin/useRouteDraft.ts:48
 msgid "直す場所を見る"
 msgstr "Show me what to fix"
 
@@ -7417,7 +7416,7 @@ msgstr "Place a waypoint"
 msgid "経由地を置くと、近い順に並びます。"
 msgstr "Once there is a waypoint, they are listed nearest first."
 
-#: src/components/admin/AdminListTable.tsx:278
+#: src/components/admin/AdminListTable.tsx:281
 msgid "絞りこみ"
 msgstr "Filters"
 
@@ -8435,12 +8434,12 @@ msgid "選ぶのをやめる"
 msgstr "Clear the selection"
 
 #. placeholder {0}: ticked.size
-#: src/components/admin/AdminListTable.tsx:307
+#: src/components/admin/AdminListTable.tsx:310
 msgid "選んだ{0}件を削除"
 msgstr "Delete the {0} selected"
 
 #. placeholder {0}: ids.length
-#: src/components/admin/AdminListTable.tsx:157
+#: src/components/admin/AdminListTable.tsx:160
 msgid "選んだ{0}件を削除します。元に戻せません。よろしいですか？"
 msgstr "Delete the {0} selected? This cannot be undone."
 
@@ -8507,7 +8506,7 @@ msgstr "Choose your prefecture"
 msgid "重複しているように見える場所はありません。"
 msgstr "No places look duplicated."
 
-#: src/components/admin/AdminListTable.tsx:316
+#: src/components/admin/AdminListTable.tsx:319
 #: src/components/admin/DuplicateFinder.tsx:49
 msgid "重複している場所をさがす"
 msgstr "Find duplicate places"
@@ -8521,7 +8520,7 @@ msgstr "Friday"
 msgid "長さ"
 msgstr "Length"
 
-#: src/components/admin/AdminListTable.tsx:206
+#: src/components/admin/AdminListTable.tsx:209
 #: src/components/admin/BannerOrder.tsx:112
 #: src/components/admin/BlockEditor.tsx:561
 #: src/components/admin/BlockEditor.tsx:599
