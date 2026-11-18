@@ -1,6 +1,6 @@
 # One-map editor: every course and place on one admin map
 
-Status: **step 1 built** (PR #577, `useRouteDraft`); the rest is design (updated 2026-11-17 with the user's answers and the map editor redesign).
+Status: **steps 1 to 4 built** (#577, #587, #590, step 4 = edit a course in place on the one map); steps 5 and 6 are design (updated 2026-11-17 with the user's answers and the map editor redesign).
 
 ## What the user asked (2026-11-17)
 
@@ -108,7 +108,7 @@ Then the one map:
 
 2. **Overview endpoint** with its authorization tests (a participant gets 403; bbox validation; row cap). Done: #587; a waypoint on two courses lists both (`routeIds`, home first).
 3. **`/admin/map`, read only**: every course and place drawn, the course selector (raise and fly to), the list under the map, links to the existing pages.
-4. **Edit a course in place**: the switch, `MapEditor` with `useRouteDraft`, the save bar, the unsaved check on switching.
+4. **Edit a course in place** (built): the switch, `MapEditor` with `useRouteDraft` (shared as `CourseMapEditor` and `RestoreOffer`), the save bar, the unsaved check on switching. While editing, the overview map is hidden, so the other courses are not drawn under the editor; a problem that stops a save (all on the course page's overview tab) links there.
 5. **Edit a directory place in place**: its form under the map, dragging its marker.
 6. **A new course from the map** (decided 7): 新しいコース on the map opens an empty `useRouteDraft` in place; the first save creates it (`POST /admin/routes`, then the usual saves) and the selector switches to it.
 
