@@ -26,7 +26,7 @@ import { RIDGE_HEIGHT, RIDGE_WIDTH, ridgePath } from "@/lib/ridge";
  * adds to it, through the data-* markers: data-journey (the whole), data-beat 0..2, data-ridge (the line), data-seal.
  * The words are the editable home words, so an editor's text shows here too.
  */
-export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = false }: { slides: BannerSlide[]; routes: RouteSummary[]; locale: string; w: Record<HomeSlot, string>; chapterPhotos?: (string | null)[]; /** The trial home page: the page scrolls on, nothing is pinned (JourneyFlow), and the logo sits at the top. */ flow?: boolean }) {
+export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = false }: { slides: BannerSlide[]; routes: RouteSummary[]; locale: string; w: Record<HomeSlot, string>; chapterPhotos?: (string | null)[]; /** The trial home page: the page scrolls on, nothing is pinned (JourneyFlow). */ flow?: boolean }) {
   const ridge = ridgePath(routes);
   const line = stageLine(ridge);
   // One seal for every stamp place, grouped by mound: a mound with two places (3, 14, 28) gets a pair.
@@ -41,7 +41,7 @@ export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = 
       </a>
       <div data-journey-stage>
         <div data-beat="0">
-          <LandingHero slides={slides} locale={locale} line={w.heroLine} bare logoTop={flow} />
+          <LandingHero slides={slides} locale={locale} line={w.heroLine} bare />
         </div>
 
         <div data-beat="1">

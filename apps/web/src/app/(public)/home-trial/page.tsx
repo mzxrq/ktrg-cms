@@ -10,7 +10,7 @@ import { homeIntroVideo } from "@/lib/video";
 import { initLingui } from "@/i18n/server";
 
 // A trial of the home page (2026-11-18), apart from the real one, which went to the committee as it is: the journey scrolls with
-// the page instead of being pinned, and the logo is bigger and at the top. Linked from nowhere and kept out of search.
+// the page instead of being pinned. Linked from nowhere and kept out of search.
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function HomeTrialPage() {
