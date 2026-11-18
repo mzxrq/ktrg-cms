@@ -689,11 +689,8 @@ msgstr "1つ目"
 msgid "1以上の整数を入れてください。"
 msgstr "1以上の整数を入れてください。"
 
-#: src/components/admin/RubyEditor.tsx:60
-msgid "1文字ずつ"
-msgstr "1文字ずつ"
-
-#: src/components/admin/RubyEditor.tsx:59
+#: src/components/admin/RubyEditor.tsx:49
+#: src/components/admin/RubyEditor.tsx:49
 msgid "1文字ずつ、別の読みを入れます"
 msgstr "1文字ずつ、別の読みを入れます"
 
@@ -1168,7 +1165,7 @@ msgstr "いまの場所から、約{m}m"
 msgid "いまの状態"
 msgstr "いまの状態"
 
-#: src/components/admin/RubyEditor.tsx:77
+#: src/components/admin/RubyEditor.tsx:75
 msgid "いまの読み（名前全体にひとつ）：{value}。上に入れると、漢字ごとの読みに置き換わります。"
 msgstr "いまの読み（名前全体にひとつ）：{value}。上に入れると、漢字ごとの読みに置き換わります。"
 
@@ -2783,12 +2780,12 @@ msgstr "トップページの見出しと説明です。"
 msgid "とても大きい"
 msgstr "とても大きい"
 
-#: src/components/admin/RubyEditor.tsx:52
-#: src/components/admin/RubyEditor.tsx:52
+#: src/components/admin/RubyEditor.tsx:59
+#: src/components/admin/RubyEditor.tsx:59
 msgid "となりの漢字と、ひとつの読みにします"
 msgstr "となりの漢字と、ひとつの読みにします"
 
-#: src/components/admin/RubyEditor.tsx:72
+#: src/components/admin/RubyEditor.tsx:70
 msgid "となりの漢字と、ひとつの読みにします（例：粉 ＋ 河 → こかわ）。"
 msgstr "となりの漢字と、ひとつの読みにします（例：粉 ＋ 河 → こかわ）。"
 
@@ -3718,7 +3715,7 @@ msgstr "よくあるご質問"
 msgid "よく見られたページ"
 msgstr "よく見られたページ"
 
-#: src/components/admin/RubyEditor.tsx:46
+#: src/components/admin/RubyEditor.tsx:47
 msgid "よみ"
 msgstr "よみ"
 
@@ -6841,7 +6838,7 @@ msgstr "消したい点をクリックします。"
 
 #: src/components/admin/map-editor/PlaceList.tsx:121
 #: src/components/admin/RouteEditor.tsx:98
-#: src/components/admin/RubyEditor.tsx:79
+#: src/components/admin/RubyEditor.tsx:77
 #: src/components/settings/PasskeyManager.tsx:163
 #: src/components/settings/PasskeyManager.tsx:210
 #: src/components/settings/PasswordMethod.tsx:55
@@ -6872,7 +6869,7 @@ msgstr "港・フェリー乗り場"
 msgid "準備中"
 msgstr "準備中"
 
-#: src/components/admin/RubyEditor.tsx:37
+#: src/components/admin/RubyEditor.tsx:36
 msgid "漢字ごとの読み"
 msgstr "漢字ごとの読み"
 
@@ -6880,7 +6877,7 @@ msgstr "漢字ごとの読み"
 msgid "漢字の上に出るふりがなです。寺社や経塚の名前は、辞書には任せず人が入れます。"
 msgstr "漢字の上に出るふりがなです。寺社や経塚の名前は、辞書には任せず人が入れます。"
 
-#: src/components/admin/RubyEditor.tsx:33
+#: src/components/admin/RubyEditor.tsx:32
 msgid "漢字を入れると、ここで漢字ごとに読みを入れられます。"
 msgstr "漢字を入れると、ここで漢字ごとに読みを入れられます。"
 

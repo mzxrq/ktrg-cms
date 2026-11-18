@@ -3,9 +3,8 @@
 import { useLingui } from "@lingui/react/macro";
 import { Fragment, type ReactNode } from "react";
 import { isKanji, isPerKanji, partsFor, serializeRuby, type RubyPart } from "@/lib/ruby";
-import { LinkIcon } from "../icons";
+import { LinkIcon, ScissorsIcon } from "../icons";
 
-const tiny = "inline-flex h-11 min-h-0 items-center justify-center whitespace-nowrap rounded-full border border-line px-3 text-sm font-bold hover:bg-surface";
 // Round, icon only: it sits in the gap between two reading boxes, which says what it joins.
 const link = "inline-flex size-11 min-h-0 min-w-0 items-center justify-center rounded-full border border-line text-ink hover:bg-surface [&_svg]:size-5";
 // A real minimum width, so a reading is never cut off; a long name scrolls sideways instead.
@@ -33,7 +32,7 @@ export function RubyEditor({ name, value, onChange }: { name: string; value: str
   if (name.trim() === "" || !hasKanjiRun) return <p className="text-base text-muted">{t`漢字を入れると、ここで漢字ごとに読みを入れられます。`}</p>;
   return (
     <div className="flex flex-col gap-2">
-      {/* The name in one row, a reading box under each run of kanji with a join button between two neighbouring boxes, and the split buttons under the boxes. */}
+      {/* The name in one row, a reading box under each run of kanji with a join button between two neighbouring boxes and a split button beside a box of several kanji. */}
       <div role="group" aria-label={t`漢字ごとの読み`} className="grid w-fit max-w-full items-center gap-x-1 gap-y-1 overflow-x-auto" style={{ gridTemplateColumns: `repeat(${parts.length * 2 - 1}, auto)` }}>
         {row((i) => (
           <label htmlFor={`ruby-${i}`} className="px-1 text-center text-xl font-bold leading-tight">
@@ -43,7 +42,15 @@ export function RubyEditor({ name, value, onChange }: { name: string; value: str
         {row(
           (i) =>
             kanjiAt(i) ? (
-              <input id={`ruby-${i}`} type="text" value={parts[i]!.reading ?? ""} onChange={(e) => patch(i, e.target.value)} maxLength={40} placeholder={t`よみ`} lang="ja" size={Math.max(4, [...parts[i]!.text].length * 3)} className={box} />
+              // The split button sits beside its box (a scissors icon, the pair of the join button's link), not under it.
+              <span className="inline-flex items-center gap-1">
+                <input id={`ruby-${i}`} type="text" value={parts[i]!.reading ?? ""} onChange={(e) => patch(i, e.target.value)} maxLength={40} placeholder={t`よみ`} lang="ja" size={Math.max(4, [...parts[i]!.text].length * 3)} className={box} />
+                {[...parts[i]!.text].length > 1 ? (
+                  <button type="button" onClick={() => split(i)} className={link} aria-label={t`1文字ずつ、別の読みを入れます`} title={t`1文字ずつ、別の読みを入れます`}>
+                    <ScissorsIcon />
+                  </button>
+                ) : null}
+              </span>
             ) : (
               <span />
             ),
@@ -53,15 +60,6 @@ export function RubyEditor({ name, value, onChange }: { name: string; value: str
                 <LinkIcon />
               </button>
             ) : null,
-        )}
-        {row((i) =>
-          kanjiAt(i) && [...parts[i]!.text].length > 1 ? (
-            <button type="button" onClick={() => split(i)} className={tiny} title={t`1文字ずつ、別の読みを入れます`}>
-              {t`1文字ずつ`}
-            </button>
-          ) : (
-            <span />
-          ),
         )}
       </div>
       {parts.some((_, i) => joinable(i)) ? (

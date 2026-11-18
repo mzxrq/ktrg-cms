@@ -689,11 +689,8 @@ msgstr "First"
 msgid "1以上の整数を入れてください。"
 msgstr "Enter a whole number, 1 or more."
 
-#: src/components/admin/RubyEditor.tsx:60
-msgid "1文字ずつ"
-msgstr "Per kanji"
-
-#: src/components/admin/RubyEditor.tsx:59
+#: src/components/admin/RubyEditor.tsx:49
+#: src/components/admin/RubyEditor.tsx:49
 msgid "1文字ずつ、別の読みを入れます"
 msgstr "Type a separate reading for each kanji"
 
@@ -1168,7 +1165,7 @@ msgstr "About {m} m from where you are"
 msgid "いまの状態"
 msgstr "Current status"
 
-#: src/components/admin/RubyEditor.tsx:77
+#: src/components/admin/RubyEditor.tsx:75
 msgid "いまの読み（名前全体にひとつ）：{value}。上に入れると、漢字ごとの読みに置き換わります。"
 msgstr "Current reading (one for the whole name): {value}. Typing above replaces it with per-kanji readings."
 
@@ -2783,12 +2780,12 @@ msgstr "The headings and text of the home page."
 msgid "とても大きい"
 msgstr "Extra large"
 
-#: src/components/admin/RubyEditor.tsx:52
-#: src/components/admin/RubyEditor.tsx:52
+#: src/components/admin/RubyEditor.tsx:59
+#: src/components/admin/RubyEditor.tsx:59
 msgid "となりの漢字と、ひとつの読みにします"
 msgstr "Make one reading with the next kanji"
 
-#: src/components/admin/RubyEditor.tsx:72
+#: src/components/admin/RubyEditor.tsx:70
 msgid "となりの漢字と、ひとつの読みにします（例：粉 ＋ 河 → こかわ）。"
 msgstr "Makes one reading with the next kanji (e.g. 粉 + 河 → こかわ)."
 
@@ -3718,7 +3715,7 @@ msgstr "FAQ"
 msgid "よく見られたページ"
 msgstr "Most viewed pages"
 
-#: src/components/admin/RubyEditor.tsx:46
+#: src/components/admin/RubyEditor.tsx:47
 msgid "よみ"
 msgstr "Reading"
 
@@ -6841,7 +6838,7 @@ msgstr "Click the point to remove."
 
 #: src/components/admin/map-editor/PlaceList.tsx:121
 #: src/components/admin/RouteEditor.tsx:98
-#: src/components/admin/RubyEditor.tsx:79
+#: src/components/admin/RubyEditor.tsx:77
 #: src/components/settings/PasskeyManager.tsx:163
 #: src/components/settings/PasskeyManager.tsx:210
 #: src/components/settings/PasswordMethod.tsx:55
@@ -6872,7 +6869,7 @@ msgstr "Port or ferry"
 msgid "準備中"
 msgstr "Coming soon"
 
-#: src/components/admin/RubyEditor.tsx:37
+#: src/components/admin/RubyEditor.tsx:36
 msgid "漢字ごとの読み"
 msgstr "Reading for each kanji"
 
@@ -6880,7 +6877,7 @@ msgstr "Reading for each kanji"
 msgid "漢字の上に出るふりがなです。寺社や経塚の名前は、辞書には任せず人が入れます。"
 msgstr "The furigana over the kanji. Temple, shrine and sutra mound names are typed by a person, never left to a dictionary."
 
-#: src/components/admin/RubyEditor.tsx:33
+#: src/components/admin/RubyEditor.tsx:32
 msgid "漢字を入れると、ここで漢字ごとに読みを入れられます。"
 msgstr "Once there are kanji, type the reading for each here."
 
