@@ -88,15 +88,27 @@ export function SpotSheet({
 
       {stampable ? (
       <section className="mx-4 flex items-center gap-4 rounded-[1.75rem] bg-surface p-4">
-        <StampFace state="empty" image={spot.stampImageUrl} className="h-14 w-14 shrink-0 rounded-full!" />
-        <div>
-          <p className="text-xl font-bold">
-            <Trans>スタンプの場所</Trans>
-          </p>
-          <p className="text-lg text-muted">
-            <Trans>押し方: 場所の近くで、ボタンを押します（位置情報）</Trans>
-          </p>
-        </div>
+        {/* Once stamped, the card says so with the stamp itself, in place of how to stamp (2026-11-18, user). */}
+        <StampFace state={spot.stamped === true ? "stamped" : "empty"} image={spot.stampImageUrl} className="h-14 w-14 shrink-0 rounded-full!" />
+        {spot.stamped === true ? (
+          <div>
+            <p className="text-xl font-bold text-moss">
+              <Trans>このスタンプは押しました</Trans>
+            </p>
+            <p className="text-lg text-muted">
+              <Trans>スタンプ帳に入っています。</Trans>
+            </p>
+          </div>
+        ) : (
+          <div>
+            <p className="text-xl font-bold">
+              <Trans>スタンプの場所</Trans>
+            </p>
+            <p className="text-lg text-muted">
+              <Trans>押し方: 場所の近くで、ボタンを押します（位置情報）</Trans>
+            </p>
+          </div>
+        )}
       </section>
       ) : null}
 

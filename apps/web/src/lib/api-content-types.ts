@@ -68,7 +68,7 @@ export interface PublicRally {
   sortOrder: number;
   places: { id: string; routeId: string; nameJa: string; nameEn: string | null }[];
   /** Each course with its published stamp places and their status. */
-  courses: { routeId: string; nameJa: string; nameEn: string | null; spots: { id: string; status: string }[] }[];
+  courses: { routeId: string; nameJa: string; nameEn: string | null; spots: { id: string; status: string; nameJa: string; nameEn: string | null }[] }[];
 }
 
 /** One rally as GET /rallies/:id sends it, for the rally's own page: every stamp place with its checked position. */

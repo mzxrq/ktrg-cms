@@ -242,22 +242,18 @@ export const fetchPublicSpot = cache(async (id: string): Promise<PublicSpot | nu
   return okBody<{ spot: PublicSpot }>(await getJson(`/spots/${encodeURIComponent(id)}`))?.spot ?? null;
 });
 
-/** A course is finished when it has places and every one is stamped, a closed one counting as done and an information place not counting at all (the server's rule, rallies/progress.ts). */
-const courseFinished = (spots: readonly { id: string; status: string }[], stamped: ReadonlySet<string>) =>
-  spots.some((s) => s.status !== "info") && spots.every((s) => stamped.has(s.id) || s.status === "closed" || s.status === "info");
-
 /**
- * The rallies the CMS publishes, as the stamp page shows them. A rally of places has one slot for each place; a rally of
- * courses one for each course, stamped once every published stamp place of that course is. `stamped` is the set of place
+ * The rallies the CMS publishes, as the stamp page shows them. Every rally has one slot for each stamp place, as the pages
+ * count them in か所: a rally of places its own places, a rally of courses the places of its courses in course order (an
+ * information place offers no stamp and is left out, like on the server). `stamped` is the set of place
  * ids the visitor holds (empty when signed out: the page then hides the progress). `stampedAt` says when each was stamped,
  * so the page can put the rally the visitor last stamped in first.
  */
 export function ralliesFromApi(rallies: readonly PublicRally[], stamped: ReadonlySet<string>, stampedAt: ReadonlyMap<string, string> = new Map()): RallyItem[] {
   return rallies.map((r, i): RallyItem => {
-    const slots =
-      r.kind === "places"
-        ? r.places.map((p, n) => ({ id: p.id, number: n + 1, nameJa: p.nameJa, nameEn: p.nameEn, stamped: stamped.has(p.id) }))
-        : r.courses.map((c, n) => ({ id: c.routeId, number: n + 1, nameJa: c.nameJa, nameEn: c.nameEn, stamped: courseFinished(c.spots, stamped) }));
+    // A place on two courses of the same rally is one stamp, so it is one slot.
+    const places = r.kind === "places" ? r.places : [...new Map(r.courses.flatMap((c) => c.spots.filter((s) => s.status !== "info").map((s) => [s.id, s] as const))).values()];
+    const slots = places.map((p, n) => ({ id: p.id, number: n + 1, nameJa: p.nameJa, nameEn: p.nameEn, stamped: stamped.has(p.id) }));
     // The latest stamp among the rally's own places (for a rally of courses: the places of its courses).
     const placeIds = r.kind === "places" ? r.places.map((p) => p.id) : r.courses.flatMap((c) => c.spots.map((s) => s.id));
     const lastStampedAt = placeIds.reduce<string | null>((best, id) => {

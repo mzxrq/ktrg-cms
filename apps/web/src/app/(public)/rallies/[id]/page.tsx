@@ -77,7 +77,7 @@ export default async function RallyPage({ params, searchParams }: Props) {
   });
   // Where "start now" leads: the next place not yet stamped (the first one when nothing is), opened on the map.
   const next = nextSlot(rally);
-  const start = detail.places.find((p) => (next && detail.kind === "course" ? p.routeId === next.id : true) && !heldSet.has(p.id)) ?? detail.places.find((p) => !heldSet.has(p.id));
+  const start = detail.places.find((p) => p.id === next?.id) ?? detail.places.find((p) => !heldSet.has(p.id));
   const startHref = start ? `/map?route=${encodeURIComponent(start.routeId)}&stop=${encodeURIComponent(start.id)}` : "/map";
   const canStampHere = !done && detail.places.some((p) => p.lat !== null && !offersNoStamp(p.status) && !heldSet.has(p.id));
   const button = buttonStyle("primary", "lg", "flex w-full");

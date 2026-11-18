@@ -364,7 +364,7 @@ describe("what visitors read about rallies", () => {
     expect(body.rallies.map((r: Json) => [r.nameJa, r.kind])).toEqual([["経塚ラリー", "places"], ["全コース", "course"]]);
     // A1 is published, B1 is not: only A1 is named.
     expect(body.rallies[0].places.map((p: Json) => p.id)).toEqual([A1]);
-    expect(body.rallies[1].courses).toEqual([{ routeId: ROUTE_A, nameJa: "ルートA", nameEn: "Route A", spots: [{ id: A1, status: "closed" }] }]);
+    expect(body.rallies[1].courses).toEqual([{ routeId: ROUTE_A, nameJa: "ルートA", nameEn: "Route A", spots: [{ id: A1, status: "closed", nameJa: "A一", nameEn: null }] }]);
   });
 
   test("the answer is kept for the time given, and rebuilt after it", async () => {

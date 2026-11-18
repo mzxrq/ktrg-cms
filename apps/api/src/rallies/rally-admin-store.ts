@@ -129,10 +129,8 @@ export function createDrizzleRallyAdminStore(db: Db): RallyAdminStore {
           .orderBy(asc(rallySpots.position)),
         db.select().from(rallyRoutes).where(inArray(rallyRoutes.rallyId, ids)).orderBy(asc(rallyRoutes.position)),
       ]);
-      const spotIds = [...new Set(spotLinks.map((l) => l.spotId))];
       const routeIds = [...new Set(routeLinks.map((l) => l.routeId))];
-      const [spotNames, routeNames, stampSpots] = await Promise.all([
-        spotIds.length ? db.select().from(spotTranslations).where(inArray(spotTranslations.spotId, spotIds)) : [],
+      const [routeNames, stampSpots] = await Promise.all([
         routeIds.length ? db.select().from(routeTranslations).where(inArray(routeTranslations.routeId, routeIds)) : [],
         routeIds.length
           ? db
@@ -143,11 +141,17 @@ export function createDrizzleRallyAdminStore(db: Db): RallyAdminStore {
               .orderBy(asc(spots.sortOrder))
           : [],
       ]);
+      // Names of the rallies' own places and of their courses' places: a rally of courses counts and names places too.
+      const spotIds = [...new Set([...spotLinks.map((l) => l.spotId), ...stampSpots.map((s) => s.id)])];
+      const spotNames = spotIds.length ? await db.select().from(spotTranslations).where(inArray(spotTranslations.spotId, spotIds)) : [];
       const rallyText = flattenTexts(RALLY_TEXT, names, (t) => t.rallyId);
       const spotText = flattenTexts(SPOT_TEXT, spotNames, (t) => t.spotId);
       const routeText = flattenTexts(ROUTE_TEXT, routeNames, (t) => t.routeId);
-      const stampsOf = new Map<string, { id: string; status: "open" | "caution" | "closed" | "info" }[]>();
-      for (const s of stampSpots) stampsOf.set(s.routeId, [...(stampsOf.get(s.routeId) ?? []), { id: s.id, status: s.status }]);
+      const stampsOf = new Map<string, PublicRally["courses"][number]["spots"]>();
+      for (const s of stampSpots) {
+        const n = spotText.get(s.id) ?? emptyTexts(SPOT_TEXT);
+        stampsOf.set(s.routeId, [...(stampsOf.get(s.routeId) ?? []), { id: s.id, status: s.status, nameJa: n.nameJa ?? "", nameEn: n.nameEn }]);
+      }
       return rows.map((r): PublicRally => {
         const t = rallyText.get(r.id) ?? emptyTexts(RALLY_TEXT);
         const base = { id: r.id, kind: r.kind, nameJa: t.nameJa ?? "", nameEn: t.nameEn, sortOrder: r.sortOrder };
