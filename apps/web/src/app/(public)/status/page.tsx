@@ -12,6 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // Is the site working right now: the API and its database, checked when the page opens (no outside service watches it).
 export default async function StatusPage() {
+  await initLingui(); // sets the language for <Trans> in this render (generateMetadata is a separate one)
   return (
     <div className="page-narrow flex flex-col gap-6 px-4 pt-2">
       <BackLink href="/">
