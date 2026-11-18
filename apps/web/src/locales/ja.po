@@ -25,7 +25,7 @@ msgid "（名前がありません）"
 msgstr "（名前がありません）"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1092
-#: src/components/admin/one-map/OneMap.tsx:343
+#: src/components/admin/one-map/OneMap.tsx:344
 msgid "（名前なし）"
 msgstr "（名前なし）"
 
@@ -59,7 +59,7 @@ msgid "{0}（{1}件）"
 msgstr "{0}（{1}件）"
 
 #. placeholder {0}: c.nameJa
-#: src/components/admin/one-map/OneMap.tsx:254
+#: src/components/admin/one-map/OneMap.tsx:255
 msgid "{0}（線がまだありません）"
 msgstr "{0}（線がまだありません）"
 
@@ -543,7 +543,7 @@ msgid "「{0}」のふりがなを削除しますか？"
 msgstr "「{0}」のふりがなを削除しますか？"
 
 #. placeholder {0}: choice?.nameJa ?? ""
-#: src/components/admin/one-map/OneMap.tsx:330
+#: src/components/admin/one-map/OneMap.tsx:331
 msgid "「{0}」の経由地"
 msgstr "「{0}」の経由地"
 
@@ -1287,13 +1287,13 @@ msgstr "お店・食事"
 #: src/app/(public)/places/page.tsx:12
 #: src/app/(public)/places/page.tsx:37
 #: src/app/(public)/sitemap/page.tsx:67
-#: src/components/admin/one-map/OneMap.tsx:393
+#: src/components/admin/one-map/OneMap.tsx:394
 #: src/components/SiteFooter.tsx:26
 #: src/components/SiteHeader.tsx:275
 msgid "お店と施設"
 msgstr "お店と施設"
 
-#: src/components/admin/one-map/OneMap.tsx:301
+#: src/components/admin/one-map/OneMap.tsx:302
 msgid "お店と施設の場所"
 msgstr "お店と施設の場所"
 
@@ -1492,7 +1492,7 @@ msgstr "コースのすべての場所でスタンプを押すと、そのコー
 msgid "コースのページで直す"
 msgstr "コースのページで直す"
 
-#: src/components/admin/one-map/OneMap.tsx:266
+#: src/components/admin/one-map/OneMap.tsx:267
 msgid "コースのページを開く"
 msgstr "コースのページを開く"
 
@@ -1605,7 +1605,7 @@ msgstr "コースを見る"
 msgid "コースを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "コースを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 
-#: src/components/admin/one-map/OneMap.tsx:249
+#: src/components/admin/one-map/OneMap.tsx:250
 msgid "コースを選ぶ"
 msgstr "コースを選ぶ"
 
@@ -1714,7 +1714,7 @@ msgstr "このアプリを知ったきっかけ"
 msgid "このコースがまだありません"
 msgstr "このコースがまだありません"
 
-#: src/components/admin/one-map/OneMap.tsx:276
+#: src/components/admin/one-map/OneMap.tsx:277
 msgid "このコースには、まだ線も範囲もないので、地図を動かせません。"
 msgstr "このコースには、まだ線も範囲もないので、地図を動かせません。"
 
@@ -1746,11 +1746,11 @@ msgstr "このコースを削除"
 msgid "このコースを削除します。元に戻せません。よろしいですか？"
 msgstr "このコースを削除します。元に戻せません。よろしいですか？"
 
-#: src/components/admin/one-map/OneMap.tsx:261
+#: src/components/admin/one-map/OneMap.tsx:262
 msgid "このコースを編集する"
 msgstr "このコースを編集する"
 
-#: src/components/admin/one-map/OneMap.tsx:319
+#: src/components/admin/one-map/OneMap.tsx:320
 msgid "このコースを選ぶ"
 msgstr "このコースを選ぶ"
 
@@ -1952,7 +1952,7 @@ msgstr "この場所は見つかりません（ページには出ません）"
 msgid "この場所を削除します。元に戻せません。よろしいですか？"
 msgstr "この場所を削除します。元に戻せません。よろしいですか？"
 
-#: src/components/admin/one-map/OneMap.tsx:303
+#: src/components/admin/one-map/OneMap.tsx:304
 msgid "この場所を編集する"
 msgstr "この場所を編集する"
 
@@ -2048,15 +2048,15 @@ msgstr "この端末に {0} 個、アカウントに {1} 個のスタンプが�
 msgid "この端末には保存しました。つながったときに、アカウントにも保存されます。"
 msgstr "この端末には保存しました。つながったときに、アカウントにも保存されます。"
 
-#: src/components/admin/one-map/OneMap.tsx:283
+#: src/components/admin/one-map/OneMap.tsx:284
 msgid "この範囲には、コースも経由地も場所もありません。"
 msgstr "この範囲には、コースも経由地も場所もありません。"
 
-#: src/components/admin/one-map/OneMap.tsx:282
+#: src/components/admin/one-map/OneMap.tsx:283
 msgid "この範囲には多すぎて、すべては表示できません。地図を拡大してください。"
 msgstr "この範囲には多すぎて、すべては表示できません。地図を拡大してください。"
 
-#: src/components/admin/one-map/OneMap.tsx:354
+#: src/components/admin/one-map/OneMap.tsx:355
 msgid "この範囲のコース"
 msgstr "この範囲のコース"
 
@@ -2089,7 +2089,7 @@ msgstr "この経由地を保存しました。"
 msgid "この経由地を削除"
 msgstr "この経由地を削除"
 
-#: src/components/admin/one-map/OneMap.tsx:315
+#: src/components/admin/one-map/OneMap.tsx:316
 msgid "この経由地を編集する"
 msgstr "この経由地を編集する"
 
@@ -2539,7 +2539,7 @@ msgstr "すべてのコース"
 msgid "すべてのコース、経由地、お店と施設を、一つの地図で見られます。コースを選ぶと、そのコースが手前に出て、地図がそこへ動きます。「このコースを編集する」で、線と経由地をこの画面のまま直せます。"
 msgstr "すべてのコース、経由地、お店と施設を、一つの地図で見られます。コースを選ぶと、そのコースが手前に出て、地図がそこへ動きます。「このコースを編集する」で、線と経由地をこの画面のまま直せます。"
 
-#: src/components/admin/one-map/OneMap.tsx:279
+#: src/components/admin/one-map/OneMap.tsx:280
 msgid "すべてのコースと場所の地図"
 msgstr "すべてのコースと場所の地図"
 
@@ -3369,7 +3369,7 @@ msgstr "ほかにログインの方法がないので、これは消せません
 msgid "ほかのアプリに保存するときは、表示される画面で選んでください。"
 msgstr "ほかのアプリに保存するときは、表示される画面で選んでください。"
 
-#: src/components/admin/one-map/OneMap.tsx:385
+#: src/components/admin/one-map/OneMap.tsx:386
 msgid "ほかのコース"
 msgstr "ほかのコース"
 
@@ -3378,7 +3378,7 @@ msgstr "ほかのコース"
 msgid "ほかのコースと共有する経由地"
 msgstr "ほかのコースと共有する経由地"
 
-#: src/components/admin/one-map/OneMap.tsx:389
+#: src/components/admin/one-map/OneMap.tsx:390
 msgid "ほかのコースの経由地"
 msgstr "ほかのコースの経由地"
 
@@ -4037,9 +4037,9 @@ msgstr "下り {down}m"
 #: src/app/(admin)/admin/attention/page.tsx:122
 #: src/components/admin/BannerOrder.tsx:105
 #: src/components/admin/DirectoryPicker.tsx:144
-#: src/components/admin/one-map/OneMap.tsx:299
-#: src/components/admin/one-map/OneMap.tsx:310
-#: src/components/admin/one-map/OneMap.tsx:345
+#: src/components/admin/one-map/OneMap.tsx:300
+#: src/components/admin/one-map/OneMap.tsx:311
+#: src/components/admin/one-map/OneMap.tsx:346
 #: src/components/admin/PlacePanel.tsx:112
 #: src/components/admin/RallyEditor.tsx:124
 #: src/components/admin/RallyList.tsx:59
@@ -4090,7 +4090,7 @@ msgstr "並べ替えは、検索・絞り込み・並べかえを外してから
 msgid "並べ替えは、絞り込み・並べかえを外してからできます。"
 msgstr "並べ替えは、絞り込み・並べかえを外してからできます。"
 
-#: src/components/admin/one-map/OneMap.tsx:397
+#: src/components/admin/one-map/OneMap.tsx:398
 msgid "中が白いもの：下書き、または位置を確認していない"
 msgstr "中が白いもの：下書き、または位置を確認していない"
 
@@ -4187,7 +4187,7 @@ msgid "位置"
 msgstr "位置"
 
 #: src/components/admin/map-editor/PlaceList.tsx:140
-#: src/components/admin/one-map/OneMap.tsx:346
+#: src/components/admin/one-map/OneMap.tsx:347
 msgid "位置なし"
 msgstr "位置なし"
 
@@ -5623,7 +5623,7 @@ msgstr "地図に出すもの"
 msgid "地図のコースと場所は仮のものです。実際の公開情報ではありません。"
 msgstr "地図のコースと場所は仮のものです。実際の公開情報ではありません。"
 
-#: src/components/admin/one-map/OneMap.tsx:288
+#: src/components/admin/one-map/OneMap.tsx:289
 msgid "地図のデータを読み込めませんでした。"
 msgstr "地図のデータを読み込めませんでした。"
 
@@ -6903,7 +6903,7 @@ msgid "港・フェリー乗り場"
 msgstr "港・フェリー乗り場"
 
 #: src/app/(public)/rallies/[id]/page.tsx:109
-#: src/components/admin/one-map/OneMap.tsx:361
+#: src/components/admin/one-map/OneMap.tsx:362
 #: src/components/admin/RouteTable.tsx:43
 #: src/components/BookmarkList.tsx:57
 #: src/components/RallyViews.tsx:181
@@ -7451,7 +7451,7 @@ msgid "経由地 {0}"
 msgstr "経由地 {0}"
 
 #. placeholder {0}: nameOf(ownPicked ? chosen! : spot!.routeId)
-#: src/components/admin/one-map/OneMap.tsx:312
+#: src/components/admin/one-map/OneMap.tsx:313
 msgid "経由地（{0}）"
 msgstr "経由地（{0}）"
 
@@ -7519,7 +7519,7 @@ msgstr "経由地の状態を変えた"
 msgid "経由地の順番を変えた"
 msgstr "経由地の順番を変えた"
 
-#: src/components/admin/one-map/OneMap.tsx:336
+#: src/components/admin/one-map/OneMap.tsx:337
 msgid "経由地は、まだありません。"
 msgstr "経由地は、まだありません。"
 
@@ -7664,7 +7664,7 @@ msgid "線を確認した"
 msgstr "線を確認した"
 
 #: src/app/(admin)/admin/attention/page.tsx:58
-#: src/components/admin/one-map/OneMap.tsx:362
+#: src/components/admin/one-map/OneMap.tsx:363
 msgid "線を確認していない"
 msgstr "線を確認していない"
 
@@ -8175,8 +8175,8 @@ msgstr "読みを入れてほしい名前"
 msgid "読み込み中"
 msgstr "読み込み中"
 
-#: src/components/admin/one-map/OneMap.tsx:281
-#: src/components/admin/one-map/OneMap.tsx:334
+#: src/components/admin/one-map/OneMap.tsx:282
+#: src/components/admin/one-map/OneMap.tsx:335
 #: src/components/admin/one-map/OneMapCourseEditor.tsx:45
 #: src/components/admin/VideoHistory.tsx:34
 msgid "読み込み中…"
@@ -8572,7 +8572,7 @@ msgstr "遠いとみなす距離"
 msgid "選ばない"
 msgstr "選ばない"
 
-#: src/components/admin/one-map/OneMap.tsx:251
+#: src/components/admin/one-map/OneMap.tsx:252
 msgid "選ばない（すべて同じ太さで表示）"
 msgstr "選ばない（すべて同じ太さで表示）"
 
@@ -8602,7 +8602,7 @@ msgstr "選んだ{0}件を削除"
 msgid "選んだ{0}件を削除します。元に戻せません。よろしいですか？"
 msgstr "選んだ{0}件を削除します。元に戻せません。よろしいですか？"
 
-#: src/components/admin/one-map/OneMap.tsx:381
+#: src/components/admin/one-map/OneMap.tsx:382
 msgid "選んだコース"
 msgstr "選んだコース"
 
@@ -8610,7 +8610,7 @@ msgstr "選んだコース"
 msgid "選んだファイルの中にありません"
 msgstr "選んだファイルの中にありません"
 
-#: src/components/admin/one-map/OneMap.tsx:294
+#: src/components/admin/one-map/OneMap.tsx:295
 msgid "選んだもの"
 msgstr "選んだもの"
 

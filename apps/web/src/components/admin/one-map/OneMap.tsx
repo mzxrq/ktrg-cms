@@ -75,10 +75,10 @@ export function OneMap({ courses, initialChosen, locale }: { courses: CourseChoi
   const stopEditing = async () => {
     if (await okToClose()) setEditing(false);
   };
-  // A save changes the course's line, waypoints and maybe its name: read the faint layers, its pins and the course list again.
+  // A save changes the course's line, waypoints and maybe its name: read its pins and the course list again. The faint layers
+  // are read when editing ends (the hidden map has no size now, so its area would be wrong).
   const onSaved = useCallback(() => {
     setOwnRev((n) => n + 1);
-    void latest.current.load();
     router.refresh();
   }, [router]);
 
@@ -90,6 +90,7 @@ export function OneMap({ courses, initialChosen, locale }: { courses: CourseChoi
       map.resize();
       const to = courses.find((c) => c.id === chosen)?.bounds;
       if (to) map.fitBounds(to, { ...FIT, animate: false });
+      void latest.current.load(); // the faint layers, with what was saved meanwhile
     }
     wasEditing.current = editing;
   }, [editing, chosen, courses]);

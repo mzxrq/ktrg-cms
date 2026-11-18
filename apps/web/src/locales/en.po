@@ -25,7 +25,7 @@ msgid "（名前がありません）"
 msgstr "(no name)"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1092
-#: src/components/admin/one-map/OneMap.tsx:343
+#: src/components/admin/one-map/OneMap.tsx:344
 msgid "（名前なし）"
 msgstr "(no name)"
 
@@ -59,7 +59,7 @@ msgid "{0}（{1}件）"
 msgstr "{0} ({1})"
 
 #. placeholder {0}: c.nameJa
-#: src/components/admin/one-map/OneMap.tsx:254
+#: src/components/admin/one-map/OneMap.tsx:255
 msgid "{0}（線がまだありません）"
 msgstr "{0} (no line yet)"
 
@@ -543,7 +543,7 @@ msgid "「{0}」のふりがなを削除しますか？"
 msgstr "Delete the furigana of “{0}”?"
 
 #. placeholder {0}: choice?.nameJa ?? ""
-#: src/components/admin/one-map/OneMap.tsx:330
+#: src/components/admin/one-map/OneMap.tsx:331
 msgid "「{0}」の経由地"
 msgstr "Waypoints of “{0}”"
 
@@ -1287,13 +1287,13 @@ msgstr "Shops and food"
 #: src/app/(public)/places/page.tsx:12
 #: src/app/(public)/places/page.tsx:37
 #: src/app/(public)/sitemap/page.tsx:67
-#: src/components/admin/one-map/OneMap.tsx:393
+#: src/components/admin/one-map/OneMap.tsx:394
 #: src/components/SiteFooter.tsx:26
 #: src/components/SiteHeader.tsx:275
 msgid "お店と施設"
 msgstr "Shops and facilities"
 
-#: src/components/admin/one-map/OneMap.tsx:301
+#: src/components/admin/one-map/OneMap.tsx:302
 msgid "お店と施設の場所"
 msgstr "Shop or facility"
 
@@ -1492,7 +1492,7 @@ msgstr "Press a stamp at every place of a course to get that course's badge."
 msgid "コースのページで直す"
 msgstr "Fix it on the course page"
 
-#: src/components/admin/one-map/OneMap.tsx:266
+#: src/components/admin/one-map/OneMap.tsx:267
 msgid "コースのページを開く"
 msgstr "Open the course page"
 
@@ -1605,7 +1605,7 @@ msgstr "See the courses"
 msgid "コースを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "Could not load the courses. Please wait a moment and reopen the page."
 
-#: src/components/admin/one-map/OneMap.tsx:249
+#: src/components/admin/one-map/OneMap.tsx:250
 msgid "コースを選ぶ"
 msgstr "Choose a course"
 
@@ -1714,7 +1714,7 @@ msgstr "How did you find out about this?"
 msgid "このコースがまだありません"
 msgstr "This course does not exist yet"
 
-#: src/components/admin/one-map/OneMap.tsx:276
+#: src/components/admin/one-map/OneMap.tsx:277
 msgid "このコースには、まだ線も範囲もないので、地図を動かせません。"
 msgstr "This course has no line or area yet, so the map cannot move to it."
 
@@ -1746,11 +1746,11 @@ msgstr "Delete this course"
 msgid "このコースを削除します。元に戻せません。よろしいですか？"
 msgstr "This course will be deleted and cannot be restored. Continue?"
 
-#: src/components/admin/one-map/OneMap.tsx:261
+#: src/components/admin/one-map/OneMap.tsx:262
 msgid "このコースを編集する"
 msgstr "Edit this course"
 
-#: src/components/admin/one-map/OneMap.tsx:319
+#: src/components/admin/one-map/OneMap.tsx:320
 msgid "このコースを選ぶ"
 msgstr "Choose this course"
 
@@ -1952,7 +1952,7 @@ msgstr "Place not found (it will not show on the page)"
 msgid "この場所を削除します。元に戻せません。よろしいですか？"
 msgstr "Delete this place? This cannot be undone."
 
-#: src/components/admin/one-map/OneMap.tsx:303
+#: src/components/admin/one-map/OneMap.tsx:304
 msgid "この場所を編集する"
 msgstr "Edit this place"
 
@@ -2048,15 +2048,15 @@ msgstr "This device has {0} stamps and the account has {1}."
 msgid "この端末には保存しました。つながったときに、アカウントにも保存されます。"
 msgstr "Saved on this phone. It will be saved to your account when you are connected."
 
-#: src/components/admin/one-map/OneMap.tsx:283
+#: src/components/admin/one-map/OneMap.tsx:284
 msgid "この範囲には、コースも経由地も場所もありません。"
 msgstr "No courses, waypoints or places in this area."
 
-#: src/components/admin/one-map/OneMap.tsx:282
+#: src/components/admin/one-map/OneMap.tsx:283
 msgid "この範囲には多すぎて、すべては表示できません。地図を拡大してください。"
 msgstr "Too many to show everything in this area. Zoom in on the map."
 
-#: src/components/admin/one-map/OneMap.tsx:354
+#: src/components/admin/one-map/OneMap.tsx:355
 msgid "この範囲のコース"
 msgstr "Courses in this area"
 
@@ -2089,7 +2089,7 @@ msgstr "This waypoint was saved."
 msgid "この経由地を削除"
 msgstr "Delete this waypoint"
 
-#: src/components/admin/one-map/OneMap.tsx:315
+#: src/components/admin/one-map/OneMap.tsx:316
 msgid "この経由地を編集する"
 msgstr "Edit this waypoint"
 
@@ -2539,7 +2539,7 @@ msgstr "All courses"
 msgid "すべてのコース、経由地、お店と施設を、一つの地図で見られます。コースを選ぶと、そのコースが手前に出て、地図がそこへ動きます。「このコースを編集する」で、線と経由地をこの画面のまま直せます。"
 msgstr "Every course, waypoint, shop and facility on one map. Choose a course to bring it to the front and move the map to it. With “Edit this course” you can change its line and waypoints right here."
 
-#: src/components/admin/one-map/OneMap.tsx:279
+#: src/components/admin/one-map/OneMap.tsx:280
 msgid "すべてのコースと場所の地図"
 msgstr "Map of every course and place"
 
@@ -3369,7 +3369,7 @@ msgstr "This can't be removed because it is your only way to log in. Set up emai
 msgid "ほかのアプリに保存するときは、表示される画面で選んでください。"
 msgstr "To save it in a different app, choose it on the screen that appears."
 
-#: src/components/admin/one-map/OneMap.tsx:385
+#: src/components/admin/one-map/OneMap.tsx:386
 msgid "ほかのコース"
 msgstr "Other courses"
 
@@ -3378,7 +3378,7 @@ msgstr "Other courses"
 msgid "ほかのコースと共有する経由地"
 msgstr "Waypoints shared with other courses"
 
-#: src/components/admin/one-map/OneMap.tsx:389
+#: src/components/admin/one-map/OneMap.tsx:390
 msgid "ほかのコースの経由地"
 msgstr "Waypoints of other courses"
 
@@ -4037,9 +4037,9 @@ msgstr "Down {down} m"
 #: src/app/(admin)/admin/attention/page.tsx:122
 #: src/components/admin/BannerOrder.tsx:105
 #: src/components/admin/DirectoryPicker.tsx:144
-#: src/components/admin/one-map/OneMap.tsx:299
-#: src/components/admin/one-map/OneMap.tsx:310
-#: src/components/admin/one-map/OneMap.tsx:345
+#: src/components/admin/one-map/OneMap.tsx:300
+#: src/components/admin/one-map/OneMap.tsx:311
+#: src/components/admin/one-map/OneMap.tsx:346
 #: src/components/admin/PlacePanel.tsx:112
 #: src/components/admin/RallyEditor.tsx:124
 #: src/components/admin/RallyList.tsx:59
@@ -4090,7 +4090,7 @@ msgstr "Reordering is possible only with no search, filter or sort on."
 msgid "並べ替えは、絞り込み・並べかえを外してからできます。"
 msgstr "Reordering is possible only with no filter or sort on."
 
-#: src/components/admin/one-map/OneMap.tsx:397
+#: src/components/admin/one-map/OneMap.tsx:398
 msgid "中が白いもの：下書き、または位置を確認していない"
 msgstr "White inside: a draft, or a position not checked yet"
 
@@ -4187,7 +4187,7 @@ msgid "位置"
 msgstr "Position"
 
 #: src/components/admin/map-editor/PlaceList.tsx:140
-#: src/components/admin/one-map/OneMap.tsx:346
+#: src/components/admin/one-map/OneMap.tsx:347
 msgid "位置なし"
 msgstr "No position"
 
@@ -5623,7 +5623,7 @@ msgstr "Show on the map"
 msgid "地図のコースと場所は仮のものです。実際の公開情報ではありません。"
 msgstr "The course and places on the map are provisional. They are not published information."
 
-#: src/components/admin/one-map/OneMap.tsx:288
+#: src/components/admin/one-map/OneMap.tsx:289
 msgid "地図のデータを読み込めませんでした。"
 msgstr "The map data could not be loaded."
 
@@ -6903,7 +6903,7 @@ msgid "港・フェリー乗り場"
 msgstr "Port or ferry"
 
 #: src/app/(public)/rallies/[id]/page.tsx:109
-#: src/components/admin/one-map/OneMap.tsx:361
+#: src/components/admin/one-map/OneMap.tsx:362
 #: src/components/admin/RouteTable.tsx:43
 #: src/components/BookmarkList.tsx:57
 #: src/components/RallyViews.tsx:181
@@ -7451,7 +7451,7 @@ msgid "経由地 {0}"
 msgstr "{0} waypoints"
 
 #. placeholder {0}: nameOf(ownPicked ? chosen! : spot!.routeId)
-#: src/components/admin/one-map/OneMap.tsx:312
+#: src/components/admin/one-map/OneMap.tsx:313
 msgid "経由地（{0}）"
 msgstr "Waypoint ({0})"
 
@@ -7519,7 +7519,7 @@ msgstr "Changed a waypoint's status"
 msgid "経由地の順番を変えた"
 msgstr "Reordered the waypoints"
 
-#: src/components/admin/one-map/OneMap.tsx:336
+#: src/components/admin/one-map/OneMap.tsx:337
 msgid "経由地は、まだありません。"
 msgstr "No waypoints yet."
 
@@ -7664,7 +7664,7 @@ msgid "線を確認した"
 msgstr "Line checked"
 
 #: src/app/(admin)/admin/attention/page.tsx:58
-#: src/components/admin/one-map/OneMap.tsx:362
+#: src/components/admin/one-map/OneMap.tsx:363
 msgid "線を確認していない"
 msgstr "Line not checked"
 
@@ -8175,8 +8175,8 @@ msgstr "Names that need a reading"
 msgid "読み込み中"
 msgstr "Loading"
 
-#: src/components/admin/one-map/OneMap.tsx:281
-#: src/components/admin/one-map/OneMap.tsx:334
+#: src/components/admin/one-map/OneMap.tsx:282
+#: src/components/admin/one-map/OneMap.tsx:335
 #: src/components/admin/one-map/OneMapCourseEditor.tsx:45
 #: src/components/admin/VideoHistory.tsx:34
 msgid "読み込み中…"
@@ -8572,7 +8572,7 @@ msgstr "Distance that counts as far"
 msgid "選ばない"
 msgstr "Not set"
 
-#: src/components/admin/one-map/OneMap.tsx:251
+#: src/components/admin/one-map/OneMap.tsx:252
 msgid "選ばない（すべて同じ太さで表示）"
 msgstr "None (every course drawn the same)"
 
@@ -8602,7 +8602,7 @@ msgstr "Delete the {0} selected"
 msgid "選んだ{0}件を削除します。元に戻せません。よろしいですか？"
 msgstr "Delete the {0} selected? This cannot be undone."
 
-#: src/components/admin/one-map/OneMap.tsx:381
+#: src/components/admin/one-map/OneMap.tsx:382
 msgid "選んだコース"
 msgstr "Chosen course"
 
@@ -8610,7 +8610,7 @@ msgstr "Chosen course"
 msgid "選んだファイルの中にありません"
 msgstr "not among the chosen files"
 
-#: src/components/admin/one-map/OneMap.tsx:294
+#: src/components/admin/one-map/OneMap.tsx:295
 msgid "選んだもの"
 msgstr "Chosen item"
 
