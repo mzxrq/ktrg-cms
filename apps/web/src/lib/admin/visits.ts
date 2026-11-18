@@ -60,6 +60,12 @@ export function niceMax(max: number): number {
   return ([1, 2, 5, 10].map((m) => m * power).find((v) => v >= max) ?? 10 * power);
 }
 
+/** The scale's numbers, top first: as many equal whole steps (4, else 5, 2 or 1) as divide `top`, so no number repeats. */
+export function axisTicks(top: number): number[] {
+  const steps = [4, 5, 2, 1].find((s) => top % s === 0) ?? 1;
+  return Array.from({ length: steps + 1 }, (_, i) => (top * (steps - i)) / steps);
+}
+
 /** A path for a table: an id (uuid) inside it is cut to its first four characters, so the page's own name stays readable. */
 export function shortPath(path: string): string {
   return path.replace(/\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(?=\/|$)/gi, (m) => `${m.slice(0, 5)}…`);
