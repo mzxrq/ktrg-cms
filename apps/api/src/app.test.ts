@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
-import vercelEntry, { app } from "./app";
+import vercelEntry, { app, createApp } from "./app";
 import { parseEnv } from "./parse-env";
 
 describe("GET /api/v1/health", () => {
@@ -9,6 +9,31 @@ describe("GET /api/v1/health", () => {
     const res = await app.handle(new Request("http://localhost/api/v1/health"));
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ status: "ok" });
+  });
+});
+
+describe("GET /api/v1/health/db", () => {
+  // No services are touched: the route only runs the check it is given.
+  const withCheck = (checkDatabase?: () => Promise<unknown>) => createApp(() => ({}) as never, { secureCookies: false, docs: false, checkDatabase });
+  const ask = (a: { handle(r: Request): Promise<Response> }) => a.handle(new Request("http://localhost/api/v1/health/db"));
+
+  test("ok when the database answers, kept at the edge a few seconds", async () => {
+    const res = await ask(withCheck(async () => 1));
+    expect(res.status).toBe(200);
+    expect(res.headers.get("cache-control")).toBe("public, max-age=15");
+    const body = await res.json();
+    expect(Object.keys(body).sort()).toEqual(["checkedAt", "database"]); // up or down and when, nothing else
+    expect(body.database).toBe("ok");
+  });
+
+  test("503 and down when the check fails, or when there is none, without the error's text", async () => {
+    for (const a of [withCheck(async () => Promise.reject(new Error("host db.internal:5432 refused"))), withCheck()]) {
+      const res = await ask(a);
+      expect(res.status).toBe(503);
+      const text = await res.text();
+      expect(JSON.parse(text).database).toBe("down");
+      expect(text).not.toContain("db.internal");
+    }
   });
 });
 

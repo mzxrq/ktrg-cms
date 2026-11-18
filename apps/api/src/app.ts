@@ -1,5 +1,7 @@
+import { sql } from "drizzle-orm";
 import { Elysia } from "elysia";
 import { createDrizzleAuditWriter } from "./audit/audit-store";
+import { publicCache } from "./lib/public-cache";
 import { photoHostsFor, withWikimedia } from "./lib/https-url";
 import { parseAdminEmails } from "./auth/admin-emails";
 import { createDrizzleOtpStore } from "./auth/otp-store";
@@ -79,10 +81,12 @@ const diskUploads: DiskStorage | undefined =
     : undefined;
 
 // Built on first use, so importing the app never opens a database connection.
+let database: ReturnType<typeof createDb>["db"] | undefined;
+const getDb = () => (database ??= createDb(env.DATABASE_URL).db);
 let services: Services | undefined;
 function getServices(): Services {
   if (!services) {
-    const { db } = createDb(env.DATABASE_URL);
+    const db = getDb();
     services = createServices({
       stores: {
         otp: createDrizzleOtpStore(db),
@@ -149,7 +153,7 @@ function getServices(): Services {
  */
 export function createApp(
   getServices: () => Services,
-  opts: RouteOptions & { docs: boolean; cronSecret?: string; appOrigin?: () => string; diskUploads?: DiskStorage },
+  opts: RouteOptions & { docs: boolean; cronSecret?: string; appOrigin?: () => string; diskUploads?: DiskStorage; checkDatabase?: () => Promise<unknown> },
 ) {
   return new Elysia({ prefix: "/api/v1" })
     .use(apiBase({ allowedOrigin: opts.appOrigin })) // first: request ids, the Origin check and the one error shape
@@ -160,6 +164,21 @@ export function createApp(
         status: "ok" as const,
       }),
       { detail: { tags: ["Health"], summary: "Is the API up?" } },
+    )
+    // For the /status page. Open to anyone, so the edge keeps the answer a few seconds: calling it in a loop never reaches the
+    // database pool (it hung once on too many queries). The body says up or down and when, nothing about hosts or errors.
+    .get(
+      "/health/db",
+      async ({ set }) => {
+        publicCache(set, 15);
+        let timer: ReturnType<typeof setTimeout> | undefined;
+        const timeout = new Promise<never>((_, reject) => (timer = setTimeout(() => reject(new Error("timeout")), 3000)));
+        const up = opts.checkDatabase ? await Promise.race([opts.checkDatabase(), timeout]).then(() => true, () => false) : false;
+        clearTimeout(timer);
+        if (!up) set.status = 503;
+        return { database: up ? ("ok" as const) : ("down" as const), checkedAt: new Date().toISOString() };
+      },
+      { detail: { tags: ["Health"], summary: "Can the API reach its database?" } },
     )
     .use(authRoutes(getServices, opts))
     .use(passkeyRoutes(getServices, opts))
@@ -224,6 +243,7 @@ export const app = createApp(getServices, {
   cronSecret: env.CRON_SECRET,
   appOrigin: () => env.APP_ORIGIN,
   diskUploads,
+  checkDatabase: async () => getDb().execute(sql`select 1`),
 });
 
 // Vercel's entry: its Elysia preset picks the first of app.ts, index.ts, server.ts, src/app.ts,

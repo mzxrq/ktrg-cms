@@ -1809,6 +1809,10 @@ msgstr "このページをすべて選ぶ"
 msgid "このページを見る権限がありません"
 msgstr "このページを見る権限がありません"
 
+#: src/app/(public)/status/page.tsx:24
+msgid "このページを開いたときに、サイトが動いているかを確かめます。スタンプが押せない、ログインできないときは、ここを見てください。"
+msgstr "このページを開いたときに、サイトが動いているかを確かめます。スタンプが押せない、ログインできないときは、ここを見てください。"
+
 #: src/components/useErrorMessages.ts:23
 msgid "このボタンは、もう使えません。7日を過ぎたか、すでに使われています。メールの番号でログインして、ログインの方法を確認してください。"
 msgstr "このボタンは、もう使えません。7日を過ぎたか、すでに使われています。メールの番号でログインして、ログインの方法を確認してください。"
@@ -2239,6 +2243,10 @@ msgstr "サイト"
 msgid "サイトで見る"
 msgstr "サイトで見る"
 
+#: src/components/StatusChecks.tsx:47
+msgid "サイトとサーバー"
+msgstr "サイトとサーバー"
+
 #: src/components/admin/HomeSectionsForm.tsx:23
 #: src/components/admin/LargeStyleUpload.tsx:55
 #: src/components/admin/PageTextEditor.tsx:67
@@ -2258,9 +2266,15 @@ msgstr "サイトの内容"
 msgid "サイトの文章を辞書が読んで、読みを考えたものです。人が確かめて承認するまで、訪れる人には表示されません。同じ字でも読み方が変わる言葉は、文に合う読みか確かめてください。1時間ごとにも読み直します。"
 msgstr "サイトの文章を辞書が読んで、読みを考えたものです。人が確かめて承認するまで、訪れる人には表示されません。同じ字でも読み方が変わる言葉は、文に合う読みか確かめてください。1時間ごとにも読み直します。"
 
+#: src/app/(public)/status/page.tsx:10
+#: src/app/(public)/status/page.tsx:21
+#: src/components/SiteFooter.tsx:35
+msgid "サイトの状態"
+msgstr "サイトの状態"
+
 #: src/app/(public)/sitemap/page.tsx:15
 #: src/app/(public)/sitemap/page.tsx:50
-#: src/components/SiteFooter.tsx:35
+#: src/components/SiteFooter.tsx:38
 #: src/components/SiteHeader.tsx:280
 msgid "サイトマップ"
 msgstr "サイトマップ"
@@ -2741,6 +2755,10 @@ msgstr "つながると、自動で送ります。そのときにサーバーが
 msgid "つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。"
 msgstr "つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。"
 
+#: src/components/StatusChecks.tsx:48
+msgid "データベース（スタンプ、ログイン、内容）"
+msgstr "データベース（スタンプ、ログイン、内容）"
+
 #: src/components/SiteHeader.tsx:256
 msgid "テーマ"
 msgstr "テーマ"
@@ -3173,7 +3191,7 @@ msgstr "フッター"
 #: src/app/(admin)/admin/pages/page.tsx:26
 #: src/app/(public)/sitemap/page.tsx:132
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:41
+#: src/components/SiteFooter.tsx:44
 #: src/components/SiteHeader.tsx:278
 msgid "プライバシーポリシー"
 msgstr "プライバシーポリシー"
@@ -3307,6 +3325,7 @@ msgstr "ベースの地図"
 #: src/app/(public)/sitemap/page.tsx:48
 #: src/app/(public)/sitemap/page.tsx:53
 #: src/app/(public)/sitemap/page.tsx:55
+#: src/app/(public)/status/page.tsx:18
 #: src/app/(public)/story/page.tsx:41
 #: src/components/admin/PageTextEditor.tsx:60
 #: src/components/pages/PageViews.tsx:88
@@ -3644,6 +3663,10 @@ msgstr "もう一度ひらく"
 #: src/components/admin/PublishedEditDialog.tsx:53
 msgid "もう一度公開するときは、「経由地」タブで「公開する」を押してください。"
 msgstr "もう一度公開するときは、「経由地」タブで「公開する」を押してください。"
+
+#: src/components/StatusChecks.tsx:66
+msgid "もう一度確認する"
+msgstr "もう一度確認する"
 
 #: src/components/StampHere.tsx:209
 msgid "もう一度試す"
@@ -5011,7 +5034,7 @@ msgstr "利用者に見せる言葉"
 #: src/app/(admin)/admin/pages/page.tsx:25
 #: src/app/(public)/sitemap/page.tsx:129
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:38
+#: src/components/SiteFooter.tsx:41
 #: src/components/SiteHeader.tsx:277
 msgid "利用規約"
 msgstr "利用規約"
@@ -5162,6 +5185,10 @@ msgstr "加えました。"
 #: src/components/admin/FuriganaWords.tsx:103
 msgid "加える"
 msgstr "加える"
+
+#: src/components/StatusChecks.tsx:44
+msgid "動いています"
+msgstr "動いています"
 
 #: src/components/MotionSelect.tsx:18
 msgid "動かさない"
@@ -6747,6 +6774,10 @@ msgstr "次まで 登り{up}m"
 msgid "次まで 登り{up}m・下り{down}m"
 msgstr "次まで 登り{up}m・下り{down}m"
 
+#: src/components/StatusChecks.tsx:44
+msgid "止まっています"
+msgstr "止まっています"
+
 #: src/components/landing/useHomeWords.ts:10
 #: src/components/RallyViews.tsx:266
 msgid "歩いて、スタンプを集めよう。"
@@ -7210,6 +7241,11 @@ msgstr "確認した情報源（サイト名やリンク）"
 msgid "確認した日：{checkedOn}"
 msgstr "確認した日：{checkedOn}"
 
+#. placeholder {0}: at.toLocaleTimeString("ja-JP", { timeZone: "Asia/Tokyo" })
+#: src/components/StatusChecks.tsx:64
+msgid "確認した時刻：{0}（日本時間）"
+msgstr "確認した時刻：{0}（日本時間）"
+
 #: src/components/admin/CourseMapEditor.tsx:98
 msgid "確認していない線は、利用者には表示されません。公式の地図などと見比べてから、チェックを入れてください。"
 msgstr "確認していない線は、利用者には表示されません。公式の地図などと見比べてから、チェックを入れてください。"
@@ -7217,6 +7253,10 @@ msgstr "確認していない線は、利用者には表示されません。公
 #: src/components/auth/ReauthDialog.tsx:91
 msgid "確認する"
 msgstr "確認する"
+
+#: src/components/StatusChecks.tsx:44
+msgid "確認できません（この端末がインターネットにつながっていません）"
+msgstr "確認できません（この端末がインターネットにつながっていません）"
 
 #: src/components/useErrorMessages.ts:30
 msgid "確認できませんでした。もう一度お試しください。"
@@ -7229,6 +7269,10 @@ msgstr "確認のため、会員番号（{memberId}）を入れてください"
 #: src/components/settings/LoginMethods.tsx:78
 msgid "確認の番号を送る"
 msgstr "確認の番号を送る"
+
+#: src/components/StatusChecks.tsx:44
+msgid "確認中…"
+msgstr "確認中…"
 
 #: src/components/admin/CommentInbox.tsx:30
 #: src/components/admin/CommentInbox.tsx:31

@@ -334,6 +334,7 @@ describe("user B cannot touch user A", () => {
   /** Routes anyone may call: health and the login and sign-up steps. */
   const PUBLIC = new Set([
     "GET /api/v1/health",
+    "GET /api/v1/health/db",
     // What visitors read: routes and published places (see content/content-routes.test.ts).
     "GET /api/v1/routes",
     "GET /api/v1/routes/:id",
