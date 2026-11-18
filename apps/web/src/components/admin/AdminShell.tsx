@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
-import { Trans } from "@lingui/react/macro";
-import { LocaleSwitcher } from "@/components/LocaleSwitcher";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { AdminProfileMenu } from "./AdminProfileMenu";
 import { AdminFrame, SidebarToggle } from "./AdminFrame";
 import { PublicSiteLink } from "./PublicSiteLink";
 import { AdminNav } from "./AdminNav";
+
+/** Runs before the page paints: the admin screens are light unless dark was chosen, so a dark device does not flash dark first. */
+const adminLightScript = "if(!document.documentElement.dataset.theme)document.documentElement.dataset.theme='light'";
 
 // The frame of every admin page: a menu on the left (folded behind a button on a narrow screen) that ends with who is signed
 // in, the language and the theme, and the page itself. Its top holds the way to the same page on the site visitors see.
@@ -18,17 +19,13 @@ export function AdminShell({ name, role, lists, children }: { name: string | nul
             <PublicSiteLink />
             <SidebarToggle />
           </div>
-          <AdminNav
-            lists={lists}
-            isAdmin={role === "admin"}
-            footer={
-              <div className="mt-2 flex flex-col items-start gap-2 border-t border-line pt-3 lg:group-data-[folded=true]:hidden">
-                <p className="text-base text-muted">{name ? <Trans>{name} さんでログイン中</Trans> : <Trans>管理者としてログイン中</Trans>}</p>
-                <LocaleSwitcher />
-                <ThemeSwitcher />
-              </div>
-            }
-          />
+          <AdminNav lists={lists} isAdmin={role === "admin"} footer={null} />
+          {/* Always in sight: in the top bar on a phone, at the foot of the menu on a wide screen. */}
+          <div className="ml-auto lg:sticky lg:bottom-0 lg:ml-0 lg:mt-auto lg:border-t lg:border-line lg:bg-paper lg:pt-3">
+            <AdminProfileMenu name={name} role={role} />
+          </div>
+          {/* Light before the first paint (admin screens do not follow the device); see AdminProfileMenu. */}
+          <script dangerouslySetInnerHTML={{ __html: adminLightScript }} />
         </>
       }
     >

@@ -362,10 +362,6 @@ msgstr "{name}, closing time of period {0}"
 msgid "{name} {0}つ目の開く時間"
 msgstr "{name}, opening time of period {0}"
 
-#: src/components/admin/AdminShell.tsx:26
-msgid "{name} さんでログイン中"
-msgstr "Signed in as {name}"
-
 #: src/components/admin/list-parts.tsx:63
 msgid "{name} を1つ前へ"
 msgstr "Move {name} one step earlier"
@@ -948,6 +944,10 @@ msgstr "Restrict or delete the account"
 #: src/components/ProfileSettings.tsx:229
 msgid "アカウントの削除"
 msgstr "Delete account"
+
+#: src/components/admin/AdminProfileMenu.tsx:74
+msgid "アカウントの設定"
+msgstr "Account settings"
 
 #: src/components/ProfileSettings.tsx:181
 msgid "アカウントを削除します"
@@ -2238,6 +2238,10 @@ msgstr "View on site"
 msgid "サイトに反映しますか？"
 msgstr "Publish this to the site?"
 
+#: src/components/admin/AdminProfileMenu.tsx:71
+msgid "サイトのトップへ"
+msgstr "Go to the site's home"
+
 #: src/components/admin/AdminNav.tsx:90
 msgid "サイトの内容"
 msgstr "Site content"
@@ -2597,6 +2601,7 @@ msgstr "Other"
 msgid "その名前の場所は見つかりませんでした。"
 msgstr "No place with that name was found."
 
+#: src/components/admin/AdminProfileMenu.tsx:94
 #: src/components/ThemeSwitcher.tsx:30
 msgid "ダーク"
 msgstr "Dark"
@@ -3217,6 +3222,10 @@ msgstr "See all posts"
 msgid "プロフィール"
 msgstr "Profile"
 
+#: src/components/admin/AdminProfileMenu.tsx:80
+msgid "プロフィール（名前・写真）"
+msgstr "Profile (name and photo)"
+
 #: src/components/ProfilePhoto.tsx:34
 msgid "プロフィール写真"
 msgstr "Profile photo"
@@ -3735,6 +3744,7 @@ msgstr "Reading"
 msgid "ライセンス情報"
 msgstr "Licenses"
 
+#: src/components/admin/AdminProfileMenu.tsx:94
 #: src/components/ThemeSwitcher.tsx:30
 msgid "ライト"
 msgstr "Light"
@@ -3896,6 +3906,7 @@ msgstr "Link address"
 msgid "リンク先のページが用意できてから、オンにしてください。オフの間は、ホームページに出ません。"
 msgstr "Turn this on once the pages it links to are ready. While it is off, it does not appear on the home page."
 
+#: src/components/admin/AdminProfileMenu.tsx:98
 #: src/components/SiteHeader.tsx:228
 msgid "ログアウト"
 msgstr "Log out"
@@ -7304,6 +7315,11 @@ msgstr "Only administrators can use the admin area. If you need access, tell an 
 msgid "管理画面を開く"
 msgstr "Open the admin area"
 
+#: src/components/admin/AdminProfileMenu.tsx:53
+#: src/components/admin/AdminProfileMenu.tsx:64
+msgid "管理者"
+msgstr "Admin"
+
 #: src/components/ProfileSettings.tsx:167
 msgid "管理者が、アカウントの削除を予約しました"
 msgstr "An administrator has scheduled your account for deletion"
@@ -7315,10 +7331,6 @@ msgstr "There is no deletion scheduled by an administrator."
 #: src/components/admin/UserActions.tsx:100
 msgid "管理者が削除を予約しました。7日たつと、アカウントとスタンプが消えます。"
 msgstr "An admin scheduled this deletion. The account and its stamps go after 7 days."
-
-#: src/components/admin/AdminShell.tsx:26
-msgid "管理者としてログイン中"
-msgstr "Signed in as an administrator"
 
 #: src/components/useErrorMessages.ts:65
 msgid "管理者のアカウントは、制限したり削除したりできません。先に権限を変えてください。"
@@ -7659,6 +7671,11 @@ msgstr "Edits restored. Check them, then press Save."
 msgid "編集を戻す"
 msgstr "Restore edits"
 
+#: src/components/admin/AdminProfileMenu.tsx:53
+#: src/components/admin/AdminProfileMenu.tsx:64
+msgid "編集者"
+msgstr "Editor"
+
 #: src/components/admin/AccessPointsEditor.tsx:75
 #: src/components/admin/CourseAreaEditor.tsx:233
 #: src/components/admin/PlacePanel.tsx:232
@@ -7962,6 +7979,7 @@ msgstr "Readability"
 #: src/app/(public)/settings/page.tsx:12
 #: src/app/(public)/settings/page.tsx:28
 #: src/app/(public)/sitemap/page.tsx:117
+#: src/components/admin/AdminProfileMenu.tsx:83
 #: src/components/SiteHeader.tsx:265
 msgid "見やすさの設定"
 msgstr "Display settings"
@@ -8830,6 +8848,10 @@ msgstr "Face or fingerprint"
 #: src/components/auth/RegisterFlow.tsx:162
 msgid "顔・指紋で登録する"
 msgstr "Continue"
+
+#: src/components/admin/AdminProfileMenu.tsx:86
+msgid "顔・指紋のログイン"
+msgstr "Passkeys"
 
 #: src/components/settings/PasskeyManager.tsx:146
 msgid "顔・指紋のログイン {number}"
