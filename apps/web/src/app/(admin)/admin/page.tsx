@@ -42,7 +42,7 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
   const routeMax = Math.max(0, ...(data?.stampsByRoute.map((r) => r.stamps) ?? []));
 
   return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-5">
+    <div className="flex max-w-5xl flex-col gap-5">
       <h1 className="text-3xl font-bold">
         <Trans>ダッシュボード</Trans>
       </h1>

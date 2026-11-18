@@ -118,7 +118,7 @@ msgstr "{0}を開く"
 #. placeholder {0}: rows.length
 #. placeholder {0}: shown.length
 #: src/components/admin/CommentInbox.tsx:147
-#: src/components/admin/RallyList.tsx:127
+#: src/components/admin/RallyList.tsx:124
 #: src/components/admin/RouteTable.tsx:149
 #: src/components/places/DirectoryView.tsx:99
 msgid "{0}件"
@@ -3739,7 +3739,7 @@ msgstr "ライセンス情報"
 msgid "ライト"
 msgstr "ライト"
 
-#: src/app/(admin)/admin/rallies/page.tsx:22
+#: src/app/(admin)/admin/rallies/page.tsx:23
 #: src/app/(public)/badges/page.tsx:38
 #: src/app/(public)/rallies/[id]/page.tsx:95
 #: src/app/(public)/rallies/page.tsx:20
@@ -3754,11 +3754,11 @@ msgstr "ライト"
 msgid "ラリー"
 msgstr "ラリー"
 
-#: src/app/(admin)/admin/rallies/page.tsx:12
+#: src/app/(admin)/admin/rallies/page.tsx:13
 msgid "ラリー（管理）"
 msgstr "ラリー（管理）"
 
-#: src/components/admin/RallyList.tsx:121
+#: src/components/admin/RallyList.tsx:118
 msgid "ラリーがまだありません。「新しいラリー」から作ってください。"
 msgstr "ラリーがまだありません。「新しいラリー」から作ってください。"
 
@@ -3803,7 +3803,7 @@ msgstr "ラリーの中身を保存しました。"
 msgid "ラリーの名前"
 msgstr "ラリーの名前"
 
-#: src/app/(admin)/admin/rallies/page.tsx:22
+#: src/app/(admin)/admin/rallies/page.tsx:23
 msgid "ラリーは、コースを集めてつくるか、経由地を集めてつくります。名前を押すと、名前・公開・中身を直せます。"
 msgstr "ラリーは、コースを集めてつくるか、経由地を集めてつくります。名前を押すと、名前・公開・中身を直せます。"
 
@@ -3811,7 +3811,7 @@ msgstr "ラリーは、コースを集めてつくるか、経由地を集めて
 msgid "ラリーは、まだ準備中です。"
 msgstr "ラリーは、まだ準備中です。"
 
-#: src/components/admin/RallyList.tsx:106
+#: src/components/admin/RallyList.tsx:103
 msgid "ラリーをさがす"
 msgstr "ラリーをさがす"
 
@@ -3831,7 +3831,7 @@ msgstr "ラリーを見る"
 
 #: src/app/(admin)/admin/rallies/[id]/page.tsx:35
 #: src/app/(admin)/admin/rallies/new/page.tsx:27
-#: src/app/(admin)/admin/rallies/page.tsx:27
+#: src/app/(admin)/admin/rallies/page.tsx:32
 msgid "ラリーを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "ラリーを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 
@@ -4054,7 +4054,7 @@ msgstr "並べかえ"
 msgid "並べ方"
 msgstr "並べ方"
 
-#: src/components/admin/RallyList.tsx:141
+#: src/components/admin/RallyList.tsx:138
 #: src/components/admin/RouteTable.tsx:181
 msgid "並べ替え"
 msgstr "並べ替え"
@@ -4063,7 +4063,7 @@ msgstr "並べ替え"
 msgid "並べ替えは、検索・絞り込み・並べかえを外してからできます。"
 msgstr "並べ替えは、検索・絞り込み・並べかえを外してからできます。"
 
-#: src/components/admin/RallyList.tsx:191
+#: src/components/admin/RallyList.tsx:188
 msgid "並べ替えは、絞り込み・並べかえを外してからできます。"
 msgstr "並べ替えは、絞り込み・並べかえを外してからできます。"
 
@@ -4089,7 +4089,7 @@ msgstr "中心の経度"
 msgid "中心の緯度"
 msgstr "中心の緯度"
 
-#: src/components/admin/RallyList.tsx:136
+#: src/components/admin/RallyList.tsx:133
 msgid "中身"
 msgstr "中身"
 
@@ -5383,7 +5383,7 @@ msgstr "同じ道を行って、同じ道を戻ります。"
 #: src/components/admin/PhotoLibrary.tsx:175
 #: src/components/admin/RallyCreate.tsx:76
 #: src/components/admin/RallyEditor.tsx:142
-#: src/components/admin/RallyList.tsx:134
+#: src/components/admin/RallyList.tsx:131
 #: src/components/admin/RouteTable.tsx:169
 #: src/components/PlaceFacts.tsx:28
 msgid "名前"
@@ -5439,7 +5439,7 @@ msgstr "名前のない経由地"
 msgid "名前の一部を入れて探す"
 msgstr "名前の一部を入れて探す"
 
-#: src/components/admin/RallyList.tsx:107
+#: src/components/admin/RallyList.tsx:104
 #: src/components/admin/RouteTable.tsx:128
 msgid "名前の一部を入力"
 msgstr "名前の一部を入力"
@@ -6318,8 +6318,8 @@ msgstr "新しいコース（管理）"
 msgid "新しいパスワード"
 msgstr "新しいパスワード"
 
+#: src/app/(admin)/admin/rallies/page.tsx:25
 #: src/components/admin/RallyCreate.tsx:61
-#: src/components/admin/RallyList.tsx:101
 msgid "新しいラリー"
 msgstr "新しいラリー"
 
@@ -6463,7 +6463,7 @@ msgstr "時間を追加（昼休みなど）"
 msgid "曲がり角"
 msgstr "曲がり角"
 
-#: src/components/admin/RallyList.tsx:139
+#: src/components/admin/RallyList.tsx:136
 #: src/components/admin/RouteTable.tsx:179
 #: src/components/OfflinePack.tsx:102
 msgid "更新"
@@ -6577,7 +6577,7 @@ msgstr "条件に合う{title}はありません。"
 msgid "条件に合うコースがありません。"
 msgstr "条件に合うコースがありません。"
 
-#: src/components/admin/RallyList.tsx:123
+#: src/components/admin/RallyList.tsx:120
 msgid "条件に合うラリーがありません。"
 msgstr "条件に合うラリーがありません。"
 
@@ -6927,9 +6927,9 @@ msgstr "点を置く"
 msgid "片道（別の場所へ）"
 msgstr "片道（別の場所へ）"
 
-#: src/components/admin/RallyList.tsx:111
-#: src/components/admin/RallyList.tsx:137
-#: src/components/admin/RallyList.tsx:137
+#: src/components/admin/RallyList.tsx:108
+#: src/components/admin/RallyList.tsx:134
+#: src/components/admin/RallyList.tsx:134
 #: src/components/admin/RouteTable.tsx:133
 #: src/components/admin/RouteTable.tsx:171
 #: src/components/admin/RouteTable.tsx:171
@@ -7237,9 +7237,9 @@ msgstr "稜線"
 #: src/components/admin/map-editor/PlaceList.tsx:158
 #: src/components/admin/PlacePanel.tsx:133
 #: src/components/admin/PlaceTable.tsx:137
-#: src/components/admin/RallyList.tsx:110
-#: src/components/admin/RallyList.tsx:135
-#: src/components/admin/RallyList.tsx:135
+#: src/components/admin/RallyList.tsx:107
+#: src/components/admin/RallyList.tsx:132
+#: src/components/admin/RallyList.tsx:132
 #: src/components/PlaceFacts.tsx:29
 #: src/components/places/DirectoryView.tsx:58
 #: src/components/SpotStats.tsx:25
@@ -8498,14 +8498,14 @@ msgstr "道を調べられませんでした。しばらくしてから、もう
 msgid "達成した {0} 人の記録は残ります。"
 msgstr "達成した {0} 人の記録は残ります。"
 
-#: src/components/admin/RallyList.tsx:138
+#: src/components/admin/RallyList.tsx:135
 msgid "達成した人"
 msgstr "達成した人"
 
 #. placeholder {0}: r.completionCount
 #. placeholder {0}: saved.completionCount
 #: src/components/admin/RallyEditor.tsx:137
-#: src/components/admin/RallyList.tsx:182
+#: src/components/admin/RallyList.tsx:179
 msgid "達成した人 {0}"
 msgstr "達成した人 {0}"
 
@@ -8784,7 +8784,7 @@ msgstr "音声案内"
 msgid "音声案内をオンにしました"
 msgstr "音声案内をオンにしました"
 
-#: src/components/admin/RallyList.tsx:133
+#: src/components/admin/RallyList.tsx:130
 #: src/components/admin/RouteTable.tsx:168
 msgid "順"
 msgstr "順"

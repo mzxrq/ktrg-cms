@@ -30,7 +30,7 @@ export default async function AdminListPage({ params }: { params: Promise<{ list
 
   return (
     // As wide as the course list, so the columns (dates, chips) do not wrap.
-    <div className="mx-auto flex max-w-6xl flex-col gap-5">
+    <div className="flex max-w-6xl flex-col gap-5">
       {meta.key === "authors" || meta.key === "tags" ? (
         <AdminBack href="/admin/posts">
           <Trans>ブログへ戻る</Trans>

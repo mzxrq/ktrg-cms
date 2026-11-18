@@ -118,7 +118,7 @@ msgstr "Open {0}"
 #. placeholder {0}: rows.length
 #. placeholder {0}: shown.length
 #: src/components/admin/CommentInbox.tsx:147
-#: src/components/admin/RallyList.tsx:127
+#: src/components/admin/RallyList.tsx:124
 #: src/components/admin/RouteTable.tsx:149
 #: src/components/places/DirectoryView.tsx:99
 msgid "{0}件"
@@ -3739,7 +3739,7 @@ msgstr "Licenses"
 msgid "ライト"
 msgstr "Light"
 
-#: src/app/(admin)/admin/rallies/page.tsx:22
+#: src/app/(admin)/admin/rallies/page.tsx:23
 #: src/app/(public)/badges/page.tsx:38
 #: src/app/(public)/rallies/[id]/page.tsx:95
 #: src/app/(public)/rallies/page.tsx:20
@@ -3754,11 +3754,11 @@ msgstr "Light"
 msgid "ラリー"
 msgstr "Rallies"
 
-#: src/app/(admin)/admin/rallies/page.tsx:12
+#: src/app/(admin)/admin/rallies/page.tsx:13
 msgid "ラリー（管理）"
 msgstr "Rallies (admin)"
 
-#: src/components/admin/RallyList.tsx:121
+#: src/components/admin/RallyList.tsx:118
 msgid "ラリーがまだありません。「新しいラリー」から作ってください。"
 msgstr "There are no rallies yet. Create one with \"New rally\"."
 
@@ -3803,7 +3803,7 @@ msgstr "What is in the rally was saved."
 msgid "ラリーの名前"
 msgstr "Rally name"
 
-#: src/app/(admin)/admin/rallies/page.tsx:22
+#: src/app/(admin)/admin/rallies/page.tsx:23
 msgid "ラリーは、コースを集めてつくるか、経由地を集めてつくります。名前を押すと、名前・公開・中身を直せます。"
 msgstr "A rally is made from courses or from stamp waypoints. Open one to change its name, whether it is public, and what is in it."
 
@@ -3811,7 +3811,7 @@ msgstr "A rally is made from courses or from stamp waypoints. Open one to change
 msgid "ラリーは、まだ準備中です。"
 msgstr "The rallies are not ready yet."
 
-#: src/components/admin/RallyList.tsx:106
+#: src/components/admin/RallyList.tsx:103
 msgid "ラリーをさがす"
 msgstr "Find a rally"
 
@@ -3831,7 +3831,7 @@ msgstr "See the rallies"
 
 #: src/app/(admin)/admin/rallies/[id]/page.tsx:35
 #: src/app/(admin)/admin/rallies/new/page.tsx:27
-#: src/app/(admin)/admin/rallies/page.tsx:27
+#: src/app/(admin)/admin/rallies/page.tsx:32
 msgid "ラリーを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "The rallies could not be loaded. Please open the page again in a moment."
 
@@ -4054,7 +4054,7 @@ msgstr "Sort"
 msgid "並べ方"
 msgstr "Sort by"
 
-#: src/components/admin/RallyList.tsx:141
+#: src/components/admin/RallyList.tsx:138
 #: src/components/admin/RouteTable.tsx:181
 msgid "並べ替え"
 msgstr "Reorder"
@@ -4063,7 +4063,7 @@ msgstr "Reorder"
 msgid "並べ替えは、検索・絞り込み・並べかえを外してからできます。"
 msgstr "Reordering is possible only with no search, filter or sort on."
 
-#: src/components/admin/RallyList.tsx:191
+#: src/components/admin/RallyList.tsx:188
 msgid "並べ替えは、絞り込み・並べかえを外してからできます。"
 msgstr "Reordering is possible only with no filter or sort on."
 
@@ -4089,7 +4089,7 @@ msgstr "Centre longitude"
 msgid "中心の緯度"
 msgstr "Centre latitude"
 
-#: src/components/admin/RallyList.tsx:136
+#: src/components/admin/RallyList.tsx:133
 msgid "中身"
 msgstr "Contents"
 
@@ -5383,7 +5383,7 @@ msgstr "You go out along the same path and come back the same way."
 #: src/components/admin/PhotoLibrary.tsx:175
 #: src/components/admin/RallyCreate.tsx:76
 #: src/components/admin/RallyEditor.tsx:142
-#: src/components/admin/RallyList.tsx:134
+#: src/components/admin/RallyList.tsx:131
 #: src/components/admin/RouteTable.tsx:169
 #: src/components/PlaceFacts.tsx:28
 msgid "名前"
@@ -5439,7 +5439,7 @@ msgstr "Unnamed waypoint"
 msgid "名前の一部を入れて探す"
 msgstr "Type part of a name to search"
 
-#: src/components/admin/RallyList.tsx:107
+#: src/components/admin/RallyList.tsx:104
 #: src/components/admin/RouteTable.tsx:128
 msgid "名前の一部を入力"
 msgstr "Part of the name"
@@ -6318,8 +6318,8 @@ msgstr "New course (admin)"
 msgid "新しいパスワード"
 msgstr "New password"
 
+#: src/app/(admin)/admin/rallies/page.tsx:25
 #: src/components/admin/RallyCreate.tsx:61
-#: src/components/admin/RallyList.tsx:101
 msgid "新しいラリー"
 msgstr "New rally"
 
@@ -6463,7 +6463,7 @@ msgstr "Add hours (e.g. a lunch break)"
 msgid "曲がり角"
 msgstr "Turn"
 
-#: src/components/admin/RallyList.tsx:139
+#: src/components/admin/RallyList.tsx:136
 #: src/components/admin/RouteTable.tsx:179
 #: src/components/OfflinePack.tsx:102
 msgid "更新"
@@ -6577,7 +6577,7 @@ msgstr "No {title} match the conditions."
 msgid "条件に合うコースがありません。"
 msgstr "No courses match."
 
-#: src/components/admin/RallyList.tsx:123
+#: src/components/admin/RallyList.tsx:120
 msgid "条件に合うラリーがありません。"
 msgstr "No rallies match."
 
@@ -6927,9 +6927,9 @@ msgstr "Add points"
 msgid "片道（別の場所へ）"
 msgstr "One way (to another place)"
 
-#: src/components/admin/RallyList.tsx:111
-#: src/components/admin/RallyList.tsx:137
-#: src/components/admin/RallyList.tsx:137
+#: src/components/admin/RallyList.tsx:108
+#: src/components/admin/RallyList.tsx:134
+#: src/components/admin/RallyList.tsx:134
 #: src/components/admin/RouteTable.tsx:133
 #: src/components/admin/RouteTable.tsx:171
 #: src/components/admin/RouteTable.tsx:171
@@ -7237,9 +7237,9 @@ msgstr "Ridge"
 #: src/components/admin/map-editor/PlaceList.tsx:158
 #: src/components/admin/PlacePanel.tsx:133
 #: src/components/admin/PlaceTable.tsx:137
-#: src/components/admin/RallyList.tsx:110
-#: src/components/admin/RallyList.tsx:135
-#: src/components/admin/RallyList.tsx:135
+#: src/components/admin/RallyList.tsx:107
+#: src/components/admin/RallyList.tsx:132
+#: src/components/admin/RallyList.tsx:132
 #: src/components/PlaceFacts.tsx:29
 #: src/components/places/DirectoryView.tsx:58
 #: src/components/SpotStats.tsx:25
@@ -8498,14 +8498,14 @@ msgstr "Could not look up the paths. Please try again in a little while."
 msgid "達成した {0} 人の記録は残ります。"
 msgstr "The records of the {0} people who finished stay. "
 
-#: src/components/admin/RallyList.tsx:138
+#: src/components/admin/RallyList.tsx:135
 msgid "達成した人"
 msgstr "Finished by"
 
 #. placeholder {0}: r.completionCount
 #. placeholder {0}: saved.completionCount
 #: src/components/admin/RallyEditor.tsx:137
-#: src/components/admin/RallyList.tsx:182
+#: src/components/admin/RallyList.tsx:179
 msgid "達成した人 {0}"
 msgstr "{0} finished"
 
@@ -8784,7 +8784,7 @@ msgstr "Voice guidance"
 msgid "音声案内をオンにしました"
 msgstr "Voice guidance is on"
 
-#: src/components/admin/RallyList.tsx:133
+#: src/components/admin/RallyList.tsx:130
 #: src/components/admin/RouteTable.tsx:168
 msgid "順"
 msgstr "No."

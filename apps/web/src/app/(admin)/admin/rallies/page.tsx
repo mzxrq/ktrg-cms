@@ -5,6 +5,7 @@ import { RallyList } from "@/components/admin/RallyList";
 import { initLingui } from "@/i18n/server";
 import { adminGet } from "@/lib/admin/admin-fetch";
 import type { AdminRally } from "@/lib/admin/types";
+import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -18,8 +19,12 @@ export default async function AdminRalliesPage() {
   const rallies = status === 200 && body?.ok ? body.rallies : null;
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-5">
-      <AdminPageHeader title={<Trans>ラリー</Trans>} intro={i18n._(msg`ラリーは、コースを集めてつくるか、経由地を集めてつくります。名前を押すと、名前・公開・中身を直せます。`)} />
+    <div className="flex max-w-6xl flex-col gap-5">
+      <AdminPageHeader title={<Trans>ラリー</Trans>} intro={i18n._(msg`ラリーは、コースを集めてつくるか、経由地を集めてつくります。名前を押すと、名前・公開・中身を直せます。`)}>
+        <Link href="/admin/rallies/new" className="tap-target inline-flex items-center rounded-full bg-create px-5 text-lg font-bold text-on-create">
+          <Trans>新しいラリー</Trans>
+        </Link>
+      </AdminPageHeader>
       {rallies ? (
         <RallyList initial={rallies} locale={i18n.locale} />
       ) : (

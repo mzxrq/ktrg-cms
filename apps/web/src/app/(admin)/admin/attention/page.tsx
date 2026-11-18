@@ -76,7 +76,7 @@ export default async function AttentionPage() {
   const all = list.reduce((n, c) => n + c.issues.length + c.spots.reduce((m, s) => m + s.issues.length, 0), 0);
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-5">
+    <div className="flex max-w-4xl flex-col gap-5">
       <AdminPageHeader title={<Trans>直すところ</Trans>} intro={i18n._(msg`赤いものは、直すまで訪問者に見えません。名前を押すと、そのコースの編集画面が開きます。`)} />
       {!found ? (
         <p role="alert" className="rounded-lg border-l-4 border-danger bg-surface p-6 text-lg font-bold text-danger">

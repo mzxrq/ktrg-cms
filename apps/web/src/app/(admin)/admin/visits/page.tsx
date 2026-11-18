@@ -48,7 +48,7 @@ export default async function VisitsPage({ searchParams }: { searchParams: Promi
   const japan = data?.byCountry.find((c) => c.country === "JP")?.views ?? 0;
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-6">
+    <div className="flex max-w-6xl flex-col gap-6">
       <AdminPageHeader title={<Trans>アクセス解析</Trans>} intro={i18n._(msg`ページが開かれた回数を、接続元のおおよその地域（国・都道府県・市）ごとに数えています。IPアドレスや個人は記録しません。市や町の位置は、実際の場所とずれることがあります。`)} />
 
       {data ? (

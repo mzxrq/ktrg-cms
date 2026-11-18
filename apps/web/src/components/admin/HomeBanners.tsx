@@ -28,7 +28,7 @@ export function HomeBanners({ meta, items, locale }: { meta: ListMeta; items: Ba
         <button type="button" onClick={async () => {
             // Closing a half-filled new banner asks first, like leaving the page would.
             if (!adding || (await okToClose())) setAdding(!adding);
-          }} aria-expanded={adding} className="tap-target inline-flex items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
+          }} aria-expanded={adding} className="tap-target inline-flex items-center rounded-full bg-create px-5 text-lg font-bold text-on-create">
           {adding ? t`閉じる` : pick(meta.newLabel ?? meta.title, locale)}
         </button>
       </div>

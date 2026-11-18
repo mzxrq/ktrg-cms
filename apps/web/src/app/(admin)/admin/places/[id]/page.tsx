@@ -31,7 +31,7 @@ export default async function EditWaypointPage({ params }: { params: Promise<{ i
 
   const name = pick({ ja: route.body.route.nameJa, en: route.body.route.nameEn ?? route.body.route.nameJa }, i18n.locale);
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-4">
+    <div className="flex max-w-4xl flex-col gap-4">
       <AdminBack href="/admin/places">
         <Trans>経由地の一覧へ戻る</Trans>
       </AdminBack>

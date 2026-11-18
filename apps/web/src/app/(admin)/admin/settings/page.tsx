@@ -17,7 +17,7 @@ export default async function SiteSettingsPage() {
   const i18n = await initLingui();
   const settings = await getMapSettings();
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-5">
+    <div className="flex max-w-4xl flex-col gap-5">
       <AdminPageHeader title={<Trans>地図の見た目</Trans>} intro={i18n._(msg`「地図」ページ、コースのページ、トップページの地図の見え方です。ここで変えたことは、すぐに訪問者の画面に反映されます。`)} />
       <SiteSettingsForm initial={settings} />
     </div>
