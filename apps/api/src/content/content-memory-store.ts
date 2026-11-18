@@ -58,7 +58,8 @@ export function createMemoryContentStore(audit: AuditWriter, opts: { now?: () =>
     },
     async spotsInBox(box, limit) {
       const inside = (lat: number | null, lng: number | null) => lat !== null && lng !== null && lat >= box.south && lat <= box.north && lng >= box.west && lng <= box.east;
-      return [...spots.values()].filter((s) => inside(s.lat, s.lng)).sort((a, b) => a.id.localeCompare(b.id)).slice(0, limit);
+      const alsoOn = (id: string) => [...shares.keys()].filter((k) => k.startsWith(`${id}|`)).map((k) => k.split("|")[1]!);
+      return [...spots.values()].filter((s) => inside(s.lat, s.lng)).sort((a, b) => a.id.localeCompare(b.id)).slice(0, limit).map((s) => ({ ...s, alsoOn: alsoOn(s.id) }));
     },
 
     async createRoute(actor, fields) {

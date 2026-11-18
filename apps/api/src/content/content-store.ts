@@ -200,7 +200,9 @@ export function createDrizzleContentStore(db: Db): ContentStore {
         .where(and(between(spots.lat, box.south, box.north), between(spots.lng, box.west, box.east)))
         .orderBy(asc(spots.id))
         .limit(limit);
-      return withSpotTexts(db, rows);
+      if (rows.length === 0) return [];
+      const links = await db.select({ spotId: spotRoutes.spotId, routeId: spotRoutes.routeId }).from(spotRoutes).where(inArray(spotRoutes.spotId, rows.map((r) => r.id)));
+      return (await withSpotTexts(db, rows)).map((s) => ({ ...s, alsoOn: links.filter((l) => l.spotId === s.id).map((l) => l.routeId) }));
     },
 
     async createRoute(actor, input) {

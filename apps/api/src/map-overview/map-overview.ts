@@ -16,7 +16,7 @@ const LINE_POINTS = 300;
 
 export interface MapOverviewDeps {
   routes: () => Promise<RouteSummaryRow[]>;
-  spotsInBox: (box: CourseArea, limit: number) => Promise<SpotRow[]>;
+  spotsInBox: (box: CourseArea, limit: number) => Promise<(SpotRow & { alsoOn: string[] })[]>;
   placesInBox: (box: CourseArea, limit: number) => Promise<PlaceRow[]>;
 }
 
@@ -43,8 +43,8 @@ export function createMapOverviewService(deps: MapOverviewDeps) {
             ? [{ id: r.id, nameJa: r.nameJa, nameEn: r.nameEn, sortOrder: r.sortOrder, open: r.publishedSpotCount > 0, lineVerified: r.lineVerified, line: simplifyLine({ type: "LineString", coordinates: r.geometry.coordinates }, LINE_POINTS).coordinates.map(([lng, lat]) => [lng, lat] as [number, number]) }]
             : [],
         ),
-        // shortcut: a waypoint is listed under its home course only (spot_routes not read); read route_spots if the map must show the shared ones on each course.
-        spots: spots.slice(0, OVERVIEW_LIMIT).map((s) => ({ id: s.id, routeId: s.routeId, lat: s.lat!, lng: s.lng!, nameJa: s.nameJa, kind: s.kind, stampable: s.stampable, stopBy: s.stopBy, published: s.published, positionVerified: s.positionVerified, status: s.status })),
+        // routeIds: every course the waypoint is on, its home course first (one place on two courses, spot_routes).
+        spots: spots.slice(0, OVERVIEW_LIMIT).map((s) => ({ id: s.id, routeId: s.routeId, routeIds: [s.routeId, ...s.alsoOn], lat: s.lat!, lng: s.lng!, nameJa: s.nameJa, kind: s.kind, stampable: s.stampable, stopBy: s.stopBy, published: s.published, positionVerified: s.positionVerified, status: s.status })),
         places: places.slice(0, OVERVIEW_LIMIT).map((p) => ({ id: p.id, lat: p.lat!, lng: p.lng!, nameJa: p.nameJa, category: p.category, published: p.published, positionVerified: p.positionVerified, status: p.status })),
       };
     },
