@@ -11,6 +11,7 @@ import { listRequest, type ListPage, type OneItem } from "@/lib/admin/lists/list
 import { parseRuby } from "@/lib/ruby";
 import { inputClass } from "./fields";
 import { RubyPreview } from "./FuriganaOverview";
+import { RubyEditor } from "./RubyEditor";
 
 type Word = { id: string; word: string; reading: string; always: boolean; updatedAt: string };
 const asWord = (i: Record<string, unknown>): Word => ({ id: String(i.id), word: String(i.word), reading: String(i.reading), always: i.always === true, updatedAt: String(i.updatedAt) });
@@ -93,10 +94,11 @@ export function FuriganaWords({ initial }: { initial: ListPage }) {
             {t`言葉`}
             <input value={add.word} onChange={(e) => setAdd({ ...add, word: e.target.value })} placeholder={t`例：臥薪嘗胆`} className={inputClass} maxLength={40} />
           </label>
-          <label className="flex flex-col gap-1 text-base font-bold">
+          {/* One reading per run of kanji, split to single characters where needed (the same editor as a course's name). */}
+          <div className="flex flex-col gap-1 text-base font-bold">
             {t`読み（ひらがな）`}
-            <input value={add.reading} onChange={(e) => setAdd({ ...add, reading: e.target.value })} placeholder={t`例：がしんしょうたん`} className={inputClass} maxLength={120} />
-          </label>
+            {add.word.trim() ? <RubyEditor name={add.word.trim()} value={add.reading} onChange={(reading) => setAdd({ ...add, reading })} /> : <p className="text-base font-normal text-muted">{t`先に言葉を入れてください。`}</p>}
+          </div>
           <button type="submit" disabled={busy || !add.word.trim() || !add.reading.trim()} className={buttonStyle("action", "md", "inline-flex self-end")}>
             {t`加える`}
           </button>
@@ -126,21 +128,24 @@ export function FuriganaWords({ initial }: { initial: ListPage }) {
       ) : (
         <ul className="divide-y divide-line/40 border-y border-line/40">
           {rows.map((row) => {
-            const value = typed[row.id] ?? plainReading(row.reading);
-            const changed = typed[row.id] !== undefined && typed[row.id]!.trim() !== plainReading(row.reading);
+            // The reading as stored (per kanji), so each character keeps its own reading.
+            const value = typed[row.id] ?? row.reading;
+            const changed = typed[row.id] !== undefined && typed[row.id] !== row.reading;
             return (
               <li key={row.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 py-2">
                 <span className="min-w-[8rem]">
                   <RubyPreview word={row.word} reading={row.reading} />
                 </span>
                 <form
-                  className="flex min-w-[12rem] flex-1 gap-2"
+                  className="flex min-w-[12rem] flex-1 items-end gap-2"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    if (changed) void save(row, { reading: value.trim() });
+                    if (changed && value.trim()) void save(row, { reading: value });
                   }}
                 >
-                  <input value={value} onChange={(e) => setTyped({ ...typed, [row.id]: e.target.value })} aria-label={t`「${row.word}」の読み`} className={inputClass} maxLength={120} />
+                  <div className="min-w-0 flex-1">
+                    <RubyEditor name={row.word} value={value} onChange={(reading) => setTyped({ ...typed, [row.id]: reading })} />
+                  </div>
                   {changed ? (
                     <button type="submit" disabled={busy} className={buttonStyle("action", "sm", "inline-flex shrink-0")}>
                       {t`保存`}

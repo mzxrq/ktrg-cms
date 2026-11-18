@@ -11,8 +11,8 @@ import { showToast } from "@/lib/admin/toast";
 import { parseRuby } from "@/lib/ruby";
 import { readJson } from "@/lib/read-json";
 import { listRequest } from "@/lib/admin/lists/list-client";
-import { MARKUP_EXAMPLE, plainReading } from "./FuriganaWords";
-import { inputClass } from "./fields";
+import { MARKUP_EXAMPLE } from "./FuriganaWords";
+import { RubyEditor } from "./RubyEditor";
 
 type Suggestion = { id: string; word: string; reading: string; updatedAt: string };
 type Unread = { kind: "route" | "spot" | "place"; id: string; routeId?: string; nameJa: string };
@@ -198,13 +198,15 @@ export function FuriganaOverview() {
                         void fix(p, fixing.reading);
                       }}
                     >
-                      <input autoFocus value={fixing.reading} onChange={(e) => setFixing({ id: p.id, reading: e.target.value })} aria-label={t`「${p.word}」の読み`} className={inputClass} maxLength={120} />
+                      <div className="min-w-0 flex-1">
+                        <RubyEditor name={p.word} value={fixing.reading} onChange={(reading) => setFixing({ id: p.id, reading })} />
+                      </div>
                       <button type="submit" disabled={busy} className={buttonStyle("action", "sm", "inline-flex shrink-0")}>
                         {t`直して承認`}
                       </button>
                     </form>
                   ) : (
-                    <button type="button" disabled={busy} onClick={() => setFixing({ id: p.id, reading: plainReading(p.reading) })} className={buttonStyle("secondary", "sm", "inline-flex")}>
+                    <button type="button" disabled={busy} onClick={() => setFixing({ id: p.id, reading: p.reading })} className={buttonStyle("secondary", "sm", "inline-flex")}>
                       {t`直す`}
                     </button>
                   )}

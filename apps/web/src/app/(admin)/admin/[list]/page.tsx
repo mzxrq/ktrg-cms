@@ -30,7 +30,7 @@ export default async function AdminListPage({ params }: { params: Promise<{ list
 
   return (
     // As wide as the course list, so the columns (dates, chips) do not wrap.
-    <div className="flex max-w-6xl flex-col gap-5">
+    <div className={`flex flex-col gap-5 ${meta.key === "furigana" ? "max-w-screen-2xl" : "max-w-6xl"}`}>
       {meta.key === "authors" || meta.key === "tags" ? (
         <AdminBack href="/admin/posts">
           <Trans>ブログへ戻る</Trans>
@@ -42,17 +42,21 @@ export default async function AdminListPage({ params }: { params: Promise<{ list
           <AdminPageHeader title={title} intro={pick(meta.intro, i18n.locale)} />
         </>
       )}
-      {meta.key === "furigana" ? (
-        <>
-          <FuriganaOverview />
-          <h2 className="text-xl font-bold text-accent">
-            <Trans>表示している読み</Trans>
-          </h2>
-        </>
-      ) : null}
       {page && meta.key === "furigana" ? (
-        // Readings are edited in place (no page per word); drawn afresh when approving above changes the server's first page.
-        <FuriganaWords key={`${page.total ?? ""}:${page.items[0]?.id ?? ""}`} initial={page} />
+        // The readings on the left; the two waiting lists (names to read, dictionary readings to check) in a column on the
+        // right of a wide screen, so they no longer push the list down (2026-11-18, user); below the list on a narrow one.
+        <div className="flex flex-col gap-5 xl:grid xl:grid-cols-[minmax(0,1fr)_26rem] xl:items-start">
+          <div className="flex min-w-0 flex-col gap-4">
+            <h2 className="text-xl font-bold text-accent">
+              <Trans>表示している読み</Trans>
+            </h2>
+            {/* Readings are edited in place (no page per word); drawn afresh when approving beside it changes the server's first page. */}
+            <FuriganaWords key={`${page.total ?? ""}:${page.items[0]?.id ?? ""}`} initial={page} />
+          </div>
+          <aside className="flex flex-col gap-4 xl:sticky xl:top-4 xl:max-h-[calc(100vh-2rem)] xl:overflow-y-auto">
+            <FuriganaOverview />
+          </aside>
+        </div>
       ) : page ? (
         <AdminListTable meta={meta} initial={page} locale={i18n.locale} choices={choices}>
           {meta.key === "posts" ? (

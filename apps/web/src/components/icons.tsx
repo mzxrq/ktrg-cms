@@ -114,6 +114,15 @@ export const WarningIcon = () => (
   </Icon>
 );
 
+/** Split (scissors): one reading box becomes one per character (the pair of LinkIcon, which joins). */
+export const ScissorsIcon = () => (
+  <Icon>
+    <circle cx="6" cy="6" r="3" />
+    <circle cx="6" cy="18" r="3" />
+    <path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12" />
+  </Icon>
+);
+
 export const LinkIcon = () => (
   <Icon>
     <path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1" />
