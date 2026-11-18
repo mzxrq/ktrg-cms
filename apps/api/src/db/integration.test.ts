@@ -2092,6 +2092,12 @@ describe.skipIf(!url)("list and report stores on real PostgreSQL", () => {
       expect(new Set(mine.map((e) => e.id)).size).toBe(3);
       expect(await store.get(first[0]!.id)).toMatchObject({ id: first[0]!.id, actorName: "管理者" });
       expect(await store.get(randomUUID())).toBeNull();
+      // The item's current name is read when shown (here a tag); a target that is gone has none.
+      const [tag] = await tx.insert(blogTags).values({ nameJa: "季節のタグ" }).returning({ id: blogTags.id });
+      await writeAudit(tx, { actorUserId: actor!.id, action: TAG_AUDIT.update, targetId: tag!.id });
+      const named = (await store.list(null, 10)).find((e) => e.targetId === tag!.id);
+      expect(named?.targetName).toBe("季節のタグ");
+      expect(mine.every((e) => e.targetName === null)).toBe(true);
     });
   });
 });

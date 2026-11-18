@@ -20,6 +20,12 @@ export function itemName(meta: ListMeta, item: ListItem, locale: string): string
     const v = item[field];
     if (typeof v === "string" && v.trim() !== "") return v;
   }
+  // A choice names the row by its words (the change log: "コースを変更", not "route.update").
+  const titleDef = meta.fields?.find((f) => f.name === meta.titleField);
+  if (titleDef?.kind === "select") {
+    const option = titleDef.options?.find((o) => o.value === item[meta.titleField]);
+    if (option) return pick(option.label, locale);
+  }
   if (`${meta.titleField}Ja` in item) {
     const ja = String(item[`${meta.titleField}Ja`] ?? "");
     const en = item[`${meta.titleField}En`];
@@ -35,10 +41,10 @@ export function itemHref(meta: ListMeta, item: ListItem): string | null {
 }
 
 /** A moment in Japan time, as the admin reads it. */
-export function formatMoment(locale: string, iso: string): string {
+export function formatMoment(locale: string, iso: string, seconds = false): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
-  return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "ja-JP", { timeZone: "Asia/Tokyo", dateStyle: "medium", timeStyle: "short" }).format(d);
+  return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "ja-JP", { timeZone: "Asia/Tokyo", dateStyle: "medium", timeStyle: seconds ? "medium" : "short" }).format(d);
 }
 
 /** One field's value as text (null when it has none): a day or moment written out, a route by name, a choice by label. */
@@ -50,7 +56,7 @@ export function displayValue(f: FieldUi, item: ListItem, locale: string, routeNa
     case "date":
       return formatDay(locale, String(value));
     case "datetime":
-      return formatMoment(locale, String(value));
+      return formatMoment(locale, String(value), f.seconds);
     case "hours":
       return "…";
     case "route":

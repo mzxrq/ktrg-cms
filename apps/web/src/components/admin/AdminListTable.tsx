@@ -17,6 +17,7 @@ import { cellOf, itemHref, itemName, listColumns, nameIsFallback, pick, type Fie
 import { listRequest, type ListPage } from "@/lib/admin/lists/list-client";
 import { nextSort, sortItems, type Sort } from "@/lib/admin/lists/sort";
 import { confirmDialog } from "@/components/ConfirmDialog";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 // A soft shadow on the right edge while more columns wait to be scrolled to (the cover is `local`, so it moves away at the end).
 const edgeShadow = { background: "linear-gradient(to left, var(--color-paper) 30%, transparent) right / 2.5rem 100% local no-repeat, linear-gradient(to left, rgb(0 0 0 / 0.18), transparent) right / 0.9rem 100% scroll no-repeat" };
@@ -70,6 +71,9 @@ export function AdminListTable({
   const name = (item: (typeof items)[number]) => itemName(config, item, locale);
   const title = pick(config.title, locale);
   const columns = listColumns(config);
+  // The first column is the row's name; when the name is a choice (the change log's "what"), the column is named after it.
+  const titleDef = config.fields.find((f) => f.name === config.titleField);
+  const nameLabel = titleDef?.kind === "select" ? pick(titleDef.label, locale) : t`名前`;
   const lookup = (id: string, field: string) => choices[field]?.find((c) => c.id === id)?.name ?? null;
   const rows = useMemo(() => sortItems(items, config, sort, locale, lookup), [items, config, sort, locale]); // eslint-disable-line react-hooks/exhaustive-deps -- lookup only reads `choices`
 
@@ -214,11 +218,9 @@ export function AdminListTable({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold">{title}</h1>
+      <AdminPageHeader title={title} intro={pick(config.intro, locale)}>
         {newButton}
-      </div>
-      <p className="text-lg text-muted">{pick(config.intro, locale)}</p>
+      </AdminPageHeader>
       {children}
 
       {inlineNew && adding && config.newLabel ? (
@@ -340,7 +342,7 @@ export function AdminListTable({
                       <input type="checkbox" aria-label={t`このページをすべて選ぶ`} checked={allTicked} onChange={tickAll} className="mt-3 size-5" />
                     </th>
                   ) : null}
-                  <SortHeader label={t`名前`} sortKey="name" sort={sort} onSort={(key) => setSort(nextSort(sort, key))} />
+                  <SortHeader label={nameLabel} sortKey="name" sort={sort} onSort={(key) => setSort(nextSort(sort, key))} />
                   {columns.map((f) => (
                     <SortHeader
                       key={f.name}
@@ -407,7 +409,7 @@ export function AdminListTable({
                 className={`${inputClass} max-w-64`}
               >
                 <option value="">{t`新しい順`}</option>
-                {[{ key: "name", label: t`名前` }, ...columns.map((f) => ({ key: f.name, label: pick(f.label, locale) }))].flatMap((c) => [
+                {[{ key: "name", label: nameLabel }, ...columns.map((f) => ({ key: f.name, label: pick(f.label, locale) }))].flatMap((c) => [
                   <option key={`${c.key}:asc`} value={`${c.key}:asc`}>{`${c.label} ↑`}</option>,
                   <option key={`${c.key}:desc`} value={`${c.key}:desc`}>{`${c.label} ↓`}</option>,
                 ])}
