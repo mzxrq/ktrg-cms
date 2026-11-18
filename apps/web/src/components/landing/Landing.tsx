@@ -83,7 +83,7 @@ export function Landing({
   chapterPhotos?: (string | null)[];
   /** The map look an admin chose (管理 > 地図の見た目), so the home map matches the map page. */
   mapLook?: MapSettings;
-  /** The trial home page (/home-trial): the journey scrolls with the page instead of being pinned. */
+  /** The journey scrolls with the page instead of being pinned (the default; an admin can switch back in 詳細設定). */
   flow?: boolean;
 }) {
   const w = useHomeWords(text);
@@ -161,7 +161,7 @@ export function Landing({
   // The intro film, when one is set. The ground comes from the caller (it alternates on the signed-in page).
   const videoChapter = (g: Ground) =>
     introVideo ? (
-      <Chapter ground={g} heading={w.videoHeading} id="video-title" roomy>
+      <Chapter horizontal={flow} ground={g} heading={w.videoHeading} id="video-title" roomy>
         <div>
           <IntroVideo video={introVideo} title={locale === "ja" ? "葛城修験の紹介動画" : "Katsuragi Shugen introduction video"} />
           <p className="mt-2 text-base text-muted">
@@ -173,7 +173,7 @@ export function Landing({
   // What closes the page for everyone: links to the council's pages, the tourism cards (when on) and what to know before leaving.
   const tail = () => (
     <>
-      <Chapter ground={ground()} heading={w.officialHeading} id="official-title">
+      <Chapter horizontal={flow} ground={ground()} heading={w.officialHeading} id="official-title">
         <ul className="flex flex-col gap-3">
           {[
             { path: "/story/", label: <Trans>日本遺産 葛城修験ストーリー</Trans> },
@@ -193,7 +193,7 @@ export function Landing({
       </Chapter>
 
       {showTourism ? (
-        <Chapter ground={ground()} heading={w.tourismHeading} id="tourism-title">
+        <Chapter horizontal={flow} ground={ground()} heading={w.tourismHeading} id="tourism-title">
           <ul className="grid grid-cols-2 gap-3 @[34rem]:grid-cols-3">
             {[
               { cat: "cat01", img: "/home/tourism_1.jpg", label: <Trans>観光</Trans> },
@@ -217,7 +217,7 @@ export function Landing({
         </Chapter>
       ) : null}
 
-      <Chapter ground={ground()} heading={w.beforeHeading} id="before-title">
+      <Chapter horizontal={flow} ground={ground()} heading={w.beforeHeading} id="before-title">
         <ul className="flex flex-col gap-3 text-lg leading-8">
           {[w.before1, w.before2, w.before3].map((line) => (
             <li key={line} className="flex gap-3">
@@ -341,7 +341,7 @@ export function Landing({
         ) : (
           <>
             {/* 4: the map of every course (the GSI map for now; it may become a drawing later). */}
-            <Chapter ground={ground()} heading={w.mapHeading} id="map-title" wide={<LandingMap routes={routes} look={mapLook} />}>
+            <Chapter horizontal={flow} ground={ground()} heading={w.mapHeading} id="map-title" wide={<LandingMap routes={routes} look={mapLook} />}>
               {null}
             </Chapter>
 

@@ -26,7 +26,7 @@ import { RIDGE_HEIGHT, RIDGE_WIDTH, ridgePath } from "@/lib/ridge";
  * adds to it, through the data-* markers: data-journey (the whole), data-beat 0..2, data-ridge (the line), data-seal.
  * The words are the editable home words, so an editor's text shows here too.
  */
-export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = false }: { slides: BannerSlide[]; routes: RouteSummary[]; locale: string; w: Record<HomeSlot, string>; chapterPhotos?: (string | null)[]; /** The trial home page: the page scrolls on, nothing is pinned (JourneyFlow). */ flow?: boolean }) {
+export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = false }: { slides: BannerSlide[]; routes: RouteSummary[]; locale: string; w: Record<HomeSlot, string>; chapterPhotos?: (string | null)[]; /** The page scrolls on, nothing is pinned (JourneyFlow); off = the older pinned scene (詳細設定). */ flow?: boolean }) {
   const ridge = ridgePath(routes);
   const line = stageLine(ridge);
   // One seal for every stamp place, grouped by mound: a mound with two places (3, 14, 28) gets a pair.
@@ -41,11 +41,11 @@ export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = 
       </a>
       <div data-journey-stage>
         <div data-beat="0">
-          <LandingHero slides={slides} locale={locale} line={w.heroLine} bare />
+          <LandingHero slides={slides} locale={locale} line={w.heroLine} bare across={flow} />
         </div>
 
         <div data-beat="1">
-          <Chapter ground="story-ground-inverse" heading={w.storyHeading} id="story-title" decoration={<StaffAndWaves />}>
+          <Chapter horizontal={flow} ground="story-ground-inverse" heading={w.storyHeading} id="story-title" decoration={<StaffAndWaves />}>
             <p className="text-lg leading-9">{w.storyText}</p>
             <Link href="/story" className="tap-target inline-flex items-center text-lg font-bold underline underline-offset-4">
               <Trans>ストーリーを読む</Trans>
@@ -95,7 +95,7 @@ export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = 
         </figure>
 
         <div data-beat="2">
-          <Chapter ground="story-ground-surface" heading={w.rallyHeading} id="rally-title" decoration={<SutraScroll />}>
+          <Chapter horizontal={flow} ground="story-ground-surface" heading={w.rallyHeading} id="rally-title" decoration={<SutraScroll />}>
             <p className="font-serif text-2xl font-bold leading-snug">{w.rallyLead}</p>
             <p className="text-lg leading-9">{w.rallyText}</p>
             <Link href="/rallies" className={buttonStyle("secondary", "lg", "flex w-full @[34rem]:w-fit")}>
