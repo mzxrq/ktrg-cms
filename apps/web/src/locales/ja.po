@@ -348,7 +348,7 @@ msgstr "{minutes}分（{km} km）"
 msgid "{mode} {minutes}分"
 msgstr "{mode} {minutes}分"
 
-#: src/components/admin/FuriganaOverview.tsx:96
+#: src/components/admin/FuriganaOverview.tsx:97
 msgid "{n}件の読みを承認しました。訪れる人に表示されます。"
 msgstr "{n}件の読みを承認しました。訪れる人に表示されます。"
 
@@ -548,7 +548,7 @@ msgid "「{0}」の経由地"
 msgstr "「{0}」の経由地"
 
 #. placeholder {0}: p.word
-#: src/components/admin/FuriganaOverview.tsx:120
+#: src/components/admin/FuriganaOverview.tsx:136
 msgid "「{0}」の読みを直して承認しました。"
 msgstr "「{0}」の読みを直して承認しました。"
 
@@ -1412,7 +1412,7 @@ msgstr "ゲストのまま使う"
 #: src/app/(public)/routes/page.tsx:16
 #: src/app/(public)/sitemap/page.tsx:71
 #: src/components/admin/AdminNav.tsx:74
-#: src/components/admin/FuriganaOverview.tsx:127
+#: src/components/admin/FuriganaOverview.tsx:143
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/Journey.tsx:56
 #: src/components/landing/Landing.tsx:326
@@ -2254,7 +2254,7 @@ msgstr "サイトのトップへ"
 msgid "サイトの内容"
 msgstr "サイトの内容"
 
-#: src/components/admin/FuriganaOverview.tsx:164
+#: src/components/admin/FuriganaOverview.tsx:183
 msgid "サイトの文章を辞書が読んで、読みを考えたものです。人が確かめて承認するまで、訪れる人には表示されません。同じ字でも読み方が変わる言葉は、文に合う読みか確かめてください。1時間ごとにも読み直します。"
 msgstr "サイトの文章を辞書が読んで、読みを考えたものです。人が確かめて承認するまで、訪れる人には表示されません。同じ字でも読み方が変わる言葉は、文に合う読みか確かめてください。1時間ごとにも読み直します。"
 
@@ -2555,7 +2555,7 @@ msgstr "すべての公開をやめる"
 msgid "すべての区間（線のない所）に"
 msgstr "すべての区間（線のない所）に"
 
-#: src/components/admin/FuriganaOverview.tsx:140
+#: src/components/admin/FuriganaOverview.tsx:156
 msgid "すべての名前に読みがあります。"
 msgstr "すべての名前に読みがあります。"
 
@@ -2581,7 +2581,7 @@ msgid "すべて見る（{0}か所）"
 msgstr "すべて見る（{0}か所）"
 
 #: src/components/admin/CommentInbox.tsx:128
-#: src/components/admin/FuriganaOverview.tsx:177
+#: src/components/admin/FuriganaOverview.tsx:196
 #: src/components/admin/RallyMemberPicker.tsx:39
 msgid "すべて選ぶ"
 msgstr "すべて選ぶ"
@@ -5775,7 +5775,7 @@ msgstr "基本"
 
 #: src/components/admin/BlockEditor.tsx:130
 #: src/components/admin/BlockEditor.tsx:366
-#: src/components/admin/FuriganaOverview.tsx:127
+#: src/components/admin/FuriganaOverview.tsx:143
 msgid "場所"
 msgstr "場所"
 
@@ -5975,7 +5975,7 @@ msgstr "寄り道の線を見る"
 msgid "寺社"
 msgstr "寺社"
 
-#: src/components/admin/FuriganaOverview.tsx:138
+#: src/components/admin/FuriganaOverview.tsx:154
 msgid "寺社・経塚・行場などの名前は、辞書には任せず人が読みを入れます。それぞれの編集画面の「名前の読み」で入れてください。"
 msgstr "寺社・経塚・行場などの名前は、辞書には任せず人が読みを入れます。それぞれの編集画面の「名前の読み」で入れてください。"
 
@@ -6171,7 +6171,7 @@ msgstr "手直しが必要なコースだけ（{needsWorkCount}）"
 msgid "手順"
 msgstr "手順"
 
-#: src/components/admin/FuriganaOverview.tsx:191
+#: src/components/admin/FuriganaOverview.tsx:210
 msgid "承認"
 msgstr "承認"
 
@@ -6363,7 +6363,7 @@ msgstr "新しいラリー（管理）"
 msgid "新しい点は、選んだ点（{chosenNo}番）のあとに入ります。もう一度クリックすると、選びなおせます。"
 msgstr "新しい点は、選んだ点（{chosenNo}番）のあとに入ります。もう一度クリックすると、選びなおせます。"
 
-#: src/components/admin/FuriganaOverview.tsx:108
+#: src/components/admin/FuriganaOverview.tsx:124
 msgid "新しい言葉はありませんでした。"
 msgstr "新しい言葉はありませんでした。"
 
@@ -7159,11 +7159,11 @@ msgstr "目標を保存"
 msgid "目標を決める・変える"
 msgstr "目標を決める・変える"
 
-#: src/components/admin/FuriganaOverview.tsx:205
+#: src/components/admin/FuriganaOverview.tsx:224
 msgid "直して承認"
 msgstr "直して承認"
 
-#: src/components/admin/FuriganaOverview.tsx:210
+#: src/components/admin/FuriganaOverview.tsx:229
 msgid "直す"
 msgstr "直す"
 
@@ -7239,7 +7239,7 @@ msgstr "確認待ち"
 msgid "確認待ちのコメントはありません。"
 msgstr "確認待ちのコメントはありません。"
 
-#: src/components/admin/FuriganaOverview.tsx:166
+#: src/components/admin/FuriganaOverview.tsx:185
 msgid "確認待ちの読みはありません。"
 msgstr "確認待ちの読みはありません。"
 
@@ -7440,7 +7440,7 @@ msgstr "経塚ラリー"
 msgid "経度"
 msgstr "経度"
 
-#: src/components/admin/FuriganaOverview.tsx:127
+#: src/components/admin/FuriganaOverview.tsx:143
 #: src/components/admin/useChecklistLabels.ts:22
 msgid "経由地"
 msgstr "経由地"
@@ -8158,7 +8158,7 @@ msgstr "説明文（日本語）"
 msgid "読み（ひらがな）"
 msgstr "読み（ひらがな）"
 
-#: src/components/admin/FuriganaOverview.tsx:118
+#: src/components/admin/FuriganaOverview.tsx:134
 #: src/components/admin/FuriganaWords.tsx:57
 msgid "読みが言葉に合いません。ひらがなで入れるか、漢字ごとに「{MARKUP_EXAMPLE}」と入れてください。"
 msgstr "読みが言葉に合いません。ひらがなで入れるか、漢字ごとに「{MARKUP_EXAMPLE}」と入れてください。"
@@ -8167,9 +8167,15 @@ msgstr "読みが言葉に合いません。ひらがなで入れるか、漢字
 msgid "読みを入れた漢字の上に、小さく表示されます（ひらがな）。"
 msgstr "読みを入れた漢字の上に、小さく表示されます（ひらがな）。"
 
-#: src/components/admin/FuriganaOverview.tsx:136
+#: src/components/admin/FuriganaOverview.tsx:152
 msgid "読みを入れてほしい名前"
 msgstr "読みを入れてほしい名前"
+
+#. placeholder {0}: progress.done
+#. placeholder {1}: progress.total
+#: src/components/admin/FuriganaOverview.tsx:181
+msgid "読み直しています… {0} / {1} 件の文章"
+msgstr "読み直しています… {0} / {1} 件の文章"
 
 #: src/components/settings/PasskeyManager.tsx:107
 msgid "読み込み中"
@@ -8195,7 +8201,7 @@ msgstr "読み込めませんでした。しばらくしてから、ページを
 
 #: src/components/admin/BannerOrder.tsx:119
 #: src/components/admin/BlockEditor.tsx:131
-#: src/components/admin/FuriganaOverview.tsx:130
+#: src/components/admin/FuriganaOverview.tsx:146
 #: src/components/admin/PhotoLibrary.tsx:163
 msgid "読み込んでいます…"
 msgstr "読み込んでいます…"
@@ -8258,15 +8264,15 @@ msgstr "車"
 msgid "転落・滑落の危険がある所がある。地図を読む力と、ミスをしない注意が必要。"
 msgstr "転落・滑落の危険がある所がある。地図を読む力と、ミスをしない注意が必要。"
 
-#: src/components/admin/FuriganaOverview.tsx:161
+#: src/components/admin/FuriganaOverview.tsx:177
 msgid "辞書で読み直す"
 msgstr "辞書で読み直す"
 
-#: src/components/admin/FuriganaOverview.tsx:158
+#: src/components/admin/FuriganaOverview.tsx:174
 msgid "辞書の読み（確認待ち）"
 msgstr "辞書の読み（確認待ち）"
 
-#: src/components/admin/FuriganaOverview.tsx:108
+#: src/components/admin/FuriganaOverview.tsx:124
 msgid "辞書の読みが{n}件ふえました。確認してください。"
 msgstr "辞書の読みが{n}件ふえました。確認してください。"
 
@@ -8638,7 +8644,7 @@ msgid "選んだ数：{0} / {1}"
 msgstr "選んだ数：{0} / {1}"
 
 #. placeholder {0}: picked.size
-#: src/components/admin/FuriganaOverview.tsx:180
+#: src/components/admin/FuriganaOverview.tsx:199
 msgid "選んだ読みを承認する（{0}件）"
 msgstr "選んだ読みを承認する（{0}件）"
 

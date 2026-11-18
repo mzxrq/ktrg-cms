@@ -174,6 +174,10 @@ export async function nameReadings(
   return [...routes, ...spots, ...listed].flatMap((r) => (r.nameKana ? [{ word: r.nameJa, reading: r.nameKana }] : []));
 }
 
+/** About how much text one refresh batch tokenizes: about 0.2 s on a desktop PC (2026-11-18; loading the dictionary first: 0.4 s, once). */
+export const BATCH_CHARS = 20_000;
+type Suggestion = { word: string; reading: string };
+
 export function createFuriganaService(deps: {
   store: FuriganaStore;
   names?: () => Promise<{ word: string; reading: string }[]>;
@@ -183,26 +187,59 @@ export function createFuriganaService(deps: {
   /** Names that still need a reading typed. */
   unread?: () => Promise<UnreadName[]>;
 }) {
-  return {
+  // Words that already have a reading: a person's word, or a reading typed with a name. Read one after another (see above).
+  const knownWords = async () => {
+    const words = await deps.store.all();
+    const names = (await deps.names?.()) ?? [];
+    return new Set([...words.map((w) => w.word), ...names.map((n) => n.word.trim())]);
+  };
+  const service = {
     ...createListService({ store: deps.store, rules: furiganaRules(deps.store) }),
     /**
-     * Read the site's text with the dictionary again. New words become suggestions (waiting, never shown); suggestions for
-     * words that are gone are dropped; a person's word and a name with a typed reading are never touched or suggested.
+     * One batch of reading the site's text with the dictionary again: the texts from `from` until about BATCH_CHARS
+     * characters (at least one text, however long). Short requests, so no other request waits long behind the tokenizer,
+     * and nothing kept on the server between them: the admin page gathers the words and sends them to `applySuggestions`.
+     * shortcut: a text published mid-refresh shifts the order, so one can be skipped; the next refresh finds its words.
      */
-    async refresh(actor: string | null): Promise<{ added: number; removed: number }> {
-      if (!deps.texts || !deps.tokenizer) return { added: 0, removed: 0 };
-      // One after another (see above); the dictionary loads while no query is waiting.
-      const texts = await deps.texts();
-      const words = await deps.store.all();
-      const names = (await deps.names?.()) ?? [];
-      const tokenizer = await deps.tokenizer();
-      const known = new Set([...words.map((w) => w.word), ...names.map((n) => n.word.trim())]);
-      const found = dictionaryWords(tokenizer, texts, (w) => known.has(w));
-      const suggestions = [...found].flatMap(([word, reading]) => {
+    async readBatch(from: number): Promise<{ words: Suggestion[]; next: number | null; total: number }> {
+      if (!deps.texts || !deps.tokenizer) return { words: [], next: null, total: 0 };
+      // The same order on every call (the texts are deduplicated and sorted), so `from` points at the same text each time.
+      const texts = [...new Set(await deps.texts())].sort();
+      const known = await knownWords();
+      const tokenizer = await deps.tokenizer(); // the first batch in a process loads the dictionary (a few seconds, once)
+      let end = from;
+      for (let chars = 0; end < texts.length && (end === from || chars + texts[end]!.length <= BATCH_CHARS); end++) chars += texts[end]!.length;
+      const found = dictionaryWords(tokenizer, texts.slice(from, end), (w) => known.has(w));
+      const words = [...found].flatMap(([word, reading]) => {
         const markup = alignReading(word, reading);
         return markup ? [{ word, reading: markup }] : [];
       });
-      return deps.store.setSuggestions(actor, suggestions);
+      return { words, next: end < texts.length ? end : null, total: texts.length };
+    },
+    /**
+     * The gathered batches become the suggestions (waiting, never shown); suggestions for words that are gone are dropped;
+     * a person's word and a name with a typed reading are never touched or suggested. Every pair is checked again here:
+     * the list comes from the browser.
+     */
+    async applySuggestions(actor: string | null, words: Suggestion[]): Promise<{ added: number; removed: number }> {
+      const known = await knownWords();
+      const seen = new Set<string>();
+      const good = words.filter((w) => {
+        if (seen.has(w.word) || known.has(w.word) || !hasHardKanji(w.word) || !validMarkup(w.word, w.reading)) return false;
+        seen.add(w.word);
+        return true;
+      });
+      return deps.store.setSuggestions(actor, good);
+    },
+    /** Every batch, then the suggestions: what the admin page does, in one call (tests, and a check that the two agree). */
+    async refresh(actor: string | null): Promise<{ added: number; removed: number }> {
+      const words: Suggestion[] = [];
+      for (let from: number | null = 0; from !== null; ) {
+        const batch = await service.readBatch(from);
+        words.push(...batch.words);
+        from = batch.next;
+      }
+      return service.applySuggestions(actor, words);
     },
     pending: () => deps.store.pending(),
     /** The words drawn for every visitor reading Japanese, whether or not they turned furigana on. */
@@ -233,6 +270,7 @@ export function createFuriganaService(deps: {
       return out;
     },
   };
+  return service;
 }
 
 /** In-memory words for tests and the dev page. */
@@ -361,10 +399,22 @@ export function adminFuriganaRoutes(getServices: () => FuriganaServices, opts: R
       async ({ user, body }) => ({ ok: true as const, approved: await svc().approve(user.id, body.ids) }),
       { auth: "furigana.manage", rateLimit: { adminWriteUser: "user.id" }, body: t.Object({ ids: t.Array(t.String({ format: "uuid" }), { minItems: 1, maxItems: 500 }) }) },
     )
+    // 辞書で読み直す in short steps: the page reads every batch, then applies what it gathered (one refresh is a few dozen calls,
+    // well inside the 300 per 15 minutes of adminWriteUser).
     .post(
-      "/refresh",
-      async ({ user }) => ({ ok: true as const, ...(await svc().refresh(user.id)) }),
-      { auth: "furigana.manage", rateLimit: { adminWriteUser: "user.id" }, detail: { summary: "Read the site's text with the dictionary again now" } },
+      "/refresh/read",
+      async ({ body }) => ({ ok: true as const, ...(await svc().readBatch(body.from)) }),
+      { auth: "furigana.manage", rateLimit: { adminWriteUser: "user.id" }, body: t.Object({ from: t.Integer({ minimum: 0, maximum: 1_000_000 }) }), detail: { summary: "Read one batch of the site's text with the dictionary" } },
+    )
+    .post(
+      "/refresh/apply",
+      async ({ user, body }) => ({ ok: true as const, ...(await svc().applySuggestions(user.id, body.words)) }),
+      {
+        auth: "furigana.manage",
+        rateLimit: { adminWriteUser: "user.id" },
+        body: t.Object({ words: t.Array(t.Object({ word: FURIGANA_FIELDS.word, reading: FURIGANA_FIELDS.reading }), { maxItems: 5000 }) }),
+        detail: { summary: "Make the gathered dictionary readings the waiting suggestions" },
+      },
     );
 }
 
