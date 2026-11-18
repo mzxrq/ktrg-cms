@@ -492,7 +492,7 @@ msgid "{title}を直す（管理）"
 msgstr "Edit {title} (admin)"
 
 #: src/app/(admin)/admin/[list]/[id]/page.tsx:39
-#: src/app/(admin)/admin/[list]/page.tsx:71
+#: src/app/(admin)/admin/[list]/page.tsx:75
 msgid "{title}を読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "{title} could not be loaded. Please reload the page in a little while."
 
@@ -542,7 +542,7 @@ msgid "「{0}」のスタンプを押しました！"
 msgstr "Stamped \"{0}\"!"
 
 #. placeholder {0}: row.word
-#: src/components/admin/FuriganaWords.tsx:64
+#: src/components/admin/FuriganaWords.tsx:65
 msgid "「{0}」のふりがなを削除しますか？"
 msgstr "Delete the furigana of “{0}”?"
 
@@ -550,13 +550,6 @@ msgstr "Delete the furigana of “{0}”?"
 #: src/components/admin/one-map/OneMap.tsx:286
 msgid "「{0}」の経由地"
 msgstr "Waypoints of “{0}”"
-
-#. placeholder {0}: p.word
-#. placeholder {0}: row.word
-#: src/components/admin/FuriganaOverview.tsx:201
-#: src/components/admin/FuriganaWords.tsx:143
-msgid "「{0}」の読み"
-msgstr "Reading of “{0}”"
 
 #. placeholder {0}: p.word
 #: src/components/admin/FuriganaOverview.tsx:120
@@ -569,7 +562,7 @@ msgid "「{0}」をゴールにもする（出発した場所にもどる）"
 msgstr "Make “{0}” the goal too (the walk comes back to where it started)"
 
 #. placeholder {0}: row.word
-#: src/components/admin/FuriganaWords.tsx:60
+#: src/components/admin/FuriganaWords.tsx:61
 msgid "「{0}」を保存しました。"
 msgstr "Saved “{0}”."
 
@@ -1103,11 +1096,11 @@ msgstr "Remove the last return line"
 msgid "いつまで（空なら、解除するまで）"
 msgstr "Until (empty: until you lift it)"
 
-#: src/components/admin/FuriganaWords.tsx:152
+#: src/components/admin/FuriganaWords.tsx:157
 msgid "いつも表示"
 msgstr "Always shown"
 
-#: src/components/admin/FuriganaWords.tsx:106
+#: src/components/admin/FuriganaWords.tsx:108
 msgid "いつも表示する（とても難しい字や四字熟語に）"
 msgstr "Always show (for very hard kanji or four-character idioms)"
 
@@ -2093,7 +2086,7 @@ msgstr "This line does not match the order or positions of the waypoints, so it 
 msgid "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。"
 msgstr "The idea follows Nagano Prefecture's Shinshu mountain grading (physical and technical levels). The descriptions are this site's own words."
 
-#: src/components/admin/FuriganaWords.tsx:79
+#: src/components/admin/FuriganaWords.tsx:80
 msgid "この言葉はもう一覧にあります。"
 msgstr "This word is already in the list."
 
@@ -2259,7 +2252,7 @@ msgstr "Searching…"
 
 #: src/components/admin/AdminListTable.tsx:247
 #: src/components/admin/DuplicateFinder.tsx:53
-#: src/components/admin/FuriganaWords.tsx:120
+#: src/components/admin/FuriganaWords.tsx:122
 msgid "さがす"
 msgstr "Search"
 
@@ -2610,7 +2603,7 @@ msgstr "Tiles"
 msgid "タグ"
 msgstr "Tags"
 
-#: src/app/(admin)/admin/[list]/page.tsx:64
+#: src/app/(admin)/admin/[list]/page.tsx:68
 msgid "タグを管理する"
 msgstr "Manage tags"
 
@@ -3449,7 +3442,7 @@ msgstr "Not saved yet."
 msgid "まだ写真がありません。"
 msgstr "There are no photos yet."
 
-#: src/components/admin/FuriganaWords.tsx:125
+#: src/components/admin/FuriganaWords.tsx:127
 msgid "まだ言葉がありません。"
 msgstr "No words yet."
 
@@ -4288,10 +4281,6 @@ msgstr "Create"
 msgid "使える写真は見つかりませんでした。"
 msgstr "No usable photos were found."
 
-#: src/components/admin/FuriganaWords.tsx:98
-msgid "例：がしんしょうたん"
-msgstr "e.g. がしんしょうたん"
-
 #: src/components/admin/PhotoListEditor.tsx:81
 #: src/components/admin/RouteEditor.tsx:257
 msgid "例：山田太郎, CC BY-SA 4.0"
@@ -4305,7 +4294,7 @@ msgstr "e.g. Main hall"
 msgid "例：祝日は休み／ラストオーダーは閉店30分前"
 msgstr "e.g. Closed on public holidays / last order 30 minutes before closing"
 
-#: src/components/admin/FuriganaWords.tsx:94
+#: src/components/admin/FuriganaWords.tsx:95
 msgid "例：臥薪嘗胆"
 msgstr "e.g. 臥薪嘗胆"
 
@@ -4318,7 +4307,7 @@ msgid "例：金剛山の山頂"
 msgstr "e.g. The summit of Mt. Kongō"
 
 #: src/components/admin/AdminItemForm.tsx:319
-#: src/components/admin/FuriganaWords.tsx:146
+#: src/components/admin/FuriganaWords.tsx:151
 #: src/components/admin/PageTextEditor.tsx:99
 msgid "保存"
 msgstr "Save"
@@ -4493,6 +4482,10 @@ msgstr "Save the course first."
 #: src/app/(admin)/admin/attention/page.tsx:93
 msgid "先に直すもの"
 msgstr "Fix first"
+
+#: src/components/admin/FuriganaWords.tsx:100
+msgid "先に言葉を入れてください。"
+msgstr "Type the word first."
 
 #: src/components/admin/DuplicateFinder.tsx:66
 msgid "先頭だけ残して、ほかを削除"
@@ -5022,7 +5015,7 @@ msgstr "Restricted"
 #: src/components/admin/CommentInbox.tsx:184
 #: src/components/admin/DuplicateFinder.tsx:85
 #: src/components/admin/fields.tsx:157
-#: src/components/admin/FuriganaWords.tsx:155
+#: src/components/admin/FuriganaWords.tsx:160
 #: src/components/admin/HoursInput.tsx:36
 #: src/components/admin/PlaceTable.tsx:141
 #: src/components/admin/PlaceTable.tsx:206
@@ -5055,7 +5048,7 @@ msgstr "Delete this?"
 #: src/components/admin/AdminListTable.tsx:162
 #: src/components/admin/CommentInbox.tsx:82
 #: src/components/admin/DuplicateFinder.tsx:32
-#: src/components/admin/FuriganaWords.tsx:64
+#: src/components/admin/FuriganaWords.tsx:65
 #: src/components/admin/RallyEditor.tsx:111
 #: src/components/admin/RouteEditor.tsx:83
 #: src/components/admin/WaypointEditor.tsx:90
@@ -5128,7 +5121,7 @@ msgstr "Earlier and later posts"
 msgid "加えました。"
 msgstr "Added."
 
-#: src/components/admin/FuriganaWords.tsx:101
+#: src/components/admin/FuriganaWords.tsx:103
 msgid "加える"
 msgstr "Add"
 
@@ -6498,7 +6491,7 @@ msgstr "Once rewritten, the \"this is a draft\" notice and the updated date are 
 msgid "書きかえ済み"
 msgstr "Rewritten"
 
-#: src/app/(admin)/admin/[list]/page.tsx:61
+#: src/app/(admin)/admin/[list]/page.tsx:65
 msgid "書き手を管理する"
 msgstr "Manage writers"
 
@@ -6891,7 +6884,7 @@ msgstr "The furigana over the kanji. Temple, shrine and sutra mound names are ty
 msgid "漢字を入れると、ここで漢字ごとに読みを入れられます。"
 msgstr "Once there are kanji, type the reading for each here."
 
-#: src/components/admin/FuriganaWords.tsx:79
+#: src/components/admin/FuriganaWords.tsx:80
 msgid "漢字を含む言葉と、それに合う読みを入れてください。"
 msgstr "Enter a word with kanji and a reading that fits it."
 
@@ -7126,11 +7119,11 @@ msgstr "Save goals"
 msgid "目標を決める・変える"
 msgstr "Set or change the goals"
 
-#: src/components/admin/FuriganaOverview.tsx:203
+#: src/components/admin/FuriganaOverview.tsx:205
 msgid "直して承認"
 msgstr "Correct and approve"
 
-#: src/components/admin/FuriganaOverview.tsx:208
+#: src/components/admin/FuriganaOverview.tsx:210
 msgid "直す"
 msgstr "Correct"
 
@@ -7890,7 +7883,7 @@ msgstr "Delete table"
 msgid "表示"
 msgstr "View"
 
-#: src/app/(admin)/admin/[list]/page.tsx:49
+#: src/app/(admin)/admin/[list]/page.tsx:51
 msgid "表示している読み"
 msgstr "Readings shown to visitors"
 
@@ -7943,7 +7936,7 @@ msgstr "Places found"
 msgid "見つからない写真（その写真だけ入りません）：{0}"
 msgstr "Photos not found (only those photos are left out): {0}"
 
-#: src/components/admin/FuriganaWords.tsx:125
+#: src/components/admin/FuriganaWords.tsx:127
 #: src/components/admin/PhotoLibrary.tsx:170
 #: src/components/admin/RelationPicker.tsx:137
 #: src/components/admin/SharedPlaces.tsx:159
@@ -8010,20 +8003,20 @@ msgstr "Tourism information"
 msgid "観光情報（観光・グルメ・お土産・体験・宿泊）を表示する"
 msgstr "Show the tourism information (sightseeing, gourmet, souvenirs, experiences, stay)"
 
-#: src/components/admin/FuriganaWords.tsx:93
+#: src/components/admin/FuriganaWords.tsx:94
 msgid "言葉"
 msgstr "Word"
 
-#: src/components/admin/FuriganaWords.tsx:118
-#: src/components/admin/FuriganaWords.tsx:118
+#: src/components/admin/FuriganaWords.tsx:120
+#: src/components/admin/FuriganaWords.tsx:120
 msgid "言葉をさがす"
 msgstr "Search words"
 
-#: src/components/admin/FuriganaWords.tsx:84
+#: src/components/admin/FuriganaWords.tsx:85
 msgid "言葉を加えました。訪れる人に表示されます。"
 msgstr "Word added. Visitors will see it."
 
-#: src/components/admin/FuriganaWords.tsx:90
+#: src/components/admin/FuriganaWords.tsx:91
 msgid "言葉を加える"
 msgstr "Add a word"
 
@@ -8109,12 +8102,12 @@ msgstr "About this place"
 msgid "説明文（日本語）"
 msgstr "Description (Japanese)"
 
-#: src/components/admin/FuriganaWords.tsx:97
+#: src/components/admin/FuriganaWords.tsx:99
 msgid "読み（ひらがな）"
 msgstr "Reading (hiragana)"
 
 #: src/components/admin/FuriganaOverview.tsx:118
-#: src/components/admin/FuriganaWords.tsx:56
+#: src/components/admin/FuriganaWords.tsx:57
 msgid "読みが言葉に合いません。ひらがなで入れるか、漢字ごとに「{MARKUP_EXAMPLE}」と入れてください。"
 msgstr "The reading does not fit the word. Type it in hiragana, or after each kanji as “{MARKUP_EXAMPLE}”."
 

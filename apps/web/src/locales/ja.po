@@ -492,7 +492,7 @@ msgid "{title}を直す（管理）"
 msgstr "{title}を直す（管理）"
 
 #: src/app/(admin)/admin/[list]/[id]/page.tsx:39
-#: src/app/(admin)/admin/[list]/page.tsx:71
+#: src/app/(admin)/admin/[list]/page.tsx:75
 msgid "{title}を読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "{title}を読み込めませんでした。しばらくしてから、ページを開き直してください。"
 
@@ -542,7 +542,7 @@ msgid "「{0}」のスタンプを押しました！"
 msgstr "「{0}」のスタンプを押しました！"
 
 #. placeholder {0}: row.word
-#: src/components/admin/FuriganaWords.tsx:64
+#: src/components/admin/FuriganaWords.tsx:65
 msgid "「{0}」のふりがなを削除しますか？"
 msgstr "「{0}」のふりがなを削除しますか？"
 
@@ -550,13 +550,6 @@ msgstr "「{0}」のふりがなを削除しますか？"
 #: src/components/admin/one-map/OneMap.tsx:286
 msgid "「{0}」の経由地"
 msgstr "「{0}」の経由地"
-
-#. placeholder {0}: p.word
-#. placeholder {0}: row.word
-#: src/components/admin/FuriganaOverview.tsx:201
-#: src/components/admin/FuriganaWords.tsx:143
-msgid "「{0}」の読み"
-msgstr "「{0}」の読み"
 
 #. placeholder {0}: p.word
 #: src/components/admin/FuriganaOverview.tsx:120
@@ -569,7 +562,7 @@ msgid "「{0}」をゴールにもする（出発した場所にもどる）"
 msgstr "「{0}」をゴールにもする（出発した場所にもどる）"
 
 #. placeholder {0}: row.word
-#: src/components/admin/FuriganaWords.tsx:60
+#: src/components/admin/FuriganaWords.tsx:61
 msgid "「{0}」を保存しました。"
 msgstr "「{0}」を保存しました。"
 
@@ -1103,11 +1096,11 @@ msgstr "いちばん後ろの戻りの線を消す"
 msgid "いつまで（空なら、解除するまで）"
 msgstr "いつまで（空なら、解除するまで）"
 
-#: src/components/admin/FuriganaWords.tsx:152
+#: src/components/admin/FuriganaWords.tsx:157
 msgid "いつも表示"
 msgstr "いつも表示"
 
-#: src/components/admin/FuriganaWords.tsx:106
+#: src/components/admin/FuriganaWords.tsx:108
 msgid "いつも表示する（とても難しい字や四字熟語に）"
 msgstr "いつも表示する（とても難しい字や四字熟語に）"
 
@@ -2093,7 +2086,7 @@ msgstr "この線は、経由地の順番や位置と合わないため、区間
 msgid "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。"
 msgstr "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。"
 
-#: src/components/admin/FuriganaWords.tsx:79
+#: src/components/admin/FuriganaWords.tsx:80
 msgid "この言葉はもう一覧にあります。"
 msgstr "この言葉はもう一覧にあります。"
 
@@ -2259,7 +2252,7 @@ msgstr "さがしています…"
 
 #: src/components/admin/AdminListTable.tsx:247
 #: src/components/admin/DuplicateFinder.tsx:53
-#: src/components/admin/FuriganaWords.tsx:120
+#: src/components/admin/FuriganaWords.tsx:122
 msgid "さがす"
 msgstr "さがす"
 
@@ -2610,7 +2603,7 @@ msgstr "タイル"
 msgid "タグ"
 msgstr "タグ"
 
-#: src/app/(admin)/admin/[list]/page.tsx:64
+#: src/app/(admin)/admin/[list]/page.tsx:68
 msgid "タグを管理する"
 msgstr "タグを管理する"
 
@@ -3449,7 +3442,7 @@ msgstr "まだ保存していません。"
 msgid "まだ写真がありません。"
 msgstr "まだ写真がありません。"
 
-#: src/components/admin/FuriganaWords.tsx:125
+#: src/components/admin/FuriganaWords.tsx:127
 msgid "まだ言葉がありません。"
 msgstr "まだ言葉がありません。"
 
@@ -4288,10 +4281,6 @@ msgstr "作成"
 msgid "使える写真は見つかりませんでした。"
 msgstr "使える写真は見つかりませんでした。"
 
-#: src/components/admin/FuriganaWords.tsx:98
-msgid "例：がしんしょうたん"
-msgstr "例：がしんしょうたん"
-
 #: src/components/admin/PhotoListEditor.tsx:81
 #: src/components/admin/RouteEditor.tsx:257
 msgid "例：山田太郎, CC BY-SA 4.0"
@@ -4305,7 +4294,7 @@ msgstr "例：本殿"
 msgid "例：祝日は休み／ラストオーダーは閉店30分前"
 msgstr "例：祝日は休み／ラストオーダーは閉店30分前"
 
-#: src/components/admin/FuriganaWords.tsx:94
+#: src/components/admin/FuriganaWords.tsx:95
 msgid "例：臥薪嘗胆"
 msgstr "例：臥薪嘗胆"
 
@@ -4318,7 +4307,7 @@ msgid "例：金剛山の山頂"
 msgstr "例：金剛山の山頂"
 
 #: src/components/admin/AdminItemForm.tsx:319
-#: src/components/admin/FuriganaWords.tsx:146
+#: src/components/admin/FuriganaWords.tsx:151
 #: src/components/admin/PageTextEditor.tsx:99
 msgid "保存"
 msgstr "保存"
@@ -4493,6 +4482,10 @@ msgstr "先にコースを保存してください。"
 #: src/app/(admin)/admin/attention/page.tsx:93
 msgid "先に直すもの"
 msgstr "先に直すもの"
+
+#: src/components/admin/FuriganaWords.tsx:100
+msgid "先に言葉を入れてください。"
+msgstr "先に言葉を入れてください。"
 
 #: src/components/admin/DuplicateFinder.tsx:66
 msgid "先頭だけ残して、ほかを削除"
@@ -5022,7 +5015,7 @@ msgstr "制限中"
 #: src/components/admin/CommentInbox.tsx:184
 #: src/components/admin/DuplicateFinder.tsx:85
 #: src/components/admin/fields.tsx:157
-#: src/components/admin/FuriganaWords.tsx:155
+#: src/components/admin/FuriganaWords.tsx:160
 #: src/components/admin/HoursInput.tsx:36
 #: src/components/admin/PlaceTable.tsx:141
 #: src/components/admin/PlaceTable.tsx:206
@@ -5055,7 +5048,7 @@ msgstr "削除しますか？"
 #: src/components/admin/AdminListTable.tsx:162
 #: src/components/admin/CommentInbox.tsx:82
 #: src/components/admin/DuplicateFinder.tsx:32
-#: src/components/admin/FuriganaWords.tsx:64
+#: src/components/admin/FuriganaWords.tsx:65
 #: src/components/admin/RallyEditor.tsx:111
 #: src/components/admin/RouteEditor.tsx:83
 #: src/components/admin/WaypointEditor.tsx:90
@@ -5128,7 +5121,7 @@ msgstr "前後の記事"
 msgid "加えました。"
 msgstr "加えました。"
 
-#: src/components/admin/FuriganaWords.tsx:101
+#: src/components/admin/FuriganaWords.tsx:103
 msgid "加える"
 msgstr "加える"
 
@@ -6498,7 +6491,7 @@ msgstr "書きかえると、「案です」の表示や更新日の表示は出
 msgid "書きかえ済み"
 msgstr "書きかえ済み"
 
-#: src/app/(admin)/admin/[list]/page.tsx:61
+#: src/app/(admin)/admin/[list]/page.tsx:65
 msgid "書き手を管理する"
 msgstr "書き手を管理する"
 
@@ -6891,7 +6884,7 @@ msgstr "漢字の上に出るふりがなです。寺社や経塚の名前は、
 msgid "漢字を入れると、ここで漢字ごとに読みを入れられます。"
 msgstr "漢字を入れると、ここで漢字ごとに読みを入れられます。"
 
-#: src/components/admin/FuriganaWords.tsx:79
+#: src/components/admin/FuriganaWords.tsx:80
 msgid "漢字を含む言葉と、それに合う読みを入れてください。"
 msgstr "漢字を含む言葉と、それに合う読みを入れてください。"
 
@@ -7126,11 +7119,11 @@ msgstr "目標を保存"
 msgid "目標を決める・変える"
 msgstr "目標を決める・変える"
 
-#: src/components/admin/FuriganaOverview.tsx:203
+#: src/components/admin/FuriganaOverview.tsx:205
 msgid "直して承認"
 msgstr "直して承認"
 
-#: src/components/admin/FuriganaOverview.tsx:208
+#: src/components/admin/FuriganaOverview.tsx:210
 msgid "直す"
 msgstr "直す"
 
@@ -7890,7 +7883,7 @@ msgstr "表を消す"
 msgid "表示"
 msgstr "表示"
 
-#: src/app/(admin)/admin/[list]/page.tsx:49
+#: src/app/(admin)/admin/[list]/page.tsx:51
 msgid "表示している読み"
 msgstr "表示している読み"
 
@@ -7943,7 +7936,7 @@ msgstr "見つかった場所"
 msgid "見つからない写真（その写真だけ入りません）：{0}"
 msgstr "見つからない写真（その写真だけ入りません）：{0}"
 
-#: src/components/admin/FuriganaWords.tsx:125
+#: src/components/admin/FuriganaWords.tsx:127
 #: src/components/admin/PhotoLibrary.tsx:170
 #: src/components/admin/RelationPicker.tsx:137
 #: src/components/admin/SharedPlaces.tsx:159
@@ -8010,20 +8003,20 @@ msgstr "観光情報"
 msgid "観光情報（観光・グルメ・お土産・体験・宿泊）を表示する"
 msgstr "観光情報（観光・グルメ・お土産・体験・宿泊）を表示する"
 
-#: src/components/admin/FuriganaWords.tsx:93
+#: src/components/admin/FuriganaWords.tsx:94
 msgid "言葉"
 msgstr "言葉"
 
-#: src/components/admin/FuriganaWords.tsx:118
-#: src/components/admin/FuriganaWords.tsx:118
+#: src/components/admin/FuriganaWords.tsx:120
+#: src/components/admin/FuriganaWords.tsx:120
 msgid "言葉をさがす"
 msgstr "言葉をさがす"
 
-#: src/components/admin/FuriganaWords.tsx:84
+#: src/components/admin/FuriganaWords.tsx:85
 msgid "言葉を加えました。訪れる人に表示されます。"
 msgstr "言葉を加えました。訪れる人に表示されます。"
 
-#: src/components/admin/FuriganaWords.tsx:90
+#: src/components/admin/FuriganaWords.tsx:91
 msgid "言葉を加える"
 msgstr "言葉を加える"
 
@@ -8109,12 +8102,12 @@ msgstr "説明"
 msgid "説明文（日本語）"
 msgstr "説明文（日本語）"
 
-#: src/components/admin/FuriganaWords.tsx:97
+#: src/components/admin/FuriganaWords.tsx:99
 msgid "読み（ひらがな）"
 msgstr "読み（ひらがな）"
 
 #: src/components/admin/FuriganaOverview.tsx:118
-#: src/components/admin/FuriganaWords.tsx:56
+#: src/components/admin/FuriganaWords.tsx:57
 msgid "読みが言葉に合いません。ひらがなで入れるか、漢字ごとに「{MARKUP_EXAMPLE}」と入れてください。"
 msgstr "読みが言葉に合いません。ひらがなで入れるか、漢字ごとに「{MARKUP_EXAMPLE}」と入れてください。"
 
