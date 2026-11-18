@@ -3,6 +3,7 @@ import {
   anchorsFromPoints,
   backChoices,
   backLeg,
+  isStraightBack,
   backPairs,
   pairId,
   capLegs,
@@ -299,8 +300,33 @@ describe("return legs (a route that goes back over its own way)", () => {
     expect(backChoices([], [])).toEqual({ end: null, options: [] });
   });
 
-  test("a new return leg is a straight leg between the two stops, marked as a return leg", () => {
+  test("a new return leg with no route to follow is a straight leg between the two stops, marked as a return leg", () => {
     expect(backLeg(stops[2]!, stops[1]!)).toEqual({ from: "c", to: "b", points: [[135.02, 34.02], [135.01, 34.01]], back: true });
+    expect(backLeg(stops[2]!, stops[1]!, stops, [])).toEqual({ from: "c", to: "b", points: [[135.02, 34.02], [135.01, 34.01]], back: true });
+  });
+
+  test("a new return leg follows the route's own way back, over every leg between the two stops, reversed", () => {
+    const bent: Leg = { from: "b", to: "c", points: [[135.01, 34.01], [135.018, 34.011], [135.02, 34.02]] };
+    expect(backLeg(stops[2]!, stops[0]!, stops, [ab, bent, cb])).toEqual({
+      from: "c",
+      to: "a",
+      points: [[135.02, 34.02], [135.018, 34.011], [135.01, 34.01], [135.0, 34.0]], // b once, not twice; the return leg cb is not followed
+      back: true,
+    });
+  });
+
+  test("a return leg over one ridden leg (a ferry) is ridden too; over more than one it is not", () => {
+    const ferry: Leg = { ...ab, points: [[135.0, 34.0], [135.004, 34.008], [135.01, 34.01]], ride: { mode: "ferry", minutes: 20 } };
+    expect(backLeg(stops[1]!, stops[0]!, stops, [ferry, bc]).ride).toEqual({ mode: "ferry", minutes: 20 });
+    expect(backLeg(stops[1]!, stops[0]!, stops, [ferry, bc]).points).toEqual([[135.01, 34.01], [135.004, 34.008], [135.0, 34.0]]);
+    expect(backLeg(stops[2]!, stops[0]!, stops, [ferry, bc]).ride).toBeUndefined();
+  });
+
+  test("only a return leg still straight and untouched is filled from the route", () => {
+    expect(isStraightBack(ba)).toBe(true);
+    expect(isStraightBack(cb)).toBe(false);
+    expect(isStraightBack(ab)).toBe(false);
+    expect(isStraightBack(undefined)).toBe(false);
   });
 
   test("every leg has its own id: a route leg by the stop it runs to, a return leg by both stops (two legs can end on the same stop)", () => {
