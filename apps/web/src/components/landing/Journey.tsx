@@ -5,6 +5,7 @@ import { buttonStyle } from "@/components/button";
 import { Chapter } from "@/components/landing/Chapter";
 import { EnNoGyoja, SutraScroll, StaffAndWaves } from "@/components/landing/Decor";
 import { DeskPanel } from "@/components/landing/DeskPanel";
+import { JourneyFlow } from "@/components/landing/JourneyFlow";
 import { JourneyScene } from "@/components/landing/JourneyScene";
 import { LandingHero } from "@/components/landing/LandingHero";
 import type { BannerSlide } from "@/lib/banners";
@@ -25,21 +26,22 @@ import { RIDGE_HEIGHT, RIDGE_WIDTH, ridgePath } from "@/lib/ridge";
  * adds to it, through the data-* markers: data-journey (the whole), data-beat 0..2, data-ridge (the line), data-seal.
  * The words are the editable home words, so an editor's text shows here too.
  */
-export function Journey({ slides, routes, locale, w, chapterPhotos = [] }: { slides: BannerSlide[]; routes: RouteSummary[]; locale: string; w: Record<HomeSlot, string>; chapterPhotos?: (string | null)[] }) {
+export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = false }: { slides: BannerSlide[]; routes: RouteSummary[]; locale: string; w: Record<HomeSlot, string>; chapterPhotos?: (string | null)[]; /** The trial home page: the page scrolls on, nothing is pinned (JourneyFlow), and the logo sits at the top. */ flow?: boolean }) {
   const ridge = ridgePath(routes);
   const line = stageLine(ridge);
   // One seal for every stamp place, grouped by mound: a mound with two places (3, 14, 28) gets a pair.
   const seals = moundSealPoints(line.points, MOUND_PLACES);
+  const Scene = flow ? JourneyFlow : JourneyScene;
 
   return (
-    <JourneyScene seals={TOTAL_STAMPS}>
+    <Scene seals={TOTAL_STAMPS}>
       {/* For anyone who does not want the introduction: a real link, first in the tab order. */}
       <a href="#start-title" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-40 focus:rounded-full focus:bg-paper focus:px-4 focus:py-2 focus:text-lg focus:font-bold focus:text-ink focus:underline">
         <Trans>スキップ</Trans>
       </a>
       <div data-journey-stage>
         <div data-beat="0">
-          <LandingHero slides={slides} locale={locale} line={w.heroLine} bare />
+          <LandingHero slides={slides} locale={locale} line={w.heroLine} bare logoTop={flow} />
         </div>
 
         <div data-beat="1">
@@ -106,7 +108,7 @@ export function Journey({ slides, routes, locale, w, chapterPhotos = [] }: { sli
             course photos, then the first banner photo, then the trail photo of the Japan Heritage council. */}
         <DeskPanel photos={panelPhotos(routes, slides.find((s) => s.src)?.src ?? null, "/home/top_slider_img01.jpg", 2, chapterPhotos)} />
       </div>
-    </JourneyScene>
+    </Scene>
   );
 }
 

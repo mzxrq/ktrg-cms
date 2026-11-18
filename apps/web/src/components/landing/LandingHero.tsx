@@ -23,7 +23,10 @@ const FALLBACK: HeroSlide = { src: "/home/top_slider_img01.jpg", alt: "", unopti
  * buttons' place on the patterned band below (their progress, instead of signing up). `bare` leaves the band out: the
  * landing journey (Journey.tsx) shows the photos alone as its first beat and puts the buttons in its last.
  */
-export function LandingHero({ slides, locale, line, title, children, bare = false }: { slides: BannerSlide[]; locale: string; line: string; title?: ReactNode; children?: ReactNode; bare?: boolean }) {
+/** The logo in white: its colours are theme tokens, so they are set to white for this one. */
+const logo = (size: string) => <KatsuragiLogo className={`${size} w-auto shrink-0 [--color-brand:#fff] [--color-ink:#fff] [filter:drop-shadow(0_1px_4px_rgb(0_0_0/0.6))]`} />;
+
+export function LandingHero({ slides, locale, line, title, children, bare = false, logoTop = false }: { slides: BannerSlide[]; locale: string; line: string; title?: ReactNode; children?: ReactNode; bare?: boolean; /** The trial home page: a bigger logo above the line instead of a small one under it. */ logoTop?: boolean }) {
   const photos: HeroSlide[] = slides.flatMap((s) => (s.src ? [{ src: s.src, alt: locale === "ja" ? s.altJa : s.altEn, credit: s.credit, unoptimized: true }] : []));
   return (
     // data-cover: like a course page's photo, the picture runs behind the status bar of the installed app (globals.css).
@@ -38,7 +41,10 @@ export function LandingHero({ slides, locale, line, title, children, bare = fals
                 columns run right to left), across and centred on a low one. Signed in or not. */}
             {/* A greeting holds the visitor's name, of any length, so it is set across: a vertical column is capped at the picture's height
                 and a long one broke mid-phrase ("adminさ / ん、こんに / ちは。") on a low window. Only the line alone is vertical. */}
-            <div className={`flex flex-col items-center gap-2 ${title ? "" : "tall:block tall:max-h-[calc(100%-7rem)] tall:tracking-[0.04em] tall:[writing-mode:vertical-rl]"}`}>
+            {/* The trial page's logo (2026-11-18: too small under the line): first in the column, which already starts below the
+                language menu and the photo dots, so a phone keeps them apart. The line gives up the extra height. */}
+            {logoTop ? logo("h-20 @[42rem]:h-24") : null}
+            <div className={`flex flex-col items-center gap-2 ${title ? "" : logoTop ? "tall:block tall:max-h-[calc(100%-9.5rem)] tall:tracking-[0.04em] tall:[writing-mode:vertical-rl]" : "tall:block tall:max-h-[calc(100%-7rem)] tall:tracking-[0.04em] tall:[writing-mode:vertical-rl]"}`}>
               {title ? (
                 <p className="font-serif text-lg font-bold text-white [text-shadow:0_1px_6px_rgb(0_0_0/0.7)] tall:ml-4 @[34rem]:text-xl">{line}</p>
               ) : null}
@@ -49,8 +55,7 @@ export function LandingHero({ slides, locale, line, title, children, bare = fals
                 {title ?? line}
               </h1>
             </div>
-            {/* The logo in white: its colours are theme tokens, so they are set to white for this one. */}
-            <KatsuragiLogo className="h-14 w-auto shrink-0 [--color-brand:#fff] [--color-ink:#fff] [filter:drop-shadow(0_1px_4px_rgb(0_0_0/0.6))]" />
+            {logoTop ? null : logo("h-14")}
           </div>
         </HeroSlides>
         {bare ? <ScrollCue /> : null}
