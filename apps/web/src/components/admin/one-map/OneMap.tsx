@@ -190,7 +190,12 @@ export function OneMap({ courses, initialChosen }: { courses: CourseChoice[]; in
     if (!ready || !map || !ml || !ownPlaces) return;
     for (const p of ownPlaces) {
       if (p.lat === null || p.lng === null) continue;
-      const el = createMarkerElement({ order: p.stampable ? p.number : null, label: p.stampable ? `${p.number}. ${p.name}` : p.name, kind: "neutral", status: "open", sideTrip: p.stopBy, noStamp: !p.stampable, role: p.role, place: p.kind, onSelect: () => setPicked({ what: "spot", id: p.key }) });
+      const el = createMarkerElement({ order: p.stampable ? p.number : null, label: p.stampable ? `${p.number}. ${p.name}` : p.name, kind: "neutral", status: "open", sideTrip: p.stopBy, noStamp: !p.stampable, role: p.role, place: p.kind, onSelect: () => {} });
+      // Stopped here, as in the course editor: otherwise the map's own click also runs and could choose a course under the pin.
+      el.addEventListener("click", (event) => {
+        event.stopPropagation();
+        setPicked({ what: "spot", id: p.key });
+      });
       el.dataset.published = String(p.published);
       el.title = p.published ? `${p.name}（公開中）` : p.name;
       el.setAttribute("aria-pressed", String(picked?.id === p.key));
