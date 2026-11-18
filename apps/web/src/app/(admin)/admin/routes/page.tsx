@@ -6,6 +6,7 @@ import { RouteTable } from "@/components/admin/RouteTable";
 import { initLingui } from "@/i18n/server";
 import { adminGet } from "@/lib/admin/admin-fetch";
 import type { AdminRouteSummary } from "@/lib/admin/types";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
@@ -19,17 +20,11 @@ export default async function AdminRoutesPage() {
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold">
-          <Trans>コース</Trans>
-        </h1>
+      <AdminPageHeader title={<Trans>コース</Trans>} intro={i18n._(msg`歩く順番に並んでいます。名前を押すと、文章や地図を直せます。`)}>
         <Link href="/admin/routes/new" className="tap-target inline-flex items-center rounded-full bg-ink px-5 text-lg font-bold text-paper">
           <Trans>新しいコース</Trans>
         </Link>
-      </div>
-      <p className="text-lg text-muted">
-        <Trans>歩く順番に並んでいます。名前を押すと、文章や地図を直せます。</Trans>
-      </p>
+      </AdminPageHeader>
       {routes ? (
         <RouteTable initial={routes} locale={i18n.locale} />
       ) : (
