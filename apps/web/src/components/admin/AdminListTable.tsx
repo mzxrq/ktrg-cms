@@ -17,6 +17,7 @@ import { cellOf, itemHref, itemName, listColumns, nameIsFallback, pick, type Fie
 import { listRequest, type ListPage } from "@/lib/admin/lists/list-client";
 import { nextSort, sortItems, type Sort } from "@/lib/admin/lists/sort";
 import { confirmDialog } from "@/components/ConfirmDialog";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 // A soft shadow on the right edge while more columns wait to be scrolled to (the cover is `local`, so it moves away at the end).
 const edgeShadow = { background: "linear-gradient(to left, var(--color-paper) 30%, transparent) right / 2.5rem 100% local no-repeat, linear-gradient(to left, rgb(0 0 0 / 0.18), transparent) right / 0.9rem 100% scroll no-repeat" };
@@ -217,11 +218,9 @@ export function AdminListTable({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold">{title}</h1>
+      <AdminPageHeader title={title} intro={pick(config.intro, locale)}>
         {newButton}
-      </div>
-      <p className="text-lg text-muted">{pick(config.intro, locale)}</p>
+      </AdminPageHeader>
       {children}
 
       {inlineNew && adding && config.newLabel ? (
