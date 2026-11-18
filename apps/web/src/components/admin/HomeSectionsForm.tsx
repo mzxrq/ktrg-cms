@@ -10,13 +10,13 @@ import { showToast } from "@/lib/admin/toast";
 import { readJson } from "@/lib/read-json";
 
 /** 管理 > ページ > ホーム: which optional sections visitors see. Each one is off until it is turned on here. */
-export function HomeSectionsForm({ initial }: { initial: { tourism: boolean } }) {
+export function HomeSectionsForm({ initial }: { initial: { tourism: boolean; pinnedJourney: boolean } }) {
   const { t } = useLingui();
   const messages = useErrorMessages();
   const [saved, setSaved] = useState(initial);
   const [s, setS] = useState(initial);
   const [busy, setBusy] = useState(false);
-  const dirty = s.tourism !== saved.tourism;
+  const dirty = s.tourism !== saved.tourism || s.pinnedJourney !== saved.pinnedJourney;
   useUnsavedGuard(dirty);
 
   async function save() {
@@ -28,7 +28,7 @@ export function HomeSectionsForm({ initial }: { initial: { tourism: boolean } })
         method: "PUT",
         credentials: "same-origin",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ tourism: s.tourism }),
+        body: JSON.stringify({ tourism: s.tourism, pinnedJourney: s.pinnedJourney }),
       });
       const json = await readJson<{ ok?: unknown; error?: unknown }>(res);
       if (res.ok && json?.ok === true) {
@@ -49,12 +49,23 @@ export function HomeSectionsForm({ initial }: { initial: { tourism: boolean } })
         {t`ホームページの表示`}
       </h2>
       <label className="tap-target flex items-start gap-3 text-lg">
-        <input type="checkbox" checked={s.tourism} onChange={(e) => { showToast(null); setS({ tourism: e.target.checked }); }} className="mt-1.5 size-6 accent-[var(--color-brand)]" />
+        <input type="checkbox" checked={s.tourism} onChange={(e) => { showToast(null); setS({ ...s, tourism: e.target.checked }); }} className="mt-1.5 size-6 accent-[var(--color-brand)]" />
         <span>
           <span className="block font-bold">{t`観光情報（観光・グルメ・お土産・体験・宿泊）を表示する`}</span>
           <span className="block text-base text-muted">{t`リンク先のページが用意できてから、オンにしてください。オフの間は、ホームページに出ません。`}</span>
         </span>
       </label>
+      {/* The older pinned journey, kept as a way back (2026-11-18). Folded: most admins never need it. Open when it is on. */}
+      <details open={initial.pinnedJourney} className="rounded-2xl border border-line p-4">
+        <summary className="tap-target flex cursor-pointer items-center text-lg font-bold">{t`詳細設定`}</summary>
+        <label className="tap-target mt-2 flex items-start gap-3 text-lg">
+          <input type="checkbox" checked={s.pinnedJourney} onChange={(e) => { showToast(null); setS({ ...s, pinnedJourney: e.target.checked }); }} className="mt-1.5 size-6 accent-[var(--color-brand)]" />
+          <span>
+            <span className="block font-bold">{t`はじめての方のホームを、前の見せ方（画面が止まって切り替わる）にする`}</span>
+            <span className="block text-base text-muted">{t`オフ（ふつう）では、ページと一緒にスクロールします。`}</span>
+          </span>
+        </label>
+      </details>
       <div className="flex flex-wrap items-center gap-3">
         <button type="button" disabled={busy || !dirty} onClick={save} className="tap-target rounded-full bg-ink px-6 text-lg font-bold text-paper disabled:opacity-50">
           {busy ? t`保存しています…` : t`保存する`}

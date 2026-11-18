@@ -73,9 +73,11 @@ export function validLargeEntries(entries: LargeStyleSetting["entries"]): boolea
  * Which optional sections of the home page are switched on. Off until an admin turns one on, so a section that has no
  * pages behind it yet (the tourism cards) is not shown to visitors by accident.
  */
-export const HOME_SECTIONS = t.Object({ tourism: t.Boolean() });
-export type HomeSections = Static<typeof HOME_SECTIONS>;
-export const defaultHomeSections: HomeSections = { tourism: false };
+// pinnedJourney (詳細設定, 2026-11-18): the first-visit journey as the older pinned scene instead of scrolling with the page.
+// Optional so an admin page from before it still saves (backward compatible); reading fills in false.
+export const HOME_SECTIONS = t.Object({ tourism: t.Boolean(), pinnedJourney: t.Optional(t.Boolean()) });
+export type HomeSections = Required<Static<typeof HOME_SECTIONS>>;
+export const defaultHomeSections: HomeSections = { tourism: false, pinnedJourney: false };
 
 export const SETTING_KEYS = { mapStyle: "map_style", dashboardGoals: "dashboard_goals", homeSections: "home_sections", largeStyle: "large_style" } as const;
 
@@ -115,7 +117,7 @@ export function createSiteSettingsService(deps: { store: SiteSettingsStore }) {
     setDashboardGoals: (actor: string, value: DashboardGoals) => deps.store.set(actor, SETTING_KEYS.dashboardGoals, value),
     /** Which optional home page sections are on; every one is off until set. */
     homeSections: async (): Promise<HomeSections> => ({ ...defaultHomeSections, ...(((await deps.store.get(SETTING_KEYS.homeSections)) as Partial<HomeSections> | null) ?? {}) }),
-    setHomeSections: (actor: string, value: HomeSections) => deps.store.set(actor, SETTING_KEYS.homeSections, value),
+    setHomeSections: (actor: string, value: Static<typeof HOME_SECTIONS>) => deps.store.set(actor, SETTING_KEYS.homeSections, value),
     /** The uploaded adjustments of the 「大きい文字」 map, or null (use the built-in ones). */
     largeStyle: async () => ((await deps.store.get(SETTING_KEYS.largeStyle)) as LargeStyleSetting | null)?.entries ?? null,
     setLargeStyle: (actor: string, value: LargeStyleSetting) => deps.store.set(actor, SETTING_KEYS.largeStyle, value),

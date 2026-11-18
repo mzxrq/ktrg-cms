@@ -26,10 +26,13 @@ describe("site settings", () => {
   test("every home section is off until an admin turns it on, and the change is audited by setting only", async () => {
     const audit = createMemoryAuditWriter();
     const svc = createSiteSettingsService({ store: createMemorySiteSettingsStore(audit.writer) });
-    expect(await svc.homeSections()).toEqual({ tourism: false });
+    expect(await svc.homeSections()).toEqual({ tourism: false, pinnedJourney: false });
+    await svc.setHomeSections("11111111-1111-4111-8111-111111111111", { tourism: true, pinnedJourney: true });
+    expect(await svc.homeSections()).toEqual({ tourism: true, pinnedJourney: true });
+    // An admin page from before the switch saves without it: read back as off.
     await svc.setHomeSections("11111111-1111-4111-8111-111111111111", { tourism: true });
-    expect(await svc.homeSections()).toEqual({ tourism: true });
-    expect(audit.rows.map((r) => r.targetId)).toEqual(["00000000-0000-4000-8000-000000000007"]);
+    expect(await svc.homeSections()).toEqual({ tourism: true, pinnedJourney: false });
+    expect(audit.rows.map((r) => r.targetId)).toEqual(["00000000-0000-4000-8000-000000000007", "00000000-0000-4000-8000-000000000007"]);
   });
 
   test("the schema refuses an unknown base map and out-of-range numbers", () => {

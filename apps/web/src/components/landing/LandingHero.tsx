@@ -26,7 +26,7 @@ const FALLBACK: HeroSlide = { src: "/home/top_slider_img01.jpg", alt: "", unopti
 /** The logo in white: its colours are theme tokens, so they are set to white for this one. */
 const logo = (size: string) => <KatsuragiLogo className={`${size} w-auto shrink-0 [--color-brand:#fff] [--color-ink:#fff] [filter:drop-shadow(0_1px_4px_rgb(0_0_0/0.6))]`} />;
 
-export function LandingHero({ slides, locale, line, title, children, bare = false }: { slides: BannerSlide[]; locale: string; line: string; title?: ReactNode; children?: ReactNode; bare?: boolean }) {
+export function LandingHero({ slides, locale, line, title, children, bare = false, across = false }: { slides: BannerSlide[]; locale: string; line: string; title?: ReactNode; children?: ReactNode; bare?: boolean; /** On a desktop, the line runs across instead of down (the scrolling journey, 2026-11-18). */ across?: boolean }) {
   const photos: HeroSlide[] = slides.flatMap((s) => (s.src ? [{ src: s.src, alt: locale === "ja" ? s.altJa : s.altEn, credit: s.credit, unoptimized: true }] : []));
   return (
     // data-cover: like a course page's photo, the picture runs behind the status bar of the installed app (globals.css).
@@ -44,7 +44,7 @@ export function LandingHero({ slides, locale, line, title, children, bare = fals
             {/* The logo first and bigger (2026-11-18: too small under the line): the column already starts below the language menu
                 and the photo dots, so a phone keeps them apart. The vertical line gives up the logo's height. */}
             {logo("h-20 @[42rem]:h-24")}
-            <div className={`flex flex-col items-center gap-2 ${title ? "" : "tall:block tall:max-h-[calc(100%-9.5rem)] tall:tracking-[0.04em] tall:[writing-mode:vertical-rl]"}`}>
+            <div className={`flex flex-col items-center gap-2 ${title ? "" : "tall:block tall:max-h-[calc(100%-9.5rem)] tall:tracking-[0.04em] tall:[writing-mode:vertical-rl]"} ${across && !title ? "desk:flex! desk:max-h-none! desk:tracking-normal! desk:[writing-mode:horizontal-tb]!" : ""}`}>
               {title ? (
                 <p className="font-serif text-lg font-bold text-white [text-shadow:0_1px_6px_rgb(0_0_0/0.7)] tall:ml-4 @[34rem]:text-xl">{line}</p>
               ) : null}

@@ -42,6 +42,7 @@ export default async function EditPageText({ params }: { params: Promise<{ key: 
           slides: slidesToShow(banners, sampleContentEnabled()),
           posts,
           showTourism: sections.tourism,
+          flow: !sections.pinnedJourney,
           introVideo: homeIntroVideo(),
         }))
       : undefined;
@@ -68,7 +69,7 @@ export default async function EditPageText({ params }: { params: Promise<{ key: 
           </p>
         )
       ) : null}
-      {home ? <HomeSectionsForm initial={{ tourism: home.showTourism }} /> : null}
+      {home ? <HomeSectionsForm initial={{ tourism: home.showTourism, pinnedJourney: !home.flow }} /> : null}
     </div>
   );
 }

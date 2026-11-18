@@ -36,7 +36,8 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   const stamped = routes.reduce((n, r) => n + (r.stampedCount ?? 0), 0);
   // Someone with no account and no stamp yet gets the landing page for a first-time visitor; anyone with progress (a guest's
   // stamps are kept in the browser) gets it shown.
-  if (!viewer.signedIn && stamped === 0) return <Landing {...page} />;
+  // The journey scrolls with the page unless an admin chose the older pinned scene (管理 > ページ > ホーム > 詳細設定).
+  if (!viewer.signedIn && stamped === 0) return <Landing {...page} flow={!sections.pinnedJourney} />;
 
   const total = routes.reduce((n, r) => n + r.spotCount, 0) || TOTAL_STAMPS;
   const name = viewer.name;
@@ -76,5 +77,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
     </div>
   );
 
-  return <Landing {...page} top={top} greeting={greeting} />;
+  // flow here only sets the chapter headings across on a desktop (there is no journey for a returning visitor).
+  return <Landing {...page} top={top} greeting={greeting} flow={!sections.pinnedJourney} />;
 }

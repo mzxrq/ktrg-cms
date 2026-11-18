@@ -54,7 +54,7 @@ test("the chapters after the scene use the width of a desk: a tall map, a wide f
   const landing = read("components", "landing", "Landing.tsx");
   expect(landing).toMatch(/desk:grid-cols-2/);
   expect(landing).toMatch(/min-\[90rem\]:grid-cols-3/);
-  expect(landing).toMatch(/<Chapter ground=\{g\} heading=\{w\.videoHeading\} id="video-title" roomy>/);
+  expect(landing).toMatch(/<Chapter horizontal=\{flow\} ground=\{g\} heading=\{w\.videoHeading\} id="video-title" roomy>/);
   expect(landing).toMatch(/id="start-title"\s+horizontal/);
   expect(read("components", "landing", "LandingMap.tsx")).toMatch(/desk:h-\[70svh\]/);
   const chapter = read("components", "landing", "Chapter.tsx");

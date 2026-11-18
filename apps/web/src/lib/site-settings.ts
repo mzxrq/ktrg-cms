@@ -5,7 +5,7 @@ import { readJson } from "@/lib/read-json";
 // Server side: the settings an admin chose for the whole site (管理 > 地図の見た目), read from the API for every page
 // view. Until one is saved, or when the API cannot be reached, the built-in default applies, so a map never fails to appear.
 
-type PublicSettings = { ok?: unknown; mapStyle?: unknown; homeSections?: { tourism?: unknown } | null };
+type PublicSettings = { ok?: unknown; mapStyle?: unknown; homeSections?: { tourism?: unknown; pinnedJourney?: unknown } | null };
 
 async function readSettings(): Promise<PublicSettings | null> {
   try {
@@ -34,7 +34,7 @@ export async function getMapSettings(): Promise<MapSettings> {
 }
 
 /** The optional home page sections an admin switched on. Everything is off when nothing was saved or the API cannot be reached. */
-export async function getHomeSections(): Promise<{ tourism: boolean }> {
+export async function getHomeSections(): Promise<{ tourism: boolean; pinnedJourney: boolean }> {
   const body = await readSettings();
-  return { tourism: body?.homeSections?.tourism === true };
+  return { tourism: body?.homeSections?.tourism === true, pinnedJourney: body?.homeSections?.pinnedJourney === true };
 }

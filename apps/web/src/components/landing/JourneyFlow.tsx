@@ -4,7 +4,8 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { drawnShare, motionMode, sealsPlaced } from "@/lib/journey";
 
 /**
- * The journey for the trial home page (/home-trial, 2026-11-18): the same static page as JourneyScene's, but nothing is pinned.
+ * The home page's journey (tried at /home-trial, the default since 2026-11-18; JourneyScene stays behind 詳細設定): the same
+ * static page as JourneyScene's, but nothing is pinned.
  * The page scrolls as any page does; each beat rises in as it arrives, and the ridge draws and the seals drop while the ridge
  * picture itself passes through the screen. Seniors watching the pinned scene did not see that they were moving on.
  * Calm on, no script or GSAP failing: the plain page. Reduced motion: beats fade in only, the ridge stays drawn.
