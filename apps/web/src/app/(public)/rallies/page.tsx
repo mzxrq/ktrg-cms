@@ -31,7 +31,7 @@ export default async function StampsPage({ searchParams }: { searchParams: Promi
       {/* The title, with the badges and how to play to its side ("?"): how to play lives here, with the stamps, and nowhere else. */}
       {/* On a phone the top bar carries the title (as on the course list); the heading stays for screen readers and a wider page. */}
       <div className="flex items-center justify-end gap-3 px-4 md:justify-start">
-        <h1 className="min-w-0 flex-1 font-serif text-3xl font-bold text-accent wide:text-4xl sr-only md:not-sr-only">
+        <h1 className="min-w-0 flex-1 font-serif text-3xl font-bold text-accent wide:text-4xl sr-only wide:not-sr-only">
           <Trans>ラリー</Trans>
         </h1>
         <Link href="/badges" className="tap-target inline-flex items-center rounded-full bg-surface px-5 text-xl font-bold text-accent">
