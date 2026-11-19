@@ -10,11 +10,9 @@ import { clearSavedPages } from "@/lib/offline-pack";
 import { BookmarkIcon, ChevronIcon, DocumentIcon, ShopIcon, ChevronLeftIcon, CloseIcon, GearIcon, HomeIcon, MapIcon, RouteIcon, StampIcon } from "./icons";
 import { panelGround } from "./TabBar";
 import { WIDE_QUERY } from "@/lib/screen";
-import { QuickActions } from "./QuickActions";
-import type { Prefs } from "@/lib/prefs";
 import { ProfileCard, type ProfileCardProps } from "./ProfileCard";
 import { KatsuragiLogo } from "./KatsuragiLogo";
-import { LocaleSelect } from "./LocaleSwitcher";
+import { LocaleSelect, LocaleSwitcher } from "./LocaleSwitcher";
 import { foundationEn, foundationJa } from "@/lib/terms-content";
 import { useMenu } from "./MenuProvider";
 import { usePresence } from "@/lib/motion";
@@ -49,7 +47,6 @@ export function SiteHeader({
   staff = false,
   profile,
   locale,
-  prefs,
   sample,
 }: {
   signedIn: boolean;
@@ -57,7 +54,6 @@ export function SiteHeader({
   staff?: boolean;
   profile: Omit<ProfileCardProps, "locale">;
   locale: string;
-  prefs: Prefs;
   sample: boolean;
 }) {
   const { t } = useLingui();
@@ -190,6 +186,18 @@ export function SiteHeader({
           {/* On a tablet this corner is the menu button's (TabBar), so it stays empty. */}
           <span className="justify-self-end md:invisible">{open ? <LocaleSelect /> : sample ? <SampleNoticeButton /> : null}</span>
         </div>
+        {/* The rally page's バッジ and ? on a tablet: in the bar, just left of the メニュー button and at its height (user, 2026-11-19).
+            Drawn by the bar itself, so they never depend on where the page's content is laid out. */}
+        {/^\/rallies\/?$/.test(pathname) ? (
+          <div className="absolute right-[11rem] top-1 hidden items-center gap-2 md:flex wide:hidden">
+            <Link href="/badges" className="inline-flex min-h-11 items-center rounded-full bg-surface px-4 text-lg font-bold text-accent">
+              {t`バッジ`}
+            </Link>
+            <Link href="/guide" aria-label={t`遊び方`} className="inline-flex size-11 items-center justify-center rounded-full bg-surface text-xl font-bold text-accent">
+              ?
+            </Link>
+          </div>
+        ) : null}
       </div>
 
       {panelMounted ? (
@@ -280,14 +288,18 @@ export function SiteHeader({
               <div className="flex flex-col gap-2">
                 {/* One light list, the same rows as the settings page: the words on the left, the switch or the choice on the right. */}
                 <div className="divide-y divide-line/40 overflow-hidden rounded-lg bg-surface">
-                  <QuickActions prefs={prefs} signedIn={signedIn} />
                   <div className="tap-target flex items-center gap-4 px-4 py-3">
                     <span className="min-w-0 flex-1 text-lg font-bold">{t`テーマ`}</span>
                     <ThemeSwitcher plain />
                   </div>
-                  <div className="menu-locale tap-target flex items-center gap-4 px-4 py-3">
-                    <span className="min-w-0 flex-1 text-lg font-bold">{t`言語`}</span>
-                    <LocaleSelect plain />
+                  {/* Both languages written out, each in its own script, so a visitor who landed on the Japanese site can spot
+                      "English" without opening anything (user's friend, 2026-11-19). */}
+                  <div className="menu-locale tap-target flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+                    <span className="min-w-0 flex-1 text-lg font-bold">
+                      {t`言語`}
+                      {locale === "ja" ? <span lang="en" className="ml-2 font-normal text-muted">Language</span> : null}
+                    </span>
+                    <LocaleSwitcher />
                   </div>
                 </div>
                 <MenuLinks>

@@ -63,7 +63,6 @@ export default async function PublicLayout({ children }: { children: ReactNode }
             staff={viewer.role === "editor" || viewer.role === "admin"}
             locale={i18n.locale}
             profile={{ publicId: viewer.publicId, deletionDueAt: viewer.deletionDueAt, name: viewer.name, origin: viewer.origin, originPlace: viewer.originPlace, ageRange: viewer.ageRange, gender: viewer.gender, foundVia: viewer.foundVia }}
-            prefs={prefsState.effective}
             sample={sample}
           />
           <OfflineNotice />
