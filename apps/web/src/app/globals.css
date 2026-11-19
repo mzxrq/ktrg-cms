@@ -1239,8 +1239,8 @@ body:has([data-sample-notice]) .cover-credit > details {
 }
 
 /* On a phone the top bar has the back button, so the page's own back link (and a wrapper holding only it) is left out;
-   from 768 px the bar is not drawn and the link is the way back. */
-@media (max-width: 767px) {
+   on a desktop (wide) the bar is not drawn and the link is the way back. A tablet has the bar, so it hides the link too. */
+@media (max-width: 767px), (max-width: 1023px) and (min-height: 601px) {
   .back-link,
   :has(> .back-link:only-child) {
     display: none;
