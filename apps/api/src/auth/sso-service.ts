@@ -17,7 +17,9 @@ export interface SsoStore {
    * another account's (never merged quietly: that would hand the account to whoever controls the provider account).
    * "taken": the provider account was linked meanwhile.
    */
-  createUser(input: { provider: SsoProvider; subject: string; email: string | null; locale: Locale }): Promise<AuthUser | "email_in_use" | "taken">;
+  createUser(input: { provider: SsoProvider; subject: string; email: string | null; displayName: string | null; locale: Locale }): Promise<AuthUser | "email_in_use" | "taken">;
+  /** Give the account the provider's name, only when it has none (a name the person typed always wins). */
+  fillName(userId: string, name: string): Promise<void>;
   /** "taken": the provider account already signs in to another account. Linking it again to the same one is fine. */
   link(userId: string, provider: SsoProvider, subject: string): Promise<"ok" | "taken">;
   list(userId: string): Promise<SsoIdentity[]>;
@@ -36,9 +38,13 @@ export function createSsoService({ store, adminEmails = new Set() }: { store: Ss
     /** Sign in, or make the account on the first visit. Editors and admins never sign in this way (like the password). */
     async login(provider: SsoProvider, claims: IdClaims, locale: Locale): Promise<SsoLoginResult> {
       const found = await store.findUser(provider, claims.subject);
-      if (found) return found.role === "participant" ? { ok: true, user: found, created: false } : { ok: false, error: "sso_staff" };
+      if (found) {
+        if (found.role !== "participant") return { ok: false, error: "sso_staff" };
+        if (claims.name) await store.fillName(found.id, claims.name);
+        return { ok: true, user: found, created: false };
+      }
       const email = claims.email && !adminEmails.has(claims.email) ? claims.email : null;
-      const made = await store.createUser({ provider, subject: claims.subject, email, locale });
+      const made = await store.createUser({ provider, subject: claims.subject, email, displayName: claims.name, locale });
       if (made === "email_in_use") return { ok: false, error: "sso_email_in_use" };
       if (made === "taken") return { ok: false, error: "sso_failed" };
       return { ok: true, user: made, created: true };

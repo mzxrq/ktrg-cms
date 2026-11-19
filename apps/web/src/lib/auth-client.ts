@@ -327,12 +327,13 @@ export async function ssoProviders(): Promise<SsoProvider[]> {
 export async function startSso(provider: SsoProvider, mode: SsoMode, opts: { returnTo?: string; locale?: "ja" | "en" } = {}): Promise<AuthResult> {
   try {
     const route = api.auth.sso({ provider });
+    const installedApp = window.matchMedia("(display-mode: standalone)").matches || (navigator as { standalone?: boolean }).standalone === true;
     const res =
       mode === "login"
-        ? await route.login.post({ returnTo: opts.returnTo, locale: opts.locale })
+        ? await route.login.post({ returnTo: opts.returnTo, locale: opts.locale, installedApp })
         : mode === "link"
-          ? await route.link.post({ returnTo: opts.returnTo })
-          : await route.reauth.post({ returnTo: opts.returnTo });
+          ? await route.link.post({ returnTo: opts.returnTo, installedApp })
+          : await route.reauth.post({ returnTo: opts.returnTo, installedApp });
     if (res.error) return fail(apiFailure(res.error));
     if (!res.data.ok) return fail(res.data.error);
     window.location.assign(res.data.url);

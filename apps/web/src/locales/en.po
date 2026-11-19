@@ -218,6 +218,10 @@ msgstr "{0} h {1} min"
 msgid "{0}時間前"
 msgstr "{0} hours ago"
 
+#: src/components/settings/SsoMethods.tsx:91
+msgid "{added} につないだ"
+msgstr "Connected {added}"
+
 #: src/components/settings/PasskeyManager.tsx:147
 msgid "{added} に追加"
 msgstr "Added {added}"
@@ -387,19 +391,11 @@ msgstr "Hello, {name}."
 msgid "{name}でログイン"
 msgstr "Log in with {name}"
 
-#: src/components/settings/SsoMethods.tsx:76
-msgid "{name}でログインできます"
-msgstr "You can log in with {name}"
-
 #: src/components/auth/ReauthDialog.tsx:78
 msgid "{name}で確認"
 msgstr "Confirm with {name}"
 
-#: src/components/settings/SsoMethods.tsx:89
-msgid "{name}とつなぐ"
-msgstr "Connect {name}"
-
-#: src/components/settings/SsoMethods.tsx:57
+#: src/components/settings/SsoMethods.tsx:59
 msgid "{name}のログインを外しますか？"
 msgstr "Stop logging in with {name}?"
 
@@ -826,7 +822,7 @@ msgstr "Hold the Ctrl key to move the map"
 msgid "Google マップで開く"
 msgstr "Open in Google Maps"
 
-#: src/components/settings/SsoMethods.tsx:70
+#: src/components/settings/SsoMethods.tsx:76
 msgid "Google・LINE・Apple"
 msgstr "Google, LINE and Apple"
 
@@ -1223,10 +1219,6 @@ msgstr "The box is set by hand."
 #: src/components/admin/CourseAreaEditor.tsx:186
 msgid "いまは、自動の四角です（点線）。"
 msgstr "The box is automatic (dotted line)."
-
-#: src/components/settings/LoginMethods.tsx:50
-msgid "いまは、顔・指紋だけでログインしています。メールを追加すると、端末をなくしても、メールの番号でログインできます。"
-msgstr "You currently log in with your face or fingerprint only. If you add an email, you can still log in with an emailed number if you lose your device."
 
 #: src/components/admin/RallyEditor.tsx:172
 msgid "いまは「コースでつくる」です。"
@@ -2807,9 +2799,13 @@ msgstr "It is sent automatically once connected. The server checks it then, so i
 msgid "つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。"
 msgstr "It is sent automatically once connected. When the signal is weak, it tries again every 30 seconds."
 
-#: src/components/settings/SsoMethods.tsx:71
+#: src/components/settings/SsoMethods.tsx:77
 msgid "つなぎました。次からは、このアカウントでもログインできます。"
 msgstr "Connected. From now on you can also log in with it."
+
+#: src/components/settings/SsoMethods.tsx:99
+msgid "つなぐ"
+msgstr "Connect"
 
 #: src/components/StatusChecks.tsx:48
 msgid "データベース（スタンプ、ログイン、内容）"
@@ -3479,7 +3475,7 @@ msgstr "Other vehicle"
 msgid "ほかの場所へ"
 msgstr "Another place"
 
-#: src/components/settings/SsoMethods.tsx:57
+#: src/components/settings/SsoMethods.tsx:59
 msgid "ほかの方法では、これまでどおりログインできます。"
 msgstr "You can still log in the other ways."
 
@@ -3548,6 +3544,10 @@ msgstr "No stamps yet."
 #: src/components/RallyViews.tsx:105
 msgid "まだスタンプはありません。"
 msgstr "No stamps yet."
+
+#: src/components/settings/SsoMethods.tsx:91
+msgid "まだつないでいません"
+msgstr "Not connected"
 
 #: src/components/admin/HomeSectionsForm.tsx:73
 #: src/components/admin/SiteSettingsForm.tsx:145
@@ -3660,6 +3660,10 @@ msgstr "You can still log in with an emailed number, your face or your fingerpri
 #: src/components/settings/LoginMethods.tsx:55
 msgid "メールを追加する"
 msgstr "Add email"
+
+#: src/components/settings/LoginMethods.tsx:50
+msgid "メールを追加すると、端末をなくしたときも、メールに届く番号でログインできます。"
+msgstr "Add an email so you can still log in with an emailed code if you lose this device."
 
 #: src/components/auth/EmailCodeStep.tsx:57
 msgid "メールを開いて番号を見たら、この画面にもどって入力してください。届かないときは、迷惑メールのフォルダも見てください。"
@@ -5951,8 +5955,8 @@ msgstr "Discard your changes?"
 
 #: src/components/admin/PhotoField.tsx:47
 #: src/components/admin/PhotoListEditor.tsx:90
-#: src/components/settings/SsoMethods.tsx:57
-#: src/components/settings/SsoMethods.tsx:78
+#: src/components/settings/SsoMethods.tsx:59
+#: src/components/settings/SsoMethods.tsx:95
 msgid "外す"
 msgstr "Remove"
 

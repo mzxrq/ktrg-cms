@@ -14,6 +14,8 @@ export interface SsoServices extends KitServices {
 
 const providerParams = t.Object({ provider: oneOf(SSO_PROVIDERS) });
 const returnTo = t.Optional(t.String({ maxLength: 300 }));
+/** Started in the home-screen app: LINE must not jump to its own app, which comes back to Safari, not to ours. */
+const installedApp = t.Optional(t.Boolean());
 
 /** What the provider sends back, in the query (Google, LINE) or a form (Apple). Only checked as strings; the state decides. */
 const callbackFields = t.Object({
@@ -39,12 +41,12 @@ export function ssoRoutes(getServices: () => SsoServices, opts: RouteOptions & {
   }
 
   /** Step 1: remember the flow in the cookie and give back the provider's address; the page then goes there. */
-  function begin(set: SetLike, provider: SsoProvider, mode: SsoMode, o: { locale?: "ja" | "en"; returnTo?: string; userId?: string }) {
+  function begin(set: SetLike, provider: SsoProvider, mode: SsoMode, o: { locale?: "ja" | "en"; returnTo?: string; userId?: string; installedApp?: boolean }) {
     const sso = getServices().ssoProviders;
     if (!sso?.enabled(provider)) return fail(set, 404, "sso_unavailable");
     const flow = sso.newFlow(provider, mode, { locale: o.locale ?? "ja", returnTo: o.returnTo, userId: o.userId });
     addCookie(set, serializeSessionCookie({ name: cookieName, value: encodeFlow(flow), maxAgeSec: SSO_FLOW_MS / 1000, secure: opts.secureCookies }));
-    return { ok: true as const, url: sso.authorizeUrl(flow) };
+    return { ok: true as const, url: sso.authorizeUrl(flow, { installedApp: o.installedApp }) };
   }
 
   return (
@@ -54,20 +56,20 @@ export function ssoRoutes(getServices: () => SsoServices, opts: RouteOptions & {
       .get("/providers", () => ({ ok: true as const, providers: getServices().ssoProviders?.providers() ?? [] }))
       .post("/:provider/login", ({ params, body, set }) => begin(set, params.provider, "login", body), {
         params: providerParams,
-        body: t.Object({ locale: t.Optional(localeSchema), returnTo }),
+        body: t.Object({ locale: t.Optional(localeSchema), returnTo, installedApp }),
         rateLimit: { ssoStartIp: "ip" },
       })
       // Add the provider to the signed-in account. Participants only, after a fresh login (like adding a passkey).
-      .post("/:provider/link", ({ params, body, user, set }) => begin(set, params.provider, "link", { locale: user.locale, returnTo: body.returnTo, userId: user.id }), {
+      .post("/:provider/link", ({ params, body, user, set }) => begin(set, params.provider, "link", { locale: user.locale, returnTo: body.returnTo, userId: user.id, installedApp: body.installedApp }), {
         params: providerParams,
-        body: t.Object({ returnTo }),
+        body: t.Object({ returnTo, installedApp }),
         auth: "me.sso",
         rateLimit: { ssoStartIp: "ip" },
       })
       // The fresh-login re-check for an account that signs in with the provider (it may have no email or passkey).
-      .post("/:provider/reauth", ({ params, body, user, set }) => begin(set, params.provider, "reauth", { locale: user.locale, returnTo: body.returnTo, userId: user.id }), {
+      .post("/:provider/reauth", ({ params, body, user, set }) => begin(set, params.provider, "reauth", { locale: user.locale, returnTo: body.returnTo, userId: user.id, installedApp: body.installedApp }), {
         params: providerParams,
-        body: t.Object({ returnTo }),
+        body: t.Object({ returnTo, installedApp }),
         auth: "me.manage",
         rateLimit: { ssoStartIp: "ip" },
       })

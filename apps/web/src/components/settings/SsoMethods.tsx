@@ -3,20 +3,22 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { AuthError, secondaryButton } from "@/components/auth/authUi";
+import { AuthError } from "@/components/auth/authUi";
+import { buttonStyle } from "@/components/button";
 import { useReauth } from "@/components/auth/ReauthDialog";
-import { SSO_NAMES, useSsoProviders } from "@/components/auth/SsoButtons";
+import { SSO_NAMES, SsoMark, useSsoProviders } from "@/components/auth/SsoButtons";
 import { confirmDialog } from "@/components/ConfirmDialog";
 import { isServerCode } from "@/lib/api-error";
 import { listSsoIdentities, removeSsoIdentity, startSso, type SsoIdentityItem } from "@/lib/auth-client";
 import type { AuthFailure } from "@/lib/auth-flow";
+import { formatDay, japanDay } from "@/lib/format";
 
 /**
  * Google, LINE and Apple on the login-methods screen: which are connected, connect another, or take one off. Connecting
  * leaves for the provider and comes back here with `?sso=linked` or `?sso_error=<code>`.
  */
 export function SsoMethods() {
-  const { t } = useLingui();
+  const { t, i18n } = useLingui();
   const providers = useSsoProviders();
   const [items, setItems] = useState<SsoIdentityItem[] | null>(null);
   const [busy, setBusy] = useState(false);
@@ -64,32 +66,43 @@ export function SsoMethods() {
     else setError(res.code === "cancelled" ? null : res.code);
   }
 
-  const connected = new Set(items?.map((i) => i.provider));
+  // One row per provider, connected first (with the day), then the ones this site offers that are not connected yet.
+  const rows = [
+    ...(items ?? []).map((item) => ({ provider: item.provider, item })),
+    ...providers.filter((p) => !items?.some((i) => i.provider === p)).map((provider) => ({ provider, item: null })),
+  ];
   return (
-    <div className="flex flex-col gap-4 rounded-[1.75rem] bg-surface p-4">
+    <div className="flex flex-col gap-4">
       <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">{t`Google・LINE・Apple`}</h2>
       {linked ? <p className="text-lg font-bold">{t`つなぎました。次からは、このアカウントでもログインできます。`}</p> : null}
-      {items?.map((item) => {
-        const name = SSO_NAMES[item.provider];
-        return (
-          <div key={item.id} className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-lg">{t`${name}でログインできます`}</p>
-            <button type="button" disabled={busy} onClick={() => void remove(item)} className={`${secondaryButton} wide:w-auto`}>
-              {t`外す`}
-            </button>
-          </div>
-        );
-      })}
-      {providers
-        .filter((p) => !connected.has(p))
-        .map((p) => {
-          const name = SSO_NAMES[p];
+      <ul className="flex flex-col gap-3">
+        {rows.map(({ provider, item }) => {
+          const name = SSO_NAMES[provider];
+          const added = item ? formatDay(i18n.locale, japanDay(item.createdAt)) : "";
           return (
-            <button key={p} type="button" disabled={busy} onClick={() => void connect(p)} className={secondaryButton}>
-              {t`${name}とつなぐ`}
-            </button>
+            <li key={item?.id ?? provider} className="flex items-center gap-4 rounded-lg bg-surface p-4">
+              <span
+                className={`flex size-12 shrink-0 items-center justify-center rounded-full ${item ? "bg-ink text-paper" : "border border-ink bg-paper text-ink"}`}
+              >
+                <SsoMark provider={provider} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-xl font-bold leading-snug">{name}</span>
+                <span className="block text-lg text-muted">{item ? t`${added} につないだ` : t`まだつないでいません`}</span>
+              </span>
+              {item ? (
+                <button type="button" disabled={busy} onClick={() => void remove(item)} className={buttonStyle("secondary", "sm", "inline-flex shrink-0")}>
+                  {t`外す`}
+                </button>
+              ) : (
+                <button type="button" disabled={busy} onClick={() => void connect(provider)} className={buttonStyle("action", "sm", "inline-flex shrink-0")}>
+                  {t`つなぐ`}
+                </button>
+              )}
+            </li>
           );
         })}
+      </ul>
       <AuthError code={error} />
       {dialog}
     </div>

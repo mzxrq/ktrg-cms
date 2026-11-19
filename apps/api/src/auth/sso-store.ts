@@ -1,4 +1,4 @@
-import { and, count, eq, sql } from "drizzle-orm";
+import { and, count, eq, isNull, sql } from "drizzle-orm";
 import { writeAudit } from "../audit/audit-store";
 import type { Db } from "../db/client";
 import { passkeys, userIdentities, users } from "../db/schema";
@@ -18,14 +18,14 @@ export function createDrizzleSsoStore(db: Db): SsoStore {
       return row ?? null;
     },
 
-    async createUser({ provider, subject, email, locale }) {
+    async createUser({ provider, subject, email, displayName, locale }) {
       try {
         return await db.transaction(async (tx) => {
           if (email) {
             const [owner] = await tx.select({ id: users.id }).from(users).where(sql`lower(${users.email}) = ${email}`).limit(1);
             if (owner) return "email_in_use" as const;
           }
-          const [user] = await tx.insert(users).values({ email, locale }).returning(authUser);
+          const [user] = await tx.insert(users).values({ email, displayName, locale }).returning(authUser);
           await tx.insert(userIdentities).values({ userId: user!.id, provider, subject });
           return user!;
         });
@@ -34,6 +34,10 @@ export function createDrizzleSsoStore(db: Db): SsoStore {
         if ((err as { code?: string; cause?: { code?: string } }).code === "23505" || (err as { cause?: { code?: string } }).cause?.code === "23505") return "taken";
         throw err;
       }
+    },
+
+    async fillName(userId, name) {
+      await db.update(users).set({ displayName: name }).where(and(eq(users.id, userId), isNull(users.displayName)));
     },
 
     async link(userId, provider, subject) {

@@ -1,4 +1,5 @@
 import { createHash, randomBytes } from "node:crypto";
+import { normalizeDisplayName } from "../me/me-service";
 import { normalizeEmail } from "./otp";
 import type { Locale } from "./user";
 
@@ -35,7 +36,7 @@ const PROVIDERS: Record<SsoProvider, { authorize: string; token: string; issuers
     authorize: "https://accounts.google.com/o/oauth2/v2/auth",
     token: "https://oauth2.googleapis.com/token",
     issuers: ["https://accounts.google.com", "accounts.google.com"],
-    scope: "openid email",
+    scope: "openid email profile",
     pkce: true,
   },
   // The email arrives only once the channel has LINE's email permission; until then accounts are made without one.
@@ -43,7 +44,7 @@ const PROVIDERS: Record<SsoProvider, { authorize: string; token: string; issuers
     authorize: "https://access.line.me/oauth2/v2.1/authorize",
     token: "https://api.line.me/oauth2/v2.1/token",
     issuers: ["https://access.line.me"],
-    scope: "openid email",
+    scope: "openid profile email",
     pkce: true,
   },
   // Asking for the email makes Apple POST the answer back (form_post): see the apple callback route. Apple does not document PKCE.
@@ -111,6 +112,8 @@ export interface IdClaims {
   subject: string;
   /** Kept only to reach the person for recovery (login codes, alerts). Null when the provider gave none or did not verify it. */
   email: string | null;
+  /** The name the person uses there (Google, LINE), cleaned like a typed display name; null when none or unusable. */
+  name: string | null;
 }
 
 /** Reads the ID token from the token endpoint; null unless it is for us, from this provider, unexpired and for this flow. */
@@ -131,7 +134,8 @@ export function readIdToken(idToken: string, provider: SsoProvider, clientId: st
   // accepts LINE's address (2026-11-19).
   const verified = provider === "line" || c.email_verified === true || c.email_verified === "true";
   const email = typeof c.email === "string" && verified && /^[^\s@]+@[^\s@]+$/.test(c.email) && c.email.length <= 254 ? normalizeEmail(c.email) : null;
-  return { subject: c.sub, email };
+  const name = typeof c.name === "string" ? (normalizeDisplayName(c.name) ?? null) : null;
+  return { subject: c.sub, email, name };
 }
 
 /** Apple's client secret: an ES256 JWT signed with the key from the Apple developer account, good for five minutes. */
@@ -169,7 +173,7 @@ export function createSso(config: SsoConfig) {
     }),
 
     /** Where to send the browser. */
-    authorizeUrl(flow: SsoFlow): string {
+    authorizeUrl(flow: SsoFlow, opts: { installedApp?: boolean } = {}): string {
       const def = PROVIDERS[flow.provider];
       const url = new URL(def.authorize);
       const q = url.searchParams;
@@ -186,6 +190,9 @@ export function createSso(config: SsoConfig) {
       if (flow.provider === "apple") q.set("response_mode", "form_post");
       // Make Google show its account chooser, so a shared phone does not silently sign in as the last person.
       if (flow.provider === "google") q.set("prompt", "select_account");
+      // LINE's automatic login opens the LINE app, which returns to Safari: the iPhone home-screen app never gets the
+      // session (its cookies are its own). Off, the person signs in on LINE's page inside our app instead.
+      if (flow.provider === "line" && opts.installedApp) q.set("disable_auto_login", "true");
       return url.toString();
     },
 

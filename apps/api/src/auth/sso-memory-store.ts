@@ -11,6 +11,8 @@ export function createMemorySsoStore(users: Map<string, AuthUser>, passkeyUsers:
   const rows: (SsoIdentity & { userId: string; subject: string })[] = [];
   /** Stands in for the audit log. */
   const actions: string[] = [];
+  /** Stands in for users.display_name. */
+  const names = new Map<string, string>();
   const byId = (id: string) => [...users.values()].find((u) => u.id === id) ?? null;
   const find = (provider: SsoProvider, subject: string) => rows.find((r) => r.provider === provider && r.subject === subject);
 
@@ -19,13 +21,17 @@ export function createMemorySsoStore(users: Map<string, AuthUser>, passkeyUsers:
       const row = find(provider, subject);
       return row ? byId(row.userId) : null;
     },
-    async createUser({ provider, subject, email, locale }) {
+    async createUser({ provider, subject, email, displayName, locale }) {
       if (email && [...users.values()].some((u) => u.email === email)) return "email_in_use";
       if (find(provider, subject)) return "taken";
       const user: AuthUser = { id: randomUUID(), email, role: "participant", locale };
       users.set(email ?? user.id, user);
+      if (displayName) names.set(user.id, displayName);
       rows.push({ id: randomUUID(), userId: user.id, provider, subject, createdAt: new Date() });
       return user;
+    },
+    async fillName(userId, name) {
+      if (!names.has(userId)) names.set(userId, name);
     },
     async link(userId, provider, subject) {
       const row = find(provider, subject);
@@ -47,5 +53,5 @@ export function createMemorySsoStore(users: Map<string, AuthUser>, passkeyUsers:
       return "ok";
     },
   };
-  return { store, rows, actions };
+  return { store, rows, actions, names };
 }
