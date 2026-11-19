@@ -194,3 +194,23 @@ export const webauthnChallenges = pgTable(
   },
   (t) => [index("webauthn_challenges_expires_idx").on(t.expiresAt)],
 );
+
+export const ssoProvider = pgEnum("sso_provider", ["google", "line", "apple"]);
+
+/**
+ * Google, LINE and Apple accounts that sign in to one of ours (auth/sso.ts). Only the provider's own id for the person is
+ * kept; the email it gave, if any, lives on `users` as the way to reach them for recovery.
+ */
+export const userIdentities = pgTable(
+  "user_identities",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    provider: ssoProvider("provider").notNull(),
+    subject: text("subject").notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [uniqueIndex("user_identities_provider_subject_uq").on(t.provider, t.subject), index("user_identities_user_idx").on(t.userId)],
+);

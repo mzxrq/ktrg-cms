@@ -62,6 +62,16 @@ export const ERROR_CODES = {
   gps_accuracy_poor: "422: the GPS reading is too rough (worse than 100 m); move to open sky and try again",
   guest_full: "409: a visitor without an account holds the most stamps that can be kept this way; sign up to keep collecting",
 
+  // --- Sign in with Google, LINE or Apple (auth/sso-routes.ts) ------------------------------
+  // The callback answers with a redirect carrying `?sso_error=<code>`; the start routes answer JSON.
+  sso_unavailable: "404: this site has not set up sign-in with that provider",
+  sso_failed: "302 (callback, as ?sso_error): the sign-in did not come back right (expired, a different browser, or the provider refused); start again",
+  sso_cancelled: "302 (callback, as ?sso_error): the person cancelled at the provider",
+  sso_staff: "302 (callback, as ?sso_error): editors and admins sign in with their email or a passkey, not Google, LINE or Apple",
+  sso_email_in_use: "302 (callback, as ?sso_error): the provider's email belongs to an account already: log in to it and link the provider in settings",
+  sso_taken: "302 (callback, as ?sso_error): that provider account already signs in to another account",
+  sso_not_yours: "302 (callback, as ?sso_error): the re-check came back with a provider account that is not linked to this account",
+
   // --- Admin rallies ---------------------------------------------------------------------
   rally_empty: "409: a rally with nothing in it cannot be published, and a published rally cannot be emptied",
   invalid_rally_members: "400: a rally of places takes stamp places, a rally of courses takes courses, each once",
@@ -127,6 +137,8 @@ export function requestIdFrom(incoming: string | null): string {
  *   browsers always send it on such requests.
  */
 const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
+/** Apple posts its sign-in answer from its own site. That route changes nothing; it only redirects (auth/sso-routes.ts). */
+const FOREIGN_POST_ALLOWED = { path: "/api/v1/auth/sso/apple/callback", origin: "https://appleid.apple.com" };
 
 export function apiBase(opts: { log?: (line: string) => void; allowedOrigin?: () => string } = {}) {
   const log = opts.log ?? console.error;
@@ -138,7 +150,8 @@ export function apiBase(opts: { log?: (line: string) => void; allowedOrigin?: ()
       set.headers[REQUEST_ID_HEADER] = requestIdFrom(request.headers.get(REQUEST_ID_HEADER));
       set.headers["x-content-type-options"] = "nosniff"; // the API answers JSON only; never let a browser guess otherwise
       const origin = request.headers.get("origin");
-      if (opts.allowedOrigin && origin && !SAFE_METHODS.has(request.method) && origin !== opts.allowedOrigin()) {
+      const applePost = origin === FOREIGN_POST_ALLOWED.origin && new URL(request.url).pathname === FOREIGN_POST_ALLOWED.path;
+      if (opts.allowedOrigin && origin && !SAFE_METHODS.has(request.method) && origin !== opts.allowedOrigin() && !applePost) {
         if (refusedOrigins.size < 20 && !refusedOrigins.has(origin)) {
           refusedOrigins.add(origin);
           log(`[api] refused a write from origin ${origin.slice(0, 200)}; the allowed origin is ${opts.allowedOrigin()} (set APP_ORIGIN to the address people use)`);

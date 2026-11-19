@@ -7,6 +7,9 @@ import type { PasskeyServices } from "./auth/passkey-routes";
 import { AUTH_LIMITS, createRateLimiter, type RateLimitStore } from "./auth/rate-limit";
 import type { NavigationServices } from "./navigation/navigation-routes";
 import type { AuthServices } from "./auth/routes";
+import { createSso, type SsoConfig } from "./auth/sso";
+import type { SsoServices } from "./auth/sso-routes";
+import { createSsoService, type SsoStore } from "./auth/sso-service";
 import { createSessionService, type SessionStore } from "./auth/session-service";
 import type { Mailer } from "./lib/mailer";
 import type { MeServices } from "./me/me-routes";
@@ -50,7 +53,7 @@ import { createUploadService } from "./uploads/upload-service";
 import type { FileStorage } from "./uploads/upload-storage";
 
 /** Everything the routes use. */
-export type Services = AuthServices & PasskeyServices & PasswordServices & MeServices & ContentServices & UploadServices & RallyAdminServices & StampServices & StampListServices & NoticeServices & PostServices & CommentServices & AuthorServices & TagServices & BannerServices & PlaceServices & SiteSettingsServices & VisitServices & DashboardServices & AuditListServices & PlaceListServices & UserListServices & GuestServices & FuriganaServices & NavigationServices & MapOverviewServices;
+export type Services = AuthServices & PasskeyServices & PasswordServices & SsoServices & MeServices & ContentServices & UploadServices & RallyAdminServices & StampServices & StampListServices & NoticeServices & PostServices & CommentServices & AuthorServices & TagServices & BannerServices & PlaceServices & SiteSettingsServices & VisitServices & DashboardServices & AuditListServices & PlaceListServices & UserListServices & GuestServices & FuriganaServices & NavigationServices & MapOverviewServices;
 
 /** What the services are built from: the storage (database or in-memory) and the outside world. */
 export interface ServiceDeps {
@@ -60,6 +63,7 @@ export interface ServiceDeps {
     rateLimit: RateLimitStore;
     passkeys: PasskeyStore;
     passwords: PasswordStore;
+    sso: SsoStore;
     me: MeStore;
     content: ContentStore;
     rallyAdmin: RallyAdminStore;
@@ -88,6 +92,8 @@ export interface ServiceDeps {
   /** ADMIN_EMAILS, normalized: promoted to admin on an email-code login. */
   adminEmails?: ReadonlySet<string>;
   passkey: PasskeyConfig;
+  /** Sign in with Google, LINE or Apple. Absent or no providers: no buttons, the start routes answer 404. */
+  sso?: SsoConfig;
   /** Photo storage (Cloudflare R2) and its public address. Without them uploads answer 503. */
   uploads?: { storage: FileStorage; publicBaseUrl: string };
   /** Host names a photo address may use (PHOTO_HOSTS). Empty or missing: any https address. */
@@ -121,6 +127,9 @@ export function createServices(deps: ServiceDeps): Services {
     passkeys: createPasskeyService({ store: stores.passkeys, mailer, config: deps.passkey, now }),
     // The optional password. The alert email links back to the site, which is the passkey origin.
     passwords: createPasswordService({ store: stores.passwords, mailer, appOrigin: deps.passkey.origin, now }),
+    // Google, LINE and Apple accounts linked to ours, and the trip to the provider and back.
+    sso: createSsoService({ store: stores.sso }),
+    ssoProviders: deps.sso ? createSso({ now, ...deps.sso }) : undefined,
     // Profile, language, display name and deletion requests (emails the owner).
     me: createMeService({ store: stores.me, mailer, now, photoHosts: deps.photoHosts }),
     // Routes and places: what the admin edits and visitors read.

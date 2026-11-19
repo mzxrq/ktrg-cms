@@ -4,6 +4,7 @@ import { createMemoryAuditWriter } from "./audit/audit-log";
 import { createMemoryOtpStore } from "./auth/otp-memory-store";
 import { createMemoryPasskeyStore } from "./auth/passkey-memory-store";
 import { createMemoryPasswordStore } from "./auth/password-memory-store";
+import { createMemorySsoStore } from "./auth/sso-memory-store";
 import { createMemoryRateLimitStore } from "./auth/rate-limit-memory-store";
 import { createMemorySessionStore } from "./auth/session-memory-store";
 import { createMemoryVisitStore } from "./visits/visits";
@@ -35,6 +36,7 @@ function build(photoHosts?: string[]) {
       rateLimit: createMemoryRateLimitStore().store,
       passkeys: createMemoryPasskeyStore(users).store,
       passwords: createMemoryPasswordStore(users).store,
+      sso: createMemorySsoStore(users).store,
       me: createMemoryMeStore(users).store,
       content: createMemoryContentStore(audit.writer).store,
       rallyAdmin: createMemoryRallyAdminStore(audit.writer).store,

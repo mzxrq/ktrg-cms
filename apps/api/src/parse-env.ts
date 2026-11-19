@@ -28,6 +28,17 @@ const EnvSchema = Type.Object({
   // First admin: comma-separated emails promoted to admin when they log in
   // with an email code. Promote-only: removing an address later does not demote anyone.
   ADMIN_EMAILS: Type.Optional(Type.String()),
+  // Sign in with Google, LINE or Apple (auth/sso.ts). Each provider is on when all of its settings are set, and off (no
+  // button) otherwise. Callbacks: <APP_ORIGIN>/api/v1/auth/sso/<google|line|apple>/callback, registered with each provider.
+  GOOGLE_CLIENT_ID: Type.Optional(Type.String({ minLength: 1 })),
+  GOOGLE_CLIENT_SECRET: Type.Optional(Type.String({ minLength: 1 })),
+  LINE_CHANNEL_ID: Type.Optional(Type.String({ minLength: 1 })),
+  LINE_CHANNEL_SECRET: Type.Optional(Type.String({ minLength: 1 })),
+  // Apple: the Services ID, the team, and a Sign in with Apple key (its id and the .p8 file's text; \n for line breaks is fine).
+  APPLE_CLIENT_ID: Type.Optional(Type.String({ minLength: 1 })),
+  APPLE_TEAM_ID: Type.Optional(Type.String({ minLength: 1 })),
+  APPLE_KEY_ID: Type.Optional(Type.String({ minLength: 1 })),
+  APPLE_PRIVATE_KEY: Type.Optional(Type.String({ minLength: 1 })),
   // Secret for the scheduled clean-up (POST /internal/purge-deletions, called hourly by a GitHub Actions workflow).
   // Unset: that route does not exist.
   CRON_SECRET: Type.Optional(Type.String({ minLength: 32 })),

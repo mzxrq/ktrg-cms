@@ -526,6 +526,13 @@
       "when": 1794894898957,
       "tag": "0074_route_photo_name",
       "breakpoints": true
+    },
+    {
+      "idx": 75,
+      "version": "7",
+      "when": 1795055552458,
+      "tag": "0075_sso_identities",
+      "breakpoints": true
     }
   ]
 }

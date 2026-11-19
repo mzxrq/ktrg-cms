@@ -51,6 +51,8 @@ const WHOLE: Partial<Record<AuditAction, Label>> = {
   "email.add": { ja: "メールアドレスを追加", en: "Email added" },
   "password.set": { ja: "パスワードを設定", en: "Password set" },
   "password.remove": { ja: "パスワードを削除", en: "Password removed" },
+  "sso.link": { ja: "Google・LINE・Appleのログインを追加", en: "Google, LINE or Apple sign-in added" },
+  "sso.unlink": { ja: "Google・LINE・Appleのログインを削除", en: "Google, LINE or Apple sign-in removed" },
   "password.undo": { ja: "パスワードの変更を取り消した", en: "Password change undone" },
   "user.deletion_request": { ja: "アカウントの削除を申し込んだ", en: "Asked to delete the account" },
   "user.deletion_cancel": { ja: "アカウントの削除をやめた", en: "Cancelled the account deletion" },
