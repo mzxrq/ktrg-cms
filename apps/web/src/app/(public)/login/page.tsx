@@ -4,11 +4,12 @@ import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { BackLink } from "@/components/BackLink";
 import { LoginFlow } from "@/components/auth/LoginFlow";
+import { isServerCode } from "@/lib/api-error";
 import { safeNextPath } from "@/lib/auth-flow";
 import { getViewer } from "@/lib/viewer";
 import { initLingui } from "@/i18n/server";
 
-type Props = { searchParams: Promise<{ next?: string; as?: string }> };
+type Props = { searchParams: Promise<{ next?: string; as?: string; sso_error?: string }> };
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
@@ -32,7 +33,12 @@ export default async function LoginPage({ searchParams }: Props) {
         <Trans>ログイン</Trans>
       </h1>
       <div className="frame pattern-shippo p-5">
-        <LoginFlow next={next} registerHref={`/register?next=${encodeURIComponent(next)}`} />
+        <LoginFlow
+          next={next}
+          registerHref={`/register?next=${encodeURIComponent(next)}`}
+          // Google, LINE or Apple came back with a problem (auth/sso-routes.ts in the API).
+          ssoError={isServerCode(params.sso_error) ? params.sso_error : null}
+        />
       </div>
     </div>
   );

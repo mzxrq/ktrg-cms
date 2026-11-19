@@ -8,6 +8,7 @@ import { randomBytes, randomUUID } from "node:crypto";
 import { and, asc, eq, inArray, like, sql } from "drizzle-orm";
 import { createDrizzleAuditWriter, writeAudit } from "../audit/audit-store";
 import { createDrizzleOtpStore } from "../auth/otp-store";
+import { createDrizzleSsoStore } from "../auth/sso-store";
 import { createDrizzleContentStore } from "../content/content-store";
 import { createDrizzleMeStore } from "../me/me-store";
 import { createDrizzlePasskeyStore } from "../auth/passkey-store";
@@ -444,6 +445,43 @@ describe.skipIf(!url)("Drizzle stores on real PostgreSQL", () => {
 
       expect(await rate.hit(key("prune"), new Date("2020-01-01T00:00:00Z"))).toBe(1); // was forgotten
       expect(await rate.hit(key("prune"), new Date("2030-01-01T00:00:00Z"))).toBe(2); // was kept
+    });
+  });
+
+  describe("Google, LINE and Apple (sso store)", () => {
+    const sso = createDrizzleSsoStore(db);
+
+    test("a first visit makes a participant with the email; the next finds it; a taken email is never merged", async () => {
+      const made = await sso.createUser({ provider: "line", subject: key("line-1"), email: email("sso-new"), locale: "en" });
+      expect(made).toMatchObject({ email: email("sso-new"), role: "participant", locale: "en" });
+      expect((await sso.findUser("line", key("line-1")))?.id).toBe((made as { id: string }).id);
+      expect(await sso.findUser("google", key("line-1"))).toBeNull(); // the same id at another provider is someone else
+      expect(await sso.createUser({ provider: "google", subject: key("g-1"), email: email("sso-new"), locale: "ja" })).toBe("email_in_use");
+      expect(await sso.findUser("google", key("g-1"))).toBeNull(); // rolled back: no half-made account
+      expect(await sso.createUser({ provider: "line", subject: key("line-1"), email: null, locale: "ja" })).toBe("taken");
+    });
+
+    test("an account without email: link, list, and the last way in stays", async () => {
+      const made = await sso.createUser({ provider: "line", subject: key("line-2"), email: null, locale: "ja" });
+      const id = (made as { id: string }).id;
+      extraUserIds.push(id);
+      expect(await sso.link(id, "google", key("g-2"))).toBe("ok");
+      expect(await sso.link(id, "google", key("g-2"))).toBe("ok"); // again: nothing changes
+      const other = await newUser("sso-other");
+      expect(await sso.link(other.id, "google", key("g-2"))).toBe("taken");
+      const list = await sso.list(id);
+      expect(list.map((i) => i.provider)).toEqual(["line", "google"]);
+      expect(await sso.unlink(other.id, list[0]!.id)).toBe("not_found"); // not theirs
+      expect(await sso.unlink(id, list[0]!.id)).toBe("ok");
+      expect(await sso.unlink(id, list[1]!.id)).toBe("last");
+      const audit = await db.select({ action: auditLog.action }).from(auditLog).where(eq(auditLog.actorUserId, id));
+      expect(audit.map((a) => a.action).sort()).toEqual(["sso.link", "sso.unlink"]);
+    });
+
+    test("deleting the account removes its linked accounts", async () => {
+      const made = (await sso.createUser({ provider: "apple", subject: key("a-1"), email: null, locale: "ja" })) as { id: string };
+      await db.delete(users).where(eq(users.id, made.id));
+      expect(await sso.findUser("apple", key("a-1"))).toBeNull();
     });
   });
 

@@ -69,6 +69,13 @@ const SERVER_CODES: Record<ErrorCode, true> = {
   routing_unavailable: true,
   routing_no_route: true,
   routing_failed: true,
+  sso_unavailable: true,
+  sso_failed: true,
+  sso_cancelled: true,
+  sso_staff: true,
+  sso_email_in_use: true,
+  sso_taken: true,
+  sso_not_yours: true,
 };
 
 export const isServerCode = (value: unknown): value is ErrorCode => typeof value === "string" && Object.hasOwn(SERVER_CODES, value);

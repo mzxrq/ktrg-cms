@@ -383,6 +383,26 @@ msgstr "{name} (end)"
 msgid "{name}さん、こんにちは。"
 msgstr "Hello, {name}."
 
+#: src/components/auth/SsoButtons.tsx:55
+msgid "{name}でログイン"
+msgstr "Log in with {name}"
+
+#: src/components/settings/SsoMethods.tsx:76
+msgid "{name}でログインできます"
+msgstr "You can log in with {name}"
+
+#: src/components/auth/ReauthDialog.tsx:78
+msgid "{name}で確認"
+msgstr "Confirm with {name}"
+
+#: src/components/settings/SsoMethods.tsx:89
+msgid "{name}とつなぐ"
+msgstr "Connect {name}"
+
+#: src/components/settings/SsoMethods.tsx:57
+msgid "{name}のログインを外しますか？"
+msgstr "Stop logging in with {name}?"
+
 #: src/components/admin/PageTextEditor.tsx:156
 msgid "{name}を空にして、もとの文章に戻す"
 msgstr "Empty {name} and go back to the built-in text"
@@ -643,7 +663,7 @@ msgstr "Fill in every field marked “Required” to save."
 msgid "「書き方」シートにある種類の名前で書いてください"
 msgstr "Write one of the kind names listed on the 書き方 sheet"
 
-#: src/components/useErrorMessages.ts:58
+#: src/components/useErrorMessages.ts:66
 msgid "「案内のみ」の場所は、「状態のひとこと」（日本語）を書いてから公開してください。"
 msgstr "Write the status note (Japanese) of an info-only place before publishing it."
 
@@ -806,6 +826,10 @@ msgstr "Hold the Ctrl key to move the map"
 msgid "Google マップで開く"
 msgstr "Open in Google Maps"
 
+#: src/components/settings/SsoMethods.tsx:70
+msgid "Google・LINE・Apple"
+msgstr "Google, LINE and Apple"
+
 #: src/components/navigation/NavFarCard.tsx:65
 msgid "Googleマップ"
 msgstr "Google Maps"
@@ -818,7 +842,7 @@ msgstr "The GPS signal looks weak. Move to open sky and try again."
 msgid "GPSの電波が弱いようです。空の開けた場所に動いてください。"
 msgstr "The GPS signal is weak. Please move to open sky."
 
-#: src/components/useErrorMessages.ts:51
+#: src/components/useErrorMessages.ts:59
 msgid "GPSの電波が弱いようです。空の開けた場所に移動して、もう一度お試しください。"
 msgstr "The GPS signal is weak. Move to open sky and try again."
 
@@ -998,7 +1022,7 @@ msgstr "Analytics (admin)"
 msgid "アップロードしたファイルをやめて、初めから入っている設定に戻します。よろしいですか？"
 msgstr "Stop using the uploaded file and go back to the settings that came with the app. Continue?"
 
-#: src/components/useErrorMessages.ts:71
+#: src/components/useErrorMessages.ts:79
 msgid "アップロードできるのは、4MBまでのJPEG・PNG・WebPの写真と、200MBまでのMP4・WebMの動画だけです。"
 msgstr "Only photos (JPEG, PNG or WebP, up to 4 MB) and videos (MP4 or WebM, up to 200 MB) can be uploaded."
 
@@ -1200,7 +1224,7 @@ msgstr "The box is set by hand."
 msgid "いまは、自動の四角です（点線）。"
 msgstr "The box is automatic (dotted line)."
 
-#: src/components/settings/LoginMethods.tsx:49
+#: src/components/settings/LoginMethods.tsx:50
 msgid "いまは、顔・指紋だけでログインしています。メールを追加すると、端末をなくしても、メールの番号でログインできます。"
 msgstr "You currently log in with your face or fingerprint only. If you add an email, you can still log in with an emailed number if you lose your device."
 
@@ -1266,13 +1290,13 @@ msgstr "Use offline"
 msgid "お住まい"
 msgstr "Where from"
 
-#: src/components/auth/RegisterFlow.tsx:70
+#: src/components/auth/RegisterFlow.tsx:71
 #: src/components/ProfileSettings.tsx:147
 #: src/components/ProfileSettings.tsx:256
 msgid "お名前"
 msgstr "Your name"
 
-#: src/components/useErrorMessages.ts:38
+#: src/components/useErrorMessages.ts:46
 msgid "お名前に使えない文字が含まれているか、長すぎます（40文字まで）。"
 msgstr "The name has characters that cannot be used, or is too long (40 characters at most)."
 
@@ -1561,7 +1585,7 @@ msgstr "Map of the course area"
 msgid "コースの終わりが次のコースの始まりのときは、同じ場所を二つのコースに置けます。スタンプは1つで、両方のコースに数えられます。内容を直すときは、もとのコースで直します。"
 msgstr "When one course ends where the next begins, the same place can be on both courses. There is one stamp, and it counts in both. To change the place itself, edit it on its home course."
 
-#: src/components/useErrorMessages.ts:42
+#: src/components/useErrorMessages.ts:50
 msgid "コースの線が正しくありません。日本の中に、2点以上の線を描いてください。"
 msgstr "The course line is not valid. Draw a line of at least 2 points inside Japan."
 
@@ -1697,6 +1721,10 @@ msgstr "This account does not use face or fingerprint login yet."
 msgid "このアカウントでは、顔・指紋のログインを使っていません。メールの番号で確認してください。"
 msgstr "This account does not use face or fingerprint login. Confirm with the number sent to your email."
 
+#: src/components/useErrorMessages.ts:44
+msgid "このアカウントにつながっていないアカウントで確認されました。つないだアカウントでお試しください。"
+msgstr "That account is not connected to this one. Please use the account you connected."
+
 #: src/components/useErrorMessages.ts:28
 msgid "このアカウントには、メールがありません。顔・指紋で確認してください。"
 msgstr "This account has no email. Confirm with your face or fingerprint."
@@ -1705,7 +1733,7 @@ msgstr "This account has no email. Confirm with your face or fingerprint."
 msgid "このアカウントに送る"
 msgstr "Send to this account"
 
-#: src/components/useErrorMessages.ts:68
+#: src/components/useErrorMessages.ts:76
 #: src/components/useStampMessages.ts:24
 msgid "このアカウントは、いま制限されています。スタンプを押すことと、コメントを書くことはできません。"
 msgstr "This account is restricted right now. It cannot collect stamps or write comments."
@@ -1766,11 +1794,15 @@ msgstr "Choose this course"
 msgid "このコメントを削除します。元に戻せません。"
 msgstr "Delete this comment? This cannot be undone."
 
+#: src/components/useErrorMessages.ts:38
+msgid "このサイトでは、そのログインの方法は使えません。"
+msgstr "This way of logging in is not available on this site."
+
 #: src/components/StampHere.tsx:136
 msgid "このスタンプは、もう押してあります。"
 msgstr "You already have this stamp."
 
-#: src/components/useErrorMessages.ts:49
+#: src/components/useErrorMessages.ts:57
 #: src/components/useStampMessages.ts:17
 msgid "このスタンプは、押してから時間がたちすぎているため、受け付けられませんでした（48時間まで）。"
 msgstr "This stamp was pressed too long ago to be accepted (the limit is 48 hours)."
@@ -1824,6 +1856,10 @@ msgstr "This page checks whether the site is working when you open it. If you ca
 #: src/components/useErrorMessages.ts:23
 msgid "このボタンは、もう使えません。7日を過ぎたか、すでに使われています。メールの番号でログインして、ログインの方法を確認してください。"
 msgstr "This button no longer works: it is over 7 days old or was already used. Log in with an emailed number and check your ways to log in."
+
+#: src/components/useErrorMessages.ts:42
+msgid "このメールアドレスのアカウントが、すでにあります。メールでログインしてから、「ログインの方法」でつないでください。"
+msgstr "There is already an account with this email address. Log in with your email, then connect it under \"Ways to log in\"."
 
 #: src/components/useErrorMessages.ts:36
 msgid "このメールアドレスは、使えません。すでに別のアカウントで使われているか、このアカウントにはメールが入っています。"
@@ -1879,7 +1915,7 @@ msgstr "Import this"
 msgid "この写真を使う"
 msgstr "Use this photo"
 
-#: src/components/useErrorMessages.ts:66
+#: src/components/useErrorMessages.ts:74
 msgid "この削除は、管理者が予約したものです。プロフィールの画面から、異議を送れます。"
 msgstr "An administrator scheduled this deletion. You can appeal from your profile page."
 
@@ -1928,7 +1964,7 @@ msgstr "There are no courses in this area yet."
 msgid "この場所のスタンプの絵"
 msgstr "Stamp picture for this place"
 
-#: src/components/useErrorMessages.ts:48
+#: src/components/useErrorMessages.ts:56
 #: src/components/useStampMessages.ts:23
 msgid "この場所のスタンプは、確認のため取り消されています。お困りの場合は運営にお問い合わせください。"
 msgstr "The stamp for this place was revoked after a check. If this looks wrong, please contact the team."
@@ -1952,7 +1988,7 @@ msgstr "This place is closed right now."
 msgid "この場所は、いまは閉鎖中です。スタンプは押せません。"
 msgstr "This place is closed right now. You can't collect the stamp."
 
-#: src/components/useErrorMessages.ts:46
+#: src/components/useErrorMessages.ts:54
 msgid "この場所は今、通行止めなどで閉まっているため、スタンプを押せません。"
 msgstr "This place is closed right now, so you cannot collect a stamp here."
 
@@ -2026,7 +2062,7 @@ msgstr "Vibration is not available on this device."
 msgid "この端末では、顔・指紋のログインを使えません。"
 msgstr "This device can't use face or fingerprint login."
 
-#: src/components/useErrorMessages.ts:78
+#: src/components/useErrorMessages.ts:86
 msgid "この端末では、顔・指紋のログインを使えません。メールでお試しください。"
 msgstr "This device can't use face or fingerprint login. Please try email instead."
 
@@ -2076,7 +2112,7 @@ msgstr "Courses in this area"
 msgid "この経由地から、この距離の中にいるとスタンプを押せます。"
 msgstr "Visitors within this distance of the waypoint can collect the stamp."
 
-#: src/components/useErrorMessages.ts:54
+#: src/components/useErrorMessages.ts:62
 msgid "この経由地の位置がまだ決まっていません。地図で位置を決めてください。"
 msgstr "This waypoint has no position yet. Set it on the map."
 
@@ -2143,7 +2179,7 @@ msgstr "This setting takes effect on the live site at once. Save it?"
 msgid "この説明は日本語のみです。"
 msgstr "This description is in Japanese only."
 
-#: src/components/useErrorMessages.ts:75
+#: src/components/useErrorMessages.ts:83
 msgid "この近くに、歩ける道が見つかりませんでした。線の点を、道の近くに置いてお試しください。"
 msgstr "No walkable path was found near here. Move the points of the line closer to a path and try again."
 
@@ -2276,13 +2312,13 @@ msgstr "Readings the dictionary worked out from the site's text. Visitors don't 
 
 #: src/app/(public)/status/page.tsx:10
 #: src/app/(public)/status/page.tsx:22
-#: src/components/SiteFooter.tsx:20
+#: src/components/SiteFooter.tsx:21
 msgid "サイトの状態"
 msgstr "Site status"
 
 #: src/app/(public)/sitemap/page.tsx:15
 #: src/app/(public)/sitemap/page.tsx:50
-#: src/components/SiteFooter.tsx:23
+#: src/components/SiteFooter.tsx:24
 #: src/components/SiteHeader.tsx:280
 msgid "サイトマップ"
 msgstr "Site map"
@@ -2464,7 +2500,7 @@ msgstr "Restore stamps"
 msgid "スタンプを押した人"
 msgstr "People with a stamp"
 
-#: src/components/useErrorMessages.ts:50
+#: src/components/useErrorMessages.ts:58
 #: src/components/useStampMessages.ts:18
 msgid "スタンプを押した時刻が正しくありません。端末の日付と時刻を確かめてください。"
 msgstr "The time the stamp was pressed is not valid. Check your device's date and time."
@@ -2612,6 +2648,10 @@ msgstr "Select all"
 msgid "スマホ幅"
 msgstr "Phone width"
 
+#: src/components/useErrorMessages.ts:43
+msgid "そのアカウントは、すでに別のアカウントにつながっています。"
+msgstr "That account is already connected to another account."
+
 #: src/components/admin/HomeTextFields.tsx:41
 msgid "そのほかの見出し"
 msgstr "Other headings"
@@ -2716,7 +2756,7 @@ msgstr "Next places"
 msgid "つぎの場所まで"
 msgstr "To the next place"
 
-#: src/components/auth/RegisterFlow.tsx:141
+#: src/components/auth/RegisterFlow.tsx:142
 #: src/components/map/MapHelp.tsx:55
 #: src/components/settings/WelcomeFlow.tsx:153
 msgid "つぎへ"
@@ -2762,6 +2802,10 @@ msgstr "It is sent automatically once connected. The server checks it then, so i
 #: src/components/StampOutbox.tsx:171
 msgid "つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。"
 msgstr "It is sent automatically once connected. When the signal is weak, it tries again every 30 seconds."
+
+#: src/components/settings/SsoMethods.tsx:71
+msgid "つなぎました。次からは、このアカウントでもログインできます。"
+msgstr "Connected. From now on you can also log in with it."
 
 #: src/components/StatusChecks.tsx:48
 msgid "データベース（スタンプ、ログイン、内容）"
@@ -2906,7 +2950,7 @@ msgstr "Navigating: {routeName}"
 msgid "なめらかにする"
 msgstr "Smooth"
 
-#: src/components/auth/RegisterFlow.tsx:79
+#: src/components/auth/RegisterFlow.tsx:80
 msgid "ニックネームでもかまいません。"
 msgstr "A nickname is fine."
 
@@ -2935,9 +2979,13 @@ msgstr "yes"
 msgid "はじめての方のホームを、前の見せ方（画面が止まって切り替わる）にする"
 msgstr "Show first-time visitors the earlier home (the screen holds still and changes)"
 
-#: src/components/auth/LoginFlow.tsx:151
+#: src/components/auth/LoginFlow.tsx:153
 msgid "はじめての方は"
 msgstr "First time here?"
+
+#: src/components/auth/SsoButtons.tsx:59
+msgid "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
+msgstr "If this is your first time, an account is made for you. If an email address comes with it, we use it only to help you get back in if you cannot log in. See our <0>privacy policy</0> for details."
 
 #: src/app/(public)/welcome/page.tsx:11
 msgid "はじめての設定"
@@ -2980,13 +3028,13 @@ msgstr "About {minutes} min by bus"
 msgid "バスで約{n}分"
 msgstr "About {n} min by bus"
 
-#: src/components/auth/LoginFlow.tsx:80
+#: src/components/auth/LoginFlow.tsx:81
 #: src/components/settings/PasswordMethod.tsx:68
 #: src/components/settings/WelcomeFlow.tsx:118
 msgid "パスワード"
 msgstr "Password"
 
-#: src/components/auth/LoginFlow.tsx:149
+#: src/components/auth/LoginFlow.tsx:150
 msgid "パスワードでログイン"
 msgstr "Log in with a password"
 
@@ -3028,7 +3076,7 @@ msgstr "Save password"
 msgid "パスワードを変える"
 msgstr "Change password"
 
-#: src/components/auth/LoginFlow.tsx:88
+#: src/components/auth/LoginFlow.tsx:89
 msgid "パスワードを忘れたときは、メールでログイン"
 msgstr "Forgot your password? Log in with email"
 
@@ -3196,14 +3244,14 @@ msgstr "Bookmark removed"
 msgid "ブックマーク済み"
 msgstr "Bookmarked"
 
-#: src/components/SiteFooter.tsx:15
+#: src/components/SiteFooter.tsx:16
 msgid "フッター"
 msgstr "Footer"
 
 #: src/app/(admin)/admin/pages/page.tsx:26
 #: src/app/(public)/sitemap/page.tsx:132
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:29
+#: src/components/SiteFooter.tsx:30
 #: src/components/SiteHeader.tsx:278
 msgid "プライバシーポリシー"
 msgstr "Privacy policy"
@@ -3328,7 +3376,7 @@ msgstr "Base map"
 #: src/app/(admin)/admin/pages/page.tsx:22
 #: src/app/(public)/blog/page.tsx:49
 #: src/app/(public)/licenses/page.tsx:21
-#: src/app/(public)/login/page.tsx:29
+#: src/app/(public)/login/page.tsx:30
 #: src/app/(public)/notices/page.tsx:22
 #: src/app/(public)/places/page.tsx:33
 #: src/app/(public)/register/page.tsx:28
@@ -3394,7 +3442,7 @@ msgstr "There are more. Type a little more to narrow them down."
 msgid "ほかにログインの方法がないので、これは消せません。先にメールか、別の端末の顔・指紋のログインを使えるようにしてください。"
 msgstr "This can't be removed because it is your only way to log in. Set up email, or a face or fingerprint login on another device, first."
 
-#: src/components/auth/RegisterFlow.tsx:158
+#: src/components/auth/RegisterFlow.tsx:159
 #: src/components/settings/PasskeyManager.tsx:180
 msgid "ほかのアプリに保存するときは、表示される画面で選んでください。"
 msgstr "To save it in a different app, choose it on the screen that appears."
@@ -3424,6 +3472,10 @@ msgstr "Other vehicle"
 #: src/components/navigation/NavTargetPicker.tsx:44
 msgid "ほかの場所へ"
 msgstr "Another place"
+
+#: src/components/settings/SsoMethods.tsx:57
+msgid "ほかの方法では、これまでどおりログインできます。"
+msgstr "You can still log in the other ways."
 
 #: src/components/admin/AdminListTable.tsx:296
 msgid "ほかの絞りこみ"
@@ -3554,11 +3606,11 @@ msgstr "Difficulty (in a few words)"
 msgid "むずかしさを、ひとことで書く（任意）"
 msgstr "Describe the difficulty in a few words (optional)"
 
-#: src/components/auth/LoginFlow.tsx:67
-#: src/components/auth/LoginFlow.tsx:118
-#: src/components/auth/RegisterFlow.tsx:124
-#: src/components/settings/LoginMethods.tsx:28
-#: src/components/settings/LoginMethods.tsx:65
+#: src/components/auth/LoginFlow.tsx:68
+#: src/components/auth/LoginFlow.tsx:119
+#: src/components/auth/RegisterFlow.tsx:125
+#: src/components/settings/LoginMethods.tsx:29
+#: src/components/settings/LoginMethods.tsx:66
 msgid "メールアドレス"
 msgstr "Email address"
 
@@ -3570,19 +3622,19 @@ msgstr "The email address or password is wrong. If you have not set a password, 
 msgid "メールアドレスを直す"
 msgstr "Change the email address"
 
-#: src/components/settings/LoginMethods.tsx:48
+#: src/components/settings/LoginMethods.tsx:49
 msgid "メールアドレスを追加する"
 msgstr "Add an email address"
 
-#: src/components/auth/LoginFlow.tsx:148
+#: src/components/auth/LoginFlow.tsx:149
 msgid "メールでログイン"
 msgstr "Email"
 
-#: src/components/auth/RegisterFlow.tsx:175
+#: src/components/auth/RegisterFlow.tsx:176
 msgid "メールで登録"
 msgstr "Email"
 
-#: src/components/auth/ReauthDialog.tsx:77
+#: src/components/auth/ReauthDialog.tsx:96
 msgid "メールに、6桁の番号を送りました。"
 msgstr "We sent a 6-digit number to your email."
 
@@ -3590,7 +3642,7 @@ msgstr "We sent a 6-digit number to your email."
 msgid "メールの番号でログインしなおして、ログインの方法を確認してください。"
 msgstr "Log in again with an emailed number and check your ways to log in."
 
-#: src/components/auth/ReauthDialog.tsx:69
+#: src/components/auth/ReauthDialog.tsx:88
 msgid "メールの番号で確認"
 msgstr "Confirm with an email number"
 
@@ -3598,7 +3650,7 @@ msgstr "Confirm with an email number"
 msgid "メールの番号や顔・指紋では、これまでどおりログインできます。"
 msgstr "You can still log in with an emailed number, your face or your fingerprint."
 
-#: src/components/settings/LoginMethods.tsx:54
+#: src/components/settings/LoginMethods.tsx:55
 msgid "メールを追加する"
 msgstr "Add email"
 
@@ -3737,8 +3789,8 @@ msgstr "Badges earned"
 
 #: src/components/admin/PublishedEditDialog.tsx:63
 #: src/components/admin/RallyEditor.tsx:191
-#: src/components/auth/ReauthDialog.tsx:72
-#: src/components/auth/ReauthDialog.tsx:94
+#: src/components/auth/ReauthDialog.tsx:91
+#: src/components/auth/ReauthDialog.tsx:113
 #: src/components/LoadingOverlay.tsx:26
 #: src/components/ProfileSettings.tsx:291
 #: src/components/RallyNearbyStamp.tsx:112
@@ -3771,7 +3823,7 @@ msgstr "Redo"
 #: src/app/(admin)/admin/pages/page.tsx:23
 #: src/app/(public)/sitemap/page.tsx:126
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:17
+#: src/components/SiteFooter.tsx:18
 #: src/components/SiteHeader.tsx:276
 msgid "よくあるご質問"
 msgstr "FAQ"
@@ -3785,7 +3837,7 @@ msgid "よみ"
 msgstr "Reading"
 
 #: src/app/(public)/sitemap/page.tsx:135
-#: src/components/SiteFooter.tsx:32
+#: src/components/SiteFooter.tsx:33
 #: src/components/SiteHeader.tsx:279
 msgid "ライセンス情報"
 msgstr "Licenses"
@@ -3965,13 +4017,13 @@ msgstr "Log out?"
 msgid "ログアウトする"
 msgstr "Log out"
 
-#: src/app/(public)/login/page.tsx:15
-#: src/app/(public)/login/page.tsx:32
+#: src/app/(public)/login/page.tsx:16
+#: src/app/(public)/login/page.tsx:33
 #: src/app/(public)/sitemap/page.tsx:111
-#: src/components/auth/LoginFlow.tsx:84
-#: src/components/auth/LoginFlow.tsx:103
+#: src/components/auth/LoginFlow.tsx:85
+#: src/components/auth/LoginFlow.tsx:104
 #: src/components/auth/PasswordUndo.tsx:35
-#: src/components/auth/RegisterFlow.tsx:179
+#: src/components/auth/RegisterFlow.tsx:181
 #: src/components/blog/CommentSection.tsx:127
 #: src/components/GuestNag.tsx:88
 #: src/components/landing/Landing.tsx:133
@@ -3982,6 +4034,10 @@ msgstr "Log out"
 #: src/components/SiteHeader.tsx:234
 msgid "ログイン"
 msgstr "Log in"
+
+#: src/components/useErrorMessages.ts:40
+msgid "ログインが中止されました。"
+msgstr "Login was cancelled."
 
 #: src/components/useErrorMessages.ts:24
 #: src/components/useStampMessages.ts:21
@@ -4002,6 +4058,10 @@ msgstr "Could not log in. If you have not set up face or fingerprint login on th
 #: src/components/ProfileSettings.tsx:222
 msgid "ログインの方法"
 msgstr "Ways to log in"
+
+#: src/components/useErrorMessages.ts:39
+msgid "ログインを確認できませんでした。時間がたったか、別のブラウザーに戻った可能性があります。もう一度お試しください。"
+msgstr "We could not confirm the login. It may have taken too long, or come back in a different browser. Please try again."
 
 #: src/components/settings/PasskeyManager.tsx:198
 msgid "わかりました"
@@ -4150,7 +4210,7 @@ msgstr "Centre latitude"
 msgid "中身"
 msgstr "Contents"
 
-#: src/components/useErrorMessages.ts:60
+#: src/components/useErrorMessages.ts:68
 msgid "中身のないラリーは公開できません。公開中のラリーを空にすることもできません。"
 msgstr "An empty rally cannot be published, and a published rally cannot be emptied."
 
@@ -4254,7 +4314,7 @@ msgstr "Positions are added as \"not checked\". Check them against official info
 msgid "位置を公式の情報で確認し、「位置を確認した」にチェックを入れて情報源を書いてください。"
 msgstr "Check the position against official information, tick \"Position checked\" and write the source."
 
-#: src/components/useErrorMessages.ts:55
+#: src/components/useErrorMessages.ts:63
 msgid "位置を公式の情報で確認していません。確認してから「位置を確認した」にチェックを入れてください。"
 msgstr "The position has not been checked against an official source. Check it, then tick \"Position checked\"."
 
@@ -4274,7 +4334,7 @@ msgstr "Position checked"
 msgid "位置を確認した（確認するまで、利用者には位置を出しません）"
 msgstr "Position checked (visitors do not see it until it is checked)"
 
-#: src/components/useErrorMessages.ts:56
+#: src/components/useErrorMessages.ts:64
 msgid "位置を確認した情報源（サイトの名前やリンク）を書いてください。"
 msgstr "Write the source you checked the position against (a site name or link)."
 
@@ -4850,7 +4910,7 @@ msgstr "Some of the photos and text are from the "
 
 #: src/components/admin/PlacePanel.tsx:227
 #: src/components/admin/RouteEditor.tsx:231
-#: src/components/useErrorMessages.ts:43
+#: src/components/useErrorMessages.ts:51
 msgid "写真のリンクは、https:// で始まるものだけ使えます。"
 msgstr "Photo links must start with https://."
 
@@ -4917,7 +4977,7 @@ msgstr "Upload a photo"
 msgid "写真をアップロード（まとめて選べます）"
 msgstr "Upload photos (choose several at once)"
 
-#: src/components/useErrorMessages.ts:72
+#: src/components/useErrorMessages.ts:80
 msgid "写真を保存できませんでした。しばらくしてからもう一度お試しください。"
 msgstr "The photo could not be saved. Please try again in a moment."
 
@@ -4985,7 +5045,7 @@ msgstr "Source"
 msgid "出典: {0}"
 msgstr "Source: {0}"
 
-#: src/components/useErrorMessages.ts:69
+#: src/components/useErrorMessages.ts:77
 msgid "出典のリンクは https:// で始まるアドレスを入れてください。"
 msgstr "The source link must be an address starting with https://."
 
@@ -5034,7 +5094,7 @@ msgstr "Use the default"
 msgid "別のコースにひもづいています"
 msgstr "Linked to another course"
 
-#: src/components/useErrorMessages.ts:40
+#: src/components/useErrorMessages.ts:48
 msgid "別の人が先に保存しました。読み込み直してから、もう一度お試しください。"
 msgstr "Someone else saved first. Reload the page and try again."
 
@@ -5045,7 +5105,7 @@ msgstr "Words visitors see"
 #: src/app/(admin)/admin/pages/page.tsx:25
 #: src/app/(public)/sitemap/page.tsx:129
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:26
+#: src/components/SiteFooter.tsx:27
 #: src/components/SiteHeader.tsx:277
 msgid "利用規約"
 msgstr "Terms of use"
@@ -5238,7 +5298,7 @@ msgstr "Open the video page"
 msgid "動画のリンク（YouTube、またはアップロードした動画）"
 msgstr "Video link (YouTube or an uploaded video)"
 
-#: src/components/useErrorMessages.ts:41
+#: src/components/useErrorMessages.ts:49
 msgid "動画のリンクは、https:// で始まるYouTube、またはアップロードした動画（.mp4・.webm）のものだけ使えます。"
 msgstr "Video links must start with https:// and point to YouTube or an uploaded video (.mp4 or .webm)."
 
@@ -5377,7 +5437,7 @@ msgstr "Applied. Visitors' maps change within a few minutes."
 msgid "反映する"
 msgstr "Apply"
 
-#: src/components/useErrorMessages.ts:53
+#: src/components/useErrorMessages.ts:61
 msgid "取り消していないスタンプがある経由地は消せません。先に「スタンプ」の一覧で取り消すか、「公開をやめる」をお使いください。"
 msgstr "A waypoint with stamps that have not been revoked cannot be deleted. Revoke them in the Stamps list first, or use \"Unpublish\"."
 
@@ -5558,7 +5618,7 @@ msgstr "Wakayama"
 msgid "和泉山脈から金剛山地へ。大阪・和歌山・奈良の境にのびるこの山なみは、古くから「葛城」と呼ばれ、神の宿る山として敬われてきました。山で心身をきたえる修験道を開いたと伝わる役行者が、はじめて修行をしたのも、この山々だといわれています。"
 msgstr "From the Izumi range to the Kongo mountains, these ridges run along the borders of Osaka, Wakayama and Nara. They have long been called Katsuragi and revered as mountains where the gods dwell. It is said that En no Gyoja, who is believed to have founded Shugendo, the path of training in the mountains, first practised here."
 
-#: src/components/useErrorMessages.ts:81
+#: src/components/useErrorMessages.ts:89
 #: src/components/useStampMessages.ts:27
 msgid "問題が発生しました。しばらくしてからもう一度お試しください。"
 msgstr "Something went wrong. Please try again in a little while."
@@ -5817,7 +5877,7 @@ msgstr "Basics"
 msgid "場所"
 msgstr "Place"
 
-#: src/components/useErrorMessages.ts:47
+#: src/components/useErrorMessages.ts:55
 msgid "場所から少し離れています。近くまで行って、もう一度お試しください。"
 msgstr "You are a little too far from the place. Go closer and try again."
 
@@ -5883,6 +5943,8 @@ msgstr "Discard your changes?"
 
 #: src/components/admin/PhotoField.tsx:47
 #: src/components/admin/PhotoListEditor.tsx:90
+#: src/components/settings/SsoMethods.tsx:57
+#: src/components/settings/SsoMethods.tsx:78
 msgid "外す"
 msgstr "Remove"
 
@@ -5922,7 +5984,7 @@ msgstr "Shown under the large photo, with where it is from."
 msgid "大きな文字の一文"
 msgstr "Line in large letters"
 
-#: src/components/auth/ReauthDialog.tsx:53
+#: src/components/auth/ReauthDialog.tsx:58
 msgid "大切な操作なので、もう一度、確認します。"
 msgstr "This is an important action, so we confirm it is you once more."
 
@@ -6155,10 +6217,10 @@ msgstr "Information"
 msgid "情報源を入れないと、「確認した」は保存されません。"
 msgstr "\"Checked\" is not saved without a source."
 
-#: src/components/auth/LoginFlow.tsx:91
-#: src/components/auth/LoginFlow.tsx:137
-#: src/components/auth/RegisterFlow.tsx:144
-#: src/components/auth/RegisterFlow.tsx:165
+#: src/components/auth/LoginFlow.tsx:92
+#: src/components/auth/LoginFlow.tsx:138
+#: src/components/auth/RegisterFlow.tsx:145
+#: src/components/auth/RegisterFlow.tsx:166
 #: src/components/map/MapHelp.tsx:47
 #: src/components/map/MapScreen.tsx:264
 #: src/components/map/MapScreen.tsx:280
@@ -6421,7 +6483,7 @@ msgstr "A Japanese name is needed to create a new one"
 #: src/app/(public)/register/page.tsx:15
 #: src/app/(public)/register/page.tsx:31
 #: src/app/(public)/sitemap/page.tsx:114
-#: src/components/auth/LoginFlow.tsx:153
+#: src/components/auth/LoginFlow.tsx:155
 #: src/components/GuestNag.tsx:85
 #: src/components/landing/Landing.tsx:121
 #: src/components/landing/LandingHero.tsx:74
@@ -6615,7 +6677,7 @@ msgstr "Not set"
 msgid "未選択"
 msgstr "Not chosen"
 
-#: src/components/auth/ReauthDialog.tsx:51
+#: src/components/auth/ReauthDialog.tsx:56
 msgid "本人かどうか、確認します"
 msgstr "Confirming it is you"
 
@@ -7039,7 +7101,7 @@ msgstr "Finding your position…"
 msgid "現地の許可"
 msgstr "Permission from the site"
 
-#: src/components/useErrorMessages.ts:57
+#: src/components/useErrorMessages.ts:65
 msgid "現地の許可がまだ確認できていません。許可を得たら「許可確認済み」にチェックを入れてください。"
 msgstr "Permission from the site has not been confirmed yet. Once you have it, tick \"Permission confirmed\"."
 
@@ -7141,7 +7203,7 @@ msgstr "Would you like to sign up?"
 msgid "登録しなくても、スタンプは押せます。"
 msgstr "You can collect stamps without signing up."
 
-#: src/components/auth/RegisterFlow.tsx:91
+#: src/components/auth/RegisterFlow.tsx:92
 msgid "登録する"
 msgstr "Register"
 
@@ -7161,12 +7223,12 @@ msgstr "Could not register. Please try again."
 msgid "登録なしで押したスタンプがあります"
 msgstr "You have stamps from before you signed in"
 
-#: src/components/useErrorMessages.ts:52
+#: src/components/useErrorMessages.ts:60
 #: src/components/useStampMessages.ts:22
 msgid "登録なしで残せるスタンプの数が、上限になりました。新規登録すると、続けて集められます。"
 msgstr "You have reached the most stamps that can be kept without an account. Sign up to keep collecting."
 
-#: src/components/auth/RegisterFlow.tsx:177
+#: src/components/auth/RegisterFlow.tsx:179
 #: src/components/landing/Landing.tsx:131
 #: src/components/landing/LandingHero.tsx:81
 msgid "登録済みの方は"
@@ -7261,7 +7323,7 @@ msgstr "Checked at {0} (Japan time)"
 msgid "確認していない線は、利用者には表示されません。公式の地図などと見比べてから、チェックを入れてください。"
 msgstr "A line that has not been checked is not shown to visitors. Compare it with an official map, then tick the box."
 
-#: src/components/auth/ReauthDialog.tsx:91
+#: src/components/auth/ReauthDialog.tsx:110
 msgid "確認する"
 msgstr "Confirm"
 
@@ -7277,7 +7339,7 @@ msgstr "We could not confirm it. Please try again."
 msgid "確認のため、会員番号（{memberId}）を入れてください"
 msgstr "To confirm, enter the member ID ({memberId})"
 
-#: src/components/settings/LoginMethods.tsx:78
+#: src/components/settings/LoginMethods.tsx:79
 msgid "確認の番号を送る"
 msgstr "Send a confirmation code"
 
@@ -7299,12 +7361,12 @@ msgid "確認待ちの読みはありません。"
 msgstr "No readings waiting."
 
 #: src/components/auth/EmailCodeStep.tsx:59
-#: src/components/auth/ReauthDialog.tsx:86
+#: src/components/auth/ReauthDialog.tsx:105
 msgid "確認番号"
 msgstr "Confirmation number"
 
-#: src/components/auth/LoginFlow.tsx:134
-#: src/components/auth/RegisterFlow.tsx:141
+#: src/components/auth/LoginFlow.tsx:135
+#: src/components/auth/RegisterFlow.tsx:142
 msgid "確認番号を送る"
 msgstr "Send the confirmation number"
 
@@ -7401,7 +7463,7 @@ msgstr "Admin"
 msgid "管理者が、アカウントの削除を予約しました"
 msgstr "An administrator has scheduled your account for deletion"
 
-#: src/components/useErrorMessages.ts:67
+#: src/components/useErrorMessages.ts:75
 msgid "管理者が予約した削除は、ありません。"
 msgstr "There is no deletion scheduled by an administrator."
 
@@ -7409,7 +7471,7 @@ msgstr "There is no deletion scheduled by an administrator."
 msgid "管理者が削除を予約しました。7日たつと、アカウントとスタンプが消えます。"
 msgstr "An admin scheduled this deletion. The account and its stamps go after 7 days."
 
-#: src/components/useErrorMessages.ts:65
+#: src/components/useErrorMessages.ts:73
 msgid "管理者のアカウントは、制限したり削除したりできません。先に権限を変えてください。"
 msgstr "An admin account cannot be restricted or deleted. Change its permission first."
 
@@ -7521,7 +7583,7 @@ msgstr "Waypoints ({0})"
 msgid "経由地が残っているコースは削除できません。"
 msgstr "A course that still has waypoints cannot be deleted."
 
-#: src/components/useErrorMessages.ts:44
+#: src/components/useErrorMessages.ts:52
 msgid "経由地が残っているコースは消せません。先に経由地を消してください。"
 msgstr "A course that still has waypoints cannot be deleted. Delete its waypoints first."
 
@@ -7529,7 +7591,7 @@ msgstr "A course that still has waypoints cannot be deleted. Delete its waypoint
 msgid "経由地でつくったラリー：えらんだ経由地のスタンプを全部押すと達成。"
 msgstr "A rally of waypoints: complete when every chosen stamp waypoint is stamped."
 
-#: src/components/useErrorMessages.ts:61
+#: src/components/useErrorMessages.ts:69
 msgid "経由地でつくったラリーにはスタンプを押せる経由地を、コースでつくったラリーにはコースを入れてください。同じものは一度だけです。"
 msgstr "A rally of waypoints takes stamp waypoints and a rally of courses takes courses, each once."
 
@@ -7758,6 +7820,10 @@ msgstr "Restore edits"
 msgid "編集者"
 msgstr "Editor"
 
+#: src/components/useErrorMessages.ts:41
+msgid "編集者と管理者は、メールか顔・指紋でログインしてください。"
+msgstr "Editors and admins log in with their email or face or fingerprint."
+
 #: src/components/admin/AccessPointsEditor.tsx:75
 #: src/components/admin/CourseAreaEditor.tsx:233
 #: src/components/admin/PlacePanel.tsx:232
@@ -7806,11 +7872,11 @@ msgstr "Pages you make yourself are written in Posts and pages (set the type to 
 msgid "自分に送っておくと、ブラウザのデータが消えても、このリンクからスタンプをもどせます。ほかの人には見せないでください。"
 msgstr "Send it to yourself, and if the browser's data is lost you can bring the stamps back from this link. Do not show it to other people."
 
-#: src/components/useErrorMessages.ts:64
+#: src/components/useErrorMessages.ts:72
 msgid "自分のアカウントは、制限したり削除したりできません。"
 msgstr "You cannot restrict or delete your own account."
 
-#: src/components/useErrorMessages.ts:63
+#: src/components/useErrorMessages.ts:71
 msgid "自分の権限は変えられません。ほかの管理者に頼んでください。"
 msgstr "You cannot change your own permission. Ask another administrator."
 
@@ -8433,7 +8499,7 @@ msgstr "Point to point"
 msgid "通る順に並べます。市・町・村は一覧から選びます。一覧にない地名は、下に入力して追加します（8つまで）。"
 msgstr "Put them in the order the course passes through. Choose cities, towns and villages from the list; type a name that is not on it below (up to 8)."
 
-#: src/components/useErrorMessages.ts:80
+#: src/components/useErrorMessages.ts:88
 #: src/components/useStampMessages.ts:26
 msgid "通信できませんでした。電波の良い場所でもう一度お試しください。"
 msgstr "Could not connect. Please try again where the signal is better."
@@ -8521,7 +8587,7 @@ msgstr "Follow the path {distText}"
 msgid "道に沿わせる"
 msgstr "Snap to trails"
 
-#: src/components/useErrorMessages.ts:74
+#: src/components/useErrorMessages.ts:82
 msgid "道に沿わせる機能が、まだ使えません。管理する人に、道案内サービスの設定を頼んでください。手で線を描くことはできます。"
 msgstr "Snapping to trails is not available yet. Ask whoever manages the site to set up the route-finding service. You can still draw the line by hand."
 
@@ -8600,7 +8666,7 @@ msgstr "Looking up the paths…"
 msgid "道を調べています…（{step}/{total}）"
 msgstr "Looking for trails… ({step}/{total})"
 
-#: src/components/useErrorMessages.ts:76
+#: src/components/useErrorMessages.ts:84
 msgid "道を調べられませんでした。しばらくしてから、もう一度お試しください。"
 msgstr "Could not look up the paths. Please try again in a little while."
 
@@ -8926,19 +8992,19 @@ msgstr "Save with both the title and the text empty to go back to the built-in t
 msgid "題を入力"
 msgstr "Write a title"
 
-#: src/components/auth/ReauthDialog.tsx:60
+#: src/components/auth/ReauthDialog.tsx:65
 msgid "顔・指紋・ロック番号で確認"
 msgstr "Confirm with face, fingerprint or lock code"
 
-#: src/components/auth/LoginFlow.tsx:146
+#: src/components/auth/LoginFlow.tsx:147
 msgid "顔・指紋でログイン"
 msgstr "Face or fingerprint"
 
-#: src/components/auth/RegisterFlow.tsx:174
+#: src/components/auth/RegisterFlow.tsx:175
 msgid "顔・指紋で登録"
 msgstr "Face or fingerprint"
 
-#: src/components/auth/RegisterFlow.tsx:162
+#: src/components/auth/RegisterFlow.tsx:163
 msgid "顔・指紋で登録する"
 msgstr "Continue"
 
@@ -8958,7 +9024,7 @@ msgstr "You can't add any more face or fingerprint logins. Remove one you don't 
 msgid "顔・指紋のログインを追加する"
 msgstr "Add face or fingerprint login"
 
-#: src/components/useErrorMessages.ts:79
+#: src/components/useErrorMessages.ts:87
 msgid "顔・指紋の確認が中止されました。もう一度お試しください。"
 msgstr "The face or fingerprint check was cancelled. Please try again."
 
