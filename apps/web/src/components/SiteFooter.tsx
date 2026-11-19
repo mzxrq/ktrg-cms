@@ -1,35 +1,21 @@
 import Link from "next/link";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { foundationEn, foundationJa } from "@/lib/terms-content";
-import { LocaleSelect } from "./LocaleSwitcher";
 
 /**
- * What every page ends with: the questions people ask, the terms, the licenses, the privacy policy, and who makes the
- * app. On a desktop (`variant="sidebar"`) the same links sit at the bottom of the sidebar, stacked and compact, so they
- * are always in view. Both carry the `site-footer` class: the map page hides them (it is the whole screen).
+ * What every page ends with: help, status and the legal pages, and who makes the app. The blog and the directory are
+ * content, reached from the メニュー, so they are not repeated here (2026-11-19: the desktop sidebar had grown too long,
+ * so these links moved from it to the foot of the page). The `site-footer` class lets the map page hide it.
  */
-export function SiteFooter({ locale, variant = "page" }: { locale: string; variant?: "page" | "sidebar" }) {
+export function SiteFooter({ locale }: { locale: string }) {
   const { t } = useLingui();
-  const sidebar = variant === "sidebar";
-  const link = `tap-target inline-flex items-center font-bold underline ${sidebar ? "text-base" : "text-lg"}`;
+  const link = "tap-target inline-flex items-center text-lg font-bold underline";
   return (
-    <footer className={sidebar ? "print:hidden site-footer border-t border-line/30 px-2 pt-3" : "print:hidden site-footer mt-10 border-t border-line/30 px-4 pt-4"}>
-      {/* The language beside the links people look through for it (2026-11-16, user: easier to find on a computer). */}
-      <div className={sidebar ? "mb-2" : "mb-3"}>
-        <LocaleSelect plain />
-      </div>
-      <nav aria-label={t`フッター`} className={sidebar ? "flex flex-col" : "flex flex-wrap gap-x-6 gap-y-1"}>
-        <Link prefetch={false} href="/blog" className={link}>
-          <Trans>ブログ</Trans>
-        </Link>
-        <Link prefetch={false} href="/places" className={link}>
-          <Trans>お店と施設</Trans>
-        </Link>
+    // Desktop only: on a phone the same links are in the メニュー (user, 2026-11-19).
+    <footer className="print:hidden site-footer mt-16 hidden border-t border-line/30 pt-4 wide:block">
+      <nav aria-label={t`フッター`} className="flex flex-wrap gap-x-6 gap-y-1">
         <Link prefetch={false} href="/faq" className={link}>
           <Trans>よくあるご質問</Trans>
-        </Link>
-        <Link prefetch={false} href="/licenses" className={link}>
-          <Trans>ライセンス情報</Trans>
         </Link>
         <Link prefetch={false} href="/status" className={link}>
           <Trans>サイトの状態</Trans>
@@ -43,11 +29,13 @@ export function SiteFooter({ locale, variant = "page" }: { locale: string; varia
         <Link prefetch={false} href="/privacy" className={link}>
           <Trans>プライバシーポリシー</Trans>
         </Link>
+        <Link prefetch={false} href="/licenses" className={link}>
+          <Trans>ライセンス情報</Trans>
+        </Link>
       </nav>
       {/* A credit line, kept small: Japanese name on the Japanese pages, English name on the English ones. */}
-      <p lang={locale === "ja" ? "ja" : "en"} className={`text-base text-muted ${sidebar ? "mt-2 whitespace-pre-line" : "mt-3"}`}>
-        {/* In the narrow sidebar the legal form (一般財団法人) sits on its own line above the name. */}
-        {locale !== "ja" ? foundationEn : sidebar ? foundationJa.replace(/^一般財団法人/, "一般財団法人\n") : foundationJa}
+      <p lang={locale === "ja" ? "ja" : "en"} className="mt-3 text-base text-muted">
+        {locale === "ja" ? foundationJa : foundationEn}
       </p>
     </footer>
   );
