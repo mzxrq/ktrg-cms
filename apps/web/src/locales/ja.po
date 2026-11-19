@@ -967,13 +967,13 @@ msgid "アカウント設定"
 msgstr "アカウント設定"
 
 #: src/app/(admin)/admin/page.tsx:67
-#: src/components/RouteView.tsx:124
+#: src/components/RouteView.tsx:126
 msgid "アクセス"
 msgstr "アクセス"
 
 #: src/components/admin/RouteEditor.tsx:267
 #: src/components/admin/useChecklistLabels.ts:18
-#: src/components/RouteView.tsx:226
+#: src/components/RouteView.tsx:229
 msgid "アクセス・交通"
 msgstr "アクセス・交通"
 
@@ -1525,7 +1525,7 @@ msgstr "コースの写真"
 msgid "コースの出発地点から近い順（まっすぐ測った距離です）"
 msgstr "コースの出発地点から近い順（まっすぐ測った距離です）"
 
-#: src/components/RouteView.tsx:256
+#: src/components/RouteView.tsx:259
 msgid "コースの動画"
 msgstr "コースの動画"
 
@@ -1992,8 +1992,8 @@ msgstr "この文章のもとにした資料や、確かめた公式サイトを
 msgid "この文章は、本番のサイトにすぐ反映されます。保存しますか？"
 msgstr "この文章は、本番のサイトにすぐ反映されます。保存しますか？"
 
-#: src/components/RouteView.tsx:206
-#: src/components/RouteView.tsx:237
+#: src/components/RouteView.tsx:209
+#: src/components/RouteView.tsx:240
 msgid "この文章は日本語のみです。"
 msgstr "この文章は日本語のみです。"
 
@@ -2373,7 +2373,7 @@ msgstr "スタンプ {0} / {1}"
 
 #: src/components/map/MapScreen.tsx:496
 #: src/components/RoutePill.tsx:53
-#: src/components/RouteView.tsx:282
+#: src/components/RouteView.tsx:285
 #: src/components/TrailRibbon.tsx:74
 msgid "スタンプ {stampedCount} / {spotCount}"
 msgstr "スタンプ {stampedCount} / {spotCount}"
@@ -2415,7 +2415,7 @@ msgid "スタンプの場所の近くにいるか、たしかめるために、�
 msgstr "スタンプの場所の近くにいるか、たしかめるために、スマートフォンの位置を1回だけ調べます。"
 
 #: src/components/map/MapScreen.tsx:505
-#: src/components/RouteView.tsx:271
+#: src/components/RouteView.tsx:274
 msgid "スタンプの場所は、まだ準備中です。"
 msgstr "スタンプの場所は、まだ準備中です。"
 
@@ -4666,7 +4666,7 @@ msgstr "公開できるようになったら、ここにコースのバッジが
 msgid "公開できるようになったら、ここにスタンプのラリーが表示されます。"
 msgstr "公開できるようになったら、ここにスタンプのラリーが表示されます。"
 
-#: src/components/RouteView.tsx:272
+#: src/components/RouteView.tsx:275
 msgid "公開できるようになったら、ここに場所の一覧が表示されます。"
 msgstr "公開できるようになったら、ここに場所の一覧が表示されます。"
 
@@ -4964,7 +4964,7 @@ msgstr "出かける前に"
 #: src/app/(public)/routes/page.tsx:67
 #: src/components/landing/TrailNotices.tsx:66
 #: src/components/landing/useHomeWords.ts:24
-#: src/components/RouteView.tsx:307
+#: src/components/RouteView.tsx:310
 #: src/components/SpotSheet.tsx:192
 msgid "出かける前に、公式の最新情報を確認してください。"
 msgstr "出かける前に、公式の最新情報を確認してください。"
@@ -4984,7 +4984,7 @@ msgstr "出どころの文字"
 #: src/components/admin/PlacePanel.tsx:128
 #: src/components/admin/RouteEditor.tsx:275
 #: src/components/admin/RouteEditor.tsx:276
-#: src/components/RouteView.tsx:216
+#: src/components/RouteView.tsx:219
 #: src/components/SpotSheet.tsx:151
 msgid "出典"
 msgstr "出典"
@@ -5230,7 +5230,7 @@ msgstr "動きなし"
 #: src/components/admin/HomeTextFields.tsx:43
 #: src/components/admin/RouteEditor.tsx:234
 #: src/components/admin/useChecklistLabels.ts:20
-#: src/components/RouteView.tsx:127
+#: src/components/RouteView.tsx:125
 msgid "動画"
 msgstr "動画"
 
@@ -5628,8 +5628,8 @@ msgstr "地名や記号が大きく、はっきり読める地図です。色の
 #: src/components/admin/AdminNav.tsx:73
 #: src/components/map/TrailMap.tsx:400
 #: src/components/navigation/NavigationHud.tsx:486
-#: src/components/RouteView.tsx:126
-#: src/components/RouteView.tsx:298
+#: src/components/RouteView.tsx:128
+#: src/components/RouteView.tsx:301
 msgid "地図"
 msgstr "地図"
 
@@ -6850,7 +6850,7 @@ msgstr "歴史"
 #: src/components/admin/RouteEditor.tsx:264
 #: src/components/admin/RouteEditor.tsx:265
 #: src/components/admin/useChecklistLabels.ts:17
-#: src/components/RouteView.tsx:200
+#: src/components/RouteView.tsx:203
 #: src/components/SpotSheet.tsx:135
 msgid "歴史・由来"
 msgstr "歴史・由来"
@@ -8547,8 +8547,8 @@ msgstr "道のけわしさとは"
 msgid "道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。"
 msgstr "道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。"
 
-#: src/components/RouteView.tsx:125
-#: src/components/RouteView.tsx:279
+#: src/components/RouteView.tsx:127
+#: src/components/RouteView.tsx:282
 msgid "道のり"
 msgstr "道のり"
 
