@@ -25,6 +25,11 @@ export const PERMISSIONS = {
    * case, and a password is what gets phished. Needs a fresh login.
    */
   "me.password": ["participant"],
+  /**
+   * Link a Google, LINE or Apple account (auth/sso.ts), and sign in with one. Not staff, for the same reason as the
+   * password: an admin takeover is the worst case. Needs a fresh login.
+   */
+  "me.sso": ["participant"],
   /** Keep this device, so the admin screens ask again after 30 days and not 12 hours. Needs a fresh login. */
   "session.keep_staff_check": ["editor", "admin"],
   /** Collect a stamp at a spot. */
@@ -78,7 +83,7 @@ export type Permission = keyof typeof PERMISSIONS;
  * Permissions that also need a fresh login: a login or POST /auth/reauth/verify within
  * FRESH_LOGIN_MS. The guard enforces this, so a route only names the permission.
  */
-export const FRESH_LOGIN_REQUIRED: readonly Permission[] = ["user.manage_roles", "user.restrict", "user.delete", "me.sensitive", "me.password", "session.keep_staff_check"];
+export const FRESH_LOGIN_REQUIRED: readonly Permission[] = ["user.manage_roles", "user.restrict", "user.delete", "me.sensitive", "me.password", "me.sso", "session.keep_staff_check"];
 
 /**
  * What a restricted account may not do: taking part. Signing in, reading, its own profile and asking for its own deletion

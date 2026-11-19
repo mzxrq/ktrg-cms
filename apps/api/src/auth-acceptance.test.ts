@@ -13,6 +13,7 @@ import { OTP_COOLDOWN_MS, OTP_TTL_MS, normalizeEmail } from "./auth/otp";
 import { createMemoryOtpStore } from "./auth/otp-memory-store";
 import { createMemoryPasskeyStore } from "./auth/passkey-memory-store";
 import { createMemoryPasswordStore } from "./auth/password-memory-store";
+import { createMemorySsoStore } from "./auth/sso-memory-store";
 import { createMemoryRateLimitStore } from "./auth/rate-limit-memory-store";
 import { SESSION_POLICY } from "./auth/session";
 import { createMemorySessionStore } from "./auth/session-memory-store";
@@ -92,6 +93,7 @@ function setup(opts: { adminEmails?: string[] } = {}) {
       rateLimit: createMemoryRateLimitStore().store,
       passkeys: passkeys.store,
       passwords: createMemoryPasswordStore(users).store,
+      sso: createMemorySsoStore(users).store,
       me: profiles.store,
       content: createMemoryContentStore(audit.writer).store,
       rallyAdmin: createMemoryRallyAdminStore(audit.writer).store,
@@ -381,6 +383,11 @@ describe("user B cannot touch user A", () => {
     "POST /api/v1/auth/passkeys/login/verify",
     "POST /api/v1/auth/password/login",
     "POST /api/v1/auth/password/undo",
+    // Sign in with Google, LINE or Apple: the buttons, the start, and the provider coming back (the flow cookie decides).
+    "GET /api/v1/auth/sso/providers",
+    "POST /api/v1/auth/sso/:provider/login",
+    "GET /api/v1/auth/sso/:provider/callback",
+    "POST /api/v1/auth/sso/apple/callback",
     // Not for people: a scheduler calls it with a bearer secret (404 without one configured); see internal/purge-routes.test.ts.
     "POST /api/v1/internal/purge-deletions",
     "POST /api/v1/internal/furigana-refresh",
@@ -391,6 +398,8 @@ describe("user B cannot touch user A", () => {
     "POST /api/v1/admin/furigana/refresh/read": () => ({ from: 0 }),
     "POST /api/v1/admin/furigana/refresh/apply": () => ({ words: [] }),
     "PATCH /api/v1/auth/passkeys/:id": () => ({ label: "x" }),
+    "POST /api/v1/auth/sso/:provider/link": () => ({}),
+    "POST /api/v1/auth/sso/:provider/reauth": () => ({}),
     "PUT /api/v1/auth/password": () => ({ password: "yamabushi-walk" }),
     "PUT /api/v1/admin/routes/:id/shared-spots/:spotId": () => ({ position: 0 }),
     "PATCH /api/v1/me": () => ({ locale: "en" }),
@@ -471,7 +480,7 @@ describe("user B cannot touch user A", () => {
 
     for (const key of routes) {
       const [method, path] = key.split(" ") as [string, string];
-      const url = path.replace("/api/v1", "").replace(":id", crypto.randomUUID()).replace(":spotId", crypto.randomUUID()).replace(":key", "faq");
+      const url = path.replace("/api/v1", "").replace(":id", crypto.randomUUID()).replace(":spotId", crypto.randomUUID()).replace(":key", "faq").replace(":provider", "google");
       for (const cookie of [undefined, "session=made-up-token"]) {
         const res = await s.call(method, url, { cookie, body: BODIES[key]?.() });
         expect({ key, status: res.status, body: await res.json() }).toEqual({ key, status: 401, body: UNAUTHENTICATED });

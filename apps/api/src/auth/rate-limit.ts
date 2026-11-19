@@ -41,6 +41,11 @@ export const AUTH_LIMITS = {
   passkeyLoginIp: { name: "passkey-login-ip", limit: 30, windowMs: 15 * MINUTE },
   // Keyed by user id: removing passkeys.
   passkeyRemoveUser: { name: "passkey-remove-user", limit: 10, windowMs: 15 * MINUTE },
+  // Keyed by IP: leaving for Google, LINE or Apple, and coming back. Each round trip is a person pressing a button.
+  ssoStartIp: { name: "sso-start-ip", limit: 30, windowMs: 15 * MINUTE },
+  ssoCallbackIp: { name: "sso-callback-ip", limit: 30, windowMs: 15 * MINUTE },
+  // Keyed by user id: removing a linked account.
+  ssoUnlinkUser: { name: "sso-unlink-user", limit: 10, windowMs: 15 * MINUTE },
   // Keyed by user id: the app asks about once a day, so this only stops a loop.
   sessionRotateUser: { name: "session-rotate-user", limit: 30, windowMs: 60 * MINUTE },
   // Keyed by user id: renaming passkeys.

@@ -20,6 +20,9 @@ import { createDrizzleStampStore } from "./stamps/stamp-store";
 import { publicContentRoutes } from "./content/public-routes";
 import { passkeyRoutes } from "./auth/passkey-routes";
 import { passwordRoutes } from "./auth/password-routes";
+import { ssoProvidersFromEnv } from "./auth/sso";
+import { ssoRoutes } from "./auth/sso-routes";
+import { createDrizzleSsoStore } from "./auth/sso-store";
 import { createDrizzlePasswordStore } from "./auth/password-store";
 import { createDrizzlePasskeyStore } from "./auth/passkey-store";
 import { createDrizzleRateLimitStore } from "./auth/rate-limit-store";
@@ -94,6 +97,7 @@ function getServices(): Services {
         rateLimit: createDrizzleRateLimitStore(db),
         passkeys: createDrizzlePasskeyStore(db),
         passwords: createDrizzlePasswordStore(db),
+        sso: createDrizzleSsoStore(db),
         me: createDrizzleMeStore(db),
         content: createDrizzleContentStore(db),
         rallyAdmin: createDrizzleRallyAdminStore(db),
@@ -122,6 +126,7 @@ function getServices(): Services {
       // Production requires the secret (parse-env); this dev fallback never ships.
       secret: env.OTP_HMAC_SECRET ?? "dev-only-otp-secret-change-me-0000000",
       adminEmails: parseAdminEmails(env.ADMIN_EMAILS).emails, // checked at boot (parse-env)
+      sso: { appOrigin: env.APP_ORIGIN, providers: ssoProvidersFromEnv(env) },
       passkey: {
         rpName: "葛城修験",
         // Passkeys only work on this domain, so it must be the site users actually visit.
@@ -183,6 +188,7 @@ export function createApp(
     .use(authRoutes(getServices, opts))
     .use(passkeyRoutes(getServices, opts))
     .use(passwordRoutes(getServices, opts))
+    .use(ssoRoutes(getServices, opts))
     .use(meRoutes(getServices, opts))
     .use(adminContentRoutes(getServices, opts))
     .use(mapOverviewRoutes(getServices, opts))

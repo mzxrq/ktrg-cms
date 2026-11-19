@@ -25,6 +25,9 @@ export const AUDIT_ACTIONS = {
   "password.set": "user",
   "password.remove": "user",
   "password.undo": "user",
+  /** A Google, LINE or Apple account was linked to the account, or removed from it. */
+  "sso.link": "user",
+  "sso.unlink": "user",
   "passkey.add": "passkey",
   "passkey.remove": "passkey",
   "passkey.rename": "passkey",

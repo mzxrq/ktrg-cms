@@ -304,3 +304,58 @@ export async function requestAccountDeletion(): Promise<AuthResult> {
     return fail("network");
   }
 }
+
+// ---- Google, LINE and Apple -----------------------------------------------------------------------------------
+
+export type SsoProvider = "google" | "line" | "apple";
+export type SsoMode = "login" | "link" | "reauth";
+
+/** The providers this site has set up; none (or no signal) means no buttons. */
+export async function ssoProviders(): Promise<SsoProvider[]> {
+  try {
+    const res = await api.auth.sso.providers.get();
+    return res.data?.ok ? res.data.providers : [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Leave for the provider. The page goes away on success, so only a failure comes back. The provider returns to
+ * `returnTo` (a path on this site); a problem arrives as `?sso_error=<code>` there, or on /login when signing in.
+ */
+export async function startSso(provider: SsoProvider, mode: SsoMode, opts: { returnTo?: string; locale?: "ja" | "en" } = {}): Promise<AuthResult> {
+  try {
+    const route = api.auth.sso({ provider });
+    const res =
+      mode === "login"
+        ? await route.login.post({ returnTo: opts.returnTo, locale: opts.locale })
+        : mode === "link"
+          ? await route.link.post({ returnTo: opts.returnTo })
+          : await route.reauth.post({ returnTo: opts.returnTo });
+    if (res.error) return fail(apiFailure(res.error));
+    if (!res.data.ok) return fail(res.data.error);
+    window.location.assign(res.data.url);
+    return done;
+  } catch {
+    return fail("network");
+  }
+}
+
+export interface SsoIdentityItem {
+  id: string;
+  provider: SsoProvider;
+  createdAt: string;
+}
+
+export async function listSsoIdentities(): Promise<{ ok: true; identities: SsoIdentityItem[] } | { ok: false; code: AuthFailure }> {
+  try {
+    const res = await api.auth.sso.identities.get();
+    return res.error ? { ok: false, code: apiFailure(res.error) } : { ok: true, identities: res.data.identities };
+  } catch {
+    return { ok: false, code: "network" };
+  }
+}
+
+/** Remove a linked account (needs a fresh login; the API refuses to remove the last way to log in). */
+export const removeSsoIdentity = (id: string) => asResult(() => api.auth.sso.identities({ id }).delete());

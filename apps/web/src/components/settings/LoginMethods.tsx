@@ -7,6 +7,7 @@ import { EmailCodeStep } from "@/components/auth/EmailCodeStep";
 import { useReauth } from "@/components/auth/ReauthDialog";
 import { PasskeyManager } from "@/components/settings/PasskeyManager";
 import { PasswordMethod } from "@/components/settings/PasswordMethod";
+import { SsoMethods } from "@/components/settings/SsoMethods";
 import { api } from "@/lib/api";
 import { requestAddEmail, verifyAddEmail } from "@/lib/auth-client";
 import type { AuthFailure } from "@/lib/auth-flow";
@@ -107,6 +108,7 @@ export function LoginMethods({ locale }: { locale: string }) {
       {email !== undefined ? <EmailMethod email={email} locale={language} onAdded={setEmail} /> : null}
       <PasskeyManager locale={locale} hasEmail={email !== null} />
       {email !== undefined ? <PasswordMethod hasEmail={email !== null} /> : null}
+      <SsoMethods />
     </div>
   );
 }

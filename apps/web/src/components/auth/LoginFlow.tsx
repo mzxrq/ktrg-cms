@@ -9,12 +9,13 @@ import { logInWithPasskey, logInWithPassword, requestEmailCode, verifyEmailCode 
 import { safeNextPath, type AuthFailure } from "@/lib/auth-flow";
 import { AuthError, ChoiceCard, inputClass, primaryButton, secondaryButton } from "./authUi";
 import { EmailCodeStep } from "./EmailCodeStep";
+import { SsoButtons } from "./SsoButtons";
 import { PasswordInput } from "./PasswordInput";
 
 type Step = "choose" | "email" | "code" | "password";
 
 /** Log in: big tiles for a passkey (face or fingerprint, no typing), an emailed number, or the optional password. */
-export function LoginFlow({ next, registerHref }: { next?: string; registerHref: string }) {
+export function LoginFlow({ next, registerHref, ssoError = null }: { next?: string; registerHref: string; ssoError?: AuthFailure | null }) {
   const { t, i18n } = useLingui();
   const router = useRouter();
   const locale = i18n.locale === "en" ? "en" : "ja";
@@ -147,6 +148,7 @@ export function LoginFlow({ next, registerHref }: { next?: string; registerHref:
       <AuthError code={error} />
       <ChoiceCard icon={<MailIcon />} title={t`メールでログイン`} onClick={() => setStep("email")} />
       <ChoiceCard icon={<LockIcon />} title={t`パスワードでログイン`} onClick={() => setStep("password")} />
+      <SsoButtons returnTo={safeNextPath(next, "/")} initialError={ssoError} />
       <p className="mt-2 text-lg">
         {t`はじめての方は`}{" "}
         <Link href={registerHref} className="tap-target inline-flex items-center font-bold text-accent underline underline-offset-4">

@@ -34,6 +34,14 @@ export function useErrorMessages(): Record<ErrorKey, string> {
     too_many_passkeys: t`顔・指紋のログインは、これ以上ふやせません。使わないものを消してから、お試しください。`,
     last_login_method: t`ほかにログインの方法がないので、これは消せません。先にメールか、別の端末の顔・指紋のログインを使えるようにしてください。`,
     email_in_use: t`このメールアドレスは、使えません。すでに別のアカウントで使われているか、このアカウントにはメールが入っています。`,
+    // Google, LINE and Apple
+    sso_unavailable: t`このサイトでは、そのログインの方法は使えません。`,
+    sso_failed: t`ログインを確認できませんでした。時間がたったか、別のブラウザーに戻った可能性があります。もう一度お試しください。`,
+    sso_cancelled: t`ログインが中止されました。`,
+    sso_staff: t`編集者と管理者は、メールか顔・指紋でログインしてください。`,
+    sso_email_in_use: t`このメールアドレスのアカウントが、すでにあります。メールでログインしてから、「ログインの方法」でつないでください。`,
+    sso_taken: t`そのアカウントは、すでに別のアカウントにつながっています。`,
+    sso_not_yours: t`このアカウントにつながっていないアカウントで確認されました。つないだアカウントでお試しください。`,
     // Profile
     invalid_display_name: t`お名前に使えない文字が含まれているか、長すぎます（40文字まで）。`,
     // Admin: routes and places

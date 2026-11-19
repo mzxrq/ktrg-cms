@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { listPasskeys, passkeysSupported, reauthWithPasskey, requestReauthCode, verifyReauthCode, type AuthResult } from "@/lib/auth-client";
+import { listPasskeys, listSsoIdentities, passkeysSupported, reauthWithPasskey, requestReauthCode, startSso, verifyReauthCode, type AuthResult, type SsoProvider } from "@/lib/auth-client";
 import type { AuthFailure } from "@/lib/auth-flow";
 import { AuthError, inputClass, primaryButton, secondaryButton } from "./authUi";
+import { SSO_NAMES } from "./SsoButtons";
 
 /**
  * "Confirm it is you again": shown before a sensitive action (adding or removing a passkey, deleting the account)
@@ -20,9 +21,13 @@ export function ReauthSteps({ onDone, onCancel }: { onDone: () => void; onCancel
   // The passkey check is offered only to someone who has a passkey; anyone else (adding their first one) gets the email code.
   const [hasPasskey, setHasPasskey] = useState(false);
   const supported = passkeysSupported() && hasPasskey;
+  // Google, LINE or Apple accounts linked to this one. Checking with one leaves the page and comes back to it; the visitor
+  // then presses the button again (the session stays fresh for 10 minutes).
+  const [linked, setLinked] = useState<SsoProvider[]>([]);
 
   useEffect(() => {
     let live = true;
+    void listSsoIdentities().then((res) => live && res.ok && setLinked([...new Set(res.identities.map((i) => i.provider))]));
     if (passkeysSupported()) void listPasskeys().then((res) => live && res.ok && setHasPasskey(res.passkeys.length > 0));
     return () => {
       live = false;
@@ -60,6 +65,20 @@ export function ReauthSteps({ onDone, onCancel }: { onDone: () => void; onCancel
               {t`顔・指紋・ロック番号で確認`}
             </button>
           ) : null}
+          {linked.map((p) => {
+            const name = SSO_NAMES[p];
+            return (
+              <button
+                key={p}
+                type="button"
+                disabled={busy}
+                onClick={() => void run(() => startSso(p, "reauth", { returnTo: window.location.pathname }), () => {})}
+                className={secondaryButton}
+              >
+                {t`${name}で確認`}
+              </button>
+            );
+          })}
           <button
             type="button"
             disabled={busy}
