@@ -162,7 +162,7 @@ export function SiteHeader({
               : "site-header-bar relative mb-3 border-b border-line/30 bg-paper px-3 py-1 wide:hidden"
         }
       >
-        <div className={`mx-auto grid max-w-xl items-center gap-2 ${onMap ? "pointer-events-none grid-cols-[auto_1fr_auto] [&>*]:pointer-events-auto" : onRoutes ? "grid-cols-[auto_1fr_auto]" : "grid-cols-[1fr_auto_1fr]"}`}>
+        <div className={`mx-auto grid max-w-xl items-center gap-2 md:max-w-none ${onMap ? "pointer-events-none grid-cols-[auto_1fr_auto] [&>*]:pointer-events-auto" : onRoutes ? "grid-cols-[auto_1fr_auto]" : "grid-cols-[1fr_auto_1fr]"}`}>
           {onRoutes ? null : TOP_LEVEL.test(pathname) ? (
             <span />
           ) : (
