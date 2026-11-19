@@ -56,7 +56,8 @@ export default async function PublicLayout({ children }: { children: ReactNode }
             </div>
           }
         />
-        <div className="min-w-0 max-w-xl flex-1 md:border-x md:border-surface wide:flex wide:min-h-dvh wide:max-w-none wide:flex-col wide:border-x-0">
+        {/* A phone column; from a tablet up it takes the full width (2026-11-19: a tablet reads like a phone page, not a strip in the middle). */}
+        <div className="min-w-0 max-w-xl flex-1 md:max-w-none wide:flex wide:min-h-dvh wide:flex-col">
           <SiteHeader
             signedIn={viewer.signedIn}
             staff={viewer.role === "editor" || viewer.role === "admin"}

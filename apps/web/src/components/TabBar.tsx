@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useSyncExternalStore, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { HomeIcon, MapIcon, MenuIcon, PanelIcon, RouteIcon, StampIcon } from "./icons";
+import { CloseIcon, HomeIcon, MapIcon, MenuIcon, PanelIcon, RouteIcon, StampIcon } from "./icons";
 import { KatsuragiLogo } from "./KatsuragiLogo";
 import { LOW_QUERY, watchQuery } from "@/lib/screen";
 import { useMenu } from "./MenuProvider";
@@ -160,8 +160,17 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
               open ? "bg-ink text-paper md:text-ink wide:bg-ink wide:text-paper" : "text-ink hover:bg-paper wide:bg-transparent"
             }`}
           >
-            <MenuIcon />
-            {t`メニュー`}
+            {/* On a tablet, while the menu is open, this button is its close button (the drawer has none of its own there). */}
+            <span className={`contents ${open ? "md:hidden wide:contents" : ""}`}>
+              <MenuIcon />
+              {t`メニュー`}
+            </span>
+            {open ? (
+              <span className="hidden md:contents wide:hidden">
+                <CloseIcon />
+                {t`閉じる`}
+              </span>
+            ) : null}
           </button>
         </li>
       </ul>

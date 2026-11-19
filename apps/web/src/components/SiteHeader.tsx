@@ -145,9 +145,9 @@ export function SiteHeader({
       {backdropMounted ? (
         // Tapping outside the panel closes it. (Escape and the button do the same for the keyboard.) On a tablet the dimmed
         // space beside the menu shows the logo; on a desktop the page stays as it is.
-        <div ref={backdropRef} aria-hidden="true" onClick={() => setOpen(false)} className="fixed inset-0 bg-black/50 wide:bg-transparent">
+        <div ref={backdropRef} aria-hidden="true" onClick={() => setOpen(false)} className="fixed inset-0 z-10 bg-black/50 wide:bg-transparent">
           <span className="pointer-events-none absolute inset-y-0 left-[26rem] right-0 hidden items-center justify-center md:flex wide:hidden">
-            <KatsuragiLogo className="h-28 w-auto [--color-brand:#fff] [--color-ink:#fff] [filter:drop-shadow(0_1px_4px_rgb(0_0_0/0.6))]" />
+            <KatsuragiLogo className="h-auto w-3/4 [--color-brand:#fff] [--color-ink:#fff] [filter:drop-shadow(0_1px_4px_rgb(0_0_0/0.6))]" />
           </span>
         </div>
       ) : null}
@@ -158,7 +158,7 @@ export function SiteHeader({
           onMap
             ? "pointer-events-none absolute inset-x-3 top-[calc(0.75rem+var(--top-clear))] wide:hidden"
             : onLanding
-              ? `absolute inset-x-0 top-0 border-b border-line/30 bg-paper px-3 pb-1 pt-[calc(0.25rem+var(--top-clear))] transition-opacity wide:hidden motion-reduce:transition-none ${hidden ? "pointer-events-none opacity-0" : ""}`
+              ? `absolute inset-x-0 top-0 border-b border-line/30 bg-paper px-3 pb-1 pt-[calc(0.25rem+var(--top-clear))] transition-opacity md:hidden motion-reduce:transition-none ${hidden ? "pointer-events-none opacity-0" : ""}`
               : "site-header-bar relative mb-3 border-b border-line/30 bg-paper px-3 py-1 wide:hidden"
         }
       >
@@ -198,17 +198,17 @@ export function SiteHeader({
           id="site-menu"
           // A link to the page we are already on does not change the path, so close here to show the tap worked.
           onClick={(e) => e.target instanceof Element && e.target.closest("a") && setOpen(false)}
-          className="rail-night fixed inset-0 overflow-y-auto overscroll-contain bg-paper pb-28 pt-[var(--top-clear)] md:overflow-hidden md:bg-night md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
+          className="rail-night fixed inset-0 overflow-y-auto overscroll-contain bg-paper z-20 pb-28 pt-[var(--top-clear)] md:overflow-hidden md:bg-night md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
         >
           {/* From 768 px the drawer has the sidebar's frame, which stays put while the menu scrolls inside it. */}
           {panelGround("md:block")}
-          <div className="md:h-full md:overflow-y-auto md:overscroll-contain">
+          <div className="md:h-full md:overflow-y-auto md:overscroll-contain md:[scrollbar-width:none] wide:[scrollbar-width:thin]">
           <div className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5 md:p-[29px]">
-            {/* From 768 px the drawer has its own close button at the top. */}
-            <div className="flex items-center justify-between gap-2 md:justify-end">
+            {/* On a desktop the drawer has its own close button at the top; on a tablet the menu button turns into it. */}
+            <div className="flex items-center justify-between gap-2 md:hidden wide:flex wide:justify-end">
               <h1 className="font-serif text-3xl font-bold text-accent md:hidden">{t`メニュー`}</h1>
               {/* On a phone the Menu tab below closes it; the popover has no tab to press. */}
-              <button type="button" onClick={() => setOpen(false)} className="tap-target hidden items-center gap-2 rounded-xl border border-ink px-3 text-lg font-bold md:inline-flex">
+              <button type="button" onClick={() => setOpen(false)} className="tap-target hidden items-center gap-2 rounded-xl border border-ink px-3 text-lg font-bold wide:inline-flex">
                 <CloseIcon />
                 {t`閉じる`}
               </button>
