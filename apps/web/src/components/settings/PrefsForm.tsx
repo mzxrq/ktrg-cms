@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { MotionSelect } from "@/components/MotionSelect";
 import { persistPrefs } from "@/lib/prefs-client";
+import { setSound, useSound } from "@/lib/stamp-feel";
 import { defaultPrefs, textSizes, type Prefs, type TextSize } from "@/lib/prefs";
 import { primaryButton, secondaryButton } from "@/components/auth/authUi";
 
@@ -30,6 +31,7 @@ export function PrefsForm({
   const [prefs, setPrefs] = useState<Prefs>(initial);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const sound = useSound();
 
   // Show the chosen size on the whole page straight away; the server writes it on the next page load.
   useEffect(() => {
@@ -133,6 +135,15 @@ export function PrefsForm({
             </span>
             <MotionSelect prefs={prefs} onChange={setPrefs} />
           </div>
+          {/* The stamp sound: kept on this device only and changed at once (not part of 保存), off until chosen. It moved here
+              from the menu, which now keeps only theme and language (2026-11-19). */}
+          <label className="tap-target flex cursor-pointer items-center gap-4 px-4 py-3">
+            <span className="min-w-0 flex-1">
+              <span className="block text-lg font-bold">{t`音`}</span>
+              <span className="mt-0.5 block text-base text-muted">{t`スタンプを押したときに音を鳴らします。この端末だけの設定です。`}</span>
+            </span>
+            <input type="checkbox" role="switch" checked={sound} onChange={(e) => setSound(e.target.checked)} className="shrink-0" />
+          </label>
         </div>
       </fieldset>
 

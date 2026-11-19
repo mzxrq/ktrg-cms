@@ -305,7 +305,7 @@ export function SiteHeader({
                 <MenuLinks>
                   <MenuLink href="/settings" label={t`見やすさの設定`} />
                 </MenuLinks>
-                <p className="text-base text-muted">{t`文字やボタンの大きさ、地図の見せ方`}</p>
+                <p className="text-base text-muted">{t`文字の大きさ、ふりがな、くっきり表示、動き、音、地図の見せ方`}</p>
               </div>
             </MenuGroup>
 

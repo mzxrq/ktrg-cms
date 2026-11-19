@@ -1021,7 +1021,7 @@ msgstr "{0} to go"
 msgid "あと{remaining}か所"
 msgstr "{remaining} left to go"
 
-#: src/components/settings/PrefsForm.tsx:169
+#: src/components/settings/PrefsForm.tsx:180
 msgid "あとからでも、「メニュー」の「見やすさの設定」で変えられます。"
 msgstr "You can change this later under \"Menu\", \"Display settings\"."
 
@@ -1030,7 +1030,7 @@ msgstr "You can change this later under \"Menu\", \"Display settings\"."
 msgid "あとで"
 msgstr "Later"
 
-#: src/components/settings/PrefsForm.tsx:167
+#: src/components/settings/PrefsForm.tsx:178
 msgid "あとで決める"
 msgstr "Decide later"
 
@@ -1054,7 +1054,7 @@ msgstr "Copy the address"
 msgid "あなたのことを、少しだけ教えてください。答えなくても大丈夫です。あとから変えられます。"
 msgstr "Tell us a little about yourself. You don't have to answer, and you can change it later."
 
-#: src/components/settings/PrefsForm.tsx:132
+#: src/components/settings/PrefsForm.tsx:134
 msgid "アニメーションや、ふわっと動く表示の量を選びます。"
 msgstr "Choose how much the page animates and fades."
 
@@ -1393,7 +1393,7 @@ msgstr "Cafe"
 msgid "キャンプ場"
 msgstr "Campsite"
 
-#: src/components/settings/PrefsForm.tsx:128
+#: src/components/settings/PrefsForm.tsx:130
 msgid "くっきり表示"
 msgstr "Bold display"
 
@@ -2056,7 +2056,7 @@ msgstr "Which stamps do you want to keep: this device's or the account's?"
 msgid "この端末に {0} 個、アカウントに {1} 個のスタンプがあります。"
 msgstr "This device has {0} stamps and the account has {1}."
 
-#: src/components/settings/PrefsForm.tsx:58
+#: src/components/settings/PrefsForm.tsx:60
 msgid "この端末には保存しました。つながったときに、アカウントにも保存されます。"
 msgstr "Saved on this phone. It will be saved to your account when you are connected."
 
@@ -2126,7 +2126,7 @@ msgstr "What this post is about"
 msgid "この記事を共有する"
 msgstr "Share this post"
 
-#: src/components/settings/PrefsForm.tsx:159
+#: src/components/settings/PrefsForm.tsx:170
 msgid "この設定ではじめる"
 msgstr "Start with these settings"
 
@@ -2459,6 +2459,10 @@ msgstr "Restored {0} stamps ({1} now)."
 #: src/app/(public)/restore/page.tsx:18
 msgid "スタンプをもどす"
 msgstr "Restore stamps"
+
+#: src/components/settings/PrefsForm.tsx:143
+msgid "スタンプを押したときに音を鳴らします。この端末だけの設定です。"
+msgstr "Plays a sound when you stamp. This setting is for this device only."
 
 #: src/app/(admin)/admin/page.tsx:79
 msgid "スタンプを押した人"
@@ -2793,7 +2797,7 @@ msgstr "Toilet"
 msgid "トイレ・休憩"
 msgstr "Toilets and rest"
 
-#: src/components/settings/PrefsForm.tsx:145
+#: src/components/settings/PrefsForm.tsx:156
 msgid "トイレやお店などを、地図を開いたときから表示します。"
 msgstr "Show toilets, shops and so on as soon as the map opens."
 
@@ -2829,7 +2833,7 @@ msgstr "Which end it serves"
 msgid "トップページの見出しと説明です。"
 msgstr "The headings and text of the home page."
 
-#: src/components/settings/PrefsForm.tsx:50
+#: src/components/settings/PrefsForm.tsx:52
 msgid "とても大きい"
 msgstr "Extra large"
 
@@ -3151,7 +3155,7 @@ msgstr "Fade only"
 msgid "フェリー"
 msgstr "Ferry"
 
-#: src/components/settings/PrefsForm.tsx:48
+#: src/components/settings/PrefsForm.tsx:50
 msgid "ふつう"
 msgstr "Standard"
 
@@ -3159,7 +3163,7 @@ msgstr "Standard"
 msgid "ふつうに動く"
 msgstr "Full motion"
 
-#: src/components/settings/PrefsForm.tsx:48
+#: src/components/settings/PrefsForm.tsx:50
 msgid "ふつうの大きさです。"
 msgstr "The usual size."
 
@@ -3213,7 +3217,7 @@ msgstr "Privacy policy"
 msgid "ブラウザのメニュー（⋮ や ⋯）から、「ホーム画面に追加」または「アプリをインストール」をえらびます。"
 msgstr "From the browser's menu (⋮ or ⋯), choose \"Add to Home screen\" or \"Install app\"."
 
-#: src/components/settings/PrefsForm.tsx:127
+#: src/components/settings/PrefsForm.tsx:129
 msgid "ふりがなをつける"
 msgstr "Show furigana"
 
@@ -3301,7 +3305,7 @@ msgstr "Page views counted by the approximate region of the connection (country,
 msgid "ページの先頭へ"
 msgstr "Back to top"
 
-#: src/components/settings/PrefsForm.tsx:127
+#: src/components/settings/PrefsForm.tsx:129
 msgid "ページの漢字すべてに、読みがなをつけます。"
 msgstr "Adds a reading over every kanji on the page."
 
@@ -3537,7 +3541,7 @@ msgstr "Around here"
 msgid "まわりの場所"
 msgstr "Places nearby"
 
-#: src/components/settings/PrefsForm.tsx:144
+#: src/components/settings/PrefsForm.tsx:155
 msgid "まわりの場所を最初から出す"
 msgstr "Show places nearby from the start"
 
@@ -4429,7 +4433,7 @@ msgstr "Save and next"
 #: src/components/admin/useRouteDraft.ts:268
 #: src/components/admin/WaypointEditor.tsx:72
 #: src/components/ProfileSettings.tsx:213
-#: src/components/settings/PrefsForm.tsx:72
+#: src/components/settings/PrefsForm.tsx:74
 msgid "保存しました。"
 msgstr "Saved."
 
@@ -4467,7 +4471,7 @@ msgstr "Saved. No more places waiting to be checked."
 #: src/components/admin/SiteSettingsForm.tsx:140
 #: src/components/ProfileSettings.tsx:261
 #: src/components/settings/PasskeyManager.tsx:136
-#: src/components/settings/PrefsForm.tsx:173
+#: src/components/settings/PrefsForm.tsx:184
 msgid "保存する"
 msgstr "Save"
 
@@ -5215,7 +5219,7 @@ msgid "動かす"
 msgstr "Move"
 
 #: src/components/MotionSelect.tsx:11
-#: src/components/settings/PrefsForm.tsx:131
+#: src/components/settings/PrefsForm.tsx:133
 msgid "動き"
 msgstr "Motion"
 
@@ -5681,7 +5685,7 @@ msgstr "How to use the map"
 msgid "地図の種類"
 msgstr "Map type"
 
-#: src/components/settings/PrefsForm.tsx:140
+#: src/components/settings/PrefsForm.tsx:151
 msgid "地図の見せ方"
 msgstr "How the map is shown"
 
@@ -5890,7 +5894,7 @@ msgstr "Discard your changes?"
 msgid "外す"
 msgstr "Remove"
 
-#: src/components/settings/PrefsForm.tsx:49
+#: src/components/settings/PrefsForm.tsx:51
 msgid "大きい"
 msgstr "Large"
 
@@ -6021,7 +6025,7 @@ msgstr "Temple or shrine"
 msgid "寺社・経塚・行場などの名前は、辞書には任せず人が読みを入れます。それぞれの編集画面の「名前の読み」で入れてください。"
 msgstr "Names of temples, shrines, sutra mounds and practice places are read by a person, not the dictionary. Type them in 名前の読み on each editing screen."
 
-#: src/components/settings/PrefsForm.tsx:47
+#: src/components/settings/PrefsForm.tsx:49
 msgid "小さい"
 msgstr "Small"
 
@@ -6330,29 +6334,29 @@ msgstr "A well-kept path that is hard to lose, where a fall is unlikely to cause
 msgid "整数で書いてください"
 msgstr "Write a whole number"
 
-#: src/components/settings/PrefsForm.tsx:47
+#: src/components/settings/PrefsForm.tsx:49
 msgid "文字だけ小さくなります。ボタンの大きさは、ふつうのままです。"
 msgstr "Only the text gets smaller. Buttons stay as large as normal."
 
-#: src/components/settings/PrefsForm.tsx:99
+#: src/components/settings/PrefsForm.tsx:101
 msgid "文字とボタンの大きさ"
 msgstr "Size of text and buttons"
 
-#: src/components/settings/PrefsForm.tsx:128
+#: src/components/settings/PrefsForm.tsx:130
 msgid "文字と背景の差を大きくし、線を太く、リンクに下線をつけます。"
 msgstr "Stronger contrast between text and background, thicker lines, underlined links."
 
-#: src/components/settings/PrefsForm.tsx:50
+#: src/components/SiteHeader.tsx:308
+msgid "文字の大きさ、ふりがな、くっきり表示、動き、音、地図の見せ方"
+msgstr "Text size, furigana, high contrast, motion, sound and the map"
+
+#: src/components/settings/PrefsForm.tsx:52
 msgid "文字もボタンも、いちばん大きくなります。"
 msgstr "Text and buttons become as big as they go."
 
-#: src/components/settings/PrefsForm.tsx:49
+#: src/components/settings/PrefsForm.tsx:51
 msgid "文字もボタンも、少し大きくなります。"
 msgstr "Text and buttons become a little bigger."
-
-#: src/components/SiteHeader.tsx:308
-msgid "文字やボタンの大きさ、地図の見せ方"
-msgstr "Size of text and buttons, how the map is shown"
 
 #: src/app/(public)/page.tsx:72
 msgid "文字やボタンの大きさ、地図の見せ方を選べます。"
@@ -8054,7 +8058,7 @@ msgstr "Nothing found."
 msgid "見どころ"
 msgstr "Point of interest"
 
-#: src/components/settings/PrefsForm.tsx:125
+#: src/components/settings/PrefsForm.tsx:127
 msgid "見やすさ"
 msgstr "Readability"
 
@@ -8883,6 +8887,10 @@ msgstr "Hidden"
 #: src/components/admin/CommentInbox.tsx:179
 msgid "非表示にする"
 msgstr "Hide"
+
+#: src/components/settings/PrefsForm.tsx:142
+msgid "音"
+msgstr "Sound"
 
 #: src/components/navigation/NavigationHud.tsx:427
 #: src/components/navigation/NavigationHud.tsx:428

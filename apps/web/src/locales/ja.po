@@ -1021,7 +1021,7 @@ msgstr "あと{0}か所"
 msgid "あと{remaining}か所"
 msgstr "あと{remaining}か所"
 
-#: src/components/settings/PrefsForm.tsx:169
+#: src/components/settings/PrefsForm.tsx:180
 msgid "あとからでも、「メニュー」の「見やすさの設定」で変えられます。"
 msgstr "あとからでも、「メニュー」の「見やすさの設定」で変えられます。"
 
@@ -1030,7 +1030,7 @@ msgstr "あとからでも、「メニュー」の「見やすさの設定」で
 msgid "あとで"
 msgstr "あとで"
 
-#: src/components/settings/PrefsForm.tsx:167
+#: src/components/settings/PrefsForm.tsx:178
 msgid "あとで決める"
 msgstr "あとで決める"
 
@@ -1054,7 +1054,7 @@ msgstr "アドレスをコピー"
 msgid "あなたのことを、少しだけ教えてください。答えなくても大丈夫です。あとから変えられます。"
 msgstr "あなたのことを、少しだけ教えてください。答えなくても大丈夫です。あとから変えられます。"
 
-#: src/components/settings/PrefsForm.tsx:132
+#: src/components/settings/PrefsForm.tsx:134
 msgid "アニメーションや、ふわっと動く表示の量を選びます。"
 msgstr "アニメーションや、ふわっと動く表示の量を選びます。"
 
@@ -1393,7 +1393,7 @@ msgstr "カフェ・喫茶"
 msgid "キャンプ場"
 msgstr "キャンプ場"
 
-#: src/components/settings/PrefsForm.tsx:128
+#: src/components/settings/PrefsForm.tsx:130
 msgid "くっきり表示"
 msgstr "くっきり表示"
 
@@ -2056,7 +2056,7 @@ msgstr "この端末と、アカウントの、どちらのスタンプを残し
 msgid "この端末に {0} 個、アカウントに {1} 個のスタンプがあります。"
 msgstr "この端末に {0} 個、アカウントに {1} 個のスタンプがあります。"
 
-#: src/components/settings/PrefsForm.tsx:58
+#: src/components/settings/PrefsForm.tsx:60
 msgid "この端末には保存しました。つながったときに、アカウントにも保存されます。"
 msgstr "この端末には保存しました。つながったときに、アカウントにも保存されます。"
 
@@ -2126,7 +2126,7 @@ msgstr "この記事の場所"
 msgid "この記事を共有する"
 msgstr "この記事を共有する"
 
-#: src/components/settings/PrefsForm.tsx:159
+#: src/components/settings/PrefsForm.tsx:170
 msgid "この設定ではじめる"
 msgstr "この設定ではじめる"
 
@@ -2459,6 +2459,10 @@ msgstr "スタンプを{0}個、もどしました。（いま {1}個）"
 #: src/app/(public)/restore/page.tsx:18
 msgid "スタンプをもどす"
 msgstr "スタンプをもどす"
+
+#: src/components/settings/PrefsForm.tsx:143
+msgid "スタンプを押したときに音を鳴らします。この端末だけの設定です。"
+msgstr "スタンプを押したときに音を鳴らします。この端末だけの設定です。"
 
 #: src/app/(admin)/admin/page.tsx:79
 msgid "スタンプを押した人"
@@ -2793,7 +2797,7 @@ msgstr "トイレ"
 msgid "トイレ・休憩"
 msgstr "トイレ・休憩"
 
-#: src/components/settings/PrefsForm.tsx:145
+#: src/components/settings/PrefsForm.tsx:156
 msgid "トイレやお店などを、地図を開いたときから表示します。"
 msgstr "トイレやお店などを、地図を開いたときから表示します。"
 
@@ -2829,7 +2833,7 @@ msgstr "どちら側の入口か"
 msgid "トップページの見出しと説明です。"
 msgstr "トップページの見出しと説明です。"
 
-#: src/components/settings/PrefsForm.tsx:50
+#: src/components/settings/PrefsForm.tsx:52
 msgid "とても大きい"
 msgstr "とても大きい"
 
@@ -3151,7 +3155,7 @@ msgstr "フェードだけ"
 msgid "フェリー"
 msgstr "フェリー"
 
-#: src/components/settings/PrefsForm.tsx:48
+#: src/components/settings/PrefsForm.tsx:50
 msgid "ふつう"
 msgstr "ふつう"
 
@@ -3159,7 +3163,7 @@ msgstr "ふつう"
 msgid "ふつうに動く"
 msgstr "ふつうに動く"
 
-#: src/components/settings/PrefsForm.tsx:48
+#: src/components/settings/PrefsForm.tsx:50
 msgid "ふつうの大きさです。"
 msgstr "ふつうの大きさです。"
 
@@ -3213,7 +3217,7 @@ msgstr "プライバシーポリシー"
 msgid "ブラウザのメニュー（⋮ や ⋯）から、「ホーム画面に追加」または「アプリをインストール」をえらびます。"
 msgstr "ブラウザのメニュー（⋮ や ⋯）から、「ホーム画面に追加」または「アプリをインストール」をえらびます。"
 
-#: src/components/settings/PrefsForm.tsx:127
+#: src/components/settings/PrefsForm.tsx:129
 msgid "ふりがなをつける"
 msgstr "ふりがなをつける"
 
@@ -3301,7 +3305,7 @@ msgstr "ページが開かれた回数を、接続元のおおよその地域（
 msgid "ページの先頭へ"
 msgstr "ページの先頭へ"
 
-#: src/components/settings/PrefsForm.tsx:127
+#: src/components/settings/PrefsForm.tsx:129
 msgid "ページの漢字すべてに、読みがなをつけます。"
 msgstr "ページの漢字すべてに、読みがなをつけます。"
 
@@ -3537,7 +3541,7 @@ msgstr "まわりにあるもの"
 msgid "まわりの場所"
 msgstr "まわりの場所"
 
-#: src/components/settings/PrefsForm.tsx:144
+#: src/components/settings/PrefsForm.tsx:155
 msgid "まわりの場所を最初から出す"
 msgstr "まわりの場所を最初から出す"
 
@@ -4429,7 +4433,7 @@ msgstr "保存して次へ"
 #: src/components/admin/useRouteDraft.ts:268
 #: src/components/admin/WaypointEditor.tsx:72
 #: src/components/ProfileSettings.tsx:213
-#: src/components/settings/PrefsForm.tsx:72
+#: src/components/settings/PrefsForm.tsx:74
 msgid "保存しました。"
 msgstr "保存しました。"
 
@@ -4467,7 +4471,7 @@ msgstr "保存しました。次に確認する場所はありません。"
 #: src/components/admin/SiteSettingsForm.tsx:140
 #: src/components/ProfileSettings.tsx:261
 #: src/components/settings/PasskeyManager.tsx:136
-#: src/components/settings/PrefsForm.tsx:173
+#: src/components/settings/PrefsForm.tsx:184
 msgid "保存する"
 msgstr "保存する"
 
@@ -5215,7 +5219,7 @@ msgid "動かす"
 msgstr "動かす"
 
 #: src/components/MotionSelect.tsx:11
-#: src/components/settings/PrefsForm.tsx:131
+#: src/components/settings/PrefsForm.tsx:133
 msgid "動き"
 msgstr "動き"
 
@@ -5681,7 +5685,7 @@ msgstr "地図の使い方"
 msgid "地図の種類"
 msgstr "地図の種類"
 
-#: src/components/settings/PrefsForm.tsx:140
+#: src/components/settings/PrefsForm.tsx:151
 msgid "地図の見せ方"
 msgstr "地図の見せ方"
 
@@ -5890,7 +5894,7 @@ msgstr "変更を捨てますか？"
 msgid "外す"
 msgstr "外す"
 
-#: src/components/settings/PrefsForm.tsx:49
+#: src/components/settings/PrefsForm.tsx:51
 msgid "大きい"
 msgstr "大きい"
 
@@ -6021,7 +6025,7 @@ msgstr "寺社"
 msgid "寺社・経塚・行場などの名前は、辞書には任せず人が読みを入れます。それぞれの編集画面の「名前の読み」で入れてください。"
 msgstr "寺社・経塚・行場などの名前は、辞書には任せず人が読みを入れます。それぞれの編集画面の「名前の読み」で入れてください。"
 
-#: src/components/settings/PrefsForm.tsx:47
+#: src/components/settings/PrefsForm.tsx:49
 msgid "小さい"
 msgstr "小さい"
 
@@ -6330,29 +6334,29 @@ msgstr "整備された道で、迷いにくく、転んでも大きな事故に
 msgid "整数で書いてください"
 msgstr "整数で書いてください"
 
-#: src/components/settings/PrefsForm.tsx:47
+#: src/components/settings/PrefsForm.tsx:49
 msgid "文字だけ小さくなります。ボタンの大きさは、ふつうのままです。"
 msgstr "文字だけ小さくなります。ボタンの大きさは、ふつうのままです。"
 
-#: src/components/settings/PrefsForm.tsx:99
+#: src/components/settings/PrefsForm.tsx:101
 msgid "文字とボタンの大きさ"
 msgstr "文字とボタンの大きさ"
 
-#: src/components/settings/PrefsForm.tsx:128
+#: src/components/settings/PrefsForm.tsx:130
 msgid "文字と背景の差を大きくし、線を太く、リンクに下線をつけます。"
 msgstr "文字と背景の差を大きくし、線を太く、リンクに下線をつけます。"
 
-#: src/components/settings/PrefsForm.tsx:50
+#: src/components/SiteHeader.tsx:308
+msgid "文字の大きさ、ふりがな、くっきり表示、動き、音、地図の見せ方"
+msgstr "文字の大きさ、ふりがな、くっきり表示、動き、音、地図の見せ方"
+
+#: src/components/settings/PrefsForm.tsx:52
 msgid "文字もボタンも、いちばん大きくなります。"
 msgstr "文字もボタンも、いちばん大きくなります。"
 
-#: src/components/settings/PrefsForm.tsx:49
+#: src/components/settings/PrefsForm.tsx:51
 msgid "文字もボタンも、少し大きくなります。"
 msgstr "文字もボタンも、少し大きくなります。"
-
-#: src/components/SiteHeader.tsx:308
-msgid "文字やボタンの大きさ、地図の見せ方"
-msgstr "文字やボタンの大きさ、地図の見せ方"
 
 #: src/app/(public)/page.tsx:72
 msgid "文字やボタンの大きさ、地図の見せ方を選べます。"
@@ -8054,7 +8058,7 @@ msgstr "見つかりませんでした。"
 msgid "見どころ"
 msgstr "見どころ"
 
-#: src/components/settings/PrefsForm.tsx:125
+#: src/components/settings/PrefsForm.tsx:127
 msgid "見やすさ"
 msgstr "見やすさ"
 
@@ -8883,6 +8887,10 @@ msgstr "非表示"
 #: src/components/admin/CommentInbox.tsx:179
 msgid "非表示にする"
 msgstr "非表示にする"
+
+#: src/components/settings/PrefsForm.tsx:142
+msgid "音"
+msgstr "音"
 
 #: src/components/navigation/NavigationHud.tsx:427
 #: src/components/navigation/NavigationHud.tsx:428
