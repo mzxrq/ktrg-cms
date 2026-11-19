@@ -202,8 +202,9 @@ export function SiteHeader({
         >
           {/* From 768 px the drawer has the sidebar's frame, which stays put while the menu scrolls inside it. */}
           {panelGround("md:block")}
-          <div className="md:h-full md:overflow-y-auto md:overscroll-contain md:[scrollbar-width:none] wide:[scrollbar-width:thin]">
-          <div className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5 md:p-[29px]">
+          {/* The menu scrolls inside the frame only, fading out just inside its lines. */}
+          <div className="md:absolute md:inset-[14px] md:overflow-y-auto md:overscroll-contain md:[scrollbar-width:none] md:[mask-image:linear-gradient(transparent,#000_1.5rem,#000_calc(100%-1.5rem),transparent)] wide:[scrollbar-width:thin]">
+          <div className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5 md:px-[15px] md:py-[1.75rem]">
             {/* On a desktop the drawer has its own close button at the top; on a tablet the menu button turns into it. */}
             <div className="flex items-center justify-between gap-2 md:hidden wide:flex wide:justify-end">
               <h1 className="font-serif text-3xl font-bold text-accent md:hidden">{t`メニュー`}</h1>

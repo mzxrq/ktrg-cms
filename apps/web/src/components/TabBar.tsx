@@ -50,6 +50,9 @@ function subscribeFold(listener: () => void) {
 export const panelGround = (show: string) => (
   <span aria-hidden="true" className={`pointer-events-none absolute inset-2 -z-10 hidden border-[3px] border-double border-on-night/35 ${show}`}>
     <span className="pattern-shippo pattern-on-night block size-full" />
+    {/* The top and bottom lines open in the middle (2026-11-19, the user's idea): an open frame, not a box. */}
+    <span className="absolute -top-[3px] left-1/2 h-[3px] w-1/3 -translate-x-1/2 bg-night" />
+    <span className="absolute -bottom-[3px] left-1/2 h-[3px] w-1/3 -translate-x-1/2 bg-night" />
   </span>
 );
 
