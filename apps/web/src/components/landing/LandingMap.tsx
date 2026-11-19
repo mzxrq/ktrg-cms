@@ -69,7 +69,7 @@ export function LandingMap({ routes, look = defaultMapSettings }: { routes: Rout
       const vertical = b.name?.lang === "ja";
       const nameLen = Math.min(NAME_MAX_PX, chars * (vertical ? 16 : 8.5));
       const at = { x: (b.cx - left) * scale, y: (b.cy - top) * scale * Math.cos((TILT_DEG * Math.PI) / 180), circle: CIRCLE_PX };
-      return vertical ? { ...at, width: CIRCLE_PX + 24, height: Math.max(CIRCLE_PX, nameLen + 14) } : { ...at, width: CIRCLE_PX + nameLen + 14, height: CIRCLE_PX };
+      return vertical ? { ...at, width: CIRCLE_PX + 20, height: Math.max(CIRCLE_PX, nameLen) } : { ...at, width: CIRCLE_PX + nameLen + 14, height: CIRCLE_PX };
     }),
   );
 
@@ -108,9 +108,9 @@ export function LandingMap({ routes, look = defaultMapSettings }: { routes: Rout
               style={{ left: `${((b.cx - left) / W) * 100}%`, top: `${((b.cy - top) / H) * 100}%`, transform: `rotateX(-${TILT_DEG}deg)` }}
             >
               <span
-                className={`absolute bottom-0 flex gap-0.5 whitespace-nowrap rounded-full @[42rem]:bg-paper/90 @[42rem]:shadow-[0_1px_4px_rgb(0_0_0/0.25)] ${
-                  b.name?.lang === "ja" ? "items-end @[42rem]:pt-2" : `items-center ${sides[i] === "left" ? "@[42rem]:pl-2.5" : "@[42rem]:pr-2.5"}`
-                } ${sides[i] === "left" ? "right-0 flex-row-reverse translate-x-3 @[42rem]:translate-x-3.5" : "left-0 -translate-x-3 @[42rem]:-translate-x-3.5"}`}
+                className={`absolute bottom-0 flex gap-0.5 whitespace-nowrap ${b.name?.lang === "ja" ? "items-end" : "items-center"} ${
+                  sides[i] === "left" ? "right-0 flex-row-reverse translate-x-3 @[42rem]:translate-x-3.5" : "left-0 -translate-x-3 @[42rem]:-translate-x-3.5"
+                }`}
               >
                 <span className="grid size-6 shrink-0 place-items-center rounded-full border-2 border-paper bg-accent text-xs font-bold text-paper @[42rem]:size-7 @[42rem]:text-sm">
                   {b.order}
@@ -118,7 +118,7 @@ export function LandingMap({ routes, look = defaultMapSettings }: { routes: Rout
                 {b.name && (
                   <span
                     lang={b.name.lang}
-                    className={`hidden truncate text-base font-bold text-ink @[42rem]:block ${b.name.lang === "ja" ? "max-h-[7em] pb-1 [writing-mode:vertical-rl]" : "max-w-[7em]"}`}
+                    className={`hidden truncate text-base font-bold text-ink [-webkit-text-stroke:4px_var(--color-paper)] [paint-order:stroke_fill] @[42rem]:block ${b.name.lang === "ja" ? "max-h-[7em] [writing-mode:vertical-rl]" : "max-w-[7em]"}`}
                   >
                     {b.name.text}
                   </span>
@@ -130,6 +130,8 @@ export function LandingMap({ routes, look = defaultMapSettings }: { routes: Rout
         {/* The far edge melts into the page, and the sides and near edge meet it softly. */}
         <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1/3 bg-linear-to-b from-paper to-transparent" />
         <span aria-hidden="true" className="absolute inset-x-0 -bottom-px h-1/4 bg-linear-to-t from-paper to-transparent" />
+        <span aria-hidden="true" className="absolute inset-y-0 -left-px w-[10%] bg-linear-to-r from-paper to-transparent" />
+        <span aria-hidden="true" className="absolute inset-y-0 -right-px w-[10%] bg-linear-to-l from-paper to-transparent" />
         <a href={gsiTileListUrl} target="_blank" rel="noopener noreferrer" className="absolute bottom-1 right-2 rounded bg-paper/85 px-1 text-sm text-muted underline">
           <Trans>国土地理院（地理院タイル）</Trans>
         </a>
