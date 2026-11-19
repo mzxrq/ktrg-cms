@@ -60,13 +60,16 @@ export function LandingMap({ routes, look = defaultMapSettings }: { routes: Rout
     cx: b.ring.reduce((n, p) => n + x(p.lng), 0) / b.ring.length,
     cy: b.ring.reduce((n, p) => n + y(p.lat), 0) / b.ring.length,
   }));
-  // Each name runs to the side where it covers the fewest other labels, judged on the tilted picture as a desktop shows it.
+  // Each name sits on the side where it covers the fewest other labels, judged on the tilted picture as a desktop shows it.
+  // A Japanese name stands as a column beside its number (narrow, so neighbours fit side by side); English runs across.
   const scale = SCREEN_W / W;
   const sides = labelSides(
     labels.map((b) => {
       const chars = b.name?.text.length ?? 0;
-      const nameW = Math.min(NAME_MAX_PX, chars * (b.name?.lang === "en" ? 8.5 : 16));
-      return { x: (b.cx - left) * scale, y: (b.cy - top) * scale * Math.cos((TILT_DEG * Math.PI) / 180), width: CIRCLE_PX + nameW + 14, height: CIRCLE_PX, circle: CIRCLE_PX };
+      const vertical = b.name?.lang === "ja";
+      const nameLen = Math.min(NAME_MAX_PX, chars * (vertical ? 16 : 8.5));
+      const at = { x: (b.cx - left) * scale, y: (b.cy - top) * scale * Math.cos((TILT_DEG * Math.PI) / 180), circle: CIRCLE_PX };
+      return vertical ? { ...at, width: CIRCLE_PX + 24, height: Math.max(CIRCLE_PX, nameLen + 14) } : { ...at, width: CIRCLE_PX + nameLen + 14, height: CIRCLE_PX };
     }),
   );
 
@@ -105,15 +108,18 @@ export function LandingMap({ routes, look = defaultMapSettings }: { routes: Rout
               style={{ left: `${((b.cx - left) / W) * 100}%`, top: `${((b.cy - top) / H) * 100}%`, transform: `rotateX(-${TILT_DEG}deg)` }}
             >
               <span
-                className={`absolute bottom-0 flex items-center gap-1 whitespace-nowrap rounded-full @[42rem]:bg-paper/90 @[42rem]:shadow-[0_1px_4px_rgb(0_0_0/0.25)] ${
-                  sides[i] === "left" ? "right-0 flex-row-reverse translate-x-3 @[42rem]:translate-x-3.5 @[42rem]:pl-2.5" : "left-0 -translate-x-3 @[42rem]:-translate-x-3.5 @[42rem]:pr-2.5"
-                }`}
+                className={`absolute bottom-0 flex gap-0.5 whitespace-nowrap rounded-full @[42rem]:bg-paper/90 @[42rem]:shadow-[0_1px_4px_rgb(0_0_0/0.25)] ${
+                  b.name?.lang === "ja" ? "items-end @[42rem]:pt-2" : `items-center ${sides[i] === "left" ? "@[42rem]:pl-2.5" : "@[42rem]:pr-2.5"}`
+                } ${sides[i] === "left" ? "right-0 flex-row-reverse translate-x-3 @[42rem]:translate-x-3.5" : "left-0 -translate-x-3 @[42rem]:-translate-x-3.5"}`}
               >
                 <span className="grid size-6 shrink-0 place-items-center rounded-full border-2 border-paper bg-accent text-xs font-bold text-paper @[42rem]:size-7 @[42rem]:text-sm">
                   {b.order}
                 </span>
                 {b.name && (
-                  <span lang={b.name.lang} className="hidden max-w-[7em] truncate text-base font-bold text-ink @[42rem]:block">
+                  <span
+                    lang={b.name.lang}
+                    className={`hidden truncate text-base font-bold text-ink @[42rem]:block ${b.name.lang === "ja" ? "max-h-[7em] pb-1 [writing-mode:vertical-rl]" : "max-w-[7em]"}`}
+                  >
                     {b.name.text}
                   </span>
                 )}
