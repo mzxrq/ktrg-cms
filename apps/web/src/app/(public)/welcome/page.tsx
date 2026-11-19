@@ -22,7 +22,7 @@ export default async function WelcomePage({ searchParams }: { searchParams: Prom
 
   return (
     <div className="page-narrow flex flex-col gap-6 px-4 pt-2">
-      <WelcomeFlow initial={prefs} signedIn={viewer.signedIn} next={next} askAbout={askAbout} askPassword={askAbout && viewer.role === "participant" && viewer.email !== null} />
+      <WelcomeFlow initial={prefs} signedIn={viewer.signedIn} next={next} askAbout={askAbout} askPassword={askAbout && viewer.role === "participant" && viewer.email !== null} name={viewer.signedIn ? viewer.name : null} />
     </div>
   );
 }

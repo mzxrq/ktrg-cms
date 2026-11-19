@@ -806,7 +806,7 @@ msgid "80代"
 msgstr "80s"
 
 #: src/components/settings/PasswordMethod.tsx:86
-#: src/components/settings/WelcomeFlow.tsx:118
+#: src/components/settings/WelcomeFlow.tsx:123
 msgid "8文字以上にしてください。記号はなくてもかまいません。"
 msgstr "Use at least 8 characters. Symbols are not needed."
 
@@ -1054,7 +1054,7 @@ msgstr "Later"
 msgid "あとで決める"
 msgstr "Decide later"
 
-#: src/components/settings/WelcomeFlow.tsx:156
+#: src/components/settings/WelcomeFlow.tsx:168
 msgid "あとで答える"
 msgstr "Answer later"
 
@@ -1070,7 +1070,7 @@ msgstr "The address may be wrong, or the page is not published."
 msgid "アドレスをコピー"
 msgstr "Copy the address"
 
-#: src/components/settings/WelcomeFlow.tsx:142
+#: src/components/settings/WelcomeFlow.tsx:147
 msgid "あなたのことを、少しだけ教えてください。答えなくても大丈夫です。あとから変えられます。"
 msgstr "Tell us a little about yourself. You don't have to answer, and you can change it later."
 
@@ -1285,6 +1285,7 @@ msgstr "Where from"
 #: src/components/auth/RegisterFlow.tsx:71
 #: src/components/ProfileSettings.tsx:147
 #: src/components/ProfileSettings.tsx:256
+#: src/components/settings/WelcomeFlow.tsx:152
 msgid "お名前"
 msgstr "Your name"
 
@@ -2347,7 +2348,7 @@ msgid "しおりと案内"
 msgstr "Bookmarks and guides"
 
 #: src/components/landing/Journey.tsx:40
-#: src/components/settings/WelcomeFlow.tsx:107
+#: src/components/settings/WelcomeFlow.tsx:112
 msgid "スキップ"
 msgstr "Skip"
 
@@ -2754,7 +2755,7 @@ msgstr "To the next place"
 
 #: src/components/auth/RegisterFlow.tsx:142
 #: src/components/map/MapHelp.tsx:55
-#: src/components/settings/WelcomeFlow.tsx:153
+#: src/components/settings/WelcomeFlow.tsx:165
 msgid "つぎへ"
 msgstr "Next"
 
@@ -3030,7 +3031,7 @@ msgstr "About {n} min by bus"
 
 #: src/components/auth/LoginFlow.tsx:81
 #: src/components/settings/PasswordMethod.tsx:68
-#: src/components/settings/WelcomeFlow.tsx:118
+#: src/components/settings/WelcomeFlow.tsx:123
 msgid "パスワード"
 msgstr "Password"
 
@@ -3038,7 +3039,7 @@ msgstr "Password"
 msgid "パスワードでログイン"
 msgstr "Log in with a password"
 
-#: src/components/settings/WelcomeFlow.tsx:125
+#: src/components/settings/WelcomeFlow.tsx:130
 msgid "パスワードなしで続ける"
 msgstr "Continue without a password"
 
@@ -3068,7 +3069,7 @@ msgid "パスワードを保存しました。確認のメールを送りまし�
 msgstr "Your password is saved. We sent you a confirmation email."
 
 #: src/components/settings/PasswordMethod.tsx:88
-#: src/components/settings/WelcomeFlow.tsx:122
+#: src/components/settings/WelcomeFlow.tsx:127
 msgid "パスワードを保存する"
 msgstr "Save password"
 
@@ -3080,7 +3081,7 @@ msgstr "Change password"
 msgid "パスワードを忘れたときは、メールでログイン"
 msgstr "Forgot your password? Log in with email"
 
-#: src/components/settings/WelcomeFlow.tsx:116
+#: src/components/settings/WelcomeFlow.tsx:121
 msgid "パスワードを決めますか？"
 msgstr "Would you like to set a password?"
 
@@ -4064,6 +4065,10 @@ msgstr "Log in"
 #: src/components/useErrorMessages.ts:32
 msgid "ログインできませんでした。この端末で顔・指紋のログインを設定していないときは、メールでログインしてください。"
 msgstr "Could not log in. If you have not set up face or fingerprint login on this device, log in with email."
+
+#: src/components/settings/WelcomeFlow.tsx:154
+msgid "ログインに使ったサービスの名前を入れました。コメントを書くと、ほかの方にも見えます。変えても、消してもかまいません。"
+msgstr "We filled in the name from the service you logged in with. Others see it when you write a comment. You can change or clear it."
 
 #: src/app/(public)/settings/passkeys/page.tsx:12
 #: src/app/(public)/settings/passkeys/page.tsx:26
@@ -6941,7 +6946,7 @@ msgstr "Drinking water"
 msgid "水曜日"
 msgstr "Wednesday"
 
-#: src/components/settings/WelcomeFlow.tsx:117
+#: src/components/settings/WelcomeFlow.tsx:122
 msgid "決めなくても大丈夫です。決めておくと、メールを待たずにログインできます。あとから「ログインの方法」でも決められます。"
 msgstr "You do not have to. With one, you can log in without waiting for an email. You can also set one later in Ways to log in."
 
@@ -7193,8 +7198,8 @@ msgstr "Up {up} m"
 msgid "登り（獲得標高）"
 msgstr "Climb (elevation gain)"
 
-#: src/components/settings/WelcomeFlow.tsx:141
-#: src/components/settings/WelcomeFlow.tsx:166
+#: src/components/settings/WelcomeFlow.tsx:146
+#: src/components/settings/WelcomeFlow.tsx:178
 msgid "登録ありがとうございます"
 msgstr "Thank you for registering"
 
@@ -8140,7 +8145,7 @@ msgstr "Readability"
 msgid "見やすさの設定"
 msgstr "Display settings"
 
-#: src/components/settings/WelcomeFlow.tsx:167
+#: src/components/settings/WelcomeFlow.tsx:179
 msgid "見やすさを、あなたに合わせましょう。大きさは、選ぶとすぐに変わります。"
 msgstr "Let us make things easy for you to see. The size changes as soon as you choose it."
 
@@ -8148,7 +8153,7 @@ msgstr "Let us make things easy for you to see. The size changes as soon as you 
 msgid "見やすさを設定しませんか"
 msgstr "Set up how things look?"
 
-#: src/components/settings/WelcomeFlow.tsx:166
+#: src/components/settings/WelcomeFlow.tsx:178
 msgid "見やすさを選びましょう"
 msgstr "Choose how it looks"
 

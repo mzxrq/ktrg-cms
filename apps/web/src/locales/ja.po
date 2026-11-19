@@ -806,7 +806,7 @@ msgid "80代"
 msgstr "80代"
 
 #: src/components/settings/PasswordMethod.tsx:86
-#: src/components/settings/WelcomeFlow.tsx:118
+#: src/components/settings/WelcomeFlow.tsx:123
 msgid "8文字以上にしてください。記号はなくてもかまいません。"
 msgstr "8文字以上にしてください。記号はなくてもかまいません。"
 
@@ -1054,7 +1054,7 @@ msgstr "あとで"
 msgid "あとで決める"
 msgstr "あとで決める"
 
-#: src/components/settings/WelcomeFlow.tsx:156
+#: src/components/settings/WelcomeFlow.tsx:168
 msgid "あとで答える"
 msgstr "あとで答える"
 
@@ -1070,7 +1070,7 @@ msgstr "アドレスがちがうか、ページが公開されていません。
 msgid "アドレスをコピー"
 msgstr "アドレスをコピー"
 
-#: src/components/settings/WelcomeFlow.tsx:142
+#: src/components/settings/WelcomeFlow.tsx:147
 msgid "あなたのことを、少しだけ教えてください。答えなくても大丈夫です。あとから変えられます。"
 msgstr "あなたのことを、少しだけ教えてください。答えなくても大丈夫です。あとから変えられます。"
 
@@ -1285,6 +1285,7 @@ msgstr "お住まい"
 #: src/components/auth/RegisterFlow.tsx:71
 #: src/components/ProfileSettings.tsx:147
 #: src/components/ProfileSettings.tsx:256
+#: src/components/settings/WelcomeFlow.tsx:152
 msgid "お名前"
 msgstr "お名前"
 
@@ -2347,7 +2348,7 @@ msgid "しおりと案内"
 msgstr "しおりと案内"
 
 #: src/components/landing/Journey.tsx:40
-#: src/components/settings/WelcomeFlow.tsx:107
+#: src/components/settings/WelcomeFlow.tsx:112
 msgid "スキップ"
 msgstr "スキップ"
 
@@ -2754,7 +2755,7 @@ msgstr "つぎの場所まで"
 
 #: src/components/auth/RegisterFlow.tsx:142
 #: src/components/map/MapHelp.tsx:55
-#: src/components/settings/WelcomeFlow.tsx:153
+#: src/components/settings/WelcomeFlow.tsx:165
 msgid "つぎへ"
 msgstr "つぎへ"
 
@@ -3030,7 +3031,7 @@ msgstr "バスで約{n}分"
 
 #: src/components/auth/LoginFlow.tsx:81
 #: src/components/settings/PasswordMethod.tsx:68
-#: src/components/settings/WelcomeFlow.tsx:118
+#: src/components/settings/WelcomeFlow.tsx:123
 msgid "パスワード"
 msgstr "パスワード"
 
@@ -3038,7 +3039,7 @@ msgstr "パスワード"
 msgid "パスワードでログイン"
 msgstr "パスワードでログイン"
 
-#: src/components/settings/WelcomeFlow.tsx:125
+#: src/components/settings/WelcomeFlow.tsx:130
 msgid "パスワードなしで続ける"
 msgstr "パスワードなしで続ける"
 
@@ -3068,7 +3069,7 @@ msgid "パスワードを保存しました。確認のメールを送りまし�
 msgstr "パスワードを保存しました。確認のメールを送りました。"
 
 #: src/components/settings/PasswordMethod.tsx:88
-#: src/components/settings/WelcomeFlow.tsx:122
+#: src/components/settings/WelcomeFlow.tsx:127
 msgid "パスワードを保存する"
 msgstr "パスワードを保存する"
 
@@ -3080,7 +3081,7 @@ msgstr "パスワードを変える"
 msgid "パスワードを忘れたときは、メールでログイン"
 msgstr "パスワードを忘れたときは、メールでログイン"
 
-#: src/components/settings/WelcomeFlow.tsx:116
+#: src/components/settings/WelcomeFlow.tsx:121
 msgid "パスワードを決めますか？"
 msgstr "パスワードを決めますか？"
 
@@ -4064,6 +4065,10 @@ msgstr "ログインする"
 #: src/components/useErrorMessages.ts:32
 msgid "ログインできませんでした。この端末で顔・指紋のログインを設定していないときは、メールでログインしてください。"
 msgstr "ログインできませんでした。この端末で顔・指紋のログインを設定していないときは、メールでログインしてください。"
+
+#: src/components/settings/WelcomeFlow.tsx:154
+msgid "ログインに使ったサービスの名前を入れました。コメントを書くと、ほかの方にも見えます。変えても、消してもかまいません。"
+msgstr "ログインに使ったサービスの名前を入れました。コメントを書くと、ほかの方にも見えます。変えても、消してもかまいません。"
 
 #: src/app/(public)/settings/passkeys/page.tsx:12
 #: src/app/(public)/settings/passkeys/page.tsx:26
@@ -6941,7 +6946,7 @@ msgstr "水場"
 msgid "水曜日"
 msgstr "水曜日"
 
-#: src/components/settings/WelcomeFlow.tsx:117
+#: src/components/settings/WelcomeFlow.tsx:122
 msgid "決めなくても大丈夫です。決めておくと、メールを待たずにログインできます。あとから「ログインの方法」でも決められます。"
 msgstr "決めなくても大丈夫です。決めておくと、メールを待たずにログインできます。あとから「ログインの方法」でも決められます。"
 
@@ -7193,8 +7198,8 @@ msgstr "登り {up}m"
 msgid "登り（獲得標高）"
 msgstr "登り（獲得標高）"
 
-#: src/components/settings/WelcomeFlow.tsx:141
-#: src/components/settings/WelcomeFlow.tsx:166
+#: src/components/settings/WelcomeFlow.tsx:146
+#: src/components/settings/WelcomeFlow.tsx:178
 msgid "登録ありがとうございます"
 msgstr "登録ありがとうございます"
 
@@ -8140,7 +8145,7 @@ msgstr "見やすさ"
 msgid "見やすさの設定"
 msgstr "見やすさの設定"
 
-#: src/components/settings/WelcomeFlow.tsx:167
+#: src/components/settings/WelcomeFlow.tsx:179
 msgid "見やすさを、あなたに合わせましょう。大きさは、選ぶとすぐに変わります。"
 msgstr "見やすさを、あなたに合わせましょう。大きさは、選ぶとすぐに変わります。"
 
@@ -8148,7 +8153,7 @@ msgstr "見やすさを、あなたに合わせましょう。大きさは、選
 msgid "見やすさを設定しませんか"
 msgstr "見やすさを設定しませんか"
 
-#: src/components/settings/WelcomeFlow.tsx:166
+#: src/components/settings/WelcomeFlow.tsx:178
 msgid "見やすさを選びましょう"
 msgstr "見やすさを選びましょう"
 
