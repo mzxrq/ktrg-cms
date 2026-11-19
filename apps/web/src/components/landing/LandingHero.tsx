@@ -61,9 +61,10 @@ export function LandingHero({ slides, locale, line, title, children, bare = fals
         </HeroSlides>
         {bare ? <ScrollCue /> : null}
         {/* The first screen has no language question any more: the language sits at the top left of the photo (the photo's progress
-            dots are top right), as one drop-down rather than two buttons so it keeps clear of the vertical line (2026-11-17). */}
+            dots are top right), as one drop-down rather than two buttons so it keeps clear of the vertical line (2026-11-17). On a tablet
+            it lines up with the メニュー button (same top and height). */}
         {bare ? (
-          <div className="absolute left-3 top-[calc(0.75rem+var(--top-clear))] z-10">
+          <div className="absolute left-3 top-[calc(0.75rem+var(--top-clear))] z-10 md:top-[calc(0.25rem+var(--top-clear))] md:[&_select]:min-h-11">
             <LocaleSelect />
           </div>
         ) : null}

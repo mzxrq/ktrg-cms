@@ -7,14 +7,12 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "re
 import { useLingui } from "@lingui/react/macro";
 import { logOut } from "@/lib/auth-client";
 import { clearSavedPages } from "@/lib/offline-pack";
-import { BookmarkIcon, ChevronIcon, DocumentIcon, ChevronLeftIcon, CloseIcon, GearIcon, HomeIcon, MapIcon, RouteIcon, StampIcon } from "./icons";
+import { BookmarkIcon, ChevronIcon, DocumentIcon, ShopIcon, ChevronLeftIcon, CloseIcon, GearIcon, HomeIcon, MapIcon, RouteIcon, StampIcon } from "./icons";
 import { panelGround } from "./TabBar";
 import { WIDE_QUERY } from "@/lib/screen";
-import { QuickActions } from "./QuickActions";
-import type { Prefs } from "@/lib/prefs";
 import { ProfileCard, type ProfileCardProps } from "./ProfileCard";
 import { KatsuragiLogo } from "./KatsuragiLogo";
-import { LocaleSelect } from "./LocaleSwitcher";
+import { LocaleSelect, LocaleSwitcher } from "./LocaleSwitcher";
 import { foundationEn, foundationJa } from "@/lib/terms-content";
 import { useMenu } from "./MenuProvider";
 import { usePresence } from "@/lib/motion";
@@ -49,7 +47,6 @@ export function SiteHeader({
   staff = false,
   profile,
   locale,
-  prefs,
   sample,
 }: {
   signedIn: boolean;
@@ -57,7 +54,6 @@ export function SiteHeader({
   staff?: boolean;
   profile: Omit<ProfileCardProps, "locale">;
   locale: string;
-  prefs: Prefs;
   sample: boolean;
 }) {
   const { t } = useLingui();
@@ -190,6 +186,18 @@ export function SiteHeader({
           {/* On a tablet this corner is the menu button's (TabBar), so it stays empty. */}
           <span className="justify-self-end md:invisible">{open ? <LocaleSelect /> : sample ? <SampleNoticeButton /> : null}</span>
         </div>
+        {/* The rally page's バッジ and ? on a tablet: in the bar, just left of the メニュー button and at its height (user, 2026-11-19).
+            Drawn by the bar itself, so they never depend on where the page's content is laid out. */}
+        {/^\/rallies\/?$/.test(pathname) ? (
+          <div className="absolute right-[11rem] top-1 hidden items-center gap-2 md:flex wide:hidden">
+            <Link href="/badges" className="inline-flex min-h-11 items-center rounded-full bg-surface px-4 text-lg font-bold text-accent">
+              {t`バッジ`}
+            </Link>
+            <Link href="/guide" aria-label={t`遊び方`} className="inline-flex size-11 items-center justify-center rounded-full bg-surface text-xl font-bold text-accent">
+              ?
+            </Link>
+          </div>
+        ) : null}
       </div>
 
       {panelMounted ? (
@@ -198,7 +206,7 @@ export function SiteHeader({
           id="site-menu"
           // A link to the page we are already on does not change the path, so close here to show the tap worked.
           onClick={(e) => e.target instanceof Element && e.target.closest("a") && setOpen(false)}
-          className="rail-night fixed inset-0 overflow-y-auto overscroll-contain bg-paper z-20 pb-28 pt-[var(--top-clear)] md:overflow-hidden md:bg-night md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
+          className="fixed inset-0 overflow-y-auto overscroll-contain bg-paper z-20 pb-28 pt-[var(--top-clear)] md:overflow-hidden md:bg-rail md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
         >
           {/* From 768 px the drawer has the sidebar's frame, which stays put while the menu scrolls inside it. */}
           {panelGround("md:block")}
@@ -268,10 +276,11 @@ export function SiteHeader({
               )}
             </MenuGroup>
 
-            <MenuGroup title={t`しおりと読みもの`}>
+            <MenuGroup title={t`しおりと案内`}>
               <MenuLinks>
                 <MenuLink href="/bookmarks" icon={<BookmarkIcon />} label={t`ブックマーク`} />
                 <MenuLink href="/blog" icon={<DocumentIcon />} label={t`ブログ`} />
+                <MenuLink href="/places" icon={<ShopIcon />} label={t`お店と施設`} />
               </MenuLinks>
             </MenuGroup>
 
@@ -279,28 +288,31 @@ export function SiteHeader({
               <div className="flex flex-col gap-2">
                 {/* One light list, the same rows as the settings page: the words on the left, the switch or the choice on the right. */}
                 <div className="divide-y divide-line/40 overflow-hidden rounded-lg bg-surface">
-                  <QuickActions prefs={prefs} signedIn={signedIn} />
                   <div className="tap-target flex items-center gap-4 px-4 py-3">
                     <span className="min-w-0 flex-1 text-lg font-bold">{t`テーマ`}</span>
                     <ThemeSwitcher plain />
                   </div>
-                  <div className="menu-locale tap-target flex items-center gap-4 px-4 py-3">
-                    <span className="min-w-0 flex-1 text-lg font-bold">{t`言語`}</span>
-                    <LocaleSelect plain />
+                  {/* Both languages written out, each in its own script, so a visitor who landed on the Japanese site can spot
+                      "English" without opening anything (user's friend, 2026-11-19). */}
+                  <div className="menu-locale tap-target flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+                    <span className="min-w-0 flex-1 text-lg font-bold">
+                      {t`言語`}
+                      {locale === "ja" ? <span lang="en" className="ml-2 font-normal text-muted">Language</span> : null}
+                    </span>
+                    <LocaleSwitcher />
                   </div>
                 </div>
                 <MenuLinks>
                   <MenuLink href="/settings" label={t`見やすさの設定`} />
                 </MenuLinks>
-                <p className="text-base text-muted">{t`文字やボタンの大きさ、地図の見せ方`}</p>
+                <p className="text-base text-muted">{t`文字の大きさ、ふりがな、くっきり表示、動き、音、地図の見せ方`}</p>
               </div>
             </MenuGroup>
 
-            {/* From 1024 px these links are always in the sidebar's footer, so the menu leaves them out. */}
-            <div className="flex flex-col gap-4 wide:hidden">
+            {/* From 768 px these links are in the page footer (a tablet has the room; user, 2026-11-19), so the menu leaves them out. */}
+            <div className="flex flex-col gap-4 md:hidden">
               <MenuGroup title={t`このアプリについて`}>
                 <MenuLinks>
-                  <MenuLink href="/places" label={t`お店と施設`} />
                   <MenuLink href="/faq" label={t`よくあるご質問`} />
                   <MenuLink href="/terms" label={t`利用規約`} />
                   <MenuLink href="/privacy" label={t`プライバシーポリシー`} />

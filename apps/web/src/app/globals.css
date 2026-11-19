@@ -45,6 +45,9 @@
   --color-lift: #ffffff; /* a chosen pill (prefecture tabs): white on the light page, the panel tone on the dark one */
   --color-night: #1f1b1a; /* the dark band of a reading page (the ridge at night): the ink colour */
   --color-on-night: #fcfaf5; /* the words on the dark band */
+  --color-rail: #fcfaf5; /* the sidebar and menu panel: the page in light, night in dark (follows the theme, 2026-11-19) */
+  --color-on-rail: #1f1b1a; /* its frame, pattern and logo words */
+  --color-rail-mark: #cc6256; /* the logo's red part on the panel: brand in light, the words colour in dark */
   --color-sea: #1b3140; /* the sea (the story's first chapter): deep blue-slate, so the walk that starts at the shore reads as water, not night */
   --color-on-sea: #fcfaf5;
   --color-brand: #cc6256; /* the brand red: action buttons, icons, the bar beside headings. Not for text on white, not for a selected state (that is ink) */
@@ -211,6 +214,9 @@
     --color-lift: #29241f;
     --color-night: #0b0908; /* the dark band stays night: deeper than the page (墨, sumi ink) */
     --color-on-night: #ebe2d0;
+    --color-rail: #0b0908;
+    --color-on-rail: #ebe2d0;
+    --color-rail-mark: #ebe2d0;
     --color-sea: #0e1c26; /* the sea (the story's first chapter): deep blue-slate, so the walk that starts at the shore reads as water, not night */
     --color-on-sea: #ebe2d0;
     --color-brand: #cc6256; /* the same brand red */
@@ -250,6 +256,9 @@
   --color-lift: #29241f;
   --color-night: #0b0908;
   --color-on-night: #ebe2d0;
+  --color-rail: #0b0908;
+  --color-on-rail: #ebe2d0;
+  --color-rail-mark: #ebe2d0;
   --color-sea: #0e1c26; /* the sea (the story's first chapter): deep blue-slate, so the walk that starts at the shore reads as water, not night */
   --color-on-sea: #ebe2d0;
   --color-brand: #cc6256; /* the same brand red */
@@ -283,6 +292,9 @@
   --color-lift: #ffffff; /* a chosen pill (prefecture tabs): white on the light page, the panel tone on the dark one */
   --color-night: #1f1b1a; /* the dark band of a reading page (the ridge at night): the ink colour */
   --color-on-night: #fcfaf5; /* the words on the dark band */
+  --color-rail: #fcfaf5; /* the sidebar and menu panel: the page in light, night in dark (follows the theme, 2026-11-19) */
+  --color-on-rail: #1f1b1a; /* its frame, pattern and logo words */
+  --color-rail-mark: #cc6256; /* the logo's red part on the panel: brand in light, the words colour in dark */
   --color-sea: #1b3140; /* the sea (the story's first chapter): deep blue-slate, so the walk that starts at the shore reads as water, not night */
   --color-on-sea: #fcfaf5;
   --color-brand: #cc6256; /* the brand red: action buttons, icons, the bar beside headings. Not for text on white, not for a selected state (that is ink) */
@@ -675,68 +687,11 @@ html[data-size="xlarge"] {
 }
 
 /* 七宝 on the night ground (a place with no photo): in the words' colour instead of the brand red, which would not show. */
+.pattern-on-rail::before {
+  background-color: var(--color-on-rail);
+}
 .pattern-on-night::before {
   background-color: var(--color-on-night);
-}
-
-/*
- * The sidebar and its menu drawer as one night panel, dark in both themes (2026-11-19: visitors did not see the side menu
- * as a menu). Inside it the tokens are the dark palette, so every control in it (tabs, the chosen tab, toggles, buttons,
- * focus ring, language) looks as it does in dark mode. From `md:` (the tablet rail too); a phone's tab bar and menu keep
- * the page's palette. The values are the dark palette's; contrast.test.ts fails if they drift apart. The background is
- * set where the panel is drawn (TabBar.tsx, SiteHeader.tsx) with `bg-night`.
- */
-.rail-night {
-  @variant md {
-    color: var(--color-ink);
-    --color-ink: #ebe2d0;
-    --color-muted: #c0af96;
-    --color-paper: #1e1a17;
-    --check-tick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%231e1a17' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    --color-surface: #29241f;
-    --color-lift: #29241f;
-    --color-night: #0b0908;
-    --color-on-night: #ebe2d0;
-    --color-sea: #0e1c26;
-    --color-on-sea: #ebe2d0;
-    --color-brand: #cc6256;
-    --color-on-brand: #ffffff;
-    --color-brand-strong: #e0837a;
-    --color-create: #166534;
-    --color-on-create: #ffffff;
-    --color-on-brand-strong: #0b0908;
-    --color-selected: #ebe2d0;
-    --color-on-selected: #1e1a17;
-    --color-accent: #f2a69b;
-    --color-moss: #8fd6a5;
-    --color-shu: #e8603f;
-    --color-on-shu: #0b0908;
-    --color-caution: #fbbf24;
-    --color-danger: #fca5a5;
-    --color-ruri: #1e50a2;
-    --color-on-ruri: #ffffff;
-    --color-goal: #c2410c;
-    --color-on-goal: #ffffff;
-    --color-line: #8a7563;
-    color-scheme: dark;
-  }
-}
-
-/* Stronger contrast (the device's, or くっきり表示) reaches inside the panel too: the panel sets its own line and muted, so
-   the page-wide override would stop at its edge. Same values as those rules further down. */
-@media (prefers-contrast: more) {
-  .rail-night {
-    @variant md {
-      --color-line: var(--color-ink);
-      --color-muted: var(--color-ink);
-    }
-  }
-}
-html[data-contrast] .rail-night {
-  @variant md {
-    --color-line: var(--color-ink);
-    --color-muted: var(--color-ink);
-  }
 }
 
 /* The language sits under the desktop sidebar's tabs, so the menu leaves it out, except while the sidebar is folded. */

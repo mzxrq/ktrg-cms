@@ -45,14 +45,14 @@ function subscribeFold(listener: () => void) {
 // the tabs are inside the menu, which slides in from the left (2026-11-19, the user's reference: a tablet reads like a
 // phone page, with a menu button instead of a tab bar). From 1024 px it is a sidebar fixed to the far left: the logo (a
 // link home), the tabs centred, the menu as one more item, and at the bottom `footer` (the language picker).
-/** The night panel's ground: a thin double frame set in from the edge with a faint 七宝 inside it only (the margin outside
+/** The panel's ground: a thin double frame set in from the edge with a faint 七宝 inside it only (the margin outside
  *  stays plain, 2026-11-19). Decoration only. `show` is the variant it appears at (the desktop sidebar, the menu drawer). */
 export const panelGround = (show: string) => (
-  <span aria-hidden="true" className={`pointer-events-none absolute inset-2 -z-10 hidden border-[3px] border-double border-on-night/35 ${show}`}>
-    <span className="pattern-shippo pattern-on-night block size-full" />
+  <span aria-hidden="true" className={`pointer-events-none absolute inset-2 -z-10 hidden border-[3px] border-double border-on-rail/35 ${show}`}>
+    <span className="pattern-shippo pattern-on-rail block size-full" />
     {/* The top and bottom lines open in the middle (2026-11-19, the user's idea): an open frame, not a box. */}
-    <span className="absolute -top-[3px] left-1/2 h-[3px] w-1/3 -translate-x-1/2 bg-night" />
-    <span className="absolute -bottom-[3px] left-1/2 h-[3px] w-1/3 -translate-x-1/2 bg-night" />
+    <span className="absolute -top-[3px] left-1/2 h-[3px] w-1/3 -translate-x-1/2 bg-rail" />
+    <span className="absolute -bottom-[3px] left-1/2 h-[3px] w-1/3 -translate-x-1/2 bg-rail" />
   </span>
 );
 
@@ -108,10 +108,10 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
 
   return (
     // Below 1024 px this wrapper adds nothing (the nav is placed by its own classes); from 1024 px it is the sidebar.
-    <div data-rail={mini ? "mini" : "full"} className={`rail-night print:hidden md:contents wide:sticky wide:top-0 wide:isolate wide:flex wide:h-dvh wide:shrink-0 wide:flex-col wide:self-start wide:overflow-y-auto wide:bg-night ${mini ? "wide:w-20" : "wide:w-64"}`}>
+    <div data-rail={mini ? "mini" : "full"} className={`print:hidden md:contents wide:sticky wide:top-0 wide:isolate wide:flex wide:h-dvh wide:shrink-0 wide:flex-col wide:self-start wide:overflow-y-auto wide:border-r wide:border-line/30 wide:bg-rail ${mini ? "wide:w-20" : "wide:w-64"}`}>
     {panelGround("wide:block")}
     <Link href="/" aria-label={t`ホーム`} className={`hidden wide:block ${low ? "px-2 pt-2" : mini ? "px-2 pt-4" : "px-[29px] pb-2 pt-8"}`}>
-      <KatsuragiLogo compact className={`[--color-brand:var(--color-on-night)] [--color-ink:var(--color-on-night)] ${mini ? "mx-auto h-8 w-auto" : "h-16 w-auto"}`} />
+      <KatsuragiLogo compact className={`[--color-brand:var(--color-rail-mark)] [--color-ink:var(--color-on-rail)] ${mini ? "mx-auto h-8 w-auto" : "h-16 w-auto"}`} />
     </Link>
     {low ? null : (
     <button
@@ -143,7 +143,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
                   if (open && active) e.preventDefault();
                   setOpen(false);
                 }}
-                className={`${item}${miniItem} ${active && !open ? "bg-selected text-on-selected" : "text-ink hover:bg-paper"}`}
+                className={`${item}${miniItem} ${active && !open ? "bg-selected text-on-selected" : "text-ink hover:bg-surface"}`}
               >
                 {icon}
                 {label}
@@ -159,8 +159,8 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
             aria-expanded={open}
             aria-controls="site-menu"
             // On a tablet it is the only button: a dark pill over the page, at the top right.
-            className={`${item}${miniItem} w-full md:min-h-12 md:border md:border-line md:bg-night md:px-4 md:text-lg md:shadow-[0_2px_10px_rgb(0_0_0/0.3)] wide:min-h-14 wide:border-0 wide:px-5 wide:text-xl wide:shadow-none ${
-              open ? "bg-ink text-paper md:text-ink wide:bg-ink wide:text-paper" : "text-ink hover:bg-paper wide:bg-transparent"
+            className={`${item}${miniItem} w-full md:min-h-11 md:border md:border-line md:bg-rail md:px-4 md:text-base md:shadow-[0_2px_10px_rgb(0_0_0/0.3)] wide:min-h-14 wide:border-0 wide:px-5 wide:text-xl wide:shadow-none ${
+              open ? "bg-ink text-paper md:text-ink wide:bg-ink wide:text-paper" : "text-ink hover:bg-surface wide:bg-transparent"
             }`}
           >
             {/* On a tablet, while the menu is open, this button is its close button (the drawer has none of its own there). */}
