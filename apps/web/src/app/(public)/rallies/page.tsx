@@ -31,7 +31,7 @@ export default async function StampsPage({ searchParams }: { searchParams: Promi
       {/* The title, with the badges and how to play to its side ("?"): how to play lives here, with the stamps, and nowhere else. */}
       {/* On a phone or tablet the top bar carries the title (as on the course list); the heading stays for screen readers and a desktop.
           On a tablet バッジ and ? sit in the top bar too, left of the メニュー button and at the bar buttons' height (user, 2026-11-19). */}
-      <div className="flex items-center justify-end gap-3 px-4 md:absolute md:right-[11rem] md:top-[calc(0.25rem+var(--top-clear))] md:z-30 md:gap-2 md:px-0 md:[&>a]:min-h-11 md:[&>a]:min-w-11 md:[&>a]:text-lg md:[&>a:last-child]:size-11 wide:static wide:z-auto wide:gap-3 wide:px-4 wide:justify-start wide:[&>a]:min-h-12 wide:[&>a]:min-w-12 wide:[&>a]:text-xl wide:[&>a:last-child]:size-12 wide:[&>a:last-child]:text-2xl">
+      <div className="flex items-center justify-end gap-3 px-4 md:absolute md:right-[11rem] md:top-[calc(0.25rem+var(--top-clear))] md:z-[1] md:gap-2 md:px-0 md:[&>a]:min-h-11 md:[&>a]:min-w-11 md:[&>a]:text-lg md:[&>a:last-child]:size-11 wide:static wide:z-auto wide:gap-3 wide:px-4 wide:justify-start wide:[&>a]:min-h-12 wide:[&>a]:min-w-12 wide:[&>a]:text-xl wide:[&>a:last-child]:size-12 wide:[&>a:last-child]:text-2xl">
         <h1 className="min-w-0 flex-1 font-serif text-3xl font-bold text-accent wide:text-4xl sr-only wide:not-sr-only">
           <Trans>ラリー</Trans>
         </h1>
