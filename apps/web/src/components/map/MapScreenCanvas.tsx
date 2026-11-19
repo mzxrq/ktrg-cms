@@ -640,7 +640,7 @@ export function MapScreenCanvas({
         }}
         // A row that scrolls sideways under the finger: no scrollbar, the page's edges fade where there is more, and a swipe on it
         // moves the row, not the map.
-        className="map-layer-pills absolute inset-x-0 top-[calc(0.5rem+var(--top-clear))] z-[4] flex touch-pan-x snap-x scroll-pl-[6.75rem] scroll-pr-3 md:scroll-pl-3 gap-2 overflow-x-auto overscroll-x-contain pl-[6.75rem] pr-3 pb-1 md:pl-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,#000_calc(100%-2.5rem),transparent)]"
+        className="map-layer-pills absolute inset-x-0 top-[calc(0.5rem+var(--top-clear))] z-[4] flex touch-pan-x snap-x scroll-pl-[6.75rem] scroll-pr-3 md:right-[12rem] wide:right-0 wide:scroll-pl-3 gap-2 overflow-x-auto overscroll-x-contain pl-[6.75rem] pr-3 pb-1 wide:pl-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,#000_calc(100%-2.5rem),transparent)]"
       >
         {offeredLayers(routes).map((layer) => {
           const on = layers.has(layer);

@@ -302,7 +302,7 @@ export function MapScreen({
   const showDetailInSheet = hasDetail;
 
   return (
-    <div className="relative md:-mt-6 wide:mt-0">
+    <div className="relative">
     <div
       ref={wrap}
       className={`trail-map map-screen relative h-dvh w-full overflow-hidden md:[--tab-room:0rem] ${chosen ? "[--tab-room:0rem]" : "[--tab-room:calc(5.5rem+env(safe-area-inset-bottom))]"}`}
