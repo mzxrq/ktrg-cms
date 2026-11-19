@@ -30,8 +30,8 @@ export interface SsoStore {
 export type SsoLoginResult = { ok: true; user: AuthUser; created: boolean } | { ok: false; error: "sso_staff" | "sso_email_in_use" | "sso_failed" };
 
 /**
- * `adminEmails` (ADMIN_EMAILS): such an address is never taken from a provider. An email-code login with it later would
- * promote the account the provider made, and the provider's session on it would become an admin session.
+ * `adminEmails` (ADMIN_EMAILS): such an address never makes an account here. An email-code login with it later would
+ * promote the account the provider made; and making one without the email would split the admin into a second account.
  */
 export function createSsoService({ store, adminEmails = new Set() }: { store: SsoStore; adminEmails?: ReadonlySet<string> }) {
   return {
@@ -43,8 +43,9 @@ export function createSsoService({ store, adminEmails = new Set() }: { store: Ss
         if (claims.name) await store.fillName(found.id, claims.name);
         return { ok: true, user: found, created: false };
       }
-      const email = claims.email && !adminEmails.has(claims.email) ? claims.email : null;
-      const made = await store.createUser({ provider, subject: claims.subject, email, displayName: claims.name, locale });
+      // The staff's own address: refuse, never a second account without the email (it would land on another user id).
+      if (claims.email && adminEmails.has(claims.email)) return { ok: false, error: "sso_staff" };
+      const made = await store.createUser({ provider, subject: claims.subject, email: claims.email, displayName: claims.name, locale });
       if (made === "email_in_use") return { ok: false, error: "sso_email_in_use" };
       if (made === "taken") return { ok: false, error: "sso_failed" };
       return { ok: true, user: made, created: true };

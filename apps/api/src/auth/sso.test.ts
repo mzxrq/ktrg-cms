@@ -219,11 +219,13 @@ describe("signing in", () => {
     expect(res.headers.get("location")).toContain("sso_error=sso_email_in_use");
   });
 
-  test("an ADMIN_EMAILS address is never taken from a provider (an email-code login would promote the account)", async () => {
-    const { roundTrip, users } = setup();
+  test("an ADMIN_EMAILS address makes no account at all: not with the email, and not a second one without it", async () => {
+    const { roundTrip, users, cookieValue } = setup();
+    const before = users.size;
     const res = await roundTrip("google", "login", { sub: "G-BOSS", email: "boss@example.com", email_verified: true });
-    expect(res.status).toBe(302);
-    expect([...users.values()].some((u) => u.email === "boss@example.com")).toBe(false);
+    expect(res.headers.get("location")).toContain("sso_error=sso_staff");
+    expect(cookieValue(res, "session")).toBeNull();
+    expect(users.size).toBe(before);
   });
 
   test("cancelling at the provider comes back with a calm message", async () => {
