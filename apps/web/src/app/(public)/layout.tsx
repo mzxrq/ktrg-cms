@@ -57,7 +57,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
           }
         />
         {/* A phone column; from a tablet up it takes the full width (2026-11-19: a tablet reads like a phone page, not a strip in the middle). */}
-        <div className="min-w-0 max-w-xl flex-1 md:max-w-none wide:flex wide:min-h-dvh wide:flex-col">
+        <div className="min-w-0 max-w-xl flex-1 md:flex md:min-h-dvh md:max-w-none md:flex-col">
           <SiteHeader
             signedIn={viewer.signedIn}
             staff={viewer.role === "editor" || viewer.role === "admin"}
@@ -70,10 +70,10 @@ export default async function PublicLayout({ children }: { children: ReactNode }
           {sample ? <SampleNoticeHost /> : null}
           <PrefsSync signedIn={viewer.signedIn} account={prefsState.account} device={prefsState.device} />
           {viewer.signedIn ? <SessionRotate /> : null}
-          <main id="main" className="pb-[calc(7rem+var(--nav-toast,0px))] md:pb-[calc(2.5rem+var(--nav-toast,0px))] wide:flex wide:flex-1 wide:flex-col wide:pb-[calc(2rem+var(--nav-toast,0px))] wide:pt-8 wide:has-[[data-landing-top]]:pt-0">
+          <main id="main" className="pb-[calc(7rem+var(--nav-toast,0px))] md:pb-[calc(2.5rem+var(--nav-toast,0px))] md:flex md:flex-1 md:flex-col wide:pb-[calc(2rem+var(--nav-toast,0px))] wide:pt-8 wide:has-[[data-landing-top]]:pt-0">
             {/* On a desktop the page fills at least the screen, so the footer sits at the bottom of a short or empty page. */}
-            <div className="wide:mx-auto wide:flex wide:w-full wide:max-w-6xl wide:flex-1 wide:flex-col wide:px-10">
-              <div className="wide:flex-1">
+            <div className="md:flex md:flex-1 md:flex-col wide:mx-auto wide:w-full wide:max-w-6xl wide:px-10">
+              <div className="md:flex-1">
               {viewer.signedIn ? null : <BrowserWarning />}
               {children}
               </div>
