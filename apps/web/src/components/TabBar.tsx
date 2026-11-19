@@ -159,7 +159,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
             aria-expanded={open}
             aria-controls="site-menu"
             // On a tablet it is the only button: a dark pill over the page, at the top right.
-            className={`${item}${miniItem} w-full md:min-h-12 md:border md:border-line md:bg-night md:px-4 md:text-lg md:shadow-[0_2px_10px_rgb(0_0_0/0.3)] wide:min-h-14 wide:border-0 wide:px-5 wide:text-xl wide:shadow-none ${
+            className={`${item}${miniItem} w-full md:min-h-11 md:border md:border-line md:bg-night md:px-4 md:text-base md:shadow-[0_2px_10px_rgb(0_0_0/0.3)] wide:min-h-14 wide:border-0 wide:px-5 wide:text-xl wide:shadow-none ${
               open ? "bg-ink text-paper md:text-ink wide:bg-ink wide:text-paper" : "text-ink hover:bg-paper wide:bg-transparent"
             }`}
           >
