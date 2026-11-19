@@ -87,7 +87,7 @@ export function SpotSheet({
       ) : null}
 
       {stampable ? (
-      <section className="mx-4 flex items-center gap-4 rounded-[1.75rem] bg-surface p-4">
+      <section className="mx-4 flex items-center gap-4 rounded-lg bg-surface p-4">
         {/* Once stamped, the card says so with the stamp itself, in place of how to stamp (2026-11-18, user). */}
         <StampFace state={spot.stamped === true ? "stamped" : "empty"} image={spot.stampImageUrl} className="h-14 w-14 shrink-0 rounded-full!" />
         {spot.stamped === true ? (
@@ -171,7 +171,7 @@ export function SpotSheet({
           <h2 className="mb-2 border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
             <Trans>まわりにあるもの</Trans>
           </h2>
-          <div className="rounded-[1.75rem] bg-surface px-5 py-2">
+          <div className="rounded-lg bg-surface px-5 py-2">
             <NearbyPlaces places={nearby} />
           </div>
         </section>
@@ -182,7 +182,7 @@ export function SpotSheet({
           <h2 className="mb-2 border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
             <Trans>最寄り</Trans>
           </h2>
-          <div className="rounded-[1.75rem] bg-surface p-5">
+          <div className="rounded-lg bg-surface p-5">
             <NearestPlaces groups={nearest} />
           </div>
         </section>

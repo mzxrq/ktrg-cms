@@ -103,7 +103,7 @@ export function PlaceChips({
             type="button"
             aria-pressed={on}
             onClick={() => onToggle(group)}
-            className={`tap-target flex border border-ink text-left text-lg font-bold leading-tight ${compact ? "flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl px-3 py-2 @4xl:flex-nowrap @4xl:gap-2 @4xl:rounded-full @4xl:py-1" : "items-center gap-2 rounded-full px-3 py-1"} ${
+            className={`tap-target flex border border-ink text-left text-lg font-bold leading-tight ${compact ? "flex-wrap items-center gap-x-2 gap-y-1 rounded-lg px-3 py-2 @4xl:flex-nowrap @4xl:gap-2 @4xl:rounded-full @4xl:py-1" : "items-center gap-2 rounded-full px-3 py-1"} ${
               on ? "bg-ink text-paper" : compact ? "bg-paper/95 text-ink shadow-sm hover:bg-surface" : "bg-paper text-ink hover:bg-surface"
             }`}
           >

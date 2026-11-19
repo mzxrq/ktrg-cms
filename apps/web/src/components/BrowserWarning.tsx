@@ -20,7 +20,7 @@ export function BrowserWarning() {
   if (!risky || closed) return null;
 
   return (
-    <section role="alert" className="mx-4 mb-4 flex flex-col gap-3 rounded-2xl border-2 border-caution bg-surface p-4">
+    <section role="alert" className="mx-4 mb-4 flex flex-col gap-3 rounded-lg border-2 border-caution bg-surface p-4">
       <p className="text-lg font-bold leading-snug">{t`このブラウザでは、スタンプが消えてしまうことがあります。`}</p>
       <p className="text-lg leading-7">{t`アプリの中で開いたページや、プライベートモードでは、記録が残りません。SafariかChromeで、このページを開いてください。登録しておくと、記録は消えません。`}</p>
       <div className="flex flex-wrap gap-3">

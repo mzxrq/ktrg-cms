@@ -97,7 +97,7 @@ export function RallyNearbyStamp({ places, held, locale, rallyName, quiet = fals
         ref={dialog}
         aria-labelledby="rally-explain-title"
         onClose={() => setPhase((p) => (p.name === "explain" ? { name: "idle" } : p))}
-        className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-3xl bg-paper p-6 text-ink backdrop:bg-black/60"
+        className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg bg-paper p-6 text-ink backdrop:bg-black/60"
       >
         <h2 id="rally-explain-title" className="text-2xl font-bold">
           {t`いまの位置を調べます`}
@@ -114,22 +114,22 @@ export function RallyNearbyStamp({ places, held, locale, rallyName, quiet = fals
         </div>
       </dialog>
       {phase.name === "done" ? (
-        <p role="status" className="rounded-2xl bg-surface p-4 text-xl font-bold leading-snug">
+        <p role="status" className="rounded-lg bg-surface p-4 text-xl font-bold leading-snug">
           {phase.already ? t`「${phase.place}」のスタンプは、もう押してあります。` : t`「${phase.place}」のスタンプを押しました！`}
         </p>
       ) : null}
       {phase.name === "queued" ? (
-        <p role="status" className="rounded-2xl bg-surface p-4 text-lg font-bold leading-snug">
+        <p role="status" className="rounded-lg bg-surface p-4 text-lg font-bold leading-snug">
           {t`電波が弱いか、つながらないため、「${phase.place}」のスタンプは、あとで送ります。そのときに受け付けられないこともあります。`}
         </p>
       ) : null}
       {phase.name === "none" ? (
-        <p role="alert" className="rounded-2xl border-2 border-caution bg-paper p-4 text-lg font-bold leading-7">
+        <p role="alert" className="rounded-lg border-2 border-caution bg-paper p-4 text-lg font-bold leading-7">
           {t`近くにスタンプの場所がありません。いちばん近いのは「${phase.place}」で、${away(phase.distanceM)}です。`}
         </p>
       ) : null}
       {phase.name === "problem" ? (
-        <p role="alert" className="rounded-2xl border-2 border-caution bg-paper p-4 text-lg font-bold leading-7">
+        <p role="alert" className="rounded-lg border-2 border-caution bg-paper p-4 text-lg font-bold leading-7">
           {messages[phase.problem]}
           {phase.problem === "too_far" && phase.distanceM !== undefined ? ` ${away(phase.distanceM)}` : ""}
         </p>

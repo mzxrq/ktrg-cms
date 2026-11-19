@@ -20,7 +20,7 @@ export interface InlinePlace {
 export function PlaceInline({ place }: { place: InlinePlace }) {
   const category = useCategoryNames();
   return (
-    <Link href={`/places/${place.id}`} className="flex max-w-prose items-center gap-3 rounded-3xl bg-surface p-4 no-underline hover:bg-line/20">
+    <Link href={`/places/${place.id}`} className="flex max-w-prose items-center gap-3 rounded-lg bg-surface p-4 no-underline hover:bg-line/20">
       <PlaceIcon category={place.category} icon={place.icon} size={32} />
       <span className="min-w-0 flex-1">
         <span lang={place.nameLang} className="block text-lg font-bold leading-snug text-ink">

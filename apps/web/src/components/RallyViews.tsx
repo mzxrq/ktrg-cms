@@ -71,7 +71,7 @@ export function FeaturedRally({ rally, locale, account, routes = [] }: { rally: 
     return (
       <section className="flex flex-col gap-3 px-4">
         <SectionBanner>{t`はじめのラリー`}</SectionBanner>
-        <div className="pattern-shippo overflow-hidden rounded-[1.75rem] bg-surface">
+        <div className="pattern-shippo overflow-hidden rounded-lg bg-surface">
           <div className="relative aspect-[16/9]">
             <RoutePhoto src={facts.photoUrl} alt={name} focus={facts.photoFocus} />
             {/* The © button over the photo, as on the course page, not a line of small print on the tile (2026-11-16, user). */}
@@ -92,7 +92,7 @@ export function FeaturedRally({ rally, locale, account, routes = [] }: { rally: 
   return (
     <section className="flex flex-col gap-3 px-4">
       <SectionBanner>{rally.lastStampedAt ? t`いまのラリー` : t`はじめのラリー`}</SectionBanner>
-      <div className="pattern-shippo rounded-[1.75rem] bg-surface p-5">
+      <div className="pattern-shippo rounded-lg bg-surface p-5">
         {rally.lastStampedAt ? (
           <p className="text-base text-muted">{t`最後に押した日時　${when}`}</p>
         ) : null}
@@ -174,7 +174,7 @@ export function RallyCard({ rally, locale, account, routes = [] }: { rally: Rall
 
   if (isSoon(rally)) {
     return (
-      <li className="rounded-[1.75rem] bg-surface/60 p-4">
+      <li className="rounded-lg bg-surface/60 p-4">
         <p className="text-base text-muted">{kind}</p>
         <p className="text-xl font-bold leading-snug">{name}</p>
         <p className="mt-1 inline-block rounded-full border-2 border-dashed border-line px-3 text-lg font-bold text-muted">
@@ -186,7 +186,7 @@ export function RallyCard({ rally, locale, account, routes = [] }: { rally: Rall
 
   const stamped = rally.stamped ?? 0;
   return (
-    <li className="relative rounded-[1.75rem] bg-surface">
+    <li className="relative rounded-lg bg-surface">
       <details className="group">
         <summary className="tap-target flex cursor-pointer list-none flex-col gap-2 p-4 [&::-webkit-details-marker]:hidden">
           <span className="pr-10 text-base text-muted">{kind}</span>
@@ -260,7 +260,7 @@ export function RallyCard({ rally, locale, account, routes = [] }: { rally: Rall
 /** The top of the rally list: what a rally is, with a sutra scroll behind and the three kinds of seal in a row. Decoration and a sentence, no numbers. */
 export function RallyHero() {
   return (
-    <section className="@container pattern-shippo relative isolate mx-4 flex flex-col gap-3 overflow-hidden rounded-[1.75rem] bg-surface p-6 wide:p-8">
+    <section className="@container pattern-shippo relative isolate mx-4 flex flex-col gap-3 overflow-hidden rounded-lg bg-surface p-6 wide:p-8">
       <SutraScroll />
       <p className="font-serif text-2xl font-bold leading-snug text-accent wide:text-3xl">
         <Trans>歩いて、スタンプを集めよう。</Trans>

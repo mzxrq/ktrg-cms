@@ -37,7 +37,7 @@ export function PostRow({ post, locale, lead = false }: { post: BlogPost; locale
   }
   return (
     // A capsule like the course list's: the words on the left, the photo fading in from the right.
-    <Link href={`/blog/${post.id}`} className="tap-target group relative block overflow-hidden rounded-[1.75rem] bg-surface no-underline">
+    <Link href={`/blog/${post.id}`} className="tap-target group relative block overflow-hidden rounded-lg bg-surface no-underline">
       {post.coverPhotoUrl ? (
         <span className="absolute inset-y-0 right-0 block w-2/5 overflow-hidden">
           <RoutePhoto src={post.coverPhotoUrl} alt="" />

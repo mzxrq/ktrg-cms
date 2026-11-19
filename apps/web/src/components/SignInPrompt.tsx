@@ -16,7 +16,7 @@ export async function SignInPrompt({ compact = false }: { compact?: boolean }) {
   await initLingui();
   if (compact) {
     return (
-      <section className="mx-4 rounded-[1.75rem] bg-surface px-5">
+      <section className="mx-4 rounded-lg bg-surface px-5">
         <Dismissible storageKey="ktrg-signin-prompt-closed">
           <p className="flex flex-wrap items-center gap-x-4 text-lg font-bold">
             <Link href="/register" className="tap-target inline-flex items-center underline underline-offset-4">
@@ -31,7 +31,7 @@ export async function SignInPrompt({ compact = false }: { compact?: boolean }) {
     );
   }
   return (
-    <section className="mx-4 flex flex-col gap-4 rounded-[1.75rem] bg-surface p-5">
+    <section className="mx-4 flex flex-col gap-4 rounded-lg bg-surface p-5">
       <div className="flex items-start gap-4">
         <StampFace state="empty" className="h-12 w-12 shrink-0" />
         <div className="text-lg">

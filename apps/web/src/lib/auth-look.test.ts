@@ -17,7 +17,7 @@ test("auth pages: Mincho page titles in the readable red", () => {
 test("auth panels: capsule corners, red-bar group titles", () => {
   for (const f of ["SignInPrompt.tsx", "ProfilePhoto.tsx", "settings/LoginMethods.tsx", "settings/PasswordMethod.tsx", "settings/PasskeyManager.tsx"]) {
     const s = read("components", ...f.split("/"));
-    expect(s).toMatch(/rounded-\[1\.75rem\] bg-surface/);
+    expect(s).toMatch(/rounded-lg bg-surface/);
     expect(s).not.toMatch(/rounded-3xl bg-surface/);
   }
   for (const f of ["ProfilePhoto.tsx", "settings/LoginMethods.tsx", "settings/PasswordMethod.tsx"]) {

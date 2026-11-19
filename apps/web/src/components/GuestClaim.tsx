@@ -60,7 +60,7 @@ export function GuestClaim() {
   }, [step.name]);
 
   return (
-    <dialog ref={dialog} aria-labelledby="guest-claim-title" onClose={() => setStep({ name: "idle" })} className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-3xl bg-paper p-6 text-ink backdrop:bg-black/60">
+    <dialog ref={dialog} aria-labelledby="guest-claim-title" onClose={() => setStep({ name: "idle" })} className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg bg-paper p-6 text-ink backdrop:bg-black/60">
       {step.name === "ask" ? (
         <>
           <h2 id="guest-claim-title" className="text-2xl font-bold leading-snug">

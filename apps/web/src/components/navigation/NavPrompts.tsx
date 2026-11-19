@@ -13,7 +13,7 @@ import { useEnter } from "@/lib/motion";
 // Rule 1 of docs/navigation-v2-plan.md: the buttons sit in a footer that is always on screen (data-nav-footer); only the middle
 // may scroll, and on a short screen the photo gives way first (nav-dialogs.test.ts checks this).
 
-const CARD = "w-full max-w-sm rounded-2xl bg-paper p-5 text-ink shadow-2xl";
+const CARD = "w-full max-w-sm rounded-lg bg-paper p-5 text-ink shadow-2xl";
 const COVER = "fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4";
 /** Long enough to read and answer with a walking pole in one hand. */
 const PASSED_WAIT_S = 20;
@@ -78,7 +78,7 @@ export function EndPrompt({ onEnd, onKeep }: { onEnd: () => void; onKeep: () => 
     dialog.current?.showModal();
   }, []);
   return (
-    <dialog ref={dialog} aria-labelledby="nav-end" onClose={onKeep} className="m-auto max-h-[85dvh] w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-2xl bg-paper p-5 text-ink shadow-2xl backdrop:bg-black/50 open:flex">
+    <dialog ref={dialog} aria-labelledby="nav-end" onClose={onKeep} className="m-auto max-h-[85dvh] w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-lg bg-paper p-5 text-ink shadow-2xl backdrop:bg-black/50 open:flex">
       <div className="flex min-h-0 items-start gap-3 overflow-y-auto">
         <span className="mt-0.5 shrink-0 text-caution">
           <WarningIcon />

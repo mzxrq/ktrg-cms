@@ -26,18 +26,19 @@ test("every group title on the course page has the brand bar", () => {
   expect(v).not.toMatch(/<h2 className="text-xl font-bold">/);
 });
 
-test("course page panels are capsules", () => {
+// 2026-11-19: cards have small corners (rounded-lg, like the menu's lists), no longer 28px capsules.
+test("course page panels have small corners", () => {
   for (const f of ["ElevationChart.tsx", "ElevationProfile.tsx", "RouteJourney.tsx", "RouteStats.tsx", "StopList.tsx", "OfflinePack.tsx"]) {
-    expect(read("components", f)).not.toMatch(/rounded-3xl|rounded-lg bg-surface/);
+    expect(read("components", f)).not.toMatch(/rounded-(3xl|2xl|\[1\.75rem\])/);
   }
-  expect(read("components", "ElevationChart.tsx")).toMatch(/rounded-\[1\.75rem\] bg-surface p-4/);
-  expect(read("components", "ElevationProfile.tsx")).toMatch(/rounded-\[1\.75rem\] bg-surface p-4/);
-  expect(read("components", "RouteJourney.tsx")).toMatch(/rounded-\[1\.75rem\] bg-surface p-4/);
-  expect(read("components", "OfflinePack.tsx")).toMatch(/rounded-\[1\.75rem\] bg-surface p-4/);
-  expect(read("components", "StopList.tsx")).toMatch(/overflow-hidden rounded-\[1\.75rem\] bg-surface/);
-  // The next-course card and the not-ready note are capsules too.
-  expect(routePage()).not.toMatch(/rounded-2xl/);
-  expect(routePage()).toMatch(/rounded-\[1\.75rem\] bg-surface p-4 no-underline/);
+  expect(read("components", "ElevationChart.tsx")).toMatch(/rounded-lg bg-surface p-4/);
+  expect(read("components", "ElevationProfile.tsx")).toMatch(/rounded-lg bg-surface p-4/);
+  expect(read("components", "RouteJourney.tsx")).toMatch(/rounded-lg bg-surface p-4/);
+  expect(read("components", "OfflinePack.tsx")).toMatch(/rounded-lg bg-surface p-4/);
+  expect(read("components", "StopList.tsx")).toMatch(/overflow-hidden rounded-lg bg-surface/);
+  // The next-course card and the not-ready note too.
+  expect(routePage()).not.toMatch(/rounded-(3xl|2xl|\[1\.75rem\])/);
+  expect(routePage()).toMatch(/rounded-lg bg-surface p-4 no-underline/);
 });
 
 test("the rally page takes the course cover, Mincho title and group titles", () => {
@@ -48,7 +49,7 @@ test("the rally page takes the course cover, Mincho title and group titles", () 
   const h2s = [...r.matchAll(/<h2 className="([^"]*)"/g)].map((m) => m[1]);
   expect(h2s.length).toBe(2);
   for (const c of h2s) expect(c).toBe(GROUP_TITLE);
-  expect(r).toMatch(/pattern-shippo order-4 mx-4 flex flex-col items-center gap-3 rounded-\[1\.75rem\] bg-surface p-6/);
+  expect(r).toMatch(/pattern-shippo order-4 mx-4 flex flex-col items-center gap-3 rounded-lg bg-surface p-6/);
 });
 
 test("stamping and status pieces stay on the rally page", () => {

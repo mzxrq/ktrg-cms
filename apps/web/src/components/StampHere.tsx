@@ -131,7 +131,7 @@ export function StampHere({
     return (
       <div className={wrapper}>
         {phase.already ? null : <StampPress image={stampImage} />}
-        <div role="status" className="flex items-center gap-4 rounded-3xl bg-surface p-4 shadow-lg">
+        <div role="status" className="flex items-center gap-4 rounded-lg bg-surface p-4 shadow-lg">
           <StampFace state="stamped" number={1} image={stampImage} rough className="stamp-land h-16 w-16 shrink-0" />
           <p className="text-xl font-bold leading-snug">{phase.already ? t`このスタンプは、もう押してあります。` : t`スタンプを押しました！`}</p>
         </div>
@@ -141,7 +141,7 @@ export function StampHere({
   if (phase.name === "queued") {
     return (
       <div className={wrapper}>
-        <div role="status" className="flex flex-col gap-1 rounded-3xl bg-surface p-4 shadow-lg">
+        <div role="status" className="flex flex-col gap-1 rounded-lg bg-surface p-4 shadow-lg">
           <p className="text-xl font-bold leading-snug">{t`電波が弱いか、つながらないため、あとで送ります。`}</p>
           <p className="text-base leading-snug">{t`つながると、自動で送ります。そのときにサーバーが確かめるため、受け付けられないこともあります（場所が閉鎖中になったときなど）。`}</p>
         </div>
@@ -172,7 +172,7 @@ export function StampHere({
         <LoadingOverlay label={t`スタンプを押しています…`} />
       ) : null}
       {phase.name === "problem" ? (
-        <div role="alert" className="flex flex-col gap-1 rounded-2xl border-2 border-caution bg-paper px-4 py-3 text-lg leading-7 shadow-lg">
+        <div role="alert" className="flex flex-col gap-1 rounded-lg border-2 border-caution bg-paper px-4 py-3 text-lg leading-7 shadow-lg">
           <p className="font-bold">{messages[phase.problem]}</p>
           {distance ? (
             <p className="tabular-nums">{distance.unit === "km" ? t`いまの場所から、約${km}km` : t`いまの場所から、約${m}m`}</p>
@@ -216,7 +216,7 @@ export function StampHere({
         ref={dialog}
         aria-labelledby="stamp-explain-title"
         onClose={() => setPhase((p) => (p.name === "explain" ? { name: "idle" } : p))}
-        className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-3xl bg-paper p-6 text-ink backdrop:bg-black/60"
+        className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg bg-paper p-6 text-ink backdrop:bg-black/60"
       >
         <h2 id="stamp-explain-title" className="text-2xl font-bold">
           {t`いまの位置を調べます`}

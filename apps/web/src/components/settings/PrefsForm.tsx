@@ -89,7 +89,7 @@ export function PrefsForm({
       />
     </label>
   );
-  const list = "divide-y divide-line/40 overflow-hidden rounded-[1.75rem] bg-surface";
+  const list = "divide-y divide-line/40 overflow-hidden rounded-lg bg-surface";
   // The あ in each size tile, in pixels so the four keep their difference whatever size the page is showing now.
   const sample: Record<TextSize, number> = { small: 18, standard: 24, large: 30, xlarge: 36 };
 
@@ -148,7 +148,7 @@ export function PrefsForm({
       </fieldset>
 
       {message ? (
-        <p role="status" className="rounded-2xl bg-surface p-3 text-lg font-bold">
+        <p role="status" className="rounded-lg bg-surface p-3 text-lg font-bold">
           {message}
         </p>
       ) : null}

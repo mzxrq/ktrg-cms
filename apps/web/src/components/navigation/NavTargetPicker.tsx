@@ -56,7 +56,7 @@ export function NavTargetPicker() {
         ref={dialog}
         aria-labelledby="nav-target-title"
         onClick={closeOnBackdrop}
-        className="nav-sheet mx-0 mb-0 mt-auto max-h-[85dvh] w-full max-w-none flex-col overflow-hidden rounded-t-3xl bg-paper text-ink backdrop:bg-black/60 open:flex md:m-auto md:w-[calc(100%-2rem)] md:max-w-sm md:rounded-3xl"
+        className="nav-sheet mx-0 mb-0 mt-auto max-h-[85dvh] w-full max-w-none flex-col overflow-hidden rounded-t-3xl bg-paper text-ink backdrop:bg-black/60 open:flex md:m-auto md:w-[calc(100%-2rem)] md:max-w-sm md:rounded-lg"
       >
         <h2 id="nav-target-title" className="shrink-0 px-5 pt-5 text-2xl font-bold">
           {t`どこへ向かいますか？`}

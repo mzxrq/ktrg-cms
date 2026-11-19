@@ -14,7 +14,7 @@ test("directory and place page titles are Mincho in the readable red", () => {
 test("the directory has no heading rule and its rows are separate capsules", () => {
   expect(read("app", "(public)", "places", "page.tsx")).not.toMatch(/border-b-2 border-ink/);
   const view = read("components", "places", "DirectoryView.tsx");
-  expect(view).toMatch(/rounded-\[1\.75rem\] bg-surface/);
+  expect(view).toMatch(/rounded-lg bg-surface/);
   expect(view).not.toMatch(/divide-y|rounded-3xl bg-surface px-4/);
 });
 

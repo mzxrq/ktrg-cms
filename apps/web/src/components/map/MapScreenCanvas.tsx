@@ -600,7 +600,7 @@ export function MapScreenCanvas({
   };
 
   if (failed) {
-    return <p className="absolute inset-x-4 top-[calc(5rem+var(--top-clear))] z-10 rounded-2xl bg-surface p-4 text-lg">{t`この端末では地図を表示できません。下の一覧から区間を選べます。`}</p>;
+    return <p className="absolute inset-x-4 top-[calc(5rem+var(--top-clear))] z-10 rounded-lg bg-surface p-4 text-lg">{t`この端末では地図を表示できません。下の一覧から区間を選べます。`}</p>;
   }
 
   return (

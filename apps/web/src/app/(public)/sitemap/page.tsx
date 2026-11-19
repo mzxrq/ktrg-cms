@@ -30,7 +30,7 @@ function Group({ title, children }: { title: React.ReactNode; children: React.Re
   return (
     <section className="flex flex-col gap-3 px-4">
       <SectionBanner>{title}</SectionBanner>
-      <ul className="divide-y divide-line/30 rounded-[1.75rem] bg-surface px-5 py-2">{children}</ul>
+      <ul className="divide-y divide-line/30 rounded-lg bg-surface px-5 py-2">{children}</ul>
     </section>
   );
 }
