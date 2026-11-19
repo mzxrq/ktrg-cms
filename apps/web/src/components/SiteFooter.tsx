@@ -11,8 +11,9 @@ export function SiteFooter({ locale }: { locale: string }) {
   const { t } = useLingui();
   const link = "tap-target inline-flex items-center text-lg font-bold underline";
   return (
-    // Desktop only: on a phone the same links are in the メニュー (user, 2026-11-19).
-    <footer className="print:hidden site-footer mt-16 hidden border-t border-line/30 pt-4 wide:block">
+    // From a tablet up (768 px): on a phone the same links are in the メニュー (user, 2026-11-19). A tablet page has no side
+    // padding of its own, so the footer brings it.
+    <footer className="print:hidden site-footer mx-4 mb-8 mt-16 hidden border-t border-line/30 pt-4 md:block wide:mx-0 wide:mb-0">
       <nav aria-label={t`フッター`} className="flex flex-wrap gap-x-6 gap-y-1">
         <Link prefetch={false} href="/faq" className={link}>
           <Trans>よくあるご質問</Trans>

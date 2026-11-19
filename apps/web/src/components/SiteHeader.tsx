@@ -7,7 +7,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "re
 import { useLingui } from "@lingui/react/macro";
 import { logOut } from "@/lib/auth-client";
 import { clearSavedPages } from "@/lib/offline-pack";
-import { BookmarkIcon, ChevronIcon, DocumentIcon, ChevronLeftIcon, CloseIcon, GearIcon, HomeIcon, MapIcon, RouteIcon, StampIcon } from "./icons";
+import { BookmarkIcon, ChevronIcon, DocumentIcon, ShopIcon, ChevronLeftIcon, CloseIcon, GearIcon, HomeIcon, MapIcon, RouteIcon, StampIcon } from "./icons";
 import { panelGround } from "./TabBar";
 import { WIDE_QUERY } from "@/lib/screen";
 import { QuickActions } from "./QuickActions";
@@ -268,10 +268,11 @@ export function SiteHeader({
               )}
             </MenuGroup>
 
-            <MenuGroup title={t`しおりと読みもの`}>
+            <MenuGroup title={t`しおりと案内`}>
               <MenuLinks>
                 <MenuLink href="/bookmarks" icon={<BookmarkIcon />} label={t`ブックマーク`} />
                 <MenuLink href="/blog" icon={<DocumentIcon />} label={t`ブログ`} />
+                <MenuLink href="/places" icon={<ShopIcon />} label={t`お店と施設`} />
               </MenuLinks>
             </MenuGroup>
 
@@ -296,11 +297,10 @@ export function SiteHeader({
               </div>
             </MenuGroup>
 
-            {/* From 1024 px these links are always in the sidebar's footer, so the menu leaves them out. */}
-            <div className="flex flex-col gap-4 wide:hidden">
+            {/* From 768 px these links are in the page footer (a tablet has the room; user, 2026-11-19), so the menu leaves them out. */}
+            <div className="flex flex-col gap-4 md:hidden">
               <MenuGroup title={t`このアプリについて`}>
                 <MenuLinks>
-                  <MenuLink href="/places" label={t`お店と施設`} />
                   <MenuLink href="/faq" label={t`よくあるご質問`} />
                   <MenuLink href="/terms" label={t`利用規約`} />
                   <MenuLink href="/privacy" label={t`プライバシーポリシー`} />
