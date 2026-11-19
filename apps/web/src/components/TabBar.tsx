@@ -102,7 +102,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
 
   // The label is capped at 4.25vw so "Routes" still fits a 320 px phone at the largest text size; wider screens never hit the cap.
   const item =
-    "flex min-h-[3.25rem] min-w-0 flex-col items-center justify-center gap-0.5 rounded-[1.125rem] text-[min(0.875rem,4.25vw)] font-bold leading-tight [&_svg]:size-6 md:min-h-14 md:flex-row md:justify-start md:gap-4 md:rounded-xl md:px-5 md:text-xl";
+    "flex min-h-[3.25rem] min-w-0 flex-col items-center justify-center gap-0.5 rounded-[1.125rem] text-[min(0.875rem,4.25vw)] font-bold leading-tight [&_svg]:size-6 wide:min-h-14 md:flex-row md:justify-start md:gap-4 md:rounded-xl md:px-5 md:text-xl";
   // Folded, a tab is its icon over its word again, as on a phone.
   const miniItem = mini ? ` wide:flex-col wide:justify-center wide:gap-0.5 wide:rounded-[1.125rem] wide:px-0 wide:text-sm ${low ? "wide:min-h-12" : ""}` : "";
 
@@ -128,7 +128,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
     <nav
       aria-label={t`メインメニュー`}
       data-tabbar
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line/30 bg-paper px-1 min-[400px]:px-3 pt-1.5 md:inset-x-auto md:bottom-auto md:right-3 md:top-[calc(0.5rem+var(--top-clear))] md:border-t-0 md:bg-transparent md:p-0 wide:static wide:flex wide:h-auto wide:w-full wide:flex-1 wide:flex-col wide:self-auto ${low ? "wide:pt-1" : "wide:pt-4"} ${mini ? "wide:px-2" : "wide:px-[29px]"}`}
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line/30 bg-paper px-1 min-[400px]:px-3 pt-1.5 md:inset-x-auto md:bottom-auto md:right-3 md:top-[calc(0.25rem+var(--top-clear))] md:border-t-0 md:bg-transparent md:p-0 wide:static wide:flex wide:h-auto wide:w-full wide:flex-1 wide:flex-col wide:self-auto ${low ? "wide:pt-1" : "wide:pt-4"} ${mini ? "wide:px-2" : "wide:px-[29px]"}`}
     >
       <ul className={`mx-auto grid max-w-xl grid-cols-5 gap-0.5 min-[400px]:gap-1 md:flex wide:my-auto wide:w-full wide:max-w-none wide:flex-col ${low ? "wide:gap-0.5" : "wide:gap-2"}`}>
         {tabs.map(({ path, label, icon }) => {
