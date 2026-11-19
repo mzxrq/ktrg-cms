@@ -17,7 +17,7 @@ type InstallPrompt = Event & { prompt: () => Promise<unknown> };
 /** A screenshot of one step on an iPhone (public/install; they carry the "tap here" marks in Japanese). */
 function StepPicture({ name, height, alt }: { name: string; height: number; alt: string }) {
   // eslint-disable-next-line @next/next/no-img-element -- a small static file, already sized
-  return <img src={`/install/ios-${name}.webp`} alt={alt} width={720} height={height} loading="lazy" decoding="async" className="mt-3 h-auto w-full max-w-sm rounded-2xl border border-line" />;
+  return <img src={`/install/ios-${name}.webp`} alt={alt} width={720} height={height} loading="lazy" decoding="async" className="mt-3 h-auto w-full max-w-sm rounded-lg border border-line" />;
 }
 
 export function InstallSteps({ titleId }: { titleId: string }) {
@@ -42,7 +42,7 @@ export function InstallSteps({ titleId }: { titleId: string }) {
         <Trans>ホーム画面に追加すると、アプリのようにすぐ開けます。山の中でも、探す手間がかかりません。</Trans>
       </p>
       {isInAppBrowser(ua) ? (
-        <p className="rounded-[1.75rem] bg-surface p-4 text-lg leading-8">
+        <p className="rounded-lg bg-surface p-4 text-lg leading-8">
           <Trans>いま開いているのは、ほかのアプリの中のブラウザです。Safari や Chrome で開きなおしてから、追加してください。</Trans>
         </p>
       ) : offer ? (
@@ -50,7 +50,7 @@ export function InstallSteps({ titleId }: { titleId: string }) {
           <Trans>ホーム画面に追加する</Trans>
         </button>
       ) : ios ? (
-        <ol className="flex list-decimal flex-col gap-6 rounded-[1.75rem] bg-surface p-4 pl-9 text-lg leading-8">
+        <ol className="flex list-decimal flex-col gap-6 rounded-lg bg-surface p-4 pl-9 text-lg leading-8">
           <li>
             <Trans>Safari で、画面の下（または上）にある共有ボタン（□に↑）を押します。</Trans>
             <StepPicture name="share" height={560} alt={t`Safari の下のバーで、共有ボタンを押します`} />
@@ -69,7 +69,7 @@ export function InstallSteps({ titleId }: { titleId: string }) {
           </li>
         </ol>
       ) : (
-        <p className="rounded-[1.75rem] bg-surface p-4 text-lg leading-8">
+        <p className="rounded-lg bg-surface p-4 text-lg leading-8">
           <Trans>ブラウザのメニュー（⋮ や ⋯）から、「ホーム画面に追加」または「アプリをインストール」をえらびます。</Trans>
         </p>
       )}

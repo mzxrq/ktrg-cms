@@ -15,7 +15,7 @@ export function LoadingOverlay({ label, onCancel }: { label: string; onCancel?: 
   const { t } = useLingui();
   return createPortal(
     <div className="overlay-in fixed inset-0 z-30 flex items-center justify-center bg-black/50 p-4">
-      <div role="status" aria-live="polite" className="flex w-full max-w-sm flex-col items-center gap-4 rounded-2xl bg-paper p-6 text-center text-ink shadow-2xl">
+      <div role="status" aria-live="polite" className="flex w-full max-w-sm flex-col items-center gap-4 rounded-lg bg-paper p-6 text-center text-ink shadow-2xl">
         <svg viewBox="0 0 48 48" aria-hidden="true" className="size-16 -rotate-90">
           <circle cx="24" cy="24" r="20" fill="none" strokeWidth="3" className="stroke-line/30" />
           <circle cx="24" cy="24" r="20" fill="none" strokeWidth="3" strokeLinecap="round" pathLength={1} className="seal-draw stroke-brand" />

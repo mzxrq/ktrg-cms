@@ -121,10 +121,11 @@ export function RouteView({ route, locale, places, settings, placesFirst, labels
   // The titles in the sticky bar: each opens its fold (an id on the section that holds it).
   const jumps = [
     history ? { id: "history", label: <Trans>歴史</Trans> } : null,
+    // The video sits right under the history on the page, so its tab follows 歴史 (user, 2026-11-19).
+    video || videoFile ? { id: "video", label: <Trans>動画</Trans> } : null,
     access || journey || route.accessPoints.length > 0 ? { id: "access", label: <Trans>アクセス</Trans> } : null,
     trail.length > 0 ? { id: "walk", label: <Trans>道のり</Trans> } : null,
     stops.length > 0 ? { id: "map", label: <Trans>地図</Trans> } : null,
-    video || videoFile ? { id: "video", label: <Trans>動画</Trans> } : null,
   ].filter((j) => j !== null);
   const photoName = pickText(locale, route.photoNameJa ?? null, route.photoNameEn ?? null)?.text;
   const photo = route.photoUrl ? { src: route.photoUrl, alt: photoName ?? pickText(locale, route.nameJa, route.nameEn)?.text ?? route.nameJa, caption: photoName, credit: route.photoCredit ?? null, focus: route.photoFocus ?? null } : null;
@@ -142,8 +143,10 @@ export function RouteView({ route, locale, places, settings, placesFirst, labels
   // pulled back: 2rem above, and on the right the page's 2.5rem plus the space beside a centred page, max-w-6xl = 72rem
   // in app/(public)/layout.tsx: change them together).
   const MAP_COLUMN = "contents @4xl:block @4xl:sticky @4xl:top-0 @4xl:-mt-8 @4xl:-mr-[calc(max(0px,(100vw-var(--rail,0px)-72rem)/2)+2.5rem)] @4xl:h-svh";
+  // A container (and so two columns from @4xl) on a desktop only: a tablet page is full width now and reads like a phone
+  // (2026-11-19: at 896 px the split opened early and the map column pushed the page sideways).
   return (
-    <div className="@container flex flex-col gap-6">
+    <div className="wide:@container flex flex-col gap-6">
       <div className="flex flex-col gap-6 @4xl:grid @4xl:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] @4xl:items-start @4xl:gap-x-6">
         <div className={SIDE}>
           {back ? <div className="order-0 px-4 @4xl:order-none">{back}</div> : null}

@@ -155,7 +155,7 @@ export function RouteStats({ route, compact = false, icons = false, inline = fal
   return (
     <dl className="mt-4 grid grid-cols-2 gap-3">
       {items.map(({ label, value, info }) => (
-        <div key={label} className="rounded-2xl bg-surface px-4 py-3">
+        <div key={label} className="rounded-lg bg-surface px-4 py-3">
           <dt className="text-base text-muted">
             {label}
             {tips ? tip(info) : null}

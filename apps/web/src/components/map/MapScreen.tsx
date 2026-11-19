@@ -302,7 +302,7 @@ export function MapScreen({
   const showDetailInSheet = hasDetail;
 
   return (
-    <div className="relative md:-mt-6 wide:mt-0">
+    <div className="relative">
     <div
       ref={wrap}
       className={`trail-map map-screen relative h-dvh w-full overflow-hidden md:[--tab-room:0rem] ${chosen ? "[--tab-room:0rem]" : "[--tab-room:calc(5.5rem+env(safe-area-inset-bottom))]"}`}
@@ -391,7 +391,7 @@ function CourseList({ routes, onChoose, locale }: { routes: MapScreenRoute[]; on
     <ol className="flex flex-col gap-2">
       {ordered.map((r) => (
         <li key={r.id}>
-          <button type="button" onClick={() => onChoose(r.id)} className="tap-target block w-full rounded-[1.75rem] text-left hover:opacity-95">
+          <button type="button" onClick={() => onChoose(r.id)} className="tap-target block w-full rounded-lg text-left hover:opacity-95">
             <RoutePill
               route={r}
               brief
@@ -443,7 +443,7 @@ function StopRows({ route, onChooseStop }: { route: MapScreenRoute; onChooseStop
               <span className={`absolute right-3 top-3 grid size-8 place-items-center rounded-full text-lg font-bold tabular-nums ${spot.stamped ? "bg-shu text-on-shu" : "badge-pattern bg-brand-strong text-on-brand-strong"}`}>{spot.order}</span>
             </>
           );
-          const rowClass = "tap-target relative block w-full overflow-hidden rounded-[1.75rem] bg-surface text-left";
+          const rowClass = "tap-target relative block w-full overflow-hidden rounded-lg bg-surface text-left";
           return (
             <li key={spot.id}>
               {onMap ? (
@@ -488,7 +488,7 @@ function RoutePanel({
   );
   return (
     <div className="flex flex-col gap-4 px-4">
-      {route.status === "soon" ? <p className="rounded-2xl bg-surface p-4 text-lg font-bold">{t`この区間は、準備中です。`}</p> : null}
+      {route.status === "soon" ? <p className="rounded-lg bg-surface p-4 text-lg font-bold">{t`この区間は、準備中です。`}</p> : null}
 
       <RouteStats route={route} compact />
 
@@ -502,7 +502,7 @@ function RoutePanel({
       {route.spots.length > 0 ? (
         <StopRows key={route.id} route={route} onChooseStop={onChooseStop} />
       ) : route.status === "ready" ? (
-        <p className="rounded-2xl bg-surface p-4 text-lg">{t`スタンプの場所は、まだ準備中です。`}</p>
+        <p className="rounded-lg bg-surface p-4 text-lg">{t`スタンプの場所は、まだ準備中です。`}</p>
       ) : null}
 
       {route.elevations ? <ElevationProfile elevations={route.elevations} distanceKm={route.distanceKm} routeLine={fetched?.line} lineElevations={fetched?.elevations} rides={route.rides} /> : null}
@@ -562,7 +562,7 @@ function StopPanel({
       </p>
 
       {stop.statusNote ? (
-        <p className="rounded-2xl border-2 border-line p-3 text-lg leading-7">
+        <p className="rounded-lg border-2 border-line p-3 text-lg leading-7">
           {stop.statusNote}
           {stop.statusUpdatedAt ? <span className="block text-base text-muted">{t`${updated} 更新`}</span> : null}
         </p>

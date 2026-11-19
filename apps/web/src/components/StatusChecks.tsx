@@ -50,7 +50,7 @@ export function StatusChecks() {
 
   return (
     <div className="flex flex-col gap-4">
-      <dl className="flex flex-col gap-3 rounded-[1.75rem] bg-surface p-5" aria-live="polite">
+      <dl className="flex flex-col gap-3 rounded-lg bg-surface p-5" aria-live="polite">
         {rows.map((r) => (
           <div key={r.name} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <dt className="text-lg font-bold">{r.name}</dt>

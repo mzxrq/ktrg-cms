@@ -46,33 +46,36 @@ export default async function PublicLayout({ children }: { children: ReactNode }
       <NavigationProvider signedIn={viewer.signedIn} voiceByDefault={speaksByDefault(viewer.ageRange)}>
       <VisitBeacon />
       <StampFilters />
-      <div className="mx-auto flex w-full max-w-5xl justify-center md:gap-6 wide:mx-0 wide:max-w-none wide:justify-start wide:gap-0">
+      <div className="mx-auto flex w-full max-w-5xl justify-center wide:mx-0 wide:max-w-none wide:justify-start wide:gap-0">
         {/* Under the desktop sidebar's tabs only the language (easy to find on a computer, 2026-11-16); the other links are
             in the page footer and the メニュー. */}
         <TabBar
           footer={
-            <div className="border-t border-line/30 px-2 pt-3">
+            <div className="[&_select]:w-full [&_select]:justify-between [&_select]:px-5 [&_select]:rounded-xl">
               <LocaleSelect plain />
             </div>
           }
         />
-        <div className="min-w-0 max-w-xl flex-1 md:border-x md:border-surface wide:max-w-none wide:border-x-0">
+        {/* A phone column; from a tablet up it takes the full width (2026-11-19: a tablet reads like a phone page, not a strip in the middle). */}
+        <div className="min-w-0 max-w-xl flex-1 md:flex md:min-h-dvh md:max-w-none md:flex-col">
           <SiteHeader
             signedIn={viewer.signedIn}
             staff={viewer.role === "editor" || viewer.role === "admin"}
             locale={i18n.locale}
             profile={{ publicId: viewer.publicId, deletionDueAt: viewer.deletionDueAt, name: viewer.name, origin: viewer.origin, originPlace: viewer.originPlace, ageRange: viewer.ageRange, gender: viewer.gender, foundVia: viewer.foundVia }}
-            prefs={prefsState.effective}
             sample={sample}
           />
           <OfflineNotice />
           {sample ? <SampleNoticeHost /> : null}
           <PrefsSync signedIn={viewer.signedIn} account={prefsState.account} device={prefsState.device} />
           {viewer.signedIn ? <SessionRotate /> : null}
-          <main id="main" className="pb-[calc(7rem+var(--nav-toast,0px))] md:pb-[calc(2.5rem+var(--nav-toast,0px))] md:pt-6 md:has-[[data-landing-top]]:pt-0 wide:pb-[calc(5rem+var(--nav-toast,0px))] wide:pt-8 wide:has-[[data-landing-top]]:pt-0">
-            <div className="wide:mx-auto wide:max-w-6xl wide:px-10">
+          <main id="main" className="pb-[calc(7rem+var(--nav-toast,0px))] md:pb-[calc(2.5rem+var(--nav-toast,0px))] md:flex md:flex-1 md:flex-col wide:pb-[calc(2rem+var(--nav-toast,0px))] wide:pt-8 wide:has-[[data-landing-top]]:pt-0">
+            {/* On a desktop the page fills at least the screen, so the footer sits at the bottom of a short or empty page. */}
+            <div className="md:flex md:flex-1 md:flex-col wide:mx-auto wide:w-full wide:max-w-6xl wide:px-10">
+              <div className="md:flex-1">
               {viewer.signedIn ? null : <BrowserWarning />}
               {children}
+              </div>
               <SiteFooter locale={i18n.locale} />
             </div>
           </main>

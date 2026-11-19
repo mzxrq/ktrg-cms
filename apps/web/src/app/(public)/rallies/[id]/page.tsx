@@ -113,7 +113,7 @@ export default async function RallyPage({ params, searchParams }: Props) {
 
       {done ? (
         // A finished rally: the closed medal, in place of the count and the bar.
-        <section className="pattern-shippo order-4 mx-4 flex flex-col items-center gap-3 rounded-[1.75rem] bg-surface p-6 text-center wide:order-none">
+        <section className="pattern-shippo order-4 mx-4 flex flex-col items-center gap-3 rounded-lg bg-surface p-6 text-center wide:order-none">
           <Medal number={rally.total} done stamped={rally.total} total={rally.total} className="h-44 w-auto" />
           <p className="font-serif text-3xl font-bold text-accent">
             <Trans>コンプリート！</Trans>
@@ -130,11 +130,11 @@ export default async function RallyPage({ params, searchParams }: Props) {
         </section>
       ) : stamped === 0 && rally.total > 0 ? (
         // Not started: how big the walk is and an invitation, not "0 / N".
-        <section className="pattern-shippo order-4 mx-4 rounded-[1.75rem] bg-surface p-4 wide:order-none">
+        <section className="pattern-shippo order-4 mx-4 rounded-lg bg-surface p-4 wide:order-none">
           <JourneyFacts facts={journeyFacts(rally, routes)} />
         </section>
       ) : (
-        <section className="order-4 mx-4 flex flex-col gap-3 rounded-[1.75rem] bg-surface p-4 wide:order-none">
+        <section className="order-4 mx-4 flex flex-col gap-3 rounded-lg bg-surface p-4 wide:order-none">
           <p className="text-6xl font-bold leading-none tabular-nums text-accent">
             {stamped}
             <span className="ml-2 text-3xl text-muted">/ {rally.total}</span>
@@ -171,7 +171,7 @@ export default async function RallyPage({ params, searchParams }: Props) {
       {/* On a wide screen the column also holds the place page that is open (RallyBook), so it scrolls within the screen's height. */}
       <div className="order-6 wide:sticky wide:top-4 wide:order-none wide:flex wide:max-h-[calc(100dvh-2rem)] wide:flex-col wide:gap-4 wide:overflow-y-auto">
       {rally.total > 0 ? (
-        <section className="flex flex-col gap-3 px-4 wide:rounded-[1.75rem] wide:bg-surface wide:p-6">
+        <section className="flex flex-col gap-3 px-4 wide:rounded-lg wide:bg-surface wide:p-6">
           <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
             <Trans>スタンプ</Trans>
           </h2>

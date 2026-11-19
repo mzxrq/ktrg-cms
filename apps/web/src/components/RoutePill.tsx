@@ -23,7 +23,7 @@ export function RoutePill({ route, name, place, photo, focus, brief = false }: {
   const soon = route.status === "soon";
 
   return (
-    <span className="@container relative flex h-full flex-col overflow-hidden rounded-[1.75rem] bg-surface">
+    <span className="@container relative flex h-full flex-col overflow-hidden rounded-lg bg-surface">
       <span className="absolute inset-y-0 right-0 block w-2/5 overflow-hidden @2xl:w-1/2">
         {/* A course that is not ready shows its photo blurred (the scale hides the soft edge), as in the course list. */}
         <span className={`absolute inset-0 block ${soon ? "scale-110 blur-[6px] saturate-50" : ""}`}>

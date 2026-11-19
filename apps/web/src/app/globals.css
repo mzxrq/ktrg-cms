@@ -45,6 +45,9 @@
   --color-lift: #ffffff; /* a chosen pill (prefecture tabs): white on the light page, the panel tone on the dark one */
   --color-night: #1f1b1a; /* the dark band of a reading page (the ridge at night): the ink colour */
   --color-on-night: #fcfaf5; /* the words on the dark band */
+  --color-rail: #fcfaf5; /* the sidebar and menu panel: the page in light, night in dark (follows the theme, 2026-11-19) */
+  --color-on-rail: #1f1b1a; /* its frame, pattern and logo words */
+  --color-rail-mark: #cc6256; /* the logo's red part on the panel: brand in light, the words colour in dark */
   --color-sea: #1b3140; /* the sea (the story's first chapter): deep blue-slate, so the walk that starts at the shore reads as water, not night */
   --color-on-sea: #fcfaf5;
   --color-brand: #cc6256; /* the brand red: action buttons, icons, the bar beside headings. Not for text on white, not for a selected state (that is ink) */
@@ -211,6 +214,9 @@
     --color-lift: #29241f;
     --color-night: #0b0908; /* the dark band stays night: deeper than the page (墨, sumi ink) */
     --color-on-night: #ebe2d0;
+    --color-rail: #0b0908;
+    --color-on-rail: #ebe2d0;
+    --color-rail-mark: #ebe2d0;
     --color-sea: #0e1c26; /* the sea (the story's first chapter): deep blue-slate, so the walk that starts at the shore reads as water, not night */
     --color-on-sea: #ebe2d0;
     --color-brand: #cc6256; /* the same brand red */
@@ -250,6 +256,9 @@
   --color-lift: #29241f;
   --color-night: #0b0908;
   --color-on-night: #ebe2d0;
+  --color-rail: #0b0908;
+  --color-on-rail: #ebe2d0;
+  --color-rail-mark: #ebe2d0;
   --color-sea: #0e1c26; /* the sea (the story's first chapter): deep blue-slate, so the walk that starts at the shore reads as water, not night */
   --color-on-sea: #ebe2d0;
   --color-brand: #cc6256; /* the same brand red */
@@ -283,6 +292,9 @@
   --color-lift: #ffffff; /* a chosen pill (prefecture tabs): white on the light page, the panel tone on the dark one */
   --color-night: #1f1b1a; /* the dark band of a reading page (the ridge at night): the ink colour */
   --color-on-night: #fcfaf5; /* the words on the dark band */
+  --color-rail: #fcfaf5; /* the sidebar and menu panel: the page in light, night in dark (follows the theme, 2026-11-19) */
+  --color-on-rail: #1f1b1a; /* its frame, pattern and logo words */
+  --color-rail-mark: #cc6256; /* the logo's red part on the panel: brand in light, the words colour in dark */
   --color-sea: #1b3140; /* the sea (the story's first chapter): deep blue-slate, so the walk that starts at the shore reads as water, not night */
   --color-on-sea: #fcfaf5;
   --color-brand: #cc6256; /* the brand red: action buttons, icons, the bar beside headings. Not for text on white, not for a selected state (that is ink) */
@@ -675,8 +687,18 @@ html[data-size="xlarge"] {
 }
 
 /* 七宝 on the night ground (a place with no photo): in the words' colour instead of the brand red, which would not show. */
+.pattern-on-rail::before {
+  background-color: var(--color-on-rail);
+}
 .pattern-on-night::before {
   background-color: var(--color-on-night);
+}
+
+/* The language sits under the desktop sidebar's tabs, so the menu leaves it out, except while the sidebar is folded. */
+@variant wide {
+  body:has([data-rail="full"]) .menu-locale {
+    display: none;
+  }
 }
 
 /* The same 七宝 in a course's number badge, in the badge's own text colour so it shows on the red. Decoration only. */
@@ -1125,11 +1147,17 @@ body:has([data-sample-notice]) .cover-credit > details {
 }
 
 /* The sidebar's width from 1024 px, for what runs from edge to edge of the area beside it. The clip hides the scrollbar's share of 100vw. */
+/* Below 1024 px there is no sidebar (a tablet has a menu button), so nothing is beside the page (2026-11-19). */
 :root {
-  --rail: 16rem;
+  --rail: 0px;
 }
-:root:has([data-rail="mini"]) {
-  --rail: calc(5rem + env(safe-area-inset-left) + env(safe-area-inset-right));
+@media (min-width: 1024px), (min-width: 768px) and (max-height: 600px) {
+  :root {
+    --rail: 16rem;
+  }
+  :root:has([data-rail="mini"]) {
+    --rail: calc(5rem + env(safe-area-inset-left) + env(safe-area-inset-right));
+  }
 }
 /* A phone on its side: the Dynamic Island sits at one end, so the rail and the page keep clear of both (the insets are 0 elsewhere). */
 @media (min-width: 1024px), (min-width: 768px) and (max-height: 600px) {
@@ -1166,8 +1194,8 @@ body:has([data-sample-notice]) .cover-credit > details {
 }
 
 /* On a phone the top bar has the back button, so the page's own back link (and a wrapper holding only it) is left out;
-   from 768 px the bar is not drawn and the link is the way back. */
-@media (max-width: 767px) {
+   on a desktop (wide) the bar is not drawn and the link is the way back. A tablet has the bar, so it hides the link too. */
+@media (max-width: 767px), (max-width: 1023px) and (min-height: 601px) {
   .back-link,
   :has(> .back-link:only-child) {
     display: none;

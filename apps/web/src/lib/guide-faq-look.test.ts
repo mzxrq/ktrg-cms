@@ -15,10 +15,10 @@ test("guide and FAQ titles are Mincho in the readable red", () => {
 
 test("step and question cards are capsules without strokes", () => {
   const cards = read("components", "pages", "Cards.tsx");
-  expect(cards).toMatch(/rounded-\[1\.75rem\] bg-surface/);
+  expect(cards).toMatch(/rounded-lg bg-surface/);
   expect(cards).not.toMatch(/rounded-3xl|border-2/);
 });
 
 test("the block editor's card wrapper matches the capsule card", () => {
-  expect(read("components", "admin", "BlockEditor.tsx")).toMatch(/relative rounded-\[1\.75rem\] bg-surface p-5/);
+  expect(read("components", "admin", "BlockEditor.tsx")).toMatch(/relative rounded-lg bg-surface p-5/);
 });

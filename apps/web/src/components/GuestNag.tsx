@@ -75,7 +75,7 @@ export function GuestNag({ hasStamps }: { hasStamps: boolean }) {
 
   const later = buttonStyle("secondary", "md", "flex w-full");
   return (
-    <dialog ref={dialog} aria-labelledby="guest-nag-title" onClose={() => setOpen(false)} className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-3xl bg-paper p-6 text-ink backdrop:bg-black/60">
+    <dialog ref={dialog} aria-labelledby="guest-nag-title" onClose={() => setOpen(false)} className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg bg-paper p-6 text-ink backdrop:bg-black/60">
       <h2 id="guest-nag-title" className="text-2xl font-bold leading-snug">
         {t`今すぐアカウントを作りましょう。記録が消えてしまうかもしれません！`}
       </h2>

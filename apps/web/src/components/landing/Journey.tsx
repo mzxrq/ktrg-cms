@@ -41,7 +41,7 @@ export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = 
       </a>
       <div data-journey-stage>
         <div data-beat="0">
-          <LandingHero slides={slides} locale={locale} line={w.heroLine} bare across={flow} />
+          <LandingHero slides={slides} locale={locale} line={w.heroLine} bare />
         </div>
 
         <div data-beat="1">

@@ -43,7 +43,7 @@ export function StampProgressPopup() {
     <dialog ref={dialog} aria-labelledby="stamp-progress-title" onClose={() => {
         setInfo(null);
         window.dispatchEvent(new Event(STAMP_POPUP_CLOSED_EVENT));
-      }} className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-3xl bg-paper p-6 text-center text-ink backdrop:bg-black/60">
+      }} className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg bg-paper p-6 text-center text-ink backdrop:bg-black/60">
       {info ? (
         <div className="flex flex-col items-center gap-3">
           <h2 id="stamp-progress-title" className="text-2xl font-bold">

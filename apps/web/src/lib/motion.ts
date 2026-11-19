@@ -50,7 +50,7 @@ export function preloadMotion(): void {
 // Where each kind starts (enter) and ends (leave), in pixels and scale; "fade" kinds use opacity only.
 const MOVE: Record<MotionKind, gsap.TweenVars> = {
   drop: { y: -12 },
-  pop: { scale: 0.95, x: -8 }, // the origin is set by the menu, beside its button
+  pop: { x: -16 }, // the menu drawer slides out from the rail's edge
   rise: { y: 10 },
   fade: {},
   collapse: {},

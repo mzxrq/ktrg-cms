@@ -56,7 +56,7 @@ export default async function BadgesPage() {
       </div>
 
       {near ? (
-        <Link href={`/routes/${near.r.id}`} className="tap-target mx-4 flex items-center gap-4 rounded-[1.75rem] bg-surface p-4 no-underline">
+        <Link href={`/routes/${near.r.id}`} className="tap-target mx-4 flex items-center gap-4 rounded-lg bg-surface p-4 no-underline">
           <Medal number={near.r.order} done={false} stamped={near.r.stampedCount ?? 0} total={near.r.spotCount} className="h-20 w-auto shrink-0" />
           <span className="flex min-w-0 flex-col gap-1">
             <span className="text-base font-bold text-muted">

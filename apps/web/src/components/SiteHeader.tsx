@@ -7,12 +7,12 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "re
 import { useLingui } from "@lingui/react/macro";
 import { logOut } from "@/lib/auth-client";
 import { clearSavedPages } from "@/lib/offline-pack";
-import { BookmarkIcon, ChevronIcon, DocumentIcon, ChevronLeftIcon, CloseIcon, GearIcon } from "./icons";
-import { QuickActions } from "./QuickActions";
-import type { Prefs } from "@/lib/prefs";
+import { BookmarkIcon, ChevronIcon, DocumentIcon, ShopIcon, ChevronLeftIcon, CloseIcon, GearIcon, HomeIcon, MapIcon, RouteIcon, StampIcon } from "./icons";
+import { panelGround } from "./TabBar";
+import { WIDE_QUERY } from "@/lib/screen";
 import { ProfileCard, type ProfileCardProps } from "./ProfileCard";
 import { KatsuragiLogo } from "./KatsuragiLogo";
-import { LocaleSelect } from "./LocaleSwitcher";
+import { LocaleSelect, LocaleSwitcher } from "./LocaleSwitcher";
 import { foundationEn, foundationJa } from "@/lib/terms-content";
 import { useMenu } from "./MenuProvider";
 import { usePresence } from "@/lib/motion";
@@ -22,7 +22,7 @@ import { confirmDialog } from "@/components/ConfirmDialog";
 import { buttonStyle } from "@/components/button";
 
 const barButton =
-  "inline-flex min-h-11 items-center gap-1.5 rounded-full border border-ink bg-paper px-2.5 text-base font-bold text-ink hover:bg-surface [&>svg]:size-6";
+  "inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-ink bg-paper px-2.5 text-base font-bold text-ink hover:bg-surface [&>svg]:size-6";
 
 // The four tab pages: nothing is "behind" them, so the bar has no back button there.
 const TOP_LEVEL = /^\/(map|routes|rallies)?\/?$/;
@@ -47,7 +47,6 @@ export function SiteHeader({
   staff = false,
   profile,
   locale,
-  prefs,
   sample,
 }: {
   signedIn: boolean;
@@ -55,7 +54,6 @@ export function SiteHeader({
   staff?: boolean;
   profile: Omit<ProfileCardProps, "locale">;
   locale: string;
-  prefs: Prefs;
   sample: boolean;
 }) {
   const { t } = useLingui();
@@ -77,35 +75,25 @@ export function SiteHeader({
   const onLanding = onMap || (!signedIn && pathname === "/");
   // The logo bar of the signed-out home page shows only while the menu is open: scrolling never brings it over the page.
   const hidden = onLanding && !onMap && !open;
-  // 768 px and up: the menu is a popover beside the rail button, and the page behind it may scroll.
+  // 768 px and up: the menu is a drawer beside the rail, and the page behind it may scroll.
   const wide = () => window.matchMedia("(min-width: 768px)").matches;
   // The panel and the dimmed backdrop stay on screen while they leave (motion level permitting), then go.
   const { mounted: panelMounted, ref: panelRef } = usePresence<HTMLDivElement>(open, () => (wide() ? "pop" : "drop"));
   const { mounted: backdropMounted, ref: backdropRef } = usePresence<HTMLDivElement>(open, "fade");
 
-  // The popover sits to the right of the rail button that opened it, as high as the button allows while staying fully
-  // on screen, and grows out of the button. A resize would leave it in the wrong place, so it closes instead.
+  // The menu is a drawer the full height of the screen, flush against the rail's edge, so it reads as part of the
+  // navigation rather than a card floating over the page (2026-11-19). A resize would leave it in the wrong place, so it
+  // closes instead.
   useLayoutEffect(() => {
     const panel = panelRef.current;
     const anchor = railButton.current;
     if (!open || !panel || !anchor || !wide()) return;
-    const place = () => {
-      const r = anchor.getBoundingClientRect();
-      const top = Math.max(12, Math.min(r.top - 8, window.innerHeight - panel.offsetHeight - 12));
-      panel.style.left = `${r.right + 12}px`;
-      panel.style.top = `${top}px`;
-      panel.style.transformOrigin = `left ${r.top + r.height / 2 - top}px`;
-    };
-    place();
-    // The menu fills in after it opens (the account block, the settings), so it is placed again whenever its height changes.
-    const watch = new ResizeObserver(place);
-    watch.observe(panel);
+    // On a desktop it starts at the sidebar's edge (the nav fills the sidebar); a tablet has no sidebar, so it slides in
+    // from the left edge of the screen.
+    panel.style.left = window.matchMedia(WIDE_QUERY).matches ? `${(anchor.closest("[data-tabbar]") ?? anchor).getBoundingClientRect().right}px` : "0px";
     const close = () => setOpen(false);
     window.addEventListener("resize", close);
-    return () => {
-      watch.disconnect();
-      window.removeEventListener("resize", close);
-    };
+    return () => window.removeEventListener("resize", close);
   }, [open, railButton, setOpen, panelRef]);
 
   // While the menu is open on a phone the page behind it must not scroll: only the menu does.
@@ -149,23 +137,28 @@ export function SiteHeader({
   }
 
   return (
-    <header className={`print:hidden site-header ${onLanding ? "sticky top-0 z-30 h-0" : "relative z-30 md:sticky md:top-0 md:h-0"}`}>
+    <header className={`print:hidden site-header ${onLanding ? "sticky top-0 z-30 h-0" : "relative z-30 wide:sticky wide:top-0 wide:h-0"}`}>
       {backdropMounted ? (
-        // Tapping outside the panel closes it. (Escape and the button do the same for the keyboard.)
-        <div ref={backdropRef} aria-hidden="true" onClick={() => setOpen(false)} className="fixed inset-0 bg-black/50 md:bg-transparent" />
+        // Tapping outside the panel closes it. (Escape and the button do the same for the keyboard.) On a tablet the dimmed
+        // space beside the menu shows the logo; on a desktop the page stays as it is.
+        <div ref={backdropRef} aria-hidden="true" onClick={() => setOpen(false)} className="fixed inset-0 z-10 bg-black/50 wide:bg-transparent">
+          <span className="pointer-events-none absolute inset-y-0 left-[26rem] right-0 hidden items-center justify-center md:flex wide:hidden">
+            <KatsuragiLogo className="h-auto w-3/4 [--color-brand:#fff] [--color-ink:#fff] [filter:drop-shadow(0_1px_4px_rgb(0_0_0/0.6))]" />
+          </span>
+        </div>
       ) : null}
       <div
         inert={hidden}
         // The bar is as wide as the tab bar at the bottom (same side gaps), with the logo in the middle.
         className={
           onMap
-            ? "pointer-events-none absolute inset-x-3 top-[calc(0.75rem+var(--top-clear))] md:hidden"
+            ? "pointer-events-none absolute inset-x-3 top-[calc(0.75rem+var(--top-clear))] wide:hidden"
             : onLanding
               ? `absolute inset-x-0 top-0 border-b border-line/30 bg-paper px-3 pb-1 pt-[calc(0.25rem+var(--top-clear))] transition-opacity md:hidden motion-reduce:transition-none ${hidden ? "pointer-events-none opacity-0" : ""}`
-              : "site-header-bar relative mb-3 border-b border-line/30 bg-paper px-3 py-1 md:hidden"
+              : "site-header-bar relative mb-3 border-b border-line/30 bg-paper px-3 py-1 wide:hidden"
         }
       >
-        <div className={`mx-auto grid max-w-xl items-center gap-2 ${onMap ? "pointer-events-none grid-cols-[auto_1fr_auto] [&>*]:pointer-events-auto" : onRoutes ? "grid-cols-[auto_1fr_auto]" : "grid-cols-[1fr_auto_1fr]"}`}>
+        <div className={`mx-auto grid max-w-xl items-center gap-2 md:max-w-none ${onMap ? "pointer-events-none grid-cols-[auto_1fr_auto] [&>*]:pointer-events-auto" : onRoutes ? "grid-cols-[auto_1fr_auto]" : "grid-cols-[1fr_auto_1fr]"}`}>
           {onRoutes ? null : TOP_LEVEL.test(pathname) ? (
             <span />
           ) : (
@@ -190,8 +183,21 @@ export function SiteHeader({
           {/* The course list: the page's title stands beside the logo, up in the bar (the page itself has no heading on a phone). */}
           {onRoutes ? open ? <span /> : <p className="line-clamp-2 min-w-0 font-serif text-xl font-bold leading-tight text-accent tall:text-2xl">{barTitle}</p> : null}
           {/* Open: the language drop-down takes the right end of the bar, so the bar and the menu read as one piece. */}
-          <span className="justify-self-end">{open ? <LocaleSelect /> : sample ? <SampleNoticeButton /> : null}</span>
+          {/* On a tablet this corner is the menu button's (TabBar), so it stays empty. */}
+          <span className="justify-self-end md:invisible">{open ? <LocaleSelect /> : sample ? <SampleNoticeButton /> : null}</span>
         </div>
+        {/* The rally page's バッジ and ? on a tablet: in the bar, just left of the メニュー button and at its height (user, 2026-11-19).
+            Drawn by the bar itself, so they never depend on where the page's content is laid out. */}
+        {/^\/rallies\/?$/.test(pathname) ? (
+          <div className="absolute right-[11rem] top-1 hidden items-center gap-2 md:flex wide:hidden">
+            <Link href="/badges" className="inline-flex min-h-11 items-center rounded-full bg-surface px-4 text-lg font-bold text-accent">
+              {t`バッジ`}
+            </Link>
+            <Link href="/guide" aria-label={t`遊び方`} className="inline-flex size-11 items-center justify-center rounded-full bg-surface text-xl font-bold text-accent">
+              ?
+            </Link>
+          </div>
+        ) : null}
       </div>
 
       {panelMounted ? (
@@ -200,18 +206,48 @@ export function SiteHeader({
           id="site-menu"
           // A link to the page we are already on does not change the path, so close here to show the tap worked.
           onClick={(e) => e.target instanceof Element && e.target.closest("a") && setOpen(false)}
-          className="fixed inset-0 overflow-y-auto overscroll-contain bg-paper pb-28 pt-[var(--top-clear)] md:inset-auto md:right-auto md:w-[26rem] md:max-h-[calc(100dvh-1.5rem)] md:rounded-2xl md:border-2 md:border-brand md:pb-0 md:pt-0 md:shadow-xl"
+          className="fixed inset-0 overflow-y-auto overscroll-contain bg-paper z-20 pb-28 pt-[var(--top-clear)] md:overflow-hidden md:bg-rail md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
         >
-          <div className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5">
-            {/* From 768 px the bar is not drawn (the rail has the menu button), so the top row of the popover holds both. */}
-            <div className="flex items-center justify-between gap-2 md:justify-end">
+          {/* From 768 px the drawer has the sidebar's frame, which stays put while the menu scrolls inside it. */}
+          {panelGround("md:block")}
+          {/* The menu scrolls inside the frame only, fading out just inside its lines. */}
+          <div className="md:absolute md:inset-[14px] md:overflow-y-auto md:overscroll-contain md:[scrollbar-width:none] md:[mask-image:linear-gradient(transparent,#000_1.5rem,#000_calc(100%-1.5rem),transparent)] wide:[scrollbar-width:thin]">
+          <div className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5 md:px-[15px] md:py-[1.75rem]">
+            {/* On a desktop the drawer has its own close button at the top; on a tablet the menu button turns into it. */}
+            <div className="flex items-center justify-between gap-2 md:hidden wide:flex wide:justify-end">
               <h1 className="font-serif text-3xl font-bold text-accent md:hidden">{t`メニュー`}</h1>
               {/* On a phone the Menu tab below closes it; the popover has no tab to press. */}
-              <button type="button" onClick={() => setOpen(false)} className="tap-target hidden items-center gap-2 rounded-full border border-ink px-3 text-lg font-bold md:inline-flex">
+              <button type="button" onClick={() => setOpen(false)} className="tap-target hidden items-center gap-2 rounded-xl border border-ink px-3 text-lg font-bold wide:inline-flex">
                 <CloseIcon />
                 {t`閉じる`}
               </button>
             </div>
+
+            {/* A tablet has no tab bar and no sidebar: the tabs lead the menu. */}
+            <nav aria-label={t`メインメニュー`} className="hidden md:block wide:hidden">
+              <ul className="flex flex-col gap-2">
+                {[
+                  { path: "/", label: t`ホーム`, icon: <HomeIcon /> },
+                  { path: "/map", label: t`マップ`, icon: <MapIcon /> },
+                  { path: "/routes", label: t`コース`, icon: <RouteIcon /> },
+                  { path: "/rallies", label: t`ラリー`, icon: <StampIcon /> },
+                ].map(({ path, label, icon }) => {
+                  const active = path === "/" ? pathname === "/" : pathname.startsWith(path);
+                  return (
+                    <li key={path}>
+                      <Link
+                        href={path}
+                        aria-current={active ? "page" : undefined}
+                        className={`flex min-h-14 items-center gap-4 rounded-xl px-5 text-xl font-bold [&_svg]:size-6 ${active ? "bg-selected text-on-selected" : "text-ink hover:bg-paper"}`}
+                      >
+                        {icon}
+                        {label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
 
             <MenuGroup title={t`アカウント`}>
               {signedIn ? (
@@ -240,39 +276,43 @@ export function SiteHeader({
               )}
             </MenuGroup>
 
-            <MenuGroup title={t`しおりと読みもの`}>
+            <MenuGroup title={t`しおりと案内`}>
               <MenuLinks>
                 <MenuLink href="/bookmarks" icon={<BookmarkIcon />} label={t`ブックマーク`} />
                 <MenuLink href="/blog" icon={<DocumentIcon />} label={t`ブログ`} />
+                <MenuLink href="/places" icon={<ShopIcon />} label={t`お店と施設`} />
               </MenuLinks>
             </MenuGroup>
 
             <MenuGroup title={t`表示と設定`}>
               <div className="flex flex-col gap-2">
                 {/* One light list, the same rows as the settings page: the words on the left, the switch or the choice on the right. */}
-                <div className="divide-y divide-line/40 overflow-hidden rounded-[1.75rem] bg-surface">
-                  <QuickActions prefs={prefs} signedIn={signedIn} />
+                <div className="divide-y divide-line/40 overflow-hidden rounded-lg bg-surface">
                   <div className="tap-target flex items-center gap-4 px-4 py-3">
                     <span className="min-w-0 flex-1 text-lg font-bold">{t`テーマ`}</span>
                     <ThemeSwitcher plain />
                   </div>
-                  <div className="tap-target flex items-center gap-4 px-4 py-3">
-                    <span className="min-w-0 flex-1 text-lg font-bold">{t`言語`}</span>
-                    <LocaleSelect plain />
+                  {/* Both languages written out, each in its own script, so a visitor who landed on the Japanese site can spot
+                      "English" without opening anything (user's friend, 2026-11-19). */}
+                  <div className="menu-locale tap-target flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+                    <span className="min-w-0 flex-1 text-lg font-bold">
+                      {t`言語`}
+                      {locale === "ja" ? <span lang="en" className="ml-2 font-normal text-muted">Language</span> : null}
+                    </span>
+                    <LocaleSwitcher />
                   </div>
                 </div>
                 <MenuLinks>
                   <MenuLink href="/settings" label={t`見やすさの設定`} />
                 </MenuLinks>
-                <p className="text-base text-muted">{t`文字やボタンの大きさ、地図の見せ方`}</p>
+                <p className="text-base text-muted">{t`文字の大きさ、ふりがな、くっきり表示、動き、音、地図の見せ方`}</p>
               </div>
             </MenuGroup>
 
-            {/* From 1024 px these links are always in the sidebar's footer, so the menu leaves them out. */}
-            <div className="flex flex-col gap-4 wide:hidden">
+            {/* From 768 px these links are in the page footer (a tablet has the room; user, 2026-11-19), so the menu leaves them out. */}
+            <div className="flex flex-col gap-4 md:hidden">
               <MenuGroup title={t`このアプリについて`}>
                 <MenuLinks>
-                  <MenuLink href="/places" label={t`お店と施設`} />
                   <MenuLink href="/faq" label={t`よくあるご質問`} />
                   <MenuLink href="/terms" label={t`利用規約`} />
                   <MenuLink href="/privacy" label={t`プライバシーポリシー`} />
@@ -283,6 +323,7 @@ export function SiteHeader({
               <p lang={locale === "ja" ? "ja" : "en"} className="text-base text-muted">
                 {locale === "ja" ? foundationJa : foundationEn}
               </p>
+            </div>
             </div>
           </div>
         </div>

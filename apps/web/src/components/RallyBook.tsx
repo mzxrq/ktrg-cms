@@ -212,7 +212,7 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
 
   return (
     <>
-      {side && content ? createPortal(<section aria-label={name?.text} className="overflow-hidden rounded-[1.75rem] border-2 border-ink bg-paper">{content}</section>, side) : null}
+      {side && content ? createPortal(<section aria-label={name?.text} className="overflow-hidden rounded-lg border-2 border-ink bg-paper">{content}</section>, side) : null}
       <div ref={root} onClickCapture={open}>
         {children}
       </div>
@@ -225,7 +225,7 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
           if (e.key === "ArrowLeft") turn(-1);
           if (e.key === "ArrowRight") turn(1);
         }}
-        className="m-auto max-h-[92dvh] w-[min(34rem,calc(100vw-1.5rem))] overflow-y-auto rounded-[1.75rem] border-2 border-ink bg-paper p-0 text-ink backdrop:bg-black/60"
+        className="m-auto max-h-[92dvh] w-[min(34rem,calc(100vw-1.5rem))] overflow-y-auto rounded-lg border-2 border-ink bg-paper p-0 text-ink backdrop:bg-black/60"
       >
         {wide ? null : content}
       </dialog>

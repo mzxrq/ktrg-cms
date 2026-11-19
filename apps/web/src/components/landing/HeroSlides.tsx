@@ -97,7 +97,7 @@ export function HeroSlides({ slides, children }: { slides: HeroSlide[]; children
               {paused ? <path d="M8 5v14l11-7z" /> : <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />}
             </svg>
           </button>
-          <div aria-hidden="true" className="pointer-events-none absolute right-4 top-[calc(1rem+var(--top-clear,0px))] z-10 flex items-center gap-2">
+          <div aria-hidden="true" className="pointer-events-none absolute right-4 top-[calc(1rem+var(--top-clear,0px))] z-10 md:top-[4.5rem] wide:top-[calc(1rem+var(--top-clear,0px))] flex items-center gap-2">
             {slides.map((s, i) => (
               <span key={s.src} className={`relative h-2.5 overflow-hidden rounded-full bg-white/50 ${i === index ? "w-8" : "w-2.5"}`}>
                 {i === index ? (

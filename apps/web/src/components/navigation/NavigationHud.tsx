@@ -403,7 +403,7 @@ export function NavigationToast() {
         {endPrompt}
         {finding}
         {/* Phone: the top of the screen itself, from the status bar down (a solid box there keeps iOS from blurring it). */}
-        <section ref={banner} aria-label={t`ナビ中：${routeName}`} className="fixed inset-x-0 top-0 z-30 flex max-h-[70dvh] flex-col gap-1 overflow-y-auto rounded-b-2xl border-b border-line/30 bg-paper px-4 pb-3 pt-[calc(0.75rem+var(--top-clear))] shadow-lg md:inset-x-auto md:left-[calc(50%-14rem)] md:top-[calc(0.5rem+var(--top-clear))] md:w-[28rem] md:rounded-2xl md:border-b-0 md:pt-3 md:shadow-2xl md:ring-1 md:ring-line/30">
+        <section ref={banner} aria-label={t`ナビ中：${routeName}`} className="fixed inset-x-0 top-0 z-30 flex max-h-[70dvh] flex-col gap-1 overflow-y-auto rounded-b-2xl border-b border-line/30 bg-paper px-4 pb-3 pt-[calc(0.75rem+var(--top-clear))] shadow-lg md:inset-x-auto md:left-[calc(50%-14rem)] md:top-[calc(0.5rem+var(--top-clear))] md:w-[28rem] md:rounded-lg md:border-b-0 md:pt-3 md:shadow-2xl md:ring-1 md:ring-line/30">
           <div className="flex items-start gap-2">
             <div className="min-w-0 flex-1">{main}</div>
             {canStayAwake && !tucked ? (
@@ -452,7 +452,7 @@ export function NavigationToast() {
           className={`fixed inset-x-0 bottom-[calc(var(--tabbar-room)+var(--bar-inset))] z-30 transition duration-200 ease-out motion-reduce:transition-none md:inset-x-auto md:bottom-6 md:right-6 md:w-[24rem] ${tucked ? "pointer-events-none translate-y-[calc(100%+2rem)] opacity-0" : "translate-y-0 opacity-100 delay-200"}`}
         >
           {/* Its own box: the pattern's class sets `position` and would undo the `fixed` above. */}
-          <div className="pattern-shippo flex flex-col gap-3 rounded-t-2xl border-t border-line/30 bg-paper px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px)-var(--bar-inset))] pt-3 shadow-[0_-4px_24px_rgb(0_0_0/0.28)] md:rounded-2xl md:pb-3">
+          <div className="pattern-shippo flex flex-col gap-3 rounded-t-2xl border-t border-line/30 bg-paper px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px)-var(--bar-inset))] pt-3 shadow-[0_-4px_24px_rgb(0_0_0/0.28)] md:rounded-lg md:pb-3">
           {offRouteCard}
           {far ? null : (arrivalStrip ?? progressLine)}
           {far || arrived || !profile ? null : <NavElevation profile={profile} />}
@@ -474,7 +474,7 @@ export function NavigationToast() {
       ref={box}
       aria-live="polite"
       aria-label={t`ナビ中：${routeName}`}
-      className="fixed inset-x-3 bottom-[calc(max(0.75rem,var(--tabbar-room))+env(safe-area-inset-bottom))] z-30 flex max-h-[50dvh] transition-[bottom] duration-200 motion-reduce:transition-none flex-col gap-2 overflow-y-auto rounded-2xl bg-paper px-3 py-2 shadow-2xl ring-1 ring-line/30 md:inset-x-auto md:bottom-6 md:right-6 md:w-[24rem]"
+      className="fixed inset-x-3 bottom-[calc(max(0.75rem,var(--tabbar-room))+env(safe-area-inset-bottom))] z-30 flex max-h-[50dvh] transition-[bottom] duration-200 motion-reduce:transition-none flex-col gap-2 overflow-y-auto rounded-lg bg-paper px-3 py-2 shadow-2xl ring-1 ring-line/30 md:inset-x-auto md:bottom-6 md:right-6 md:w-[24rem]"
     >
       {finding}
       {/* The direction and distance come first; with large text the two buttons drop to their own row instead of cutting it short. */}

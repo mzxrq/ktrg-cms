@@ -63,7 +63,7 @@ export function CommentSection({ postId, comments, signedIn, locale, loginHref }
       {list.length === 0 ? <p className="text-lg text-muted">{t`まだコメントはありません。`}</p> : null}
       <ul className="flex flex-col gap-3">
         {list.map((c) => (
-          <li key={c.id} className="flex gap-3 rounded-2xl bg-surface p-4">
+          <li key={c.id} className="flex gap-3 rounded-lg bg-surface p-4">
             <Avatar src={null} name={c.authorName} size={40} />
             <div className="min-w-0 flex-1">
               <p className="flex flex-wrap items-baseline gap-x-3 text-base">
@@ -79,7 +79,7 @@ export function CommentSection({ postId, comments, signedIn, locale, loginHref }
       </ul>
 
       {signedIn && held ? (
-        <div role="status" className="flex flex-col gap-3 rounded-2xl border-2 border-moss bg-paper p-4">
+        <div role="status" className="flex flex-col gap-3 rounded-lg border-2 border-moss bg-paper p-4">
           <p className="flex items-center gap-3 text-lg font-bold text-moss">
             <TickIcon size={28} />
             {t`コメントを受け付けました`}
@@ -121,7 +121,7 @@ export function CommentSection({ postId, comments, signedIn, locale, loginHref }
           ) : null}
         </form>
       ) : (
-        <p className="rounded-2xl bg-surface p-4 text-lg leading-8">
+        <p className="rounded-lg bg-surface p-4 text-lg leading-8">
           {t`コメントを書くには、ログインが必要です。`}{" "}
           <Link href={loginHref} className="font-bold text-accent underline underline-offset-4">
             {t`ログイン`}

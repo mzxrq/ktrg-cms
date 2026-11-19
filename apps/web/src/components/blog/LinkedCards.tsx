@@ -7,7 +7,7 @@ import { RoutePhoto } from "@/components/RoutePhoto";
 import type { RouteSummary, SpotDetail } from "@/lib/content";
 import { pickText } from "@/lib/pick-text";
 
-const card = "group flex overflow-hidden rounded-3xl bg-surface hover:bg-paper";
+const card = "group flex overflow-hidden rounded-lg bg-surface hover:bg-paper";
 
 /** The route a post is about, as a card: its photo, name, length and climb, and a link to it. */
 export function RouteCard({ route, locale }: { route: RouteSummary; locale: string }) {
