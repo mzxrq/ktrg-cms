@@ -722,6 +722,23 @@ html[data-size="xlarge"] {
   }
 }
 
+/* Stronger contrast (the device's, or くっきり表示) reaches inside the panel too: the panel sets its own line and muted, so
+   the page-wide override would stop at its edge. Same values as those rules further down. */
+@media (prefers-contrast: more) {
+  .rail-night {
+    @variant md {
+      --color-line: var(--color-ink);
+      --color-muted: var(--color-ink);
+    }
+  }
+}
+html[data-contrast] .rail-night {
+  @variant md {
+    --color-line: var(--color-ink);
+    --color-muted: var(--color-ink);
+  }
+}
+
 /* The language sits under the desktop sidebar's tabs, so the menu leaves it out, except while the sidebar is folded. */
 @variant wide {
   body:has([data-rail="full"]) .menu-locale {
