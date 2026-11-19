@@ -22,7 +22,7 @@ import { confirmDialog } from "@/components/ConfirmDialog";
 import { buttonStyle } from "@/components/button";
 
 const barButton =
-  "inline-flex min-h-11 items-center gap-1.5 rounded-full border border-ink bg-paper px-2.5 text-base font-bold text-ink hover:bg-surface [&>svg]:size-6";
+  "inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-ink bg-paper px-2.5 text-base font-bold text-ink hover:bg-surface [&>svg]:size-6";
 
 // The four tab pages: nothing is "behind" them, so the bar has no back button there.
 const TOP_LEVEL = /^\/(map|routes|rallies)?\/?$/;
@@ -196,7 +196,7 @@ export function SiteHeader({
             <div className="flex items-center justify-between gap-2 md:justify-end">
               <h1 className="font-serif text-3xl font-bold text-accent md:hidden">{t`メニュー`}</h1>
               {/* On a phone the Menu tab below closes it; the popover has no tab to press. */}
-              <button type="button" onClick={() => setOpen(false)} className="tap-target hidden items-center gap-2 rounded-full border border-ink px-3 text-lg font-bold md:inline-flex">
+              <button type="button" onClick={() => setOpen(false)} className="tap-target hidden items-center gap-2 rounded-xl border border-ink px-3 text-lg font-bold md:inline-flex">
                 <CloseIcon />
                 {t`閉じる`}
               </button>
@@ -239,7 +239,7 @@ export function SiteHeader({
             <MenuGroup title={t`表示と設定`}>
               <div className="flex flex-col gap-2">
                 {/* One light list, the same rows as the settings page: the words on the left, the switch or the choice on the right. */}
-                <div className="divide-y divide-line/40 overflow-hidden rounded-[1.75rem] bg-surface">
+                <div className="divide-y divide-line/40 overflow-hidden rounded-lg bg-surface">
                   <QuickActions prefs={prefs} signedIn={signedIn} />
                   <div className="tap-target flex items-center gap-4 px-4 py-3">
                     <span className="min-w-0 flex-1 text-lg font-bold">{t`テーマ`}</span>

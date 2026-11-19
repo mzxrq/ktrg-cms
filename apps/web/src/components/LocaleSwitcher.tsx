@@ -31,7 +31,7 @@ export function LocaleSwitcher() {
               rememberLocale(locale);
               router.refresh();
             }}
-            className={`inline-flex min-h-11 min-w-16 items-center justify-center rounded-full border border-ink px-2.5 text-base font-bold ${
+            className={`inline-flex min-h-11 min-w-16 items-center justify-center rounded-xl border border-ink px-2.5 text-base font-bold ${
               active ? "bg-ink text-paper" : "bg-paper text-ink hover:bg-surface"
             }`}
           >
@@ -60,7 +60,7 @@ export function LocaleSelect({ plain = false }: { plain?: boolean }) {
         rememberLocale(next);
         router.refresh();
       }}
-      className={`min-h-12 rounded-full border bg-paper px-3.5 text-base font-bold text-ink hover:bg-surface ${plain ? "border-line" : "border-ink"}`}
+      className={`min-h-12 rounded-xl border bg-paper px-3.5 text-base font-bold text-ink hover:bg-surface ${plain ? "border-line" : "border-ink"}`}
     >
       {locales.map((locale) => (
         <option key={locale} value={locale} lang={locale}>

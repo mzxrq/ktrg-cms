@@ -11,7 +11,7 @@ export function MotionSelect({ prefs, onChange }: { prefs: Prefs; onChange: (nex
       aria-label={t`動き`}
       value={motionOf(prefs)}
       onChange={(e) => onChange(withMotion(prefs, e.target.value as MotionPref))}
-      className="min-h-12 rounded-full border border-line bg-paper px-3.5 text-base font-bold text-ink hover:bg-surface"
+      className="min-h-12 rounded-xl border border-line bg-paper px-3.5 text-base font-bold text-ink hover:bg-surface"
     >
       <option value="full">{t`ふつうに動く`}</option>
       <option value="fade">{t`フェードだけ`}</option>
