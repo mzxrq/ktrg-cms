@@ -682,11 +682,11 @@ html[data-size="xlarge"] {
 /*
  * The desktop sidebar as its own night panel (2026-11-19: visitors did not see the side menu as a menu). Inside it the
  * tokens take the dark palette's values, so everything in it (logo, tabs, the chosen tab, focus ring, language) stays
- * readable on the night ground in either theme. Only from `wide:`; below that the tab bar keeps the page's palette.
+ * readable on the night ground in either theme. From `md:` (the tablet rail too); a phone's tab bar keeps the page's
+ * palette. The night background itself is set in TabBar.tsx (on the rail on a tablet, on the whole sidebar from `wide:`).
  */
 .rail-night {
-  @variant wide {
-    background-color: var(--color-night);
+  @variant md {
     color: var(--color-on-night);
     --color-ink: var(--color-on-night);
     --color-muted: #c0af96;

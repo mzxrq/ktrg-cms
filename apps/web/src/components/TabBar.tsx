@@ -45,6 +45,15 @@ function subscribeFold(listener: () => void) {
 // of the page on a phone) is one more item at the bottom of the rail, so it looks and works like the tabs.
 // From 1024 px it is a sidebar fixed to the far left: the logo (a link home), the tabs and, at the bottom, `footer`
 // (the language picker). On a phone and a tablet only the tabs are shown.
+/** The night panel's ground: a thin double frame set in from the edge with a faint 七宝 inside it only (the margin outside
+ *  stays plain, 2026-11-19). Decoration only. `show` is the variant it appears at: on the tablet rail (the nav) or on the
+ *  whole desktop sidebar (the wrapper). */
+const panelGround = (show: string) => (
+  <span aria-hidden="true" className={`pointer-events-none absolute inset-2 -z-10 hidden border-[3px] border-double border-on-night/35 ${show}`}>
+    <span className="pattern-shippo pattern-on-night block size-full" />
+  </span>
+);
+
 export function TabBar({ footer }: { footer?: ReactNode }) {
   const { t } = useLingui();
   const pathname = usePathname() ?? "";
@@ -97,12 +106,8 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
 
   return (
     // Below 1024 px this wrapper adds nothing (the nav is placed by its own classes); from 1024 px it is the sidebar.
-    <div data-rail={mini ? "mini" : "full"} className={`rail-night print:hidden md:contents wide:sticky wide:top-0 wide:isolate wide:flex wide:h-dvh wide:shrink-0 wide:flex-col wide:self-start wide:overflow-y-auto ${mini ? "wide:w-20" : "wide:w-64"}`}>
-    {/* The panel's ground: a faint 七宝 and a thin double frame set in from the edge. Decoration only. */}
-    <span aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 hidden wide:block">
-      <span className="pattern-shippo pattern-on-night block size-full" />
-    </span>
-    <span aria-hidden="true" className="pointer-events-none absolute inset-2 -z-10 hidden border-[3px] border-double border-on-night/35 wide:block" />
+    <div data-rail={mini ? "mini" : "full"} className={`rail-night print:hidden md:contents wide:sticky wide:top-0 wide:isolate wide:flex wide:h-dvh wide:shrink-0 wide:flex-col wide:self-start wide:overflow-y-auto wide:bg-night ${mini ? "wide:w-20" : "wide:w-64"}`}>
+    {panelGround("wide:block")}
     <Link href="/" aria-label={t`ホーム`} className={`hidden wide:block ${low ? "px-2 pt-2" : mini ? "px-2 pt-4" : "px-6 pb-2 pt-8"}`}>
       <KatsuragiLogo compact className={mini ? "mx-auto h-8 w-auto" : "h-16 w-auto"} />
     </Link>
@@ -121,8 +126,9 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
     <nav
       aria-label={t`メインメニュー`}
       data-tabbar
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line/30 bg-paper px-1 min-[400px]:px-3 pt-1.5 md:sticky md:inset-x-auto md:bottom-auto md:top-0 md:h-dvh md:w-44 md:shrink-0 md:self-start md:border-t-0 md:bg-transparent md:p-0 md:px-2 md:pt-6 wide:static wide:h-auto wide:w-full wide:flex-1 wide:self-auto ${low ? "wide:pt-1" : "wide:pt-4"} ${mini ? "wide:px-2" : "wide:px-4"}`}
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line/30 bg-paper px-1 min-[400px]:px-3 pt-1.5 md:sticky md:inset-x-auto md:bottom-auto md:top-0 md:h-dvh md:w-44 md:shrink-0 md:self-start md:isolate md:border-t-0 md:bg-night md:p-0 md:px-3 md:pt-6 wide:static wide:bg-transparent wide:h-auto wide:w-full wide:flex-1 wide:self-auto ${low ? "wide:pt-1" : "wide:pt-4"} ${mini ? "wide:px-2" : "wide:px-4"}`}
     >
+      {panelGround("md:block wide:hidden")}
       <ul className={`mx-auto grid max-w-xl grid-cols-5 gap-0.5 min-[400px]:gap-1 md:flex md:max-w-none md:flex-col ${low ? "md:gap-0.5" : "md:gap-2"}`}>
         {tabs.map(({ path, label, icon }) => {
           const active = path === "/" ? pathname === "/" : pathname.startsWith(path);
