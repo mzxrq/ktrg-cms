@@ -126,10 +126,10 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
     <nav
       aria-label={t`メインメニュー`}
       data-tabbar
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line/30 bg-paper px-1 min-[400px]:px-3 pt-1.5 md:sticky md:inset-x-auto md:bottom-auto md:top-0 md:h-dvh md:w-44 md:shrink-0 md:self-start md:isolate md:border-t-0 md:bg-night md:p-0 md:px-3 md:pt-6 wide:static wide:bg-transparent wide:h-auto wide:w-full wide:flex-1 wide:self-auto ${low ? "wide:pt-1" : "wide:pt-4"} ${mini ? "wide:px-2" : "wide:px-[29px]"}`}
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line/30 bg-paper px-1 min-[400px]:px-3 pt-1.5 md:sticky md:inset-x-auto md:bottom-auto md:top-0 md:h-dvh md:w-44 md:shrink-0 md:self-start md:isolate md:flex md:flex-col md:border-t-0 md:bg-night md:p-0 md:px-3 md:pt-6 wide:static wide:bg-transparent wide:h-auto wide:w-full wide:flex-1 wide:self-auto ${low ? "wide:pt-1" : "wide:pt-4"} ${mini ? "wide:px-2" : "wide:px-[29px]"}`}
     >
       {panelGround("md:block wide:hidden")}
-      <ul className={`mx-auto grid max-w-xl grid-cols-5 gap-0.5 min-[400px]:gap-1 md:flex md:max-w-none md:flex-col ${low ? "md:gap-0.5" : "md:gap-2"}`}>
+      <ul className={`mx-auto grid max-w-xl grid-cols-5 gap-0.5 min-[400px]:gap-1 md:my-auto md:flex md:w-full md:max-w-none md:flex-col ${low ? "md:gap-0.5" : "md:gap-2"}`}>
         {tabs.map(({ path, label, icon }) => {
           const active = path === "/" ? pathname === "/" : pathname.startsWith(path);
           return (
