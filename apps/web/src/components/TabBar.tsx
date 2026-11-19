@@ -97,7 +97,12 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
 
   return (
     // Below 1024 px this wrapper adds nothing (the nav is placed by its own classes); from 1024 px it is the sidebar.
-    <div data-rail={mini ? "mini" : "full"} className={`print:hidden md:contents wide:sticky wide:top-0 wide:flex wide:h-dvh wide:shrink-0 wide:flex-col wide:self-start wide:overflow-y-auto wide:border-r wide:border-surface ${mini ? "wide:w-20" : "wide:w-64"}`}>
+    <div data-rail={mini ? "mini" : "full"} className={`rail-night print:hidden md:contents wide:sticky wide:top-0 wide:isolate wide:flex wide:h-dvh wide:shrink-0 wide:flex-col wide:self-start wide:overflow-y-auto ${mini ? "wide:w-20" : "wide:w-64"}`}>
+    {/* The panel's ground: a faint 七宝 and a thin double frame set in from the edge. Decoration only. */}
+    <span aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 hidden wide:block">
+      <span className="pattern-shippo pattern-on-night block size-full" />
+    </span>
+    <span aria-hidden="true" className="pointer-events-none absolute inset-2 -z-10 hidden border-[3px] border-double border-on-night/35 wide:block" />
     <Link href="/" aria-label={t`ホーム`} className={`hidden wide:block ${low ? "px-2 pt-2" : mini ? "px-2 pt-4" : "px-6 pb-2 pt-8"}`}>
       <KatsuragiLogo compact className={mini ? "mx-auto h-8 w-auto" : "h-16 w-auto"} />
     </Link>
@@ -108,7 +113,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
       aria-expanded={!mini}
       aria-label={mini ? t`メニューをひらく` : t`メニューをたたむ`}
       title={mini ? t`メニューをひらく` : t`メニューをたたむ`}
-      className={`tap-target hidden items-center justify-center rounded-full text-ink hover:bg-surface wide:inline-flex ${mini ? "mx-auto mt-2 shrink-0" : "absolute right-2 top-2"}`}
+      className={`tap-target hidden items-center justify-center rounded-full text-ink hover:bg-surface wide:inline-flex ${mini ? "mx-auto mt-3 shrink-0" : "absolute right-3 top-3"}`}
     >
       <PanelIcon />
     </button>
