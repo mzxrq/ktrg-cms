@@ -9,6 +9,7 @@ import { NavigationToast } from "@/components/navigation/NavigationHud";
 import { OfflineNotice } from "@/components/OfflineNotice";
 import { SampleNoticeHost } from "@/components/SampleNotice";
 import { SiteFooter } from "@/components/SiteFooter";
+import { LocaleSelect } from "@/components/LocaleSwitcher";
 import { StampFilters } from "@/components/StampFilters";
 import { BookmarkProvider } from "@/components/useBookmarks";
 import { InstallNudge } from "@/components/InstallNudge";
@@ -46,8 +47,15 @@ export default async function PublicLayout({ children }: { children: ReactNode }
       <VisitBeacon />
       <StampFilters />
       <div className="mx-auto flex w-full max-w-5xl justify-center md:gap-6 wide:mx-0 wide:max-w-none wide:justify-start wide:gap-0">
-        {/* The footer lives in the sidebar on a desktop (and is hidden on the map, whose page has no room for it). */}
-        <TabBar footer={<SiteFooter locale={i18n.locale} variant="sidebar" />} />
+        {/* Under the desktop sidebar's tabs only the language (easy to find on a computer, 2026-11-16); the other links are
+            in the page footer and the メニュー. */}
+        <TabBar
+          footer={
+            <div className="border-t border-line/30 px-2 pt-3">
+              <LocaleSelect plain />
+            </div>
+          }
+        />
         <div className="min-w-0 max-w-xl flex-1 md:border-x md:border-surface wide:max-w-none wide:border-x-0">
           <SiteHeader
             signedIn={viewer.signedIn}
@@ -65,6 +73,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
             <div className="wide:mx-auto wide:max-w-6xl wide:px-10">
               {viewer.signedIn ? null : <BrowserWarning />}
               {children}
+              <SiteFooter locale={i18n.locale} />
             </div>
           </main>
         </div>

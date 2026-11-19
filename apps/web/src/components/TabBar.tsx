@@ -44,7 +44,7 @@ function subscribeFold(listener: () => void) {
 // the active tab as a filled pill. On a wide screen it becomes the left rail, and the menu (a pill at the top
 // of the page on a phone) is one more item at the bottom of the rail, so it looks and works like the tabs.
 // From 1024 px it is a sidebar fixed to the far left: the logo (a link home), the tabs and, at the bottom, `footer`
-// (the site's footer links), so they are always in view. On a phone and a tablet only the tabs are shown.
+// (the language picker). On a phone and a tablet only the tabs are shown.
 export function TabBar({ footer }: { footer?: ReactNode }) {
   const { t } = useLingui();
   const pathname = usePathname() ?? "";

@@ -1297,7 +1297,6 @@ msgstr "Shops and food"
 #: src/app/(public)/places/page.tsx:37
 #: src/app/(public)/sitemap/page.tsx:67
 #: src/components/admin/one-map/OneMap.tsx:394
-#: src/components/SiteFooter.tsx:26
 #: src/components/SiteHeader.tsx:275
 msgid "お店と施設"
 msgstr "Shops and facilities"
@@ -2277,13 +2276,13 @@ msgstr "Readings the dictionary worked out from the site's text. Visitors don't 
 
 #: src/app/(public)/status/page.tsx:10
 #: src/app/(public)/status/page.tsx:22
-#: src/components/SiteFooter.tsx:35
+#: src/components/SiteFooter.tsx:20
 msgid "サイトの状態"
 msgstr "Site status"
 
 #: src/app/(public)/sitemap/page.tsx:15
 #: src/app/(public)/sitemap/page.tsx:50
-#: src/components/SiteFooter.tsx:38
+#: src/components/SiteFooter.tsx:23
 #: src/components/SiteHeader.tsx:280
 msgid "サイトマップ"
 msgstr "Site map"
@@ -3197,14 +3196,14 @@ msgstr "Bookmark removed"
 msgid "ブックマーク済み"
 msgstr "Bookmarked"
 
-#: src/components/SiteFooter.tsx:21
+#: src/components/SiteFooter.tsx:15
 msgid "フッター"
 msgstr "Footer"
 
 #: src/app/(admin)/admin/pages/page.tsx:26
 #: src/app/(public)/sitemap/page.tsx:132
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:44
+#: src/components/SiteFooter.tsx:29
 #: src/components/SiteHeader.tsx:278
 msgid "プライバシーポリシー"
 msgstr "Privacy policy"
@@ -3234,7 +3233,6 @@ msgstr "Preview (the video visitors see)"
 #: src/app/(public)/sitemap/page.tsx:82
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/BlogCard.tsx:22
-#: src/components/SiteFooter.tsx:23
 #: src/components/SiteHeader.tsx:246
 msgid "ブログ"
 msgstr "Blog"
@@ -3773,7 +3771,7 @@ msgstr "Redo"
 #: src/app/(admin)/admin/pages/page.tsx:23
 #: src/app/(public)/sitemap/page.tsx:126
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:29
+#: src/components/SiteFooter.tsx:17
 #: src/components/SiteHeader.tsx:276
 msgid "よくあるご質問"
 msgstr "FAQ"
@@ -5047,7 +5045,7 @@ msgstr "Words visitors see"
 #: src/app/(admin)/admin/pages/page.tsx:25
 #: src/app/(public)/sitemap/page.tsx:129
 #: src/components/admin/PageTextEditor.tsx:60
-#: src/components/SiteFooter.tsx:41
+#: src/components/SiteFooter.tsx:26
 #: src/components/SiteHeader.tsx:277
 msgid "利用規約"
 msgstr "Terms of use"
