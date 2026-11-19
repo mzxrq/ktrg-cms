@@ -7,7 +7,9 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "re
 import { useLingui } from "@lingui/react/macro";
 import { logOut } from "@/lib/auth-client";
 import { clearSavedPages } from "@/lib/offline-pack";
-import { BookmarkIcon, ChevronIcon, DocumentIcon, ChevronLeftIcon, CloseIcon, GearIcon } from "./icons";
+import { BookmarkIcon, ChevronIcon, DocumentIcon, ChevronLeftIcon, CloseIcon, GearIcon, HomeIcon, MapIcon, RouteIcon, StampIcon } from "./icons";
+import { panelGround } from "./TabBar";
+import { WIDE_QUERY } from "@/lib/screen";
 import { QuickActions } from "./QuickActions";
 import type { Prefs } from "@/lib/prefs";
 import { ProfileCard, type ProfileCardProps } from "./ProfileCard";
@@ -90,8 +92,9 @@ export function SiteHeader({
     const panel = panelRef.current;
     const anchor = railButton.current;
     if (!open || !panel || !anchor || !wide()) return;
-    // The rail is the nav on a tablet; on a desktop the nav fills the sidebar, so its edge is the sidebar's.
-    panel.style.left = `${(anchor.closest("[data-tabbar]") ?? anchor).getBoundingClientRect().right}px`;
+    // On a desktop it starts at the sidebar's edge (the nav fills the sidebar); a tablet has no sidebar, so it slides in
+    // from the left edge of the screen.
+    panel.style.left = window.matchMedia(WIDE_QUERY).matches ? `${(anchor.closest("[data-tabbar]") ?? anchor).getBoundingClientRect().right}px` : "0px";
     const close = () => setOpen(false);
     window.addEventListener("resize", close);
     return () => window.removeEventListener("resize", close);
@@ -138,20 +141,25 @@ export function SiteHeader({
   }
 
   return (
-    <header className={`print:hidden site-header ${onLanding ? "sticky top-0 z-30 h-0" : "relative z-30 md:sticky md:top-0 md:h-0"}`}>
+    <header className={`print:hidden site-header ${onLanding ? "sticky top-0 z-30 h-0" : "relative z-30 wide:sticky wide:top-0 wide:h-0"}`}>
       {backdropMounted ? (
-        // Tapping outside the panel closes it. (Escape and the button do the same for the keyboard.)
-        <div ref={backdropRef} aria-hidden="true" onClick={() => setOpen(false)} className="fixed inset-0 bg-black/50 md:bg-transparent" />
+        // Tapping outside the panel closes it. (Escape and the button do the same for the keyboard.) On a tablet the dimmed
+        // space beside the menu shows the logo; on a desktop the page stays as it is.
+        <div ref={backdropRef} aria-hidden="true" onClick={() => setOpen(false)} className="fixed inset-0 bg-black/50 wide:bg-transparent">
+          <span className="pointer-events-none absolute inset-y-0 left-[26rem] right-0 hidden items-center justify-center md:flex wide:hidden">
+            <KatsuragiLogo className="h-28 w-auto [--color-brand:#fff] [--color-ink:#fff] [filter:drop-shadow(0_1px_4px_rgb(0_0_0/0.6))]" />
+          </span>
+        </div>
       ) : null}
       <div
         inert={hidden}
         // The bar is as wide as the tab bar at the bottom (same side gaps), with the logo in the middle.
         className={
           onMap
-            ? "pointer-events-none absolute inset-x-3 top-[calc(0.75rem+var(--top-clear))] md:hidden"
+            ? "pointer-events-none absolute inset-x-3 top-[calc(0.75rem+var(--top-clear))] wide:hidden"
             : onLanding
-              ? `absolute inset-x-0 top-0 border-b border-line/30 bg-paper px-3 pb-1 pt-[calc(0.25rem+var(--top-clear))] transition-opacity md:hidden motion-reduce:transition-none ${hidden ? "pointer-events-none opacity-0" : ""}`
-              : "site-header-bar relative mb-3 border-b border-line/30 bg-paper px-3 py-1 md:hidden"
+              ? `absolute inset-x-0 top-0 border-b border-line/30 bg-paper px-3 pb-1 pt-[calc(0.25rem+var(--top-clear))] transition-opacity wide:hidden motion-reduce:transition-none ${hidden ? "pointer-events-none opacity-0" : ""}`
+              : "site-header-bar relative mb-3 border-b border-line/30 bg-paper px-3 py-1 wide:hidden"
         }
       >
         <div className={`mx-auto grid max-w-xl items-center gap-2 ${onMap ? "pointer-events-none grid-cols-[auto_1fr_auto] [&>*]:pointer-events-auto" : onRoutes ? "grid-cols-[auto_1fr_auto]" : "grid-cols-[1fr_auto_1fr]"}`}>
@@ -179,7 +187,8 @@ export function SiteHeader({
           {/* The course list: the page's title stands beside the logo, up in the bar (the page itself has no heading on a phone). */}
           {onRoutes ? open ? <span /> : <p className="line-clamp-2 min-w-0 font-serif text-xl font-bold leading-tight text-accent tall:text-2xl">{barTitle}</p> : null}
           {/* Open: the language drop-down takes the right end of the bar, so the bar and the menu read as one piece. */}
-          <span className="justify-self-end">{open ? <LocaleSelect /> : sample ? <SampleNoticeButton /> : null}</span>
+          {/* On a tablet this corner is the menu button's (TabBar), so it stays empty. */}
+          <span className="justify-self-end md:invisible">{open ? <LocaleSelect /> : sample ? <SampleNoticeButton /> : null}</span>
         </div>
       </div>
 
@@ -189,10 +198,13 @@ export function SiteHeader({
           id="site-menu"
           // A link to the page we are already on does not change the path, so close here to show the tap worked.
           onClick={(e) => e.target instanceof Element && e.target.closest("a") && setOpen(false)}
-          className="rail-night fixed inset-0 overflow-y-auto overscroll-contain bg-paper pb-28 pt-[var(--top-clear)] md:bg-night md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
+          className="rail-night fixed inset-0 overflow-y-auto overscroll-contain bg-paper pb-28 pt-[var(--top-clear)] md:overflow-hidden md:bg-night md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
         >
-          <div className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5">
-            {/* From 768 px the bar is not drawn (the rail has the menu button), so the top row of the popover holds both. */}
+          {/* From 768 px the drawer has the sidebar's frame, which stays put while the menu scrolls inside it. */}
+          {panelGround("md:block")}
+          <div className="md:h-full md:overflow-y-auto md:overscroll-contain">
+          <div className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5 md:p-[29px]">
+            {/* From 768 px the drawer has its own close button at the top. */}
             <div className="flex items-center justify-between gap-2 md:justify-end">
               <h1 className="font-serif text-3xl font-bold text-accent md:hidden">{t`メニュー`}</h1>
               {/* On a phone the Menu tab below closes it; the popover has no tab to press. */}
@@ -201,6 +213,32 @@ export function SiteHeader({
                 {t`閉じる`}
               </button>
             </div>
+
+            {/* A tablet has no tab bar and no sidebar: the tabs lead the menu. */}
+            <nav aria-label={t`メインメニュー`} className="hidden md:block wide:hidden">
+              <ul className="flex flex-col gap-2">
+                {[
+                  { path: "/", label: t`ホーム`, icon: <HomeIcon /> },
+                  { path: "/map", label: t`マップ`, icon: <MapIcon /> },
+                  { path: "/routes", label: t`コース`, icon: <RouteIcon /> },
+                  { path: "/rallies", label: t`ラリー`, icon: <StampIcon /> },
+                ].map(({ path, label, icon }) => {
+                  const active = path === "/" ? pathname === "/" : pathname.startsWith(path);
+                  return (
+                    <li key={path}>
+                      <Link
+                        href={path}
+                        aria-current={active ? "page" : undefined}
+                        className={`flex min-h-14 items-center gap-4 rounded-xl px-5 text-xl font-bold [&_svg]:size-6 ${active ? "bg-selected text-on-selected" : "text-ink hover:bg-paper"}`}
+                      >
+                        {icon}
+                        {label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
 
             <MenuGroup title={t`アカウント`}>
               {signedIn ? (
@@ -272,6 +310,7 @@ export function SiteHeader({
               <p lang={locale === "ja" ? "ja" : "en"} className="text-base text-muted">
                 {locale === "ja" ? foundationJa : foundationEn}
               </p>
+            </div>
             </div>
           </div>
         </div>

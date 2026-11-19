@@ -41,14 +41,13 @@ function subscribeFold(listener: () => void) {
 }
 
 // Tabs with an icon plus a word. On a phone: a floating rounded bar near the bottom, where the thumb is, with
-// the active tab as a filled pill. On a wide screen it becomes the left rail, and the menu (a pill at the top
-// of the page on a phone) is one more item at the bottom of the rail, so it looks and works like the tabs.
-// From 1024 px it is a sidebar fixed to the far left: the logo (a link home), the tabs and, at the bottom, `footer`
-// (the language picker). On a phone and a tablet only the tabs are shown.
+// the active tab as a filled pill. On a tablet (768-1023 px) only the menu is shown, as one dark button at the top right;
+// the tabs are inside the menu, which slides in from the left (2026-11-19, the user's reference: a tablet reads like a
+// phone page, with a menu button instead of a tab bar). From 1024 px it is a sidebar fixed to the far left: the logo (a
+// link home), the tabs centred, the menu as one more item, and at the bottom `footer` (the language picker).
 /** The night panel's ground: a thin double frame set in from the edge with a faint 七宝 inside it only (the margin outside
- *  stays plain, 2026-11-19). Decoration only. `show` is the variant it appears at: on the tablet rail (the nav) or on the
- *  whole desktop sidebar (the wrapper). */
-const panelGround = (show: string) => (
+ *  stays plain, 2026-11-19). Decoration only. `show` is the variant it appears at (the desktop sidebar, the menu drawer). */
+export const panelGround = (show: string) => (
   <span aria-hidden="true" className={`pointer-events-none absolute inset-2 -z-10 hidden border-[3px] border-double border-on-night/35 ${show}`}>
     <span className="pattern-shippo pattern-on-night block size-full" />
   </span>
@@ -126,14 +125,13 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
     <nav
       aria-label={t`メインメニュー`}
       data-tabbar
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line/30 bg-paper px-1 min-[400px]:px-3 pt-1.5 md:sticky md:inset-x-auto md:bottom-auto md:top-0 md:h-dvh md:w-44 md:shrink-0 md:self-start md:isolate md:flex md:flex-col md:border-t-0 md:bg-night md:p-0 md:px-3 md:pt-6 wide:static wide:bg-transparent wide:h-auto wide:w-full wide:flex-1 wide:self-auto ${low ? "wide:pt-1" : "wide:pt-4"} ${mini ? "wide:px-2" : "wide:px-[29px]"}`}
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line/30 bg-paper px-1 min-[400px]:px-3 pt-1.5 md:inset-x-auto md:bottom-auto md:right-3 md:top-[calc(0.5rem+var(--top-clear))] md:border-t-0 md:bg-transparent md:p-0 wide:static wide:flex wide:h-auto wide:w-full wide:flex-1 wide:flex-col wide:self-auto ${low ? "wide:pt-1" : "wide:pt-4"} ${mini ? "wide:px-2" : "wide:px-[29px]"}`}
     >
-      {panelGround("md:block wide:hidden")}
-      <ul className={`mx-auto grid max-w-xl grid-cols-5 gap-0.5 min-[400px]:gap-1 md:my-auto md:flex md:w-full md:max-w-none md:flex-col ${low ? "md:gap-0.5" : "md:gap-2"}`}>
+      <ul className={`mx-auto grid max-w-xl grid-cols-5 gap-0.5 min-[400px]:gap-1 md:flex wide:my-auto wide:w-full wide:max-w-none wide:flex-col ${low ? "wide:gap-0.5" : "wide:gap-2"}`}>
         {tabs.map(({ path, label, icon }) => {
           const active = path === "/" ? pathname === "/" : pathname.startsWith(path);
           return (
-            <li key={path}>
+            <li key={path} className="md:hidden wide:block">
               <Link
                 href={path}
                 aria-current={active ? "page" : undefined}
@@ -157,7 +155,10 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
             onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-controls="site-menu"
-            className={`${item}${miniItem} w-full ${open ? "bg-ink text-paper" : "text-ink hover:bg-paper"}`}
+            // On a tablet it is the only button: a dark pill over the page, at the top right.
+            className={`${item}${miniItem} w-full md:min-h-12 md:border md:border-line md:bg-night md:px-4 md:text-lg md:shadow-[0_2px_10px_rgb(0_0_0/0.3)] wide:min-h-14 wide:border-0 wide:px-5 wide:text-xl wide:shadow-none ${
+              open ? "bg-ink text-paper md:text-ink wide:bg-ink wide:text-paper" : "text-ink hover:bg-paper wide:bg-transparent"
+            }`}
           >
             <MenuIcon />
             {t`メニュー`}

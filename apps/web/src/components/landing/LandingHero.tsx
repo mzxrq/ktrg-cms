@@ -44,9 +44,9 @@ export function LandingHero({ slides, locale, line, title, children, bare = fals
             {/* The logo first and bigger (2026-11-18: too small under the line): the column already starts below the language menu
                 and the photo dots, so a phone keeps them apart. The vertical line gives up the logo's height. */}
             {logo("h-20 @[42rem]:h-24")}
-            {/* From @[42rem] (a tablet or a desktop) the picture is only 30rem tall, too low for the line set down at that size
+            {/* From @[34rem] (a tablet or a desktop) the picture is only 24-30rem tall, too low for the line set down at that size
                 (it broke into scraps on a tablet, 2026-11-19), so there it runs across. */}
-            <div className={`flex flex-col items-center gap-2 ${title ? "" : "tall:block tall:max-h-[calc(100%-9.5rem)] tall:tracking-[0.04em] tall:[writing-mode:vertical-rl] @[42rem]:flex! @[42rem]:max-h-none! @[42rem]:tracking-normal! @[42rem]:[writing-mode:horizontal-tb]!"}`}>
+            <div className={`flex flex-col items-center gap-2 ${title ? "" : "tall:block tall:max-h-[calc(100%-9.5rem)] tall:tracking-[0.04em] tall:[writing-mode:vertical-rl] @[34rem]:flex! @[34rem]:max-h-none! @[34rem]:tracking-normal! @[34rem]:[writing-mode:horizontal-tb]!"}`}>
               {title ? (
                 <p className="font-serif text-lg font-bold text-white [text-shadow:0_1px_6px_rgb(0_0_0/0.7)] tall:ml-4 @[34rem]:text-xl">{line}</p>
               ) : null}

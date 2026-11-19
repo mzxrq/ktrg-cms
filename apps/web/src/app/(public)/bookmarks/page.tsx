@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { BackLink } from "@/components/BackLink";
 import { BookmarkList } from "@/components/BookmarkList";
 import { listRallies, listRoutes } from "@/lib/content";
 import { listPosts } from "@/lib/posts";
@@ -16,6 +17,11 @@ export default async function BookmarksPage() {
   const i18n = await initLingui();
   return (
     <div className="flex flex-col gap-6 pt-2 wide:pt-0">
+      <div className="px-4">
+        <BackLink href="/">
+          <Trans>ホーム</Trans>
+        </BackLink>
+      </div>
       <h1 className="px-4 font-serif text-3xl font-bold text-accent wide:text-4xl">
         <Trans>ブックマーク</Trans>
       </h1>

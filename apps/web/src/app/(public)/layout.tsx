@@ -46,7 +46,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
       <NavigationProvider signedIn={viewer.signedIn} voiceByDefault={speaksByDefault(viewer.ageRange)}>
       <VisitBeacon />
       <StampFilters />
-      <div className="mx-auto flex w-full max-w-5xl justify-center md:gap-6 wide:mx-0 wide:max-w-none wide:justify-start wide:gap-0">
+      <div className="mx-auto flex w-full max-w-5xl justify-center wide:mx-0 wide:max-w-none wide:justify-start wide:gap-0">
         {/* Under the desktop sidebar's tabs only the language (easy to find on a computer, 2026-11-16); the other links are
             in the page footer and the メニュー. */}
         <TabBar
@@ -56,7 +56,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
             </div>
           }
         />
-        <div className="min-w-0 max-w-xl flex-1 md:border-x md:border-surface wide:max-w-none wide:border-x-0">
+        <div className="min-w-0 max-w-xl flex-1 md:border-x md:border-surface wide:flex wide:min-h-dvh wide:max-w-none wide:flex-col wide:border-x-0">
           <SiteHeader
             signedIn={viewer.signedIn}
             staff={viewer.role === "editor" || viewer.role === "admin"}
@@ -69,10 +69,13 @@ export default async function PublicLayout({ children }: { children: ReactNode }
           {sample ? <SampleNoticeHost /> : null}
           <PrefsSync signedIn={viewer.signedIn} account={prefsState.account} device={prefsState.device} />
           {viewer.signedIn ? <SessionRotate /> : null}
-          <main id="main" className="pb-[calc(7rem+var(--nav-toast,0px))] md:pb-[calc(2.5rem+var(--nav-toast,0px))] md:pt-6 md:has-[[data-landing-top]]:pt-0 wide:pb-[calc(5rem+var(--nav-toast,0px))] wide:pt-8 wide:has-[[data-landing-top]]:pt-0">
-            <div className="wide:mx-auto wide:max-w-6xl wide:px-10">
+          <main id="main" className="pb-[calc(7rem+var(--nav-toast,0px))] md:pb-[calc(2.5rem+var(--nav-toast,0px))] wide:flex wide:flex-1 wide:flex-col wide:pb-[calc(2rem+var(--nav-toast,0px))] wide:pt-8 wide:has-[[data-landing-top]]:pt-0">
+            {/* On a desktop the page fills at least the screen, so the footer sits at the bottom of a short or empty page. */}
+            <div className="wide:mx-auto wide:flex wide:w-full wide:max-w-6xl wide:flex-1 wide:flex-col wide:px-10">
+              <div className="wide:flex-1">
               {viewer.signedIn ? null : <BrowserWarning />}
               {children}
+              </div>
               <SiteFooter locale={i18n.locale} />
             </div>
           </main>
