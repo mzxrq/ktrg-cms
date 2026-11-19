@@ -11,7 +11,8 @@ export function SiteFooter({ locale }: { locale: string }) {
   const { t } = useLingui();
   const link = "tap-target inline-flex items-center text-lg font-bold underline";
   return (
-    <footer className="print:hidden site-footer mx-4 mt-16 border-t border-line/30 pt-4 wide:mx-0">
+    // Desktop only: on a phone the same links are in the メニュー (user, 2026-11-19).
+    <footer className="print:hidden site-footer mt-16 hidden border-t border-line/30 pt-4 wide:block">
       <nav aria-label={t`フッター`} className="flex flex-wrap gap-x-6 gap-y-1">
         <Link prefetch={false} href="/faq" className={link}>
           <Trans>よくあるご質問</Trans>
