@@ -383,26 +383,6 @@ msgstr "{name}（終点）"
 msgid "{name}さん、こんにちは。"
 msgstr "{name}さん、こんにちは。"
 
-#: src/components/auth/SsoButtons.tsx:55
-msgid "{name}でログイン"
-msgstr "{name}でログイン"
-
-#: src/components/settings/SsoMethods.tsx:76
-msgid "{name}でログインできます"
-msgstr "{name}でログインできます"
-
-#: src/components/auth/ReauthDialog.tsx:78
-msgid "{name}で確認"
-msgstr "{name}で確認"
-
-#: src/components/settings/SsoMethods.tsx:89
-msgid "{name}とつなぐ"
-msgstr "{name}とつなぐ"
-
-#: src/components/settings/SsoMethods.tsx:57
-msgid "{name}のログインを外しますか？"
-msgstr "{name}のログインを外しますか？"
-
 #: src/components/admin/PageTextEditor.tsx:156
 msgid "{name}を空にして、もとの文章に戻す"
 msgstr "{name}を空にして、もとの文章に戻す"
@@ -663,7 +643,7 @@ msgstr "「必須」の欄をすべて入れると保存できます。"
 msgid "「書き方」シートにある種類の名前で書いてください"
 msgstr "「書き方」シートにある種類の名前で書いてください"
 
-#: src/components/useErrorMessages.ts:66
+#: src/components/useErrorMessages.ts:58
 msgid "「案内のみ」の場所は、「状態のひとこと」（日本語）を書いてから公開してください。"
 msgstr "「案内のみ」の場所は、「状態のひとこと」（日本語）を書いてから公開してください。"
 
@@ -826,10 +806,6 @@ msgstr "Ctrlキーを押しながら地図を動かします"
 msgid "Google マップで開く"
 msgstr "Google マップで開く"
 
-#: src/components/settings/SsoMethods.tsx:70
-msgid "Google・LINE・Apple"
-msgstr "Google・LINE・Apple"
-
 #: src/components/navigation/NavFarCard.tsx:65
 msgid "Googleマップ"
 msgstr "Googleマップ"
@@ -842,7 +818,7 @@ msgstr "GPSの電波が弱いようです。空の開けた場所に動いて、
 msgid "GPSの電波が弱いようです。空の開けた場所に動いてください。"
 msgstr "GPSの電波が弱いようです。空の開けた場所に動いてください。"
 
-#: src/components/useErrorMessages.ts:59
+#: src/components/useErrorMessages.ts:51
 msgid "GPSの電波が弱いようです。空の開けた場所に移動して、もう一度お試しください。"
 msgstr "GPSの電波が弱いようです。空の開けた場所に移動して、もう一度お試しください。"
 
@@ -949,7 +925,7 @@ msgid "アウトドア"
 msgstr "アウトドア"
 
 #: src/app/(public)/sitemap/page.tsx:103
-#: src/components/SiteHeader.tsx:216
+#: src/components/SiteHeader.tsx:243
 msgid "アカウント"
 msgstr "アカウント"
 
@@ -986,7 +962,7 @@ msgstr "アカウントを削除しますか？"
 msgid "アカウントを削除する"
 msgstr "アカウントを削除する"
 
-#: src/components/SiteHeader.tsx:224
+#: src/components/SiteHeader.tsx:251
 msgid "アカウント設定"
 msgstr "アカウント設定"
 
@@ -1022,7 +998,7 @@ msgstr "アクセス解析（管理）"
 msgid "アップロードしたファイルをやめて、初めから入っている設定に戻します。よろしいですか？"
 msgstr "アップロードしたファイルをやめて、初めから入っている設定に戻します。よろしいですか？"
 
-#: src/components/useErrorMessages.ts:79
+#: src/components/useErrorMessages.ts:71
 msgid "アップロードできるのは、4MBまでのJPEG・PNG・WebPの写真と、200MBまでのMP4・WebMの動画だけです。"
 msgstr "アップロードできるのは、4MBまでのJPEG・PNG・WebPの写真と、200MBまでのMP4・WebMの動画だけです。"
 
@@ -1224,7 +1200,7 @@ msgstr "いまは、手で決めた四角です。"
 msgid "いまは、自動の四角です（点線）。"
 msgstr "いまは、自動の四角です（点線）。"
 
-#: src/components/settings/LoginMethods.tsx:50
+#: src/components/settings/LoginMethods.tsx:49
 msgid "いまは、顔・指紋だけでログインしています。メールを追加すると、端末をなくしても、メールの番号でログインできます。"
 msgstr "いまは、顔・指紋だけでログインしています。メールを追加すると、端末をなくしても、メールの番号でログインできます。"
 
@@ -1290,13 +1266,13 @@ msgstr "オフラインで使う"
 msgid "お住まい"
 msgstr "お住まい"
 
-#: src/components/auth/RegisterFlow.tsx:71
+#: src/components/auth/RegisterFlow.tsx:70
 #: src/components/ProfileSettings.tsx:147
 #: src/components/ProfileSettings.tsx:256
 msgid "お名前"
 msgstr "お名前"
 
-#: src/components/useErrorMessages.ts:46
+#: src/components/useErrorMessages.ts:38
 msgid "お名前に使えない文字が含まれているか、長すぎます（40文字まで）。"
 msgstr "お名前に使えない文字が含まれているか、長すぎます（40文字まで）。"
 
@@ -1321,7 +1297,7 @@ msgstr "お店・食事"
 #: src/app/(public)/places/page.tsx:37
 #: src/app/(public)/sitemap/page.tsx:67
 #: src/components/admin/one-map/OneMap.tsx:394
-#: src/components/SiteHeader.tsx:275
+#: src/components/SiteHeader.tsx:302
 msgid "お店と施設"
 msgstr "お店と施設"
 
@@ -1450,7 +1426,8 @@ msgstr "ゲストのまま使う"
 #: src/components/landing/Landing.tsx:329
 #: src/components/map/MapScreenCanvas.tsx:647
 #: src/components/places/DirectoryView.tsx:81
-#: src/components/TabBar.tsx:88
+#: src/components/SiteHeader.tsx:223
+#: src/components/TabBar.tsx:96
 msgid "コース"
 msgstr "コース"
 
@@ -1585,7 +1562,7 @@ msgstr "コースの範囲の地図"
 msgid "コースの終わりが次のコースの始まりのときは、同じ場所を二つのコースに置けます。スタンプは1つで、両方のコースに数えられます。内容を直すときは、もとのコースで直します。"
 msgstr "コースの終わりが次のコースの始まりのときは、同じ場所を二つのコースに置けます。スタンプは1つで、両方のコースに数えられます。内容を直すときは、もとのコースで直します。"
 
-#: src/components/useErrorMessages.ts:50
+#: src/components/useErrorMessages.ts:42
 msgid "コースの線が正しくありません。日本の中に、2点以上の線を描いてください。"
 msgstr "コースの線が正しくありません。日本の中に、2点以上の線を描いてください。"
 
@@ -1608,7 +1585,7 @@ msgstr "コースやラリー、ブログの記事で、しおりのボタンを
 
 #: src/components/admin/RouteTable.tsx:127
 #: src/components/landing/Landing.tsx:124
-#: src/components/landing/LandingHero.tsx:77
+#: src/components/landing/LandingHero.tsx:79
 msgid "コースをさがす"
 msgstr "コースをさがす"
 
@@ -1721,10 +1698,6 @@ msgstr "このアカウントでは、顔・指紋のログインをまだ使っ
 msgid "このアカウントでは、顔・指紋のログインを使っていません。メールの番号で確認してください。"
 msgstr "このアカウントでは、顔・指紋のログインを使っていません。メールの番号で確認してください。"
 
-#: src/components/useErrorMessages.ts:44
-msgid "このアカウントにつながっていないアカウントで確認されました。つないだアカウントでお試しください。"
-msgstr "このアカウントにつながっていないアカウントで確認されました。つないだアカウントでお試しください。"
-
 #: src/components/useErrorMessages.ts:28
 msgid "このアカウントには、メールがありません。顔・指紋で確認してください。"
 msgstr "このアカウントには、メールがありません。顔・指紋で確認してください。"
@@ -1733,12 +1706,12 @@ msgstr "このアカウントには、メールがありません。顔・指紋
 msgid "このアカウントに送る"
 msgstr "このアカウントに送る"
 
-#: src/components/useErrorMessages.ts:76
+#: src/components/useErrorMessages.ts:68
 #: src/components/useStampMessages.ts:24
 msgid "このアカウントは、いま制限されています。スタンプを押すことと、コメントを書くことはできません。"
 msgstr "このアカウントは、いま制限されています。スタンプを押すことと、コメントを書くことはできません。"
 
-#: src/components/SiteHeader.tsx:273
+#: src/components/SiteHeader.tsx:300
 msgid "このアプリについて"
 msgstr "このアプリについて"
 
@@ -1794,15 +1767,11 @@ msgstr "このコースを選ぶ"
 msgid "このコメントを削除します。元に戻せません。"
 msgstr "このコメントを削除します。元に戻せません。"
 
-#: src/components/useErrorMessages.ts:38
-msgid "このサイトでは、そのログインの方法は使えません。"
-msgstr "このサイトでは、そのログインの方法は使えません。"
-
 #: src/components/StampHere.tsx:136
 msgid "このスタンプは、もう押してあります。"
 msgstr "このスタンプは、もう押してあります。"
 
-#: src/components/useErrorMessages.ts:57
+#: src/components/useErrorMessages.ts:49
 #: src/components/useStampMessages.ts:17
 msgid "このスタンプは、押してから時間がたちすぎているため、受け付けられませんでした（48時間まで）。"
 msgstr "このスタンプは、押してから時間がたちすぎているため、受け付けられませんでした（48時間まで）。"
@@ -1856,10 +1825,6 @@ msgstr "このページを開いたときに、サイトが動いているかを
 #: src/components/useErrorMessages.ts:23
 msgid "このボタンは、もう使えません。7日を過ぎたか、すでに使われています。メールの番号でログインして、ログインの方法を確認してください。"
 msgstr "このボタンは、もう使えません。7日を過ぎたか、すでに使われています。メールの番号でログインして、ログインの方法を確認してください。"
-
-#: src/components/useErrorMessages.ts:42
-msgid "このメールアドレスのアカウントが、すでにあります。メールでログインしてから、「ログインの方法」でつないでください。"
-msgstr "このメールアドレスのアカウントが、すでにあります。メールでログインしてから、「ログインの方法」でつないでください。"
 
 #: src/components/useErrorMessages.ts:36
 msgid "このメールアドレスは、使えません。すでに別のアカウントで使われているか、このアカウントにはメールが入っています。"
@@ -1915,7 +1880,7 @@ msgstr "この内容で取り込む"
 msgid "この写真を使う"
 msgstr "この写真を使う"
 
-#: src/components/useErrorMessages.ts:74
+#: src/components/useErrorMessages.ts:66
 msgid "この削除は、管理者が予約したものです。プロフィールの画面から、異議を送れます。"
 msgstr "この削除は、管理者が予約したものです。プロフィールの画面から、異議を送れます。"
 
@@ -1964,7 +1929,7 @@ msgstr "この地域のコースはまだありません。"
 msgid "この場所のスタンプの絵"
 msgstr "この場所のスタンプの絵"
 
-#: src/components/useErrorMessages.ts:56
+#: src/components/useErrorMessages.ts:48
 #: src/components/useStampMessages.ts:23
 msgid "この場所のスタンプは、確認のため取り消されています。お困りの場合は運営にお問い合わせください。"
 msgstr "この場所のスタンプは、確認のため取り消されています。お困りの場合は運営にお問い合わせください。"
@@ -1988,7 +1953,7 @@ msgstr "この場所は、いまは閉鎖中です。"
 msgid "この場所は、いまは閉鎖中です。スタンプは押せません。"
 msgstr "この場所は、いまは閉鎖中です。スタンプは押せません。"
 
-#: src/components/useErrorMessages.ts:54
+#: src/components/useErrorMessages.ts:46
 msgid "この場所は今、通行止めなどで閉まっているため、スタンプを押せません。"
 msgstr "この場所は今、通行止めなどで閉まっているため、スタンプを押せません。"
 
@@ -2062,7 +2027,7 @@ msgstr "この端末では、振動は使えません。"
 msgid "この端末では、顔・指紋のログインを使えません。"
 msgstr "この端末では、顔・指紋のログインを使えません。"
 
-#: src/components/useErrorMessages.ts:86
+#: src/components/useErrorMessages.ts:78
 msgid "この端末では、顔・指紋のログインを使えません。メールでお試しください。"
 msgstr "この端末では、顔・指紋のログインを使えません。メールでお試しください。"
 
@@ -2112,7 +2077,7 @@ msgstr "この範囲のコース"
 msgid "この経由地から、この距離の中にいるとスタンプを押せます。"
 msgstr "この経由地から、この距離の中にいるとスタンプを押せます。"
 
-#: src/components/useErrorMessages.ts:62
+#: src/components/useErrorMessages.ts:54
 msgid "この経由地の位置がまだ決まっていません。地図で位置を決めてください。"
 msgstr "この経由地の位置がまだ決まっていません。地図で位置を決めてください。"
 
@@ -2179,7 +2144,7 @@ msgstr "この設定は、本番のサイトにすぐ反映されます。保存
 msgid "この説明は日本語のみです。"
 msgstr "この説明は日本語のみです。"
 
-#: src/components/useErrorMessages.ts:83
+#: src/components/useErrorMessages.ts:75
 msgid "この近くに、歩ける道が見つかりませんでした。線の点を、道の近くに置いてお試しください。"
 msgstr "この近くに、歩ける道が見つかりませんでした。線の点を、道の近くに置いてお試しください。"
 
@@ -2319,7 +2284,7 @@ msgstr "サイトの状態"
 #: src/app/(public)/sitemap/page.tsx:15
 #: src/app/(public)/sitemap/page.tsx:50
 #: src/components/SiteFooter.tsx:24
-#: src/components/SiteHeader.tsx:280
+#: src/components/SiteHeader.tsx:307
 msgid "サイトマップ"
 msgstr "サイトマップ"
 
@@ -2350,7 +2315,7 @@ msgstr "シート（CSV）から取り込む"
 msgid "シートの高さ（上下の矢印キーで変えられます）"
 msgstr "シートの高さ（上下の矢印キーで変えられます）"
 
-#: src/components/SiteHeader.tsx:243
+#: src/components/SiteHeader.tsx:270
 msgid "しおりと読みもの"
 msgstr "しおりと読みもの"
 
@@ -2500,7 +2465,7 @@ msgstr "スタンプをもどす"
 msgid "スタンプを押した人"
 msgstr "スタンプを押した人"
 
-#: src/components/useErrorMessages.ts:58
+#: src/components/useErrorMessages.ts:50
 #: src/components/useStampMessages.ts:18
 msgid "スタンプを押した時刻が正しくありません。端末の日付と時刻を確かめてください。"
 msgstr "スタンプを押した時刻が正しくありません。端末の日付と時刻を確かめてください。"
@@ -2648,10 +2613,6 @@ msgstr "すべて選ぶ"
 msgid "スマホ幅"
 msgstr "スマホ幅"
 
-#: src/components/useErrorMessages.ts:43
-msgid "そのアカウントは、すでに別のアカウントにつながっています。"
-msgstr "そのアカウントは、すでに別のアカウントにつながっています。"
-
 #: src/components/admin/HomeTextFields.tsx:41
 msgid "そのほかの見出し"
 msgstr "そのほかの見出し"
@@ -2756,7 +2717,7 @@ msgstr "つぎの場所"
 msgid "つぎの場所まで"
 msgstr "つぎの場所まで"
 
-#: src/components/auth/RegisterFlow.tsx:142
+#: src/components/auth/RegisterFlow.tsx:141
 #: src/components/map/MapHelp.tsx:55
 #: src/components/settings/WelcomeFlow.tsx:153
 msgid "つぎへ"
@@ -2803,15 +2764,11 @@ msgstr "つながると、自動で送ります。そのときにサーバーが
 msgid "つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。"
 msgstr "つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。"
 
-#: src/components/settings/SsoMethods.tsx:71
-msgid "つなぎました。次からは、このアカウントでもログインできます。"
-msgstr "つなぎました。次からは、このアカウントでもログインできます。"
-
 #: src/components/StatusChecks.tsx:48
 msgid "データベース（スタンプ、ログイン、内容）"
 msgstr "データベース（スタンプ、ログイン、内容）"
 
-#: src/components/SiteHeader.tsx:256
+#: src/components/SiteHeader.tsx:283
 msgid "テーマ"
 msgstr "テーマ"
 
@@ -2950,7 +2907,7 @@ msgstr "ナビ中：{routeName}"
 msgid "なめらかにする"
 msgstr "なめらかにする"
 
-#: src/components/auth/RegisterFlow.tsx:80
+#: src/components/auth/RegisterFlow.tsx:79
 msgid "ニックネームでもかまいません。"
 msgstr "ニックネームでもかまいません。"
 
@@ -2979,13 +2936,9 @@ msgstr "はい"
 msgid "はじめての方のホームを、前の見せ方（画面が止まって切り替わる）にする"
 msgstr "はじめての方のホームを、前の見せ方（画面が止まって切り替わる）にする"
 
-#: src/components/auth/LoginFlow.tsx:153
+#: src/components/auth/LoginFlow.tsx:151
 msgid "はじめての方は"
 msgstr "はじめての方は"
-
-#: src/components/auth/SsoButtons.tsx:59
-msgid "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
-msgstr "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
 
 #: src/app/(public)/welcome/page.tsx:11
 msgid "はじめての設定"
@@ -3028,13 +2981,13 @@ msgstr "バスで約{minutes}分"
 msgid "バスで約{n}分"
 msgstr "バスで約{n}分"
 
-#: src/components/auth/LoginFlow.tsx:81
+#: src/components/auth/LoginFlow.tsx:80
 #: src/components/settings/PasswordMethod.tsx:68
 #: src/components/settings/WelcomeFlow.tsx:118
 msgid "パスワード"
 msgstr "パスワード"
 
-#: src/components/auth/LoginFlow.tsx:150
+#: src/components/auth/LoginFlow.tsx:149
 msgid "パスワードでログイン"
 msgstr "パスワードでログイン"
 
@@ -3076,7 +3029,7 @@ msgstr "パスワードを保存する"
 msgid "パスワードを変える"
 msgstr "パスワードを変える"
 
-#: src/components/auth/LoginFlow.tsx:89
+#: src/components/auth/LoginFlow.tsx:88
 msgid "パスワードを忘れたときは、メールでログイン"
 msgstr "パスワードを忘れたときは、メールでログイン"
 
@@ -3214,11 +3167,11 @@ msgstr "ふつうの大きさです。"
 msgid "ふつうは、7日後に削除する方法を使います。本人にメールで知らせ、本人は異議を送れます。その間は、取り消せます。"
 msgstr "ふつうは、7日後に削除する方法を使います。本人にメールで知らせ、本人は異議を送れます。その間は、取り消せます。"
 
-#: src/app/(public)/bookmarks/page.tsx:11
-#: src/app/(public)/bookmarks/page.tsx:20
+#: src/app/(public)/bookmarks/page.tsx:12
+#: src/app/(public)/bookmarks/page.tsx:26
 #: src/app/(public)/sitemap/page.tsx:108
 #: src/components/landing/HomeProgress.tsx:116
-#: src/components/SiteHeader.tsx:245
+#: src/components/SiteHeader.tsx:272
 msgid "ブックマーク"
 msgstr "ブックマーク"
 
@@ -3252,7 +3205,7 @@ msgstr "フッター"
 #: src/app/(public)/sitemap/page.tsx:132
 #: src/components/admin/PageTextEditor.tsx:60
 #: src/components/SiteFooter.tsx:30
-#: src/components/SiteHeader.tsx:278
+#: src/components/SiteHeader.tsx:305
 msgid "プライバシーポリシー"
 msgstr "プライバシーポリシー"
 
@@ -3281,7 +3234,7 @@ msgstr "プレビュー（利用者に見える動画）"
 #: src/app/(public)/sitemap/page.tsx:82
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/BlogCard.tsx:22
-#: src/components/SiteHeader.tsx:246
+#: src/components/SiteHeader.tsx:273
 msgid "ブログ"
 msgstr "ブログ"
 
@@ -3375,8 +3328,9 @@ msgstr "ベースの地図"
 
 #: src/app/(admin)/admin/pages/page.tsx:22
 #: src/app/(public)/blog/page.tsx:49
+#: src/app/(public)/bookmarks/page.tsx:22
 #: src/app/(public)/licenses/page.tsx:21
-#: src/app/(public)/login/page.tsx:30
+#: src/app/(public)/login/page.tsx:29
 #: src/app/(public)/notices/page.tsx:22
 #: src/app/(public)/places/page.tsx:33
 #: src/app/(public)/register/page.tsx:28
@@ -3390,9 +3344,10 @@ msgstr "ベースの地図"
 #: src/components/pages/PageViews.tsx:88
 #: src/components/pages/PageViews.tsx:151
 #: src/components/pages/PageViews.tsx:191
-#: src/components/SiteHeader.tsx:184
-#: src/components/TabBar.tsx:86
-#: src/components/TabBar.tsx:101
+#: src/components/SiteHeader.tsx:181
+#: src/components/SiteHeader.tsx:221
+#: src/components/TabBar.tsx:94
+#: src/components/TabBar.tsx:110
 msgid "ホーム"
 msgstr "ホーム"
 
@@ -3442,7 +3397,7 @@ msgstr "ほかにもあります。もう少し入れて絞ってください。
 msgid "ほかにログインの方法がないので、これは消せません。先にメールか、別の端末の顔・指紋のログインを使えるようにしてください。"
 msgstr "ほかにログインの方法がないので、これは消せません。先にメールか、別の端末の顔・指紋のログインを使えるようにしてください。"
 
-#: src/components/auth/RegisterFlow.tsx:159
+#: src/components/auth/RegisterFlow.tsx:158
 #: src/components/settings/PasskeyManager.tsx:180
 msgid "ほかのアプリに保存するときは、表示される画面で選んでください。"
 msgstr "ほかのアプリに保存するときは、表示される画面で選んでください。"
@@ -3472,10 +3427,6 @@ msgstr "ほかの乗り物"
 #: src/components/navigation/NavTargetPicker.tsx:44
 msgid "ほかの場所へ"
 msgstr "ほかの場所へ"
-
-#: src/components/settings/SsoMethods.tsx:57
-msgid "ほかの方法では、これまでどおりログインできます。"
-msgstr "ほかの方法では、これまでどおりログインできます。"
 
 #: src/components/admin/AdminListTable.tsx:296
 msgid "ほかの絞りこみ"
@@ -3566,7 +3517,8 @@ msgstr "まっすぐつなぐ"
 
 #: src/app/(public)/map/page.tsx:17
 #: src/app/(public)/sitemap/page.tsx:62
-#: src/components/TabBar.tsx:87
+#: src/components/SiteHeader.tsx:222
+#: src/components/TabBar.tsx:95
 msgid "マップ"
 msgstr "マップ"
 
@@ -3606,11 +3558,11 @@ msgstr "むずかしさ（ひとこと）"
 msgid "むずかしさを、ひとことで書く（任意）"
 msgstr "むずかしさを、ひとことで書く（任意）"
 
-#: src/components/auth/LoginFlow.tsx:68
-#: src/components/auth/LoginFlow.tsx:119
-#: src/components/auth/RegisterFlow.tsx:125
-#: src/components/settings/LoginMethods.tsx:29
-#: src/components/settings/LoginMethods.tsx:66
+#: src/components/auth/LoginFlow.tsx:67
+#: src/components/auth/LoginFlow.tsx:118
+#: src/components/auth/RegisterFlow.tsx:124
+#: src/components/settings/LoginMethods.tsx:28
+#: src/components/settings/LoginMethods.tsx:65
 msgid "メールアドレス"
 msgstr "メールアドレス"
 
@@ -3622,19 +3574,19 @@ msgstr "メールアドレスかパスワードが違います。パスワード
 msgid "メールアドレスを直す"
 msgstr "メールアドレスを直す"
 
-#: src/components/settings/LoginMethods.tsx:49
+#: src/components/settings/LoginMethods.tsx:48
 msgid "メールアドレスを追加する"
 msgstr "メールアドレスを追加する"
 
-#: src/components/auth/LoginFlow.tsx:149
+#: src/components/auth/LoginFlow.tsx:148
 msgid "メールでログイン"
 msgstr "メールでログイン"
 
-#: src/components/auth/RegisterFlow.tsx:176
+#: src/components/auth/RegisterFlow.tsx:175
 msgid "メールで登録"
 msgstr "メールで登録"
 
-#: src/components/auth/ReauthDialog.tsx:96
+#: src/components/auth/ReauthDialog.tsx:77
 msgid "メールに、6桁の番号を送りました。"
 msgstr "メールに、6桁の番号を送りました。"
 
@@ -3642,7 +3594,7 @@ msgstr "メールに、6桁の番号を送りました。"
 msgid "メールの番号でログインしなおして、ログインの方法を確認してください。"
 msgstr "メールの番号でログインしなおして、ログインの方法を確認してください。"
 
-#: src/components/auth/ReauthDialog.tsx:88
+#: src/components/auth/ReauthDialog.tsx:69
 msgid "メールの番号で確認"
 msgstr "メールの番号で確認"
 
@@ -3650,7 +3602,7 @@ msgstr "メールの番号で確認"
 msgid "メールの番号や顔・指紋では、これまでどおりログインできます。"
 msgstr "メールの番号や顔・指紋では、これまでどおりログインできます。"
 
-#: src/components/settings/LoginMethods.tsx:55
+#: src/components/settings/LoginMethods.tsx:54
 msgid "メールを追加する"
 msgstr "メールを追加する"
 
@@ -3658,7 +3610,8 @@ msgstr "メールを追加する"
 msgid "メールを開いて番号を見たら、この画面にもどって入力してください。届かないときは、迷惑メールのフォルダも見てください。"
 msgstr "メールを開いて番号を見たら、この画面にもどって入力してください。届かないときは、迷惑メールのフォルダも見てください。"
 
-#: src/components/TabBar.tsx:117
+#: src/components/SiteHeader.tsx:218
+#: src/components/TabBar.tsx:126
 msgid "メインメニュー"
 msgstr "メインメニュー"
 
@@ -3671,8 +3624,8 @@ msgid "めぐる場所"
 msgstr "めぐる場所"
 
 #: src/components/admin/AdminNav.tsx:115
-#: src/components/SiteHeader.tsx:208
-#: src/components/TabBar.tsx:152
+#: src/components/SiteHeader.tsx:209
+#: src/components/TabBar.tsx:164
 msgid "メニュー"
 msgstr "メニュー"
 
@@ -3680,13 +3633,13 @@ msgstr "メニュー"
 msgid "メニューの「ホーム画面に追加」を押します"
 msgstr "メニューの「ホーム画面に追加」を押します"
 
-#: src/components/TabBar.tsx:109
-#: src/components/TabBar.tsx:110
+#: src/components/TabBar.tsx:118
+#: src/components/TabBar.tsx:119
 msgid "メニューをたたむ"
 msgstr "メニューをたたむ"
 
-#: src/components/TabBar.tsx:109
-#: src/components/TabBar.tsx:110
+#: src/components/TabBar.tsx:118
+#: src/components/TabBar.tsx:119
 msgid "メニューをひらく"
 msgstr "メニューをひらく"
 
@@ -3775,7 +3728,7 @@ msgstr "もどりの経由地を別に作る必要はありません。利用者
 #: src/app/(admin)/admin/routes/new/page.tsx:23
 #: src/components/ConfirmDialog.tsx:76
 #: src/components/navigation/NavPrompts.tsx:145
-#: src/components/SiteHeader.tsx:175
+#: src/components/SiteHeader.tsx:172
 msgid "もどる"
 msgstr "もどる"
 
@@ -3789,8 +3742,8 @@ msgstr "もらったバッジの数"
 
 #: src/components/admin/PublishedEditDialog.tsx:63
 #: src/components/admin/RallyEditor.tsx:191
-#: src/components/auth/ReauthDialog.tsx:91
-#: src/components/auth/ReauthDialog.tsx:113
+#: src/components/auth/ReauthDialog.tsx:72
+#: src/components/auth/ReauthDialog.tsx:94
 #: src/components/LoadingOverlay.tsx:26
 #: src/components/ProfileSettings.tsx:291
 #: src/components/RallyNearbyStamp.tsx:112
@@ -3824,7 +3777,7 @@ msgstr "やり直す"
 #: src/app/(public)/sitemap/page.tsx:126
 #: src/components/admin/PageTextEditor.tsx:60
 #: src/components/SiteFooter.tsx:18
-#: src/components/SiteHeader.tsx:276
+#: src/components/SiteHeader.tsx:303
 msgid "よくあるご質問"
 msgstr "よくあるご質問"
 
@@ -3838,7 +3791,7 @@ msgstr "よみ"
 
 #: src/app/(public)/sitemap/page.tsx:135
 #: src/components/SiteFooter.tsx:33
-#: src/components/SiteHeader.tsx:279
+#: src/components/SiteHeader.tsx:306
 msgid "ライセンス情報"
 msgstr "ライセンス情報"
 
@@ -3857,8 +3810,9 @@ msgstr "ライト"
 #: src/components/BookmarkList.tsx:55
 #: src/components/landing/HomeProgress.tsx:110
 #: src/components/pages/PageViews.tsx:33
-#: src/components/SiteHeader.tsx:75
-#: src/components/TabBar.tsx:89
+#: src/components/SiteHeader.tsx:77
+#: src/components/SiteHeader.tsx:224
+#: src/components/TabBar.tsx:97
 msgid "ラリー"
 msgstr "ラリー"
 
@@ -4005,39 +3959,35 @@ msgid "リンク先のページが用意できてから、オンにしてくだ�
 msgstr "リンク先のページが用意できてから、オンにしてください。オフの間は、ホームページに出ません。"
 
 #: src/components/admin/AdminProfileMenu.tsx:98
-#: src/components/SiteHeader.tsx:228
+#: src/components/SiteHeader.tsx:255
 msgid "ログアウト"
 msgstr "ログアウト"
 
-#: src/components/SiteHeader.tsx:142
+#: src/components/SiteHeader.tsx:134
 msgid "ログアウトしますか？"
 msgstr "ログアウトしますか？"
 
-#: src/components/SiteHeader.tsx:142
+#: src/components/SiteHeader.tsx:134
 msgid "ログアウトする"
 msgstr "ログアウトする"
 
-#: src/app/(public)/login/page.tsx:16
-#: src/app/(public)/login/page.tsx:33
+#: src/app/(public)/login/page.tsx:15
+#: src/app/(public)/login/page.tsx:32
 #: src/app/(public)/sitemap/page.tsx:111
-#: src/components/auth/LoginFlow.tsx:85
-#: src/components/auth/LoginFlow.tsx:104
+#: src/components/auth/LoginFlow.tsx:84
+#: src/components/auth/LoginFlow.tsx:103
 #: src/components/auth/PasswordUndo.tsx:35
-#: src/components/auth/RegisterFlow.tsx:181
+#: src/components/auth/RegisterFlow.tsx:179
 #: src/components/blog/CommentSection.tsx:127
 #: src/components/GuestNag.tsx:88
 #: src/components/landing/Landing.tsx:133
-#: src/components/landing/LandingHero.tsx:83
+#: src/components/landing/LandingHero.tsx:85
 #: src/components/ProfileSettings.tsx:220
 #: src/components/SignInPrompt.tsx:26
 #: src/components/SignInPrompt.tsx:57
-#: src/components/SiteHeader.tsx:234
+#: src/components/SiteHeader.tsx:261
 msgid "ログイン"
 msgstr "ログイン"
-
-#: src/components/useErrorMessages.ts:40
-msgid "ログインが中止されました。"
-msgstr "ログインが中止されました。"
 
 #: src/components/useErrorMessages.ts:24
 #: src/components/useStampMessages.ts:21
@@ -4058,10 +4008,6 @@ msgstr "ログインできませんでした。この端末で顔・指紋のロ
 #: src/components/ProfileSettings.tsx:222
 msgid "ログインの方法"
 msgstr "ログインの方法"
-
-#: src/components/useErrorMessages.ts:39
-msgid "ログインを確認できませんでした。時間がたったか、別のブラウザーに戻った可能性があります。もう一度お試しください。"
-msgstr "ログインを確認できませんでした。時間がたったか、別のブラウザーに戻った可能性があります。もう一度お試しください。"
 
 #: src/components/settings/PasskeyManager.tsx:198
 msgid "わかりました"
@@ -4210,7 +4156,7 @@ msgstr "中心の緯度"
 msgid "中身"
 msgstr "中身"
 
-#: src/components/useErrorMessages.ts:68
+#: src/components/useErrorMessages.ts:60
 msgid "中身のないラリーは公開できません。公開中のラリーを空にすることもできません。"
 msgstr "中身のないラリーは公開できません。公開中のラリーを空にすることもできません。"
 
@@ -4314,7 +4260,7 @@ msgstr "位置は「確認していない」状態で入ります。公開する
 msgid "位置を公式の情報で確認し、「位置を確認した」にチェックを入れて情報源を書いてください。"
 msgstr "位置を公式の情報で確認し、「位置を確認した」にチェックを入れて情報源を書いてください。"
 
-#: src/components/useErrorMessages.ts:63
+#: src/components/useErrorMessages.ts:55
 msgid "位置を公式の情報で確認していません。確認してから「位置を確認した」にチェックを入れてください。"
 msgstr "位置を公式の情報で確認していません。確認してから「位置を確認した」にチェックを入れてください。"
 
@@ -4334,7 +4280,7 @@ msgstr "位置を確認した"
 msgid "位置を確認した（確認するまで、利用者には位置を出しません）"
 msgstr "位置を確認した（確認するまで、利用者には位置を出しません）"
 
-#: src/components/useErrorMessages.ts:64
+#: src/components/useErrorMessages.ts:56
 msgid "位置を確認した情報源（サイトの名前やリンク）を書いてください。"
 msgstr "位置を確認した情報源（サイトの名前やリンク）を書いてください。"
 
@@ -4910,7 +4856,7 @@ msgstr "写真と文章の一部は、"
 
 #: src/components/admin/PlacePanel.tsx:227
 #: src/components/admin/RouteEditor.tsx:231
-#: src/components/useErrorMessages.ts:51
+#: src/components/useErrorMessages.ts:43
 msgid "写真のリンクは、https:// で始まるものだけ使えます。"
 msgstr "写真のリンクは、https:// で始まるものだけ使えます。"
 
@@ -4977,7 +4923,7 @@ msgstr "写真をアップロード"
 msgid "写真をアップロード（まとめて選べます）"
 msgstr "写真をアップロード（まとめて選べます）"
 
-#: src/components/useErrorMessages.ts:80
+#: src/components/useErrorMessages.ts:72
 msgid "写真を保存できませんでした。しばらくしてからもう一度お試しください。"
 msgstr "写真を保存できませんでした。しばらくしてからもう一度お試しください。"
 
@@ -5045,7 +4991,7 @@ msgstr "出典"
 msgid "出典: {0}"
 msgstr "出典: {0}"
 
-#: src/components/useErrorMessages.ts:77
+#: src/components/useErrorMessages.ts:69
 msgid "出典のリンクは https:// で始まるアドレスを入れてください。"
 msgstr "出典のリンクは https:// で始まるアドレスを入れてください。"
 
@@ -5094,7 +5040,7 @@ msgstr "初期値にする"
 msgid "別のコースにひもづいています"
 msgstr "別のコースにひもづいています"
 
-#: src/components/useErrorMessages.ts:48
+#: src/components/useErrorMessages.ts:40
 msgid "別の人が先に保存しました。読み込み直してから、もう一度お試しください。"
 msgstr "別の人が先に保存しました。読み込み直してから、もう一度お試しください。"
 
@@ -5106,7 +5052,7 @@ msgstr "利用者に見せる言葉"
 #: src/app/(public)/sitemap/page.tsx:129
 #: src/components/admin/PageTextEditor.tsx:60
 #: src/components/SiteFooter.tsx:27
-#: src/components/SiteHeader.tsx:277
+#: src/components/SiteHeader.tsx:304
 msgid "利用規約"
 msgstr "利用規約"
 
@@ -5298,7 +5244,7 @@ msgstr "動画のページをひらく"
 msgid "動画のリンク（YouTube、またはアップロードした動画）"
 msgstr "動画のリンク（YouTube、またはアップロードした動画）"
 
-#: src/components/useErrorMessages.ts:49
+#: src/components/useErrorMessages.ts:41
 msgid "動画のリンクは、https:// で始まるYouTube、またはアップロードした動画（.mp4・.webm）のものだけ使えます。"
 msgstr "動画のリンクは、https:// で始まるYouTube、またはアップロードした動画（.mp4・.webm）のものだけ使えます。"
 
@@ -5437,7 +5383,7 @@ msgstr "反映しました。訪問者の地図には、数分のうちに変わ
 msgid "反映する"
 msgstr "反映する"
 
-#: src/components/useErrorMessages.ts:61
+#: src/components/useErrorMessages.ts:53
 msgid "取り消していないスタンプがある経由地は消せません。先に「スタンプ」の一覧で取り消すか、「公開をやめる」をお使いください。"
 msgstr "取り消していないスタンプがある経由地は消せません。先に「スタンプ」の一覧で取り消すか、「公開をやめる」をお使いください。"
 
@@ -5618,7 +5564,7 @@ msgstr "和歌山県"
 msgid "和泉山脈から金剛山地へ。大阪・和歌山・奈良の境にのびるこの山なみは、古くから「葛城」と呼ばれ、神の宿る山として敬われてきました。山で心身をきたえる修験道を開いたと伝わる役行者が、はじめて修行をしたのも、この山々だといわれています。"
 msgstr "和泉山脈から金剛山地へ。大阪・和歌山・奈良の境にのびるこの山なみは、古くから「葛城」と呼ばれ、神の宿る山として敬われてきました。山で心身をきたえる修験道を開いたと伝わる役行者が、はじめて修行をしたのも、この山々だといわれています。"
 
-#: src/components/useErrorMessages.ts:89
+#: src/components/useErrorMessages.ts:81
 #: src/components/useStampMessages.ts:27
 msgid "問題が発生しました。しばらくしてからもう一度お試しください。"
 msgstr "問題が発生しました。しばらくしてからもう一度お試しください。"
@@ -5877,7 +5823,7 @@ msgstr "基本"
 msgid "場所"
 msgstr "場所"
 
-#: src/components/useErrorMessages.ts:55
+#: src/components/useErrorMessages.ts:47
 msgid "場所から少し離れています。近くまで行って、もう一度お試しください。"
 msgstr "場所から少し離れています。近くまで行って、もう一度お試しください。"
 
@@ -5943,8 +5889,6 @@ msgstr "変更を捨てますか？"
 
 #: src/components/admin/PhotoField.tsx:47
 #: src/components/admin/PhotoListEditor.tsx:90
-#: src/components/settings/SsoMethods.tsx:57
-#: src/components/settings/SsoMethods.tsx:78
 msgid "外す"
 msgstr "外す"
 
@@ -5984,7 +5928,7 @@ msgstr "大きな写真の下に、出どころと一緒に表示されます。
 msgid "大きな文字の一文"
 msgstr "大きな文字の一文"
 
-#: src/components/auth/ReauthDialog.tsx:58
+#: src/components/auth/ReauthDialog.tsx:53
 msgid "大切な操作なので、もう一度、確認します。"
 msgstr "大切な操作なので、もう一度、確認します。"
 
@@ -6217,10 +6161,10 @@ msgstr "情報"
 msgid "情報源を入れないと、「確認した」は保存されません。"
 msgstr "情報源を入れないと、「確認した」は保存されません。"
 
-#: src/components/auth/LoginFlow.tsx:92
-#: src/components/auth/LoginFlow.tsx:138
-#: src/components/auth/RegisterFlow.tsx:145
-#: src/components/auth/RegisterFlow.tsx:166
+#: src/components/auth/LoginFlow.tsx:91
+#: src/components/auth/LoginFlow.tsx:137
+#: src/components/auth/RegisterFlow.tsx:144
+#: src/components/auth/RegisterFlow.tsx:165
 #: src/components/map/MapHelp.tsx:47
 #: src/components/map/MapScreen.tsx:264
 #: src/components/map/MapScreen.tsx:280
@@ -6408,7 +6352,7 @@ msgstr "文字もボタンも、いちばん大きくなります。"
 msgid "文字もボタンも、少し大きくなります。"
 msgstr "文字もボタンも、少し大きくなります。"
 
-#: src/components/SiteHeader.tsx:267
+#: src/components/SiteHeader.tsx:294
 msgid "文字やボタンの大きさ、地図の見せ方"
 msgstr "文字やボタンの大きさ、地図の見せ方"
 
@@ -6483,13 +6427,13 @@ msgstr "新しく作るには、名前（日本語）が必要です"
 #: src/app/(public)/register/page.tsx:15
 #: src/app/(public)/register/page.tsx:31
 #: src/app/(public)/sitemap/page.tsx:114
-#: src/components/auth/LoginFlow.tsx:155
+#: src/components/auth/LoginFlow.tsx:153
 #: src/components/GuestNag.tsx:85
 #: src/components/landing/Landing.tsx:121
-#: src/components/landing/LandingHero.tsx:74
+#: src/components/landing/LandingHero.tsx:76
 #: src/components/SignInPrompt.tsx:23
 #: src/components/SignInPrompt.tsx:51
-#: src/components/SiteHeader.tsx:237
+#: src/components/SiteHeader.tsx:264
 msgid "新規登録"
 msgstr "新規登録"
 
@@ -6677,7 +6621,7 @@ msgstr "未設定"
 msgid "未選択"
 msgstr "未選択"
 
-#: src/components/auth/ReauthDialog.tsx:56
+#: src/components/auth/ReauthDialog.tsx:51
 msgid "本人かどうか、確認します"
 msgstr "本人かどうか、確認します"
 
@@ -7101,7 +7045,7 @@ msgstr "現在地を調べています…"
 msgid "現地の許可"
 msgstr "現地の許可"
 
-#: src/components/useErrorMessages.ts:65
+#: src/components/useErrorMessages.ts:57
 msgid "現地の許可がまだ確認できていません。許可を得たら「許可確認済み」にチェックを入れてください。"
 msgstr "現地の許可がまだ確認できていません。許可を得たら「許可確認済み」にチェックを入れてください。"
 
@@ -7203,7 +7147,7 @@ msgstr "登録しておきませんか"
 msgid "登録しなくても、スタンプは押せます。"
 msgstr "登録しなくても、スタンプは押せます。"
 
-#: src/components/auth/RegisterFlow.tsx:92
+#: src/components/auth/RegisterFlow.tsx:91
 msgid "登録する"
 msgstr "登録する"
 
@@ -7223,14 +7167,14 @@ msgstr "登録できませんでした。もう一度お試しください。"
 msgid "登録なしで押したスタンプがあります"
 msgstr "登録なしで押したスタンプがあります"
 
-#: src/components/useErrorMessages.ts:60
+#: src/components/useErrorMessages.ts:52
 #: src/components/useStampMessages.ts:22
 msgid "登録なしで残せるスタンプの数が、上限になりました。新規登録すると、続けて集められます。"
 msgstr "登録なしで残せるスタンプの数が、上限になりました。新規登録すると、続けて集められます。"
 
-#: src/components/auth/RegisterFlow.tsx:179
+#: src/components/auth/RegisterFlow.tsx:177
 #: src/components/landing/Landing.tsx:131
-#: src/components/landing/LandingHero.tsx:81
+#: src/components/landing/LandingHero.tsx:83
 msgid "登録済みの方は"
 msgstr "登録済みの方は"
 
@@ -7323,7 +7267,7 @@ msgstr "確認した時刻：{0}（日本時間）"
 msgid "確認していない線は、利用者には表示されません。公式の地図などと見比べてから、チェックを入れてください。"
 msgstr "確認していない線は、利用者には表示されません。公式の地図などと見比べてから、チェックを入れてください。"
 
-#: src/components/auth/ReauthDialog.tsx:110
+#: src/components/auth/ReauthDialog.tsx:91
 msgid "確認する"
 msgstr "確認する"
 
@@ -7339,7 +7283,7 @@ msgstr "確認できませんでした。もう一度お試しください。"
 msgid "確認のため、会員番号（{memberId}）を入れてください"
 msgstr "確認のため、会員番号（{memberId}）を入れてください"
 
-#: src/components/settings/LoginMethods.tsx:79
+#: src/components/settings/LoginMethods.tsx:78
 msgid "確認の番号を送る"
 msgstr "確認の番号を送る"
 
@@ -7361,12 +7305,12 @@ msgid "確認待ちの読みはありません。"
 msgstr "確認待ちの読みはありません。"
 
 #: src/components/auth/EmailCodeStep.tsx:59
-#: src/components/auth/ReauthDialog.tsx:105
+#: src/components/auth/ReauthDialog.tsx:86
 msgid "確認番号"
 msgstr "確認番号"
 
-#: src/components/auth/LoginFlow.tsx:135
-#: src/components/auth/RegisterFlow.tsx:142
+#: src/components/auth/LoginFlow.tsx:134
+#: src/components/auth/RegisterFlow.tsx:141
 msgid "確認番号を送る"
 msgstr "確認番号を送る"
 
@@ -7442,7 +7386,7 @@ msgstr "箇条書き"
 msgid "管理メニュー"
 msgstr "管理メニュー"
 
-#: src/components/SiteHeader.tsx:225
+#: src/components/SiteHeader.tsx:252
 msgid "管理画面"
 msgstr "管理画面"
 
@@ -7463,7 +7407,7 @@ msgstr "管理者"
 msgid "管理者が、アカウントの削除を予約しました"
 msgstr "管理者が、アカウントの削除を予約しました"
 
-#: src/components/useErrorMessages.ts:75
+#: src/components/useErrorMessages.ts:67
 msgid "管理者が予約した削除は、ありません。"
 msgstr "管理者が予約した削除は、ありません。"
 
@@ -7471,7 +7415,7 @@ msgstr "管理者が予約した削除は、ありません。"
 msgid "管理者が削除を予約しました。7日たつと、アカウントとスタンプが消えます。"
 msgstr "管理者が削除を予約しました。7日たつと、アカウントとスタンプが消えます。"
 
-#: src/components/useErrorMessages.ts:73
+#: src/components/useErrorMessages.ts:65
 msgid "管理者のアカウントは、制限したり削除したりできません。先に権限を変えてください。"
 msgstr "管理者のアカウントは、制限したり削除したりできません。先に権限を変えてください。"
 
@@ -7583,7 +7527,7 @@ msgstr "経由地（{0}か所）"
 msgid "経由地が残っているコースは削除できません。"
 msgstr "経由地が残っているコースは削除できません。"
 
-#: src/components/useErrorMessages.ts:52
+#: src/components/useErrorMessages.ts:44
 msgid "経由地が残っているコースは消せません。先に経由地を消してください。"
 msgstr "経由地が残っているコースは消せません。先に経由地を消してください。"
 
@@ -7591,7 +7535,7 @@ msgstr "経由地が残っているコースは消せません。先に経由地
 msgid "経由地でつくったラリー：えらんだ経由地のスタンプを全部押すと達成。"
 msgstr "経由地でつくったラリー：えらんだ経由地のスタンプを全部押すと達成。"
 
-#: src/components/useErrorMessages.ts:69
+#: src/components/useErrorMessages.ts:61
 msgid "経由地でつくったラリーにはスタンプを押せる経由地を、コースでつくったラリーにはコースを入れてください。同じものは一度だけです。"
 msgstr "経由地でつくったラリーにはスタンプを押せる経由地を、コースでつくったラリーにはコースを入れてください。同じものは一度だけです。"
 
@@ -7820,10 +7764,6 @@ msgstr "編集を戻す"
 msgid "編集者"
 msgstr "編集者"
 
-#: src/components/useErrorMessages.ts:41
-msgid "編集者と管理者は、メールか顔・指紋でログインしてください。"
-msgstr "編集者と管理者は、メールか顔・指紋でログインしてください。"
-
 #: src/components/admin/AccessPointsEditor.tsx:75
 #: src/components/admin/CourseAreaEditor.tsx:233
 #: src/components/admin/PlacePanel.tsx:232
@@ -7872,11 +7812,11 @@ msgstr "自分でつくるページは、「記事とページ」で書きます
 msgid "自分に送っておくと、ブラウザのデータが消えても、このリンクからスタンプをもどせます。ほかの人には見せないでください。"
 msgstr "自分に送っておくと、ブラウザのデータが消えても、このリンクからスタンプをもどせます。ほかの人には見せないでください。"
 
-#: src/components/useErrorMessages.ts:72
+#: src/components/useErrorMessages.ts:64
 msgid "自分のアカウントは、制限したり削除したりできません。"
 msgstr "自分のアカウントは、制限したり削除したりできません。"
 
-#: src/components/useErrorMessages.ts:71
+#: src/components/useErrorMessages.ts:63
 msgid "自分の権限は変えられません。ほかの管理者に頼んでください。"
 msgstr "自分の権限は変えられません。ほかの管理者に頼んでください。"
 
@@ -7967,7 +7907,7 @@ msgid "英語版の動画のリンク（YouTube、またはアップロードし
 msgstr "英語版の動画のリンク（YouTube、またはアップロードした動画）"
 
 #: src/app/layout.tsx:36
-#: src/components/landing/LandingHero.tsx:53
+#: src/components/landing/LandingHero.tsx:55
 msgid "葛城修験"
 msgstr "葛城修験"
 
@@ -7994,7 +7934,7 @@ msgid "葛城修験の基礎知識"
 msgstr "葛城修験の基礎知識"
 
 #: src/app/(public)/routes/page.tsx:41
-#: src/components/SiteHeader.tsx:75
+#: src/components/SiteHeader.tsx:77
 msgid "葛城修験の道"
 msgstr "葛城修験の道"
 
@@ -8063,7 +8003,7 @@ msgstr "表示している読み"
 msgid "表示する"
 msgstr "表示する"
 
-#: src/components/SiteHeader.tsx:250
+#: src/components/SiteHeader.tsx:277
 msgid "表示と設定"
 msgstr "表示と設定"
 
@@ -8128,7 +8068,7 @@ msgstr "見やすさ"
 #: src/app/(public)/settings/page.tsx:28
 #: src/app/(public)/sitemap/page.tsx:117
 #: src/components/admin/AdminProfileMenu.tsx:83
-#: src/components/SiteHeader.tsx:265
+#: src/components/SiteHeader.tsx:292
 msgid "見やすさの設定"
 msgstr "見やすさの設定"
 
@@ -8195,7 +8135,7 @@ msgstr "言葉を加える"
 
 #: src/components/LocaleSwitcher.tsx:20
 #: src/components/LocaleSwitcher.tsx:55
-#: src/components/SiteHeader.tsx:260
+#: src/components/SiteHeader.tsx:287
 msgid "言語"
 msgstr "言語"
 
@@ -8486,7 +8426,7 @@ msgstr "送信待ちだった{count}件のスタンプは、受け付けられ�
 msgid "送信待ちだったスタンプが、{accepted}件、受け付けられました！"
 msgstr "送信待ちだったスタンプが、{accepted}件、受け付けられました！"
 
-#: src/components/SiteHeader.tsx:142
+#: src/components/SiteHeader.tsx:134
 msgid "送信待ちのスタンプが{waiting}件あります。ログアウトすると、次にログインするまで送れません。ログアウトしますか？"
 msgstr "送信待ちのスタンプが{waiting}件あります。ログアウトすると、次にログインするまで送れません。ログアウトしますか？"
 
@@ -8499,7 +8439,7 @@ msgstr "通り抜け"
 msgid "通る順に並べます。市・町・村は一覧から選びます。一覧にない地名は、下に入力して追加します（8つまで）。"
 msgstr "通る順に並べます。市・町・村は一覧から選びます。一覧にない地名は、下に入力して追加します（8つまで）。"
 
-#: src/components/useErrorMessages.ts:88
+#: src/components/useErrorMessages.ts:80
 #: src/components/useStampMessages.ts:26
 msgid "通信できませんでした。電波の良い場所でもう一度お試しください。"
 msgstr "通信できませんでした。電波の良い場所でもう一度お試しください。"
@@ -8587,7 +8527,7 @@ msgstr "道なりに {distText}"
 msgid "道に沿わせる"
 msgstr "道に沿わせる"
 
-#: src/components/useErrorMessages.ts:82
+#: src/components/useErrorMessages.ts:74
 msgid "道に沿わせる機能が、まだ使えません。管理する人に、道案内サービスの設定を頼んでください。手で線を描くことはできます。"
 msgstr "道に沿わせる機能が、まだ使えません。管理する人に、道案内サービスの設定を頼んでください。手で線を描くことはできます。"
 
@@ -8666,7 +8606,7 @@ msgstr "道を調べています…"
 msgid "道を調べています…（{step}/{total}）"
 msgstr "道を調べています…（{step}/{total}）"
 
-#: src/components/useErrorMessages.ts:84
+#: src/components/useErrorMessages.ts:76
 msgid "道を調べられませんでした。しばらくしてから、もう一度お試しください。"
 msgstr "道を調べられませんでした。しばらくしてから、もう一度お試しください。"
 
@@ -8843,7 +8783,7 @@ msgstr "長さ"
 #: src/components/ProfileSettings.tsx:271
 #: src/components/RallyBook.tsx:202
 #: src/components/SampleNotice.tsx:65
-#: src/components/SiteHeader.tsx:212
+#: src/components/SiteHeader.tsx:213
 #: src/components/StampOutbox.tsx:156
 #: src/components/Zoomable.tsx:118
 msgid "閉じる"
@@ -8992,19 +8932,19 @@ msgstr "題と本文の両方を空にして保存すると、もとの文章に
 msgid "題を入力"
 msgstr "題を入力"
 
-#: src/components/auth/ReauthDialog.tsx:65
+#: src/components/auth/ReauthDialog.tsx:60
 msgid "顔・指紋・ロック番号で確認"
 msgstr "顔・指紋・ロック番号で確認"
 
-#: src/components/auth/LoginFlow.tsx:147
+#: src/components/auth/LoginFlow.tsx:146
 msgid "顔・指紋でログイン"
 msgstr "顔・指紋でログイン"
 
-#: src/components/auth/RegisterFlow.tsx:175
+#: src/components/auth/RegisterFlow.tsx:174
 msgid "顔・指紋で登録"
 msgstr "顔・指紋で登録"
 
-#: src/components/auth/RegisterFlow.tsx:163
+#: src/components/auth/RegisterFlow.tsx:162
 msgid "顔・指紋で登録する"
 msgstr "顔・指紋で登録する"
 
@@ -9024,7 +8964,7 @@ msgstr "顔・指紋のログインは、これ以上ふやせません。使わ
 msgid "顔・指紋のログインを追加する"
 msgstr "顔・指紋のログインを追加する"
 
-#: src/components/useErrorMessages.ts:87
+#: src/components/useErrorMessages.ts:79
 msgid "顔・指紋の確認が中止されました。もう一度お試しください。"
 msgstr "顔・指紋の確認が中止されました。もう一度お試しください。"
 
@@ -9055,3 +8995,67 @@ msgstr "駐車場"
 #: src/components/map/MapSheet.tsx:182
 msgid "高い"
 msgstr "高い"
+
+#: src/components/auth/SsoButtons.tsx:55
+msgid "{name}でログイン"
+msgstr "{name}でログイン"
+
+#: src/components/settings/SsoMethods.tsx:76
+msgid "{name}でログインできます"
+msgstr "{name}でログインできます"
+
+#: src/components/auth/ReauthDialog.tsx:78
+msgid "{name}で確認"
+msgstr "{name}で確認"
+
+#: src/components/settings/SsoMethods.tsx:89
+msgid "{name}とつなぐ"
+msgstr "{name}とつなぐ"
+
+#: src/components/settings/SsoMethods.tsx:57
+msgid "{name}のログインを外しますか？"
+msgstr "{name}のログインを外しますか？"
+
+#: src/components/settings/SsoMethods.tsx:70
+msgid "Google・LINE・Apple"
+msgstr "Google・LINE・Apple"
+
+#: src/components/useErrorMessages.ts:44
+msgid "このアカウントにつながっていないアカウントで確認されました。つないだアカウントでお試しください。"
+msgstr "このアカウントにつながっていないアカウントで確認されました。つないだアカウントでお試しください。"
+
+#: src/components/useErrorMessages.ts:38
+msgid "このサイトでは、そのログインの方法は使えません。"
+msgstr "このサイトでは、そのログインの方法は使えません。"
+
+#: src/components/useErrorMessages.ts:42
+msgid "このメールアドレスのアカウントが、すでにあります。メールでログインしてから、「ログインの方法」でつないでください。"
+msgstr "このメールアドレスのアカウントが、すでにあります。メールでログインしてから、「ログインの方法」でつないでください。"
+
+#: src/components/useErrorMessages.ts:43
+msgid "そのアカウントは、すでに別のアカウントにつながっています。"
+msgstr "そのアカウントは、すでに別のアカウントにつながっています。"
+
+#: src/components/settings/SsoMethods.tsx:71
+msgid "つなぎました。次からは、このアカウントでもログインできます。"
+msgstr "つなぎました。次からは、このアカウントでもログインできます。"
+
+#: src/components/auth/SsoButtons.tsx:59
+msgid "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
+msgstr "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
+
+#: src/components/settings/SsoMethods.tsx:57
+msgid "ほかの方法では、これまでどおりログインできます。"
+msgstr "ほかの方法では、これまでどおりログインできます。"
+
+#: src/components/useErrorMessages.ts:40
+msgid "ログインが中止されました。"
+msgstr "ログインが中止されました。"
+
+#: src/components/useErrorMessages.ts:39
+msgid "ログインを確認できませんでした。時間がたったか、別のブラウザーに戻った可能性があります。もう一度お試しください。"
+msgstr "ログインを確認できませんでした。時間がたったか、別のブラウザーに戻った可能性があります。もう一度お試しください。"
+
+#: src/components/useErrorMessages.ts:41
+msgid "編集者と管理者は、メールか顔・指紋でログインしてください。"
+msgstr "編集者と管理者は、メールか顔・指紋でログインしてください。"

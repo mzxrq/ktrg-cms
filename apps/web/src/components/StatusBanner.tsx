@@ -53,7 +53,7 @@ export function StatusBanner({
 
   if (status === "caution") {
     return (
-      <section className="mx-4 rounded-[1.75rem] border-4 border-caution p-5">
+      <section className="mx-4 rounded-lg border-4 border-caution p-5">
         <p className="text-2xl">
           <StatusWord status="caution" />
         </p>
@@ -65,7 +65,7 @@ export function StatusBanner({
   // Information only: the place exists, but it offers no stamp. A calm note, not a barrier: nothing is wrong or blocked.
   if (status === "info") {
     return (
-      <section className="mx-4 rounded-[1.75rem] bg-surface p-4">
+      <section className="mx-4 rounded-lg bg-surface p-4">
         <p className="text-xl">
           <StatusWord status="info" />
         </p>
@@ -78,7 +78,7 @@ export function StatusBanner({
   }
 
   return (
-    <section className="mx-4 overflow-hidden rounded-[1.75rem] border-4 border-ink">
+    <section className="mx-4 overflow-hidden rounded-lg border-4 border-ink">
       {/* Barrier stripes: closed reads as "blocked" even at a glance, without red. */}
       <div
         aria-hidden="true"

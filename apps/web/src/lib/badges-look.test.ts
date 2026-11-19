@@ -9,6 +9,6 @@ const page = readFileSync(join(import.meta.dir, "..", "app", "(public)", "badges
 test("badges page: Mincho red title, the trail progress, one capsule, medals without boxes", () => {
   expect(page).toMatch(/<h1 className="font-serif text-3xl font-bold text-accent wide:text-4xl">/);
   expect(page).toMatch(/<PathProgress /);
-  expect(page.match(/rounded-\[1\.75rem\] bg-surface/g)).toHaveLength(1);
+  expect(page.match(/rounded-lg bg-surface/g)).toHaveLength(1);
   expect(page).not.toMatch(/rounded-3xl/);
 });

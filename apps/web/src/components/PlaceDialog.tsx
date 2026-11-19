@@ -21,7 +21,7 @@ export function PlaceDialog({ place, mapHref, meters = null, onClose }: { place:
     if (!place && d.open) d.close();
   }, [place]);
   return (
-    <dialog ref={ref} onClose={onClose} onClick={(e) => e.target === ref.current && onClose()} className="m-auto max-h-[90dvh] w-[min(32rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border-2 border-ink bg-paper p-3 text-ink backdrop:bg-black/60">
+    <dialog ref={ref} onClose={onClose} onClick={(e) => e.target === ref.current && onClose()} className="m-auto max-h-[90dvh] w-[min(32rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border-2 border-ink bg-paper p-3 text-ink backdrop:bg-black/60">
       {place ? (
         <div className="flex flex-col gap-3">
           <PlaceCard place={place} meters={meters} onClose={onClose} />

@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: i18n.locale === "ja" ? "体力の目安と道のけわしさについて" : "About the effort and path stars" };
 }
 
-const panel = "mx-4 flex flex-col gap-3 rounded-[1.75rem] bg-surface p-5 text-lg leading-8";
+const panel = "mx-4 flex flex-col gap-3 rounded-lg bg-surface p-5 text-lg leading-8";
 
 // How the two levels on a route are worked out. Written in our own words; the idea follows the mountain grading used in Nagano
 // Prefecture (信州 山のグレーディング). The numbers are a guide: the person who edits the route chooses the saved level.
@@ -54,7 +54,7 @@ export default async function GradingPage() {
         <p>
           <Trans>歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど、体力が必要です。</Trans>
         </p>
-        <p className="rounded-2xl bg-paper p-4 font-bold">
+        <p className="rounded-lg bg-paper p-4 font-bold">
           <Trans>コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）</Trans>
         </p>
         <p>

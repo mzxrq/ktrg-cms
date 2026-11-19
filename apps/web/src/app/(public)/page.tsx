@@ -64,7 +64,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       />
       {prefs.setupDone ? null : (
         <Link href="/welcome" className="tap-target mx-auto flex w-full max-w-5xl flex-col px-5 @[34rem]:px-6">
-          <span className="flex flex-col rounded-[1.75rem] bg-paper/80 p-5">
+          <span className="flex flex-col rounded-lg bg-paper/80 p-5">
             <span className="text-xl font-bold text-accent">
               <Trans>見やすさを設定しませんか</Trans>
             </span>

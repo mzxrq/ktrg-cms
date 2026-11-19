@@ -8,9 +8,9 @@ const src = join(import.meta.dir, "..");
 const read = (...p: string[]) => readFileSync(join(src, ...p), "utf8");
 
 test("blog rows, bookmarks, rally cards and empty states are capsules without strokes", () => {
-  expect(read("components", "blog", "PostRow.tsx")).toMatch(/rounded-\[1\.75rem\] bg-surface/);
-  expect(read("components", "BookmarkList.tsx")).toMatch(/rounded-\[1\.75rem\] bg-surface/);
-  expect(read("components", "RallyViews.tsx")).toMatch(/relative rounded-\[1\.75rem\] bg-surface/);
+  expect(read("components", "blog", "PostRow.tsx")).toMatch(/rounded-lg bg-surface/);
+  expect(read("components", "BookmarkList.tsx")).toMatch(/rounded-lg bg-surface/);
+  expect(read("components", "RallyViews.tsx")).toMatch(/relative rounded-lg bg-surface/);
   expect(read("components", "RallyViews.tsx")).not.toMatch(/<li className="[^"]*border-dashed/); // the not-ready card has no dashed frame
   expect(read("components", "EmptyState.tsx")).not.toMatch(/border-2/);
 });

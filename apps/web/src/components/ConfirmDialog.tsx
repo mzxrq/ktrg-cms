@@ -57,7 +57,7 @@ export function ConfirmHost() {
   };
 
   return (
-    <dialog ref={dialog} aria-labelledby="confirm-title" onClose={() => settle(false)} className="m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl bg-paper p-5 text-ink shadow-2xl backdrop:bg-black/50">
+    <dialog ref={dialog} aria-labelledby="confirm-title" onClose={() => settle(false)} className="m-auto w-[calc(100%-2rem)] max-w-md rounded-lg bg-paper p-5 text-ink shadow-2xl backdrop:bg-black/50">
       {asked ? (
         <>
           <div className="flex items-start gap-3">

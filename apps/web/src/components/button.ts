@@ -1,6 +1,7 @@
 // Display (flex or inline-flex) is left to the caller, so a button keeps its place in the layout.
 // One look for every visitor-side button and button-like link: a class string, so it fits <button>, <Link>, <a> and <label>.
-// Every button is round: a pill with words, a circle with only an icon (decided 2026-11-06). Panels and cards keep their small corners.
+// Every button has soft 12 px corners (rounded-xl; 2026-11-19, was a pill since 2026-11-06); a button with only an icon stays a circle.
+// Panels and cards keep their small corners.
 const KIND = {
   /** The brand red: a button that changes something (stamp, start navigation, send, save, sign in). */
   action: "bg-brand text-on-brand",
@@ -21,5 +22,5 @@ export type ButtonSize = keyof typeof SIZE;
 export function buttonStyle(kind: ButtonKind, size: ButtonSize = "md", extra = ""): string {
   // White on the brand red is only about 3.85:1, so it is held to large bold text (see contrast.test.ts): never below text-xl.
   const sizeClass = kind === "action" ? SIZE[size].replace(/text-\w+$/, "text-xl") : SIZE[size];
-  return `tap-target items-center justify-center gap-2 rounded-full font-bold disabled:opacity-60 ${KIND[kind]} ${sizeClass} ${extra}`.trim();
+  return `tap-target items-center justify-center gap-2 rounded-xl font-bold disabled:opacity-60 ${KIND[kind]} ${sizeClass} ${extra}`.trim();
 }

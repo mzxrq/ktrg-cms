@@ -679,6 +679,73 @@ html[data-size="xlarge"] {
   background-color: var(--color-on-night);
 }
 
+/*
+ * The sidebar and its menu drawer as one night panel, dark in both themes (2026-11-19: visitors did not see the side menu
+ * as a menu). Inside it the tokens are the dark palette, so every control in it (tabs, the chosen tab, toggles, buttons,
+ * focus ring, language) looks as it does in dark mode. From `md:` (the tablet rail too); a phone's tab bar and menu keep
+ * the page's palette. The values are the dark palette's; contrast.test.ts fails if they drift apart. The background is
+ * set where the panel is drawn (TabBar.tsx, SiteHeader.tsx) with `bg-night`.
+ */
+.rail-night {
+  @variant md {
+    color: var(--color-ink);
+    --color-ink: #ebe2d0;
+    --color-muted: #c0af96;
+    --color-paper: #1e1a17;
+    --check-tick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%231e1a17' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --color-surface: #29241f;
+    --color-lift: #29241f;
+    --color-night: #0b0908;
+    --color-on-night: #ebe2d0;
+    --color-sea: #0e1c26;
+    --color-on-sea: #ebe2d0;
+    --color-brand: #cc6256;
+    --color-on-brand: #ffffff;
+    --color-brand-strong: #e0837a;
+    --color-create: #166534;
+    --color-on-create: #ffffff;
+    --color-on-brand-strong: #0b0908;
+    --color-selected: #ebe2d0;
+    --color-on-selected: #1e1a17;
+    --color-accent: #f2a69b;
+    --color-moss: #8fd6a5;
+    --color-shu: #e8603f;
+    --color-on-shu: #0b0908;
+    --color-caution: #fbbf24;
+    --color-danger: #fca5a5;
+    --color-ruri: #1e50a2;
+    --color-on-ruri: #ffffff;
+    --color-goal: #c2410c;
+    --color-on-goal: #ffffff;
+    --color-line: #8a7563;
+    color-scheme: dark;
+  }
+}
+
+/* Stronger contrast (the device's, or くっきり表示) reaches inside the panel too: the panel sets its own line and muted, so
+   the page-wide override would stop at its edge. Same values as those rules further down. */
+@media (prefers-contrast: more) {
+  .rail-night {
+    @variant md {
+      --color-line: var(--color-ink);
+      --color-muted: var(--color-ink);
+    }
+  }
+}
+html[data-contrast] .rail-night {
+  @variant md {
+    --color-line: var(--color-ink);
+    --color-muted: var(--color-ink);
+  }
+}
+
+/* The language sits under the desktop sidebar's tabs, so the menu leaves it out, except while the sidebar is folded. */
+@variant wide {
+  body:has([data-rail="full"]) .menu-locale {
+    display: none;
+  }
+}
+
 /* The same 七宝 in a course's number badge, in the badge's own text colour so it shows on the red. Decoration only. */
 .badge-pattern {
   isolation: isolate;
@@ -1125,11 +1192,17 @@ body:has([data-sample-notice]) .cover-credit > details {
 }
 
 /* The sidebar's width from 1024 px, for what runs from edge to edge of the area beside it. The clip hides the scrollbar's share of 100vw. */
+/* Below 1024 px there is no sidebar (a tablet has a menu button), so nothing is beside the page (2026-11-19). */
 :root {
-  --rail: 16rem;
+  --rail: 0px;
 }
-:root:has([data-rail="mini"]) {
-  --rail: calc(5rem + env(safe-area-inset-left) + env(safe-area-inset-right));
+@media (min-width: 1024px), (min-width: 768px) and (max-height: 600px) {
+  :root {
+    --rail: 16rem;
+  }
+  :root:has([data-rail="mini"]) {
+    --rail: calc(5rem + env(safe-area-inset-left) + env(safe-area-inset-right));
+  }
 }
 /* A phone on its side: the Dynamic Island sits at one end, so the rail and the page keep clear of both (the insets are 0 elsewhere). */
 @media (min-width: 1024px), (min-width: 768px) and (max-height: 600px) {
@@ -1166,8 +1239,8 @@ body:has([data-sample-notice]) .cover-credit > details {
 }
 
 /* On a phone the top bar has the back button, so the page's own back link (and a wrapper holding only it) is left out;
-   from 768 px the bar is not drawn and the link is the way back. */
-@media (max-width: 767px) {
+   on a desktop (wide) the bar is not drawn and the link is the way back. A tablet has the bar, so it hides the link too. */
+@media (max-width: 767px), (max-width: 1023px) and (min-height: 601px) {
   .back-link,
   :has(> .back-link:only-child) {
     display: none;

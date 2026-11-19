@@ -138,7 +138,7 @@ export function ReauthDialog({ open, onDone, onCancel }: { open: boolean; onDone
       ref={dialog}
       aria-labelledby="reauth-title"
       onClose={onCancel}
-      className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-3xl bg-paper p-6 text-ink backdrop:bg-black/60"
+      className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg bg-paper p-6 text-ink backdrop:bg-black/60"
     >
       {open ? <ReauthSteps key={round} onDone={onDone} onCancel={onCancel} /> : null}
     </dialog>

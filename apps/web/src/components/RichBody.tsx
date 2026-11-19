@@ -113,7 +113,7 @@ function OneBlock({ block, anchor, places, photos }: { block: Block; anchor: str
       );
     }
     return (
-      <section className="flex flex-col gap-1 rounded-[1.75rem] bg-surface p-5">
+      <section className="flex flex-col gap-1 rounded-lg bg-surface p-5">
         {block.title ? <h3 className="text-xl font-bold leading-snug text-accent">{block.title}</h3> : null}
         <Inside blocks={block.blocks} anchor={anchor} places={places} photos={photos} />
       </section>

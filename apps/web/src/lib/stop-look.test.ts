@@ -24,13 +24,13 @@ test("every group title on the stop page has the brand bar", () => {
 test("stop page panels are capsules", () => {
   const sheet = read("components", "SpotSheet.tsx");
   expect(sheet).not.toMatch(/rounded-3xl/);
-  expect(sheet).toMatch(/rounded-\[1\.75rem\] bg-surface/);
+  expect(sheet).toMatch(/rounded-lg bg-surface/);
 });
 
 test("status banners: rounder corners, safety signals intact", () => {
   const banner = read("components", "StatusBanner.tsx");
   expect(banner).not.toMatch(/rounded-xl/);
-  expect(banner).toMatch(/rounded-\[1\.75rem\] border-4 border-caution/);
-  expect(banner).toMatch(/overflow-hidden rounded-\[1\.75rem\] border-4 border-ink/);
+  expect(banner).toMatch(/rounded-lg border-4 border-caution/);
+  expect(banner).toMatch(/overflow-hidden rounded-lg border-4 border-ink/);
   expect(banner).toMatch(/repeating-linear-gradient\(135deg,var\(--color-ink\)/);
 });

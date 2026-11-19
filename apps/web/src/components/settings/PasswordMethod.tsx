@@ -64,7 +64,7 @@ export function PasswordMethod({ hasEmail }: { hasEmail: boolean }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-[1.75rem] bg-surface p-4">
+    <div className="flex flex-col gap-4 rounded-lg bg-surface p-4">
       <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">{t`パスワード`}</h2>
       {!hasEmail ? (
         <p className="text-lg">{t`パスワードを使うには、先にメールアドレスを追加してください。忘れたときに、メールで確認するためです。`}</p>

@@ -163,21 +163,21 @@ export function ProfileSettings({
   return (
     <div className="flex flex-col gap-6">
       {deletionDueAt && deletionByAdmin ? (
-        <section role="status" className="mx-4 flex flex-col gap-3 rounded-3xl border-2 border-danger p-5">
+        <section role="status" className="mx-4 flex flex-col gap-3 rounded-lg border-2 border-danger p-5">
           <p className="text-xl font-bold text-danger">{t`管理者が、アカウントの削除を予約しました`}</p>
           <p className="text-lg leading-8">{t`${due}（日本時間）に、アカウントとすべての記録が消えます。異議があるときは、理由を送ってください。管理者が確認します。`}</p>
-          {deletionAppeal ? <p className="whitespace-pre-line rounded-2xl bg-surface p-4 text-lg leading-8">{deletionAppeal}</p> : null}
+          {deletionAppeal ? <p className="whitespace-pre-line rounded-lg bg-surface p-4 text-lg leading-8">{deletionAppeal}</p> : null}
           {deletionAppeal ? <p className="text-lg font-bold">{t`異議を受け付けました。書きなおすと、新しい内容に変わります。`}</p> : null}
           <label className="flex flex-col gap-2 text-lg font-bold">
             {t`異議の理由`}
-            <textarea value={appeal} onChange={(e) => setAppeal(e.target.value)} rows={4} maxLength={1000} className="rounded-2xl border-2 border-line bg-paper p-3 text-lg font-normal" />
+            <textarea value={appeal} onChange={(e) => setAppeal(e.target.value)} rows={4} maxLength={1000} className="rounded-lg border-2 border-line bg-paper p-3 text-lg font-normal" />
           </label>
           <button type="button" disabled={busy || appeal.trim() === ""} onClick={sendAppeal} className={primaryButton}>
             {t`異議を送る`}
           </button>
         </section>
       ) : deletionDueAt ? (
-        <section role="status" className="mx-4 flex flex-col gap-3 rounded-3xl border-2 border-danger p-5">
+        <section role="status" className="mx-4 flex flex-col gap-3 rounded-lg border-2 border-danger p-5">
           <p className="text-xl font-bold text-danger">{t`アカウントを削除します`}</p>
           <p className="text-lg leading-8">{t`${due}（日本時間）に、アカウントとすべての記録が消えます。それまでは、取り消せます。`}</p>
           <button type="button" disabled={busy} onClick={cancelDeletion} className={primaryButton}>
@@ -188,7 +188,7 @@ export function ProfileSettings({
 
       <section className="flex flex-col gap-2">
         <h2 className="mx-4 border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">{t`プロフィール`}</h2>
-        <ul className="mx-4 divide-y divide-line/30 overflow-hidden rounded-[1.75rem] bg-surface">
+        <ul className="mx-4 divide-y divide-line/30 overflow-hidden rounded-lg bg-surface">
           {rows.map((r) => (
             <li key={r.field}>
               <button
@@ -218,7 +218,7 @@ export function ProfileSettings({
 
       <section className="flex flex-col gap-2">
         <h2 className="mx-4 border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">{t`ログイン`}</h2>
-        <Link href="/settings/passkeys" className={`mx-4 flex items-center justify-between rounded-[1.75rem] bg-surface ${rowBox}`}>
+        <Link href="/settings/passkeys" className={`mx-4 flex items-center justify-between rounded-lg bg-surface ${rowBox}`}>
           <span className="text-lg font-bold">{t`ログインの方法`}</span>
           <ChevronIcon />
         </Link>
@@ -227,7 +227,7 @@ export function ProfileSettings({
       {deletionDueAt ? null : (
         <section className="flex flex-col gap-2">
           <h2 className="mx-4 border-l-4 border-danger pl-3 font-serif text-xl font-bold text-danger">{t`アカウントの削除`}</h2>
-          <div className="mx-4 flex flex-col gap-3 rounded-3xl border-2 border-danger/40 p-4">
+          <div className="mx-4 flex flex-col gap-3 rounded-lg border-2 border-danger/40 p-4">
             <p className="text-lg leading-7">{t`アカウントと、集めたスタンプなどの記録を、すべて消します。依頼から3日のあいだは、取り消せます。`}</p>
             <button type="button" onClick={() => setConfirming(true)} className="tap-target w-full rounded-full border-2 border-danger px-4 text-lg font-bold text-danger hover:bg-paper">
               {t`アカウントを削除する`}
@@ -241,7 +241,7 @@ export function ProfileSettings({
         ref={sheet}
         aria-labelledby="profile-sheet-title"
         onClose={() => setEditing(null)}
-        className="m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-sm overflow-y-auto rounded-3xl bg-paper p-6 text-ink backdrop:bg-black/60"
+        className="m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-sm overflow-y-auto rounded-lg bg-paper p-6 text-ink backdrop:bg-black/60"
       >
         {editing === "displayName" ? (
           <form
@@ -276,7 +276,7 @@ export function ProfileSettings({
         ref={confirm}
         aria-labelledby="delete-title"
         onClose={() => setConfirming(false)}
-        className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-3xl bg-paper p-6 text-ink backdrop:bg-black/60"
+        className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg bg-paper p-6 text-ink backdrop:bg-black/60"
       >
         <h2 id="delete-title" className="text-2xl font-bold">
           {t`アカウントを削除しますか？`}

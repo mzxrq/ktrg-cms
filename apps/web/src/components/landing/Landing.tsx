@@ -425,7 +425,7 @@ function CourseCapsules({ list, locale, reveal = false }: { list: RouteSummary[]
             {route.status === "soon" ? (
               pill
             ) : (
-              <Link href={`/routes/${route.id}`} className="block h-full rounded-[1.75rem] hover:opacity-95 focus-visible:outline-offset-4">
+              <Link href={`/routes/${route.id}`} className="block h-full rounded-lg hover:opacity-95 focus-visible:outline-offset-4">
                 {pill}
               </Link>
             )}

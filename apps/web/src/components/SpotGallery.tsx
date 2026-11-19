@@ -19,7 +19,7 @@ export function SpotGallery({ photos, alt, locale }: { photos: GalleryPhoto[]; a
         return (
           <li key={p.url} className="w-72 shrink-0 snap-start">
             <figure className="flex flex-col gap-1">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-surface">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-surface">
                 <Zoomable photos={viewer} index={i}>
                   <Image src={p.url} alt={name?.text ?? alt} fill sizes="18rem" className="object-cover" unoptimized />
                 </Zoomable>

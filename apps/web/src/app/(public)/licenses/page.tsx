@@ -23,7 +23,7 @@ export default async function LicensesPage() {
         <h1 className="font-serif text-3xl font-bold text-accent">{help.licensesTitle}</h1>
         <p className="text-lg">{help.licensesIntro}</p>
       </div>
-      <dl className="mx-4 flex flex-col gap-4 rounded-[1.75rem] bg-surface p-5">
+      <dl className="mx-4 flex flex-col gap-4 rounded-lg bg-surface p-5">
         {help.credits.map((credit) => (
           <div key={credit.name}>
             <dt className="text-lg font-bold">{credit.name}</dt>

@@ -116,7 +116,7 @@ export function TermsView({ terms: t, locale }: { terms: Terms; locale: string }
 
         <section className="flex flex-col gap-3 px-4">
           <SectionBanner>{termsContent.creditsHeading}</SectionBanner>
-          <dl className="flex flex-col gap-4 rounded-[1.75rem] bg-surface p-5">
+          <dl className="flex flex-col gap-4 rounded-lg bg-surface p-5">
             {termsContent.credits.map((credit) => (
               <div key={credit.role}>
                 <dt className="text-lg font-bold">{credit.role}</dt>
@@ -166,7 +166,7 @@ export function PolicyView({ policy }: { policy: Policy }) {
             <Paragraph key={j} text={text} />
           ))}
           {section.items ? (
-            <dl className="flex flex-col gap-4 rounded-[1.75rem] bg-surface p-5">
+            <dl className="flex flex-col gap-4 rounded-lg bg-surface p-5">
               {section.items.map((item) => (
                 <div key={item.term}>
                   <dt className="text-lg font-bold">{item.term}</dt>

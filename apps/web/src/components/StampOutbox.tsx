@@ -121,7 +121,7 @@ export function StampOutbox({ userKey }: { userKey: string }) {
       ref={dialog}
       aria-labelledby="outbox-ask-title"
       onClose={() => setAsk(null)}
-      className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-3xl bg-paper p-6 text-ink backdrop:bg-black/60"
+      className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg bg-paper p-6 text-ink backdrop:bg-black/60"
     >
       <h2 id="outbox-ask-title" className="text-2xl font-bold">
         {t`登録なしで押したスタンプがあります`}
@@ -145,7 +145,7 @@ export function StampOutbox({ userKey }: { userKey: string }) {
   return (
     <div data-stamp-outbox="" className="fixed inset-x-3 bottom-[calc(5.5rem+var(--nav-toast,0px)+env(safe-area-inset-bottom))] z-20 flex flex-col gap-2 md:inset-x-auto md:bottom-[calc(1.5rem+var(--nav-toast,0px))] md:right-6 md:w-[24rem]">
       {refused.length > 0 ? (
-        <div role="alert" className="flex flex-col gap-2 rounded-2xl border-2 border-caution bg-paper p-4 shadow-2xl">
+        <div role="alert" className="flex flex-col gap-2 rounded-lg border-2 border-caution bg-paper p-4 shadow-2xl">
           <p className="text-lg font-bold leading-snug">{t`送信待ちだった${count}件のスタンプは、受け付けられませんでした。`}</p>
           <ul className="flex list-disc flex-col gap-1 pl-5 text-base leading-snug">
             {reasons.map((r) => (
@@ -158,7 +158,7 @@ export function StampOutbox({ userKey }: { userKey: string }) {
         </div>
       ) : null}
       {accepted > 0 ? (
-        <div role="status" className="flex items-center gap-3 rounded-2xl border-2 border-moss bg-paper p-4 shadow-2xl">
+        <div role="status" className="flex items-center gap-3 rounded-lg border-2 border-moss bg-paper p-4 shadow-2xl">
           <span aria-hidden="true" className="grid size-8 shrink-0 place-items-center rounded-full bg-moss text-paper">
             <TickIcon size={20} />
           </span>
@@ -166,7 +166,7 @@ export function StampOutbox({ userKey }: { userKey: string }) {
         </div>
       ) : null}
       {pending > 0 ? (
-        <div role="status" className="flex flex-col gap-2 rounded-2xl bg-paper p-4 shadow-2xl ring-1 ring-line/30">
+        <div role="status" className="flex flex-col gap-2 rounded-lg bg-paper p-4 shadow-2xl ring-1 ring-line/30">
           <p className="text-lg font-bold leading-snug tabular-nums">{t`${pending}件のスタンプが、送信待ちです。`}</p>
           <p className="text-base leading-snug text-muted">{t`つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。`}</p>
           <button type="button" disabled={busy} onClick={() => void run()} className={buttonStyle("action", "md", "flex w-full")}>

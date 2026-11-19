@@ -35,7 +35,7 @@ export function ThemeSwitcher({ plain = false }: { plain?: boolean }) {
       type="button"
       onClick={() => write(nextTheme(theme))}
       aria-label={t`テーマ：${label}。押すと切り替わります。`}
-      className={`inline-flex min-h-12 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border bg-paper px-3.5 text-base font-bold text-ink hover:bg-surface [&>svg]:size-5 ${plain ? "border-line" : "border-ink"}`}
+      className={`inline-flex min-h-12 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl border bg-paper px-3.5 text-base font-bold text-ink hover:bg-surface [&>svg]:size-5 ${plain ? "border-line" : "border-ink"}`}
     >
       {icon}
       <span>{label}</span>

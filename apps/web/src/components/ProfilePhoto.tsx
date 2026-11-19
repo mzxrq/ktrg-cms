@@ -29,7 +29,7 @@ export function ProfilePhoto({ photoUrl, name }: { photoUrl: string | null; name
   }
 
   return (
-    <section aria-labelledby="profile-photo-title" className="mx-4 flex flex-col gap-3 rounded-[1.75rem] bg-surface p-5">
+    <section aria-labelledby="profile-photo-title" className="mx-4 flex flex-col gap-3 rounded-lg bg-surface p-5">
       <h2 id="profile-photo-title" className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
         {t`プロフィール写真`}
       </h2>

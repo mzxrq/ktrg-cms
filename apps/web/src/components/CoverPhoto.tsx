@@ -14,7 +14,7 @@ export function CoverPhoto({ photo, className = "", flat = false }: { photo: Vie
   return (
     // data-cover: on a phone the top bar goes see-through and this photo runs up behind it to the top of the screen; in the
     // installed app it also runs behind the Dynamic Island (globals.css).
-    <div data-cover className={`relative aspect-[4/3] w-full overflow-hidden bg-surface ${flat ? "" : "@4xl:aspect-video @4xl:rounded-2xl"} ${className}`}>
+    <div data-cover className={`relative aspect-[4/3] w-full overflow-hidden bg-surface ${flat ? "" : "@4xl:aspect-video @4xl:rounded-lg"} ${className}`}>
       <CoverWatch />
       <Zoomable photos={[photo]}>
         <Image src={photo.src} alt={photo.alt} fill priority sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" style={focusStyle(photo.focus)} unoptimized={photo.src.startsWith("https://")} />

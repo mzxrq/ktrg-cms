@@ -68,7 +68,7 @@ const NO_SIDE_LINES: Position[][] = [];
 // the "bigger" button and the credit line along the bottom.
 const FIT = { padding: { top: 76, bottom: 112, left: 56, right: 92 }, maxZoom: 16, animate: false } as const;
 // The two buttons beside the place chips take the chips' shape (a tile under the map, a pill over it), so the row reads as one set.
-const chipShape = "tap-target flex items-center gap-2 rounded-2xl border border-ink px-3 py-2 text-lg font-bold leading-tight text-ink hover:bg-surface @4xl:rounded-full @4xl:py-1";
+const chipShape = "tap-target flex items-center gap-2 rounded-lg border border-ink px-3 py-2 text-lg font-bold leading-tight text-ink hover:bg-surface @4xl:rounded-full @4xl:py-1";
 const buttonClass =
   "tap-target inline-flex items-center justify-center gap-2 rounded-full border border-ink bg-paper px-3 text-lg font-bold text-ink hover:bg-surface";
 // The small round controls laid over the map: a 48 px target (the older-reader rule) with a smaller circle drawn in it.
@@ -386,7 +386,7 @@ export function TrailMap({
 
   if (failed) {
     return (
-      <p className="rounded-2xl bg-surface p-4 text-lg">
+      <p className="rounded-lg bg-surface p-4 text-lg">
         {t`この端末では地図を表示できません。下の一覧から場所を選べます。`}
       </p>
     );
