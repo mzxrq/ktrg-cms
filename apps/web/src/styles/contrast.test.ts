@@ -32,9 +32,15 @@ const palettes: Record<string, Record<string, string>> = {
   // The theme switch's forced palettes (data-theme on <html>).
   darkForced: tokens(block(':root[data-theme="dark"]')),
   lightForced: tokens(block(':root[data-theme="light"]')),
+  // The sidebar and menu drawer: dark in both themes.
+  railNight: tokens(block(".rail-night {")),
 };
 
 describe("theme switch", () => {
+  test("the night sidebar's palette equals the dark palette", () => {
+    expect(palettes.railNight).toEqual(palettes.dark!);
+  });
+
   test("a forced dark palette equals the automatic dark palette", () => {
     expect(palettes.darkForced).toEqual(palettes.dark!);
   });

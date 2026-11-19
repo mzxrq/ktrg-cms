@@ -51,7 +51,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
             in the page footer and the メニュー. */}
         <TabBar
           footer={
-            <div className="[&_select]:w-full [&_select]:justify-between [&_select]:px-5">
+            <div className="[&_select]:w-full [&_select]:justify-between [&_select]:px-5 [&_select]:rounded-xl">
               <LocaleSelect plain />
             </div>
           }

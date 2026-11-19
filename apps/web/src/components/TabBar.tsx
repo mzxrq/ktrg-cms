@@ -100,7 +100,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
 
   // The label is capped at 4.25vw so "Routes" still fits a 320 px phone at the largest text size; wider screens never hit the cap.
   const item =
-    "flex min-h-[3.25rem] min-w-0 flex-col items-center justify-center gap-0.5 rounded-[1.125rem] text-[min(0.875rem,4.25vw)] font-bold leading-tight [&_svg]:size-6 md:min-h-14 md:flex-row md:justify-start md:gap-4 md:rounded-full md:px-5 md:text-xl";
+    "flex min-h-[3.25rem] min-w-0 flex-col items-center justify-center gap-0.5 rounded-[1.125rem] text-[min(0.875rem,4.25vw)] font-bold leading-tight [&_svg]:size-6 md:min-h-14 md:flex-row md:justify-start md:gap-4 md:rounded-xl md:px-5 md:text-xl";
   // Folded, a tab is its icon over its word again, as on a phone.
   const miniItem = mini ? ` wide:flex-col wide:justify-center wide:gap-0.5 wide:rounded-[1.125rem] wide:px-0 wide:text-sm ${low ? "wide:min-h-12" : ""}` : "";
 
@@ -108,8 +108,8 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
     // Below 1024 px this wrapper adds nothing (the nav is placed by its own classes); from 1024 px it is the sidebar.
     <div data-rail={mini ? "mini" : "full"} className={`rail-night print:hidden md:contents wide:sticky wide:top-0 wide:isolate wide:flex wide:h-dvh wide:shrink-0 wide:flex-col wide:self-start wide:overflow-y-auto wide:bg-night ${mini ? "wide:w-20" : "wide:w-64"}`}>
     {panelGround("wide:block")}
-    <Link href="/" aria-label={t`ホーム`} className={`hidden wide:block ${low ? "px-2 pt-2" : mini ? "px-2 pt-4" : "px-6 pb-2 pt-8"}`}>
-      <KatsuragiLogo compact className={mini ? "mx-auto h-8 w-auto" : "h-16 w-auto"} />
+    <Link href="/" aria-label={t`ホーム`} className={`hidden wide:block ${low ? "px-2 pt-2" : mini ? "px-2 pt-4" : "px-[29px] pb-2 pt-8"}`}>
+      <KatsuragiLogo compact className={`[--color-brand:var(--color-on-night)] [--color-ink:var(--color-on-night)] ${mini ? "mx-auto h-8 w-auto" : "h-16 w-auto"}`} />
     </Link>
     {low ? null : (
     <button
@@ -118,7 +118,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
       aria-expanded={!mini}
       aria-label={mini ? t`メニューをひらく` : t`メニューをたたむ`}
       title={mini ? t`メニューをひらく` : t`メニューをたたむ`}
-      className={`tap-target hidden items-center justify-center rounded-full text-ink hover:bg-surface wide:inline-flex ${mini ? "mx-auto mt-3 shrink-0" : "absolute right-4 top-4"}`}
+      className={`tap-target hidden items-center justify-center rounded-full text-ink hover:bg-surface wide:inline-flex ${mini ? "mx-auto mt-3 shrink-0" : "absolute right-5 top-5"}`}
     >
       <PanelIcon />
     </button>
@@ -126,7 +126,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
     <nav
       aria-label={t`メインメニュー`}
       data-tabbar
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line/30 bg-paper px-1 min-[400px]:px-3 pt-1.5 md:sticky md:inset-x-auto md:bottom-auto md:top-0 md:h-dvh md:w-44 md:shrink-0 md:self-start md:isolate md:border-t-0 md:bg-night md:p-0 md:px-3 md:pt-6 wide:static wide:bg-transparent wide:h-auto wide:w-full wide:flex-1 wide:self-auto ${low ? "wide:pt-1" : "wide:pt-4"} ${mini ? "wide:px-2" : "wide:px-4"}`}
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line/30 bg-paper px-1 min-[400px]:px-3 pt-1.5 md:sticky md:inset-x-auto md:bottom-auto md:top-0 md:h-dvh md:w-44 md:shrink-0 md:self-start md:isolate md:border-t-0 md:bg-night md:p-0 md:px-3 md:pt-6 wide:static wide:bg-transparent wide:h-auto wide:w-full wide:flex-1 wide:self-auto ${low ? "wide:pt-1" : "wide:pt-4"} ${mini ? "wide:px-2" : "wide:px-[29px]"}`}
     >
       {panelGround("md:block wide:hidden")}
       <ul className={`mx-auto grid max-w-xl grid-cols-5 gap-0.5 min-[400px]:gap-1 md:flex md:max-w-none md:flex-col ${low ? "md:gap-0.5" : "md:gap-2"}`}>
@@ -166,7 +166,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
       </ul>
     </nav>
     {/* Lined up with the tab pills (same side padding), clear of the frame at the bottom. */}
-    {footer && !mini ? <div className="hidden px-4 pb-6 pt-4 wide:block">{footer}</div> : null}
+    {footer && !mini ? <div className="hidden px-[29px] pb-[29px] pt-4 wide:block">{footer}</div> : null}
     </div>
   );
 }

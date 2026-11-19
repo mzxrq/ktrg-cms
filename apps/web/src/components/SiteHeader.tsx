@@ -189,7 +189,7 @@ export function SiteHeader({
           id="site-menu"
           // A link to the page we are already on does not change the path, so close here to show the tap worked.
           onClick={(e) => e.target instanceof Element && e.target.closest("a") && setOpen(false)}
-          className="fixed inset-0 overflow-y-auto overscroll-contain bg-paper pb-28 pt-[var(--top-clear)] md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
+          className="rail-night fixed inset-0 overflow-y-auto overscroll-contain bg-paper pb-28 pt-[var(--top-clear)] md:bg-night md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
         >
           <div className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5">
             {/* From 768 px the bar is not drawn (the rail has the menu button), so the top row of the popover holds both. */}
@@ -245,7 +245,7 @@ export function SiteHeader({
                     <span className="min-w-0 flex-1 text-lg font-bold">{t`テーマ`}</span>
                     <ThemeSwitcher plain />
                   </div>
-                  <div className="tap-target flex items-center gap-4 px-4 py-3">
+                  <div className="menu-locale tap-target flex items-center gap-4 px-4 py-3">
                     <span className="min-w-0 flex-1 text-lg font-bold">{t`言語`}</span>
                     <LocaleSelect plain />
                   </div>
