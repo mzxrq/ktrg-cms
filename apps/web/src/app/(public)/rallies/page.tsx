@@ -29,8 +29,8 @@ export default async function StampsPage({ searchParams }: { searchParams: Promi
   return (
     <div className="flex flex-col gap-6 pt-2 wide:pt-0">
       {/* The title, with the badges and how to play to its side ("?"): how to play lives here, with the stamps, and nowhere else. */}
-      {/* On a phone the top bar carries the title (as on the course list); the heading stays for screen readers and a wider page. */}
-      <div className="flex items-center justify-end gap-3 px-4 md:justify-start">
+      {/* On a phone or tablet the top bar carries the title (as on the course list); the heading stays for screen readers and a desktop. */}
+      <div className="flex items-center justify-end gap-3 px-4 wide:justify-start">
         <h1 className="min-w-0 flex-1 font-serif text-3xl font-bold text-accent wide:text-4xl sr-only wide:not-sr-only">
           <Trans>ラリー</Trans>
         </h1>
