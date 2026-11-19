@@ -87,7 +87,13 @@ describe("reading the ID token", () => {
   const read = (claims: Record<string, unknown>, provider: SsoProvider = "google") => readIdToken(idToken(claims), provider, "g-id", "n", now);
 
   test("a good token gives the provider's id for the person", () => {
-    expect(read(base)).toEqual({ subject: "123", email: null });
+    expect(read(base)).toEqual({ subject: "123", email: null, name: null });
+  });
+  test("the name is cleaned like a typed display name; an unusable one is dropped", () => {
+    expect(read({ ...base, name: "  山田\n花子 " })?.name).toBe("山田 花子");
+    expect(read({ ...base, name: "x".repeat(41) })?.name).toBeNull();
+    expect(read({ ...base, name: "a\u202Eb" })?.name).toBeNull();
+    expect(read({ ...base, name: 5 })?.name).toBeNull();
   });
   test("another site's, another provider's, an expired or another flow's token is refused", () => {
     expect(read({ ...base, aud: "someone-else" })).toBeNull();
@@ -134,6 +140,13 @@ describe("small pieces", () => {
 });
 
 describe("signing in", () => {
+  test("from the home-screen app, LINE's automatic login (a jump to the LINE app and back to Safari) is off", async () => {
+    const { call } = setup();
+    const urlOf = async (body: object) => new URL(((await (await call("POST", "/line/login", { body })).json()) as { url: string }).url).searchParams;
+    expect((await urlOf({ installedApp: true })).get("disable_auto_login")).toBe("true");
+    expect((await urlOf({})).get("disable_auto_login")).toBeNull();
+  });
+
   test("the start gives the provider's address with state, nonce and PKCE, and keeps them in an HttpOnly cookie", async () => {
     const { call } = setup();
     const res = await call("POST", "/google/login", { body: {} });
@@ -169,6 +182,20 @@ describe("signing in", () => {
     expect([...users.values()].filter((u) => u.email === "hanako@example.com")).toHaveLength(1);
   });
 
+  test("the provider's name comes with the new account; later it only fills an empty name", async () => {
+    const { roundTrip, users, mem } = setup();
+    await roundTrip("line", "login", { sub: "U1", name: "花子" });
+    const made = [...users.values()].find((u) => mem.names.get(u.id))!;
+    expect(mem.names.get(made.id)).toBe("花子");
+    await roundTrip("line", "login", { sub: "U1", name: "別の名前" });
+    expect(mem.names.get(made.id)).toBe("花子");
+    await roundTrip("line", "login", { sub: "U2" });
+    const nameless = (await mem.store.findUser("line", "U2"))!;
+    expect(mem.names.has(nameless.id)).toBe(false);
+    await roundTrip("line", "login", { sub: "U2", name: "次郎" });
+    expect(mem.names.get(nameless.id)).toBe("次郎");
+  });
+
   test("an answer that is not for this browser's flow signs nobody in", async () => {
     const { roundTrip, cookieValue, call } = setup();
     const res = await roundTrip("google", "login", { sub: "G1" }, { state: "forged" });
@@ -192,11 +219,13 @@ describe("signing in", () => {
     expect(res.headers.get("location")).toContain("sso_error=sso_email_in_use");
   });
 
-  test("an ADMIN_EMAILS address is never taken from a provider (an email-code login would promote the account)", async () => {
-    const { roundTrip, users } = setup();
+  test("an ADMIN_EMAILS address makes no account at all: not with the email, and not a second one without it", async () => {
+    const { roundTrip, users, cookieValue } = setup();
+    const before = users.size;
     const res = await roundTrip("google", "login", { sub: "G-BOSS", email: "boss@example.com", email_verified: true });
-    expect(res.status).toBe(302);
-    expect([...users.values()].some((u) => u.email === "boss@example.com")).toBe(false);
+    expect(res.headers.get("location")).toContain("sso_error=sso_staff");
+    expect(cookieValue(res, "session")).toBeNull();
+    expect(users.size).toBe(before);
   });
 
   test("cancelling at the provider comes back with a calm message", async () => {

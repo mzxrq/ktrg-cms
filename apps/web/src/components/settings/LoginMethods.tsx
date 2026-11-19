@@ -47,7 +47,7 @@ function EmailMethod({ email, locale, onAdded }: { email: string | null; locale:
   return (
     <div className="flex flex-col gap-4 rounded-lg bg-surface p-4">
       <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">{t`メールアドレスを追加する`}</h2>
-      <p className="text-lg">{t`いまは、顔・指紋だけでログインしています。メールを追加すると、端末をなくしても、メールの番号でログインできます。`}</p>
+      <p className="text-lg">{t`メールを追加すると、端末をなくしたときも、メールに届く番号でログインできます。`}</p>
       {sentTo ? (
         <EmailCodeStep
           email={sentTo}

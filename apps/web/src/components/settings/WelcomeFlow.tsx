@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { AgeRangePicker, FoundViaPicker, GenderPicker } from "@/components/auth/AboutYou";
-import { AuthError, primaryButton, secondaryButton } from "@/components/auth/authUi";
+import { AuthError, inputClass, primaryButton, secondaryButton } from "@/components/auth/authUi";
 import { PasswordInput } from "@/components/auth/PasswordInput";
 import { useReauth } from "@/components/auth/ReauthDialog";
 import { PrefsForm } from "@/components/settings/PrefsForm";
@@ -30,6 +30,7 @@ export function WelcomeFlow({
   next,
   askAbout,
   askPassword,
+  name = null,
 }: {
   initial: Prefs;
   signedIn: boolean;
@@ -38,6 +39,8 @@ export function WelcomeFlow({
   askAbout: boolean;
   /** Offer a password first: a new visitor's account with an email. Staff cannot have one. */
   askPassword: boolean;
+  /** The name Google or LINE gave the new account: shown so the person sees it (comments show it) and can change it. */
+  name?: string | null;
 }) {
   const { t } = useLingui();
   const router = useRouter();
@@ -49,13 +52,15 @@ export function WelcomeFlow({
   const [ageRange, setAgeRange] = useState<AgeRange | null>(null);
   const [gender, setGender] = useState<Gender | null>(null);
   const [foundVia, setFoundVia] = useState<FoundVia | null>(null);
+  const [typedName, setTypedName] = useState(name ?? "");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<AuthFailure | null>(null);
 
   async function saveAbout() {
     if (busy) return;
     // Only what was chosen is sent: an unanswered question stays unanswered.
-    const body = { ...(ageRange ? { ageRange } : {}), ...(gender ? { gender } : {}), ...(foundVia ? { foundVia } : {}) };
+    const nameChange = name !== null && typedName.trim() !== name ? { displayName: typedName.trim() || null } : {};
+    const body = { ...nameChange, ...(ageRange ? { ageRange } : {}), ...(gender ? { gender } : {}), ...(foundVia ? { foundVia } : {}) };
     if (signedIn && Object.keys(body).length > 0) {
       setBusy(true);
       setError(null);
@@ -142,6 +147,13 @@ export function WelcomeFlow({
           <p className="max-w-prose text-lg leading-8">{t`あなたのことを、少しだけ教えてください。答えなくても大丈夫です。あとから変えられます。`}</p>
         </div>
         <div className="flex flex-col gap-6">
+          {name !== null ? (
+            <label className="flex flex-col gap-2 text-lg font-bold">
+              {t`お名前`}
+              <input value={typedName} onChange={(e) => setTypedName(e.target.value)} maxLength={40} autoComplete="nickname" className={inputClass} />
+              <span className="font-normal">{t`ログインに使ったサービスの名前を入れました。コメントを書くと、ほかの方にも見えます。変えても、消してもかまいません。`}</span>
+            </label>
+          ) : null}
           <AgeRangePicker value={ageRange} onChange={setAgeRange} />
           <GenderPicker value={gender} onChange={setGender} />
           <FoundViaPicker value={foundVia} onChange={setFoundVia} />

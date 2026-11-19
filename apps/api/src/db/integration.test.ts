@@ -452,17 +452,29 @@ describe.skipIf(!url)("Drizzle stores on real PostgreSQL", () => {
     const sso = createDrizzleSsoStore(db);
 
     test("a first visit makes a participant with the email; the next finds it; a taken email is never merged", async () => {
-      const made = await sso.createUser({ provider: "line", subject: key("line-1"), email: email("sso-new"), locale: "en" });
+      const made = await sso.createUser({ provider: "line", subject: key("line-1"), email: email("sso-new"), displayName: null, locale: "en" });
       expect(made).toMatchObject({ email: email("sso-new"), role: "participant", locale: "en" });
       expect((await sso.findUser("line", key("line-1")))?.id).toBe((made as { id: string }).id);
       expect(await sso.findUser("google", key("line-1"))).toBeNull(); // the same id at another provider is someone else
-      expect(await sso.createUser({ provider: "google", subject: key("g-1"), email: email("sso-new"), locale: "ja" })).toBe("email_in_use");
+      expect(await sso.createUser({ provider: "google", subject: key("g-1"), email: email("sso-new"), displayName: null, locale: "ja" })).toBe("email_in_use");
       expect(await sso.findUser("google", key("g-1"))).toBeNull(); // rolled back: no half-made account
-      expect(await sso.createUser({ provider: "line", subject: key("line-1"), email: null, locale: "ja" })).toBe("taken");
+      expect(await sso.createUser({ provider: "line", subject: key("line-1"), email: null, displayName: null, locale: "ja" })).toBe("taken");
+    });
+
+    test("the provider's name is kept, and later fills only an empty name", async () => {
+      const made = (await sso.createUser({ provider: "line", subject: key("line-n"), email: null, displayName: "花子", locale: "ja" })) as { id: string };
+      extraUserIds.push(made.id);
+      const nameOf = async () => (await db.select({ n: users.displayName }).from(users).where(eq(users.id, made.id)))[0]?.n;
+      expect(await nameOf()).toBe("花子");
+      await sso.fillName(made.id, "別の名前");
+      expect(await nameOf()).toBe("花子");
+      await db.update(users).set({ displayName: null }).where(eq(users.id, made.id));
+      await sso.fillName(made.id, "次郎");
+      expect(await nameOf()).toBe("次郎");
     });
 
     test("an account without email: link, list, and the last way in stays", async () => {
-      const made = await sso.createUser({ provider: "line", subject: key("line-2"), email: null, locale: "ja" });
+      const made = await sso.createUser({ provider: "line", subject: key("line-2"), email: null, displayName: null, locale: "ja" });
       const id = (made as { id: string }).id;
       extraUserIds.push(id);
       expect(await sso.link(id, "google", key("g-2"))).toBe("ok");
@@ -479,7 +491,7 @@ describe.skipIf(!url)("Drizzle stores on real PostgreSQL", () => {
     });
 
     test("deleting the account removes its linked accounts", async () => {
-      const made = (await sso.createUser({ provider: "apple", subject: key("a-1"), email: null, locale: "ja" })) as { id: string };
+      const made = (await sso.createUser({ provider: "apple", subject: key("a-1"), email: null, displayName: null, locale: "ja" })) as { id: string };
       await db.delete(users).where(eq(users.id, made.id));
       expect(await sso.findUser("apple", key("a-1"))).toBeNull();
     });

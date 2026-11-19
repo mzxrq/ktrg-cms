@@ -218,6 +218,10 @@ msgstr "{0}時間{1}分"
 msgid "{0}時間前"
 msgstr "{0}時間前"
 
+#: src/components/settings/SsoMethods.tsx:91
+msgid "{added} につないだ"
+msgstr "{added} につないだ"
+
 #: src/components/settings/PasskeyManager.tsx:147
 msgid "{added} に追加"
 msgstr "{added} に追加"
@@ -387,19 +391,11 @@ msgstr "{name}さん、こんにちは。"
 msgid "{name}でログイン"
 msgstr "{name}でログイン"
 
-#: src/components/settings/SsoMethods.tsx:76
-msgid "{name}でログインできます"
-msgstr "{name}でログインできます"
-
 #: src/components/auth/ReauthDialog.tsx:78
 msgid "{name}で確認"
 msgstr "{name}で確認"
 
-#: src/components/settings/SsoMethods.tsx:89
-msgid "{name}とつなぐ"
-msgstr "{name}とつなぐ"
-
-#: src/components/settings/SsoMethods.tsx:57
+#: src/components/settings/SsoMethods.tsx:59
 msgid "{name}のログインを外しますか？"
 msgstr "{name}のログインを外しますか？"
 
@@ -810,7 +806,7 @@ msgid "80代"
 msgstr "80代"
 
 #: src/components/settings/PasswordMethod.tsx:86
-#: src/components/settings/WelcomeFlow.tsx:118
+#: src/components/settings/WelcomeFlow.tsx:123
 msgid "8文字以上にしてください。記号はなくてもかまいません。"
 msgstr "8文字以上にしてください。記号はなくてもかまいません。"
 
@@ -826,7 +822,7 @@ msgstr "Ctrlキーを押しながら地図を動かします"
 msgid "Google マップで開く"
 msgstr "Google マップで開く"
 
-#: src/components/settings/SsoMethods.tsx:70
+#: src/components/settings/SsoMethods.tsx:76
 msgid "Google・LINE・Apple"
 msgstr "Google・LINE・Apple"
 
@@ -1058,7 +1054,7 @@ msgstr "あとで"
 msgid "あとで決める"
 msgstr "あとで決める"
 
-#: src/components/settings/WelcomeFlow.tsx:156
+#: src/components/settings/WelcomeFlow.tsx:168
 msgid "あとで答える"
 msgstr "あとで答える"
 
@@ -1074,7 +1070,7 @@ msgstr "アドレスがちがうか、ページが公開されていません。
 msgid "アドレスをコピー"
 msgstr "アドレスをコピー"
 
-#: src/components/settings/WelcomeFlow.tsx:142
+#: src/components/settings/WelcomeFlow.tsx:147
 msgid "あなたのことを、少しだけ教えてください。答えなくても大丈夫です。あとから変えられます。"
 msgstr "あなたのことを、少しだけ教えてください。答えなくても大丈夫です。あとから変えられます。"
 
@@ -1224,10 +1220,6 @@ msgstr "いまは、手で決めた四角です。"
 msgid "いまは、自動の四角です（点線）。"
 msgstr "いまは、自動の四角です（点線）。"
 
-#: src/components/settings/LoginMethods.tsx:50
-msgid "いまは、顔・指紋だけでログインしています。メールを追加すると、端末をなくしても、メールの番号でログインできます。"
-msgstr "いまは、顔・指紋だけでログインしています。メールを追加すると、端末をなくしても、メールの番号でログインできます。"
-
 #: src/components/admin/RallyEditor.tsx:172
 msgid "いまは「コースでつくる」です。"
 msgstr "いまは「コースでつくる」です。"
@@ -1293,6 +1285,7 @@ msgstr "お住まい"
 #: src/components/auth/RegisterFlow.tsx:71
 #: src/components/ProfileSettings.tsx:147
 #: src/components/ProfileSettings.tsx:256
+#: src/components/settings/WelcomeFlow.tsx:152
 msgid "お名前"
 msgstr "お名前"
 
@@ -2355,7 +2348,7 @@ msgid "しおりと案内"
 msgstr "しおりと案内"
 
 #: src/components/landing/Journey.tsx:40
-#: src/components/settings/WelcomeFlow.tsx:107
+#: src/components/settings/WelcomeFlow.tsx:112
 msgid "スキップ"
 msgstr "スキップ"
 
@@ -2762,7 +2755,7 @@ msgstr "つぎの場所まで"
 
 #: src/components/auth/RegisterFlow.tsx:142
 #: src/components/map/MapHelp.tsx:55
-#: src/components/settings/WelcomeFlow.tsx:153
+#: src/components/settings/WelcomeFlow.tsx:165
 msgid "つぎへ"
 msgstr "つぎへ"
 
@@ -2807,9 +2800,13 @@ msgstr "つながると、自動で送ります。そのときにサーバーが
 msgid "つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。"
 msgstr "つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。"
 
-#: src/components/settings/SsoMethods.tsx:71
+#: src/components/settings/SsoMethods.tsx:77
 msgid "つなぎました。次からは、このアカウントでもログインできます。"
 msgstr "つなぎました。次からは、このアカウントでもログインできます。"
+
+#: src/components/settings/SsoMethods.tsx:99
+msgid "つなぐ"
+msgstr "つなぐ"
 
 #: src/components/StatusChecks.tsx:48
 msgid "データベース（スタンプ、ログイン、内容）"
@@ -3034,7 +3031,7 @@ msgstr "バスで約{n}分"
 
 #: src/components/auth/LoginFlow.tsx:81
 #: src/components/settings/PasswordMethod.tsx:68
-#: src/components/settings/WelcomeFlow.tsx:118
+#: src/components/settings/WelcomeFlow.tsx:123
 msgid "パスワード"
 msgstr "パスワード"
 
@@ -3042,7 +3039,7 @@ msgstr "パスワード"
 msgid "パスワードでログイン"
 msgstr "パスワードでログイン"
 
-#: src/components/settings/WelcomeFlow.tsx:125
+#: src/components/settings/WelcomeFlow.tsx:130
 msgid "パスワードなしで続ける"
 msgstr "パスワードなしで続ける"
 
@@ -3072,7 +3069,7 @@ msgid "パスワードを保存しました。確認のメールを送りまし�
 msgstr "パスワードを保存しました。確認のメールを送りました。"
 
 #: src/components/settings/PasswordMethod.tsx:88
-#: src/components/settings/WelcomeFlow.tsx:122
+#: src/components/settings/WelcomeFlow.tsx:127
 msgid "パスワードを保存する"
 msgstr "パスワードを保存する"
 
@@ -3084,7 +3081,7 @@ msgstr "パスワードを変える"
 msgid "パスワードを忘れたときは、メールでログイン"
 msgstr "パスワードを忘れたときは、メールでログイン"
 
-#: src/components/settings/WelcomeFlow.tsx:116
+#: src/components/settings/WelcomeFlow.tsx:121
 msgid "パスワードを決めますか？"
 msgstr "パスワードを決めますか？"
 
@@ -3479,7 +3476,7 @@ msgstr "ほかの乗り物"
 msgid "ほかの場所へ"
 msgstr "ほかの場所へ"
 
-#: src/components/settings/SsoMethods.tsx:57
+#: src/components/settings/SsoMethods.tsx:59
 msgid "ほかの方法では、これまでどおりログインできます。"
 msgstr "ほかの方法では、これまでどおりログインできます。"
 
@@ -3548,6 +3545,10 @@ msgstr "まだスタンプがありません。"
 #: src/components/RallyViews.tsx:105
 msgid "まだスタンプはありません。"
 msgstr "まだスタンプはありません。"
+
+#: src/components/settings/SsoMethods.tsx:91
+msgid "まだつないでいません"
+msgstr "まだつないでいません"
 
 #: src/components/admin/HomeSectionsForm.tsx:73
 #: src/components/admin/SiteSettingsForm.tsx:145
@@ -3660,6 +3661,10 @@ msgstr "メールの番号や顔・指紋では、これまでどおりログイ
 #: src/components/settings/LoginMethods.tsx:55
 msgid "メールを追加する"
 msgstr "メールを追加する"
+
+#: src/components/settings/LoginMethods.tsx:50
+msgid "メールを追加すると、端末をなくしたときも、メールに届く番号でログインできます。"
+msgstr "メールを追加すると、端末をなくしたときも、メールに届く番号でログインできます。"
 
 #: src/components/auth/EmailCodeStep.tsx:57
 msgid "メールを開いて番号を見たら、この画面にもどって入力してください。届かないときは、迷惑メールのフォルダも見てください。"
@@ -4060,6 +4065,10 @@ msgstr "ログインする"
 #: src/components/useErrorMessages.ts:32
 msgid "ログインできませんでした。この端末で顔・指紋のログインを設定していないときは、メールでログインしてください。"
 msgstr "ログインできませんでした。この端末で顔・指紋のログインを設定していないときは、メールでログインしてください。"
+
+#: src/components/settings/WelcomeFlow.tsx:154
+msgid "ログインに使ったサービスの名前を入れました。コメントを書くと、ほかの方にも見えます。変えても、消してもかまいません。"
+msgstr "ログインに使ったサービスの名前を入れました。コメントを書くと、ほかの方にも見えます。変えても、消してもかまいません。"
 
 #: src/app/(public)/settings/passkeys/page.tsx:12
 #: src/app/(public)/settings/passkeys/page.tsx:26
@@ -5951,8 +5960,8 @@ msgstr "変更を捨てますか？"
 
 #: src/components/admin/PhotoField.tsx:47
 #: src/components/admin/PhotoListEditor.tsx:90
-#: src/components/settings/SsoMethods.tsx:57
-#: src/components/settings/SsoMethods.tsx:78
+#: src/components/settings/SsoMethods.tsx:59
+#: src/components/settings/SsoMethods.tsx:95
 msgid "外す"
 msgstr "外す"
 
@@ -6937,7 +6946,7 @@ msgstr "水場"
 msgid "水曜日"
 msgstr "水曜日"
 
-#: src/components/settings/WelcomeFlow.tsx:117
+#: src/components/settings/WelcomeFlow.tsx:122
 msgid "決めなくても大丈夫です。決めておくと、メールを待たずにログインできます。あとから「ログインの方法」でも決められます。"
 msgstr "決めなくても大丈夫です。決めておくと、メールを待たずにログインできます。あとから「ログインの方法」でも決められます。"
 
@@ -7189,8 +7198,8 @@ msgstr "登り {up}m"
 msgid "登り（獲得標高）"
 msgstr "登り（獲得標高）"
 
-#: src/components/settings/WelcomeFlow.tsx:141
-#: src/components/settings/WelcomeFlow.tsx:166
+#: src/components/settings/WelcomeFlow.tsx:146
+#: src/components/settings/WelcomeFlow.tsx:178
 msgid "登録ありがとうございます"
 msgstr "登録ありがとうございます"
 
@@ -8136,7 +8145,7 @@ msgstr "見やすさ"
 msgid "見やすさの設定"
 msgstr "見やすさの設定"
 
-#: src/components/settings/WelcomeFlow.tsx:167
+#: src/components/settings/WelcomeFlow.tsx:179
 msgid "見やすさを、あなたに合わせましょう。大きさは、選ぶとすぐに変わります。"
 msgstr "見やすさを、あなたに合わせましょう。大きさは、選ぶとすぐに変わります。"
 
@@ -8144,7 +8153,7 @@ msgstr "見やすさを、あなたに合わせましょう。大きさは、選
 msgid "見やすさを設定しませんか"
 msgstr "見やすさを設定しませんか"
 
-#: src/components/settings/WelcomeFlow.tsx:166
+#: src/components/settings/WelcomeFlow.tsx:178
 msgid "見やすさを選びましょう"
 msgstr "見やすさを選びましょう"
 

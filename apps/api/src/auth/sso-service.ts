@@ -17,7 +17,9 @@ export interface SsoStore {
    * another account's (never merged quietly: that would hand the account to whoever controls the provider account).
    * "taken": the provider account was linked meanwhile.
    */
-  createUser(input: { provider: SsoProvider; subject: string; email: string | null; locale: Locale }): Promise<AuthUser | "email_in_use" | "taken">;
+  createUser(input: { provider: SsoProvider; subject: string; email: string | null; displayName: string | null; locale: Locale }): Promise<AuthUser | "email_in_use" | "taken">;
+  /** Give the account the provider's name, only when it has none (a name the person typed always wins). */
+  fillName(userId: string, name: string): Promise<void>;
   /** "taken": the provider account already signs in to another account. Linking it again to the same one is fine. */
   link(userId: string, provider: SsoProvider, subject: string): Promise<"ok" | "taken">;
   list(userId: string): Promise<SsoIdentity[]>;
@@ -28,17 +30,22 @@ export interface SsoStore {
 export type SsoLoginResult = { ok: true; user: AuthUser; created: boolean } | { ok: false; error: "sso_staff" | "sso_email_in_use" | "sso_failed" };
 
 /**
- * `adminEmails` (ADMIN_EMAILS): such an address is never taken from a provider. An email-code login with it later would
- * promote the account the provider made, and the provider's session on it would become an admin session.
+ * `adminEmails` (ADMIN_EMAILS): such an address never makes an account here. An email-code login with it later would
+ * promote the account the provider made; and making one without the email would split the admin into a second account.
  */
 export function createSsoService({ store, adminEmails = new Set() }: { store: SsoStore; adminEmails?: ReadonlySet<string> }) {
   return {
     /** Sign in, or make the account on the first visit. Editors and admins never sign in this way (like the password). */
     async login(provider: SsoProvider, claims: IdClaims, locale: Locale): Promise<SsoLoginResult> {
       const found = await store.findUser(provider, claims.subject);
-      if (found) return found.role === "participant" ? { ok: true, user: found, created: false } : { ok: false, error: "sso_staff" };
-      const email = claims.email && !adminEmails.has(claims.email) ? claims.email : null;
-      const made = await store.createUser({ provider, subject: claims.subject, email, locale });
+      if (found) {
+        if (found.role !== "participant") return { ok: false, error: "sso_staff" };
+        if (claims.name) await store.fillName(found.id, claims.name);
+        return { ok: true, user: found, created: false };
+      }
+      // The staff's own address: refuse, never a second account without the email (it would land on another user id).
+      if (claims.email && adminEmails.has(claims.email)) return { ok: false, error: "sso_staff" };
+      const made = await store.createUser({ provider, subject: claims.subject, email: claims.email, displayName: claims.name, locale });
       if (made === "email_in_use") return { ok: false, error: "sso_email_in_use" };
       if (made === "taken") return { ok: false, error: "sso_failed" };
       return { ok: true, user: made, created: true };
