@@ -174,7 +174,7 @@ export function RegisterFlow({ next, loginHref }: { next?: string; loginHref: st
     <div className="flex flex-col gap-4">
       <ChoiceCard primary icon={<KeyIcon />} title={t`顔・指紋で登録`} onClick={() => go("details")} />
       <ChoiceCard icon={<MailIcon />} title={t`メールで登録`} onClick={() => go("name")} />
-      <SsoButtons returnTo={`/welcome?next=${encodeURIComponent(safeNextPath(next, "/"))}`} />
+      <SsoButtons returnTo={safeNextPath(next, "/")} />
       <p className="mt-2 text-lg">
         {t`登録済みの方は`}{" "}
         <Link href={loginHref} className="tap-target inline-flex items-center font-bold text-accent underline underline-offset-4">

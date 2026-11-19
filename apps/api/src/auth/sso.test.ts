@@ -44,7 +44,7 @@ function setup() {
       return Response.json({ id_token: idToken({ nonce, exp: at.getTime() / 1000 + 600, ...answer }) });
     },
   });
-  const services = { sso: createSsoService({ store: mem.store }), ssoProviders, session, rateLimit, audit: audit.writer };
+  const services = { sso: createSsoService({ store: mem.store, adminEmails: new Set(["boss@example.com"]) }), ssoProviders, session, rateLimit, audit: audit.writer };
   const app = new Elysia({ prefix: "/api/v1" })
     .use(apiBase({ allowedOrigin: () => ORIGIN, log: () => {} }))
     .use(ssoRoutes(() => services, { secureCookies: false, appOrigin: () => ORIGIN }));
@@ -156,13 +156,15 @@ describe("signing in", () => {
     const { roundTrip, cookieValue, users, tokenCalls } = setup();
     const first = await roundTrip("line", "login", { sub: "U1", email: "hanako@example.com" }, { returnTo: "/stamps" });
     expect(first.status).toBe(302);
-    expect(first.headers.get("location")).toBe(`${ORIGIN}/stamps`);
+    // A new account meets the set-up screen first, like any sign-up.
+    expect(first.headers.get("location")).toBe(`${ORIGIN}/welcome?next=%2Fstamps`);
     expect(cookieValue(first, "session")).toBeTruthy();
     expect(cookieValue(first, "ktrg_sso")).toBe(""); // the flow cookie is cleared
     expect(tokenCalls[0]!.get("code_verifier")).toBeTruthy();
     const made = [...users.values()].find((u) => u.email === "hanako@example.com")!;
     expect(made.role).toBe("participant");
-    const again = await roundTrip("line", "login", { sub: "U1" });
+    const again = await roundTrip("line", "login", { sub: "U1" }, { returnTo: "/stamps" });
+    expect(again.headers.get("location")).toBe(`${ORIGIN}/stamps`);
     expect(cookieValue(again, "session")).toBeTruthy();
     expect([...users.values()].filter((u) => u.email === "hanako@example.com")).toHaveLength(1);
   });
@@ -188,6 +190,13 @@ describe("signing in", () => {
     const { roundTrip } = setup();
     const res = await roundTrip("google", "login", { sub: "G1", email: "alice@example.com", email_verified: true });
     expect(res.headers.get("location")).toContain("sso_error=sso_email_in_use");
+  });
+
+  test("an ADMIN_EMAILS address is never taken from a provider (an email-code login would promote the account)", async () => {
+    const { roundTrip, users } = setup();
+    const res = await roundTrip("google", "login", { sub: "G-BOSS", email: "boss@example.com", email_verified: true });
+    expect(res.status).toBe(302);
+    expect([...users.values()].some((u) => u.email === "boss@example.com")).toBe(false);
   });
 
   test("cancelling at the provider comes back with a calm message", async () => {
@@ -237,6 +246,13 @@ describe("linking to the signed-in account", () => {
 });
 
 describe("the fresh-login re-check with a provider", () => {
+  test("staff cannot use it either (the re-check would also open the admin screens)", async () => {
+    const { roundTrip, cookieFor, mem } = setup();
+    await mem.store.link(editor.id, "line", "U-ED");
+    const res = await roundTrip("line", "reauth", { sub: "U-ED" }, { cookie: await cookieFor(editor, false), returnTo: "/settings" });
+    expect(res.headers.get("location")).toContain("sso_error=sso_staff");
+  });
+
   test("the linked provider account makes the session fresh; someone else's does not", async () => {
     const { roundTrip, cookieFor, call, mem } = setup();
     await mem.store.link(bob.id, "line", "U-BOB");
@@ -285,5 +301,15 @@ describe("Apple's posted answer", () => {
     expect(res.headers.get("location")).toBe(`${ORIGIN}/api/v1/auth/sso/apple/callback?code=c1&state=s1`);
     expect((await call("POST", "/google/login", { origin: "https://appleid.apple.com", body: {} })).status).toBe(403);
     expect((await call("POST", "/apple/callback", { origin: "https://evil.example", form: "code=c1&state=s1" })).status).toBe(403);
+  });
+
+  test("never carries Apple's `user` field (name and email) into the address", async () => {
+    const { call } = setup();
+    const user = encodeURIComponent(JSON.stringify({ name: { firstName: "Hanako" }, email: "hanako@example.com" }));
+    const res = await call("POST", "/apple/callback", { origin: "https://appleid.apple.com", form: `code=c1&state=s1&user=${user}` });
+    expect(res.status).toBe(303);
+    const location = res.headers.get("location")!;
+    expect(location).toBe(`${ORIGIN}/api/v1/auth/sso/apple/callback?code=c1&state=s1`);
+    expect(location).not.toContain("Hanako");
   });
 });

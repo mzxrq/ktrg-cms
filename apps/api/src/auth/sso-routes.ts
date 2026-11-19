@@ -76,11 +76,13 @@ export function ssoRoutes(getServices: () => SsoServices, opts: RouteOptions & {
       .post(
         "/apple/callback",
         ({ body, redirect }) => {
+          // Only these three, by name: on the first authorization Apple also posts `user` (name and email), which must never
+          // reach a URL (history, access logs).
           const q = new URLSearchParams();
-          for (const [k, v] of Object.entries(body)) if (typeof v === "string") q.set(k, v);
+          for (const k of ["code", "state", "error"] as const) if (body[k]) q.set(k, body[k]);
           return redirect(`${origin()}/api/v1/auth/sso/apple/callback?${q}`, 303);
         },
-        { body: callbackFields, rateLimit: { ssoCallbackIp: "ip" } },
+        { body: t.Object({ ...callbackFields.properties, user: t.Optional(t.String({ maxLength: 2048 })) }), rateLimit: { ssoCallbackIp: "ip" } },
       )
       .get(
         "/:provider/callback",
@@ -109,7 +111,8 @@ export function ssoRoutes(getServices: () => SsoServices, opts: RouteOptions & {
             if (!result.ok) return failed(result.error);
             // A full login, like a passkey: the provider checked the person just now.
             await http.startSession(set, result.user);
-            return back(flow.returnTo);
+            // A new account meets the set-up screen first, as after any sign-up, then goes where it was going.
+            return back(result.created ? `/welcome?next=${encodeURIComponent(flow.returnTo)}` : flow.returnTo);
           }
 
           // link and reauth: the same account must still be signed in on this browser.
@@ -122,6 +125,8 @@ export function ssoRoutes(getServices: () => SsoServices, opts: RouteOptions & {
             await session.endOthers(auth.user.id, auth.sessionId);
             return back(withQuery(flow.returnTo, "sso", "linked"));
           }
+          // Staff never use a provider, here too: the re-check also opens the admin screens (staffCheckedUntil).
+          if (auth.user.role !== "participant") return failed("sso_staff");
           if (!(await sso.owns(auth.user.id, flow.provider, claims.subject))) return failed("sso_not_yours");
           await session.markFresh(auth.sessionId);
           await getServices().audit.record({ actorUserId: auth.user.id, action: "session.reauth", targetId: auth.user.id });

@@ -128,7 +128,7 @@ export function createServices(deps: ServiceDeps): Services {
     // The optional password. The alert email links back to the site, which is the passkey origin.
     passwords: createPasswordService({ store: stores.passwords, mailer, appOrigin: deps.passkey.origin, now }),
     // Google, LINE and Apple accounts linked to ours, and the trip to the provider and back.
-    sso: createSsoService({ store: stores.sso }),
+    sso: createSsoService({ store: stores.sso, adminEmails: deps.adminEmails }),
     ssoProviders: deps.sso ? createSso({ now, ...deps.sso }) : undefined,
     // Profile, language, display name and deletion requests (emails the owner).
     me: createMeService({ store: stores.me, mailer, now, photoHosts: deps.photoHosts }),
