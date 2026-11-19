@@ -198,7 +198,7 @@ export function SiteHeader({
           id="site-menu"
           // A link to the page we are already on does not change the path, so close here to show the tap worked.
           onClick={(e) => e.target instanceof Element && e.target.closest("a") && setOpen(false)}
-          className="rail-night fixed inset-0 overflow-y-auto overscroll-contain bg-paper z-20 pb-28 pt-[var(--top-clear)] md:overflow-hidden md:bg-night md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
+          className="fixed inset-0 overflow-y-auto overscroll-contain bg-paper z-20 pb-28 pt-[var(--top-clear)] md:overflow-hidden md:bg-rail md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
         >
           {/* From 768 px the drawer has the sidebar's frame, which stays put while the menu scrolls inside it. */}
           {panelGround("md:block")}

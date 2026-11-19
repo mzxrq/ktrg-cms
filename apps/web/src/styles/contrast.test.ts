@@ -32,15 +32,9 @@ const palettes: Record<string, Record<string, string>> = {
   // The theme switch's forced palettes (data-theme on <html>).
   darkForced: tokens(block(':root[data-theme="dark"]')),
   lightForced: tokens(block(':root[data-theme="light"]')),
-  // The sidebar and menu drawer: dark in both themes.
-  railNight: tokens(block(".rail-night {")),
 };
 
 describe("theme switch", () => {
-  test("the night sidebar's palette equals the dark palette", () => {
-    expect(palettes.railNight).toEqual(palettes.dark!);
-  });
-
   test("a forced dark palette equals the automatic dark palette", () => {
     expect(palettes.darkForced).toEqual(palettes.dark!);
   });
@@ -64,7 +58,7 @@ function ratio(a: string, b: string) {
   return (light + 0.05) / (dark + 0.05);
 }
 
-const names = ["accent", "brand", "brand-strong", "caution", "create", "danger", "goal", "ink", "lift", "line", "moss", "muted", "night", "on-brand", "on-brand-strong", "on-create", "on-goal", "on-night", "on-ruri", "on-sea", "on-selected", "on-shu", "paper", "ruri", "sea", "selected", "shu", "surface"];
+const names = ["accent", "brand", "brand-strong", "caution", "create", "danger", "goal", "ink", "lift", "line", "moss", "muted", "night", "on-brand", "on-brand-strong", "on-create", "on-goal", "on-night", "on-rail", "on-ruri", "on-sea", "on-selected", "on-shu", "paper", "rail", "rail-mark", "ruri", "sea", "selected", "shu", "surface"];
 
 // Text must reach WCAG AAA (7:1).
 const text: [string, string][] = [
@@ -83,6 +77,7 @@ const text: [string, string][] = [
   ["paper", "moss"], // label on a moss fill
   ["on-ruri", "ruri"], // Start / Goal badge
   ["on-night", "night"], // the dark band of a reading page
+  ["on-rail", "rail"], // the sidebar and menu panel (follows the theme)
   ["on-sea", "sea"], // the story's sea chapter
   ["on-selected", "selected"], // a selected or active control: selected is ink, doing is red
   ["on-brand-strong", "brand-strong"], // course and stop numbers on the red
