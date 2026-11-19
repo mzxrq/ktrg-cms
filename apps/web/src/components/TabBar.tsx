@@ -118,7 +118,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
       aria-expanded={!mini}
       aria-label={mini ? t`メニューをひらく` : t`メニューをたたむ`}
       title={mini ? t`メニューをひらく` : t`メニューをたたむ`}
-      className={`tap-target hidden items-center justify-center rounded-full text-ink hover:bg-surface wide:inline-flex ${mini ? "mx-auto mt-3 shrink-0" : "absolute right-3 top-3"}`}
+      className={`tap-target hidden items-center justify-center rounded-full text-ink hover:bg-surface wide:inline-flex ${mini ? "mx-auto mt-3 shrink-0" : "absolute right-4 top-4"}`}
     >
       <PanelIcon />
     </button>
@@ -165,7 +165,8 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
         </li>
       </ul>
     </nav>
-    {footer && !mini ? <div className="hidden px-4 pb-4 wide:block">{footer}</div> : null}
+    {/* Lined up with the tab pills (same side padding), clear of the frame at the bottom. */}
+    {footer && !mini ? <div className="hidden px-4 pb-6 pt-4 wide:block">{footer}</div> : null}
     </div>
   );
 }
