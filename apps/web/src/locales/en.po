@@ -2989,7 +2989,7 @@ msgstr "."
 
 #: src/components/JourneyFacts.tsx:32
 msgid "の道のり"
-msgstr "walking distance"
+msgstr "Walking distance"
 
 #: src/components/admin/AdminItemForm.tsx:161
 msgid "はい"
