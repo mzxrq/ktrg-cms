@@ -270,8 +270,8 @@ export function MapEditor(props: MapEditorProps) {
   function editPath(update: (p: Path) => Path) {
     if (!activePair) return;
     const next = update(activePath);
-    // Drawn by hand: from now on the editor never routes it on its own (手で描く).
-    setLeg({ ...legFromPath(activePair.from, activePair.to, next), ...(activeLeg?.via ? { via: activeLeg.via } : {}), hand: true });
+    // Drawn by hand (手で描く): no `auto`, so from now on the editor never routes it on its own.
+    setLeg({ ...legFromPath(activePair.from, activePair.to, next), ...(activeLeg?.via ? { via: activeLeg.via } : {}) });
   }
 
   /**
@@ -759,9 +759,9 @@ export function MapEditor(props: MapEditorProps) {
 
 
   // ---- lines that make themselves (2026-11-20, user) ----------------------------------------------------------------
-  // A walked leg follows the trails by itself as soon as both its stops are there, and again when one of them moves; a ridden
-  // one (ferry, bus ...) is a straight hop. A leg drawn by hand or taken from a GPX file is left alone, and so are the ways
-  // back. GSI's own trail map is used (no key, no allowance), through the leg's guide points when it has some. The result is
+  // A walked leg (`auto`) follows the trails by itself as soon as both its stops are there, and again when one of them moves; a
+  // ridden one (ferry, bus ...) is a straight hop. A leg kept as drawn (by hand, from a GPX file, or saved before 2026-11-20)
+  // is left alone, and so are the ways back. GSI's own trail map is used (no key, no allowance), through the leg's guide points when it has some. The result is
   // folded into the change that caused it, so one undo takes back the stop and its line.
   const autoBusy = useRef(false);
   // The stops as they were when the map opened: a leg with no line is routed only once the stops changed in this session, so
@@ -777,7 +777,7 @@ export function MapEditor(props: MapEditorProps) {
     const todo = pairs.filter((pair) => {
       if (pair.back) return false;
       const leg = legOf(props.legs, pair.from.key, pair.to.key);
-      return leg ? !!leg.stale && !leg.hand : changed;
+      return leg ? !!leg.stale && !!leg.auto : changed;
     });
     if (todo.length === 0) return;
     const timer = setTimeout(() => {
@@ -795,7 +795,7 @@ export function MapEditor(props: MapEditorProps) {
           }
           const through = [{ lat: from.lat, lng: from.lng }, ...(leg?.via ?? []).map(([lng, lat]) => ({ lat, lng })), { lat: to.lat, lng: to.lng }];
           const r = await buildLine(through, "trail");
-          built.push({ from: from.key, to: to.key, points: withEnds(simplify(roundLine(r.line), MAX_POINTS), from, to), ...keep });
+          built.push({ from: from.key, to: to.key, points: withEnds(simplify(roundLine(r.line), MAX_POINTS), from, to), ...keep, auto: true });
         }
         const latestLegs = latest.current.legs;
         latest.current.onAutoLegs([...latestLegs.filter((l) => !built.some((b) => b.from === l.from && b.to === l.to)), ...built]);
@@ -871,7 +871,7 @@ export function MapEditor(props: MapEditorProps) {
   function setRide(mode: RideMode, minutes: number) {
     if (!activePair) return;
     const { from, to } = activePair;
-    const base: Leg = { ...(activeLeg ?? { from: from.key, to: to.key, points: [] }), hand: undefined, stale: undefined }; // (an undefined member is not saved)
+    const base: Leg = { ...(activeLeg ?? { from: from.key, to: to.key, points: [] }), auto: undefined, stale: undefined }; // (an undefined member is not saved)
     setLeg({ ...base, points: [[from.lng, from.lat], [to.lng, to.lat]], ride: { mode, minutes: Math.min(1440, Math.max(1, Math.round(minutes))) } });
   }
   /**
@@ -882,11 +882,11 @@ export function MapEditor(props: MapEditorProps) {
     if (!activePair) return;
     const { from, to } = activePair;
     if (kind === "walk") {
-      const base: Leg = { ...(activeLeg ?? { from: from.key, to: to.key, points: [] }), ride: undefined, hand: undefined };
-      setLeg({ ...base, points: base.points.length >= 2 ? base.points : [[from.lng, from.lat], [to.lng, to.lat]], stale: true });
+      const base: Leg = { ...(activeLeg ?? { from: from.key, to: to.key, points: [] }), ride: undefined };
+      setLeg({ ...base, points: base.points.length >= 2 ? base.points : [[from.lng, from.lat], [to.lng, to.lat]], auto: true, stale: true });
     } else if (kind === "hand") {
-      const base: Leg = { ...(activeLeg ?? { from: from.key, to: to.key, points: [[from.lng, from.lat], [to.lng, to.lat]] }), ride: undefined, stale: undefined };
-      setLeg({ ...base, hand: true });
+      const base: Leg = { ...(activeLeg ?? { from: from.key, to: to.key, points: [[from.lng, from.lat], [to.lng, to.lat]] }), ride: undefined, stale: undefined, auto: undefined };
+      setLeg(base);
       setMode("draw");
     } else setRide(kind, activeLeg?.ride?.minutes ?? 20);
   }
@@ -1186,7 +1186,7 @@ export function MapEditor(props: MapEditorProps) {
             <span className="flex items-center gap-1" role="group" aria-label={t`この区間の移動`}>
               <select
                 aria-label={t`この区間の種類`}
-                value={activeLeg?.hand ? "hand" : (activeLeg?.ride?.mode ?? "walk")}
+                value={activeLeg?.ride ? activeLeg.ride.mode : !activeLeg || activeLeg.auto ? "walk" : "hand"}
                 onChange={(e) => setKind(e.target.value as RideMode | "walk" | "hand")}
                 className="h-11 min-h-0 rounded-full border border-line bg-paper px-2 text-sm font-bold"
               >

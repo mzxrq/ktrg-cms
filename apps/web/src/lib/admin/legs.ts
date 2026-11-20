@@ -49,10 +49,10 @@ export interface Leg {
    */
   via?: GuidePoint[];
   /**
-   * Its line was drawn by hand or came from a GPX file (2026-11-20, user: 手で描く): the editor never routes it again on its own.
-   * A walked leg without it follows the trails by itself, and again when one of its ends moves.
+   * It follows the trails by itself (歩く, 2026-11-20, user): the editor routed it, and routes it again when one of its ends
+   * moves. Without it the line is kept as drawn (手で描く): drawn by hand, from a GPX file, or saved before there was a choice.
    */
-  hand?: true;
+  auto?: true;
   /** Only in the editor: a walked leg whose end moved and that is waiting to be routed again. Never saved. */
   stale?: true;
 }
@@ -254,8 +254,8 @@ function refit(leg: Leg, from: Stop, to: Stop): Leg {
   if (sameSpot(a, at(from)) && sameSpot(b, at(to))) return leg;
   if (leg.anchors) return { ...leg, points: capPoints(pointsFromAnchors(from, to, leg.anchors, leg.curves ?? leg.anchors.map(() => null))) };
   const inner = leg.points.slice(1, -1);
-  // A walked leg that routes itself is routed again from its new ends (the editor does it); a ride stays a straight hop.
-  if (!leg.hand && !leg.ride && !leg.back) return { ...leg, points: [at(from), ...inner, at(to)], stale: true };
+  // A leg that routes itself is routed again from its new ends (the editor does it); a ride stays a straight hop.
+  if (leg.auto && !leg.ride && !leg.back) return { ...leg, points: [at(from), ...inner, at(to)], stale: true };
   if (leg.ride) return { ...leg, points: [at(from), at(to)] };
   return { ...leg, points: [at(from), ...inner, at(to)] };
 }

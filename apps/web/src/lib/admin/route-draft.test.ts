@@ -54,12 +54,12 @@ describe("legs", () => {
     expect(s.present.line[0]).toEqual([135, 34]);
     expect(s.present.line.at(-1)).toEqual([135, 34.02]);
   });
-  test("lines that make themselves: a moved stop marks its walked legs to route again, never a hand-drawn or ridden one; the editor's routing is undone with the move", () => {
+  test("lines that make themselves: a moved stop marks its self-routing legs to route again, never one kept as drawn or ridden; the editor's routing is undone with the move", () => {
     let s = run(withStops(), {
       type: "setLegs",
       legs: [
-        { from: "a", to: "b", points: [[135, 34], [135.005, 34.002], [135.01, 34.01]] },
-        { from: "b", to: "c", points: [[135.01, 34.01], [135.004, 34.016], [135, 34.02]], hand: true },
+        { from: "a", to: "b", points: [[135, 34], [135.005, 34.002], [135.01, 34.01]], auto: true },
+        { from: "b", to: "c", points: [[135.01, 34.01], [135.004, 34.016], [135, 34.02]] },
       ],
     });
     s = run(s, { type: "movePlace", key: "b", lat: 34.012, lng: 135.012 });
@@ -73,13 +73,15 @@ describe("legs", () => {
     // What the editor routes is folded into the move: one undo takes both back.
     const beforeMove = s.present;
     s = run(s, { type: "movePlace", key: "c", lat: 34.021, lng: 135 });
-    s = run(s, { type: "autoLegs", legs: s.present.legs.map((l) => (l.from === "b" ? { ...l, points: [[135.012, 34.012], [135, 34.021]], stale: undefined } : l)) });
+    s = run(s, { type: "autoLegs", legs: s.present.legs.map((l) => (l.from === "b" ? { ...l, points: [[135.012, 34.012], [135, 34.021]], stale: undefined, auto: true } : l)) });
     expect(run(s, { type: "undo" }).present).toBe(beforeMove);
   });
-  test("a GPX track is kept as drawn: its stretches never route themselves", () => {
-    const s = run(withStops(), { type: "line", points: [[135, 34], [135.005, 34.004], [135.01, 34.01], [135.004, 34.016], [135, 34.02]] });
+  test("a GPX track (like every line saved before there was a choice) is kept as drawn: moving a stop never marks it to route again", () => {
+    let s = run(withStops(), { type: "line", points: [[135, 34], [135.005, 34.004], [135.01, 34.01], [135.004, 34.016], [135, 34.02]] });
     expect(s.present.legs.length).toBeGreaterThan(0);
-    expect(s.present.legs.every((l) => l.hand === true)).toBe(true);
+    expect(s.present.legs.every((l) => !l.auto)).toBe(true);
+    s = run(s, { type: "movePlace", key: "b", lat: 34.012, lng: 135.012 });
+    expect(s.present.legs.every((l) => !l.stale)).toBe(true);
   });
   test("an end point added at the start's own position is not a stamp place, and the legs come back to the start", () => {
     let s = withStops(); // a, b, c

@@ -1,5 +1,5 @@
 {
-  "id": "b59280bc-c1e5-4c5b-95e9-3412c1d0d0e9",
+  "id": "fd4dcceb-8ad4-459e-a917-ea6929be46a6",
   "prevId": "fc3ad663-ac71-4e98-a781-913ea43f86dd",
   "version": "7",
   "dialect": "postgresql",
@@ -3055,6 +3055,24 @@
           "notNull": true,
           "default": false
         },
+        "stamp_spot_id": {
+          "name": "stamp_spot_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stamp_lat": {
+          "name": "stamp_lat",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stamp_lng": {
+          "name": "stamp_lng",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
         "photo_url": {
           "name": "photo_url",
           "type": "text",
@@ -3178,6 +3196,19 @@
           ],
           "onDelete": "restrict",
           "onUpdate": "no action"
+        },
+        "spots_stamp_spot_id_spots_id_fk": {
+          "name": "spots_stamp_spot_id_spots_id_fk",
+          "tableFrom": "spots",
+          "tableTo": "spots",
+          "columnsFrom": [
+            "stamp_spot_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -3195,6 +3226,22 @@
         "spots_coordinates_together": {
           "name": "spots_coordinates_together",
           "value": "(\"spots\".\"lat\" is null) = (\"spots\".\"lng\" is null)"
+        },
+        "spots_stamp_lat_range": {
+          "name": "spots_stamp_lat_range",
+          "value": "\"spots\".\"stamp_lat\" is null or \"spots\".\"stamp_lat\" between -90 and 90"
+        },
+        "spots_stamp_lng_range": {
+          "name": "spots_stamp_lng_range",
+          "value": "\"spots\".\"stamp_lng\" is null or \"spots\".\"stamp_lng\" between -180 and 180"
+        },
+        "spots_stamp_point_together": {
+          "name": "spots_stamp_point_together",
+          "value": "(\"spots\".\"stamp_lat\" is null) = (\"spots\".\"stamp_lng\" is null)"
+        },
+        "spots_stamp_spot_not_self": {
+          "name": "spots_stamp_spot_not_self",
+          "value": "\"spots\".\"stamp_spot_id\" is null or \"spots\".\"stamp_spot_id\" <> \"spots\".\"id\""
         },
         "spots_radius_positive": {
           "name": "spots_radius_positive",

@@ -200,6 +200,10 @@ export const spots = pgTable(
     // The waypoint of the same course it is worshipped from (遥拝: 第1経塚 from 第4砲台, 第22経塚 from 水分神社; 2026-11-20,
     // user): the pin stays here, the stamp is checked at that waypoint's checked position, and one press there gives both.
     stampSpotId: uuid("stamp_spot_id").references((): AnyPgColumn => spots.id, { onDelete: "set null" }),
+    // Unused since 2026-11-20 (#619's typed stamp point, replaced by stamp_spot_id); kept until the code that reads them is
+    // gone from production, then dropped in a later migration (empty on every live place).
+    stampLat: doublePrecision("stamp_lat"),
+    stampLng: doublePrecision("stamp_lng"),
     photoUrl: text("photo_url"),
     photoCredit: text("photo_credit"),
     // The page the main photo was found on (Wikimedia Commons, a site), when it is not our own.
@@ -224,6 +228,9 @@ export const spots = pgTable(
     check("spots_lat_range", sql`${t.lat} is null or ${t.lat} between -90 and 90`),
     check("spots_lng_range", sql`${t.lng} is null or ${t.lng} between -180 and 180`),
     check("spots_coordinates_together", sql`(${t.lat} is null) = (${t.lng} is null)`),
+    check("spots_stamp_lat_range", sql`${t.stampLat} is null or ${t.stampLat} between -90 and 90`),
+    check("spots_stamp_lng_range", sql`${t.stampLng} is null or ${t.stampLng} between -180 and 180`),
+    check("spots_stamp_point_together", sql`(${t.stampLat} is null) = (${t.stampLng} is null)`),
     check("spots_stamp_spot_not_self", sql`${t.stampSpotId} is null or ${t.stampSpotId} <> ${t.id}`),
     check("spots_radius_positive", sql`${t.radiusM} > 0`),
     // Only publish with coordinates and confirmed site permission.

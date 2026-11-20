@@ -168,7 +168,7 @@ function legsFromServer(route: AdminRoute, places: PlaceDraft[], line: LngLatEle
     ...(l.back ? { back: true as const } : {}),
     ...(l.ride ? { ride: l.ride } : {}),
     ...(l.via && l.via.length > 0 ? { via: l.via } : {}),
-    ...(l.hand ? { hand: true as const } : {}),
+    ...(l.auto ? { auto: true as const } : {}),
   }));
   // Opening a course never routes anything by itself: a saved leg whose end no longer meets its stop is not marked to redo.
   const kept = reconcileLegs(stops, saved, sidePairs(places), offLineKeys(places)).map((l) => (l.stale ? { ...l, stale: undefined } : l));
@@ -412,8 +412,8 @@ function apply(d: RouteDraft, a: DraftAction): RouteDraft {
     case "line": {
       const stops = pathStops(d.places);
       if (stops.length < 2) return { ...withLine(d, a.points, []), legs: [] };
-      // A GPX track is kept as it is: its stretches are never routed again on their own.
-      const cut = splitLine(stops, a.points).map((l): Leg => ({ ...l, hand: true }));
+      // A GPX track is kept as drawn: its stretches carry no `auto`, so they are never routed again on their own.
+      const cut = splitLine(stops, a.points);
       // A new track replaces the route's own stretches; the side trips drawn by hand stay.
       return cut.length > 0 ? withLegs(d, [...cut, ...d.legs.filter((l) => l.side || l.back)]) : { ...withLine(d, a.points, []), legs: [] };
     }
@@ -428,7 +428,7 @@ function apply(d: RouteDraft, a: DraftAction): RouteDraft {
       return { ...withLine(d, [], []), legs: [] };
     case "splitLine": {
       if (d.legs.length > 0) return d;
-      const cut = splitLine(pathStops(d.places), d.line, { force: true }).map((l): Leg => ({ ...l, hand: true }));
+      const cut = splitLine(pathStops(d.places), d.line, { force: true });
       return cut.length > 0 ? withLegs(d, cut) : d;
     }
     case "elevations": {
