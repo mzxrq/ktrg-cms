@@ -220,6 +220,23 @@ describe("places", () => {
     expect(moved.ok && moved.value.positionVerified).toBe(false);
   });
 
+  test("a stamp point (遥拝) is both numbers, moving it cancels the check, and visitors see it only once checked", async () => {
+    const r = await route();
+    const s = await spot(r.id, { lat: 34.3, lng: 135.1, detached: true, positionVerified: true, positionSource: "公式", permissionConfirmed: true, stampable: true });
+    expect(await svc.updateSpot(ADMIN, s.id, s.updatedAt, { stampLat: 34.2 })).toEqual({ ok: false, reason: "validation_failed" });
+    const set = await svc.updateSpot(ADMIN, s.id, s.updatedAt, { stampLat: 34.2, stampLng: 135.05 });
+    if (!set.ok) throw new Error(set.reason);
+    expect(set.value).toMatchObject({ stampLat: 34.2, stampLng: 135.05, positionVerified: false });
+    const checked = await svc.updateSpot(ADMIN, s.id, set.value.updatedAt, { positionVerified: true });
+    if (!checked.ok) throw new Error(checked.reason);
+    const pub = await svc.publishSpot(ADMIN, s.id);
+    if (!pub.ok) throw new Error(pub.reason);
+    // The pin stays at the place; the stamp point is sent beside it.
+    expect(await svc.publicSpot(s.id)).toMatchObject({ position: { lat: 34.3, lng: 135.1 }, stampPosition: { lat: 34.2, lng: 135.05 } });
+    // Published: moving only the stamp point needs the new position checked in the same save.
+    expect(await svc.updateSpot(ADMIN, s.id, pub.value.updatedAt, { stampLat: 34.21, stampLng: 135.05 })).toEqual({ ok: false, reason: "position_not_verified" });
+  });
+
   test("a published place cannot be moved without checking the new position", async () => {
     const r = await route();
     const s = await spot(r.id, { lat: 34.3, lng: 135.1, positionVerified: true, positionSource: "公式", permissionConfirmed: true });

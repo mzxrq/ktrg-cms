@@ -69,6 +69,8 @@ export interface PlaceBody {
   detached: boolean;
   detachedLabelJa: string | null;
   detachedLabelEn: string | null;
+  stampLat: number | null;
+  stampLng: number | null;
   stampImageUrl: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
@@ -166,6 +168,8 @@ export function placeBody(p: PlaceDraft): PlaceBody {
     detached: p.detached,
     detachedLabelJa: nullIfEmpty(p.detachedLabelJa),
     detachedLabelEn: nullIfEmpty(p.detachedLabelEn),
+    stampLat: p.stampLat,
+    stampLng: p.stampLng,
     stampImageUrl: nullIfEmpty(p.stampImageUrl),
     photoUrl: nullIfEmpty(p.photoUrl),
     photoCredit: nullIfEmpty(p.photoCredit),
@@ -274,11 +278,17 @@ export function planSave(draft: RouteDraft, saved: RouteDraft | null): SaveStep[
       continue;
     }
     const diff = changed(placeBody(p), placeBody(before));
-    // A position is both numbers, and moving it needs its check restated.
+    // A position is both numbers, and moving it (or its stamp point, 遥拝) needs its check restated.
+    const full = placeBody(p);
     if ("lat" in diff || "lng" in diff) {
-      const full = placeBody(p);
       diff.lat = full.lat;
       diff.lng = full.lng;
+    }
+    if ("stampLat" in diff || "stampLng" in diff) {
+      diff.stampLat = full.stampLat;
+      diff.stampLng = full.stampLng;
+    }
+    if ("lat" in diff || "stampLat" in diff) {
       diff.positionVerified = full.positionVerified;
       diff.positionSource = full.positionSource;
     }
@@ -378,7 +388,7 @@ export function draftProblems(d: RouteDraft): DraftProblem[] {
     if (p.nameJa.trim() === "") out.push({ kind: "place_name", key: p.key });
     if (!photoLinkLooksValid(p.photoUrl)) out.push({ kind: "place_photo_link", key: p.key });
     // A position is both numbers or neither; the app never fills in the missing one.
-    if ((p.lat === null) !== (p.lng === null)) out.push({ kind: "place_position", key: p.key });
+    if ((p.lat === null) !== (p.lng === null) || (p.stampLat === null) !== (p.stampLng === null)) out.push({ kind: "place_position", key: p.key });
   }
   return out;
 }

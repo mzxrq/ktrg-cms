@@ -196,6 +196,10 @@ export const spots = pgTable(
     // Not connected to the route at all (a mound worshipped from afar, 遥拝): shown on the map, no path drawn to it. Always also
     // stopBy, so everything that leaves a side trip out of the walk (numbers, distance, start and goal) leaves this out too.
     detached: boolean("detached").notNull().default(false),
+    // Where the stamp is pressed when that is not the place itself (第1経塚 from 第4砲台, 第22経塚 from 水分神社): the map pin
+    // stays at lat/lng, the stamp check uses this. Covered by the same position check and source as lat/lng.
+    stampLat: doublePrecision("stamp_lat"),
+    stampLng: doublePrecision("stamp_lng"),
     photoUrl: text("photo_url"),
     photoCredit: text("photo_credit"),
     // The page the main photo was found on (Wikimedia Commons, a site), when it is not our own.
@@ -220,6 +224,9 @@ export const spots = pgTable(
     check("spots_lat_range", sql`${t.lat} is null or ${t.lat} between -90 and 90`),
     check("spots_lng_range", sql`${t.lng} is null or ${t.lng} between -180 and 180`),
     check("spots_coordinates_together", sql`(${t.lat} is null) = (${t.lng} is null)`),
+    check("spots_stamp_lat_range", sql`${t.stampLat} is null or ${t.stampLat} between -90 and 90`),
+    check("spots_stamp_lng_range", sql`${t.stampLng} is null or ${t.stampLng} between -180 and 180`),
+    check("spots_stamp_point_together", sql`(${t.stampLat} is null) = (${t.stampLng} is null)`),
     check("spots_radius_positive", sql`${t.radiusM} > 0`),
     // Only publish with coordinates and confirmed site permission.
     check(

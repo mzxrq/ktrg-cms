@@ -174,7 +174,7 @@ export function PlacePanel(p: PlacePanelProps) {
           <InfoTip
             indent
             label={
-              <Check id={`${id}-detached`} checked={place.detached} onChange={(v) => p.onChange(v ? { stopBy: true, detached: true } : { stopBy: false, detached: false })}>
+              <Check id={`${id}-detached`} checked={place.detached} onChange={(v) => p.onChange(v ? { stopBy: true, detached: true } : { stopBy: false, detached: false, stampLat: null, stampLng: null })}>
                 {t`道とつながらない（行けない場所。遠くから拝む経塚など）`}
               </Check>
             }
@@ -187,6 +187,17 @@ export function PlacePanel(p: PlacePanelProps) {
               </Field>
               <Field label={t`英語（なくてもよい）`} htmlFor={`${id}-detached-en`}>
                 <TextInput id={`${id}-detached-en`} lang="en" value={place.detachedLabelEn} onChange={(v) => p.onChange({ detachedLabelEn: v })} maxLength={100} placeholder="Worshipped from afar" />
+              </Field>
+              {/* 2026-11-20, user: 第1経塚 is stamped from 第4砲台, 第22経塚 from 水分神社. The pin stays at the place; the stamp
+                  is checked here. Both positions share one 位置を確認した and one source. */}
+              <p className="text-base text-muted sm:col-span-2">
+                {t`遥拝の場所（スタンプを押す位置）：別の場所から拝んでスタンプを押すときに入れます。地図のピンは、この経由地の位置のままです。空のままなら、この経由地の位置で押します。下の「位置を確認した」は、両方の位置を確認してからチェックしてください。`}
+              </p>
+              <Field label={t`遥拝の場所の緯度`} htmlFor={`${id}-stamp-lat`}>
+                <NumberInput id={`${id}-stamp-lat`} value={place.stampLat} min={-90} max={90} onChange={(v) => p.onChange({ stampLat: v })} />
+              </Field>
+              <Field label={t`遥拝の場所の経度`} htmlFor={`${id}-stamp-lng`}>
+                <NumberInput id={`${id}-stamp-lng`} value={place.stampLng} min={-180} max={180} onChange={(v) => p.onChange({ stampLng: v })} />
               </Field>
             </div>
           ) : null}

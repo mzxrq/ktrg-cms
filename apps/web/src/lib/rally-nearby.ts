@@ -20,7 +20,8 @@ export function nearestToStamp(
   let best: { place: RallyPlace; distanceM: number } | null = null;
   for (const p of places) {
     if (held.has(p.id) || offersNoStamp(p.status) || p.lat === null || p.lng === null) continue;
-    const distanceM = distanceMeters(at, { lat: p.lat, lng: p.lng });
+    // A place worshipped from afar (遥拝) is stamped at its stamp point, not where its pin is.
+    const distanceM = distanceMeters(at, p.stampPosition ?? { lat: p.lat, lng: p.lng });
     if (!best || distanceM < best.distanceM) best = { place: p, distanceM };
   }
   return best ? { ...best, near: best.distanceM <= best.place.radiusM + SLACK_M } : null;

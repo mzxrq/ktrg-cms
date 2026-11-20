@@ -890,6 +890,21 @@ describe.skipIf(!url)("seed on real PostgreSQL", () => {
     });
   });
 
+  test("stamp store: a place worshipped from afar (遥拝) is checked at its stamp point; others at their own position", async () => {
+    await inRollback(async (tx) => {
+      await seed(tx);
+      const store = createDrizzleStampStore(tx as unknown as typeof db);
+      const [route] = await tx.select().from(routes).orderBy(asc(routes.sortOrder)).offset(3).limit(1);
+      const [a, b] = await tx.select().from(spots).where(eq(spots.routeId, route!.id)).orderBy(asc(spots.sortOrder));
+      await tx.update(spots).set({ lat: 34.3, lng: 135.1, stampLat: 34.2, stampLng: 135.05 }).where(eq(spots.id, a!.id));
+      await tx.update(spots).set({ lat: 34.31, lng: 135.1 }).where(eq(spots.id, b!.id));
+      expect(await store.findSpot(a!.id)).toMatchObject({ lat: 34.2, lng: 135.05 });
+      expect(await store.findSpot(b!.id)).toMatchObject({ lat: 34.31, lng: 135.1 });
+      const many = await store.findSpots([a!.id, b!.id]);
+      expect(many.find((s) => s.id === a!.id)).toMatchObject({ lat: 34.2, lng: 135.05 });
+    });
+  });
+
   test("stamp store: one stamp per visitor and place, finishes saved in the same step, revoke hides it and is audited", async () => {
     await inRollback(async (tx) => {
       await seed(tx);

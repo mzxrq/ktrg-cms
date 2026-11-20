@@ -99,6 +99,9 @@ export interface AdminSpot {
   detached?: boolean;
   detachedLabelJa?: string | null;
   detachedLabelEn?: string | null;
+  /** Where the stamp is pressed when not at the place itself (遥拝). */
+  stampLat?: number | null;
+  stampLng?: number | null;
   stampImageUrl?: string | null;
   photoUrl: string | null;
   photoCredit?: string | null;

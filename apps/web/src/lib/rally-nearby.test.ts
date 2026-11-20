@@ -19,4 +19,11 @@ describe("nearestToStamp", () => {
     expect(nearestToStamp(here, places, new Set())).toBeNull();
     expect(nearestToStamp(here, [place("a", 34.2)], new Set(["a"]))).toBeNull();
   });
+
+  test("a place worshipped from afar (遥拝) is near at its stamp point, not at its pin", () => {
+    const mound = place("mound", 34.3, { stampPosition: { lat: 34.2001, lng: 135.1 } });
+    const got = nearestToStamp(here, [place("other", 34.25), mound], new Set());
+    expect(got?.place.id).toBe("mound");
+    expect(got?.near).toBe(true);
+  });
 });
