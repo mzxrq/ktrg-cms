@@ -353,6 +353,22 @@ describe("places", () => {
     const same = run(s, { type: "reorderPlaces", keys: ["b"] });
     expect(same).toBe(s);
   });
+  test("a reorder keeps the line it cannot use until the places go back; saving or another edit lets it go", () => {
+    const placed = run(fresh(), { type: "addPlace", key: "a", lat: 34, lng: 135 }, { type: "addPlace", key: "b", lat: 34.01, lng: 135 }, { type: "addPlace", key: "c", lat: 34.02, lng: 135 }, { type: "line", points: [[135, 34], [135, 34.01], [135, 34.02]] });
+    const legs = placed.present.legs;
+    expect(legs.map((l) => `${l.from}${l.to}`)).toEqual(["ab", "bc"]);
+    const swapped = run(placed, { type: "reorderPlaces", keys: ["a", "c", "b"] });
+    expect(swapped.present.legs).toEqual([]);
+    expect(isDirty(swapped.present, placed.present)).toBe(true);
+    const back = run(swapped, { type: "reorderPlaces", keys: ["a", "b", "c"] });
+    expect(back.present.legs).toEqual(legs);
+    expect(back.present.spareLegs).toBeUndefined();
+    expect(isDirty(back.present, placed.present)).toBe(false);
+    const typed = run(swapped, { type: "text", field: "nameJa", value: "x" }, { type: "reorderPlaces", keys: ["a", "b", "c"] });
+    expect(typed.present.legs).toEqual([]);
+    const saved = run(swapped, { type: "savedRoute", id: "r1", updatedAt: "2026-11-20T00:00:00Z" });
+    expect(saved.present.spareLegs).toBeUndefined();
+  });
   test("a place added after another goes right behind it; an unknown one goes last", () => {
     let s = run(fresh(), { type: "addPlace", key: "a", lat: 1, lng: 1 }, { type: "addPlace", key: "b", lat: 1, lng: 1 });
     s = run(s, { type: "addPlace", key: "m", lat: 1, lng: 1, after: "a" });

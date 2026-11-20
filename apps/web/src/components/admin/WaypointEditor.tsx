@@ -118,7 +118,6 @@ export function WaypointEditor({ initial, placeId, deleteWarning }: { initial: R
           invalidName={problems.some((p) => p.kind === "place_name")}
           invalidPhoto={problems.some((p) => p.kind === "place_photo_link")}
           stampFrom={stampFromChoices(state.present.places, key)}
-          onSelect={() => {}}
           onChange={(patch) => edit({ type: "place", key, patch })}
           onRemove={() => void remove()}
           onMove={() => {}}

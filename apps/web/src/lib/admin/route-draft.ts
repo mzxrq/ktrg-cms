@@ -132,6 +132,8 @@ export interface RouteDraft {
   lineVerified: boolean;
   lineSource: string;
   places: PlaceDraft[];
+  /** Legs a reorder had no use for, kept so moving the places back brings their line back; gone on save or any other edit. */
+  spareLegs?: Leg[];
 }
 
 export const emptyDraft = (): RouteDraft => ({
@@ -348,6 +350,8 @@ function syncLegs(d: RouteDraft): RouteDraft {
   return fitted === d.legs ? d : withLegs(d, fitted);
 }
 
+const legId = (l: Leg): string => `${l.back ? "back:" : ""}${l.from}:${l.to}`;
+
 /** The actions that change the map or the order of places can be undone; typing is left to the browser's own undo. */
 const undoable = new Set<DraftAction["type"]>(["area", "line", "splitLine", "setLeg", "setLegs", "clearLeg", "clearLegs", "addPlace", "addPlaces", "addRow", "movePlace", "removePlace", "reorderPlaces"]);
 
@@ -475,7 +479,16 @@ function apply(d: RouteDraft, a: DraftAction): RouteDraft {
     case "reorderPlaces": {
       const byKey = new Map(d.places.map((p) => [p.key, p]));
       if (a.keys.length !== d.places.length || !a.keys.every((k) => byKey.has(k))) return d;
-      return syncLegs({ ...d, places: a.keys.map((k) => byKey.get(k)!) });
+      // The legs the last reorders dropped are offered again, so dragging a place back restores its stretch of line.
+      const { spareLegs = [], ...rest } = d;
+      const pool = [...d.legs, ...spareLegs];
+      const moved = { ...rest, legs: pool, places: a.keys.map((k) => byKey.get(k)!) };
+      const synced = syncLegs(moved);
+      // syncLegs keeps the old line when every leg still fits; with spare legs added back, the line must be joined again.
+      const next = synced === moved && spareLegs.length > 0 ? withLegs(moved, pool) : synced;
+      const used = new Set(next.legs.map(legId));
+      const spare = pool.filter((l) => !used.has(legId(l)));
+      return spare.length > 0 ? { ...next, spareLegs: spare } : next;
     }
     case "savedPlace":
       return { ...d, places: d.places.map((p) => (p.key === a.key ? a.place : p)) };
@@ -495,7 +508,7 @@ function keepServerIds(d: RouteDraft, a: Extract<DraftAction, { type: "savedPlac
 export function draftReducer(state: DraftState, a: DraftAction): DraftState {
   if (a.type === "loaded") return initialState(a.draft);
   if (a.type === "savedPlace" || a.type === "savedRoute") {
-    return { present: apply(state.present, a), past: state.past.map((d) => keepServerIds(d, a)), future: state.future.map((d) => keepServerIds(d, a)) };
+    return { present: withoutSpare(apply(state.present, a)), past: state.past.map((d) => keepServerIds(d, a)), future: state.future.map((d) => keepServerIds(d, a)) };
   }
   if (a.type === "undo") {
     const prev = state.past.at(-1);
@@ -507,6 +520,7 @@ export function draftReducer(state: DraftState, a: DraftAction): DraftState {
   }
   let present = apply(state.present, a);
   if (present === state.present) return state;
+  if (a.type !== "reorderPlaces") present = withoutSpare(present);
   // The walking time follows the distance and climb: when the line changed (also because a stop moved), not on other edits.
   if (moves.has(a.type) || present.line !== state.present.line) present = withAutoTime(present);
   // Routed by the editor right after a change: folded into that change, so one undo takes both back.
@@ -515,7 +529,16 @@ export function draftReducer(state: DraftState, a: DraftAction): DraftState {
   return { present, past: [...state.past, state.present].slice(-HISTORY), future: [] };
 }
 
-export const isDirty = (draft: RouteDraft, saved: RouteDraft): boolean => JSON.stringify(draft) !== JSON.stringify(saved);
+const withoutSpare = (d: RouteDraft): RouteDraft => {
+  if (!d.spareLegs) return d;
+  const rest = { ...d };
+  delete rest.spareLegs;
+  return rest;
+};
+
+// The spare legs are not a change: they never go to the server.
+const unsaved = (k: string, v: unknown) => (k === "spareLegs" ? undefined : v);
+export const isDirty = (draft: RouteDraft, saved: RouteDraft): boolean => JSON.stringify(draft, unsaved) !== JSON.stringify(saved, unsaved);
 
 // ---- publish rules ------------------------------------------------------------------------------------------
 
