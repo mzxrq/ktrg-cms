@@ -10,34 +10,57 @@ import { NumberInput, Section } from "./fields";
 
 // 管理 > ルート > 地図: the box drawn for the course on the visitors' overview map. Left alone, it is the box around the checked
 // line; here an editor can set it by hand (also for a course that is not open yet, so it shows on the map as 準備中). The map
-// shows the course's line and stops, the box with a handle on each corner (resize) and one in the middle (move). The numbers
-// below it are the same box in the other form (centre and size in metres).
+// shows the box with a handle on each corner (resize) and one in the middle (move). The numbers below it are the same box in
+// the other form (centre and size in metres). Since 2026-11-20 (user) the course editor draws the box on its own map
+// (`onMap`, the コースの範囲 side of its panel); without it this component brings a small map of its own.
 const KONGO: [number, number] = [135.45, 34.45];
 type Corner = "nw" | "ne" | "sw" | "se";
 const CORNERS: Corner[] = ["nw", "ne", "sw", "se"];
 const BOX_COLOR = "#cc6256";
+const AUTO = "course-area-auto";
+const BOX = "course-area-box";
+const ROUTE = "course-area-route";
+
+type MapLibre = typeof import("maplibre-gl");
 
 const ring = (b: Bounds): [number, number][] => [[b.west, b.north], [b.east, b.north], [b.east, b.south], [b.west, b.south], [b.west, b.north]];
 const polygon = (b: Bounds | null) => ({ type: "FeatureCollection" as const, features: b ? [{ type: "Feature" as const, properties: {}, geometry: { type: "Polygon" as const, coordinates: [ring(b)] } }] : [] });
 const cornerAt = (b: Bounds, c: Corner): [number, number] => [c.endsWith("w") ? b.west : b.east, c.startsWith("n") ? b.north : b.south];
 const centreOf = (b: Bounds): [number, number] => [(b.west + b.east) / 2, (b.south + b.north) / 2];
 
-export function CourseAreaEditor({ area, line, places, onChange }: { area: Bounds | null; line: readonly (readonly (number | undefined)[])[]; places: { lat: number; lng: number }[]; onChange: (area: Bounds | null) => void }) {
+export function CourseAreaEditor({
+  area,
+  line,
+  places,
+  onChange,
+  onMap,
+}: {
+  area: Bounds | null;
+  line: readonly (readonly (number | undefined)[])[];
+  places: { lat: number; lng: number }[];
+  onChange: (area: Bounds | null) => void;
+  /** A map that already shows the course (the course editor's): the box is drawn on it, and no map of its own is made. */
+  onMap?: { map: MapLibreMap; ml: MapLibre } | null;
+}) {
   const { t } = useLingui();
   const container = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<MapLibreMap | null>(null);
+  const [own, setOwn] = useState<{ map: MapLibreMap; ml: MapLibre } | null>(null);
   const handles = useRef<{ corners: Record<Corner, Marker>; centre: Marker } | null>(null);
+  const [attached, setAttached] = useState<MapLibreMap | null>(null);
   const [failed, setFailed] = useState(false);
-  const [ready, setReady] = useState(false);
   const latest = useRef({ area, onChange });
   useEffect(() => {
     latest.current = { area, onChange };
   });
+  const embedded = onMap !== undefined;
+  const target = embedded ? (onMap ?? null) : own;
 
   // What the box would be with nothing set: the box around the course's line and stops (shown dashed for reference).
   const automatic = useMemo(() => boundsOfPoints([...line.map((p) => [p[0]!, p[1]!]), ...places.map((p) => [p.lng, p.lat])]), [line, places]);
 
+  // A map of its own, only when the course editor's map is not given.
   useEffect(() => {
+    if (embedded) return;
     let cancelled = false;
     let map: MapLibreMap | undefined;
     (async () => {
@@ -53,56 +76,10 @@ export function CourseAreaEditor({ area, line, places, onChange }: { area: Bound
         const m = map;
         m.on("load", () => {
           if (cancelled) return;
-          m.addSource("auto", { type: "geojson", data: polygon(null) });
-          m.addSource("area", { type: "geojson", data: polygon(null) });
-          m.addSource("route", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
-          m.addLayer({ id: "auto-line", type: "line", source: "auto", paint: { "line-color": "#4b4b4b", "line-width": 2, "line-dasharray": [3, 2] } });
-          m.addLayer({ id: "area-fill", type: "fill", source: "area", paint: { "fill-color": BOX_COLOR, "fill-opacity": 0.12 } });
-          m.addLayer({ id: "area-line", type: "line", source: "area", paint: { "line-color": "#8e2a21", "line-width": 3 } });
-          m.addLayer({ id: "route-line", type: "line", source: "route", filter: ["==", ["geometry-type"], "LineString"], paint: { "line-color": "#6d28d9", "line-width": 3 } });
-          m.addLayer({ id: "route-stops", type: "circle", source: "route", filter: ["==", ["geometry-type"], "Point"], paint: { "circle-radius": 4, "circle-color": "#ffffff", "circle-stroke-color": "#6d28d9", "circle-stroke-width": 2 } });
-          const report = (b: Bounds) => latest.current.onChange(b);
-          // While a handle is dragged the outline and every other handle follow it, so none is left behind.
-          const follow = (b: Bounds, dragged: Corner | "centre") => {
-            (m.getSource("area") as GeoJSONSource).setData(polygon(b));
-            const h = handles.current;
-            if (!h) return;
-            for (const k of CORNERS) if (k !== dragged) h.corners[k].setLngLat(cornerAt(b, k));
-            if (dragged !== "centre") h.centre.setLngLat(centreOf(b));
-          };
-          const dot = (cls: string) => {
-            const el = document.createElement("div");
-            el.className = cls;
-            return el;
-          };
-          const corner = {} as Record<Corner, Marker>;
-          for (const c of CORNERS) {
-            const marker = new ml.Marker({ element: dot("size-4 cursor-grab rounded-[3px] border-2 border-white bg-ink shadow-md active:cursor-grabbing"), draggable: true });
-            marker.on("drag", () => {
-              const cur = latest.current.area;
-              if (cur) follow(dragCorner(cur, c, marker.getLngLat()), c);
-            });
-            marker.on("dragend", () => {
-              const cur = latest.current.area;
-              if (!cur) return;
-              const b = dragCorner(cur, c, marker.getLngLat());
-              report(b);
-              marker.setLngLat(cornerAt(b, c)); // a corner that could not go that far returns to the box's real corner
-            });
-            corner[c] = marker;
-          }
-          const centre = new ml.Marker({ element: dot("size-7 cursor-move rounded-full border-2 border-white bg-brand shadow-md"), draggable: true });
-          centre.on("drag", () => {
-            const cur = latest.current.area;
-            if (cur) follow(moveBox(cur, centre.getLngLat()), "centre");
-          });
-          centre.on("dragend", () => {
-            const cur = latest.current.area;
-            if (cur) report(moveBox(cur, centre.getLngLat()));
-          });
-          handles.current = { corners: corner, centre };
-          mapRef.current = m;
-          setReady(true);
+          m.addSource(ROUTE, { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+          m.addLayer({ id: `${ROUTE}-line`, type: "line", source: ROUTE, filter: ["==", ["geometry-type"], "LineString"], paint: { "line-color": "#6d28d9", "line-width": 3 } });
+          m.addLayer({ id: `${ROUTE}-stops`, type: "circle", source: ROUTE, filter: ["==", ["geometry-type"], "Point"], paint: { "circle-radius": 4, "circle-color": "#ffffff", "circle-stroke-color": "#6d28d9", "circle-stroke-width": 2 } });
+          setOwn({ map: m, ml });
         });
       } catch {
         if (!cancelled) setFailed(true); // no WebGL: the numbers below still work
@@ -111,24 +88,89 @@ export function CourseAreaEditor({ area, line, places, onChange }: { area: Bound
     return () => {
       cancelled = true;
       map?.remove(); // CLAUDE.md: the map is always removed on unmount
-      mapRef.current = null;
-      handles.current = null;
+      setOwn(null);
     };
-  }, []);
+  }, [embedded]);
 
-  // The line, the stops, the automatic box and the chosen box follow the draft.
+  // The box, its dashed automatic twin and the handles, on whichever map there is; taken off again when this side closes.
   useEffect(() => {
-    const map = mapRef.current;
-    if (!map || !ready) return;
-    (map.getSource("route") as GeoJSONSource).setData({
+    if (!target) return;
+    const { map: m, ml } = target;
+    m.addSource(AUTO, { type: "geojson", data: polygon(null) });
+    m.addSource(BOX, { type: "geojson", data: polygon(null) });
+    m.addLayer({ id: AUTO, type: "line", source: AUTO, paint: { "line-color": "#4b4b4b", "line-width": 2, "line-dasharray": [3, 2] } });
+    m.addLayer({ id: `${BOX}-fill`, type: "fill", source: BOX, paint: { "fill-color": BOX_COLOR, "fill-opacity": 0.12 } });
+    m.addLayer({ id: `${BOX}-line`, type: "line", source: BOX, paint: { "line-color": "#8e2a21", "line-width": 3 } });
+    const report = (b: Bounds) => latest.current.onChange(b);
+    // While a handle is dragged the outline and every other handle follow it, so none is left behind.
+    const follow = (b: Bounds, dragged: Corner | "centre") => {
+      (m.getSource(BOX) as GeoJSONSource).setData(polygon(b));
+      const h = handles.current;
+      if (!h) return;
+      for (const k of CORNERS) if (k !== dragged) h.corners[k].setLngLat(cornerAt(b, k));
+      if (dragged !== "centre") h.centre.setLngLat(centreOf(b));
+    };
+    const dot = (cls: string) => {
+      const el = document.createElement("div");
+      el.className = cls;
+      return el;
+    };
+    const corner = {} as Record<Corner, Marker>;
+    for (const c of CORNERS) {
+      const marker = new ml.Marker({ element: dot("size-4 cursor-grab rounded-[3px] border-2 border-white bg-ink shadow-md active:cursor-grabbing"), draggable: true });
+      marker.on("drag", () => {
+        const cur = latest.current.area;
+        if (cur) follow(dragCorner(cur, c, marker.getLngLat()), c);
+      });
+      marker.on("dragend", () => {
+        const cur = latest.current.area;
+        if (!cur) return;
+        const b = dragCorner(cur, c, marker.getLngLat());
+        report(b);
+        marker.setLngLat(cornerAt(b, c)); // a corner that could not go that far returns to the box's real corner
+      });
+      corner[c] = marker;
+    }
+    const centre = new ml.Marker({ element: dot("size-7 cursor-move rounded-full border-2 border-white bg-brand shadow-md"), draggable: true });
+    centre.on("drag", () => {
+      const cur = latest.current.area;
+      if (cur) follow(moveBox(cur, centre.getLngLat()), "centre");
+    });
+    centre.on("dragend", () => {
+      const cur = latest.current.area;
+      if (cur) report(moveBox(cur, centre.getLngLat()));
+    });
+    handles.current = { corners: corner, centre };
+    setAttached(m);
+    return () => {
+      for (const c of CORNERS) corner[c].remove();
+      centre.remove();
+      handles.current = null;
+      setAttached(null);
+      // The map may already be gone (its editor unmounted first).
+      try {
+        for (const id of [`${BOX}-line`, `${BOX}-fill`, AUTO]) if (m.getLayer(id)) m.removeLayer(id);
+        for (const id of [BOX, AUTO]) if (m.getSource(id)) m.removeSource(id);
+      } catch {
+        /* removed with the map */
+      }
+    };
+  }, [target]);
+
+  // The automatic box, the chosen box (and on its own map the line and stops) follow the draft.
+  useEffect(() => {
+    const map = attached;
+    if (!map) return;
+    const route = map.getSource(ROUTE) as GeoJSONSource | undefined;
+    route?.setData({
       type: "FeatureCollection",
       features: [
         ...(line.length >= 2 ? [{ type: "Feature" as const, properties: {}, geometry: { type: "LineString" as const, coordinates: line.map((p) => [p[0]!, p[1]!]) } }] : []),
         ...places.map((p) => ({ type: "Feature" as const, properties: {}, geometry: { type: "Point" as const, coordinates: [p.lng, p.lat] } })),
       ],
     });
-    (map.getSource("auto") as GeoJSONSource).setData(polygon(area ? null : automatic));
-    (map.getSource("area") as GeoJSONSource).setData(polygon(area));
+    (map.getSource(AUTO) as GeoJSONSource).setData(polygon(area ? null : automatic));
+    (map.getSource(BOX) as GeoJSONSource).setData(polygon(area));
     const h = handles.current;
     if (!h) return;
     if (area) {
@@ -138,17 +180,16 @@ export function CourseAreaEditor({ area, line, places, onChange }: { area: Bound
       for (const c of CORNERS) h.corners[c].remove();
       h.centre.remove();
     }
-  }, [ready, line, places, area, automatic]);
+  }, [attached, line, places, area, automatic]);
 
-  // Show the whole box (or the course) once the map is ready.
+  // Show the whole box (or the course) once the box is on a map.
   useEffect(() => {
-    const map = mapRef.current;
     const target = area ?? automatic;
-    if (!map || !ready || !target) return;
-    map.fitBounds([[target.west, target.south], [target.east, target.north]], { padding: 60, maxZoom: 14, duration: 0 });
-    // Only when the map is ready: adjusting the box must not move the view under the editor's hands.
+    if (!attached || !target) return;
+    attached.fitBounds([[target.west, target.south], [target.east, target.north]], { padding: 60, maxZoom: 14, duration: embedded ? 400 : 0 });
+    // Only when the box arrives on a map: adjusting the box must not move the view under the editor's hands.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready]);
+  }, [attached]);
 
   const box = area ? boxFromBounds(area) : null;
   const set = (patch: Partial<NonNullable<typeof box>>) => {
@@ -166,7 +207,7 @@ export function CourseAreaEditor({ area, line, places, onChange }: { area: Bound
   // A new box (from the course, or a small one in the middle of the view) is brought into view: at the wide first zoom a 4 km
   // box is a few pixels, and its four handles would sit on top of each other.
   const start = () => {
-    const map = mapRef.current;
+    const map = attached;
     const c = map ? map.getCenter() : { lat: KONGO[1], lng: KONGO[0] };
     const next = padBounds(automatic) ?? boundsFromBox({ lat: c.lat, lng: c.lng, widthM: 4000, heightM: 3000 });
     onChange(next);
@@ -174,10 +215,10 @@ export function CourseAreaEditor({ area, line, places, onChange }: { area: Bound
   };
 
   const button = "tap-target inline-flex items-center justify-center rounded-full border border-line bg-paper px-5 text-base font-bold hover:bg-surface";
-  return (
-    <Section title={t`コースの範囲`} id="area-section">
+  const controls = (
+    <>
       <p className="text-base text-muted">{t`訪れる人の、全体の地図に出る四角です。ふだんは、確かめた線のまわりに自動で決まります。ここで手で決めると、まだ公開していないコースも、「準備中」として地図に出ます。`}</p>
-      {failed ? (
+      {embedded ? null : failed ? (
         <p className="text-base text-muted">{t`地図を表示できませんでした。`}</p>
       ) : (
         <div ref={container} role="application" aria-label={t`コースの範囲の地図`} className="h-96 w-full overflow-hidden rounded-xl border border-line" />
@@ -203,7 +244,7 @@ export function CourseAreaEditor({ area, line, places, onChange }: { area: Bound
         )}
       </div>
       {box ? (
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className={`grid gap-3 ${embedded ? "" : "sm:grid-cols-2"}`}>
           <label className="flex flex-col gap-1 text-base font-bold" htmlFor="area-lat">
             {t`中心の緯度`}
             <NumberInput id="area-lat" value={Math.round(box.lat * 1e6) / 1e6} min={20} max={46} step={0.0001} wide onChange={(v) => v !== null && set({ lat: v })} />
@@ -223,25 +264,35 @@ export function CourseAreaEditor({ area, line, places, onChange }: { area: Bound
         </div>
       ) : null}
       {area ? (
-        <div className="grid gap-3 sm:grid-cols-2">
-          {CORNERS.map((c) => {
-            const [lng, lat] = cornerAt(area, c);
-            return (
-              <fieldset key={c} className="flex flex-col gap-2 rounded-xl border border-line p-3">
-                <legend className="px-1 text-base font-bold">{cornerLabel[c]}</legend>
-                <label className="flex flex-col gap-1 text-base font-bold" htmlFor={`area-${c}-lat`}>
-                  {t`緯度`}
-                  <NumberInput id={`area-${c}-lat`} value={lat} min={20} max={46} step={0.0001} wide onChange={(v) => v !== null && setCorner(c, { lat: v })} />
-                </label>
-                <label className="flex flex-col gap-1 text-base font-bold" htmlFor={`area-${c}-lng`}>
-                  {t`経度`}
-                  <NumberInput id={`area-${c}-lng`} value={lng} min={122} max={154} step={0.0001} wide onChange={(v) => v !== null && setCorner(c, { lng: v })} />
-                </label>
-              </fieldset>
-            );
-          })}
-        </div>
+        <details className="rounded-xl border border-line p-3">
+          <summary className="cursor-pointer text-base font-bold">{t`四すみの緯度・経度`}</summary>
+          <div className={`mt-3 grid gap-3 ${embedded ? "" : "sm:grid-cols-2"}`}>
+            {CORNERS.map((c) => {
+              const [lng, lat] = cornerAt(area, c);
+              return (
+                <fieldset key={c} className="flex flex-col gap-2 rounded-xl border border-line p-3">
+                  <legend className="px-1 text-base font-bold">{cornerLabel[c]}</legend>
+                  <label className="flex flex-col gap-1 text-base font-bold" htmlFor={`area-${c}-lat`}>
+                    {t`緯度`}
+                    <NumberInput id={`area-${c}-lat`} value={lat} min={20} max={46} step={0.0001} wide onChange={(v) => v !== null && setCorner(c, { lat: v })} />
+                  </label>
+                  <label className="flex flex-col gap-1 text-base font-bold" htmlFor={`area-${c}-lng`}>
+                    {t`経度`}
+                    <NumberInput id={`area-${c}-lng`} value={lng} min={122} max={154} step={0.0001} wide onChange={(v) => v !== null && setCorner(c, { lng: v })} />
+                  </label>
+                </fieldset>
+              );
+            })}
+          </div>
+        </details>
       ) : null}
+    </>
+  );
+  return embedded ? (
+    <div className="flex flex-col gap-3">{controls}</div>
+  ) : (
+    <Section title={t`コースの範囲`} id="area-section">
+      {controls}
     </Section>
   );
 }

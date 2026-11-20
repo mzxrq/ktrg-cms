@@ -18,7 +18,6 @@ import type { AdminSharedSpot } from "@/lib/admin/types";
 import { formatUpdated } from "@/lib/format";
 import { adminTab, adminTabRow, Check, Field, inputClass, MultilingualField, NumberInput, Section, TextInput } from "./fields";
 import { LivePreview } from "./LivePreview";
-import { CourseAreaEditor } from "./CourseAreaEditor";
 import { walkStyleOf } from "@/lib/walk-style";
 import { PublishedEditDialog } from "./PublishedEditDialog";
 import { AccessPointsEditor } from "./AccessPointsEditor";
@@ -293,12 +292,6 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                 ) : null}
                 <CourseMapEditor d={d} confirmRemoval={confirmRemoval} />
               </Section>
-              <CourseAreaEditor
-                area={draft.area}
-                line={draft.line}
-                places={draft.places.flatMap((p) => (p.lat !== null && p.lng !== null ? [{ lat: p.lat, lng: p.lng }] : []))}
-                onChange={(value) => dispatch({ type: "area", value })}
-              />
               </>
             ) : null}
 

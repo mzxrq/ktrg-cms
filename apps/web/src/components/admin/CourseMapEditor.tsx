@@ -79,6 +79,7 @@ export function CourseMapEditor({ d, confirmRemoval }: { d: ReturnType<typeof us
           else void confirmRemoval(key).then((yes) => yes && dispatch({ type: "removePlace", key }));
         }}
         onSelectPlace={setSelectedKey}
+        area={{ value: draft.area, onChange: (value) => dispatch({ type: "area", value }) }}
         onPatchPlace={(key, patch) => {
           const p = draft.places.find((x) => x.key === key);
           // A new waypoint's stamp switch follows its kind; a saved one keeps what was chosen for it.

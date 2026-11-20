@@ -75,7 +75,7 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
       </h3>
       {/* Under the map, full width; on a very wide screen two columns of rows. A row shows the name, what the waypoint is (as
           icons) and the buttons to move, add after, place and remove it; choosing it opens the rest of its settings. */}
-      <ol className="grid items-start gap-2 2xl:grid-cols-2">
+      <ol className="grid items-start gap-2">
         {places.map((p, i) => {
           const open = p.key === selectedKey;
           const label = p.name || String(p.number ?? i + 1);
