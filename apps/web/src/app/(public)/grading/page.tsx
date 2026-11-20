@@ -20,7 +20,7 @@ export default async function GradingPage() {
   const technical: Record<(typeof TECHNICAL_LEVELS)[number], string> = ja
     ? {
         A: "整備された道で、迷いにくく、転んでも大きな事故になりにくい。",
-        B: "急な登り下りや、道がわかりにくい所がある。はしごやくさり（鎖場）がある所もある。",
+        B: "急な登り下りや、道がわかりにくい所がある。はしごや鎖がある所もある。",
         C: "転落・滑落の危険がある所がある。地図を読む力と、ミスをしない注意が必要。",
         D: "岩場やガレ場、手を使う急な登り下りがある。道がわかりにくい所も多い。",
         E: "厳しい岩場や藪こぎが続く。道を自分で見つける技術と、高い判断力が必要。",
@@ -76,7 +76,7 @@ export default async function GradingPage() {
           })}
         </ul>
         <p className="text-base text-muted">
-          <Trans>数字は目安です。星の数は、この計算結果をもとに、このサイトの運営者がコースごとに決めています。長野県の体力度は1〜10の10段階で、このサイトでは2段階ずつをまとめて星1つにしています。</Trans>
+          <Trans>数字は目安です。星の数は、この計算結果をもとに、このサイトの運営者がコースごとに決めています。</Trans>
         </p>
       </section>
 
@@ -100,7 +100,7 @@ export default async function GradingPage() {
       </section>
 
       <p className="mx-4 text-base text-muted">
-        <Trans>この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。各段階の説明文は、長野県の文章をそのまま使わず、このサイトで書いたものです。</Trans>
+        <Trans>この目安は、長野県の「信州 山のグレーディング」をもとにしています。</Trans>
       </p>
     </div>
   );

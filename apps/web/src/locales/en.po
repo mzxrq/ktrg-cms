@@ -2039,6 +2039,10 @@ msgstr "There are no records for this period yet."
 msgid "この条件に合う場所はありません。"
 msgstr "No places match."
 
+#: src/app/(public)/grading/page.tsx:103
+msgid "この目安は、長野県の「信州 山のグレーディング」をもとにしています。"
+msgstr "These levels are based on Nagano Prefecture's Shinshu mountain grading."
+
 #: src/components/navigation/NavigationHud.tsx:248
 #: src/components/useStampMessages.ts:10
 msgid "この端末・ブラウザでは、位置情報を使えません。"
@@ -2138,10 +2142,6 @@ msgstr "Edit this waypoint"
 #: src/components/admin/map-editor/MapEditor.tsx:897
 msgid "この線は、経由地の順番や位置と合わないため、区間に分けていません。経由地の順番と位置を直してから「区間に分ける」を押すか、区間を描くと、その区間から線が置き換わります（「元に戻す」で戻せます）。"
 msgstr "This line does not match the order or positions of the waypoints, so it has not been cut into legs. Fix the order and positions and press \"Cut into legs\", or draw a leg: the line is then replaced leg by leg (Undo brings it back)."
-
-#: src/app/(public)/grading/page.tsx:103
-msgid "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。各段階の説明文は、長野県の文章をそのまま使わず、このサイトで書いたものです。"
-msgstr "The idea follows Nagano Prefecture's Shinshu mountain grading (physical and technical levels). The description of each level was written for this site, not copied from Nagano's text."
 
 #: src/components/admin/FuriganaWords.tsx:80
 msgid "この言葉はもう一覧にあります。"
@@ -6223,7 +6223,7 @@ msgid "必須"
 msgstr "Required"
 
 #: src/components/admin/GradingFields.tsx:43
-msgid "急な登り下りや、道がわかりにくい所がある。はしごやくさり（鎖場）がある所もある。"
+msgid "急な登り下りや、道がわかりにくい所がある。はしごや鎖がある所もある。"
 msgstr "Steep climbs and descents and some hard-to-follow places. Some places have ladders or chains."
 
 #: src/components/auth/AboutYou.tsx:125
@@ -6395,8 +6395,8 @@ msgid "数字の丸をドラッグすると、経由地を動かせます。道�
 msgstr "Drag a numbered circle to move a waypoint. Add the path with \"Draw line\" or a GPX file."
 
 #: src/app/(public)/grading/page.tsx:79
-msgid "数字は目安です。星の数は、この計算結果をもとに、このサイトの運営者がコースごとに決めています。長野県の体力度は1〜10の10段階で、このサイトでは2段階ずつをまとめて星1つにしています。"
-msgstr "The numbers are a guide. The people who run this site choose the stars for each course, based on this sum. Nagano's physical level has ten steps, 1 to 10; here every two steps make one star."
+msgid "数字は目安です。星の数は、この計算結果をもとに、このサイトの運営者がコースごとに決めています。"
+msgstr "The numbers are a guide. The people who run this site choose the stars for each course, based on this sum."
 
 #: src/components/admin/GoalsForm.tsx:39
 msgid "数字を空にすると、その目標はなしになります。保存すると、ページを開き直したときに反映されます。"
