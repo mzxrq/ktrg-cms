@@ -34,6 +34,8 @@ export interface EditorPlace {
   kind: PointKind;
   /** Not connected to the route (遥拝): no path is drawn to it. */
   detached?: boolean;
+  /** Where its stamp is pressed when not at the place (遥拝の場所): a small fixed mark, so the position can be checked. */
+  stampPoint?: { lat: number; lng: number } | null;
   /** Visitors can see it: it cannot be deleted, and editing it turns it back into a draft. */
   published: boolean;
   /** Where the walk starts and ends (blue and orange pins), as visitors see it. */
@@ -206,6 +208,7 @@ export function MapEditor(props: MapEditorProps) {
   const markers = useRef(new Map<string, { marker: Marker; el: HTMLButtonElement; shape: string }>());
   const anchorMarkers = useRef<Marker[]>([]);
   const guideMarkers = useRef<Marker[]>([]);
+  const stampPointMarkers = useRef<Marker[]>([]);
   const justDragged = useRef(false);
   const modeRef = useRef<Mode>("pan");
   const latest = useRef(props);
@@ -597,6 +600,25 @@ export function MapEditor(props: MapEditorProps) {
       entry.el.setAttribute("aria-pressed", String(p.key === props.selectedKey));
     }
   }, [props.places, props.selectedKey, ready]);
+
+  // ---- 遥拝の場所: where a place worshipped from afar is stamped. Not draggable: the numbers are typed from a source.
+  useEffect(() => {
+    const map = mapRef.current;
+    const ml = mlRef.current;
+    if (!ready || !map || !ml) return;
+    for (const p of props.places) {
+      if (!p.stampPoint) continue;
+      const el = document.createElement("div");
+      el.className = "flex size-8 items-center justify-center rounded-full border-2 border-dashed border-ink bg-paper text-base font-bold text-ink";
+      el.textContent = t`拝`;
+      el.title = t`「${p.name}」の遥拝の場所（スタンプを押す位置）`;
+      stampPointMarkers.current.push(new ml.Marker({ element: el }).setLngLat([p.stampPoint.lng, p.stampPoint.lat]).addTo(map));
+    }
+    return () => {
+      for (const m of stampPointMarkers.current) m.remove();
+      stampPointMarkers.current = [];
+    };
+  }, [props.places, ready, t]);
 
   // Keys: V, P and L pick the tool; E toggles the eraser while drawing; Escape leaves drawing; Delete removes the chosen point
   // while drawing and otherwise the chosen waypoint.

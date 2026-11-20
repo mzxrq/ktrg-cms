@@ -12,8 +12,9 @@ const spotColumns = {
   published: spots.published,
   stampable: spots.stampable,
   positionVerified: spots.positionVerified,
-  lat: spots.lat,
-  lng: spots.lng,
+  // Where the stamp is pressed: the stamp point (遥拝) when set, else the place. Both are set or null together (checks).
+  lat: sql<number | null>`coalesce(${spots.stampLat}, ${spots.lat})`.mapWith(Number),
+  lng: sql<number | null>`coalesce(${spots.stampLng}, ${spots.lng})`.mapWith(Number),
   radiusM: spots.radiusM,
   status: spots.status,
   statusUpdatedAt: spots.statusUpdatedAt,

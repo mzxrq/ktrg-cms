@@ -46,6 +46,8 @@ export interface PublicSpot {
   detached: boolean;
   detachedLabelJa: string | null;
   detachedLabelEn: string | null;
+  /** Where the stamp is pressed when not at the place itself (遥拝); shown only once the position is checked. */
+  stampPosition: { lat: number; lng: number } | null;
   stampImageUrl: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
@@ -248,6 +250,7 @@ function toPublicSpot(s: SpotRow): PublicSpot {
     detached: s.detached,
     detachedLabelJa: s.detachedLabelJa,
     detachedLabelEn: s.detachedLabelEn,
+    stampPosition: showPosition && s.stampLat !== null && s.stampLng !== null ? { lat: s.stampLat, lng: s.stampLng } : null,
     stampImageUrl: s.stampImageUrl,
     photoUrl: s.photoUrl,
     photoCredit: s.photoCredit,
@@ -413,6 +416,8 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
     if (input.translations !== undefined) out.translations = cleanTranslations(input.translations);
     if (input.lat !== undefined) out.lat = input.lat;
     if (input.lng !== undefined) out.lng = input.lng;
+    if (input.stampLat !== undefined) out.stampLat = input.stampLat;
+    if (input.stampLng !== undefined) out.stampLng = input.stampLng;
     if (input.radiusM !== undefined) out.radiusM = input.radiusM;
     if (input.status !== undefined) out.status = input.status;
     if (input.kind !== undefined) out.kind = input.kind;
@@ -452,6 +457,8 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
     // A position is both numbers or neither.
     if ((out.lat === undefined) !== (out.lng === undefined)) return bad("validation_failed");
     if ((out.lat === null) !== (out.lng === null)) return bad("validation_failed");
+    if ((out.stampLat === undefined) !== (out.stampLng === undefined)) return bad("validation_failed");
+    if ((out.stampLat === null) !== (out.stampLng === null)) return bad("validation_failed");
     return ok(out);
   }
 
@@ -524,7 +531,10 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       if (!p.ok) return p;
       const current = await store.getSpot(id);
       if (!current) return bad("not_found");
-      const moved = p.value.lat !== undefined && (p.value.lat !== current.lat || p.value.lng !== current.lng);
+      // Moving the stamp point (遥拝) counts too: both positions share one check.
+      const moved =
+        (p.value.lat !== undefined && (p.value.lat !== current.lat || p.value.lng !== current.lng)) ||
+        (p.value.stampLat !== undefined && (p.value.stampLat !== current.stampLat || p.value.stampLng !== current.stampLng));
       const changes: Partial<SpotFields> = { ...p.value };
       // Moving a place cancels the check on its position, unless the same save checks it again.
       if (moved && p.value.positionVerified === undefined) changes.positionVerified = false;

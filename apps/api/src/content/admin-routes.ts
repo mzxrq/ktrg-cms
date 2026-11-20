@@ -155,6 +155,8 @@ const spotProps = {
   detached: t.Boolean(),
   detachedLabelJa: nullable(t.String({ maxLength: 100 })),
   detachedLabelEn: nullable(t.String({ maxLength: 100 })),
+  stampLat: nullable(t.Number({ minimum: -90, maximum: 90 })),
+  stampLng: nullable(t.Number({ minimum: -180, maximum: 180 })),
   stampImageUrl: nullable(t.String({ maxLength: 500 })),
   photoUrl: nullable(t.String({ maxLength: 500 })),
   photoCredit: nullable(t.String({ maxLength: 500 })),
