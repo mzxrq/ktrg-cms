@@ -387,10 +387,13 @@ msgstr "{name}（終点）"
 msgid "{name}さん、こんにちは。"
 msgstr "{name}さん、こんにちは。"
 
-#: src/components/auth/SsoButtons.tsx:83
-#: src/components/auth/SsoButtons.tsx:84
+#: src/components/auth/SsoButtons.tsx:143
 msgid "{name}でログイン"
 msgstr "{name}でログイン"
+
+#: src/components/auth/SsoButtons.tsx:143
+msgid "{name}で登録"
+msgstr "{name}で登録"
 
 #: src/components/auth/ReauthDialog.tsx:78
 msgid "{name}で確認"
@@ -1283,12 +1286,16 @@ msgstr "オフラインで使う"
 msgid "お住まい"
 msgstr "お住まい"
 
-#: src/components/auth/RegisterFlow.tsx:71
+#: src/components/auth/RegisterFlow.tsx:72
 #: src/components/ProfileSettings.tsx:147
 #: src/components/ProfileSettings.tsx:256
 #: src/components/settings/WelcomeFlow.tsx:152
 msgid "お名前"
 msgstr "お名前"
+
+#: src/components/auth/RegisterFlow.tsx:181
+msgid "お名前などを聞いたあと、確認番号をメールでお送りします。"
+msgstr "お名前などを聞いたあと、確認番号をメールでお送りします。"
 
 #: src/components/useErrorMessages.ts:46
 msgid "お名前に使えない文字が含まれているか、長すぎます（40文字まで）。"
@@ -2754,7 +2761,8 @@ msgstr "つぎの場所"
 msgid "つぎの場所まで"
 msgstr "つぎの場所まで"
 
-#: src/components/auth/RegisterFlow.tsx:142
+#: src/components/auth/RegisterFlow.tsx:127
+#: src/components/auth/RegisterFlow.tsx:183
 #: src/components/map/MapHelp.tsx:55
 #: src/components/settings/WelcomeFlow.tsx:165
 msgid "つぎへ"
@@ -2855,7 +2863,7 @@ msgstr "どこへ向かいますか？"
 msgid "とじる"
 msgstr "とじる"
 
-#: src/components/auth/authUi.tsx:107
+#: src/components/auth/authUi.tsx:75
 msgid "どちらからお越しですか？"
 msgstr "どちらからお越しですか？"
 
@@ -2952,7 +2960,7 @@ msgstr "ナビ中：{routeName}"
 msgid "なめらかにする"
 msgstr "なめらかにする"
 
-#: src/components/auth/RegisterFlow.tsx:80
+#: src/components/auth/RegisterFlow.tsx:81
 msgid "ニックネームでもかまいません。"
 msgstr "ニックネームでもかまいません。"
 
@@ -2981,11 +2989,11 @@ msgstr "はい"
 msgid "はじめての方のホームを、前の見せ方（画面が止まって切り替わる）にする"
 msgstr "はじめての方のホームを、前の見せ方（画面が止まって切り替わる）にする"
 
-#: src/components/auth/LoginFlow.tsx:153
+#: src/components/auth/LoginFlow.tsx:125
 msgid "はじめての方は"
 msgstr "はじめての方は"
 
-#: src/components/auth/SsoButtons.tsx:88
+#: src/components/auth/SsoButtons.tsx:151
 msgid "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
 msgstr "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
 
@@ -3030,13 +3038,13 @@ msgstr "バスで約{minutes}分"
 msgid "バスで約{n}分"
 msgstr "バスで約{n}分"
 
-#: src/components/auth/LoginFlow.tsx:81
+#: src/components/auth/LoginFlow.tsx:97
 #: src/components/settings/PasswordMethod.tsx:68
 #: src/components/settings/WelcomeFlow.tsx:123
 msgid "パスワード"
 msgstr "パスワード"
 
-#: src/components/auth/LoginFlow.tsx:150
+#: src/components/auth/LoginFlow.tsx:116
 msgid "パスワードでログイン"
 msgstr "パスワードでログイン"
 
@@ -3065,6 +3073,10 @@ msgstr "パスワードは、なくてもかまいません。決めておくと
 msgid "パスワードを使うには、先にメールアドレスを追加してください。忘れたときに、メールで確認するためです。"
 msgstr "パスワードを使うには、先にメールアドレスを追加してください。忘れたときに、メールで確認するためです。"
 
+#: src/components/auth/LoginFlow.tsx:116
+msgid "パスワードを使わずに、メールでログイン"
+msgstr "パスワードを使わずに、メールでログイン"
+
 #: src/components/settings/PasswordMethod.tsx:51
 msgid "パスワードを保存しました。確認のメールを送りました。"
 msgstr "パスワードを保存しました。確認のメールを送りました。"
@@ -3077,10 +3089,6 @@ msgstr "パスワードを保存する"
 #: src/components/settings/PasswordMethod.tsx:99
 msgid "パスワードを変える"
 msgstr "パスワードを変える"
-
-#: src/components/auth/LoginFlow.tsx:89
-msgid "パスワードを忘れたときは、メールでログイン"
-msgstr "パスワードを忘れたときは、メールでログイン"
 
 #: src/components/settings/WelcomeFlow.tsx:121
 msgid "パスワードを決めますか？"
@@ -3106,7 +3114,7 @@ msgstr "パスワードを消しますか？"
 msgid "パスワードを消す"
 msgstr "パスワードを消す"
 
-#: src/components/auth/PasswordInput.tsx:42
+#: src/components/auth/PasswordInput.tsx:45
 msgid "パスワードを表示する"
 msgstr "パスワードを表示する"
 
@@ -3446,7 +3454,7 @@ msgstr "ほかにもあります。もう少し入れて絞ってください。
 msgid "ほかにログインの方法がないので、これは消せません。先にメールか、別の端末の顔・指紋のログインを使えるようにしてください。"
 msgstr "ほかにログインの方法がないので、これは消せません。先にメールか、別の端末の顔・指紋のログインを使えるようにしてください。"
 
-#: src/components/auth/RegisterFlow.tsx:159
+#: src/components/auth/RegisterFlow.tsx:144
 #: src/components/settings/PasskeyManager.tsx:180
 msgid "ほかのアプリに保存するときは、表示される画面で選んでください。"
 msgstr "ほかのアプリに保存するときは、表示される画面で選んでください。"
@@ -3551,6 +3559,10 @@ msgstr "まだスタンプはありません。"
 msgid "まだつないでいません"
 msgstr "まだつないでいません"
 
+#: src/components/auth/authUi.tsx:26
+msgid "または"
+msgstr "または"
+
 #: src/components/admin/HomeSectionsForm.tsx:73
 #: src/components/admin/SiteSettingsForm.tsx:145
 msgid "まだ保存していません。"
@@ -3615,9 +3627,8 @@ msgstr "むずかしさ（ひとこと）"
 msgid "むずかしさを、ひとことで書く（任意）"
 msgstr "むずかしさを、ひとことで書く（任意）"
 
-#: src/components/auth/LoginFlow.tsx:68
-#: src/components/auth/LoginFlow.tsx:119
-#: src/components/auth/RegisterFlow.tsx:125
+#: src/components/auth/LoginFlow.tsx:84
+#: src/components/auth/RegisterFlow.tsx:169
 #: src/components/settings/LoginMethods.tsx:29
 #: src/components/settings/LoginMethods.tsx:66
 msgid "メールアドレス"
@@ -3634,14 +3645,6 @@ msgstr "メールアドレスを直す"
 #: src/components/settings/LoginMethods.tsx:49
 msgid "メールアドレスを追加する"
 msgstr "メールアドレスを追加する"
-
-#: src/components/auth/LoginFlow.tsx:149
-msgid "メールでログイン"
-msgstr "メールでログイン"
-
-#: src/components/auth/RegisterFlow.tsx:176
-msgid "メールで登録"
-msgstr "メールで登録"
 
 #: src/components/auth/ReauthDialog.tsx:96
 msgid "メールに、6桁の番号を送りました。"
@@ -4035,10 +4038,10 @@ msgstr "ログアウトする"
 #: src/app/(public)/login/page.tsx:16
 #: src/app/(public)/login/page.tsx:33
 #: src/app/(public)/sitemap/page.tsx:111
-#: src/components/auth/LoginFlow.tsx:85
-#: src/components/auth/LoginFlow.tsx:104
+#: src/components/auth/LoginFlow.tsx:69
+#: src/components/auth/LoginFlow.tsx:103
 #: src/components/auth/PasswordUndo.tsx:35
-#: src/components/auth/RegisterFlow.tsx:181
+#: src/components/auth/RegisterFlow.tsx:193
 #: src/components/blog/CommentSection.tsx:127
 #: src/components/GuestNag.tsx:88
 #: src/components/landing/Landing.tsx:133
@@ -4081,6 +4084,10 @@ msgstr "ログインの方法"
 #: src/components/useErrorMessages.ts:39
 msgid "ログインを確認できませんでした。時間がたったか、別のブラウザーに戻った可能性があります。もう一度お試しください。"
 msgstr "ログインを確認できませんでした。時間がたったか、別のブラウザーに戻った可能性があります。もう一度お試しください。"
+
+#: src/components/auth/LoginFlow.tsx:99
+msgid "ログイン用の番号をメールでお送りします。"
+msgstr "ログイン用の番号をメールでお送りします。"
 
 #: src/components/settings/PasskeyManager.tsx:198
 msgid "わかりました"
@@ -5627,7 +5634,7 @@ msgstr "周辺の場所（駐車場・自販機・トイレなど）"
 #: src/app/(admin)/admin/page.tsx:34
 #: src/components/admin/MunicipalitiesField.tsx:38
 #: src/components/admin/RouteTable.tsx:44
-#: src/components/auth/authUi.tsx:81
+#: src/components/auth/authUi.tsx:49
 #: src/components/PrefectureName.tsx:9
 msgid "和歌山県"
 msgstr "和歌山県"
@@ -5662,7 +5669,7 @@ msgstr "回"
 msgid "国"
 msgstr "国"
 
-#: src/components/auth/authUi.tsx:123
+#: src/components/auth/authUi.tsx:91
 msgid "国を選択してください"
 msgstr "国を選択してください"
 
@@ -6013,7 +6020,7 @@ msgstr "大阪・和歌山・奈良にまたがる、葛城修験の山の古道
 #: src/app/(admin)/admin/page.tsx:33
 #: src/components/admin/MunicipalitiesField.tsx:38
 #: src/components/admin/RouteTable.tsx:44
-#: src/components/auth/authUi.tsx:80
+#: src/components/auth/authUi.tsx:48
 #: src/components/PrefectureName.tsx:7
 msgid "大阪府"
 msgstr "大阪府"
@@ -6029,7 +6036,7 @@ msgstr "太字"
 #: src/app/(admin)/admin/page.tsx:35
 #: src/components/admin/MunicipalitiesField.tsx:38
 #: src/components/admin/RouteTable.tsx:44
-#: src/components/auth/authUi.tsx:82
+#: src/components/auth/authUi.tsx:50
 #: src/components/PrefectureName.tsx:11
 msgid "奈良県"
 msgstr "奈良県"
@@ -6235,10 +6242,8 @@ msgstr "情報"
 msgid "情報源を入れないと、「確認した」は保存されません。"
 msgstr "情報源を入れないと、「確認した」は保存されません。"
 
-#: src/components/auth/LoginFlow.tsx:92
-#: src/components/auth/LoginFlow.tsx:138
-#: src/components/auth/RegisterFlow.tsx:145
-#: src/components/auth/RegisterFlow.tsx:166
+#: src/components/auth/RegisterFlow.tsx:130
+#: src/components/auth/RegisterFlow.tsx:151
 #: src/components/map/MapHelp.tsx:47
 #: src/components/map/MapScreen.tsx:264
 #: src/components/map/MapScreen.tsx:280
@@ -6497,7 +6502,7 @@ msgstr "新しく作るには、名前（日本語）が必要です"
 #: src/app/(public)/register/page.tsx:15
 #: src/app/(public)/register/page.tsx:31
 #: src/app/(public)/sitemap/page.tsx:114
-#: src/components/auth/LoginFlow.tsx:155
+#: src/components/auth/LoginFlow.tsx:127
 #: src/components/GuestNag.tsx:85
 #: src/components/landing/Landing.tsx:121
 #: src/components/landing/LandingHero.tsx:77
@@ -6532,7 +6537,7 @@ msgstr "日付"
 msgid "日曜日"
 msgstr "日曜日"
 
-#: src/components/auth/authUi.tsx:83
+#: src/components/auth/authUi.tsx:51
 msgid "日本"
 msgstr "日本"
 
@@ -6540,7 +6545,7 @@ msgstr "日本"
 msgid "日本から"
 msgstr "日本から"
 
-#: src/components/auth/authUi.tsx:110
+#: src/components/auth/authUi.tsx:78
 msgid "日本から来ました"
 msgstr "日本から来ました"
 
@@ -6980,11 +6985,11 @@ msgid "海から山へ。{0}区間の道の高さを、順につなげた線で�
 msgstr "海から山へ。{0}区間の道の高さを、順につなげた線です。いちばん高いところは約{1}m。"
 
 #: src/app/(admin)/admin/page.tsx:37
-#: src/components/auth/authUi.tsx:84
+#: src/components/auth/authUi.tsx:52
 msgid "海外"
 msgstr "海外"
 
-#: src/components/auth/authUi.tsx:113
+#: src/components/auth/authUi.tsx:81
 msgid "海外から来ました"
 msgstr "海外から来ました"
 
@@ -7217,7 +7222,7 @@ msgstr "登録しておきませんか"
 msgid "登録しなくても、スタンプは押せます。"
 msgstr "登録しなくても、スタンプは押せます。"
 
-#: src/components/auth/RegisterFlow.tsx:92
+#: src/components/auth/RegisterFlow.tsx:93
 msgid "登録する"
 msgstr "登録する"
 
@@ -7242,7 +7247,7 @@ msgstr "登録なしで押したスタンプがあります"
 msgid "登録なしで残せるスタンプの数が、上限になりました。新規登録すると、続けて集められます。"
 msgstr "登録なしで残せるスタンプの数が、上限になりました。新規登録すると、続けて集められます。"
 
-#: src/components/auth/RegisterFlow.tsx:179
+#: src/components/auth/RegisterFlow.tsx:191
 #: src/components/landing/Landing.tsx:131
 #: src/components/landing/LandingHero.tsx:84
 msgid "登録済みの方は"
@@ -7379,8 +7384,8 @@ msgstr "確認待ちの読みはありません。"
 msgid "確認番号"
 msgstr "確認番号"
 
-#: src/components/auth/LoginFlow.tsx:135
-#: src/components/auth/RegisterFlow.tsx:142
+#: src/components/auth/LoginFlow.tsx:103
+#: src/components/auth/RegisterFlow.tsx:127
 msgid "確認番号を送る"
 msgstr "確認番号を送る"
 
@@ -7442,8 +7447,8 @@ msgstr "端末の名前"
 msgid "答えたくない"
 msgstr "答えたくない"
 
-#: src/components/auth/authUi.tsx:108
-#: src/components/auth/authUi.tsx:125
+#: src/components/auth/authUi.tsx:76
+#: src/components/auth/authUi.tsx:93
 msgid "答えなくても大丈夫です。"
 msgstr "答えなくても大丈夫です。"
 
@@ -8722,7 +8727,7 @@ msgstr "選ばない"
 msgid "選ばない（すべて同じ太さで表示）"
 msgstr "選ばない（すべて同じ太さで表示）"
 
-#: src/components/auth/authUi.tsx:149
+#: src/components/auth/authUi.tsx:117
 msgid "選びなおす"
 msgstr "選びなおす"
 
@@ -8788,7 +8793,7 @@ msgstr "選んだ数：{0} / {1}"
 msgid "選んだ読みを承認する（{0}件）"
 msgstr "選んだ読みを承認する（{0}件）"
 
-#: src/components/auth/authUi.tsx:127
+#: src/components/auth/authUi.tsx:95
 msgid "選んでください"
 msgstr "選んでください"
 
@@ -8811,7 +8816,7 @@ msgstr "都道府県"
 msgid "都道府県が未入力"
 msgstr "都道府県が未入力"
 
-#: src/components/auth/authUi.tsx:123
+#: src/components/auth/authUi.tsx:91
 msgid "都道府県を選択してください"
 msgstr "都道府県を選択してください"
 
@@ -9012,15 +9017,15 @@ msgstr "題を入力"
 msgid "顔・指紋・ロック番号で確認"
 msgstr "顔・指紋・ロック番号で確認"
 
-#: src/components/auth/LoginFlow.tsx:147
+#: src/components/auth/LoginFlow.tsx:121
 msgid "顔・指紋でログイン"
 msgstr "顔・指紋でログイン"
 
-#: src/components/auth/RegisterFlow.tsx:175
+#: src/components/auth/RegisterFlow.tsx:188
 msgid "顔・指紋で登録"
 msgstr "顔・指紋で登録"
 
-#: src/components/auth/RegisterFlow.tsx:163
+#: src/components/auth/RegisterFlow.tsx:148
 msgid "顔・指紋で登録する"
 msgstr "顔・指紋で登録する"
 

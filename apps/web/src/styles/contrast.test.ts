@@ -58,7 +58,7 @@ function ratio(a: string, b: string) {
   return (light + 0.05) / (dark + 0.05);
 }
 
-const names = ["accent", "brand", "brand-strong", "caution", "create", "danger", "goal", "ink", "lift", "line", "line-green", "moss", "muted", "night", "on-brand", "on-brand-strong", "on-create", "on-goal", "on-line-green", "on-night", "on-rail", "on-ruri", "on-sea", "on-selected", "on-shu", "paper", "rail", "rail-mark", "ruri", "sea", "selected", "shu", "surface"];
+const names = ["accent", "brand", "brand-strong", "caution", "create", "danger", "goal", "google", "google-line", "ink", "lift", "line", "line-green", "moss", "muted", "night", "on-brand", "on-brand-strong", "on-create", "on-goal", "on-google", "on-line-green", "on-night", "on-rail", "on-ruri", "on-sea", "on-selected", "on-shu", "paper", "rail", "rail-mark", "ruri", "sea", "selected", "shu", "surface"];
 
 // Text must reach WCAG AAA (7:1).
 const text: [string, string][] = [
@@ -82,6 +82,7 @@ const text: [string, string][] = [
   ["on-selected", "selected"], // a selected or active control: selected is ink, doing is red
   ["on-brand-strong", "brand-strong"], // course and stop numbers on the red
   ["on-create", "create"], // the admin's green 新しい… buttons
+  ["on-google", "google"], // Google's sign-in button (Google's own colours)
 ];
 
 // Borders and the focus ring must reach 3:1 (WCAG 1.4.11).
@@ -98,6 +99,7 @@ const parts: [string, string][] = [
   ["brand-strong", "paper"], // a number badge stands out from the page
   ["brand-strong", "surface"],
   ["selected", "surface"], // the active tab against the tab bar
+  ["google-line", "google"], // the edge of Google's white button
 ];
 
 // The numeral inside a stamped seal: large bold text, held to 4.5:1.

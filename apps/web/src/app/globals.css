@@ -57,6 +57,9 @@
   --color-on-create: #ffffff;
   --color-line-green: #06c755; /* LINE's button green, fixed by LINE's guidelines (both themes); white on it is 2.3:1, an exception the user chose (2026-11-20) */
   --color-on-line-green: #ffffff;
+  --color-google: #ffffff; /* Google's light sign-in button, fixed by Google's guidelines (both themes): the G must sit on white */
+  --color-on-google: #1f1f1f;
+  --color-google-line: #747775;
   --color-on-brand-strong: #ffffff; /* the words on brand-strong */
   --color-selected: #1f1b1a; /* a selected or active control (active tab, toggle on, saved): ink. Selected is ink, doing is red */
   --color-on-selected: #fcfaf5; /* the words and icons on a selected control */
@@ -228,6 +231,9 @@
     --color-on-create: #ffffff;
     --color-line-green: #06c755;
     --color-on-line-green: #ffffff;
+    --color-google: #ffffff; /* Google's light sign-in button, fixed by Google's guidelines (both themes): the G must sit on white */
+    --color-on-google: #1f1f1f;
+    --color-google-line: #747775;
     --color-on-brand-strong: #0b0908;
     --color-selected: #ebe2d0; /* the ink colour of the dark palette */
     --color-on-selected: #1e1a17;
@@ -272,6 +278,9 @@
   --color-on-create: #ffffff;
   --color-line-green: #06c755; /* LINE's button green, fixed by LINE's guidelines (both themes); white on it is 2.3:1, an exception the user chose (2026-11-20) */
   --color-on-line-green: #ffffff;
+  --color-google: #ffffff; /* Google's light sign-in button, fixed by Google's guidelines (both themes): the G must sit on white */
+  --color-on-google: #1f1f1f;
+  --color-google-line: #747775;
   --color-on-brand-strong: #0b0908;
   --color-selected: #ebe2d0; /* the ink colour of the dark palette */
   --color-on-selected: #1e1a17;
@@ -310,6 +319,9 @@
   --color-on-create: #ffffff;
   --color-line-green: #06c755; /* LINE's button green, fixed by LINE's guidelines (both themes); white on it is 2.3:1, an exception the user chose (2026-11-20) */
   --color-on-line-green: #ffffff;
+  --color-google: #ffffff; /* Google's light sign-in button, fixed by Google's guidelines (both themes): the G must sit on white */
+  --color-on-google: #1f1f1f;
+  --color-google-line: #747775;
   --color-on-brand-strong: #ffffff; /* the words on brand-strong */
   --color-selected: #1f1b1a; /* a selected or active control (active tab, toggle on, saved): ink. Selected is ink, doing is red */
   --color-on-selected: #fcfaf5; /* the words and icons on a selected control */

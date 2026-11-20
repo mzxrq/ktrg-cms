@@ -11,12 +11,14 @@ export function PasswordInput({
   onChange,
   autoComplete,
   hint,
+  autoFocus,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   autoComplete: "current-password" | "new-password";
   hint?: string;
+  autoFocus?: boolean;
 }) {
   const { t } = useLingui();
   const [shown, setShown] = useState(false);
@@ -29,6 +31,7 @@ export function PasswordInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           autoComplete={autoComplete}
+          autoFocus={autoFocus}
           autoCapitalize="none"
           autoCorrect="off"
           spellCheck={false}
