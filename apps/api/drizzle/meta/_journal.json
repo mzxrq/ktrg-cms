@@ -540,6 +540,20 @@
       "when": 1795138883931,
       "tag": "0076_lying_micromax",
       "breakpoints": true
+    },
+    {
+      "idx": 77,
+      "version": "7",
+      "when": 1795147967272,
+      "tag": "0077_pale_edwin_jarvis",
+      "breakpoints": true
+    },
+    {
+      "idx": 78,
+      "version": "7",
+      "when": 1795147968494,
+      "tag": "0078_clear_logan",
+      "breakpoints": true
     }
   ]
 }

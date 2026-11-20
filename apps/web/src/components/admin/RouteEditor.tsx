@@ -9,7 +9,7 @@ import { CheckIcon, DocumentIcon, ListIcon, MapIcon, PinIcon } from "@/component
 import { api } from "@/lib/api";
 import { outcome } from "@/lib/admin/admin-client";
 import { checklist, factsFromDraft, progress, type EditorTab } from "@/lib/admin/checklist";
-import { walkedStats, type TextField, type RouteDraft } from "@/lib/admin/route-draft";
+import { walkedStats, type TextField, type RouteDraft, stampFromChoices } from "@/lib/admin/route-draft";
 import { RubyEditor } from "./RubyEditor";
 import { placeChanged, type DraftProblem } from "@/lib/admin/save-plan";
 import { useRouteDraft } from "./useRouteDraft";
@@ -360,6 +360,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                         canMoveDown={i < draft.places.length - 1}
                         invalidName={problemOf("place_name", p.key)}
                         invalidPhoto={problemOf("place_photo_link", p.key)}
+                        stampFrom={stampFromChoices(draft.places, p.key)}
                         onSelect={() => setSelectedKey(p.key === selectedKey ? null : p.key)}
                         onChange={(patch) => guarded(p.key, { type: "place", key: p.key, patch })}
                         onRemove={async () => {

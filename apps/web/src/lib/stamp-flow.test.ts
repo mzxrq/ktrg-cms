@@ -19,6 +19,15 @@ test("readingFrom keeps only what the server needs", () => {
 });
 
 describe("parseStampResponse", () => {
+  test("names the other places the same press stamped for the first time (遥拝), and nothing malformed", () => {
+    const also = [
+      { spotId: "a", nameJa: "友ヶ島・序品", nameEn: "Johon", alreadyStamped: false },
+      { spotId: "b", nameJa: "前から", nameEn: null, alreadyStamped: true },
+      { spotId: "c" },
+    ];
+    expect(parseStampResponse(200, { ok: true, stamp: { alreadyStamped: false, also } })).toEqual({ ok: true, already: false, also: [{ nameJa: "友ヶ島・序品", nameEn: "Johon" }] });
+  });
+
   test("a stamp, and a stamp that was already there", () => {
     expect(parseStampResponse(200, { ok: true, stamp: { alreadyStamped: false } })).toEqual({ ok: true, already: false });
     expect(parseStampResponse(200, { ok: true, stamp: { alreadyStamped: true } })).toEqual({ ok: true, already: true });

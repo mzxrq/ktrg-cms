@@ -21,6 +21,9 @@ import { PlaceList } from "./PlaceList";
 import { createMarkerElement } from "@/components/map/MapMarker";
 import type { StopRole } from "@/lib/route-stops";
 
+/** The map source and layer of the 遥拝 links. */
+const YOHAI_SOURCE = "yohai-links";
+
 export interface EditorPlace {
   key: string;
   lat: number | null;
@@ -34,8 +37,10 @@ export interface EditorPlace {
   kind: PointKind;
   /** Not connected to the route (遥拝): no path is drawn to it. */
   detached?: boolean;
-  /** Where its stamp is pressed when not at the place (遥拝の場所): a small fixed mark, so the position can be checked. */
-  stampPoint?: { lat: number; lng: number } | null;
+  /** Its saved id (null until saved): what a 遥拝 link points to. */
+  id?: string | null;
+  /** The waypoint it is worshipped from (遥拝), by key: a dashed link is drawn to it. */
+  stampFromKey?: string | null;
   /** Visitors can see it: it cannot be deleted, and editing it turns it back into a draft. */
   published: boolean;
   /** Where the walk starts and ends (blue and orange pins), as visitors see it. */
@@ -54,6 +59,8 @@ export interface PlacePatch {
   detached?: boolean;
   /** 案内のみ on or off (the editor fills in the status and the ready-made note). */
   info?: boolean;
+  /** The saved waypoint it is worshipped from (遥拝), or null. */
+  stampSpotId?: string | null;
 }
 
 export type ElevationStatus = "idle" | "loading" | "partial";
@@ -208,7 +215,12 @@ export function MapEditor(props: MapEditorProps) {
   const markers = useRef(new Map<string, { marker: Marker; el: HTMLButtonElement; shape: string }>());
   const anchorMarkers = useRef<Marker[]>([]);
   const guideMarkers = useRef<Marker[]>([]);
-  const stampPointMarkers = useRef<Marker[]>([]);
+  // Choosing on the map the waypoint a place is worshipped from (遥拝): the key of that place while a pin is awaited.
+  const [picking, setPicking] = useState<string | null>(null);
+  const pickingRef = useRef<string | null>(null);
+  useEffect(() => {
+    pickingRef.current = picking;
+  }, [picking]);
   const justDragged = useRef(false);
   const modeRef = useRef<Mode>("pan");
   const latest = useRef(props);
@@ -584,6 +596,14 @@ export function MapEditor(props: MapEditorProps) {
         });
         el.addEventListener("click", (event) => {
           event.stopPropagation();
+          const forKey = pickingRef.current;
+          if (forKey) {
+            const target = latest.current.places.find((x) => x.key === p.key);
+            // Only a saved waypoint that is not itself worshipped from elsewhere (the list offers the same).
+            if (target && target.key !== forKey && target.id && !target.stampFromKey) latest.current.onPatchPlace(forKey, { stampSpotId: target.id });
+            setPicking(null);
+            return;
+          }
           latest.current.onSelectPlace(p.key);
         });
         const marker = new ml.Marker({ element: el, anchor: p.stopBy ? "center" : "bottom", draggable: modeRef.current === "pan" || modeRef.current === "place" }).setLngLat([p.lng!, p.lat!]).addTo(map);
@@ -601,24 +621,24 @@ export function MapEditor(props: MapEditorProps) {
     }
   }, [props.places, props.selectedKey, ready]);
 
-  // ---- 遥拝の場所: where a place worshipped from afar is stamped. Not draggable: the numbers are typed from a source.
+  // ---- 遥拝: a dashed link from a place to the waypoint it is worshipped from (where its stamp is pressed).
   useEffect(() => {
     const map = mapRef.current;
-    const ml = mlRef.current;
-    if (!ready || !map || !ml) return;
-    for (const p of props.places) {
-      if (!p.stampPoint) continue;
-      const el = document.createElement("div");
-      el.className = "flex size-8 items-center justify-center rounded-full border-2 border-dashed border-ink bg-paper text-base font-bold text-ink";
-      el.textContent = t`拝`;
-      el.title = t`「${p.name}」の遥拝の場所（スタンプを押す位置）`;
-      stampPointMarkers.current.push(new ml.Marker({ element: el }).setLngLat([p.stampPoint.lng, p.stampPoint.lat]).addTo(map));
+    if (!ready || !map) return;
+    const byKey = new Map(props.places.map((p) => [p.key, p]));
+    const features = props.places.flatMap((p) => {
+      const to = p.stampFromKey ? byKey.get(p.stampFromKey) : undefined;
+      if (p.lat === null || p.lng === null || !to || to.lat === null || to.lng === null) return [];
+      return [{ type: "Feature" as const, properties: {}, geometry: { type: "LineString" as const, coordinates: [[p.lng, p.lat], [to.lng, to.lat]] } }];
+    });
+    const data = { type: "FeatureCollection" as const, features };
+    const source = map.getSource(YOHAI_SOURCE) as { setData?: (d: unknown) => void } | undefined;
+    if (source?.setData) source.setData(data);
+    else {
+      map.addSource(YOHAI_SOURCE, { type: "geojson", data });
+      map.addLayer({ id: YOHAI_SOURCE, type: "line", source: YOHAI_SOURCE, layout: { "line-cap": "round" }, paint: { "line-color": "#4b4b4b", "line-width": 2.5, "line-dasharray": [1, 1.5] } });
     }
-    return () => {
-      for (const m of stampPointMarkers.current) m.remove();
-      stampPointMarkers.current = [];
-    };
-  }, [props.places, ready, t]);
+  }, [props.places, ready]);
 
   // Keys: V, P and L pick the tool; E toggles the eraser while drawing; Escape leaves drawing; Delete removes the chosen point
   // while drawing and otherwise the chosen waypoint.
@@ -1285,6 +1305,8 @@ export function MapEditor(props: MapEditorProps) {
           }}
           locating={locating}
           onLocate={(key) => setLocating((cur) => (cur === key ? null : key))}
+          picking={picking}
+          onPick={(key) => setPicking((cur) => (cur === key ? null : key))}
           onInsertAfter={(key) => {
             if (insertAfter === key) return setAfterOff(true);
             props.onSelectPlace(key);

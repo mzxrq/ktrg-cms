@@ -34,6 +34,8 @@ export interface PlacePanelProps {
   onUnpublish: () => void;
   /** A map to place it on, under the numbers (the route editor has its own map tab). */
   positionMap?: ReactNode;
+  /** Waypoints it may be worshipped from (遥拝), see stampFromChoices. */
+  stampFrom?: { choices: { id: string; name: string }[]; isHub: boolean };
 }
 
 /** The words for what a waypoint can be. */
@@ -174,7 +176,7 @@ export function PlacePanel(p: PlacePanelProps) {
           <InfoTip
             indent
             label={
-              <Check id={`${id}-detached`} checked={place.detached} onChange={(v) => p.onChange(v ? { stopBy: true, detached: true } : { stopBy: false, detached: false, stampLat: null, stampLng: null })}>
+              <Check id={`${id}-detached`} checked={place.detached} onChange={(v) => p.onChange(v ? { stopBy: true, detached: true } : { stopBy: false, detached: false, stampSpotId: null })}>
                 {t`道とつながらない（行けない場所。遠くから拝む経塚など）`}
               </Check>
             }
@@ -182,22 +184,24 @@ export function PlacePanel(p: PlacePanelProps) {
           />
           {place.detached ? (
             <div className="grid gap-3 sm:grid-cols-2">
-              <Field label={t`利用者に見せる言葉`} htmlFor={`${id}-detached-ja`} hint={t`空のままなら「道からはなれた場所」と表示します。`}>
-                <TextInput id={`${id}-detached-ja`} value={place.detachedLabelJa} onChange={(v) => p.onChange({ detachedLabelJa: v })} maxLength={100} placeholder={t`例：第4砲台から遥拝（スタンプは第4砲台で）`} />
+              {/* 2026-11-20, user: 第1経塚 is stamped from 第4砲台, 第22経塚 from 水分神社. Chosen from the course's waypoints, never
+                  typed: the stamp is checked at that waypoint's own checked position, and one press there gives both stamps. */}
+              <Field label={t`どこから拝む（スタンプを押す場所）`} htmlFor={`${id}-stamp-from`} hint={p.stampFrom?.isHub ? t`ほかの経由地が、ここから拝む場所になっています。そのため、ここには選べません。` : t`選んだ経由地でスタンプを押すと、この場所のスタンプも一緒に押されます。地図のピンは、この経由地の位置のままです。保存済みの経由地から選べます。`}>
+                <select id={`${id}-stamp-from`} value={place.stampSpotId ?? ""} disabled={p.stampFrom?.isHub} onChange={(e) => p.onChange({ stampSpotId: e.target.value || null })} className={`${inputClass} max-w-md`}>
+                  <option value="">{t`ここで押す（選ばない）`}</option>
+                  {(p.stampFrom?.choices ?? []).map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name || t`（名前がありません）`}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+              <div className="hidden sm:block" />
+              <Field label={t`利用者に見せる言葉`} htmlFor={`${id}-detached-ja`} hint={t`空のままなら、選んだ経由地から「〇〇から遥拝」と表示します（選んでいなければ「道からはなれた場所」）。`}>
+                <TextInput id={`${id}-detached-ja`} value={place.detachedLabelJa} onChange={(v) => p.onChange({ detachedLabelJa: v })} maxLength={100} placeholder={t`空のままでよい`} />
               </Field>
               <Field label={t`英語（なくてもよい）`} htmlFor={`${id}-detached-en`}>
-                <TextInput id={`${id}-detached-en`} lang="en" value={place.detachedLabelEn} onChange={(v) => p.onChange({ detachedLabelEn: v })} maxLength={100} placeholder="Worshipped from the 4th Battery (stamp there)" />
-              </Field>
-              {/* 2026-11-20, user: 第1経塚 is stamped from 第4砲台, 第22経塚 from 水分神社. The pin stays at the place; the stamp
-                  is checked here. Both positions share one 位置を確認した and one source. */}
-              <p className="text-base text-muted sm:col-span-2">
-                {t`遥拝の場所（スタンプを押す位置）：別の場所から拝んでスタンプを押すときに入れます。地図のピンは、この経由地の位置のままです。空のままなら、この経由地の位置で押します。下の「位置を確認した」は、両方の位置を確認してからチェックしてください。`}
-              </p>
-              <Field label={t`遥拝の場所の緯度`} htmlFor={`${id}-stamp-lat`}>
-                <NumberInput id={`${id}-stamp-lat`} value={place.stampLat} min={-90} max={90} onChange={(v) => p.onChange({ stampLat: v })} />
-              </Field>
-              <Field label={t`遥拝の場所の経度`} htmlFor={`${id}-stamp-lng`}>
-                <NumberInput id={`${id}-stamp-lng`} value={place.stampLng} min={-180} max={180} onChange={(v) => p.onChange({ stampLng: v })} />
+                <TextInput id={`${id}-detached-en`} lang="en" value={place.detachedLabelEn} onChange={(v) => p.onChange({ detachedLabelEn: v })} maxLength={100} placeholder="Can stay empty" />
               </Field>
             </div>
           ) : null}

@@ -1,10 +1,14 @@
-import { and, desc, eq, inArray, isNotNull, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNotNull, isNull, ne, or, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 import { writeAudit } from "../audit/audit-store";
 import type { Db } from "../db/client";
-import { courseCompletions, rallyCompletions, spots, stamps } from "../db/schema";
+import { courseCompletions, rallyCompletions, spots, spotTranslations, stamps } from "../db/schema";
 import { ralliesForPlace, recordFinished } from "../rallies/rally-store";
 import type { StampStore } from "./stamp-types";
 import { withTravel, type Fix } from "./travel";
+
+/** The waypoint a place is worshipped from (遥拝). */
+const stampFrom = alias(spots, "stamp_from");
 
 const spotColumns = {
   id: spots.id,
@@ -12,23 +16,40 @@ const spotColumns = {
   published: spots.published,
   stampable: spots.stampable,
   positionVerified: spots.positionVerified,
-  // Where the stamp is pressed: the stamp point (遥拝) when set, else the place. Both are set or null together (checks).
-  lat: sql<number | null>`coalesce(${spots.stampLat}, ${spots.lat})`.mapWith(Number),
-  lng: sql<number | null>`coalesce(${spots.stampLng}, ${spots.lng})`.mapWith(Number),
+  // Where the stamp is pressed: the place itself, or for a place worshipped from afar (遥拝) the waypoint it points to, only
+  // while that one is published with a checked position (otherwise nowhere, so the place cannot be stamped).
+  lat: sql<number | null>`case when ${spots.stampSpotId} is null then ${spots.lat} when ${stampFrom.published} and ${stampFrom.positionVerified} then ${stampFrom.lat} end`.mapWith(Number),
+  lng: sql<number | null>`case when ${spots.stampSpotId} is null then ${spots.lng} when ${stampFrom.published} and ${stampFrom.positionVerified} then ${stampFrom.lng} end`.mapWith(Number),
   radiusM: spots.radiusM,
   status: spots.status,
   statusUpdatedAt: spots.statusUpdatedAt,
+  stampSpotId: spots.stampSpotId,
 };
+
+const nameJa = alias(spotTranslations, "name_ja");
+const nameEn = alias(spotTranslations, "name_en");
 
 export function createDrizzleStampStore(db: Db): StampStore {
   return {
     async findSpot(id) {
-      const [s] = await db.select(spotColumns).from(spots).where(eq(spots.id, id)).limit(1);
+      const [s] = await db.select(spotColumns).from(spots).leftJoin(stampFrom, eq(stampFrom.id, spots.stampSpotId)).where(eq(spots.id, id)).limit(1);
       return s ?? null;
     },
 
     async findSpots(ids) {
-      return ids.length ? db.select(spotColumns).from(spots).where(inArray(spots.id, ids)) : [];
+      return ids.length ? db.select(spotColumns).from(spots).leftJoin(stampFrom, eq(stampFrom.id, spots.stampSpotId)).where(inArray(spots.id, ids)) : [];
+    },
+
+    async linkedSpots(spot) {
+      const hub = spot.stampSpotId ?? spot.id;
+      const rows = await db
+        .select({ ...spotColumns, nameJa: nameJa.name, nameEn: nameEn.name })
+        .from(spots)
+        .leftJoin(stampFrom, eq(stampFrom.id, spots.stampSpotId))
+        .leftJoin(nameJa, and(eq(nameJa.spotId, spots.id), eq(nameJa.locale, "ja")))
+        .leftJoin(nameEn, and(eq(nameEn.spotId, spots.id), eq(nameEn.locale, "en")))
+        .where(and(or(eq(spots.id, hub), eq(spots.stampSpotId, hub)), ne(spots.id, spot.id)));
+      return rows.map((r) => ({ ...r, nameJa: r.nameJa ?? "", nameEn: r.nameEn }));
     },
 
     async awardMany(userId, items) {

@@ -97,6 +97,24 @@ describe("collecting a stamp", () => {
     expect(mine.stamps[0]).toMatchObject({ spotId: SPOT_ID, routeId: ROUTE_ID });
   });
 
+  test("遥拝: one press at the waypoint also gives the place worshipped from it, and the other way round", async () => {
+    const { stamp, cookies, call, mem } = await setup();
+    const MOUND = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+    const CLOSED = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+    // The store gives a 遥拝 place the waypoint's position already (see stamp-store), so here it stands at HERE too.
+    mem.spots.set(MOUND, spot({ id: MOUND, stampSpotId: SPOT_ID }));
+    mem.spots.set(CLOSED, spot({ id: CLOSED, stampSpotId: SPOT_ID, status: "closed" }));
+    const first = (await (await stamp(cookies.alice)).json()) as Json;
+    expect(first.stamp.also).toEqual([{ spotId: MOUND, nameJa: MOUND, nameEn: null, alreadyStamped: false }]); // the closed one is left out
+    const mine = (await (await call("GET", "/stamps", { cookie: cookies.alice })).json()) as Json;
+    expect(mine.stamps.map((s: Json) => s.spotId).sort()).toEqual([SPOT_ID, MOUND].sort());
+
+    const fromMound = (await (await stamp(cookies.bob, { spotId: MOUND })).json()) as Json;
+    expect(fromMound.stamp).toMatchObject({ spotId: MOUND, alreadyStamped: false, also: [{ spotId: SPOT_ID, alreadyStamped: false }] });
+    // Pressing again: both already held.
+    expect(((await (await stamp(cookies.bob)).json()) as Json).stamp).toMatchObject({ alreadyStamped: true, also: [{ spotId: MOUND, alreadyStamped: true }] });
+  });
+
   test("user B never sees user A's stamps, and stamps for themselves only", async () => {
     const { stamp, cookies, call } = await setup();
     await stamp(cookies.alice);

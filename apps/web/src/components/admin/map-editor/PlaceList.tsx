@@ -28,7 +28,10 @@ function Badge({ icon, text }: { icon: ReactNode; text: string }) {
 }
 
 /** Every waypoint of the route in one list: its name, its kind and its two switches can all be changed here. */
-export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, onPatchPlace, onAddEndAt, onReorderPlaces, insertAfter, onInsertAfter, onDrawSubCourse, locating, onLocate, back }: Pick<MapEditorProps, "places" | "selectedKey" | "onSelectPlace" | "onRemovePlace" | "onPatchPlace" | "onAddEndAt" | "onReorderPlaces"> & {
+export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, onPatchPlace, onAddEndAt, onReorderPlaces, insertAfter, onInsertAfter, onDrawSubCourse, locating, onLocate, picking, onPick, back }: Pick<MapEditorProps, "places" | "selectedKey" | "onSelectPlace" | "onRemovePlace" | "onPatchPlace" | "onAddEndAt" | "onReorderPlaces"> & {
+  /** The place whose 遥拝 waypoint is being chosen on the map, and how to start or stop that. */
+  picking: string | null;
+  onPick: (key: string) => void;
   insertAfter: string | null;
   onInsertAfter: (key: string) => void;
   onDrawSubCourse: (key: string) => void;
@@ -173,13 +176,38 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
                     <button type="button" aria-pressed={p.stopBy && !p.detached} onClick={() => onPatchPlace(p.key, p.stopBy && !p.detached ? { stopBy: false, detached: false } : { stopBy: true, detached: false })} className={chipToggle(p.stopBy && !p.detached)}>
                       {t`寄り道`}
                     </button>
-                    <button type="button" aria-pressed={!!p.detached} onClick={() => onPatchPlace(p.key, p.detached ? { stopBy: false, detached: false } : { stopBy: true, detached: true })} className={chipToggle(!!p.detached)} title={t`行けない場所（遠くから拝む経塚など）。地図には出ますが、番号も線もつきません。利用者に見せる言葉は、経由地のタブで変えられます。`}>
+                    <button type="button" aria-pressed={!!p.detached} onClick={() => onPatchPlace(p.key, p.detached ? { stopBy: false, detached: false, stampSpotId: null } : { stopBy: true, detached: true })} className={chipToggle(!!p.detached)} title={t`行けない場所（遠くから拝む経塚など）。地図には出ますが、番号も線もつきません。利用者に見せる言葉は、経由地のタブで変えられます。`}>
                       {t`道とつながらない`}
                     </button>
                     <button type="button" aria-pressed={!!p.info} onClick={() => onPatchPlace(p.key, { info: !p.info })} className={chipToggle(!!p.info)} title={t`見せるだけの場所です。スタンプは押せません。「現在、立ち入りできません」などを書けます。`}>
                       {t`案内のみ`}
                     </button>
                   </div>
+                  {p.detached ? (
+                    <div className="flex flex-col gap-2">
+                      <label className="flex min-w-0 flex-col gap-1 text-base font-bold">
+                        {t`どこから拝む（スタンプを押す場所）`}
+                        <select
+                          value={p.stampFromKey ? (places.find((x) => x.key === p.stampFromKey)?.id ?? "") : ""}
+                          disabled={!!p.id && places.some((x) => x.stampFromKey === p.key)}
+                          onChange={(e) => onPatchPlace(p.key, { stampSpotId: e.target.value || null })}
+                          className={`${fieldClass} w-full min-w-0 max-w-md`}
+                        >
+                          <option value="">{t`ここで押す（選ばない）`}</option>
+                          {places
+                            .filter((x) => x.key !== p.key && x.id && !x.stampFromKey)
+                            .map((x) => (
+                              <option key={x.key} value={x.id!}>
+                                {x.name || t`（名前がありません）`}
+                              </option>
+                            ))}
+                        </select>
+                      </label>
+                      <button type="button" aria-pressed={picking === p.key} onClick={() => onPick(p.key)} className={`${chipToggle(picking === p.key)} self-start`} title={t`地図で、拝む場所の経由地のピンを押してください（もう一度押すと、やめます）`}>
+                        {picking === p.key ? t`地図でピンを押してください` : t`地図で選ぶ`}
+                      </button>
+                    </div>
+                  ) : null}
                   {p.key === firstStop && places.length >= 2 ? (
                     <button type="button" onClick={() => onAddEndAt(p.key)} className={`${chipToggle(false)} self-start`} title={t`一周して、ここに戻るコースのとき: 同じ位置に、スタンプのない終点を追加します`}>
                       {t`同じ場所に終点を追加`}

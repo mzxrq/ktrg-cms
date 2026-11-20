@@ -220,21 +220,28 @@ describe("places", () => {
     expect(moved.ok && moved.value.positionVerified).toBe(false);
   });
 
-  test("a stamp point (遥拝) is both numbers, moving it cancels the check, and visitors see it only once checked", async () => {
+  test("遥拝: a place points to a waypoint of its course; visitors get that waypoint once it is published and checked", async () => {
     const r = await route();
-    const s = await spot(r.id, { lat: 34.3, lng: 135.1, detached: true, positionVerified: true, positionSource: "公式", permissionConfirmed: true, stampable: true });
-    expect(await svc.updateSpot(ADMIN, s.id, s.updatedAt, { stampLat: 34.2 })).toEqual({ ok: false, reason: "validation_failed" });
-    const set = await svc.updateSpot(ADMIN, s.id, s.updatedAt, { stampLat: 34.2, stampLng: 135.05 });
-    if (!set.ok) throw new Error(set.reason);
-    expect(set.value).toMatchObject({ stampLat: 34.2, stampLng: 135.05, positionVerified: false });
-    const checked = await svc.updateSpot(ADMIN, s.id, set.value.updatedAt, { positionVerified: true });
-    if (!checked.ok) throw new Error(checked.reason);
-    const pub = await svc.publishSpot(ADMIN, s.id);
-    if (!pub.ok) throw new Error(pub.reason);
-    // The pin stays at the place; the stamp point is sent beside it.
-    expect(await svc.publicSpot(s.id)).toMatchObject({ position: { lat: 34.3, lng: 135.1 }, stampPosition: { lat: 34.2, lng: 135.05 } });
-    // Published: moving only the stamp point needs the new position checked in the same save.
-    expect(await svc.updateSpot(ADMIN, s.id, pub.value.updatedAt, { stampLat: 34.21, stampLng: 135.05 })).toEqual({ ok: false, reason: "position_not_verified" });
+    const other = await route({ nameJa: "ほかのコース" });
+    const ok = { positionVerified: true, positionSource: "公式", permissionConfirmed: true };
+    const mound = await spot(r.id, { lat: 34.3, lng: 135.1, detached: true, stampable: true, ...ok });
+    const battery = await spot(r.id, { nameJa: "第4砲台跡", lat: 34.2, lng: 135.05, ...ok });
+    const elsewhere = await spot(other.id, { nameJa: "よそ", lat: 34.1, lng: 135 });
+    // Not itself, not another course's waypoint.
+    expect(await svc.updateSpot(ADMIN, mound.id, mound.updatedAt, { stampSpotId: mound.id })).toEqual({ ok: false, reason: "validation_failed" });
+    expect(await svc.updateSpot(ADMIN, mound.id, mound.updatedAt, { stampSpotId: elsewhere.id })).toEqual({ ok: false, reason: "validation_failed" });
+    const linked = await svc.updateSpot(ADMIN, mound.id, mound.updatedAt, { stampSpotId: battery.id });
+    if (!linked.ok) throw new Error(linked.reason);
+    // Choosing the waypoint does not cancel the place's own position check.
+    expect(linked.value).toMatchObject({ stampSpotId: battery.id, positionVerified: true });
+    // One step only: the waypoint others are worshipped from cannot point anywhere itself.
+    expect(await svc.updateSpot(ADMIN, battery.id, battery.updatedAt, { stampSpotId: mound.id })).toEqual({ ok: false, reason: "validation_failed" });
+    if (!(await svc.publishSpot(ADMIN, mound.id)).ok) throw new Error("publish");
+    // The waypoint is still a draft: visitors see no 遥拝 place yet.
+    expect((await svc.publicSpot(mound.id))?.stampFrom).toBeNull();
+    if (!(await svc.publishSpot(ADMIN, battery.id)).ok) throw new Error("publish battery");
+    expect((await svc.publicSpot(mound.id))?.stampFrom).toEqual({ id: battery.id, nameJa: "第4砲台跡", nameEn: null, position: { lat: 34.2, lng: 135.05 } });
+    expect((await svc.publicSpot(mound.id))?.position).toMatchObject({ lat: 34.3, lng: 135.1 });
   });
 
   test("a published place cannot be moved without checking the new position", async () => {
