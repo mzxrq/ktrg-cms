@@ -7,7 +7,7 @@ import { PHYSICAL_LEVEL_UPPER_BOUNDS, STAR_COUNT, TECHNICAL_LEVELS, technicalSta
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
-  return { title: i18n.locale === "ja" ? "体力の目安と道のけわしさについて" : "About the effort and trail difficulty stars" };
+  return { title: i18n.locale === "ja" ? "体力の目安と道のけわしさについて" : "About the effort and trail difficulty ratings" };
 }
 
 const panel = "mx-4 flex flex-col gap-3 rounded-lg bg-surface p-5 text-lg leading-8";
@@ -26,11 +26,11 @@ export default async function GradingPage() {
         E: "厳しい岩場や藪こぎが続く。道を自分で見つける技術と、高い判断力が必要。",
       }
     : {
-        A: "A well-kept path that is hard to lose, where a fall is unlikely to be serious.",
+        A: "A well-kept trail that is easy to follow, where a fall is unlikely to be serious.",
         B: "Steep climbs and descents, and some places that are hard to follow. Some places have ladders or chains.",
-        C: "Places where a fall or slip is dangerous. You need to read a map and take care not to make mistakes.",
-        D: "Rocky ground and scree, and steep sections where you use your hands. Many places are hard to follow.",
-        E: "Long stretches of hard rock or thick brush. You must find your own way and judge well.",
+        C: "Some places where a fall or slip could be dangerous. You need to be able to read a map and take care at every step.",
+        D: "Rocky ground, loose stones, and steep sections where you need your hands. Many places are hard to follow.",
+        E: "Long stretches of difficult rock or thick undergrowth. You must find your own way and make sound decisions.",
       };
 
   return (
