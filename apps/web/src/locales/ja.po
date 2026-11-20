@@ -387,11 +387,11 @@ msgstr "{name}（終点）"
 msgid "{name}さん、こんにちは。"
 msgstr "{name}さん、こんにちは。"
 
-#: src/components/auth/SsoButtons.tsx:140
+#: src/components/auth/SsoButtons.tsx:143
 msgid "{name}でログイン"
 msgstr "{name}でログイン"
 
-#: src/components/auth/SsoButtons.tsx:140
+#: src/components/auth/SsoButtons.tsx:143
 msgid "{name}で登録"
 msgstr "{name}で登録"
 
@@ -2993,7 +2993,7 @@ msgstr "はじめての方のホームを、前の見せ方（画面が止まっ
 msgid "はじめての方は"
 msgstr "はじめての方は"
 
-#: src/components/auth/SsoButtons.tsx:148
+#: src/components/auth/SsoButtons.tsx:151
 msgid "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
 msgstr "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
 

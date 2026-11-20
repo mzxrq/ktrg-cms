@@ -34,8 +34,9 @@ export const SsoMark = ({ provider }: { provider: SsoProvider }) =>
 /** One size for every button in the sign-in group (face or fingerprint, Google, LINE): Google asks for equal weight. */
 const groupButton = "tap-target group relative flex min-h-14 w-full items-stretch overflow-hidden rounded-xl text-lg font-bold disabled:opacity-60";
 const groupIcon = "relative flex w-14 shrink-0 items-center justify-center";
-// The words sit in the middle of the whole button: the right padding matches the icon's width.
-const groupLabel = "relative flex flex-1 items-center justify-center pr-14 pl-2 text-center leading-snug";
+// The words sit in the middle of the whole button (right padding = the icon's width) where there is room; narrow phones
+// with large text give that room back to the words.
+const groupLabel = "relative flex flex-1 items-center justify-center pr-3 pl-2 text-center leading-snug sm:pr-14";
 
 /** A button in the sign-in group with a plain outline (face or fingerprint, and Apple until it has its own look). */
 export function GroupButton({ icon, label, onClick, disabled }: { icon: ReactNode; label: string; onClick: () => void; disabled?: boolean }) {
@@ -78,10 +79,11 @@ function LineLoginButton({ label, onClick, disabled }: { label: string; onClick:
       className="tap-target group relative flex min-h-14 w-full items-stretch overflow-hidden rounded-xl bg-line-green text-lg font-bold text-on-line-green disabled:border disabled:border-[#e5e5e5]/60 disabled:bg-white disabled:text-[#1e1e1e]/20"
     >
       <span aria-hidden="true" className="absolute inset-0 group-enabled:group-hover:bg-black/10 group-enabled:group-active:bg-black/30" />
-      <span className="relative flex w-14 shrink-0 items-center justify-center border-r border-black/8 group-disabled:border-[#e5e5e5]/60">
+      <span className="relative flex w-12 shrink-0 items-center justify-center border-r border-black/8 group-disabled:border-[#e5e5e5]/60 sm:w-14">
         <LineIcon className="size-9" />
       </span>
-      <span className="relative flex flex-1 items-center justify-center pr-14 pl-2 whitespace-nowrap">{label}</span>
+      {/* LINE allows no line break, so on a narrow phone with large text the words shrink to fit (5.6vw) instead of wrapping. */}
+      <span className="relative flex min-w-0 flex-1 items-center justify-center px-1 text-[min(1em,5.6vw)] whitespace-nowrap sm:pr-14 sm:pl-2">{label}</span>
     </button>
   );
 }
@@ -137,7 +139,8 @@ export function SsoButtons({
       {children}
       {providers.map((p) => {
         const name = SSO_NAMES[p];
-        const label = signUp ? t`${name}で登録` : t`${name}でログイン`;
+        // LINE's guidelines list only login wording (「LINEでログイン」), so LINE says ログイン on the register page too.
+        const label = signUp && p !== "line" ? t`${name}で登録` : t`${name}でログイン`;
         if (p === "google") return <GoogleLoginButton key={p} label={label} onClick={() => void go(p)} disabled={busy} />;
         if (p === "line") return <LineLoginButton key={p} label={label} onClick={() => void go(p)} disabled={busy} />;
         return <GroupButton key={p} icon={<SsoMark provider={p} />} label={label} onClick={() => void go(p)} disabled={busy} />;

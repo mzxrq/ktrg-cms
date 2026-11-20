@@ -387,11 +387,11 @@ msgstr "{name} (end)"
 msgid "{name}さん、こんにちは。"
 msgstr "Hello, {name}."
 
-#: src/components/auth/SsoButtons.tsx:140
+#: src/components/auth/SsoButtons.tsx:143
 msgid "{name}でログイン"
 msgstr "Log in with {name}"
 
-#: src/components/auth/SsoButtons.tsx:140
+#: src/components/auth/SsoButtons.tsx:143
 msgid "{name}で登録"
 msgstr "Sign up with {name}"
 
@@ -2993,7 +2993,7 @@ msgstr "Show first-time visitors the earlier home (the screen holds still and ch
 msgid "はじめての方は"
 msgstr "First time here?"
 
-#: src/components/auth/SsoButtons.tsx:148
+#: src/components/auth/SsoButtons.tsx:151
 msgid "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
 msgstr "If this is your first time, an account is made for you. If an email address comes with it, we use it only to help you get back in if you cannot log in. See our <0>privacy policy</0> for details."
 
@@ -9019,11 +9019,11 @@ msgstr "Confirm with face, fingerprint or lock code"
 
 #: src/components/auth/LoginFlow.tsx:121
 msgid "顔・指紋でログイン"
-msgstr "Face or fingerprint"
+msgstr "Log in with face or fingerprint"
 
 #: src/components/auth/RegisterFlow.tsx:188
 msgid "顔・指紋で登録"
-msgstr "Face or fingerprint"
+msgstr "Sign up with face or fingerprint"
 
 #: src/components/auth/RegisterFlow.tsx:148
 msgid "顔・指紋で登録する"
