@@ -540,6 +540,13 @@
       "when": 1795138883931,
       "tag": "0076_lying_micromax",
       "breakpoints": true
+    },
+    {
+      "idx": 77,
+      "version": "7",
+      "when": 1795149352193,
+      "tag": "0077_wooden_thor",
+      "breakpoints": true
     }
   ]
 }

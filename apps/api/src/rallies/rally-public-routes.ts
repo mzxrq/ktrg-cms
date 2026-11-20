@@ -49,7 +49,7 @@ export function rallyPublicRoutes(getServices: () => { rallyAdmin: RallyAdminSer
       lat: s.position ? s.position.lat : null,
       lng: s.position ? s.position.lng : null,
       // Where the stamp is pressed when not at the place (遥拝); null: at lat/lng.
-      stampPosition: s.stampPosition,
+      stampPosition: s.stampFrom?.position ?? null,
     });
     const places =
       "places" in found

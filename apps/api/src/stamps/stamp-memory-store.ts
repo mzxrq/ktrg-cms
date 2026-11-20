@@ -26,6 +26,10 @@ export function createMemoryStampStore(audit: AuditWriter, opts: { now?: () => D
     async findSpots(ids) {
       return ids.flatMap((id) => spots.get(id) ?? []);
     },
+    async linkedSpots(spot) {
+      const hub = spot.stampSpotId ?? spot.id;
+      return [...spots.values()].filter((s) => s.id !== spot.id && (s.id === hub || s.stampSpotId === hub)).map((s) => ({ ...s, nameJa: s.id, nameEn: null }));
+    },
     async awardMany(userId, items) {
       let added = 0;
       for (const i of items) {

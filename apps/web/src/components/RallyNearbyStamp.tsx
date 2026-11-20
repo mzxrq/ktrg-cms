@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { pickText } from "@/lib/pick-text";
-import { distanceParts, type Problem } from "@/lib/stamp-flow";
+import { distanceParts, type Problem, type AlsoName } from "@/lib/stamp-flow";
 import { nearestToStamp, type RallyPlace } from "@/lib/rally-nearby";
 import { buzz, playThud, unlockAudio } from "@/lib/stamp-feel";
 import { getOutbox } from "@/lib/stamp-outbox";
@@ -18,7 +18,7 @@ type Phase =
   | { name: "idle" }
   | { name: "explain" }
   | { name: "working"; what: "locating" | "sending" }
-  | { name: "done"; place: string; already: boolean }
+  | { name: "done"; place: string; already: boolean; also: AlsoName[] }
   | { name: "queued"; place: string }
   | { name: "none"; place: string; distanceM: number }
   | { name: "problem"; problem: Problem; distanceM?: number };
@@ -64,7 +64,7 @@ export function RallyNearbyStamp({ places, held, locale, rallyName, quiet = fals
     const result = await requestStamp(found.place.id, position.reading);
     if (!result.ok && result.failure === "network" && (await getOutbox().enqueue(found.place.id, position.reading))) return setPhase({ name: "queued", place: nameOf(found.place) });
     if (!result.ok) return setPhase({ name: "problem", problem: result.failure, distanceM: result.distanceM });
-    setPhase({ name: "done", place: nameOf(found.place), already: result.already });
+    setPhase({ name: "done", place: nameOf(found.place), already: result.already, also: result.also ?? [] });
     if (!result.already) {
       playThud();
       buzz();
@@ -116,6 +116,10 @@ export function RallyNearbyStamp({ places, held, locale, rallyName, quiet = fals
       {phase.name === "done" ? (
         <p role="status" className="rounded-lg bg-surface p-4 text-xl font-bold leading-snug">
           {phase.already ? t`「${phase.place}」のスタンプは、もう押してあります。` : t`「${phase.place}」のスタンプを押しました！`}
+          {phase.also.map((a) => {
+            const name = i18n.locale === "ja" ? a.nameJa : (a.nameEn ?? a.nameJa);
+            return <span key={a.nameJa} className="mt-1 block text-lg font-normal">{t`「${name}」のスタンプも押しました。`}</span>;
+          })}
         </p>
       ) : null}
       {phase.name === "queued" ? (

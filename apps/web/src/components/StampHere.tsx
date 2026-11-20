@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { getOutbox } from "@/lib/stamp-outbox";
 import { locationAlreadyAllowed, mockPosition, mockStamp, readPosition, requestStamp } from "@/lib/stamp-client";
-import { distanceParts, type Problem, type StampMock } from "@/lib/stamp-flow";
+import { distanceParts, type Problem, type StampMock, type AlsoName } from "@/lib/stamp-flow";
 import { buzz, playThud, unlockAudio } from "@/lib/stamp-feel";
 import { announceProgress, type StampProgress } from "@/lib/stamp-progress";
 import { track } from "@/lib/track";
@@ -25,7 +25,7 @@ type Phase =
   | { name: "explain" }
   | { name: "locating" }
   | { name: "sending" }
-  | { name: "done"; already: boolean }
+  | { name: "done"; already: boolean; also: AlsoName[] }
   | { name: "queued" }
   | { name: "problem"; problem: Problem; distanceM?: number };
 
@@ -97,7 +97,7 @@ export function StampHere({
     setPhase({ name: "sending" });
     const result = mock ? await mockStamp(mock) : await requestStamp(spotId, position.reading);
     if (result.ok) {
-      setPhase({ name: "done", already: result.already });
+      setPhase({ name: "done", already: result.already, also: result.also ?? [] });
       if (!result.already) {
         playThud();
         buzz();
@@ -133,7 +133,17 @@ export function StampHere({
         {phase.already ? null : <StampPress image={stampImage} />}
         <div role="status" className="flex items-center gap-4 rounded-lg bg-surface p-4 shadow-lg">
           <StampFace state="stamped" number={1} image={stampImage} rough className="stamp-land h-16 w-16 shrink-0" />
-          <p className="text-xl font-bold leading-snug">{phase.already ? t`このスタンプは、もう押してあります。` : t`スタンプを押しました！`}</p>
+          <div className="flex flex-col gap-1">
+            <p className="text-xl font-bold leading-snug">{phase.already ? t`このスタンプは、もう押してあります。` : t`スタンプを押しました！`}</p>
+            {phase.also.map((a) => {
+              const name = i18n.locale === "ja" ? a.nameJa : (a.nameEn ?? a.nameJa);
+              return (
+                <p key={a.nameJa} className="text-lg leading-snug">
+                  {t`「${name}」のスタンプも押しました。`}
+                </p>
+              );
+            })}
+          </div>
         </div>
       </div>
     );

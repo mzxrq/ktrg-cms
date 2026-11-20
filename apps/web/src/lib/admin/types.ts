@@ -16,7 +16,7 @@ export interface AdminLine {
   type: "LineString";
   coordinates: [number, number, number?][];
   /** The route cut into the stretches between waypoints (ids of the waypoints), when it was drawn that way. */
-  legs?: { from: string; to: string; coordinates: [number, number, number?][]; side?: true; back?: true; ride?: { mode: "ferry" | "bus" | "train" | "other"; minutes: number }; via?: [number, number][] }[];
+  legs?: { from: string; to: string; coordinates: [number, number, number?][]; side?: true; back?: true; ride?: { mode: "ferry" | "bus" | "train" | "other"; minutes: number }; via?: [number, number][]; auto?: true }[];
 }
 
 export interface AdminRoute {
@@ -99,9 +99,8 @@ export interface AdminSpot {
   detached?: boolean;
   detachedLabelJa?: string | null;
   detachedLabelEn?: string | null;
-  /** Where the stamp is pressed when not at the place itself (遥拝). */
-  stampLat?: number | null;
-  stampLng?: number | null;
+  /** The waypoint of this course it is worshipped from (遥拝). */
+  stampSpotId?: string | null;
   stampImageUrl?: string | null;
   photoUrl: string | null;
   photoCredit?: string | null;

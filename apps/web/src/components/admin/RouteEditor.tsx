@@ -9,7 +9,7 @@ import { CheckIcon, DocumentIcon, ListIcon, MapIcon, PinIcon } from "@/component
 import { api } from "@/lib/api";
 import { outcome } from "@/lib/admin/admin-client";
 import { checklist, factsFromDraft, progress, type EditorTab } from "@/lib/admin/checklist";
-import { walkedStats, type TextField, type RouteDraft } from "@/lib/admin/route-draft";
+import { walkedStats, type TextField, type RouteDraft, stampFromChoices } from "@/lib/admin/route-draft";
 import { RubyEditor } from "./RubyEditor";
 import { draftProblems, placeChanged, type DraftProblem } from "@/lib/admin/save-plan";
 import { useRouteDraft } from "./useRouteDraft";
@@ -18,7 +18,6 @@ import type { AdminSharedSpot } from "@/lib/admin/types";
 import { formatUpdated } from "@/lib/format";
 import { adminTab, adminTabRow, Check, Field, inputClass, MultilingualField, NumberInput, Section, TextInput } from "./fields";
 import { LivePreview } from "./LivePreview";
-import { CourseAreaEditor } from "./CourseAreaEditor";
 import { walkStyleOf } from "@/lib/walk-style";
 import { PublishedEditDialog } from "./PublishedEditDialog";
 import { AccessPointsEditor } from "./AccessPointsEditor";
@@ -326,12 +325,6 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                 ) : null}
                 <CourseMapEditor d={d} confirmRemoval={confirmRemoval} />
               </Section>
-              <CourseAreaEditor
-                area={draft.area}
-                line={draft.line}
-                places={draft.places.flatMap((p) => (p.lat !== null && p.lng !== null ? [{ lat: p.lat, lng: p.lng }] : []))}
-                onChange={(value) => dispatch({ type: "area", value })}
-              />
               </>
             ) : null}
 
@@ -405,6 +398,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                           canMoveDown={currentIndex < draft.places.length - 1}
                           invalidName={problemOf("place_name", current.key)}
                           invalidPhoto={problemOf("place_photo_link", current.key)}
+                          stampFrom={stampFromChoices(draft.places, current.key)}
                           onChange={(patch) => guarded(current.key, { type: "place", key: current.key, patch })}
                           onRemove={async () => {
                             if (!(await confirmRemoval(current.key))) return;

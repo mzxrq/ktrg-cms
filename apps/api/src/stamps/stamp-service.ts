@@ -25,6 +25,15 @@ export interface Collected {
   flagged: boolean;
   alreadyStamped: boolean;
   finished: Finished;
+  /** Other places stamped by the same press (遥拝, see StampStore.linkedSpots), newly or already held. */
+  also: AlsoStamped[];
+}
+
+export interface AlsoStamped {
+  spotId: string;
+  nameJa: string;
+  nameEn: string | null;
+  alreadyStamped: boolean;
 }
 
 /**
@@ -58,6 +67,16 @@ async function check(r: Reading, store: StampStore, now: Date): Promise<Result<{
 }
 
 export function createStampService({ store, now = () => new Date() }: { store: StampStore; now?: () => Date }) {
+  /** The other places this press also stamps, each passing the same checks with the same reading (遥拝 links). */
+  async function linked(r: Reading, spot: StampSpot): Promise<{ spot: StampPlace; flagged: boolean; nameJa: string; nameEn: string | null }[]> {
+    const out: { spot: StampPlace; flagged: boolean; nameJa: string; nameEn: string | null }[] = [];
+    for (const other of await store.linkedSpots(spot)) {
+      const c = await check({ ...r, spotId: other.id }, store, now());
+      if (c.ok) out.push({ spot: c.value.spot, flagged: c.value.flagged, nameJa: other.nameJa, nameEn: other.nameEn });
+    }
+    return out;
+  }
+
   return {
     /** The place, if visitors may head for it and stamp it (also used by navigation); null otherwise. */
     async stampPlace(spotId: string): Promise<StampPlace | null> {
@@ -73,6 +92,8 @@ export function createStampService({ store, now = () => new Date() }: { store: S
 
     check: (r: Reading) => check(r, store, now()),
 
+    linked,
+
     /** Saves a stamp whose checks were already done (a guest's, once they sign up). */
     awardMany: (userId: string, items: { spotId: string; flagged: boolean; flagReason?: string | null; createdAt: Date }[]) => store.awardMany(userId, items),
     award: (userId: string, spotId: string, flagged: boolean) => store.award(userId, spotId, { flagged, flagReason: flagged ? "low_accuracy" : null }),
@@ -84,9 +105,18 @@ export function createStampService({ store, now = () => new Date() }: { store: S
       const got = await store.award(userId, spot.id, { flagged, flagReason: flagged ? "low_accuracy" : null, scannedAt, travel: { lat: spot.lat, lng: spot.lng, at: scannedAt ?? now() } });
       // A revoked stamp stays on record and blocks a new one; say so instead of "already stamped" with nothing to show.
       if (got.revoked) return { ok: false, reason: "stamp_revoked" };
+      const finished: Finished = { routeIds: [...got.finished.routeIds], rallyIds: [...got.finished.rallyIds] };
+      const also: AlsoStamped[] = [];
+      for (const o of await linked(r, spot)) {
+        const more = await store.award(userId, o.spot.id, { flagged: o.flagged, flagReason: o.flagged ? "low_accuracy" : null, scannedAt });
+        if (more.revoked) continue;
+        also.push({ spotId: o.spot.id, nameJa: o.nameJa, nameEn: o.nameEn, alreadyStamped: !more.created });
+        finished.routeIds.push(...more.finished.routeIds.filter((id) => !finished.routeIds.includes(id)));
+        finished.rallyIds.push(...more.finished.rallyIds.filter((id) => !finished.rallyIds.includes(id)));
+      }
       return {
         ok: true,
-        value: { spotId: spot.id, createdAt: got.createdAt, flagged: got.flagged, alreadyStamped: !got.created, finished: got.finished },
+        value: { spotId: spot.id, createdAt: got.createdAt, flagged: got.flagged, alreadyStamped: !got.created, finished, also },
       };
     },
 

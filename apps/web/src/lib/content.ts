@@ -100,6 +100,8 @@ export interface SpotListItem {
   detached?: boolean;
   detachedLabelJa?: string | null;
   detachedLabelEn?: string | null;
+  /** The waypoint it is worshipped from (遥拝), by name: the label when none was written. */
+  stampFrom?: { nameJa: string; nameEn: string | null };
   /** A stamp can be collected here; false (or left out for sample data it is true) for a place with no stamp. */
   stampable?: boolean;
   /** The walk from the stop before this one: left out for the first stop or when the line does not fit the stops. */
@@ -128,6 +130,8 @@ export interface RoutePoint {
   detached?: boolean;
   detachedLabelJa?: string | null;
   detachedLabelEn?: string | null;
+  /** The waypoint it is worshipped from (遥拝), by name: the label when none was written. */
+  stampFrom?: { nameJa: string; nameEn: string | null };
   position: SpotPosition | null;
   /** Its status (案内のみ, 閉鎖中 ...) and the editor's note; left out on old data, which means open. */
   status?: SpotStatus;

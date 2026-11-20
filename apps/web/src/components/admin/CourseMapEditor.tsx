@@ -38,6 +38,7 @@ export function CourseMapEditor({ d, confirmRemoval }: { d: ReturnType<typeof us
         onLine={(points) => dispatch({ type: "line", points })}
         onHeights={(points) => dispatch({ type: "elevations", points })}
         onSetLeg={(leg) => dispatch({ type: "setLeg", leg })}
+        onAutoLegs={(legs) => dispatch({ type: "autoLegs", legs })}
         onSetLegs={(legs) => dispatch({ type: "setLegs", legs })}
         onClearLeg={(from, to) => dispatch({ type: "clearLeg", from, to })}
         onClearLegs={() => dispatch({ type: "clearLegs" })}
@@ -79,6 +80,7 @@ export function CourseMapEditor({ d, confirmRemoval }: { d: ReturnType<typeof us
           else void confirmRemoval(key).then((yes) => yes && dispatch({ type: "removePlace", key }));
         }}
         onSelectPlace={setSelectedKey}
+        area={{ value: draft.area, onChange: (value) => dispatch({ type: "area", value }) }}
         onPatchPlace={(key, patch) => {
           const p = draft.places.find((x) => x.key === key);
           // A new waypoint's stamp switch follows its kind; a saved one keeps what was chosen for it.

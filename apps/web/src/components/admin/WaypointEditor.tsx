@@ -7,7 +7,7 @@ import { confirmDialog } from "@/components/ConfirmDialog";
 import { useErrorMessages } from "@/components/useErrorMessages";
 import { api } from "@/lib/api";
 import { outcome } from "@/lib/admin/admin-client";
-import { draftReducer, initialState, placeFromServer, type DraftAction, type PlaceDraft, type RouteDraft } from "@/lib/admin/route-draft";
+import { draftReducer, initialState, placeFromServer, type DraftAction, type PlaceDraft, type RouteDraft, stampFromChoices } from "@/lib/admin/route-draft";
 import { draftProblems, placeChanged, planSave, type DraftProblem } from "@/lib/admin/save-plan";
 import { showToast } from "@/lib/admin/toast";
 import { PlacePanel } from "./PlacePanel";
@@ -117,6 +117,7 @@ export function WaypointEditor({ initial, placeId, deleteWarning }: { initial: R
           canMoveDown={false}
           invalidName={problems.some((p) => p.kind === "place_name")}
           invalidPhoto={problems.some((p) => p.kind === "place_photo_link")}
+          stampFrom={stampFromChoices(state.present.places, key)}
           onChange={(patch) => edit({ type: "place", key, patch })}
           onRemove={() => void remove()}
           onMove={() => {}}

@@ -6,7 +6,8 @@
 //
 // The stamping API (apps/api/src/stamps): POST /api/v1/stamps, JSON body { spotId, lat, lng, accuracyM }, session
 // cookie. Answers:
-//   200 { ok: true, stamp: { spotId, createdAt, flagged, alreadyStamped, finished: { routeIds, rallyIds } } }
+//   200 { ok: true, stamp: { spotId, createdAt, flagged, alreadyStamped, finished: { routeIds, rallyIds }, also: [...] } }
+//       `also`: other places the same press stamped (遥拝: a mound worshipped from this waypoint, or the other way round)
 //   409 { ok: false, error: "too_far" }              outside the spot's check-in radius (the distance is never sent)
 //   422 { ok: false, error: "gps_accuracy_poor" }    the phone's own error radius is over 100 m
 //   409 { ok: false, error: "spot_closed" }
@@ -46,7 +47,13 @@ export interface Finished {
   rallyIds: string[];
 }
 
-export type StampResult = { ok: true; already: boolean; finished?: Finished } | { ok: false; failure: StampFailure; distanceM?: number };
+/** A place the same press also stamped for the first time (遥拝 links), by name. */
+export interface AlsoName {
+  nameJa: string;
+  nameEn: string | null;
+}
+
+export type StampResult = { ok: true; already: boolean; finished?: Finished; also?: AlsoName[] } | { ok: false; failure: StampFailure; distanceM?: number };
 
 /** Anything that can go wrong in the flow, in the order a visitor meets it. */
 export type Problem = GeoFailure | StampFailure;
@@ -69,9 +76,14 @@ export function parseStampResponse(status: number, body: unknown): StampResult {
   if (status === 200 && b.ok === true) {
     // A stamp is only a stamp when the answer carries one.
     if (typeof b.stamp !== "object" || b.stamp === null) return { ok: false, failure: "failed" };
-    const s = b.stamp as { alreadyStamped?: unknown; finished?: unknown };
+    const s = b.stamp as { alreadyStamped?: unknown; finished?: unknown; also?: unknown };
     const finished = finishedFrom(s.finished);
-    return { ok: true, already: s.alreadyStamped === true, ...(finished ? { finished } : {}) };
+    // Only the places newly stamped are named; anything malformed is left out (the stamp itself still counts).
+    const also = (Array.isArray(s.also) ? s.also : []).flatMap((a: unknown): AlsoName[] => {
+      const x = (typeof a === "object" && a !== null ? a : {}) as { nameJa?: unknown; nameEn?: unknown; alreadyStamped?: unknown };
+      return typeof x.nameJa === "string" && x.nameJa !== "" && x.alreadyStamped === false ? [{ nameJa: x.nameJa, nameEn: typeof x.nameEn === "string" ? x.nameEn : null }] : [];
+    });
+    return { ok: true, already: s.alreadyStamped === true, ...(finished ? { finished } : {}), ...(also.length > 0 ? { also } : {}) };
   }
   if (status === 401) return { ok: false, failure: "login_needed" };
   if (status === 429) return { ok: false, failure: "too_many_requests" };

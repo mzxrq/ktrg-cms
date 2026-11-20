@@ -115,6 +115,10 @@ describe("return legs", () => {
     expect(r.ok && r.line.legs?.[0]?.back).toBe(true);
     if (r.ok) expect(ridesOf(r.line, new Set([A, B]))).toEqual([]);
   });
+  test("a leg that routes itself keeps its mark; anything but true is a line kept as drawn", () => {
+    expect((() => { const r = parseLine({ type: "LineString", coordinates, legs: [{ from: A, to: B, coordinates, auto: true }] }); return r.ok && r.line.legs?.[0]?.auto; })()).toBe(true);
+    expect((() => { const r = parseLine({ type: "LineString", coordinates, legs: [{ from: A, to: B, coordinates, auto: "yes" }] }); return r.ok && r.line.legs?.[0]?.auto; })()).toBeUndefined();
+  });
   test("anything but true is not a return leg", () => {
     const r = parseLine({ type: "LineString", coordinates, legs: [{ from: A, to: B, coordinates, back: "yes" }] });
     expect(r.ok && r.line.legs?.[0]?.back).toBeUndefined();

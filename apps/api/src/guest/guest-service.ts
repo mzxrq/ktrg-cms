@@ -1,6 +1,6 @@
 import type { Result } from "../content/content-types";
 import type { Finished } from "../stamps/stamp-types";
-import type { Reading, StampService } from "../stamps/stamp-service";
+import type { AlsoStamped, Reading, StampService } from "../stamps/stamp-service";
 import { withTravel, type Fix } from "../stamps/travel";
 import { decodeGuest, encodeGuest, GUEST_MAX, type GuestStamp } from "./guest-cookie";
 
@@ -25,17 +25,29 @@ export function createGuestService({ stamps, secret, now = () => new Date() }: {
       });
     },
 
-    async collect(cookie: string | null | undefined, r: Reading): Promise<Result<{ spotId: string; createdAt: Date; flagged: boolean; alreadyStamped: boolean; finished: Finished; cookie: string }>> {
+    async collect(cookie: string | null | undefined, r: Reading): Promise<Result<{ spotId: string; createdAt: Date; flagged: boolean; alreadyStamped: boolean; finished: Finished; also: AlsoStamped[]; cookie: string }>> {
       const checked = await stamps.check(r);
       if (!checked.ok) return checked;
       const held = list(cookie);
       const finished: Finished = { routeIds: [], rallyIds: [] }; // finishing a course or rally is an account's: no certificate here
-      const mine = held.find((s) => s.spotId === r.spotId);
-      if (mine) return { ok: true, value: { spotId: r.spotId, createdAt: new Date(mine.at * 1000), flagged: mine.flagged, alreadyStamped: true, finished, cookie: encodeGuest(held, secret) } };
-      if (held.length >= GUEST_MAX) return { ok: false, reason: "guest_full" };
       const at = Math.floor(now().getTime() / 1000);
-      const next: GuestStamp[] = [...held, { spotId: r.spotId, at, flagged: checked.value.flagged }];
-      return { ok: true, value: { spotId: r.spotId, createdAt: new Date(at * 1000), flagged: checked.value.flagged, alreadyStamped: false, finished, cookie: encodeGuest(next, secret) } };
+      const next: GuestStamp[] = [...held];
+      // This place, then every place the same press stamps (遥拝 links), as far as the cookie has room.
+      const add = (spotId: string, flagged: boolean): boolean | "full" => {
+        if (next.some((s) => s.spotId === spotId)) return false;
+        if (next.length >= GUEST_MAX) return "full";
+        next.push({ spotId, at, flagged });
+        return true;
+      };
+      const mine = held.find((s) => s.spotId === r.spotId);
+      if (!mine && add(r.spotId, checked.value.flagged) === "full") return { ok: false, reason: "guest_full" };
+      const also: AlsoStamped[] = [];
+      for (const o of await stamps.linked(r, checked.value.spot)) {
+        const added = add(o.spot.id, o.flagged);
+        if (added !== "full") also.push({ spotId: o.spot.id, nameJa: o.nameJa, nameEn: o.nameEn, alreadyStamped: !added });
+      }
+      const createdAt = mine ? new Date(mine.at * 1000) : new Date(at * 1000);
+      return { ok: true, value: { spotId: r.spotId, createdAt, flagged: mine ? mine.flagged : checked.value.flagged, alreadyStamped: !!mine, finished, also, cookie: encodeGuest(next, secret) } };
     },
 
     /** The cookie's own value, to be kept as a backup (empty when there are no stamps). */

@@ -34,9 +34,8 @@ export interface PlaceDraft {
   /** What visitors read on it (empty: the default, 道からはなれた場所). */
   detachedLabelJa: string;
   detachedLabelEn: string;
-  /** Where the stamp is pressed when not at the place itself (遥拝); null: at lat/lng. Shares the place's position check. */
-  stampLat: number | null;
-  stampLng: number | null;
+  /** The saved waypoint of this course it is worshipped from (遥拝): its stamp is pressed there. */
+  stampSpotId: string | null;
   nameJa: string;
   nameEn: string;
   /** How the Japanese name is read, typed by a person ("" = none). */
@@ -148,7 +147,7 @@ const s = (v: string | null | undefined) => v ?? "";
 
 export function placeFromServer(p: AdminSpot): PlaceDraft {
   return {
-    key: p.id, id: p.id, updatedAt: p.updatedAt, published: p.published, kind: p.kind, stampable: p.stampable, stopBy: p.stopBy, detached: p.detached ?? false, detachedLabelJa: s(p.detachedLabelJa), detachedLabelEn: s(p.detachedLabelEn), stampLat: p.stampLat ?? null, stampLng: p.stampLng ?? null,
+    key: p.id, id: p.id, updatedAt: p.updatedAt, published: p.published, kind: p.kind, stampable: p.stampable, stopBy: p.stopBy, detached: p.detached ?? false, detachedLabelJa: s(p.detachedLabelJa), detachedLabelEn: s(p.detachedLabelEn), stampSpotId: p.stampSpotId ?? null,
     nameJa: p.nameJa, nameEn: s(p.nameEn), nameKana: s(p.nameKana), descriptionJa: s(p.descriptionJa), descriptionEn: s(p.descriptionEn), historyJa: s(p.historyJa), historyEn: s(p.historyEn), translations: p.translations ?? {}, stampImageUrl: s(p.stampImageUrl), photoUrl: s(p.photoUrl), photoCredit: s(p.photoCredit), photoSourceUrl: s(p.photoSourceUrl), photoNameJa: s(p.photoNameJa), photoNameEn: s(p.photoNameEn), sourceJa: s(p.sourceJa), sourceEn: s(p.sourceEn), photos: p.photos ?? [],
     lat: p.lat, lng: p.lng, positionVerified: p.positionVerified, positionSource: s(p.positionSource), radiusM: p.radiusM,
     status: p.status, statusNoteJa: s(p.statusNoteJa), statusNoteEn: s(p.statusNoteEn),
@@ -171,8 +170,10 @@ function legsFromServer(route: AdminRoute, places: PlaceDraft[], line: LngLatEle
     ...(l.back ? { back: true as const } : {}),
     ...(l.ride ? { ride: l.ride } : {}),
     ...(l.via && l.via.length > 0 ? { via: l.via } : {}),
+    ...(l.auto ? { auto: true as const } : {}),
   }));
-  const kept = reconcileLegs(stops, saved, sidePairs(places), offLineKeys(places));
+  // Opening a course never routes anything by itself: a saved leg whose end no longer meets its stop is not marked to redo.
+  const kept = reconcileLegs(stops, saved, sidePairs(places), offLineKeys(places)).map((l) => (l.stale ? { ...l, stale: undefined } : l));
   return kept.length > 0 ? kept : splitLine(stops, line);
 }
 
@@ -203,7 +204,7 @@ export function draftFromServer(route: AdminRoute, spots: AdminSpot[]): RouteDra
 }
 
 export const newPlace = (key: string, lat: number | null, lng: number | null, n: number, kind: PointKind = "other"): PlaceDraft => ({
-  key, id: null, updatedAt: null, published: false, kind, stampable: stampableByDefault(kind), stopBy: false, detached: false, detachedLabelJa: "", detachedLabelEn: "", stampLat: null, stampLng: null,
+  key, id: null, updatedAt: null, published: false, kind, stampable: stampableByDefault(kind), stopBy: false, detached: false, detachedLabelJa: "", detachedLabelEn: "", stampSpotId: null,
   nameJa: stampableByDefault(kind) ? `経由地${n}` : "", nameEn: "", nameKana: "", descriptionJa: "", descriptionEn: "", historyJa: "", historyEn: "",
   translations: {}, stampImageUrl: "", photoUrl: "", photoCredit: "", photoSourceUrl: "", photoNameJa: "", photoNameEn: "", sourceJa: "", sourceEn: "", photos: [], lat, lng, positionVerified: false, positionSource: "", radiusM: 50, status: "open", statusNoteJa: "", statusNoteEn: "",
   permissionConfirmed: false, permissionNote: "",
@@ -270,6 +271,8 @@ export type DraftAction =
   | { type: "setLeg"; leg: Leg }
   /** Several legs at once (one undo step). */
   | { type: "setLegs"; legs: Leg[] }
+  /** Legs the editor routed by itself (a new or moved stop): part of the step that caused it, not a step of their own to undo. */
+  | { type: "autoLegs"; legs: Leg[] }
   | { type: "clearLeg"; from: string; to: string }
   /** The whole line and every leg. */
   | { type: "clearLegs" }
@@ -413,6 +416,7 @@ function apply(d: RouteDraft, a: DraftAction): RouteDraft {
     case "line": {
       const stops = pathStops(d.places);
       if (stops.length < 2) return { ...withLine(d, a.points, []), legs: [] };
+      // A GPX track is kept as drawn: its stretches carry no `auto`, so they are never routed again on their own.
       const cut = splitLine(stops, a.points);
       // A new track replaces the route's own stretches; the side trips drawn by hand stay.
       return cut.length > 0 ? withLegs(d, [...cut, ...d.legs.filter((l) => l.side || l.back)]) : { ...withLine(d, a.points, []), legs: [] };
@@ -420,6 +424,7 @@ function apply(d: RouteDraft, a: DraftAction): RouteDraft {
     case "setLeg":
       return withLegs(d, [...d.legs.filter((l) => !(l.from === a.leg.from && l.to === a.leg.to)), a.leg]);
     case "setLegs":
+    case "autoLegs":
       return withLegs(d, a.legs);
     case "clearLeg":
       return withLegs(d, d.legs.filter((l) => !(l.from === a.from && l.to === a.to)));
@@ -463,12 +468,7 @@ function apply(d: RouteDraft, a: DraftAction): RouteDraft {
         ...d,
         places: d.places.map((p) => {
           if (p.key !== a.key) return p;
-          const moved =
-            (a.patch.lat !== undefined && a.patch.lat !== p.lat) ||
-            (a.patch.lng !== undefined && a.patch.lng !== p.lng) ||
-            // The stamp point (遥拝) shares the place's position check.
-            (a.patch.stampLat !== undefined && a.patch.stampLat !== p.stampLat) ||
-            (a.patch.stampLng !== undefined && a.patch.stampLng !== p.stampLng);
+          const moved = (a.patch.lat !== undefined && a.patch.lat !== p.lat) || (a.patch.lng !== undefined && a.patch.lng !== p.lng);
           // Any edit turns a published waypoint back into a draft (the editor asks first, and the save unpublishes it before changing it).
           const edited = Object.keys(a.patch).some((k) => k !== "published");
           return { ...p, ...a.patch, ...(moved && a.patch.positionVerified === undefined ? { positionVerified: false } : {}), ...(edited ? { published: false } : {}) };
@@ -523,6 +523,8 @@ export function draftReducer(state: DraftState, a: DraftAction): DraftState {
   if (a.type !== "reorderPlaces") present = withoutSpare(present);
   // The walking time follows the distance and climb: when the line changed (also because a stop moved), not on other edits.
   if (moves.has(a.type) || present.line !== state.present.line) present = withAutoTime(present);
+  // Routed by the editor right after a change: folded into that change, so one undo takes both back.
+  if (a.type === "autoLegs") return { ...state, present };
   if (!undoable.has(a.type)) return { ...state, present };
   return { present, past: [...state.past, state.present].slice(-HISTORY), future: [] };
 }
@@ -659,4 +661,16 @@ export function previewRoute(d: RouteDraft, order: number): RouteDetail {
     photoCredit: nz(d.photoCredit),
     photoFocus: d.photoFocus,
   };
+}
+
+/**
+ * The waypoints a place may be worshipped from (遥拝): saved ones of the same course, not itself, and not one that is itself
+ * worshipped from somewhere (one step only, as the server checks). `isHub`: others are worshipped from this place, so it
+ * cannot point anywhere itself.
+ */
+export function stampFromChoices(places: readonly PlaceDraft[], key: string): { choices: { id: string; name: string }[]; isHub: boolean } {
+  const self = places.find((p) => p.key === key);
+  const isHub = !!self?.id && places.some((p) => p.stampSpotId === self.id);
+  const choices = places.filter((p) => p.key !== key && p.id !== null && p.stampSpotId === null).map((p) => ({ id: p.id!, name: p.nameJa }));
+  return { choices, isHub };
 }

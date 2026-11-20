@@ -96,9 +96,9 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
     item.key === "dashboard" ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`) || (item.key === "posts" && pathname.startsWith(`${base}/authors`)) || (item.key === "pages" && pathname.startsWith(`${base}/banners`));
   const sections = SECTIONS.map((s, i) => ({ title: s.title, items: [...s.keys.flatMap((k) => ready.filter((r) => r.key === k)), ...(i === 3 ? ready.filter((r) => !known.has(r.key)) : [])] })).filter((s) => s.items.length > 0);
 
-  // A titled group folds to its title, so the whole menu fits without scrolling (2026-11-16, user); the group holding
-  // the open screen starts open. The rail folded to icons shows every icon.
-  const [shut, setShut] = useState<Set<number>>(() => new Set(sections.flatMap((g, i) => (g.title && !g.items.some(isActive) ? [i] : []))));
+  // A titled group folds to its title (2026-11-16, user); every group starts open (2026-11-20, user). The rail folded to
+  // icons shows every icon.
+  const [shut, setShut] = useState<Set<number>>(() => new Set());
   const flip = (i: number) => setShut((now) => (now.has(i) ? new Set([...now].filter((x) => x !== i)) : new Set([...now, i])));
 
   return (

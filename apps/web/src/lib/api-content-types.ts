@@ -108,8 +108,8 @@ export interface PublicSpot {
   detached?: boolean;
   detachedLabelJa?: string | null;
   detachedLabelEn?: string | null;
-  /** Where the stamp is pressed when not at the place itself (遥拝); null or missing: at the place. */
-  stampPosition?: { lat: number; lng: number } | null;
+  /** The waypoint it is worshipped from (遥拝), where its stamp is pressed; null or missing: at the place. */
+  stampFrom?: { id: string; nameJa: string; nameEn: string | null; position: { lat: number; lng: number } } | null;
   stampImageUrl?: string | null;
   photoUrl: string | null;
   photoNameJa?: string | null;
