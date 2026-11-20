@@ -2,7 +2,7 @@
 
 import { CreditInput } from "./CreditInput";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { useErrorMessages } from "@/components/useErrorMessages";
 import { CheckIcon, DocumentIcon, ListIcon, MapIcon, PinIcon } from "@/components/icons";
@@ -11,7 +11,7 @@ import { outcome } from "@/lib/admin/admin-client";
 import { checklist, factsFromDraft, progress, type EditorTab } from "@/lib/admin/checklist";
 import { walkedStats, type TextField, type RouteDraft } from "@/lib/admin/route-draft";
 import { RubyEditor } from "./RubyEditor";
-import { placeChanged, type DraftProblem } from "@/lib/admin/save-plan";
+import { draftProblems, placeChanged, type DraftProblem } from "@/lib/admin/save-plan";
 import { useRouteDraft } from "./useRouteDraft";
 import { CourseMapEditor, RestoreOffer } from "./CourseMapEditor";
 import type { AdminSharedSpot } from "@/lib/admin/types";
@@ -34,6 +34,7 @@ import { VideoHistory } from "./VideoHistory";
 import { VideoPreview } from "./VideoPreview";
 import { parseVideoFile } from "@/lib/video";
 import { PlacePanel } from "./PlacePanel";
+import { PlaceOrderList } from "./PlaceOrderList";
 import { PlaceTable } from "./PlaceTable";
 import { SharedPlaces } from "./SharedPlaces";
 import { useChecklistLabels } from "./useChecklistLabels";
@@ -42,12 +43,22 @@ import { confirmDialog } from "@/components/ConfirmDialog";
 const TABS: EditorTab[] = ["overview", "text", "map", "places", "check"];
 const TAB_ICONS: Record<EditorTab, ReactNode> = { overview: <ListIcon />, text: <DocumentIcon />, map: <MapIcon />, places: <PinIcon />, check: <CheckIcon /> };
 const isTab = (v: string | null): v is EditorTab => v !== null && (TABS as string[]).includes(v);
+const WIDE = "(min-width: 96rem)"; // Tailwind's 2xl
+const subscribeWide = (onChange: () => void) => {
+  const m = window.matchMedia(WIDE);
+  m.addEventListener("change", onChange);
+  return () => m.removeEventListener("change", onChange);
+};
 
 export function RouteEditor({ initial, order, locale, shared = [], sharedWith = {}, routeNames = {}, back }: { back?: ReactNode; initial: RouteDraft; order: number; locale: string; shared?: AdminSharedSpot[]; sharedWith?: Record<string, string[]>; routeNames?: Record<string, string> }) {
   const { t } = useLingui();
   const router = useRouter();
   const messages = useErrorMessages();
-  const [view, setView] = useState<"edit" | "preview">("edit");
+  // The live preview: beside the form from 2xl, in its place below that. Hidden on the map tab, which needs the whole width.
+  // On by itself where it fits beside the form, until the toggle is pressed.
+  const wide = useSyncExternalStore(subscribeWide, () => window.matchMedia(WIDE).matches, () => false);
+  const [previewChoice, setPreview] = useState<boolean | null>(null);
+  const preview = previewChoice ?? wide;
   // The places tab: a table to type many at once (where a new route starts), or the detailed panel per place.
   const [placesView, setPlacesView] = useState<"table" | "detail">(() => (initial.id === null ? "table" : "detail"));
   const params = useSearchParams();
@@ -58,13 +69,18 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
   const labels = useChecklistLabels();
   const setSection = (next: EditorTab) => {
     setSectionState(next);
-    setView("edit");
+    if (!wide) setPreview(false); // narrow: the preview covers the form, so a tab shows the form again
     const url = new URL(window.location.href);
     url.searchParams.set("tab", next);
     window.history.replaceState(null, "", url.href); // a string: the service worker library forwards this value, and a URL object cannot be sent
   };
   const d = useRouteDraft(initial, {
-    onShowProblem: (kind) => setSection(kind.startsWith("place_") ? "places" : "overview"),
+    onShowProblem: (kind) => {
+      setSection(kind.startsWith("place_") ? "places" : "overview");
+      // The places tab shows one waypoint's form at a time: open the one with the problem.
+      const place = draftProblems(draft).find((x) => x.kind === kind && "key" in x);
+      if (place && "key" in place) setSelectedKey(place.key);
+    },
     onCreated: (id) => router.replace(`/admin/routes/${id}`),
   });
   const {
@@ -103,9 +119,28 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
   const timeAuto = !draft.timeManual && draft.expectedTimeMin !== null;
   const checks = useMemo(() => checklist(factsFromDraft(draft)), [draft]);
   const missingRequired = progress(checks).requiredTotal - progress(checks).requiredDone;
+  const showPreview = preview && section !== "map";
+  // The title bar's height, for the columns that stay in view under it while the page scrolls.
+  const head = useRef<HTMLDivElement>(null);
+  const [headHeight, setHeadHeight] = useState(0);
+  useEffect(() => {
+    const el = head.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setHeadHeight(el.offsetHeight));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  // The places tab shows the chosen waypoint's form (the first one until another is chosen).
+  const current = draft.places.find((p) => p.key === selectedKey) ?? draft.places[0] ?? null;
+  const currentIndex = current ? draft.places.indexOf(current) : -1;
+  const choosePlace = (key: string) => {
+    setSelectedKey(key);
+    const form = document.getElementById("place-form");
+    if (form && form.getBoundingClientRect().top < headHeight) form.scrollIntoView({ block: "start" });
+  };
 
   return (
-    <div className={`flex flex-col gap-5 ${saving ? "[&_fieldset]:pointer-events-none" : ""}`} aria-busy={saving}>
+    <div className={`flex flex-col gap-5 ${saving ? "[&_fieldset]:pointer-events-none" : ""}`} aria-busy={saving} style={{ "--head": `${headHeight}px` } as CSSProperties}>
       <PublishedEditDialog
         name={pendingEdit ? (draft.places.find((p) => p.key === pendingEdit.key)?.nameJa || t`名前のない経由地`) : null}
         onProceed={() => {
@@ -114,9 +149,9 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
         }}
         onCancel={() => setPendingEdit(null)}
       />
-      {/* Title bar: always in reach, with the one button that matters. On a narrow window the name goes on its own line under the
+      {/* Title bar: always in reach, with the one button that matters and the tabs. On a narrow window the name goes on its own line under the
           buttons (squeezed beside them it would be one letter wide), and the saved line wraps instead of being pushed out. */}
-      <div className="sticky top-0 z-20 -mx-4 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-line bg-paper px-4 py-3 lg:-mx-8 lg:px-8">
+      <div ref={head} className="sticky top-0 z-20 -mx-4 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-line bg-paper px-4 pt-3 lg:-mx-8 lg:px-8">
         {back}
         <h1 className="order-last min-w-0 basis-full break-words text-2xl font-bold lg:order-none lg:basis-0 lg:flex-1">{isNew ? t`新しいコース` : draft.nameJa || t`（名前がありません）`}</h1>
         <p className="order-last min-w-0 basis-full text-base text-muted lg:order-none lg:basis-auto lg:flex-none" aria-live="polite">
@@ -125,23 +160,9 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
         <button type="button" disabled={!dirty || saving || busyKey !== null} onClick={save} className="tap-target rounded-full bg-ink px-8 text-xl font-bold text-paper disabled:opacity-40">
           {saving ? t`保存中…` : t`保存する`}
         </button>
-      </div>
-
-      <RestoreOffer d={d} initial={initial} locale={locale} />
-
-      {/* Narrower than 2xl: one thing at a time (the form needs the room; beside a 27rem preview it is under 500 px wide at 1280). */}
-      <div className={`${adminTabRow} 2xl:hidden`} role="tablist" aria-label={t`表示の切り替え`}>
-        {(["edit", "preview"] as const).map((id) => (
-          <button key={id} type="button" role="tab" aria-selected={view === id} onClick={() => setView(id)} className={`${adminTab(view === id)} flex-1`}>
-            {id === "edit" ? t`入力` : t`プレビュー`}
-          </button>
-        ))}
-      </div>
-
-      {/* The map tab uses the whole width (the map and its waypoint list); every other tab has the live preview beside it. */}
-      <div className={`grid gap-6 ${section === "map" ? "" : "2xl:grid-cols-[minmax(0,1fr)_27rem]"}`}>
-        <div className={`flex min-w-0 flex-col gap-5 ${view === "edit" ? "" : "hidden 2xl:flex"}`}>
-          <nav aria-label={t`編集する内容`} className={adminTabRow} role="tablist">
+        {/* The tabs stay in the bar, so another part of the course is one click away however far down the page is. */}
+        <div className="order-last flex basis-full items-center gap-3">
+          <nav aria-label={t`編集する内容`} className={`${adminTabRow} min-w-0 flex-1`} role="tablist">
             {TABS.map((id) => (
               <button
                 key={id}
@@ -159,7 +180,19 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
               </button>
             ))}
           </nav>
+          {section !== "map" ? (
+            <button type="button" aria-pressed={preview} onClick={() => setPreview(!preview)} className={`tap-target shrink-0 rounded-xl border px-4 text-lg font-bold ${preview ? "border-ink bg-ink text-paper" : "border-line"}`}>
+              {t`プレビュー`}
+            </button>
+          ) : null}
+        </div>
+      </div>
 
+      <RestoreOffer d={d} initial={initial} locale={locale} />
+
+      {/* With the preview on: beside the form from 2xl; narrower, one thing at a time (beside a 27rem preview the form is under 500 px at 1280). */}
+      <div className={`grid gap-6 ${showPreview ? "2xl:grid-cols-[minmax(0,1fr)_27rem]" : ""}`}>
+        <div className={`flex min-w-0 flex-col gap-5 ${showPreview ? "hidden 2xl:flex" : ""}`}>
           <div id="editor-panel" role="tabpanel" aria-labelledby={`tab-${section}`} className="flex flex-col gap-5">
             {section === "overview" ? (
               <>
@@ -347,39 +380,51 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                     </button>
                   </p>
                 ) : (
-                  <ol className="flex flex-col gap-3">
-                    {draft.places.map((p, i) => (
-                      <PlacePanel
-                        key={p.key}
-                        place={p}
-                        number={i + 1}
-                        selected={p.key === selectedKey}
-                        dirty={placeChanged(p, savedByKey.get(p.key))}
-                        busy={busyKey !== null || saving}
-                        canMoveUp={i > 0}
-                        canMoveDown={i < draft.places.length - 1}
-                        invalidName={problemOf("place_name", p.key)}
-                        invalidPhoto={problemOf("place_photo_link", p.key)}
-                        onSelect={() => setSelectedKey(p.key === selectedKey ? null : p.key)}
-                        onChange={(patch) => guarded(p.key, { type: "place", key: p.key, patch })}
-                        onRemove={async () => {
-                          if (!(await confirmRemoval(p.key))) return;
-                          dispatch({ type: "removePlace", key: p.key });
-                          setSelectedKey(null);
-                        }}
-                        onMove={(step) => {
-                          const keys = draft.places.map((x) => x.key);
-                          const j = i + step;
-                          [keys[i], keys[j]] = [keys[j]!, keys[i]!];
-                          dispatch({ type: "reorderPlaces", keys });
-                        }}
-                        canSave={draft.id !== null}
-                        onSave={() => void savePlace(p.key)}
-                        onPublish={() => setPublished(p.key, true)}
-                        onUnpublish={() => setPublished(p.key, false)}
+                  // The list stays in view on the left (drag to reorder, click to choose); the chosen waypoint's form beside it.
+                  <div className="grid gap-4 xl:grid-cols-[17rem_minmax(0,1fr)]">
+                    <div className="min-w-0 xl:sticky xl:top-[calc(var(--head)+1rem)] xl:max-h-[calc(100dvh-var(--head)-2rem)] xl:self-start xl:overflow-y-auto [overflow-anchor:none]">
+                      <PlaceOrderList
+                        places={draft.places}
+                        selectedKey={current?.key ?? null}
+                        isDirty={(key) => placeChanged(draft.places.find((p) => p.key === key)!, savedByKey.get(key))}
+                        hasProblem={(key) => problems.some((p) => "key" in p && p.key === key)}
+                        onSelect={choosePlace}
+                        onReorder={(keys) => dispatch({ type: "reorderPlaces", keys })}
                       />
-                    ))}
-                  </ol>
+                    </div>
+                    <ol id="place-form" className="min-w-0 scroll-mt-[calc(var(--head)+1rem)]">
+                      {current ? (
+                        <PlacePanel
+                          key={current.key}
+                          place={current}
+                          number={currentIndex + 1}
+                          selected
+                          dirty={placeChanged(current, savedByKey.get(current.key))}
+                          busy={busyKey !== null || saving}
+                          canMoveUp={currentIndex > 0}
+                          canMoveDown={currentIndex < draft.places.length - 1}
+                          invalidName={problemOf("place_name", current.key)}
+                          invalidPhoto={problemOf("place_photo_link", current.key)}
+                          onChange={(patch) => guarded(current.key, { type: "place", key: current.key, patch })}
+                          onRemove={async () => {
+                            if (!(await confirmRemoval(current.key))) return;
+                            dispatch({ type: "removePlace", key: current.key });
+                            setSelectedKey(null);
+                          }}
+                          onMove={(step) => {
+                            const keys = draft.places.map((x) => x.key);
+                            const j = currentIndex + step;
+                            [keys[currentIndex], keys[j]] = [keys[j]!, keys[currentIndex]!];
+                            dispatch({ type: "reorderPlaces", keys });
+                          }}
+                          canSave={draft.id !== null}
+                          onSave={() => void savePlace(current.key)}
+                          onPublish={() => setPublished(current.key, true)}
+                          onUnpublish={() => setPublished(current.key, false)}
+                        />
+                      ) : null}
+                    </ol>
+                  </div>
                 )}
                 {problems.some((p) => p.kind === "place_position") ? <p role="alert" className="text-base font-bold text-danger">{t`緯度と経度は、両方入れるか、両方空にしてください。`}</p> : null}
                 {draft.id ? <SharedPlaces routeId={draft.id} initial={shared} lent={lent} routeNames={routeNames} locale={locale} /> : null}
@@ -436,9 +481,9 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
           ) : null}
         </div>
 
-        <div className={`min-w-0 ${view === "preview" ? "" : section === "map" ? "hidden" : "hidden 2xl:block"}`}>
+        <div className={`min-w-0 ${showPreview ? "" : "hidden"}`}>
           {/* Never taller than the screen (so its bottom is always reachable), and the browser is told not to re-anchor the page to it while it scrolls inside. */}
-          <div className="2xl:sticky 2xl:top-24 2xl:max-h-[calc(100dvh-7rem)] 2xl:overflow-y-auto [contain:paint] [overflow-anchor:none]">
+          <div className="2xl:sticky 2xl:top-[calc(var(--head)+1rem)] 2xl:max-h-[calc(100dvh-var(--head)-2rem)] 2xl:overflow-y-auto [contain:paint] [overflow-anchor:none]">
             <LivePreview draft={draft} order={order} locale={locale} />
           </div>
         </div>

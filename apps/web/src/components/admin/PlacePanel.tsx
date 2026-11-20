@@ -23,7 +23,8 @@ export interface PlacePanelProps {
   canMoveDown: boolean;
   invalidName: boolean;
   invalidPhoto: boolean;
-  onSelect: () => void;
+  /** Opens and closes the form; without it the form is always open and the name is a plain heading. */
+  onSelect?: () => void;
   onChange: (patch: Partial<PlaceDraft>) => void;
   onRemove: () => void;
   onMove: (step: -1 | 1) => void;
@@ -105,9 +106,13 @@ export function PlacePanel(p: PlacePanelProps) {
         <span aria-hidden="true" className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-strong text-lg font-bold text-on-brand-strong">
           {p.number}
         </span>
-        <button type="button" onClick={p.onSelect} aria-expanded={p.selected} className="min-w-0 flex-1 text-left text-xl font-bold text-accent underline underline-offset-4">
-          {place.nameJa || t`（名前がありません）`}
-        </button>
+        {p.onSelect ? (
+          <button type="button" onClick={p.onSelect} aria-expanded={p.selected} className="min-w-0 flex-1 text-left text-xl font-bold text-accent underline underline-offset-4">
+            {place.nameJa || t`（名前がありません）`}
+          </button>
+        ) : (
+          <h3 className="min-w-0 flex-1 break-words text-xl font-bold">{place.nameJa || t`（名前がありません）`}</h3>
+        )}
         <span className="rounded-full bg-surface px-3 py-1 text-base">{kindName[place.kind]}</span>
         <span className={`rounded-full px-3 py-1 text-base font-bold ${place.published ? "bg-moss text-paper" : "bg-surface text-ink"}`}>{place.published ? t`公開中` : t`下書き`}</span>
         {p.dirty ? <span className="text-base font-bold text-accent">{t`未保存`}</span> : null}
