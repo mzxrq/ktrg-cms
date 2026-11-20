@@ -387,7 +387,8 @@ msgstr "{name} (end)"
 msgid "{name}さん、こんにちは。"
 msgstr "Hello, {name}."
 
-#: src/components/auth/SsoButtons.tsx:55
+#: src/components/auth/SsoButtons.tsx:83
+#: src/components/auth/SsoButtons.tsx:84
 msgid "{name}でログイン"
 msgstr "Log in with {name}"
 
@@ -2984,7 +2985,7 @@ msgstr "Show first-time visitors the earlier home (the screen holds still and ch
 msgid "はじめての方は"
 msgstr "First time here?"
 
-#: src/components/auth/SsoButtons.tsx:59
+#: src/components/auth/SsoButtons.tsx:88
 msgid "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
 msgstr "If this is your first time, an account is made for you. If an email address comes with it, we use it only to help you get back in if you cannot log in. See our <0>privacy policy</0> for details."
 

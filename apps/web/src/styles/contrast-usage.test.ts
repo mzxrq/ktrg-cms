@@ -83,6 +83,14 @@ const ICON_ONLY = new Set([
   "components/auth/authUi.tsx on-brand/brand", // the words inside are text-xl bold, in their own span
 ]);
 
+// LINE's own button and mark: LINE's guidelines fix white on #06C755 (2.3:1); the user chose the official look (2026-11-20).
+// The disabled button is LINE's white with #1E1E1E at 20% (an arbitrary value this scan cannot read, so it sees on-line-green).
+const LINE_RULES = new Set([
+  "components/auth/SsoButtons.tsx on-line-green/line-green",
+  "components/auth/SsoButtons.tsx on-line-green/white",
+  "components/settings/SsoMethods.tsx on-line-green/line-green",
+]);
+
 function files(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
     const path = join(dir, e.name);
@@ -114,7 +122,7 @@ describe("words on a filled background are large enough for its contrast", () =>
     expect(all.length).toBeGreaterThan(50);
   });
   const failing = all
-    .filter((p) => worst(p) < needed(p) && !ICON_ONLY.has(`${p.where} ${p.text}/${p.bg}`))
+    .filter((p) => worst(p) < needed(p) && !ICON_ONLY.has(`${p.where} ${p.text}/${p.bg}`) && !LINE_RULES.has(`${p.where} ${p.text}/${p.bg}`))
     .map((p) => `${p.where}: text-${p.text} on bg-${p.bg} at ${p.size}px${p.bold ? " bold" : ""} is ${worst(p).toFixed(2)}:1, needs ${needed(p)}:1`);
   test("no small words on a colour they cannot be read on", () => {
     expect(failing).toEqual([]);

@@ -58,7 +58,7 @@ function ratio(a: string, b: string) {
   return (light + 0.05) / (dark + 0.05);
 }
 
-const names = ["accent", "brand", "brand-strong", "caution", "create", "danger", "goal", "ink", "lift", "line", "moss", "muted", "night", "on-brand", "on-brand-strong", "on-create", "on-goal", "on-night", "on-rail", "on-ruri", "on-sea", "on-selected", "on-shu", "paper", "rail", "rail-mark", "ruri", "sea", "selected", "shu", "surface"];
+const names = ["accent", "brand", "brand-strong", "caution", "create", "danger", "goal", "ink", "lift", "line", "line-green", "moss", "muted", "night", "on-brand", "on-brand-strong", "on-create", "on-goal", "on-line-green", "on-night", "on-rail", "on-ruri", "on-sea", "on-selected", "on-shu", "paper", "rail", "rail-mark", "ruri", "sea", "selected", "shu", "surface"];
 
 // Text must reach WCAG AAA (7:1).
 const text: [string, string][] = [
@@ -115,6 +115,10 @@ const brandFill: [string, string][] = [
   ["brand", "surface"],
 ];
 
+// LINE's login button: LINE's guidelines allow only white on #06C755 (about 2.3:1). The user chose the official button over
+// our contrast rule (2026-11-20), so this pair is held to LINE's exact colours instead of a ratio. Nothing else may use it.
+const lineButton: [string, string][] = [["on-line-green", "line-green"]];
+
 // The Goal badge (orange, large bold words): held to 4.5:1.
 const goalBadge: [string, string][] = [["on-goal", "goal"]];
 
@@ -152,6 +156,12 @@ for (const [scheme, colors] of Object.entries(palettes)) {
     for (const [foreground, background] of brandFill) {
       test(`${foreground} fill against ${background} is at least 2.5:1`, () => {
         expect(pair(foreground, background)).toBeGreaterThanOrEqual(2.5);
+      });
+    }
+
+    for (const [foreground, background] of lineButton) {
+      test(`${foreground} on ${background} is exactly LINE's white on #06C755`, () => {
+        expect([colors[foreground], colors[background]]).toEqual(["#ffffff", "#06c755"]);
       });
     }
 
