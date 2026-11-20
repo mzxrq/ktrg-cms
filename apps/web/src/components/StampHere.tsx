@@ -221,8 +221,8 @@ export function StampHere({
         <h2 id="stamp-explain-title" className="text-2xl font-bold">
           {t`いまの位置を調べます`}
         </h2>
-        <p className="mt-3 text-lg leading-8">{t`スタンプの場所の近くにいるか、たしかめるために、スマートフォンの位置を1回だけ調べます。`}</p>
-        <p className="mt-2 text-lg leading-8">{t`位置は、保存しません。保存するのは、スタンプだけです。`}</p>
+        <p className="mt-3 text-lg leading-8">{t`スタンプの場所の近くにいるかを確かめるため、スマートフォンの現在地を1度だけ調べます。`}</p>
+        <p className="mt-2 text-lg leading-8">{t`現在地は記録に残しません。記録するのは、スタンプを押したことだけです。`}</p>
         <div className="mt-6 flex flex-col gap-3">
           <button type="button" onClick={() => void start()} className={button}>
             {t`位置を調べてスタンプを押す`}

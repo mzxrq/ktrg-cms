@@ -47,7 +47,7 @@ export function JourneyFacts({ facts, compact = false }: { facts: Facts; compact
             <Walker className="absolute left-1 top-0 h-9 text-moss" />
             <span className="absolute right-1 top-[26px] size-4 rounded-full border-2 border-dashed border-line" />
           </div>
-          <p className="text-lg">{t`さあ、最初の一歩へ。${total}か所のスタンプが待っています。`}</p>
+          <p className="text-lg">{t`さあ、最初の一歩へ。このラリーのスタンプは、全部で${total}か所です。`}</p>
         </>
       )}
     </div>

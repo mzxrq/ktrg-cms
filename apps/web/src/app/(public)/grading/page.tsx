@@ -7,7 +7,7 @@ import { PHYSICAL_LEVEL_UPPER_BOUNDS, STAR_COUNT, TECHNICAL_LEVELS, technicalSta
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
-  return { title: i18n.locale === "ja" ? "体力の目安と道のけわしさについて" : "About the effort and path stars" };
+  return { title: i18n.locale === "ja" ? "体力の目安と道のけわしさについて" : "About the effort and trail difficulty stars" };
 }
 
 const panel = "mx-4 flex flex-col gap-3 rounded-lg bg-surface p-5 text-lg leading-8";
@@ -20,14 +20,14 @@ export default async function GradingPage() {
   const technical: Record<(typeof TECHNICAL_LEVELS)[number], string> = ja
     ? {
         A: "整備された道で、迷いにくく、転んでも大きな事故になりにくい。",
-        B: "急な登り下りや、わかりにくい所がある。はしごやくさりが出ることもある。",
+        B: "急な登り下りや、道がわかりにくい所がある。はしごやくさり（鎖場）がある所もある。",
         C: "転落・滑落の危険がある所がある。地図を読む力と、ミスをしない注意が必要。",
         D: "岩場やガレ場、手を使う急な登り下りがある。道がわかりにくい所も多い。",
         E: "厳しい岩場や藪こぎが続く。道を自分で見つける技術と、高い判断力が必要。",
       }
     : {
         A: "A well-kept path that is hard to lose, where a fall is unlikely to be serious.",
-        B: "Steep climbs and descents, and some places that are hard to follow. Ladders or chains may appear.",
+        B: "Steep climbs and descents, and some places that are hard to follow. Some places have ladders or chains.",
         C: "Places where a fall or slip is dangerous. You need to read a map and take care not to make mistakes.",
         D: "Rocky ground and scree, and steep sections where you use your hands. Many places are hard to follow.",
         E: "Long stretches of hard rock or thick brush. You must find your own way and judge well.",
@@ -43,7 +43,7 @@ export default async function GradingPage() {
           <Trans>体力の目安と道のけわしさについて</Trans>
         </h1>
         <p className="text-lg leading-8">
-          <Trans>コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。</Trans>
+          <Trans>コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天候や体調によって、大変さの感じ方は変わります。</Trans>
         </p>
       </div>
 
@@ -76,7 +76,7 @@ export default async function GradingPage() {
           })}
         </ul>
         <p className="text-base text-muted">
-          <Trans>数字は目安です。星の数は、コースを作った人が、この計算を見て決めています（長野県の体力度1〜10の、2段ずつが星1つです）。</Trans>
+          <Trans>数字は目安です。星の数は、この計算結果をもとに、このサイトの運営者がコースごとに決めています。長野県の体力度は1〜10の10段階で、このサイトでは2段階ずつをまとめて星1つにしています。</Trans>
         </p>
       </section>
 
@@ -85,7 +85,7 @@ export default async function GradingPage() {
           <Trans>道のけわしさ（星1〜5）</Trans>
         </h2>
         <p>
-          <Trans>道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。</Trans>
+          <Trans>道のけわしさは計算では出せません。岩場やはしご・くさりの有無、道のわかりやすさなどを見て、このサイトの運営者が決めています。星1つがいちばん歩きやすく、星5つがいちばんけわしい道です。</Trans>
         </p>
         <dl className="flex flex-col gap-2">
           {TECHNICAL_LEVELS.map((level) => (
@@ -100,7 +100,7 @@ export default async function GradingPage() {
       </section>
 
       <p className="mx-4 text-base text-muted">
-        <Trans>この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。</Trans>
+        <Trans>この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。各段階の説明文は、長野県の文章をそのまま使わず、このサイトで書いたものです。</Trans>
       </p>
     </div>
   );

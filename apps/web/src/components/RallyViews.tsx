@@ -266,7 +266,10 @@ export function RallyHero() {
         <Trans>歩いて、スタンプを集めよう。</Trans>
       </p>
       <p className="max-w-[32em] text-lg leading-8">
-        <Trans>行き先の近くでボタンを押すと、スタンプがたまります。位置は、押した一回だけ調べ、保存しません。</Trans>
+        <Trans>スタンプの場所の近くでボタンを押すと、スタンプが記録されます。現在地は、ボタンを押したときに1度だけ確かめ、記録には残しません。</Trans>
+      </p>
+      <p className="max-w-[32em] text-lg leading-8">
+        <Trans>スタンプラリーは2種類あります。経塚をめぐる「経塚のラリー」と、コースごとの「コースのラリー」です。同じ場所で押したスタンプは、どちらのラリーにも数えられます。</Trans>
       </p>
       <div aria-hidden="true" className="mt-1 flex items-center gap-3">
         <Seal state="stamped" className="size-14" />

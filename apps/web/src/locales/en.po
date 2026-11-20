@@ -1507,8 +1507,8 @@ msgid "コースにもどる"
 msgstr "Back to course"
 
 #: src/app/(public)/grading/page.tsx:46
-msgid "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天気や体調で、感じ方は変わります。"
-msgstr "A course's effort and path stars show how hard it is before you go, from one star to five. Fewer stars means an easier course. They are a guide, not official information, and the weather and how you feel change how hard it is."
+msgid "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天候や体調によって、大変さの感じ方は変わります。"
+msgstr "A course's effort and trail difficulty stars show how hard it is before you go, from one star to five. Fewer stars means an easier course. They are a guide, not official information. The weather and how you feel change how hard it seems."
 
 #: src/app/(public)/badges/page.tsx:44
 msgid "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
@@ -2140,8 +2140,8 @@ msgid "この線は、経由地の順番や位置と合わないため、区間�
 msgstr "This line does not match the order or positions of the waypoints, so it has not been cut into legs. Fix the order and positions and press \"Cut into legs\", or draw a leg: the line is then replaced leg by leg (Undo brings it back)."
 
 #: src/app/(public)/grading/page.tsx:103
-msgid "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。説明は、このサイト独自の言葉です。"
-msgstr "The idea follows Nagano Prefecture's Shinshu mountain grading (physical and technical levels). The descriptions are this site's own words."
+msgid "この考え方は、長野県の「信州 山のグレーディング」（体力度・技術度）を参考にしています。各段階の説明文は、長野県の文章をそのまま使わず、このサイトで書いたものです。"
+msgstr "The idea follows Nagano Prefecture's Shinshu mountain grading (physical and technical levels). The description of each level was written for this site, not copied from Nagano's text."
 
 #: src/components/admin/FuriganaWords.tsx:80
 msgid "この言葉はもう一覧にあります。"
@@ -2266,8 +2266,8 @@ msgid "さあ、はじめましょう"
 msgstr "Let's get started"
 
 #: src/components/JourneyFacts.tsx:50
-msgid "さあ、最初の一歩へ。{total}か所のスタンプが待っています。"
-msgstr "Take the first step. {total} stamps are waiting."
+msgid "さあ、最初の一歩へ。このラリーのスタンプは、全部で{total}か所です。"
+msgstr "Take the first step. This rally has {total} stamp places in all."
 
 #: src/components/admin/PhotoLibrary.tsx:177
 msgid "サイズ"
@@ -2439,9 +2439,18 @@ msgstr "Stamp backup link"
 msgid "スタンプの場所"
 msgstr "Stamp locations"
 
+#: src/components/landing/useHomeWords.ts:11
+#: src/components/RallyViews.tsx:269
+msgid "スタンプの場所の近くでボタンを押すと、スタンプが記録されます。現在地は、ボタンを押したときに1度だけ確かめ、記録には残しません。"
+msgstr "Press the button near a stamp place and your stamp is recorded. Your location is checked once, when you press, and is never kept."
+
+#: src/components/RallyNearbyStamp.tsx:95
+msgid "スタンプの場所の近くで押してください。現在地は1度だけ確かめ、記録には残しません。"
+msgstr "Press it near a stamp place. Your location is checked once and never kept."
+
 #: src/components/RallyNearbyStamp.tsx:105
 #: src/components/StampHere.tsx:224
-msgid "スタンプの場所の近くにいるか、たしかめるために、スマートフォンの位置を1回だけ調べます。"
+msgid "スタンプの場所の近くにいるかを確かめるため、スマートフォンの現在地を1度だけ調べます。"
 msgstr "To check that you are near the stamp place, we look at your phone's location once."
 
 #: src/components/map/MapScreen.tsx:505
@@ -2473,6 +2482,10 @@ msgstr "No stamp can be collected here, but visitors can open the place's page. 
 #: src/components/RallyViews.tsx:173
 msgid "スタンプラリー"
 msgstr "Stamp rally"
+
+#: src/components/RallyViews.tsx:272
+msgid "スタンプラリーは2種類あります。経塚をめぐる「経塚のラリー」と、コースごとの「コースのラリー」です。同じ場所で押したスタンプは、どちらのラリーにも数えられます。"
+msgstr "There are two kinds of stamp rally: the sutra mound rally, which visits the sutra mounds, and a course rally for each course. A stamp from one place counts in both."
 
 #. placeholder {0}: step.added
 #: src/components/GuestClaim.tsx:82
@@ -4312,11 +4325,6 @@ msgstr "Where the position came from"
 msgid "位置の地図"
 msgstr "Map of the position"
 
-#: src/components/RallyNearbyStamp.tsx:106
-#: src/components/StampHere.tsx:225
-msgid "位置は、保存しません。保存するのは、スタンプだけです。"
-msgstr "We don't save your location. We only save the stamp."
-
 #: src/components/admin/PlacePanel.tsx:239
 msgid "位置は、公式の情報から入れて、地図で確かめます。推測では入れません。"
 msgstr "Enter the position from official information and check it on the map. Never guess it."
@@ -4406,7 +4414,7 @@ msgstr "About the effort stars"
 
 #: src/app/(public)/grading/page.tsx:43
 msgid "体力の目安と道のけわしさについて"
-msgstr "About the effort and path stars"
+msgstr "About the effort and trail difficulty stars"
 
 #: src/components/landing/Landing.tsx:202
 msgid "体験"
@@ -4652,7 +4660,7 @@ msgstr "The first photo is the main photo of this waypoint. The others are shown
 
 #: src/components/admin/RouteEditor.tsx:208
 msgid "入れた文字が、そのまま表示されます。体力の目安・道のけわしさを選んだときは、そちらを先に表示します。"
-msgstr "Shown exactly as typed. When Effort or Path is chosen, those are shown first."
+msgstr "Shown exactly as typed. When Effort or Trail difficulty is chosen, those are shown first."
 
 #: src/components/admin/BlockEditor.tsx:584
 msgid "入れる"
@@ -5923,10 +5931,6 @@ msgstr "Search by place name (e.g. Sainen-ji)"
 msgid "場所の見せ方"
 msgstr "How places are shown"
 
-#: src/components/RallyNearbyStamp.tsx:95
-msgid "場所の近くで押してください。位置は1回だけ調べ、保存しません。"
-msgstr "Press it near a place. Your position is checked once and never saved."
-
 #: src/components/admin/map-editor/MapEditor.tsx:811
 msgid "場所を探すサービスにつながりませんでした。しばらくしてから、もう一度お試しください。"
 msgstr "Could not reach the place search. Please try again in a moment."
@@ -6130,8 +6134,8 @@ msgid "山の中は、電波がつながりにくいことがあります。"
 msgstr "Mobile signal can be weak in the mountains."
 
 #: src/components/landing/useHomeWords.ts:21
-msgid "山道です。天気と、水や食べ物、歩きやすい靴を用意してください。"
-msgstr "These are mountain paths. Check the weather and bring water, food and sturdy shoes."
+msgid "山道です。天候を確かめ、水や食べ物、歩きやすい靴を用意してください。"
+msgstr "These are mountain paths. Check the weather, and bring water, food and good walking shoes."
 
 #: src/components/admin/GradingFields.tsx:45
 msgid "岩場やガレ場、手を使う急な登り下りがある。道がわかりにくい所も多い。"
@@ -6219,8 +6223,8 @@ msgid "必須"
 msgstr "Required"
 
 #: src/components/admin/GradingFields.tsx:43
-msgid "急な登り下りや、わかりにくい所がある。はしごやくさりが出ることもある。"
-msgstr "Steep climbs and descents and some hard-to-follow places. There may be ladders or chains."
+msgid "急な登り下りや、道がわかりにくい所がある。はしごやくさり（鎖場）がある所もある。"
+msgstr "Steep climbs and descents and some hard-to-follow places. Some places have ladders or chains."
 
 #: src/components/auth/AboutYou.tsx:125
 #: src/components/ProfileSettings.tsx:150
@@ -6391,8 +6395,8 @@ msgid "数字の丸をドラッグすると、経由地を動かせます。道�
 msgstr "Drag a numbered circle to move a waypoint. Add the path with \"Draw line\" or a GPX file."
 
 #: src/app/(public)/grading/page.tsx:79
-msgid "数字は目安です。星の数は、コースを作った人が、この計算を見て決めています（長野県の体力度1〜10の、2段ずつが星1つです）。"
-msgstr "The numbers are a guide: the person who made the course chooses the stars after seeing this sum (each star covers two of Nagano's physical levels 1 to 10)."
+msgid "数字は目安です。星の数は、この計算結果をもとに、このサイトの運営者がコースごとに決めています。長野県の体力度は1〜10の10段階で、このサイトでは2段階ずつをまとめて星1つにしています。"
+msgstr "The numbers are a guide. The people who run this site choose the stars for each course, based on this sum. Nagano's physical level has ten steps, 1 to 10; here every two steps make one star."
 
 #: src/components/admin/GoalsForm.tsx:39
 msgid "数字を空にすると、その目標はなしになります。保存すると、ページを開き直したときに反映されます。"
@@ -7102,6 +7106,11 @@ msgstr "Status not checked"
 #: src/components/Breadcrumb.tsx:12
 msgid "現在の場所"
 msgstr "You are here"
+
+#: src/components/RallyNearbyStamp.tsx:106
+#: src/components/StampHere.tsx:225
+msgid "現在地は記録に残しません。記録するのは、スタンプを押したことだけです。"
+msgstr "We never keep your location. We only record that you got the stamp."
 
 #: src/components/map/MapScreenCanvas.tsx:702
 msgid "現在地を真ん中にする（進む向きが上）"
@@ -8024,11 +8033,6 @@ msgstr "official site of the Katsuragi Shugen Japan Heritage Promotion Council"
 msgid "行き"
 msgstr "Out"
 
-#: src/components/landing/useHomeWords.ts:11
-#: src/components/RallyViews.tsx:269
-msgid "行き先の近くでボタンを押すと、スタンプがたまります。位置は、押した一回だけ調べ、保存しません。"
-msgstr "Press the button near a stop and the stamp is yours. Your position is checked only once, when you press, and is not saved."
-
 #: src/components/navigation/NavFarCard.tsx:50
 #: src/components/RallyBook.tsx:173
 msgid "行き方"
@@ -8551,7 +8555,7 @@ msgstr "Last {0} days"
 
 #: src/components/RouteStats.tsx:48
 msgid "道"
-msgstr "Path"
+msgstr "Trail"
 
 #: src/components/SpotStats.tsx:43
 msgid "道から"
@@ -8609,19 +8613,19 @@ msgstr "Snapping to trails is not available yet. Ask whoever manages the site to
 #: src/components/admin/GradingFields.tsx:87
 #: src/components/RouteStats.tsx:48
 msgid "道のけわしさ"
-msgstr "Path"
+msgstr "Trail difficulty"
 
 #: src/app/(public)/grading/page.tsx:85
 msgid "道のけわしさ（星1〜5）"
-msgstr "Path (1 to 5 stars)"
+msgstr "Trail difficulty (1 to 5 stars)"
 
 #: src/components/RouteStats.tsx:57
 msgid "道のけわしさとは"
-msgstr "About the path stars"
+msgstr "About the trail difficulty stars"
 
 #: src/app/(public)/grading/page.tsx:88
-msgid "道のけわしさは計算ではなく、道の様子から人が決めます。星1つがいちばん歩きやすく、星5つがいちばん難しい道です。"
-msgstr "The path stars are not worked out by a sum: a person chooses them from how the path is. One star is the easiest path, five the hardest."
+msgid "道のけわしさは計算では出せません。岩場やはしご・くさりの有無、道のわかりやすさなどを見て、このサイトの運営者が決めています。星1つがいちばん歩きやすく、星5つがいちばんけわしい道です。"
+msgstr "Trail difficulty cannot be worked out by a sum. The people who run this site choose it from the ground itself: rocks, ladders or chains, and how easy the trail is to follow. One star is the easiest trail, five the hardest."
 
 #: src/components/RouteView.tsx:127
 #: src/components/RouteView.tsx:282
