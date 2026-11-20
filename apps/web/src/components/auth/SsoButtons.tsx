@@ -10,8 +10,36 @@ import { AuthError, ChoiceCard } from "./authUi";
 /** Brand names, the same in every language. */
 export const SSO_NAMES: Record<SsoProvider, string> = { google: "Google", line: "LINE", apple: "Apple" };
 
-/** The first letter in the tile's circle. shortcut: no brand logos yet; use each provider's official button artwork before launch. */
-export const SsoMark = ({ provider }: { provider: SsoProvider }) => <span className="text-2xl font-bold">{SSO_NAMES[provider][0]}</span>;
+/** LINE's official icon (public/sso/line-icon.png, from LINE's button kit) as a mask, so it takes the text colour. */
+export const LineIcon = ({ className = "size-10" }: { className?: string }) => (
+  <span aria-hidden="true" className={`block shrink-0 bg-current [mask:url(/sso/line-icon.png)_center/contain_no-repeat] ${className}`} />
+);
+
+/** The mark in a provider's circle. shortcut: Google and Apple show their first letter; use their official artwork before launch. */
+export const SsoMark = ({ provider }: { provider: SsoProvider }) =>
+  provider === "line" ? <LineIcon /> : <span className="text-2xl font-bold">{SSO_NAMES[provider][0]}</span>;
+
+/**
+ * LINE's login button by its guidelines (developers.line.biz, LINE Login button): #06C755 with the white icon, a divider
+ * of black at 8%, white words on one line; hover adds black at 10%, press 30%; disabled is white with #1E1E1E at 20% and a
+ * #E5E5E5 (60%) border. The height and corners match the other login choices.
+ */
+function LineLoginButton({ label, onClick, disabled }: { label: string; onClick: () => void; disabled: boolean }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className="tap-target group relative flex min-h-[5rem] w-full items-stretch overflow-hidden rounded-full bg-line-green text-on-line-green disabled:border disabled:border-[#e5e5e5]/60 disabled:bg-white disabled:text-[#1e1e1e]/20"
+    >
+      <span aria-hidden="true" className="absolute inset-0 group-enabled:group-hover:bg-black/10 group-enabled:group-active:bg-black/30" />
+      <span className="relative flex items-center border-r border-black/8 pr-4 pl-6 group-disabled:border-[#e5e5e5]/60">
+        <LineIcon className="size-12" />
+      </span>
+      <span className="relative flex flex-1 items-center justify-center px-6 text-xl font-bold whitespace-nowrap">{label}</span>
+    </button>
+  );
+}
 
 /** The providers this site has set up ([] until known, and when there are none). */
 export function useSsoProviders(): SsoProvider[] {
@@ -52,6 +80,7 @@ export function SsoButtons({ returnTo, initialError = null }: { returnTo?: strin
     <div className="flex flex-col gap-4">
       {providers.map((p) => {
         const name = SSO_NAMES[p];
+        if (p === "line") return <LineLoginButton key={p} label={t`${name}でログイン`} onClick={() => void go(p)} disabled={busy} />;
         return <ChoiceCard key={p} icon={<SsoMark provider={p} />} title={t`${name}でログイン`} onClick={() => void go(p)} disabled={busy} />;
       })}
       <AuthError code={error} />
