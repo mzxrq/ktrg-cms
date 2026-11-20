@@ -48,6 +48,13 @@ export interface Leg {
    * given between the two stops, so it cannot pick a shorter but worse way (Navivi's via points). Visitors never see them.
    */
   via?: GuidePoint[];
+  /**
+   * Its line was drawn by hand or came from a GPX file (2026-11-20, user: 手で描く): the editor never routes it again on its own.
+   * A walked leg without it follows the trails by itself, and again when one of its ends moves.
+   */
+  hand?: true;
+  /** Only in the editor: a walked leg whose end moved and that is waiting to be routed again. Never saved. */
+  stale?: true;
 }
 
 export type GuidePoint = [lng: number, lat: number];
@@ -247,6 +254,9 @@ function refit(leg: Leg, from: Stop, to: Stop): Leg {
   if (sameSpot(a, at(from)) && sameSpot(b, at(to))) return leg;
   if (leg.anchors) return { ...leg, points: capPoints(pointsFromAnchors(from, to, leg.anchors, leg.curves ?? leg.anchors.map(() => null))) };
   const inner = leg.points.slice(1, -1);
+  // A walked leg that routes itself is routed again from its new ends (the editor does it); a ride stays a straight hop.
+  if (!leg.hand && !leg.ride && !leg.back) return { ...leg, points: [at(from), ...inner, at(to)], stale: true };
+  if (leg.ride) return { ...leg, points: [at(from), at(to)] };
   return { ...leg, points: [at(from), ...inner, at(to)] };
 }
 

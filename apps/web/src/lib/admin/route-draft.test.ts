@@ -54,6 +54,33 @@ describe("legs", () => {
     expect(s.present.line[0]).toEqual([135, 34]);
     expect(s.present.line.at(-1)).toEqual([135, 34.02]);
   });
+  test("lines that make themselves: a moved stop marks its walked legs to route again, never a hand-drawn or ridden one; the editor's routing is undone with the move", () => {
+    let s = run(withStops(), {
+      type: "setLegs",
+      legs: [
+        { from: "a", to: "b", points: [[135, 34], [135.005, 34.002], [135.01, 34.01]] },
+        { from: "b", to: "c", points: [[135.01, 34.01], [135.004, 34.016], [135, 34.02]], hand: true },
+      ],
+    });
+    s = run(s, { type: "movePlace", key: "b", lat: 34.012, lng: 135.012 });
+    expect(legOf(s, "a", "b")!.stale).toBe(true);
+    expect(legOf(s, "b", "c")!.stale).toBeUndefined();
+    // A ridden leg stays a straight hop between its stops.
+    s = run(s, { type: "setLeg", leg: { from: "a", to: "b", points: [[135, 34], [135.012, 34.012]], ride: { mode: "ferry", minutes: 20 } } });
+    s = run(s, { type: "movePlace", key: "a", lat: 34.001, lng: 135 });
+    expect(legOf(s, "a", "b")).toMatchObject({ points: [[135, 34.001], [135.012, 34.012]] });
+    expect(legOf(s, "a", "b")!.stale).toBeUndefined();
+    // What the editor routes is folded into the move: one undo takes both back.
+    const beforeMove = s.present;
+    s = run(s, { type: "movePlace", key: "c", lat: 34.021, lng: 135 });
+    s = run(s, { type: "autoLegs", legs: s.present.legs.map((l) => (l.from === "b" ? { ...l, points: [[135.012, 34.012], [135, 34.021]], stale: undefined } : l)) });
+    expect(run(s, { type: "undo" }).present).toBe(beforeMove);
+  });
+  test("a GPX track is kept as drawn: its stretches never route themselves", () => {
+    const s = run(withStops(), { type: "line", points: [[135, 34], [135.005, 34.004], [135.01, 34.01], [135.004, 34.016], [135, 34.02]] });
+    expect(s.present.legs.length).toBeGreaterThan(0);
+    expect(s.present.legs.every((l) => l.hand === true)).toBe(true);
+  });
   test("an end point added at the start's own position is not a stamp place, and the legs come back to the start", () => {
     let s = withStops(); // a, b, c
     s = run(s, { type: "addPlace", key: "end", lat: 34, lng: 135, kind: "other", patch: { stampable: false, nameJa: "出発点（終点）", positionVerified: true, positionSource: "公式" } });

@@ -12,7 +12,7 @@ import { backChoices, backLeg, backPairs, isStraightBack, guideRoute, insertAnch
 import { simplify, type LngLatEle } from "@/lib/admin/line";
 import { legTime } from "@/lib/leg-times";
 import { searchPlaces, type PlaceHit } from "@/lib/admin/place-search";
-import { buildLine, closeLineGaps, smoothLine } from "@/lib/admin/route-builder";
+import { buildLine, closeLineGaps } from "@/lib/admin/route-builder";
 import { roundLine, type SnapPoint } from "@/lib/admin/snap";
 import { boundsOf, editorBaseVisibility, editorBases, editorStyle, terrainLayerId, zoomLimits, type EditorBase } from "@/lib/map";
 import { type PointKind } from "@/lib/point-kinds";
@@ -86,6 +86,8 @@ export interface MapEditorProps {
   onSetLeg: (leg: Leg) => void;
   /** Several legs at once, as one step to undo. This is the full list of legs. */
   onSetLegs: (legs: Leg[]) => void;
+  /** Legs the editor routed by itself after a stop was added or moved (the full list); undone together with that change. */
+  onAutoLegs: (legs: Leg[]) => void;
   onClearLeg: (from: string, to: string) => void;
   onClearLegs: () => void;
   /** The same line with new elevations (taken from a GPX file); the shape does not change. */
@@ -254,7 +256,6 @@ export function MapEditor(props: MapEditorProps) {
   const backKeys = new Set(pairs.filter((p) => p.back).map((p) => `${p.from.key}>${p.to.key}`));
   const tagBack = (leg: Leg): Leg => (backKeys.has(`${leg.from}>${leg.to}`) && !leg.back ? { ...leg, back: true } : leg);
   const setLeg = (leg: Leg) => props.onSetLeg(tagBack(leg));
-  const setLegs = (legs: Leg[]) => props.onSetLegs(legs.map(tagBack));
   // The chosen leg is read as nothing once its pair of stops is gone, and the chosen point only counts on the leg it was chosen on.
   const activePair = pairs.find((p) => pairId(p) === chosenId) ?? null;
   const activeId = activePair ? pairId(activePair) : null;
@@ -269,7 +270,8 @@ export function MapEditor(props: MapEditorProps) {
   function editPath(update: (p: Path) => Path) {
     if (!activePair) return;
     const next = update(activePath);
-    setLeg({ ...legFromPath(activePair.from, activePair.to, next), ...(activeLeg?.ride ? { ride: activeLeg.ride } : {}), ...(activeLeg?.via ? { via: activeLeg.via } : {}) });
+    // Drawn by hand: from now on the editor never routes it on its own (手で描く).
+    setLeg({ ...legFromPath(activePair.from, activePair.to, next), ...(activeLeg?.via ? { via: activeLeg.via } : {}), hand: true });
   }
 
   /**
@@ -755,96 +757,54 @@ export function MapEditor(props: MapEditorProps) {
     setNote(t`標高を入れました。線の${total}点のうち、${matched}点がGPXの道すじに重なっていました（ほかの点は、前後の高さから補いました）。線の形は変えていません。保存してください。`);
   }
 
-  /** The legs to work on: the chosen one; or, with none chosen, every leg that `all` accepts. */
-  const targets = (all: (pair: { from: Stop; to: Stop }) => boolean) => (activePair ? [activePair] : pairs.filter(all));
 
-  // Finds the way along trails (or a straight hop) for each leg to work on; the ends are the stops exactly.
-  async function connect(kind: "trail" | "direct") {
-    const list = targets((p) => !legOf(props.legs, p.from.key, p.to.key));
-    if (pairs.length === 0) return setNote(t`先に、経由地を2つ以上置いてください（寄り道は数えません）。`);
-    if (list.length === 0) return setNote(t`線のない区間はありません。区間を選ぶと、その区間をつくり直せます。`);
-    setWorking(true);
-    setNote(t`道を調べています…`);
-    const count = list.length;
-    const built: Leg[] = [];
-    let straight = 0;
-    for (const { from, to } of list) {
-      const r = await buildLine([{ lat: from.lat, lng: from.lng }, { lat: to.lat, lng: to.lng }], kind);
-      straight += r.straightHops;
-      built.push({ from: from.key, to: to.key, points: withEnds(r.line, from, to) });
-    }
-    setWorking(false);
-    setLegs([...props.legs.filter((l) => !built.some((b) => b.from === l.from && b.to === l.to)), ...built]);
-    setTimeout(() => (activePair ? fitLeg(pairId(activePair)) : fit()), 100);
-    setNote(
-      kind === "direct"
-        ? t`${count}つの区間を、まっすぐにつなぎました。形を確かめてから、保存してください。`
-        : straight === 0
-          ? t`${count}つの区間を、道に沿ってつなぎました。形を確かめてから、保存してください。「元に戻す」で、もとにもどせます。`
-          : t`${count}つの区間を、道に沿ってつなぎました。${straight}か所は道が見つからず、まっすぐです。形を確かめてから、保存してください。`,
-    );
-  }
-
-  // Joins the drawn legs (or the stops, for a leg that has none) along real walking trails. The route-finding service is asked
-  // first; when it is not set up or does not answer, GSI's own trail map does the same job without a key (as Navivi falls back).
-  async function snapToTrails() {
-    const list = targets(() => true);
-    if (list.length === 0) return setNote(t`先に、経由地を2つ以上置いてください（寄り道は数えません）。`);
-    setWorking(true);
-    let useService = true;
-    let lastMessage = "";
-    let allStraight = true;
-    const made: Leg[] = [];
-    for (const [n, { from, to }] of list.entries()) {
-      const step = n + 1;
-      const total = list.length;
-      setNote(t`道を調べています…（${step}/${total}）`);
-      const leg = legOf(props.legs, from.key, to.key);
-      // A leg with guide points is found again through them; otherwise the drawn shape is followed.
-      const points: SnapPoint[] = leg?.via?.length ? guideRoute(from, to, leg.via) : leg ? simplify(leg.points, 25).map((p) => ({ lat: p[1], lng: p[0] })) : [{ lat: from.lat, lng: from.lng }, { lat: to.lat, lng: to.lng }];
-      let line: LngLatEle[] | null = null;
-      if (useService) {
-        const result = await props.onSnap(points);
-        if (result.ok) {
-          line = await closeLineGaps(result.line, points);
-          allStraight = false;
-        } else {
-          useService = false;
-          lastMessage = result.message;
-        }
-      }
-      if (!line) {
-        const built = await buildLine(points, "trail");
-        if (built.straightHops < points.length - 1) allStraight = false;
-        line = built.line;
-      }
-      made.push({ from: from.key, to: to.key, points: withEnds(simplify(roundLine(line), MAX_POINTS), from, to), ...(leg?.ride ? { ride: leg.ride } : {}), ...(leg?.via ? { via: leg.via } : {}), ...(leg?.side ? { side: true as const } : {}) });
-    }
-    setWorking(false);
-    if (allStraight) return setNote(lastMessage || t`道が見つかりませんでした。`);
-    setLegs([...props.legs.filter((l) => !made.some((b) => b.from === l.from && b.to === l.to)), ...made]);
-    setTimeout(() => (activePair ? fitLeg(pairId(activePair)) : fit()), 100);
-    setNote(
-      useService
-        ? t`線を道に沿わせました。形を確かめてから、保存してください。「元に戻す」で、もとの線にもどせます。`
-        : t`道の探索サービスが使えなかったため、地図の道（国土地理院）で探しました。いつもと違う道になることがあります。形をよく確かめてください。「元に戻す」で、もとの線にもどせます。`,
-    );
-  }
-
-  // Rounds the corners of a leg (Navivi's smooth anchors): fewer, smoother bends.
-  function smooth() {
-    const list = targets((p) => !!legOf(props.legs, p.from.key, p.to.key));
-    const have = list.flatMap((p) => {
-      const leg = legOf(props.legs, p.from.key, p.to.key);
-      return leg && leg.points.length >= 3 ? [{ p, leg }] : [];
+  // ---- lines that make themselves (2026-11-20, user) ----------------------------------------------------------------
+  // A walked leg follows the trails by itself as soon as both its stops are there, and again when one of them moves; a ridden
+  // one (ferry, bus ...) is a straight hop. A leg drawn by hand or taken from a GPX file is left alone, and so are the ways
+  // back. GSI's own trail map is used (no key, no allowance), through the leg's guide points when it has some. The result is
+  // folded into the change that caused it, so one undo takes back the stop and its line.
+  const autoBusy = useRef(false);
+  // The stops as they were when the map opened: a leg with no line is routed only once the stops changed in this session, so
+  // opening a course never changes it (or cancels its line check) by itself.
+  const stopsAtOpen = useRef<string | null>(null);
+  const stopsNow = pairs.map((p) => `${p.from.key}:${p.from.lat},${p.from.lng}>${p.to.key}:${p.to.lat},${p.to.lng}`).join("|");
+  useEffect(() => {
+    if (ready && stopsAtOpen.current === null) stopsAtOpen.current = stopsNow;
+  }, [ready, stopsNow]);
+  useEffect(() => {
+    if (!ready || autoBusy.current || stopsAtOpen.current === null) return;
+    const changed = stopsNow !== stopsAtOpen.current;
+    const todo = pairs.filter((pair) => {
+      if (pair.back) return false;
+      const leg = legOf(props.legs, pair.from.key, pair.to.key);
+      return leg ? !!leg.stale && !leg.hand : changed;
     });
-    if (have.length === 0) return setNote(t`先に、線を描いてください。`);
-    setLegs([
-      ...props.legs.filter((l) => !have.some(({ leg }) => leg === l)),
-      ...have.map(({ p, leg }): Leg => ({ from: leg.from, to: leg.to, points: withEnds(simplify(smoothLine(leg.points), MAX_POINTS), p.from, p.to), ...(leg.ride ? { ride: leg.ride } : {}), ...(leg.via ? { via: leg.via } : {}), ...(leg.side ? { side: true as const } : {}) })),
-    ]);
-    setNote(t`線の角をなめらかにしました。形を確かめてください。「元に戻す」で、もとの線にもどせます。`);
-  }
+    if (todo.length === 0) return;
+    const timer = setTimeout(() => {
+      autoBusy.current = true;
+      setWorking(true);
+      void (async () => {
+        const built: Leg[] = [];
+        for (const pair of todo) {
+          const { from, to } = pair;
+          const leg = legOf(props.legs, from.key, to.key);
+          const keep = { ...(leg?.ride ? { ride: leg.ride } : {}), ...(leg?.via ? { via: leg.via } : {}), ...(pair.side ? { side: true as const } : {}) };
+          if (leg?.ride) {
+            built.push({ from: from.key, to: to.key, points: [[from.lng, from.lat], [to.lng, to.lat]], ...keep });
+            continue;
+          }
+          const through = [{ lat: from.lat, lng: from.lng }, ...(leg?.via ?? []).map(([lng, lat]) => ({ lat, lng })), { lat: to.lat, lng: to.lng }];
+          const r = await buildLine(through, "trail");
+          built.push({ from: from.key, to: to.key, points: withEnds(simplify(roundLine(r.line), MAX_POINTS), from, to), ...keep });
+        }
+        const latestLegs = latest.current.legs;
+        latest.current.onAutoLegs([...latestLegs.filter((l) => !built.some((b) => b.from === l.from && b.to === l.to)), ...built]);
+        autoBusy.current = false;
+        setWorking(false);
+      })();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [ready, pairs, props.legs, stopsNow]);
 
   function clearLine() {
     if (activePair) props.onClearLeg(activePair.from.key, activePair.to.key);
@@ -907,12 +867,28 @@ export function MapEditor(props: MapEditorProps) {
 
   const legLabel = (pair: { from: Stop; to: Stop; side?: true; back?: true }) => `${pair.side ? t`【サブコース】` : pair.back ? t`【戻り】` : ""}${nameOf.get(pair.from.key) ?? ""} → ${nameOf.get(pair.to.key) ?? ""}`;
   const rideName: Record<RideMode, string> = { ferry: t`船`, bus: t`バス`, train: t`電車`, other: t`ほかの乗り物` };
-  /** Walk, or ride (a ferry from a port ...) for this long: the leg is made (straight) when it has no line yet. */
-  function setRide(mode: RideMode | "walk", minutes: number) {
+  /** Ride (a ferry from a port ...) for this long: a straight hop between the two stops. */
+  function setRide(mode: RideMode, minutes: number) {
     if (!activePair) return;
-    const base: Leg = activeLeg ?? { from: activePair.from.key, to: activePair.to.key, points: [[activePair.from.lng, activePair.from.lat], [activePair.to.lng, activePair.to.lat]] };
-    const plain: Leg = { ...base, ride: undefined }; // (an undefined member is not saved)
-    setLeg(mode === "walk" ? plain : { ...plain, ride: { mode, minutes: Math.min(1440, Math.max(1, Math.round(minutes))) } });
+    const { from, to } = activePair;
+    const base: Leg = { ...(activeLeg ?? { from: from.key, to: to.key, points: [] }), hand: undefined, stale: undefined }; // (an undefined member is not saved)
+    setLeg({ ...base, points: [[from.lng, from.lat], [to.lng, to.lat]], ride: { mode, minutes: Math.min(1440, Math.max(1, Math.round(minutes))) } });
+  }
+  /**
+   * What the chosen leg is (2026-11-20, user): 歩く follows the trails by itself, a ride is a straight hop, 手で描く turns the
+   * line it has into points to drag at once (the draw tool opens on it) and is never routed again on its own.
+   */
+  function setKind(kind: RideMode | "walk" | "hand") {
+    if (!activePair) return;
+    const { from, to } = activePair;
+    if (kind === "walk") {
+      const base: Leg = { ...(activeLeg ?? { from: from.key, to: to.key, points: [] }), ride: undefined, hand: undefined };
+      setLeg({ ...base, points: base.points.length >= 2 ? base.points : [[from.lng, from.lat], [to.lng, to.lat]], stale: true });
+    } else if (kind === "hand") {
+      const base: Leg = { ...(activeLeg ?? { from: from.key, to: to.key, points: [[from.lng, from.lat], [to.lng, to.lat]] }), ride: undefined, stale: undefined };
+      setLeg({ ...base, hand: true });
+      setMode("draw");
+    } else setRide(kind, activeLeg?.ride?.minutes ?? 20);
   }
   // How long the leg takes to walk (from its line, and its climb once the heights are filled in): " · 25 min (1.2 km)".
   const timeText = (pair: { from: Stop; to: Stop }) => {
@@ -927,7 +903,6 @@ export function MapEditor(props: MapEditorProps) {
     return ` · ${t`${minutes}分（${km} km）`}`;
   };
   const activeName = activePair ? legLabel(activePair) + timeText(activePair) : null;
-  const canWork = !working && pairs.length > 0;
   // A saved line that the waypoints do not follow (a stop twice, or in another order) is kept as it is, not cut into legs.
   const looseLine = props.legs.length === 0 && props.line.length >= 2 && pairs.length > 0;
   const legName = activeName ?? "";
@@ -968,7 +943,7 @@ export function MapEditor(props: MapEditorProps) {
           : hasLine
             ? t`線をクリックすると、その区間を選べます。数字の丸をドラッグすると、経由地を動かせます。`
             : hasPlaces
-              ? t`数字の丸をドラッグすると、経由地を動かせます。道すじは「線を描く」か、GPXファイルで入れます。`
+              ? t`数字の丸をドラッグすると、経由地を動かせます。経由地のあいだの線は、道に沿って自動で引かれます。線をクリックすると、その区間の種類（歩く・船・手で描く など）を選べます。`
               : t`まず、GPXファイルをここにドラッグするか「GPXファイルから読み込む」を押してください。手で入れるときは「経由地を置く」で経由地を入れ、「線を描く」で区間ごとに道すじを描きます。`;
 
   return (
@@ -1010,20 +985,8 @@ export function MapEditor(props: MapEditorProps) {
           ) : null}
         </div>
         <input ref={fileInput} type="file" accept=".gpx,application/gpx+xml,text/xml,application/xml" onChange={onFile} className="sr-only" tabIndex={-1} aria-hidden="true" />
-        <span className="text-sm text-muted">{activePair ? t`選んだ区間に` : t`すべての区間（線のない所）に`}</span>
-        <div className="grid basis-full grid-cols-2 gap-2 sm:grid-cols-4">
-        <button type="button" disabled={!canWork} onClick={() => void connect("trail")} className={`${chipClass} w-full`} title={t`経由地のあいだを、地図の道でつなぎます（寄り道は通りません）`}>
-          {working ? t`調べています…` : t`道でつなぐ`}
-        </button>
-        <button type="button" disabled={!canWork} onClick={() => void connect("direct")} className={`${chipClass} w-full`} title={t`経由地のあいだを、まっすぐな線でつなぎます`}>
-          {t`まっすぐつなぐ`}
-        </button>
-        <button type="button" disabled={!canWork} onClick={() => void snapToTrails()} className={`${chipClass} w-full`} title={t`描いた線を、地図の道に沿わせます`}>
-          {t`道に沿わせる`}
-        </button>
-        <button type="button" disabled={!canWork || !hasLine} onClick={smooth} className={`${chipClass} w-full`} title={t`線の角を、丸くなめらかにします`}>
-          {t`なめらかにする`}
-        </button>
+        <span className="text-sm text-muted">{working ? t`道を調べています…` : t`経由地のあいだの線は、道に沿って自動で引かれます。`}</span>
+        <div className="flex basis-full flex-wrap gap-2 empty:hidden">
         <input
           ref={heightsInput}
           type="file"
@@ -1222,17 +1185,18 @@ export function MapEditor(props: MapEditorProps) {
             {activePair && !activePair.side ? (
             <span className="flex items-center gap-1" role="group" aria-label={t`この区間の移動`}>
               <select
-                aria-label={t`移動の手段`}
-                value={activeLeg?.ride?.mode ?? "walk"}
-                onChange={(e) => setRide(e.target.value as RideMode | "walk", activeLeg?.ride?.minutes ?? 20)}
+                aria-label={t`この区間の種類`}
+                value={activeLeg?.hand ? "hand" : (activeLeg?.ride?.mode ?? "walk")}
+                onChange={(e) => setKind(e.target.value as RideMode | "walk" | "hand")}
                 className="h-11 min-h-0 rounded-full border border-line bg-paper px-2 text-sm font-bold"
               >
-                <option value="walk">{t`歩く`}</option>
+                <option value="walk">{t`歩く（道に沿って自動）`}</option>
                 {RIDE_MODES.map((m) => (
                   <option key={m} value={m}>
                     {rideName[m]}
                   </option>
                 ))}
+                <option value="hand">{t`手で描く`}</option>
               </select>
               {activeLeg?.ride ? (
                 <>

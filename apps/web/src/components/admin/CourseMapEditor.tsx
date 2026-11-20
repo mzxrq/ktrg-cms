@@ -38,6 +38,7 @@ export function CourseMapEditor({ d, confirmRemoval }: { d: ReturnType<typeof us
         onLine={(points) => dispatch({ type: "line", points })}
         onHeights={(points) => dispatch({ type: "elevations", points })}
         onSetLeg={(leg) => dispatch({ type: "setLeg", leg })}
+        onAutoLegs={(legs) => dispatch({ type: "autoLegs", legs })}
         onSetLegs={(legs) => dispatch({ type: "setLegs", legs })}
         onClearLeg={(from, to) => dispatch({ type: "clearLeg", from, to })}
         onClearLegs={() => dispatch({ type: "clearLegs" })}

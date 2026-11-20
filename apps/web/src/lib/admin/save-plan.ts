@@ -151,7 +151,7 @@ export function routeBody(d: RouteDraft): RouteBody {
     photoNameEn: nullIfEmpty(d.photoNameEn),
     photoFocusX: d.photoFocus?.x ?? null,
     photoFocusY: d.photoFocus?.y ?? null,
-    geometry: d.line.length >= 2 ? { type: "LineString", coordinates: d.line.map(coordinate), ...(d.legs.length > 0 ? { legs: d.legs.map((l) => ({ from: l.from, to: l.to, coordinates: l.points.map(coordinate), ...(l.side ? { side: true as const } : {}), ...(l.back ? { back: true as const } : {}), ...(l.ride ? { ride: l.ride } : {}), ...(l.via && l.via.length > 0 ? { via: l.via } : {}) })) } : {}) } : null,
+    geometry: d.line.length >= 2 ? { type: "LineString", coordinates: d.line.map(coordinate), ...(d.legs.length > 0 ? { legs: d.legs.map((l) => ({ from: l.from, to: l.to, coordinates: l.points.map(coordinate), ...(l.side ? { side: true as const } : {}), ...(l.back ? { back: true as const } : {}), ...(l.ride ? { ride: l.ride } : {}), ...(l.via && l.via.length > 0 ? { via: l.via } : {}), ...(l.hand ? { hand: true as const } : {}) })) } : {}) } : null,
     // "Checked" needs a named source (the server refuses it otherwise): without one the line is saved as not checked yet.
     lineVerified: d.lineVerified && d.lineSource.trim() !== "",
     lineSource: nullIfEmpty(d.lineSource),
