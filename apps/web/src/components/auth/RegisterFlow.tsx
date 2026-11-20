@@ -4,29 +4,30 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { KeyIcon, MailIcon } from "@/components/icons";
+import { KeyIcon } from "@/components/icons";
 import { requestEmailCode, signUpWithPasskey, verifyEmailCode, type SignupProfile } from "@/lib/auth-client";
 import { hasName, NAME_MAX, safeNextPath, type AuthFailure } from "@/lib/auth-flow";
 import { PrivacyNote } from "@/components/PrivacyNote";
-import { AuthError, ChoiceCard, inputClass, OriginPicker, primaryButton, secondaryButton, type OriginAnswer } from "./authUi";
+import { AuthError, inputClass, OrDivider, OriginPicker, primaryButton, secondaryButton, type OriginAnswer } from "./authUi";
 import { EmailCodeStep } from "./EmailCodeStep";
-import { SsoButtons } from "./SsoButtons";
+import { GroupButton, SsoButtons } from "./SsoButtons";
 
-type Step = "choose" | "details" | "name" | "origin" | "email" | "code";
+type Step = "start" | "details" | "name" | "origin" | "code";
 
-/** The email way asks one thing per screen; the mailed number is the last of these. */
-const EMAIL_STEPS = 4;
+/** After the address, the email way asks one thing per screen; the mailed number is the last of these. */
+const EMAIL_STEPS = 3;
 
 /**
- * Register, with as few words as possible: two big tiles to pick a way. Face or fingerprint is one screen (a name and
- * where you come from) and then the scan. Email goes one question at a time, for people who find a long form hard: a
- * name, where you come from, the address, the mailed number. The account is only created at the end.
+ * Register like logging in, nothing to look for: the email box first, then one group of the same-sized other ways (face
+ * or fingerprint, Google, LINE). Email then goes one question at a time, for people who find a long form hard: a name,
+ * where you come from, the mailed number. Face or fingerprint is one screen (a name and where you come from) and then the
+ * scan. The account is only created at the end.
  */
 export function RegisterFlow({ next, loginHref }: { next?: string; loginHref: string }) {
   const { t, i18n } = useLingui();
   const router = useRouter();
   const locale = i18n.locale === "en" ? "en" : "ja";
-  const [step, setStep] = useState<Step>("choose");
+  const [step, setStep] = useState<Step>("start");
   const [name, setName] = useState("");
   const [origin, setOrigin] = useState<OriginAnswer>({ origin: null, place: null });
   const [email, setEmail] = useState("");
@@ -90,7 +91,7 @@ export function RegisterFlow({ next, loginHref }: { next?: string; loginHref: st
           email={email.trim()}
           locale={locale}
           submitLabel={t`登録する`}
-          onBack={() => go("email")}
+          onBack={() => go("origin")}
           onSubmit={async (code) => {
             const result = await verifyEmailCode(email.trim(), code, profile());
             if (result.ok) finish();
@@ -101,47 +102,31 @@ export function RegisterFlow({ next, loginHref }: { next?: string; loginHref: st
     );
   }
 
-  if (step === "name" || step === "origin" || step === "email") {
-    const number = { name: 1, origin: 2, email: 3 }[step];
-    const ready = step === "name" ? hasName(name) : step === "origin" || email.includes("@");
+  if (step === "name" || step === "origin") {
+    const ready = step === "origin" || hasName(name);
     const forward = (e: FormEvent) => {
       e.preventDefault();
       if (!ready) return;
-      if (step === "email") void sendCode();
-      else go(step === "name" ? "origin" : "email");
+      if (step === "origin") void sendCode();
+      else go("origin");
     };
     return (
       <form onSubmit={forward} className="flex flex-col gap-6" noValidate>
-        {stepCount(number)}
-        {step === "name" ? nameField : null}
-        {step === "origin" ? (
+        {stepCount(step === "name" ? 1 : 2)}
+        {step === "name" ? (
+          nameField
+        ) : (
           <>
             <OriginPicker value={origin} onChange={setOrigin} />
             <PrivacyNote />
           </>
-        ) : null}
-        {step === "email" ? (
-          <label className="flex flex-col gap-2 text-lg font-bold">
-            {t`メールアドレス`}
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="email"
-              autoFocus
-              inputMode="email"
-              maxLength={254}
-              placeholder="name@example.com"
-              className={inputClass}
-            />
-          </label>
-        ) : null}
+        )}
         <AuthError code={error} />
         <div className="flex flex-col gap-3">
           <button type="submit" disabled={busy || !ready} className={primaryButton}>
-            {step === "email" ? t`確認番号を送る` : t`つぎへ`}
+            {step === "origin" ? t`確認番号を送る` : t`つぎへ`}
           </button>
-          <button type="button" onClick={() => go(step === "name" ? "choose" : step === "origin" ? "name" : "origin")} className={secondaryButton}>
+          <button type="button" onClick={() => go(step === "name" ? "start" : "name")} className={secondaryButton}>
             {t`戻る`}
           </button>
         </div>
@@ -162,7 +147,7 @@ export function RegisterFlow({ next, loginHref }: { next?: string; loginHref: st
             <KeyIcon />
             {t`顔・指紋で登録する`}
           </button>
-          <button type="button" onClick={() => go("choose")} className={secondaryButton}>
+          <button type="button" onClick={() => go("start")} className={secondaryButton}>
             {t`戻る`}
           </button>
         </div>
@@ -171,11 +156,38 @@ export function RegisterFlow({ next, loginHref }: { next?: string; loginHref: st
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <ChoiceCard primary icon={<KeyIcon />} title={t`顔・指紋で登録`} onClick={() => go("details")} />
-      <ChoiceCard icon={<MailIcon />} title={t`メールで登録`} onClick={() => go("name")} />
-      <SsoButtons returnTo={safeNextPath(next, "/")} />
-      <p className="mt-2 text-lg">
+    <div className="flex flex-col gap-6">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (email.includes("@")) go("name");
+        }}
+        className="flex flex-col gap-4"
+        noValidate
+      >
+        <label className="flex flex-col gap-2 text-lg font-bold">
+          {t`メールアドレス`}
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+            inputMode="email"
+            maxLength={254}
+            placeholder="name@example.com"
+            className={inputClass}
+          />
+        </label>
+        <p className="-mt-2 text-base text-muted">{t`お名前などを聞いたあと、確認番号をメールでお送りします。`}</p>
+        <button type="submit" disabled={!email.includes("@")} className={primaryButton}>
+          {t`つぎへ`}
+        </button>
+      </form>
+      <OrDivider />
+      <SsoButtons returnTo={safeNextPath(next, "/")} signUp>
+        <GroupButton icon={<KeyIcon />} label={t`顔・指紋で登録`} onClick={() => go("details")} />
+      </SsoButtons>
+      <p className="text-lg">
         {t`登録済みの方は`}{" "}
         <Link href={loginHref} className="tap-target inline-flex items-center font-bold text-accent underline underline-offset-4">
           {t`ログイン`}

@@ -80,7 +80,6 @@ const ICON_ONLY = new Set([
   "components/settings/WelcomeFlow.tsx on-brand/brand",
   "components/settings/PasskeyManager.tsx on-brand/brand",
   "components/navigation/NavigationHud.tsx white/brand", // the turn sign
-  "components/auth/authUi.tsx on-brand/brand", // the words inside are text-xl bold, in their own span
 ]);
 
 // LINE's own button and mark: LINE's guidelines fix white on #06C755 (2.3:1); the user chose the official look (2026-11-20).

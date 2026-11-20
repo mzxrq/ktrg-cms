@@ -1,6 +1,5 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { type AuthFailure, type Origin } from "@/lib/auth-flow";
 import { COUNTRY_REGIONS, countryOptions, originOfPlace, placeOfOrigin, PREFECTURE_REGIONS, regionName } from "@/lib/origin-places";
@@ -15,49 +14,18 @@ export const secondaryButton =
   buttonStyle("secondary", "lg", "flex w-full");
 export const inputClass =
   "tap-target w-full rounded-xl border-2 border-ink bg-paper px-4 text-xl text-ink placeholder:text-muted";
+/** A quiet second choice under a form's main button, underlined like a link. */
+export const textButton = "tap-target w-fit self-center text-lg font-bold underline underline-offset-4";
 
-/**
- * A big tile to choose one way to go on: a round icon and a short title (and, only when it helps, a
- * line under it). The main choice is filled red; the other is an outlined tile. No "recommended"
- * wording: the filled tile is the quiet suggestion.
- */
-export function ChoiceCard({
-  icon,
-  title,
-  hint,
-  primary = false,
-  onClick,
-  disabled,
-}: {
-  icon: ReactNode;
-  title: string;
-  hint?: string;
-  primary?: boolean;
-  onClick: () => void;
-  disabled?: boolean;
-}) {
+/** 「または」 between the email form and the group of other ways in. */
+export function OrDivider() {
+  const { t } = useLingui();
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      className={`tap-target flex min-h-[5rem] w-full items-center gap-4 rounded-full p-4 text-left disabled:opacity-60 ${
-        // The main way in is an action, so brand red; white on it is held to large bold text, so a primary card has no hint.
-        primary ? "bg-brand text-on-brand" : "border border-ink bg-surface text-ink hover:bg-paper"
-      }`}
-    >
-      <span
-        className={`flex size-14 shrink-0 items-center justify-center rounded-full ${
-          primary ? "bg-paper text-ink" : "bg-ink text-paper"
-        } [&_svg]:size-7`}
-      >
-        {icon}
-      </span>
-      <span className="min-w-0">
-        <span className="block text-xl font-bold leading-snug">{title}</span>
-        {hint && !primary ? <span className="mt-0.5 block text-lg">{hint}</span> : null}
-      </span>
-    </button>
+    <div className="flex items-center gap-3 text-base text-muted">
+      <span aria-hidden="true" className="h-px flex-1 bg-line" />
+      {t`または`}
+      <span aria-hidden="true" className="h-px flex-1 bg-line" />
+    </div>
   );
 }
 

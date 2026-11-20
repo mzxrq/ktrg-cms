@@ -82,7 +82,7 @@ export function SsoMethods() {
           return (
             <li key={item?.id ?? provider} className="flex items-center gap-4 rounded-lg bg-surface p-4">
               <span
-                className={`flex size-12 shrink-0 items-center justify-center rounded-full ${provider === "line" ? "bg-line-green text-on-line-green" : item ? "bg-ink text-paper" : "border border-ink bg-paper text-ink"}`}
+                className={`flex size-12 shrink-0 items-center justify-center rounded-full ${provider === "line" ? "bg-line-green text-on-line-green" : provider === "google" ? "border border-google-line bg-google" : item ? "bg-ink text-paper" : "border border-ink bg-paper text-ink"}`}
               >
                 <SsoMark provider={provider} />
               </span>
