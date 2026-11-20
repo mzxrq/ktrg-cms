@@ -14,6 +14,8 @@ export interface StampSpot {
   lng: number | null;
   radiusM: number;
   status: SpotStatus;
+  /** The waypoint it is worshipped from (遥拝); lat/lng above are already that waypoint's. */
+  stampSpotId?: string | null;
   /** When the status last changed: an offline stamp pressed before a closure is still accepted. */
   statusUpdatedAt?: Date | null;
 }
@@ -51,6 +53,11 @@ export interface StampStore {
   findSpot(id: string): Promise<StampSpot | null>;
   /** Several places in one query (a guest's whole cookie); an id that is not there is left out. */
   findSpots(ids: string[]): Promise<StampSpot[]>;
+  /**
+   * The places stamped by the same press as this one (2026-11-20, user): the waypoint a 遥拝 place is worshipped from, and
+   * every place worshipped from the same waypoint (or from this one). Not this place itself; checks are the caller's.
+   */
+  linkedSpots(spot: { id: string; stampSpotId?: string | null }): Promise<(StampSpot & { nameJa: string; nameEn: string | null })[]>;
   /** Saves many stamps for one visitor at once (a guest signing up), each with the time it was earned: one transaction, finishes worked out once at the end. */
   awardMany(userId: string, items: { spotId: string; flagged: boolean; flagReason?: string | null; createdAt: Date }[]): Promise<{ added: number; already: number }>;
   /** Saves the stamp (one per visitor and place) and, in the same transaction, the courses and rallies it finishes. */

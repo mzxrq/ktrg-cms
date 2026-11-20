@@ -13,5 +13,5 @@ export function editorPlacesOf(draft: Pick<RouteDraft, "places" | "walkStyle">):
   const along = draft.places.filter((p) => !p.stopBy && p.lat !== null && p.lng !== null);
   const roleOf = (key: string): StopRole | undefined =>
     key === along[0]?.key ? (comesBack ? "both" : "start") : !comesBack && along.length > 1 && key === along.at(-1)!.key ? "goal" : undefined;
-  return draft.places.map((p) => ({ key: p.key, lat: p.lat, lng: p.lng, number: p.stampable ? ++stamp : null, name: p.nameJa, stampable: p.stampable, stopBy: p.stopBy, detached: p.detached, stampPoint: p.stampLat !== null && p.stampLng !== null ? { lat: p.stampLat, lng: p.stampLng } : null, kind: p.kind, published: p.published, role: roleOf(p.key), info: p.status === "info" }));
+  return draft.places.map((p) => ({ key: p.key, lat: p.lat, lng: p.lng, number: p.stampable ? ++stamp : null, name: p.nameJa, stampable: p.stampable, stopBy: p.stopBy, detached: p.detached, id: p.id, stampFromKey: p.stampSpotId ? (draft.places.find((x) => x.id === p.stampSpotId)?.key ?? null) : null, kind: p.kind, published: p.published, role: roleOf(p.key), info: p.status === "info" }));
 }

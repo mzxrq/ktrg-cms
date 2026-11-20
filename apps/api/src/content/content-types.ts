@@ -110,9 +110,8 @@ export interface SpotRow {
   detached: boolean;
   detachedLabelJa: string | null;
   detachedLabelEn: string | null;
-  /** Where the stamp is pressed when not at the place itself (遥拝); null: at lat/lng. */
-  stampLat: number | null;
-  stampLng: number | null;
+  /** The waypoint of the same course it is worshipped from (遥拝); its stamp is pressed there. */
+  stampSpotId: string | null;
   /** A picture used as this place's stamp. */
   stampImageUrl: string | null;
   photoUrl: string | null;
@@ -206,9 +205,8 @@ export interface SpotFields {
   detached: boolean;
   detachedLabelJa: string | null;
   detachedLabelEn: string | null;
-  /** Where the stamp is pressed when not at the place itself (遥拝); null: at lat/lng. */
-  stampLat: number | null;
-  stampLng: number | null;
+  /** The waypoint of the same course it is worshipped from (遥拝); its stamp is pressed there. */
+  stampSpotId: string | null;
   /** A picture used as this place's stamp. */
   stampImageUrl: string | null;
   photoUrl: string | null;

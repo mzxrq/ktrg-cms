@@ -46,8 +46,8 @@ export interface PublicSpot {
   detached: boolean;
   detachedLabelJa: string | null;
   detachedLabelEn: string | null;
-  /** Where the stamp is pressed when not at the place itself (遥拝); shown only once the position is checked. */
-  stampPosition: { lat: number; lng: number } | null;
+  /** The waypoint it is worshipped from (遥拝), where its stamp is pressed: published and with a checked position, else null. */
+  stampFrom: { id: string; nameJa: string; nameEn: string | null; position: { lat: number; lng: number } } | null;
   stampImageUrl: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
@@ -230,7 +230,13 @@ export function withShared(own: SpotRow[], shared: SharedSpotRow[]): SpotRow[] {
   return out.map((s, i) => ({ ...s, sortOrder: i + 1 }));
 }
 
-function toPublicSpot(s: SpotRow): PublicSpot {
+/** The 遥拝 waypoint as visitors may see it: only a published one with a checked position. */
+const stampFromOf = (from: SpotRow | null | undefined): PublicSpot["stampFrom"] =>
+  from && from.published && from.positionVerified && from.lat !== null && from.lng !== null
+    ? { id: from.id, nameJa: from.nameJa, nameEn: from.nameEn, position: { lat: from.lat, lng: from.lng } }
+    : null;
+
+function toPublicSpot(s: SpotRow, from?: SpotRow | null): PublicSpot {
   const showPosition = s.positionVerified && s.lat !== null && s.lng !== null;
   return {
     id: s.id,
@@ -250,7 +256,7 @@ function toPublicSpot(s: SpotRow): PublicSpot {
     detached: s.detached,
     detachedLabelJa: s.detachedLabelJa,
     detachedLabelEn: s.detachedLabelEn,
-    stampPosition: showPosition && s.stampLat !== null && s.stampLng !== null ? { lat: s.stampLat, lng: s.stampLng } : null,
+    stampFrom: stampFromOf(from),
     stampImageUrl: s.stampImageUrl,
     photoUrl: s.photoUrl,
     photoCredit: s.photoCredit,
@@ -416,8 +422,7 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
     if (input.translations !== undefined) out.translations = cleanTranslations(input.translations);
     if (input.lat !== undefined) out.lat = input.lat;
     if (input.lng !== undefined) out.lng = input.lng;
-    if (input.stampLat !== undefined) out.stampLat = input.stampLat;
-    if (input.stampLng !== undefined) out.stampLng = input.stampLng;
+    if (input.stampSpotId !== undefined) out.stampSpotId = input.stampSpotId;
     if (input.radiusM !== undefined) out.radiusM = input.radiusM;
     if (input.status !== undefined) out.status = input.status;
     if (input.kind !== undefined) out.kind = input.kind;
@@ -457,12 +462,24 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
     // A position is both numbers or neither.
     if ((out.lat === undefined) !== (out.lng === undefined)) return bad("validation_failed");
     if ((out.lat === null) !== (out.lng === null)) return bad("validation_failed");
-    if ((out.stampLat === undefined) !== (out.stampLng === undefined)) return bad("validation_failed");
-    if ((out.stampLat === null) !== (out.stampLng === null)) return bad("validation_failed");
     return ok(out);
   }
 
   const date = (d: Date | string) => (d instanceof Date ? d : new Date(d));
+
+  /**
+   * A 遥拝 link is a waypoint of the same course, not the place itself, and one step only: the waypoint it points to has no
+   * link of its own, and a place others are worshipped from cannot get one.
+   */
+  async function stampFromOk(routeId: string, spotId: string | null, target: string | null): Promise<Result<true>> {
+    if (target === null) return ok(true);
+    if (target === spotId) return bad("validation_failed");
+    const found = await store.getRoute(routeId);
+    const to = found?.spots.find((s) => s.id === target);
+    if (!to || to.stampSpotId !== null) return bad("validation_failed");
+    if (spotId !== null && found!.spots.some((s) => s.stampSpotId === spotId)) return bad("validation_failed");
+    return ok(true);
+  }
 
   return {
     // ---- admin: routes -------------------------------------------------------------------
@@ -516,6 +533,10 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
     async createSpot(actor: string, routeId: string, input: Partial<SpotFields> & { nameJa: string }): Promise<Result<SpotRow>> {
       const p = prepareSpot(input);
       if (!p.ok) return p;
+      if (p.value.stampSpotId) {
+        const linked = await stampFromOk(routeId, null, p.value.stampSpotId);
+        if (!linked.ok) return linked;
+      }
       if (p.value.positionVerified) {
         if (!p.value.positionSource) return bad("source_required");
         if (p.value.lat === undefined || p.value.lat === null) return bad("no_coordinates");
@@ -531,10 +552,11 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       if (!p.ok) return p;
       const current = await store.getSpot(id);
       if (!current) return bad("not_found");
-      // Moving the stamp point (遥拝) counts too: both positions share one check.
-      const moved =
-        (p.value.lat !== undefined && (p.value.lat !== current.lat || p.value.lng !== current.lng)) ||
-        (p.value.stampLat !== undefined && (p.value.stampLat !== current.stampLat || p.value.stampLng !== current.stampLng));
+      const moved = p.value.lat !== undefined && (p.value.lat !== current.lat || p.value.lng !== current.lng);
+      if (p.value.stampSpotId !== undefined) {
+        const linked = await stampFromOk(current.routeId, id, p.value.stampSpotId);
+        if (!linked.ok) return linked;
+      }
       const changes: Partial<SpotFields> = { ...p.value };
       // Moving a place cancels the check on its position, unless the same save checks it again.
       if (moved && p.value.positionVerified === undefined) changes.positionVerified = false;
@@ -629,7 +651,9 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       const stamps = published.filter((s) => s.stampable);
       const points = published.filter((s) => !s.stampable);
       // A side trip is shown only once the place it leads to is published, like the place itself.
-      return { route: toPublicRoute(found.route, stamps.length, true, new Set(published.map((s) => s.id))), spots: stamps.map(toPublicSpot), points: points.map(toPublicSpot) };
+      const byId = new Map(found.spots.map((s) => [s.id, s]));
+      const pub = (s: SpotRow) => toPublicSpot(s, s.stampSpotId ? byId.get(s.stampSpotId) : null);
+      return { route: toPublicRoute(found.route, stamps.length, true, new Set(published.map((s) => s.id))), spots: stamps.map(pub), points: points.map(pub) };
     },
 
     /** Status of every published place, nothing else: small enough to poll every minute. */
@@ -647,7 +671,8 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
     /** A draft place looks like a missing one. */
     async publicSpot(id: string): Promise<PublicSpot | null> {
       const s = await store.getSpot(id);
-      return s && s.published ? toPublicSpot(s) : null;
+      if (!s || !s.published) return null;
+      return toPublicSpot(s, s.stampSpotId ? await store.getSpot(s.stampSpotId) : null);
     },
   };
 }

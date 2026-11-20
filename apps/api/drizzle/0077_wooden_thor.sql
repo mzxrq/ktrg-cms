@@ -1,0 +1,3 @@
+ALTER TABLE "spots" ADD COLUMN "stamp_spot_id" uuid;--> statement-breakpoint
+ALTER TABLE "spots" ADD CONSTRAINT "spots_stamp_spot_id_spots_id_fk" FOREIGN KEY ("stamp_spot_id") REFERENCES "public"."spots"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "spots" ADD CONSTRAINT "spots_stamp_spot_not_self" CHECK ("spots"."stamp_spot_id" is null or "spots"."stamp_spot_id" <> "spots"."id");
