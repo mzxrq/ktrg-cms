@@ -183,10 +183,10 @@ export function PlacePanel(p: PlacePanelProps) {
           {place.detached ? (
             <div className="grid gap-3 sm:grid-cols-2">
               <Field label={t`利用者に見せる言葉`} htmlFor={`${id}-detached-ja`} hint={t`空のままなら「道からはなれた場所」と表示します。`}>
-                <TextInput id={`${id}-detached-ja`} value={place.detachedLabelJa} onChange={(v) => p.onChange({ detachedLabelJa: v })} maxLength={100} placeholder={t`例：遠くから拝む場所`} />
+                <TextInput id={`${id}-detached-ja`} value={place.detachedLabelJa} onChange={(v) => p.onChange({ detachedLabelJa: v })} maxLength={100} placeholder={t`例：第4砲台から遥拝（スタンプは第4砲台で）`} />
               </Field>
               <Field label={t`英語（なくてもよい）`} htmlFor={`${id}-detached-en`}>
-                <TextInput id={`${id}-detached-en`} lang="en" value={place.detachedLabelEn} onChange={(v) => p.onChange({ detachedLabelEn: v })} maxLength={100} placeholder="Worshipped from afar" />
+                <TextInput id={`${id}-detached-en`} lang="en" value={place.detachedLabelEn} onChange={(v) => p.onChange({ detachedLabelEn: v })} maxLength={100} placeholder="Worshipped from the 4th Battery (stamp there)" />
               </Field>
               {/* 2026-11-20, user: 第1経塚 is stamped from 第4砲台, 第22経塚 from 水分神社. The pin stays at the place; the stamp
                   is checked here. Both positions share one 位置を確認した and one source. */}

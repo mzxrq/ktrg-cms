@@ -4450,13 +4450,13 @@ msgstr "e.g. Main hall"
 msgid "例：祝日は休み／ラストオーダーは閉店30分前"
 msgstr "e.g. Closed on public holidays / last order 30 minutes before closing"
 
+#: src/components/admin/PlacePanel.tsx:186
+msgid "例：第4砲台から遥拝（スタンプは第4砲台で）"
+msgstr "e.g. Worshipped from the 4th Battery (stamp there)"
+
 #: src/components/admin/FuriganaWords.tsx:95
 msgid "例：臥薪嘗胆"
 msgstr "e.g. 臥薪嘗胆"
-
-#: src/components/admin/PlacePanel.tsx:186
-msgid "例：遠くから拝む場所"
-msgstr "e.g. Worshipped from afar"
 
 #: src/components/admin/RouteEditor.tsx:221
 msgid "例：金剛山の山頂"
@@ -6344,6 +6344,10 @@ msgstr "Available"
 #: src/components/admin/RouteHistory.tsx:57
 msgid "担当 {0}"
 msgstr "By {0}"
+
+#: src/components/admin/map-editor/MapEditor.tsx:613
+msgid "拝"
+msgstr "W"
 
 #: src/components/map/MapScreenCanvas.tsx:678
 #: src/components/map/TrailMap.tsx:449

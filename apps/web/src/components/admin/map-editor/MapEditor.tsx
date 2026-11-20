@@ -610,7 +610,7 @@ export function MapEditor(props: MapEditorProps) {
       if (!p.stampPoint) continue;
       const el = document.createElement("div");
       el.className = "flex size-8 items-center justify-center rounded-full border-2 border-dashed border-ink bg-paper text-base font-bold text-ink";
-      el.textContent = "拝";
+      el.textContent = t`拝`;
       el.title = t`「${p.name}」の遥拝の場所（スタンプを押す位置）`;
       stampPointMarkers.current.push(new ml.Marker({ element: el }).setLngLat([p.stampPoint.lng, p.stampPoint.lat]).addTo(map));
     }
