@@ -45,6 +45,9 @@ const EMPTY = { type: "FeatureCollection" as const, features: [] };
 // Where the camera starts before any area is known: the middle of the trail (Osaka, Wakayama, Nara).
 const START_CENTER: [number, number] = [135.35, 34.4];
 
+/** One empty list for every render, so the pins are not drawn again for a new `[]`. */
+const NO_POINTS: MapScreenPoint[] = [];
+
 export function MapScreenCanvas({
   routes,
   routeId,
@@ -54,6 +57,7 @@ export function MapScreenCanvas({
   onSelectMound,
   onSelectPlace,
   focusPlace = null,
+  loosePoints = NO_POINTS,
   startCamera = null,
   coveredPx,
   coveredLeftPx = 0,
@@ -76,6 +80,8 @@ export function MapScreenCanvas({
   onSelectPlace: (place: MapScreenPoint) => void;
   /** A place of the open course to bring into view and open once, when the page was asked for it. */
   focusPlace?: MapScreenPoint | null;
+  /** Places on no course: shown with the others while no course is open. */
+  loosePoints?: MapScreenPoint[];
   /** The view to come back to; the course and stop it shows are then not framed again until they change. */
   startCamera?: MapCamera | null;
   /** How much of the map's bottom the sheet and the tab bar cover right now: what is framed stays clear of it. */
@@ -562,8 +568,9 @@ export function MapScreenCanvas({
     // Toilets, shops and the like, once zoomed in: on the course that is open, or else on every course in view.
     if (map.getZoom() >= POINTS_ZOOM) {
       const seen = map.getBounds();
-      // A place on no course is on the map only when it was asked for (the place's own page).
-      const shownPoints = (focus ? [focus] : routes).flatMap((r) => r.points);
+      // An open course shows its own; the whole map shows every course's and those on no course. A place asked for in the
+      // address stays on the map whatever is open.
+      const shownPoints = focus ? [...focus.points] : [...routes.flatMap((r) => r.points), ...loosePoints];
       if (focusPlace && !shownPoints.some((p) => p.id === focusPlace.id)) shownPoints.push(focusPlace);
       for (const p of shownPoints) {
         const group = groupOf(p.category);
@@ -590,7 +597,7 @@ export function MapScreenCanvas({
     return () => live.forEach((m) => m.remove());
     // `t` changes only with the language, which reloads the page.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, mapGen, view, routes, routeId, autoId, stopId, layers, revealed, focusPlace]);
+  }, [ready, mapGen, view, routes, routeId, autoId, stopId, layers, revealed, focusPlace, loosePoints]);
 
   const zoom = (delta: 1 | -1) => {
     const map = mapRef.current;

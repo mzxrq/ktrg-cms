@@ -208,11 +208,12 @@ export default async function MapPage({ searchParams }: { searchParams: Promise<
   const initialStop = initialRoute?.stops?.find((s) => s.id === wantedStop) ?? null;
   // "Show on map": from a course's page the place is one of that course's own; from the place's own page (no course in the
   // address) it is looked up anywhere, so the sheet opens over the whole map and 戻る comes back to it, not to a course.
-  const fromDirectory = wantedPlace && !initialRoute ? places.find((p) => p.id === wantedPlace) : undefined;
+  // Places on no course (a station between two courses ...) are marks of the whole map, shown while no course is open.
+  const loosePoints = places.filter((p) => p.routes.length === 0).map((p) => placePoint(p, i18n.locale));
   const initialPlace = initialRoute
     ? (initialRoute.points.find((p) => p.id === wantedPlace) ?? null)
     : wantedPlace
-      ? (routes.flatMap((r) => r.points).find((p) => p.id === wantedPlace) ?? (fromDirectory ? placePoint(fromDirectory, i18n.locale) : null))
+      ? ([...routes.flatMap((r) => r.points), ...loosePoints].find((p) => p.id === wantedPlace) ?? null)
       : null;
 
   return (
@@ -220,6 +221,7 @@ export default async function MapPage({ searchParams }: { searchParams: Promise<
       initialRouteId={initialRoute?.id ?? null}
       initialStopId={initialStop?.id ?? null}
       initialPlace={initialPlace}
+      loosePoints={loosePoints}
       routes={routes}
       settings={settings}
       locale={i18n.locale}

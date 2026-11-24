@@ -56,7 +56,10 @@ export function MapScreen({
   initialRouteId = null,
   initialStopId = null,
   initialPlace = null,
+  loosePoints = [],
 }: {
+  /** Places of the directory on no course: on the map while no course is open. */
+  loosePoints?: MapScreenPoint[];
   /** Open with this course (and stop) chosen, as when a place page links here with "show in the map". */
   initialRouteId?: string | null;
   initialStopId?: string | null;
@@ -318,6 +321,7 @@ export function MapScreen({
         onSelectMound={(routeId, id) => chooseStop(routeId, id, true)}
         onSelectPlace={choosePlace}
         focusPlace={initialPlace}
+        loosePoints={loosePoints}
         startCamera={returning?.camera ?? null}
         coveredPx={wide ? 0 : sheetHeightPx(snap, available) + bottomPx}
         coveredLeftPx={panelPx}
