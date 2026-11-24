@@ -8,6 +8,7 @@
 
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { catalogLocales } from "../src/i18n/locales";
 import { fillEmpty, hasConflictMarkers, translationsOf } from "./resolve-catalogs-lib";
 
 const web = import.meta.dir + "/..";
@@ -17,7 +18,7 @@ const git = (...args: string[]) => {
 };
 
 if (import.meta.main) {
-  const files = ["en", "ja"].map((l) => `src/locales/${l}.po`);
+  const files = catalogLocales.map((l) => `src/locales/${l}.po`);
   const conflicted = files.filter((f) => git("ls-files", "-u", "--", f).out.trim() !== "" || hasConflictMarkers(readFileSync(`${web}/${f}`, "utf8")));
   if (conflicted.length === 0) {
     console.log("No conflict in the catalogs: nothing to do.");

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { useLingui } from "@lingui/react/macro";
+import { accountLocale } from "@/i18n/locales";
 import { KeyIcon } from "@/components/icons";
 import { requestEmailCode, signUpWithPasskey, verifyEmailCode, type SignupProfile } from "@/lib/auth-client";
 import { hasName, NAME_MAX, safeNextPath, type AuthFailure } from "@/lib/auth-flow";
@@ -26,7 +27,7 @@ const EMAIL_STEPS = 3;
 export function RegisterFlow({ next, loginHref }: { next?: string; loginHref: string }) {
   const { t, i18n } = useLingui();
   const router = useRouter();
-  const locale = i18n.locale === "en" ? "en" : "ja";
+  const locale = accountLocale(i18n.locale);
   const [step, setStep] = useState<Step>("start");
   const [name, setName] = useState("");
   const [origin, setOrigin] = useState<OriginAnswer>({ origin: null, place: null });

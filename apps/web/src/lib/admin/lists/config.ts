@@ -11,7 +11,8 @@ export type { FieldUi, Label, ListMeta, Tone };
 export type ListItem = { id: string; createdAt: string; updatedAt: string } & Record<string, unknown>;
 
 /** An admin label in the page's language (English falls back to Japanese). */
-export const pick = (label: Label, locale: string): string => (locale === "en" && label.en ? label.en : label.ja);
+// Labels come in Japanese and English only: every other language reads the English.
+export const pick = (label: Label, locale: string): string => (locale !== "ja" && label.en ? label.en : label.ja);
 
 /** What names a row in the list: its title field (bilingual or text), in the page's language. */
 export function itemName(meta: ListMeta, item: ListItem, locale: string): string {

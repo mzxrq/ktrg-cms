@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { useLingui } from "@lingui/react/macro";
+import { accountLocale } from "@/i18n/locales";
 import { KeyIcon } from "@/components/icons";
 import { logInWithPasskey, logInWithPassword, requestEmailCode, verifyEmailCode } from "@/lib/auth-client";
 import { safeNextPath, type AuthFailure } from "@/lib/auth-flow";
@@ -19,7 +20,7 @@ import { PasswordInput } from "./PasswordInput";
 export function LoginFlow({ next, registerHref, ssoError = null }: { next?: string; registerHref: string; ssoError?: AuthFailure | null }) {
   const { t, i18n } = useLingui();
   const router = useRouter();
-  const locale = i18n.locale === "en" ? "en" : "ja";
+  const locale = accountLocale(i18n.locale);
   const [codeSent, setCodeSent] = useState(false);
   const [withPassword, setWithPassword] = useState(false);
   const [email, setEmail] = useState("");

@@ -3,6 +3,7 @@ import { setupI18n, type I18n, type Messages } from "@lingui/core";
 import { setI18n } from "@lingui/react/server";
 import { localeCookie, locales, type Locale } from "./locales";
 import { pickLocale } from "./negotiate";
+import { withFallback } from "./fallback";
 
 async function loadCatalog(locale: string): Promise<[string, Messages]> {
   const { messages } = await import(`../locales/${locale}.po`);
@@ -10,8 +11,11 @@ async function loadCatalog(locale: string): Promise<[string, Messages]> {
 }
 
 // Every catalog is loaded once, when the server starts.
+const loaded: Record<string, Messages> = Object.fromEntries(
+  await Promise.all([...new Set<string>(["ja", "en", ...locales])].map(loadCatalog)),
+);
 const allMessages: Record<string, Messages> = Object.fromEntries(
-  await Promise.all(locales.map(loadCatalog)),
+  locales.map((l) => [l, l === "ja" || l === "en" ? loaded[l]! : withFallback(loaded[l] ?? {}, loaded.ja!, loaded.en!)]),
 );
 
 // One I18n instance per locale: requests for different locales run

@@ -383,11 +383,11 @@ msgstr "{name} (end)"
 msgid "{name}さん、こんにちは。"
 msgstr "Hello, {name}."
 
-#: src/components/auth/SsoButtons.tsx:143
+#: src/components/auth/SsoButtons.tsx:144
 msgid "{name}でログイン"
 msgstr "Log in with {name}"
 
-#: src/components/auth/SsoButtons.tsx:143
+#: src/components/auth/SsoButtons.tsx:144
 msgid "{name}で登録"
 msgstr "Sign up with {name}"
 
@@ -1287,14 +1287,14 @@ msgstr "Use offline"
 msgid "お住まい"
 msgstr "Where from"
 
-#: src/components/auth/RegisterFlow.tsx:72
+#: src/components/auth/RegisterFlow.tsx:73
 #: src/components/ProfileSettings.tsx:147
 #: src/components/ProfileSettings.tsx:256
 #: src/components/settings/WelcomeFlow.tsx:152
 msgid "お名前"
 msgstr "Your name"
 
-#: src/components/auth/RegisterFlow.tsx:181
+#: src/components/auth/RegisterFlow.tsx:182
 msgid "お名前などを聞いたあと、確認番号をメールでお送りします。"
 msgstr "After your name and a few details, we email you a confirmation number."
 
@@ -2781,8 +2781,8 @@ msgstr "Next places"
 msgid "つぎの場所まで"
 msgstr "To the next place"
 
-#: src/components/auth/RegisterFlow.tsx:127
-#: src/components/auth/RegisterFlow.tsx:183
+#: src/components/auth/RegisterFlow.tsx:128
+#: src/components/auth/RegisterFlow.tsx:184
 #: src/components/map/MapHelp.tsx:55
 #: src/components/settings/WelcomeFlow.tsx:165
 msgid "つぎへ"
@@ -2981,7 +2981,7 @@ msgstr "End navigation"
 msgid "ナビ中：{routeName}"
 msgstr "Navigating: {routeName}"
 
-#: src/components/auth/RegisterFlow.tsx:81
+#: src/components/auth/RegisterFlow.tsx:82
 msgid "ニックネームでもかまいません。"
 msgstr "A nickname is fine."
 
@@ -3010,11 +3010,11 @@ msgstr "yes"
 msgid "はじめての方のホームを、前の見せ方（画面が止まって切り替わる）にする"
 msgstr "Show first-time visitors the earlier home (the screen holds still and changes)"
 
-#: src/components/auth/LoginFlow.tsx:125
+#: src/components/auth/LoginFlow.tsx:126
 msgid "はじめての方は"
 msgstr "First time here?"
 
-#: src/components/auth/SsoButtons.tsx:151
+#: src/components/auth/SsoButtons.tsx:152
 msgid "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
 msgstr "If this is your first time, an account is made for you. If an email address comes with it, we use it only to help you get back in if you cannot log in. See our <0>privacy policy</0> for details."
 
@@ -3059,13 +3059,13 @@ msgstr "About {minutes} min by bus"
 msgid "バスで約{n}分"
 msgstr "About {n} min by bus"
 
-#: src/components/auth/LoginFlow.tsx:97
+#: src/components/auth/LoginFlow.tsx:98
 #: src/components/settings/PasswordMethod.tsx:68
 #: src/components/settings/WelcomeFlow.tsx:123
 msgid "パスワード"
 msgstr "Password"
 
-#: src/components/auth/LoginFlow.tsx:116
+#: src/components/auth/LoginFlow.tsx:117
 msgid "パスワードでログイン"
 msgstr "Log in with a password"
 
@@ -3094,7 +3094,7 @@ msgstr "A password is optional. With one, you can log in without waiting for an 
 msgid "パスワードを使うには、先にメールアドレスを追加してください。忘れたときに、メールで確認するためです。"
 msgstr "To use a password, add an email address first. It is how you get back in if you forget it."
 
-#: src/components/auth/LoginFlow.tsx:116
+#: src/components/auth/LoginFlow.tsx:117
 msgid "パスワードを使わずに、メールでログイン"
 msgstr "Log in by email instead of a password"
 
@@ -3475,7 +3475,7 @@ msgstr "There are more. Type a little more to narrow them down."
 msgid "ほかにログインの方法がないので、これは消せません。先にメールか、別の端末の顔・指紋のログインを使えるようにしてください。"
 msgstr "This can't be removed because it is your only way to log in. Set up email, or a face or fingerprint login on another device, first."
 
-#: src/components/auth/RegisterFlow.tsx:144
+#: src/components/auth/RegisterFlow.tsx:145
 #: src/components/settings/PasskeyManager.tsx:180
 msgid "ほかのアプリに保存するときは、表示される画面で選んでください。"
 msgstr "To save it in a different app, choose it on the screen that appears."
@@ -3648,8 +3648,8 @@ msgstr "Difficulty (in a few words)"
 msgid "むずかしさを、ひとことで書く（任意）"
 msgstr "Describe the difficulty in a few words (optional)"
 
-#: src/components/auth/LoginFlow.tsx:84
-#: src/components/auth/RegisterFlow.tsx:169
+#: src/components/auth/LoginFlow.tsx:85
+#: src/components/auth/RegisterFlow.tsx:170
 #: src/components/settings/LoginMethods.tsx:29
 #: src/components/settings/LoginMethods.tsx:66
 msgid "メールアドレス"
@@ -4059,10 +4059,10 @@ msgstr "Log out"
 #: src/app/(public)/login/page.tsx:16
 #: src/app/(public)/login/page.tsx:33
 #: src/app/(public)/sitemap/page.tsx:111
-#: src/components/auth/LoginFlow.tsx:69
-#: src/components/auth/LoginFlow.tsx:103
+#: src/components/auth/LoginFlow.tsx:70
+#: src/components/auth/LoginFlow.tsx:104
 #: src/components/auth/PasswordUndo.tsx:35
-#: src/components/auth/RegisterFlow.tsx:193
+#: src/components/auth/RegisterFlow.tsx:194
 #: src/components/blog/CommentSection.tsx:127
 #: src/components/GuestNag.tsx:88
 #: src/components/landing/Landing.tsx:133
@@ -4106,7 +4106,7 @@ msgstr "Ways to log in"
 msgid "ログインを確認できませんでした。時間がたったか、別のブラウザーに戻った可能性があります。もう一度お試しください。"
 msgstr "We could not confirm the login. It may have taken too long, or come back in a different browser. Please try again."
 
-#: src/components/auth/LoginFlow.tsx:99
+#: src/components/auth/LoginFlow.tsx:100
 msgid "ログイン用の番号をメールでお送りします。"
 msgstr "We email you a number to log in."
 
@@ -6273,8 +6273,8 @@ msgstr "Information"
 msgid "情報源を入れないと、「確認した」は保存されません。"
 msgstr "\"Checked\" is not saved without a source."
 
-#: src/components/auth/RegisterFlow.tsx:130
-#: src/components/auth/RegisterFlow.tsx:151
+#: src/components/auth/RegisterFlow.tsx:131
+#: src/components/auth/RegisterFlow.tsx:152
 #: src/components/map/MapHelp.tsx:47
 #: src/components/map/MapScreen.tsx:268
 #: src/components/map/MapScreen.tsx:284
@@ -6535,7 +6535,7 @@ msgstr "A Japanese name is needed to create a new one"
 #: src/app/(public)/register/page.tsx:15
 #: src/app/(public)/register/page.tsx:31
 #: src/app/(public)/sitemap/page.tsx:114
-#: src/components/auth/LoginFlow.tsx:127
+#: src/components/auth/LoginFlow.tsx:128
 #: src/components/GuestNag.tsx:85
 #: src/components/landing/Landing.tsx:121
 #: src/components/landing/LandingHero.tsx:77
@@ -7262,7 +7262,7 @@ msgstr "Would you like to sign up?"
 msgid "登録しなくても、スタンプは押せます。"
 msgstr "You can collect stamps without signing up."
 
-#: src/components/auth/RegisterFlow.tsx:93
+#: src/components/auth/RegisterFlow.tsx:94
 msgid "登録する"
 msgstr "Register"
 
@@ -7287,7 +7287,7 @@ msgstr "You have stamps from before you signed in"
 msgid "登録なしで残せるスタンプの数が、上限になりました。新規登録すると、続けて集められます。"
 msgstr "You have reached the most stamps that can be kept without an account. Sign up to keep collecting."
 
-#: src/components/auth/RegisterFlow.tsx:191
+#: src/components/auth/RegisterFlow.tsx:192
 #: src/components/landing/Landing.tsx:131
 #: src/components/landing/LandingHero.tsx:84
 msgid "登録済みの方は"
@@ -7424,8 +7424,8 @@ msgstr "No readings waiting."
 msgid "確認番号"
 msgstr "Confirmation number"
 
-#: src/components/auth/LoginFlow.tsx:103
-#: src/components/auth/RegisterFlow.tsx:127
+#: src/components/auth/LoginFlow.tsx:104
+#: src/components/auth/RegisterFlow.tsx:128
 msgid "確認番号を送る"
 msgstr "Send the confirmation number"
 
@@ -9022,15 +9022,15 @@ msgstr "Write a title"
 msgid "顔・指紋・ロック番号で確認"
 msgstr "Confirm with face, fingerprint or lock code"
 
-#: src/components/auth/LoginFlow.tsx:121
+#: src/components/auth/LoginFlow.tsx:122
 msgid "顔・指紋でログイン"
 msgstr "Log in with face or fingerprint"
 
-#: src/components/auth/RegisterFlow.tsx:188
+#: src/components/auth/RegisterFlow.tsx:189
 msgid "顔・指紋で登録"
 msgstr "Sign up with face or fingerprint"
 
-#: src/components/auth/RegisterFlow.tsx:148
+#: src/components/auth/RegisterFlow.tsx:149
 msgid "顔・指紋で登録する"
 msgstr "Continue"
 

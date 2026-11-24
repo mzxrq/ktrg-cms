@@ -73,3 +73,44 @@ export function mergeCatalogs(base: string, ours: string, theirs: string): strin
   const known = new Map([...translationsOf(theirs), ...translationsOf(ours)]);
   return fillEmpty(joined, known).text;
 }
+
+/** The text of quoted .po lines (`msgid "a"` + `"b"` -> `ab`), escapes left as written. */
+const textOf = (lines: string) => [...lines.matchAll(/"(.*)"/g)].map((m) => m[1]).join("");
+
+/** Each message's source files (from its `#: src/x.tsx:12 src/y.tsx:3` lines), keyed like translationsOf. */
+function filesOf(po: string): Map<string, { files: string[]; empty: boolean }> {
+  const out = new Map<string, { files: string[]; empty: boolean }>();
+  for (const block of LF(po).split(/\n\s*\n/)) {
+    const e = entryOf(block);
+    if (!e) continue;
+    const files = block.split("\n").filter((l) => l.startsWith("#:")).flatMap((l) => l.slice(2).trim().split(/\s+/)).map((o) => o.replace(/:\d+$/, ""));
+    out.set(e.key, { files: [...new Set(files)], empty: isEmpty(e.msgstr) });
+  }
+  return out;
+}
+
+export interface LostTranslation {
+  /** The message as it was (Japanese) and its translation then. */
+  was: string;
+  translation: string;
+  files: string[];
+  /** Messages of the same files that have no translation now: most likely the rewritten one. */
+  candidates: string[];
+}
+
+/**
+ * Translations in `before` whose message is gone from `after` (its Japanese was reworded, so extract --clean dropped it),
+ * each with the untranslated messages of the same source files, so the old translation can be copied to the new one.
+ */
+export function lostTranslations(before: string, after: string): LostTranslation[] {
+  const now = filesOf(after);
+  const then = filesOf(before);
+  const lost: LostTranslation[] = [];
+  for (const [key, msgstr] of translationsOf(before)) {
+    if (now.has(key)) continue;
+    const files = then.get(key)?.files ?? [];
+    const candidates = [...now].filter(([, v]) => v.empty && v.files.some((f) => files.includes(f))).map(([k]) => textOf(k));
+    lost.push({ was: textOf(key), translation: textOf(msgstr.join("\n")), files, candidates });
+  }
+  return lost;
+}

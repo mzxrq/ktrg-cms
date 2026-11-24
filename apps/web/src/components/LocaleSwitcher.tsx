@@ -7,7 +7,7 @@ import { locales, type Locale } from "@/i18n/locales";
 
 // Endonyms on purpose: each language names itself, so it is findable even
 // when the page is in a language the visitor cannot read.
-const names: Record<Locale, string> = { ja: "日本語", en: "English" };
+const names: Record<Locale, string> = { ja: "日本語", en: "English", th: "ไทย" };
 
 // The language is a cookie, not part of the address: choosing one saves it and
 // re-renders the same page in place. No navigation happens, so an installed phone app

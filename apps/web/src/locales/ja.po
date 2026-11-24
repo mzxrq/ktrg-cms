@@ -383,11 +383,11 @@ msgstr "{name}（終点）"
 msgid "{name}さん、こんにちは。"
 msgstr "{name}さん、こんにちは。"
 
-#: src/components/auth/SsoButtons.tsx:143
+#: src/components/auth/SsoButtons.tsx:144
 msgid "{name}でログイン"
 msgstr "{name}でログイン"
 
-#: src/components/auth/SsoButtons.tsx:143
+#: src/components/auth/SsoButtons.tsx:144
 msgid "{name}で登録"
 msgstr "{name}で登録"
 
@@ -1287,14 +1287,14 @@ msgstr "オフラインで使う"
 msgid "お住まい"
 msgstr "お住まい"
 
-#: src/components/auth/RegisterFlow.tsx:72
+#: src/components/auth/RegisterFlow.tsx:73
 #: src/components/ProfileSettings.tsx:147
 #: src/components/ProfileSettings.tsx:256
 #: src/components/settings/WelcomeFlow.tsx:152
 msgid "お名前"
 msgstr "お名前"
 
-#: src/components/auth/RegisterFlow.tsx:181
+#: src/components/auth/RegisterFlow.tsx:182
 msgid "お名前などを聞いたあと、確認番号をメールでお送りします。"
 msgstr "お名前などを聞いたあと、確認番号をメールでお送りします。"
 
@@ -2781,8 +2781,8 @@ msgstr "つぎの場所"
 msgid "つぎの場所まで"
 msgstr "つぎの場所まで"
 
-#: src/components/auth/RegisterFlow.tsx:127
-#: src/components/auth/RegisterFlow.tsx:183
+#: src/components/auth/RegisterFlow.tsx:128
+#: src/components/auth/RegisterFlow.tsx:184
 #: src/components/map/MapHelp.tsx:55
 #: src/components/settings/WelcomeFlow.tsx:165
 msgid "つぎへ"
@@ -2981,7 +2981,7 @@ msgstr "ナビを終える"
 msgid "ナビ中：{routeName}"
 msgstr "ナビ中：{routeName}"
 
-#: src/components/auth/RegisterFlow.tsx:81
+#: src/components/auth/RegisterFlow.tsx:82
 msgid "ニックネームでもかまいません。"
 msgstr "ニックネームでもかまいません。"
 
@@ -3010,11 +3010,11 @@ msgstr "はい"
 msgid "はじめての方のホームを、前の見せ方（画面が止まって切り替わる）にする"
 msgstr "はじめての方のホームを、前の見せ方（画面が止まって切り替わる）にする"
 
-#: src/components/auth/LoginFlow.tsx:125
+#: src/components/auth/LoginFlow.tsx:126
 msgid "はじめての方は"
 msgstr "はじめての方は"
 
-#: src/components/auth/SsoButtons.tsx:151
+#: src/components/auth/SsoButtons.tsx:152
 msgid "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
 msgstr "はじめての方は、そのままアカウントがつくられます。メールアドレスが届いたときは、ログインできなくなったときのためだけに使います。くわしくは<0>プライバシーポリシー</0>をご覧ください。"
 
@@ -3059,13 +3059,13 @@ msgstr "バスで約{minutes}分"
 msgid "バスで約{n}分"
 msgstr "バスで約{n}分"
 
-#: src/components/auth/LoginFlow.tsx:97
+#: src/components/auth/LoginFlow.tsx:98
 #: src/components/settings/PasswordMethod.tsx:68
 #: src/components/settings/WelcomeFlow.tsx:123
 msgid "パスワード"
 msgstr "パスワード"
 
-#: src/components/auth/LoginFlow.tsx:116
+#: src/components/auth/LoginFlow.tsx:117
 msgid "パスワードでログイン"
 msgstr "パスワードでログイン"
 
@@ -3094,7 +3094,7 @@ msgstr "パスワードは、なくてもかまいません。決めておくと
 msgid "パスワードを使うには、先にメールアドレスを追加してください。忘れたときに、メールで確認するためです。"
 msgstr "パスワードを使うには、先にメールアドレスを追加してください。忘れたときに、メールで確認するためです。"
 
-#: src/components/auth/LoginFlow.tsx:116
+#: src/components/auth/LoginFlow.tsx:117
 msgid "パスワードを使わずに、メールでログイン"
 msgstr "パスワードを使わずに、メールでログイン"
 
@@ -3475,7 +3475,7 @@ msgstr "ほかにもあります。もう少し入れて絞ってください。
 msgid "ほかにログインの方法がないので、これは消せません。先にメールか、別の端末の顔・指紋のログインを使えるようにしてください。"
 msgstr "ほかにログインの方法がないので、これは消せません。先にメールか、別の端末の顔・指紋のログインを使えるようにしてください。"
 
-#: src/components/auth/RegisterFlow.tsx:144
+#: src/components/auth/RegisterFlow.tsx:145
 #: src/components/settings/PasskeyManager.tsx:180
 msgid "ほかのアプリに保存するときは、表示される画面で選んでください。"
 msgstr "ほかのアプリに保存するときは、表示される画面で選んでください。"
@@ -3648,8 +3648,8 @@ msgstr "むずかしさ（ひとこと）"
 msgid "むずかしさを、ひとことで書く（任意）"
 msgstr "むずかしさを、ひとことで書く（任意）"
 
-#: src/components/auth/LoginFlow.tsx:84
-#: src/components/auth/RegisterFlow.tsx:169
+#: src/components/auth/LoginFlow.tsx:85
+#: src/components/auth/RegisterFlow.tsx:170
 #: src/components/settings/LoginMethods.tsx:29
 #: src/components/settings/LoginMethods.tsx:66
 msgid "メールアドレス"
@@ -4059,10 +4059,10 @@ msgstr "ログアウトする"
 #: src/app/(public)/login/page.tsx:16
 #: src/app/(public)/login/page.tsx:33
 #: src/app/(public)/sitemap/page.tsx:111
-#: src/components/auth/LoginFlow.tsx:69
-#: src/components/auth/LoginFlow.tsx:103
+#: src/components/auth/LoginFlow.tsx:70
+#: src/components/auth/LoginFlow.tsx:104
 #: src/components/auth/PasswordUndo.tsx:35
-#: src/components/auth/RegisterFlow.tsx:193
+#: src/components/auth/RegisterFlow.tsx:194
 #: src/components/blog/CommentSection.tsx:127
 #: src/components/GuestNag.tsx:88
 #: src/components/landing/Landing.tsx:133
@@ -4106,7 +4106,7 @@ msgstr "ログインの方法"
 msgid "ログインを確認できませんでした。時間がたったか、別のブラウザーに戻った可能性があります。もう一度お試しください。"
 msgstr "ログインを確認できませんでした。時間がたったか、別のブラウザーに戻った可能性があります。もう一度お試しください。"
 
-#: src/components/auth/LoginFlow.tsx:99
+#: src/components/auth/LoginFlow.tsx:100
 msgid "ログイン用の番号をメールでお送りします。"
 msgstr "ログイン用の番号をメールでお送りします。"
 
@@ -6273,8 +6273,8 @@ msgstr "情報"
 msgid "情報源を入れないと、「確認した」は保存されません。"
 msgstr "情報源を入れないと、「確認した」は保存されません。"
 
-#: src/components/auth/RegisterFlow.tsx:130
-#: src/components/auth/RegisterFlow.tsx:151
+#: src/components/auth/RegisterFlow.tsx:131
+#: src/components/auth/RegisterFlow.tsx:152
 #: src/components/map/MapHelp.tsx:47
 #: src/components/map/MapScreen.tsx:268
 #: src/components/map/MapScreen.tsx:284
@@ -6535,7 +6535,7 @@ msgstr "新しく作るには、名前（日本語）が必要です"
 #: src/app/(public)/register/page.tsx:15
 #: src/app/(public)/register/page.tsx:31
 #: src/app/(public)/sitemap/page.tsx:114
-#: src/components/auth/LoginFlow.tsx:127
+#: src/components/auth/LoginFlow.tsx:128
 #: src/components/GuestNag.tsx:85
 #: src/components/landing/Landing.tsx:121
 #: src/components/landing/LandingHero.tsx:77
@@ -7262,7 +7262,7 @@ msgstr "登録しておきませんか"
 msgid "登録しなくても、スタンプは押せます。"
 msgstr "登録しなくても、スタンプは押せます。"
 
-#: src/components/auth/RegisterFlow.tsx:93
+#: src/components/auth/RegisterFlow.tsx:94
 msgid "登録する"
 msgstr "登録する"
 
@@ -7287,7 +7287,7 @@ msgstr "登録なしで押したスタンプがあります"
 msgid "登録なしで残せるスタンプの数が、上限になりました。新規登録すると、続けて集められます。"
 msgstr "登録なしで残せるスタンプの数が、上限になりました。新規登録すると、続けて集められます。"
 
-#: src/components/auth/RegisterFlow.tsx:191
+#: src/components/auth/RegisterFlow.tsx:192
 #: src/components/landing/Landing.tsx:131
 #: src/components/landing/LandingHero.tsx:84
 msgid "登録済みの方は"
@@ -7424,8 +7424,8 @@ msgstr "確認待ちの読みはありません。"
 msgid "確認番号"
 msgstr "確認番号"
 
-#: src/components/auth/LoginFlow.tsx:103
-#: src/components/auth/RegisterFlow.tsx:127
+#: src/components/auth/LoginFlow.tsx:104
+#: src/components/auth/RegisterFlow.tsx:128
 msgid "確認番号を送る"
 msgstr "確認番号を送る"
 
@@ -9022,15 +9022,15 @@ msgstr "題を入力"
 msgid "顔・指紋・ロック番号で確認"
 msgstr "顔・指紋・ロック番号で確認"
 
-#: src/components/auth/LoginFlow.tsx:121
+#: src/components/auth/LoginFlow.tsx:122
 msgid "顔・指紋でログイン"
 msgstr "顔・指紋でログイン"
 
-#: src/components/auth/RegisterFlow.tsx:188
+#: src/components/auth/RegisterFlow.tsx:189
 msgid "顔・指紋で登録"
 msgstr "顔・指紋で登録"
 
-#: src/components/auth/RegisterFlow.tsx:148
+#: src/components/auth/RegisterFlow.tsx:149
 msgid "顔・指紋で登録する"
 msgstr "顔・指紋で登録する"
 

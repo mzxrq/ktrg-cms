@@ -1,5 +1,6 @@
 "use client";
 
+import { accountLocale } from "@/i18n/locales";
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import { Trans, useLingui } from "@lingui/react/macro";
@@ -126,7 +127,7 @@ export function SsoButtons({
   async function go(provider: SsoProvider) {
     setBusy(true);
     setError(null);
-    const result = await startSso(provider, "login", { returnTo, locale: i18n.locale === "en" ? "en" : "ja" });
+    const result = await startSso(provider, "login", { returnTo, locale: accountLocale(i18n.locale) });
     // On success the page is leaving for the provider; stay busy so nobody presses twice.
     if (!result.ok) {
       setError(result.code);
