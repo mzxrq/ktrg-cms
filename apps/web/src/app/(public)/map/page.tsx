@@ -24,6 +24,23 @@ function galleryOf(photo: MapPhoto | null, stops: MapScreenStop[] | null): MapPh
   return [photo, ...(stops?.map((s) => s.photo) ?? [])].filter((p): p is MapPhoto => p !== null && !seen.has(p.src) && !!seen.add(p.src));
 }
 
+/** A place of the directory as the map shows it (a small mark, and the sheet when it is tapped). */
+function placePoint(p: PlaceItem, locale: string): MapScreenPoint {
+  const placeName = pickText(locale, p.nameJa, p.nameEn);
+  return {
+    id: p.id,
+    category: p.category,
+    icon: p.icon ?? null,
+    name: placeName?.text ?? p.nameJa,
+    nameLang: placeName?.lang ?? "ja",
+    position: { lat: p.position.lat, lng: p.position.lng },
+    photo: p.photoUrl ? { src: p.photoUrl, alt: placeName?.text ?? p.nameJa, credit: p.photoCredit ?? null } : null,
+    description: pickText(locale, p.descriptionJa, p.descriptionEn)?.text ?? null,
+    hours: pickText(locale, p.hoursJa, p.hoursEn)?.text ?? null,
+    directory: true,
+  };
+}
+
 /**
  * What the map needs for each course. The detailed map (path, stops, what a stop's sheet says) is prepared
  * only for courses whose stops have positions, which today is the one draft course; the rest show their area.
@@ -129,23 +146,7 @@ async function mapRoutes(routes: RouteSummary[], places: PlaceItem[], viewer: Vi
           ...points,
           ...places
             .filter((p) => p.routes.includes(r.order))
-            .map((p): MapScreenPoint => {
-              const placeName = pickText(locale, p.nameJa, p.nameEn);
-              const about = pickText(locale, p.descriptionJa, p.descriptionEn)?.text ?? null;
-              const hours = pickText(locale, p.hoursJa, p.hoursEn)?.text ?? null;
-              return {
-                id: p.id,
-                category: p.category,
-                icon: p.icon ?? null,
-                name: placeName?.text ?? p.nameJa,
-                nameLang: placeName?.lang ?? "ja",
-                position: { lat: p.position.lat, lng: p.position.lng },
-                photo: p.photoUrl ? { src: p.photoUrl, alt: placeName?.text ?? p.nameJa, credit: p.photoCredit ?? null } : null,
-                description: about,
-                hours,
-                directory: true,
-              };
-            }),
+            .map((p) => placePoint(p, locale)),
         ];
 
         return {
@@ -205,14 +206,20 @@ export default async function MapPage({ searchParams }: { searchParams: Promise<
   // "Show in the map" from a place page: only an existing course (and a stop of it) is taken over from the address.
   const initialRoute = routes.find((r) => r.id === wantedRoute) ?? null;
   const initialStop = initialRoute?.stops?.find((s) => s.id === wantedStop) ?? null;
-  // "Show on map" from a route's nearby places: the place must be one of that course's own.
-  const initialPlace = initialRoute?.points.find((p) => p.id === wantedPlace) ?? null;
+  // "Show on map": from a course's page the place is one of that course's own; from the place's own page (no course in the
+  // address) it is looked up anywhere, so the sheet opens over the whole map and 戻る comes back to it, not to a course.
+  const fromDirectory = wantedPlace && !initialRoute ? places.find((p) => p.id === wantedPlace) : undefined;
+  const initialPlace = initialRoute
+    ? (initialRoute.points.find((p) => p.id === wantedPlace) ?? null)
+    : wantedPlace
+      ? (routes.flatMap((r) => r.points).find((p) => p.id === wantedPlace) ?? (fromDirectory ? placePoint(fromDirectory, i18n.locale) : null))
+      : null;
 
   return (
     <MapScreen
       initialRouteId={initialRoute?.id ?? null}
       initialStopId={initialStop?.id ?? null}
-      initialPlaceId={initialPlace?.id ?? null}
+      initialPlace={initialPlace}
       routes={routes}
       settings={settings}
       locale={i18n.locale}

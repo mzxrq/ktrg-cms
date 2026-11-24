@@ -36,7 +36,8 @@ export default async function PlacePage({ params }: Props) {
   const course = routes.find((r) => place.routes.includes(r.order)) ?? null;
   const near = place.nearSpotId ? ((await getSpot(place.nearSpotId)) ?? null) : null;
   const group = groupOf(place.category);
-  const mapHref = `/map?${course ? `route=${encodeURIComponent(course.id)}&` : ""}place=${encodeURIComponent(place.id)}`;
+  // The place alone, not its course: the map opens its sheet over the whole map, and 戻る comes back to that.
+  const mapHref = `/map?place=${encodeURIComponent(place.id)}`;
 
   return (
     <div className="page-narrow flex flex-col gap-6 pt-2">

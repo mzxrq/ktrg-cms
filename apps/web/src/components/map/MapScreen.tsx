@@ -55,13 +55,14 @@ export function MapScreen({
   stampMock,
   initialRouteId = null,
   initialStopId = null,
-  initialPlaceId = null,
+  initialPlace = null,
 }: {
   /** Open with this course (and stop) chosen, as when a place page links here with "show in the map". */
   initialRouteId?: string | null;
   initialStopId?: string | null;
-  /** A place of that course to bring into view (from a route page's "nearby places"). */
-  initialPlaceId?: string | null;
+  /** A place to bring into view and open: one of that course's (a route page's "nearby places"), or with no course, any
+   *  place (the place's own page), whose sheet then opens over the whole map. */
+  initialPlace?: MapScreenPoint | null;
   routes: MapScreenRoute[];
   settings: MapSettings;
   locale: string;
@@ -75,7 +76,7 @@ export function MapScreen({
   const { toastPx: navToastPx, bannerPx: navBannerPx, setSheetUp } = nav;
   // Coming back from a course's page: the same course, stop, sheet and view as when the visitor left.
   const [returning] = useState(() =>
-    resumeFrom(mapMemory, { routeIds: routes.map((r) => r.id), wantedRouteId: initialRouteId, wantedStopId: initialStopId, wantedPlaceId: initialPlaceId, navigating: nav.session !== null }),
+    resumeFrom(mapMemory, { routeIds: routes.map((r) => r.id), wantedRouteId: initialRouteId, wantedStopId: initialStopId, wantedPlaceId: initialPlace?.id ?? null, navigating: nav.session !== null }),
   );
   // Coming back to the map during a navigation opens its course again.
   const [routeId, setRouteId] = useState<string | null>(returning ? returning.routeId : (initialRouteId ?? nav.session?.routeId ?? null));
@@ -316,7 +317,7 @@ export function MapScreen({
         onSelectStop={chooseStop}
         onSelectMound={(routeId, id) => chooseStop(routeId, id, true)}
         onSelectPlace={choosePlace}
-        focusPlaceId={initialPlaceId}
+        focusPlace={initialPlace}
         startCamera={returning?.camera ?? null}
         coveredPx={wide ? 0 : sheetHeightPx(snap, available) + bottomPx}
         coveredLeftPx={panelPx}

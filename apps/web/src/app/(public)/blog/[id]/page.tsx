@@ -87,8 +87,8 @@ export default async function BlogPostPage({ params }: Props) {
     : [];
   const hours = place ? pickText(locale, place.hoursJa ?? "", place.hoursEn) : null;
   const closed = place ? pickText(locale, place.closedDaysJa ?? "", place.closedDaysEn) : null;
-  const placeRouteId = place?.routes[0] ? routes.find((r) => r.order === place.routes[0])?.id : undefined;
-  const mapHref = place ? `/map?${placeRouteId ? `route=${encodeURIComponent(placeRouteId)}&` : ""}place=${encodeURIComponent(place.id)}` : null;
+  // The place alone, not its course: 戻る on the map then comes back to the whole map (only a course's own page opens the course).
+  const mapHref = place ? `/map?place=${encodeURIComponent(place.id)}` : null;
   const hasAbout = !!(route || spot || place);
 
   const chip = "tap-target inline-flex w-fit items-center gap-2 rounded-full bg-surface py-1 pl-3 pr-4 text-base font-bold hover:bg-paper";

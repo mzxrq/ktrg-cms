@@ -53,7 +53,7 @@ export function MapScreenCanvas({
   onSelectStop,
   onSelectMound,
   onSelectPlace,
-  focusPlaceId = null,
+  focusPlace = null,
   startCamera = null,
   coveredPx,
   coveredLeftPx = 0,
@@ -75,7 +75,7 @@ export function MapScreenCanvas({
   /** A nearby place (a shop, a toilet ...) chosen on the map: the page shows it in the sheet, as it does a stop. */
   onSelectPlace: (place: MapScreenPoint) => void;
   /** A place of the open course to bring into view and open once, when the page was asked for it. */
-  focusPlaceId?: string | null;
+  focusPlace?: MapScreenPoint | null;
   /** The view to come back to; the course and stop it shows are then not framed again until they change. */
   startCamera?: MapCamera | null;
   /** How much of the map's bottom the sheet and the tab bar cover right now: what is framed stays clear of it. */
@@ -442,18 +442,18 @@ export function MapScreenCanvas({
     map?.easeTo({ center: [user.lng, user.lat], zoom: Math.max(map.getZoom(), 16), padding: padding(), duration: 700 });
   }, [resumeTick]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // A place asked for in the address ("show on map" from a route's nearby places): after the course has been framed, the map
-  // moves to it, zoomed in enough for its pin to show, and its popup opens.
+  // A place asked for in the address ("show on map"): after the course (or the whole map) has been framed, the map moves to
+  // it, zoomed in enough for its pin to show, and its sheet opens.
   useEffect(() => {
     const map = mapRef.current;
-    const place = focusPlaceId ? focus?.points.find((p) => p.id === focusPlaceId) : null;
+    const place = focusPlace;
     if (!map || !ready || !place) return;
     const timer = setTimeout(() => {
       map.easeTo({ center: [place.position.lng, place.position.lat], zoom: Math.max(map.getZoom(), 17), padding: padding(), duration: 600 });
       selectPlaceRef.current(place);
     }, 900);
     return () => clearTimeout(timer);
-  }, [ready, focusPlaceId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [ready, focusPlace?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // A chosen stop is brought into view above the sheet.
   useEffect(() => {
@@ -562,34 +562,35 @@ export function MapScreenCanvas({
     // Toilets, shops and the like, once zoomed in: on the course that is open, or else on every course in view.
     if (map.getZoom() >= POINTS_ZOOM) {
       const seen = map.getBounds();
-      for (const r of focus ? [focus] : routes) {
-        for (const p of r.points) {
-          const group = groupOf(p.category);
-          if (!layers.has(group) || !seen.contains([p.position.lng, p.position.lat])) continue;
-          put(
-            createPlaceMarkerElement({
-              group,
-              category: p.category,
-              icon: p.icon,
-              label: p.name,
-              closed: false,
-              photo: !!p.photo,
-              onSelect: () => {
-                // The sheet shows the place, as it does a stop; the map moves only to keep the pin in view.
-                selectPlaceRef.current(p);
-                map.easeTo({ center: [p.position.lng, p.position.lat], padding: padding(), duration: 400 });
-              },
-            }),
-            p.position,
-          );
-        }
+      // A place on no course is on the map only when it was asked for (the place's own page).
+      const shownPoints = (focus ? [focus] : routes).flatMap((r) => r.points);
+      if (focusPlace && !shownPoints.some((p) => p.id === focusPlace.id)) shownPoints.push(focusPlace);
+      for (const p of shownPoints) {
+        const group = groupOf(p.category);
+        if (!layers.has(group) || !seen.contains([p.position.lng, p.position.lat])) continue;
+        put(
+          createPlaceMarkerElement({
+            group,
+            category: p.category,
+            icon: p.icon,
+            label: p.name,
+            closed: false,
+            photo: !!p.photo,
+            onSelect: () => {
+              // The sheet shows the place, as it does a stop; the map moves only to keep the pin in view.
+              selectPlaceRef.current(p);
+              map.easeTo({ center: [p.position.lng, p.position.lat], padding: padding(), duration: 400 });
+            },
+          }),
+          p.position,
+        );
       }
     }
 
     return () => live.forEach((m) => m.remove());
     // `t` changes only with the language, which reloads the page.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, mapGen, view, routes, routeId, autoId, stopId, layers, revealed]);
+  }, [ready, mapGen, view, routes, routeId, autoId, stopId, layers, revealed, focusPlace]);
 
   const zoom = (delta: 1 | -1) => {
     const map = mapRef.current;
