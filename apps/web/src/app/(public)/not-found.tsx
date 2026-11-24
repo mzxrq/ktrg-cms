@@ -11,10 +11,12 @@ export default async function NotFound() {
         <Trans>ページが見つかりません</Trans>
       </h1>
       <p className="text-xl">
-        <Trans>アドレスがちがうか、ページが公開されていません。</Trans>
+        <Trans>
+          URLが間違っているか、ページが削除・移動された可能性があります。
+        </Trans>
       </p>
       <ButtonLink href="/">
-        <Trans>ホームにもどる</Trans>
+        <Trans>ホームに戻る</Trans>
       </ButtonLink>
     </div>
   );

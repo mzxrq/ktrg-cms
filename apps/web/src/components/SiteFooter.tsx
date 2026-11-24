@@ -9,7 +9,8 @@ import { foundationEn, foundationJa } from "@/lib/terms-content";
  */
 export function SiteFooter({ locale }: { locale: string }) {
   const { t } = useLingui();
-  const link = "tap-target inline-flex items-center text-lg font-bold underline";
+  const link =
+    "tap-target inline-flex items-center text-lg font-bold underline";
   return (
     // From a tablet up (768 px): on a phone the same links are in the メニュー (user, 2026-11-19). A tablet page has no side
     // padding of its own, so the footer brings it.
@@ -19,7 +20,7 @@ export function SiteFooter({ locale }: { locale: string }) {
           <Trans>よくあるご質問</Trans>
         </Link>
         <Link prefetch={false} href="/status" className={link}>
-          <Trans>サイトの状態</Trans>
+          <Trans>システム状況</Trans>
         </Link>
         <Link prefetch={false} href="/sitemap" className={link}>
           <Trans>サイトマップ</Trans>
@@ -35,7 +36,10 @@ export function SiteFooter({ locale }: { locale: string }) {
         </Link>
       </nav>
       {/* A credit line, kept small: Japanese name on the Japanese pages, English name on the English ones. */}
-      <p lang={locale === "ja" ? "ja" : "en"} className="mt-3 text-base text-muted">
+      <p
+        lang={locale === "ja" ? "ja" : "en"}
+        className="mt-3 text-base text-muted"
+      >
         {locale === "ja" ? foundationJa : foundationEn}
       </p>
     </footer>
