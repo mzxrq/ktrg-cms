@@ -737,8 +737,11 @@ export const places = pgTable(
     positionSource: text("position_source"),
     phone: text("phone"),
     website: text("website"),
+    // The main photo (the first of `photos`, copied here on each save) for pins, cards and lists.
     photoUrl: text("photo_url"),
     photoCredit: text("photo_credit"),
+    // Every photo of the place, in order; the first is the main one.
+    photos: jsonb("photos").$type<SpotPhoto[]>().notNull().default(sql`'[]'::jsonb`),
     status: placeStatus("status").notNull().default("unknown"),
     // The day a person last checked the details (opening hours go stale).
     lastVerified: date("last_verified", { mode: "string" }),

@@ -94,6 +94,14 @@ export const signupProfileSchema = t.Object(
 );
 
 /** A `:id` path parameter that must be a UUID. */
+const orNull = <T extends TString>(s: T) => t.Union([s, t.Null()]);
+
+/** A gallery of photos, in order (a waypoint's, a directory place's): up to 12; the credit says who took one that is not ours. */
+export const photoListSchema = t.Array(
+  t.Object({ url: t.String({ maxLength: 500 }), credit: orNull(t.String({ maxLength: 300 })), sourceUrl: orNull(t.String({ maxLength: 500 })), nameJa: t.Optional(orNull(t.String({ maxLength: 200 }))), nameEn: t.Optional(orNull(t.String({ maxLength: 200 }))) }),
+  { maxItems: 12 },
+);
+
 export const uuidParams = t.Object({ id: t.String({ pattern: "^[0-9a-fA-F-]{36}$" }) });
 
 type Words<F extends string> = TObject<{ [K in F]: TOptional<TUnion<[TString, TNull]>> }>;

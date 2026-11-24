@@ -319,6 +319,8 @@ export interface PlaceItem {
   /** A photo of the place (an address); null or left out when there is none. */
   photoUrl?: string | null;
   photoCredit?: string | null;
+  /** Every photo, in order (the first is the one above); left out on samples. */
+  photos?: GalleryPhoto[];
   addressJa?: string | null;
   addressEn?: string | null;
   phone?: string | null;

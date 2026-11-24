@@ -21,7 +21,7 @@ const smallButton = "tap-target rounded-full border border-line px-4 text-base f
  * Wikipedia and Wikimedia Commons (free licenses only, with the photographer and license written into the credit).
  * They are saved with the place.
  */
-export function PhotoListEditor({ stored, onChange, name, lat, lng }: { stored: StoredPhotos; onChange: (next: StoredPhotos) => void; name: string; lat: number | null; lng: number | null }) {
+export function PhotoListEditor({ stored, onChange, name, lat, lng, intro }: { stored: StoredPhotos; onChange: (next: StoredPhotos) => void; name: string; lat: number | null; lng: number | null; intro?: string }) {
   const { t } = useLingui();
   const [link, setLink] = useState("");
   const [found, setFound] = useState<PhotoCandidate[] | null>(null);
@@ -52,7 +52,7 @@ export function PhotoListEditor({ stored, onChange, name, lat, lng }: { stored: 
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-base text-muted">{t`先頭の写真が、この経由地のメイン写真です。ほかの写真は、この経由地のページに順に並びます。他の人が撮った写真は、撮った人と使用条件を、「出どころ」に書いてください。`}</p>
+      <p className="text-base text-muted">{intro ?? t`先頭の写真が、この経由地のメイン写真です。ほかの写真は、この経由地のページに順に並びます。他の人が撮った写真は、撮った人と使用条件を、「出どころ」に書いてください。`}</p>
 
       {photos.length > 0 ? (
         <ol className="flex flex-col gap-3">

@@ -6,6 +6,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { buttonStyle } from "@/components/button";
 import { RouteCard, SpotCard } from "@/components/blog/LinkedCards";
 import { HeroPhoto } from "@/components/map/HeroPhoto";
+import { SpotGallery } from "@/components/SpotGallery";
 import { PlaceFacts } from "@/components/PlaceFacts";
 import { RichText } from "@/components/RichText";
 import { NameRuby } from "@/components/Ruby";
@@ -36,6 +37,8 @@ export default async function PlacePage({ params }: Props) {
   const course = routes.find((r) => place.routes.includes(r.order)) ?? null;
   const near = place.nearSpotId ? ((await getSpot(place.nearSpotId)) ?? null) : null;
   const group = groupOf(place.category);
+  // The main photo stays at the top; the others follow in a row of their own.
+  const morePhotos = (place.photos ?? []).filter((p) => p.url !== place.photoUrl);
   // The place alone, not its course: the map opens its sheet over the whole map, and 戻る comes back to that.
   const mapHref = `/map?place=${encodeURIComponent(place.id)}`;
 
@@ -81,6 +84,15 @@ export default async function PlacePage({ params }: Props) {
           <Trans>地図で見る</Trans>
         </Link>
       </div>
+
+      {morePhotos.length > 0 ? (
+        <section className="flex flex-col gap-2 px-4">
+          <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
+            <Trans>写真</Trans>
+          </h2>
+          <SpotGallery photos={morePhotos} alt={name?.text ?? place.nameJa} locale={locale} />
+        </section>
+      ) : null}
 
       {course || near ? (
         <section className="flex flex-col gap-4 px-4">

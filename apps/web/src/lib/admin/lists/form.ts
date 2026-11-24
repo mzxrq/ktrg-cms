@@ -21,6 +21,8 @@ export function formValues(config: ListMeta, item: ListItem | null): FormValues 
   for (const f of sent(config)) {
     if (f.kind === "boolean") out[f.name] = item?.[f.name] === true;
     else if (f.kind === "hours") out[f.name] = item?.[f.name] ? JSON.stringify(item[f.name]) : "";
+    // A photo list, held as JSON like the hours.
+    else if (f.kind === "photos") out[f.name] = JSON.stringify(Array.isArray(item?.[f.name]) ? item[f.name] : []);
     else if (f.kind === "select" && !item) out[f.name] = f.options?.[0]?.value ?? "";
     // Several ids, held as one comma-separated string so the form's values stay plain text.
     else if (f.kind === "relations") out[f.name] = Array.isArray(item?.[f.name]) ? (item[f.name] as string[]).join(",") : "";
@@ -51,6 +53,9 @@ export function toPayload(config: ListMeta, values: FormValues): Record<string, 
         break;
       case "relations":
         out[f.name] = text(f.name).split(",").filter(Boolean);
+        break;
+      case "photos":
+        out[f.name] = JSON.parse(text(f.name) || "[]");
         break;
       case "number":
       case "decimal":

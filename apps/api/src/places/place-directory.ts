@@ -12,8 +12,8 @@ import { routeKit, type RouteOptions } from "../auth/route-kit";
 import { cleanTranslations } from "../db/translations";
 import { placeCategories, spotKinds, type CourseArea } from "../db/schema";
 import { cleanHours, closedDaysText, hasBackwardPeriod, hoursText, OPENING_HOURS } from "./opening-hours";
-import { isPhotoUrl } from "../lib/https-url";
-import { oneOf, translationsSchema } from "../lib/schemas";
+import { isHttpsUrl, isPhotoUrl } from "../lib/https-url";
+import { oneOf, photoListSchema, translationsSchema } from "../lib/schemas";
 
 const maybe = (max: number) => t.Union([t.String({ maxLength: max }), t.Null()]);
 
@@ -50,9 +50,8 @@ export const PLACE_FIELDS = {
   addressEn: maybe(300),
   phone: maybe(40),
   website: maybe(500),
-  photoUrl: maybe(500),
-  /** Who took the photo / where it is from (may hold links). */
-  photoCredit: t.Optional(maybe(500)),
+  /** Every photo, in order; the first is the main one (copied to the row's photoUrl and photoCredit on save). */
+  photos: t.Optional(photoListSchema),
   status: oneOf(["open", "closed", "seasonal", "gone", "unknown"] as const),
   lastVerified: t.Union([t.String({ pattern: "^\\d{4}-\\d{2}-\\d{2}$" }), t.Null()]),
   listingConfirmed: t.Boolean(),
@@ -62,7 +61,8 @@ export const PLACE_FIELDS = {
 
 const placeFields = t.Object(PLACE_FIELDS);
 export type PlaceFields = Static<typeof placeFields>;
-export type PlaceRow = ListRow & PlaceFields;
+/** The main photo is not written directly: it is the first of `photos` (see placeRules). */
+export type PlaceRow = ListRow & PlaceFields & { photoUrl: string | null; photoCredit: string | null };
 
 export interface PlaceStore extends ListStore<PlaceRow, PlaceFields> {
   /** Published places, newest first (the caller drops the ones without a position). */
@@ -81,7 +81,7 @@ const isWebLink = (v: string) => {
   }
 };
 
-const NULLABLE_TEXT = ["nameEn", "nameKana", "descriptionJa", "descriptionEn", "hoursJa", "hoursEn", "closedDaysJa", "closedDaysEn", "positionSource", "addressJa", "addressEn", "phone", "website", "photoUrl", "photoCredit", "listingNote"] as const;
+const NULLABLE_TEXT = ["nameEn", "nameKana", "descriptionJa", "descriptionEn", "hoursJa", "hoursEn", "closedDaysJa", "closedDaysEn", "positionSource", "addressJa", "addressEn", "phone", "website", "listingNote"] as const;
 
 /**
  * Trims every text and clears a blank one; a link must be https; a position needs both numbers; "checked" needs a
@@ -98,7 +98,19 @@ export const placeRules = (photoHosts: readonly string[] = [], routeExists?: (id
   const f = out as Partial<PlaceFields>;
   // A shop's own site is often plain http; it is only a link out, never loaded into our pages.
   if (typeof f.website === "string" && !isWebLink(f.website)) return bad("invalid_source_url");
-  if (typeof f.photoUrl === "string" && !isPhotoUrl(f.photoUrl, photoHosts)) return bad("invalid_photo_url");
+  if (f.photos !== undefined) {
+    const photos: NonNullable<PlaceFields["photos"]> = [];
+    for (const p of f.photos) {
+      const url = p.url.trim();
+      const sourceUrl = p.sourceUrl?.trim() || null;
+      if (!isPhotoUrl(url, photoHosts) || (sourceUrl !== null && !isHttpsUrl(sourceUrl))) return bad("invalid_photo_url");
+      photos.push({ url, credit: p.credit?.trim() || null, sourceUrl, nameJa: p.nameJa?.trim() || null, nameEn: p.nameEn?.trim() || null });
+    }
+    out.photos = photos;
+    // Pins, cards and lists read the main photo from its own columns.
+    out.photoUrl = photos[0]?.url ?? null;
+    out.photoCredit = photos[0]?.credit ?? null;
+  }
   if (f.openingHours) {
     if (hasBackwardPeriod(f.openingHours)) return bad("validation_failed");
     out.openingHours = cleanHours(f.openingHours);
@@ -192,6 +204,9 @@ export function createPlaceService(deps: { store: PlaceStore; photoHosts?: reado
   }
   return {
     ...list,
+    // The service saves only the fields sent; a new photo list also changes the main photo the rules take from it.
+    update: (actor: string, id: string, expected: Date | string, input: Partial<PlaceFields>) =>
+      list.update(actor, id, expected, input.photos !== undefined ? ({ ...input, photoUrl: null, photoCredit: null } as Partial<PlaceFields>) : input),
     /** Groups of places that look like one place entered twice (see findDuplicates). */
     async duplicates(): Promise<PlaceRow[][]> {
       return findDuplicates(await everyPlace());
@@ -247,7 +262,6 @@ export function createPlaceService(deps: { store: PlaceStore; photoHosts?: reado
           addressEn: p.addressEn,
           phone: p.phone,
           website: p.website,
-          photoUrl: null,
           status: p.status as PlaceFields["status"],
           lastVerified: p.lastVerified,
           listingConfirmed: p.listingConfirmed,
@@ -269,7 +283,7 @@ export function createPlaceService(deps: { store: PlaceStore; photoHosts?: reado
 
 /** In-memory places for tests and the dev page. */
 export function createMemoryPlaceStore(audit: AuditWriter, opts: { now?: () => Date } = {}) {
-  const list = createMemoryListStore<PlaceFields>(audit, PLACE_AUDIT, opts);
+  const list = createMemoryListStore<Omit<PlaceRow, keyof ListRow>>(audit, PLACE_AUDIT, opts);
   const store: PlaceStore = {
     ...list.store,
     async listPublic() {
@@ -375,13 +389,7 @@ export const placeDirectoryList: ListDef<"directory", typeof PLACE_FIELDS, Place
       { name: "address", kind: "bilingual", label: { ja: "住所", en: "Address" } },
       { name: "phone", kind: "text", label: { ja: "電話番号", en: "Phone" } },
       { name: "website", kind: "url", label: { ja: "Webサイト", en: "Website" } },
-      { name: "photoUrl", kind: "image", label: { ja: "写真", en: "Photo" } },
-      {
-        name: "photoCredit",
-        kind: "text",
-        label: { ja: "写真の出どころ", en: "Photo credit" },
-        hint: { ja: "写真の下に表示されます。リンクは [表示する文字](https://…) の形で書けます。", en: "Shown under the photo. A link is written [text](https://…)." },
-      },
+      { name: "photos", kind: "photos", label: { ja: "写真", en: "Photos" } },
       { name: "lat", kind: "decimal", label: { ja: "緯度", en: "Latitude" }, hint: { ja: "地図アプリで確かめた値を入れてください。推測では入れません。", en: "Use a value checked on a map app. Never guess." } },
       { name: "lng", kind: "decimal", label: { ja: "経度", en: "Longitude" } },
       { name: "positionSource", kind: "text", label: { ja: "位置の出どころ", en: "Where the position comes from" } },
@@ -445,6 +453,7 @@ export function publicPlaceRoutes(getPlaces: () => PlaceService, log: (message: 
         website: p.website,
         photoUrl: p.photoUrl,
         photoCredit: p.photoCredit,
+        photos: p.photos ?? [],
         status: p.status,
         lastVerified: p.lastVerified,
         })),

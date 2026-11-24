@@ -23,7 +23,6 @@ const place = (over: Record<string, unknown> = {}) => ({
   addressEn: null,
   phone: null,
   website: null,
-  photoUrl: null,
   status: "unknown" as const,
   lastVerified: null,
   listingConfirmed: false,
@@ -51,6 +50,20 @@ describe("places directory", () => {
     expect(await s.svc.create(actor, place({ website: "ftp://x.example" }))).toEqual({ ok: false, reason: "invalid_source_url" });
     expect(await s.svc.create(actor, place({ positionVerified: true }))).toEqual({ ok: false, reason: "no_coordinates" });
     expect(await s.svc.create(actor, place({ lat: 34.2, lng: 135.1, positionVerified: true }))).toEqual({ ok: false, reason: "source_required" });
+  });
+
+  test("a photo list is cleaned, its first photo becomes the main one, and a bad link is refused", async () => {
+    const s = setup();
+    const photos = [
+      { url: " https://img.example/a.jpg ", credit: " 写真: 某 ", sourceUrl: null },
+      { url: "https://img.example/b.jpg", credit: null, sourceUrl: "https://commons.example/b" },
+    ];
+    const r = await s.svc.create(actor, place({ photos }));
+    expect(r.ok && r.value).toMatchObject({ photoUrl: "https://img.example/a.jpg", photoCredit: "写真: 某", photos: [{ url: "https://img.example/a.jpg", credit: "写真: 某" }, { url: "https://img.example/b.jpg" }] });
+    const cleared = r.ok ? await s.svc.update(actor, r.value.id, r.value.updatedAt, { photos: [] }) : null;
+    expect(cleared?.ok && cleared.value).toMatchObject({ photoUrl: null, photoCredit: null, photos: [] });
+    expect(await s.svc.create(actor, place({ photos: [{ url: "http://img.example/a.jpg", credit: null, sourceUrl: null }] }))).toEqual({ ok: false, reason: "invalid_photo_url" });
+    expect(await s.svc.create(actor, place({ photos: [{ url: "https://img.example/a.jpg", credit: null, sourceUrl: "javascript:x" }] }))).toEqual({ ok: false, reason: "invalid_photo_url" });
   });
 
   test("publishing needs a checked position and the agreement to be listed", async () => {

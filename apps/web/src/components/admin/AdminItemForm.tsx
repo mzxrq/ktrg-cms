@@ -15,6 +15,8 @@ import { TickIcon } from "@/components/icons";
 import { adminTab, adminTabRow, Check, Field, inputClass, MultilingualField, NumberInput, Section, TextInput } from "./fields";
 import { HoursInput } from "./HoursInput";
 import { PhotoField } from "./PhotoField";
+import { PhotoListEditor } from "./PhotoListEditor";
+import { fromList, toList, type ListPhoto } from "@/lib/admin/photo-list";
 import { IconPicker } from "./IconPicker";
 import { PositionMap } from "./PositionMap";
 import { RelationPicker } from "./RelationPicker";
@@ -244,6 +246,17 @@ export function AdminItemForm({
             <RubyEditor name={text(f.of ?? "nameJa")} value={text(f.name)} onChange={set(f.name)} />
           </Field>
         );
+      case "photos": {
+        // Every photo of the item, the first the main one (the same editor as a waypoint's).
+        const list = JSON.parse(text(f.name) || "[]") as ListPhoto[];
+        const at = (name: string) => (text(name) === "" ? null : Number(text(name)));
+        return (
+          <fieldset key={f.name} className="flex flex-col gap-2">
+            <legend className="text-lg font-bold">{label}</legend>
+            <PhotoListEditor stored={fromList(list)} onChange={(next) => set(f.name)(JSON.stringify(toList(next)))} name={text("nameJa")} lat={at("lat")} lng={at("lng")} intro={t`先頭の写真が、メインの写真です（地図や一覧に出ます）。ほかの写真は、ページに順に並びます。他の人が撮った写真は、撮った人と使用条件を、「出どころ」に書いてください。`} />
+          </fieldset>
+        );
+      }
       case "hours":
         return (
           <Field key={f.name} label={label} hint={hint} htmlFor={id}>

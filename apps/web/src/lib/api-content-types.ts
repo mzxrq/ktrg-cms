@@ -154,6 +154,8 @@ export interface PublicPlace {
   website: string | null;
   photoUrl: string | null;
   photoCredit?: string | null;
+  /** Every photo, in order (the first is photoUrl); left out by an API older than the photo list. */
+  photos?: { url: string; credit: string | null; sourceUrl: string | null; nameJa?: string | null; nameEn?: string | null }[];
   status: string;
   lastVerified: string | null;
 }
