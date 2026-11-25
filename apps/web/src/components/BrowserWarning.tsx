@@ -16,13 +16,20 @@ export function BrowserWarning() {
   const { t } = useLingui();
   const [closed, setClosed] = useState(false);
   const [copied, setCopied] = useState(false);
-  const risky = useSyncExternalStore(noSubscribe, () => isInAppBrowser(navigator.userAgent) || !canKeepData(), () => false);
+  const risky = useSyncExternalStore(
+    noSubscribe,
+    () => isInAppBrowser(navigator.userAgent) || !canKeepData(),
+    () => false,
+  );
   if (!risky || closed) return null;
 
   return (
-    <section role="alert" className="mx-4 mb-4 flex flex-col gap-3 rounded-lg border-2 border-caution bg-surface p-4">
-      <p className="text-lg font-bold leading-snug">{t`このブラウザでは、スタンプが消えてしまうことがあります。`}</p>
-      <p className="text-lg leading-7">{t`アプリの中で開いたページや、プライベートモードでは、記録が残りません。SafariかChromeで、このページを開いてください。登録しておくと、記録は消えません。`}</p>
+    <section
+      role="alert"
+      className="mx-4 mb-4 flex flex-col gap-3 rounded-lg border-2 border-caution bg-surface p-4"
+    >
+      <p className="text-lg font-bold leading-snug">{t`このブラウザではスタンプが消える場合があります。`}</p>
+      <p className="text-lg leading-7">{t`アプリ内ブラウザやプライベートモードでは記録が保存されません。SafariまたはChromeで開き直してください。アカウント登録をしておくと記録が消えません。`}</p>
       <div className="flex flex-wrap gap-3">
         <button
           type="button"
@@ -36,9 +43,13 @@ export function BrowserWarning() {
           }}
           className={buttonStyle("primary", "md", "inline-flex")}
         >
-          {copied ? t`コピーしました` : t`アドレスをコピー`}
+          {copied ? t`コピーしました` : t`URLをコピー`}
         </button>
-        <button type="button" onClick={() => setClosed(true)} className={buttonStyle("secondary", "md", "inline-flex")}>
+        <button
+          type="button"
+          onClick={() => setClosed(true)}
+          className={buttonStyle("secondary", "md", "inline-flex")}
+        >
           {t`閉じる`}
         </button>
       </div>

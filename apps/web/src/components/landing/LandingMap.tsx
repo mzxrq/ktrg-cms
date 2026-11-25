@@ -22,13 +22,25 @@ const TARGET_W = 960;
 const worldX = (lng: number, z: number) => ((lng + 180) / 360) * TILE * 2 ** z;
 const worldY = (lat: number, z: number) => {
   const r = (lat * Math.PI) / 180;
-  return ((1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2) * TILE * 2 ** z;
+  return (
+    ((1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2) *
+    TILE *
+    2 ** z
+  );
 };
 
 /** The map of every course, edge to edge, inside the home page's 歩く道 chapter (which carries the heading). */
-export function LandingMap({ routes, look = defaultMapSettings }: { routes: RouteSummary[]; /** 管理 > 地図の見た目: the same base map and calming as the real map. */ look?: MapSettings }) {
+export function LandingMap({
+  routes,
+  look = defaultMapSettings,
+}: {
+  routes: RouteSummary[];
+  /** 管理 > 地図の見た目: the same base map and calming as the real map. */ look?: MapSettings;
+}) {
   const { t, i18n } = useLingui();
-  const boxes = routes.flatMap((r) => (r.area ? [{ order: r.order, ring: rectangleRing(r.area) }] : []));
+  const boxes = routes.flatMap((r) =>
+    r.area ? [{ order: r.order, ring: rectangleRing(r.area) }] : [],
+  );
   if (boxes.length === 0) return null;
 
   const all = boxes.flatMap((b) => b.ring);
@@ -36,18 +48,52 @@ export function LandingMap({ routes, look = defaultMapSettings }: { routes: Rout
   const east = Math.max(...all.map((p) => p.lng));
   const south = Math.min(...all.map((p) => p.lat));
   const north = Math.max(...all.map((p) => p.lat));
-  const z = Math.min(14, Math.max(5, Math.floor(Math.log2(TARGET_W / Math.max(1e-6, worldX(east, 0) - worldX(west, 0))))));
+  const z = Math.min(
+    14,
+    Math.max(
+      5,
+      Math.floor(
+        Math.log2(TARGET_W / Math.max(1e-6, worldX(east, 0) - worldX(west, 0))),
+      ),
+    ),
+  );
   const x = (lng: number) => worldX(lng, z);
   const y = (lat: number) => worldY(lat, z);
   const [left, top] = [x(west) - PAD_X, y(north) - PAD_Y];
-  const [W, H] = [Math.round(x(east) - x(west) + 2 * PAD_X), Math.round(y(south) - y(north) + 2 * PAD_Y)];
-  const layer = i18n.locale === "en" && z <= englishMaxZoom && (look.base === "std" || look.base === "pale") ? "english" : baseRasterLayer(look.base);
+  const [W, H] = [
+    Math.round(x(east) - x(west) + 2 * PAD_X),
+    Math.round(y(south) - y(north) + 2 * PAD_Y),
+  ];
+  const layer =
+    i18n.locale === "en" &&
+    z <= englishMaxZoom &&
+    (look.base === "std" || look.base === "pale")
+      ? "english"
+      : baseRasterLayer(look.base);
   // The real map's raster-saturation / raster-contrast, as near as CSS gets (0 leaves the tiles as GSI draws them).
-  const calm = look.saturation === 0 && look.contrast === 0 ? undefined : { filter: `saturate(${1 + look.saturation}) contrast(${1 + look.contrast})` };
+  const calm =
+    look.saturation === 0 && look.contrast === 0
+      ? undefined
+      : {
+          filter: `saturate(${1 + look.saturation}) contrast(${1 + look.contrast})`,
+        };
   const tiles: { key: string; href: string; x: number; y: number }[] = [];
-  for (let tx = Math.floor(left / TILE); tx <= Math.floor((left + W) / TILE); tx++)
-    for (let ty = Math.floor(top / TILE); ty <= Math.floor((top + H) / TILE); ty++)
-      tiles.push({ key: `${tx}/${ty}`, href: `https://cyberjapandata.gsi.go.jp/xyz/${layer}/${z}/${tx}/${ty}.png`, x: tx * TILE, y: ty * TILE });
+  for (
+    let tx = Math.floor(left / TILE);
+    tx <= Math.floor((left + W) / TILE);
+    tx++
+  )
+    for (
+      let ty = Math.floor(top / TILE);
+      ty <= Math.floor((top + H) / TILE);
+      ty++
+    )
+      tiles.push({
+        key: `${tx}/${ty}`,
+        href: `https://cyberjapandata.gsi.go.jp/xyz/${layer}/${z}/${tx}/${ty}.png`,
+        x: tx * TILE,
+        y: ty * TILE,
+      });
   const count = boxes.length;
 
   return (
@@ -55,21 +101,42 @@ export function LandingMap({ routes, look = defaultMapSettings }: { routes: Rout
       <div className="relative h-56 overflow-clip bg-paper [perspective:900px] @[42rem]:h-[28rem] desk:h-[70svh]">
         <div
           role="img"
-          aria-label={t`全${count}区間のある場所を示した図`}
+          aria-label={t`全${count}区間の位置を示した地図`}
           className="absolute left-1/2 top-1/2 w-[150%] [transform-style:preserve-3d] @[42rem]:w-[125%]"
-          style={{ aspectRatio: `${W} / ${H}`, transform: `translate(-50%, -50%) rotateX(${TILT_DEG}deg)` }}
+          style={{
+            aspectRatio: `${W} / ${H}`,
+            transform: `translate(-50%, -50%) rotateX(${TILT_DEG}deg)`,
+          }}
         >
           {/* The tiles in their own svg: a CSS filter on an svg element itself works in every browser (Safari ignores it on a <g>). */}
-          <svg viewBox={`${left} ${top} ${W} ${H}`} aria-hidden="true" className="absolute inset-0 size-full" style={calm}>
+          <svg
+            viewBox={`${left} ${top} ${W} ${H}`}
+            aria-hidden="true"
+            className="absolute inset-0 size-full"
+            style={calm}
+          >
             {tiles.map((tile) => (
-              <image key={tile.key} href={tile.href} x={tile.x} y={tile.y} width={TILE} height={TILE} />
+              <image
+                key={tile.key}
+                href={tile.href}
+                x={tile.x}
+                y={tile.y}
+                width={TILE}
+                height={TILE}
+              />
             ))}
           </svg>
-          <svg viewBox={`${left} ${top} ${W} ${H}`} aria-hidden="true" className="absolute inset-0 size-full">
+          <svg
+            viewBox={`${left} ${top} ${W} ${H}`}
+            aria-hidden="true"
+            className="absolute inset-0 size-full"
+          >
             {boxes.map((b) => (
               <polygon
                 key={b.order}
-                points={b.ring.map((p) => `${x(p.lng).toFixed(1)},${y(p.lat).toFixed(1)}`).join(" ")}
+                points={b.ring
+                  .map((p) => `${x(p.lng).toFixed(1)},${y(p.lat).toFixed(1)}`)
+                  .join(" ")}
                 className="fill-brand/25 stroke-accent"
                 strokeWidth="1.6"
               />
@@ -84,7 +151,11 @@ export function LandingMap({ routes, look = defaultMapSettings }: { routes: Rout
                 key={b.order}
                 aria-hidden="true"
                 className="absolute grid size-6 origin-bottom place-items-center rounded-full border-2 border-paper bg-accent text-xs font-bold text-paper @[42rem]:size-7 @[42rem]:text-sm"
-                style={{ left: `${((cx - left) / W) * 100}%`, top: `${((cy - top) / H) * 100}%`, transform: `translate(-50%, -100%) rotateX(-${TILT_DEG}deg)` }}
+                style={{
+                  left: `${((cx - left) / W) * 100}%`,
+                  top: `${((cy - top) / H) * 100}%`,
+                  transform: `translate(-50%, -100%) rotateX(-${TILT_DEG}deg)`,
+                }}
               >
                 {b.order}
               </span>
@@ -92,15 +163,33 @@ export function LandingMap({ routes, look = defaultMapSettings }: { routes: Rout
           })}
         </div>
         {/* The far edge melts into the page, and the sides and near edge meet it softly. */}
-        <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1/3 bg-linear-to-b from-paper to-transparent" />
-        <span aria-hidden="true" className="absolute inset-x-0 -bottom-px h-1/4 bg-linear-to-t from-paper to-transparent" />
-        <a href={gsiTileListUrl} target="_blank" rel="noopener noreferrer" className="absolute bottom-1 right-2 rounded bg-paper/85 px-1 text-sm text-muted underline">
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-1/3 bg-linear-to-b from-paper to-transparent"
+        />
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 -bottom-px h-1/4 bg-linear-to-t from-paper to-transparent"
+        />
+        <a
+          href={gsiTileListUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute bottom-1 right-2 rounded bg-paper/85 px-1 text-sm text-muted underline"
+        >
           <Trans>国土地理院（地理院タイル）</Trans>
         </a>
       </div>
       <div className="mx-auto w-full max-w-5xl px-5 @[42rem]:px-10">
-        <Link href="/map" className={buttonStyle("secondary", "lg", "flex w-full @[34rem]:w-fit")}>
-          <Trans>マップをひらく</Trans>
+        <Link
+          href="/map"
+          className={buttonStyle(
+            "secondary",
+            "lg",
+            "flex w-full @[34rem]:w-fit",
+          )}
+        >
+          <Trans>マップを開く</Trans>
         </Link>
       </div>
     </div>

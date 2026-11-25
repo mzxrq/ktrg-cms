@@ -11,8 +11,8 @@ msgstr " (until {0})"
 msgid "（{ageText}・{0} MB）"
 msgstr "({ageText}, {0} MB)"
 
-#: src/components/landing/Landing.tsx:187
-#: src/components/landing/Landing.tsx:211
+#: src/components/landing/Landing.tsx:245
+#: src/components/landing/Landing.tsx:310
 msgid "（公式サイト、新しいタブで開きます）"
 msgstr "(official site, opens in a new tab)"
 
@@ -513,8 +513,8 @@ msgstr "Edit {title} (admin)"
 msgid "{title}を読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "{title} could not be loaded. Please reload the page in a little while."
 
-#: src/components/landing/Journey.tsx:60
-#: src/components/landing/Landing.tsx:331
+#: src/components/landing/Journey.tsx:103
+#: src/components/landing/Landing.tsx:486
 msgid "{TOTAL_STAMPS}か所"
 msgstr "{TOTAL_STAMPS} places"
 
@@ -916,13 +916,13 @@ msgstr "MP4 (H.264) or WebM, up to 200 MB. For phones, export at about 720p and 
 msgid "QRコード・看板"
 msgstr "QR code or sign"
 
-#: src/components/InstallSteps.tsx:55
-msgid "Safari で、画面の下（または上）にある共有ボタン（□に↑）を押します。"
-msgstr "In Safari, tap the Share button (a square with an arrow) at the bottom or top of the screen."
+#: src/components/InstallSteps.tsx:105
+msgid "Safariの画面下部（または上部）にある共有ボタン（<0/>）をタップします。"
+msgstr "Tap the share button (<0/>) at the bottom (or top) of the Safari screen."
 
-#: src/components/InstallSteps.tsx:56
-msgid "Safari の下のバーで、共有ボタンを押します"
-msgstr "Tap the Share button in the bar at the bottom of Safari"
+#: src/components/InstallSteps.tsx:113
+msgid "Safariの画面下部（または上部）にある共有ボタンをタップします。"
+msgstr "Tap the share button at the bottom (or top) of the Safari screen."
 
 #: src/components/auth/AboutYou.tsx:143
 msgid "SNS"
@@ -931,6 +931,10 @@ msgstr "Social media"
 #: src/app/(public)/not-found.tsx:14
 msgid "URLが間違っているか、ページが削除・移動された可能性があります。"
 msgstr "The URL may be incorrect, or the page may have been moved or removed."
+
+#: src/components/BrowserWarning.tsx:46
+msgid "URLをコピー"
+msgstr "Copy URL"
 
 #: src/components/navigation/NavigationHud.tsx:219
 msgid "Uターン"
@@ -1058,8 +1062,8 @@ msgstr "{remaining} left to go"
 msgid "あとからでも、「メニュー」の「見やすさの設定」で変えられます。"
 msgstr "You can change this later under \"Menu\", \"Display settings\"."
 
-#: src/components/InstallNudge.tsx:95
-#: src/components/InstallNudge.tsx:96
+#: src/components/InstallNudge.tsx:127
+#: src/components/InstallNudge.tsx:130
 msgid "あとで"
 msgstr "Later"
 
@@ -1075,10 +1079,6 @@ msgstr "Answer later"
 msgid "あとで足すもの"
 msgstr "Add later"
 
-#: src/components/BrowserWarning.tsx:39
-msgid "アドレスをコピー"
-msgstr "Copy the address"
-
 #: src/components/settings/WelcomeFlow.tsx:147
 msgid "あなたのことを、少しだけ教えてください。答えなくても大丈夫です。あとから変えられます。"
 msgstr "Tell us a little about yourself. You don't have to answer, and you can change it later."
@@ -1091,9 +1091,13 @@ msgstr "Choose how much the page animates and fades."
 msgid "アプリにもともと入っている固定のページの文章を、ここで書きかえられます。何も書かなければ、もとの文章が表示されます。"
 msgstr "Replace the text of the fixed pages built into the app. If nothing is written, the built-in text is shown."
 
-#: src/components/BrowserWarning.tsx:25
-msgid "アプリの中で開いたページや、プライベートモードでは、記録が残りません。SafariかChromeで、このページを開いてください。登録しておくと、記録は消えません。"
-msgstr "Pages opened inside another app, or in private mode, keep no record. Please open this page in Safari or Chrome. If you sign up, your record is not lost."
+#: src/components/InstallSteps.tsx:90
+msgid "アプリ内ブラウザで開いています。SafariやChromeで開き直してから追加してください。"
+msgstr "You are currently using an app built-in browser. Please open this site via Safari/Chrome and try adding the app."
+
+#: src/components/BrowserWarning.tsx:32
+msgid "アプリ内ブラウザやプライベートモードでは記録が保存されません。SafariまたはChromeで開き直してください。アカウント登録をしておくと記録が消えません。"
+msgstr "Your progress won't be saved in an in-app browser or private mode. Please reopen this page in Safari or Chrome. Creating an account keeps your stamps safe."
 
 #: src/components/admin/RouteEditor.tsx:442
 msgid "あると、もっとよいこと"
@@ -1140,10 +1144,6 @@ msgstr "Always shown"
 #: src/components/admin/FuriganaWords.tsx:108
 msgid "いつも表示する（とても難しい字や四字熟語に）"
 msgstr "Always show (for very hard kanji or four-character idioms)"
-
-#: src/components/OfflineNotice.tsx:29
-msgid "いま、通信がつながっていません。つながると、また使えます。"
-msgstr "You are offline right now. It will work again when the signal returns."
 
 #: src/components/navigation/NavigationHud.tsx:133
 msgid "いまいる場所から、いちばん近いスタンプの場所まで案内します。位置は、この端末の中だけで使います。"
@@ -1205,10 +1205,6 @@ msgstr "Current reading (one for the whole name): {value}. Typing above replaces
 msgid "いまは、アップロードしたファイルの設定を使っています。"
 msgstr "The uploaded file's settings are in use."
 
-#: src/components/StatusBanner.tsx:92
-msgid "いまは、ここでスタンプを押せません。"
-msgstr "Stamps can't be collected here right now."
-
 #: src/components/admin/LargeStyleUpload.tsx:78
 msgid "いまは、初めから入っている設定を使っています。"
 msgstr "The settings that came with the app are in use."
@@ -1240,10 +1236,6 @@ msgstr "What you see now is sample and draft data. It includes information that 
 #: src/components/StampOutbox.tsx:173
 msgid "いま送る"
 msgstr "Send now"
-
-#: src/components/InstallSteps.tsx:46
-msgid "いま開いているのは、ほかのアプリの中のブラウザです。Safari や Chrome で開きなおしてから、追加してください。"
-msgstr "You are in a browser inside another app. Open this page again in Safari or Chrome, then add it."
 
 #: src/app/offline/page.tsx:22
 msgid "インターネットに接続されていません"
@@ -1281,6 +1273,10 @@ msgstr "When off (the usual), the page scrolls along."
 msgid "オフライン"
 msgstr "Offline"
 
+#: src/components/OfflineNotice.tsx:37
+msgid "オフラインです。接続が回復すると再び利用できます。"
+msgstr "You're offline. You can use the app again once your connection is restored."
+
 #: src/components/OfflinePack.tsx:69
 #: src/components/OfflinePack.tsx:70
 #: src/components/OfflinePack.tsx:83
@@ -1310,7 +1306,7 @@ msgstr "After your name and a few details, we email you a confirmation number."
 msgid "お名前は未設定です"
 msgstr "No name set"
 
-#: src/components/landing/Landing.tsx:201
+#: src/components/landing/Landing.tsx:275
 msgid "お土産"
 msgstr "Souvenirs"
 
@@ -1434,7 +1430,7 @@ msgstr "Bold display"
 msgid "クリックで、この点を消します"
 msgstr "Click to remove this point"
 
-#: src/components/landing/Landing.tsx:200
+#: src/components/landing/Landing.tsx:270
 msgid "グルメ"
 msgstr "Gourmet"
 
@@ -1462,8 +1458,8 @@ msgstr "You've reached the stamp limit for guest mode. Sign up to keep collectin
 #: src/components/admin/AdminNav.tsx:74
 #: src/components/admin/FuriganaOverview.tsx:143
 #: src/components/BookmarkList.tsx:55
-#: src/components/landing/Journey.tsx:58
-#: src/components/landing/Landing.tsx:329
+#: src/components/landing/Journey.tsx:94
+#: src/components/landing/Landing.tsx:477
 #: src/components/map/MapScreenCanvas.tsx:655
 #: src/components/places/DirectoryView.tsx:81
 #: src/components/SiteHeader.tsx:324
@@ -1625,14 +1621,17 @@ msgid "コースやラリー、ブログの記事で、しおりのボタンを�
 msgstr "Press the bookmark button on a course, a rally or a blog post and it is saved here. When you are signed in, it is saved to your account."
 
 #: src/components/admin/RouteTable.tsx:127
-#: src/components/landing/Landing.tsx:124
-#: src/components/landing/LandingHero.tsx:80
 msgid "コースをさがす"
 msgstr "Find a course"
 
 #: src/components/admin/RouteHistory.tsx:21
 msgid "コースを作った"
 msgstr "Created the course"
+
+#: src/components/landing/Landing.tsx:139
+#: src/components/landing/LandingHero.tsx:133
+msgid "コースを探す"
+msgstr "Explore Courses"
 
 #: src/components/admin/RouteHistory.tsx:23
 msgid "コースを消した"
@@ -1677,6 +1676,10 @@ msgstr "Course name (Japanese)"
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 msgstr "Score = 1.8 × hours + 0.3 × distance (km) + 10 × climb (km) + 0.6 × descent (km)"
 
+#: src/components/landing/useHomeWords.ts:12
+msgid "コース案内"
+msgstr "Courses"
+
 #: src/app/(public)/map/page.tsx:204
 #: src/app/(public)/routes/[id]/page.tsx:67
 #: src/components/admin/LivePreview.tsx:38
@@ -1696,7 +1699,6 @@ msgid "ここで押す（選ばない）"
 msgstr "Stamped here (none chosen)"
 
 #: src/components/StampHere.tsx:199
-#: src/components/StatusBanner.tsx:73
 msgid "ここにはスタンプはありません。"
 msgstr "There is no stamp here."
 
@@ -1835,9 +1837,9 @@ msgstr "This file could not be read. Choose a file (.xlsx) made from the templat
 msgid "このファイルは読めません。国土地理院のスタイル編集で保存したJSONファイルを選んでください。"
 msgstr "This file cannot be read. Choose a JSON file saved in GSI's style editor."
 
-#: src/components/BrowserWarning.tsx:24
-msgid "このブラウザでは、スタンプが消えてしまうことがあります。"
-msgstr "Your stamps may be lost in this browser."
+#: src/components/BrowserWarning.tsx:31
+msgid "このブラウザではスタンプが消える場合があります。"
+msgstr "Your stamps may not be saved in this browser."
 
 #: src/components/FoldJumps.tsx:42
 msgid "このページの項目"
@@ -1966,6 +1968,10 @@ msgstr "Show this leg"
 #: src/app/(public)/routes/page.tsx:57
 msgid "この地域のコースはまだありません。"
 msgstr "There are no courses in this area yet."
+
+#: src/components/StatusBanner.tsx:73
+msgid "この場所にスタンプ対象外です。"
+msgstr "No stamp is available at this spot."
 
 #: src/components/admin/PlacePanel.tsx:226
 msgid "この場所のスタンプの絵"
@@ -2189,7 +2195,7 @@ msgid "この顔・指紋のログインを消しますか？"
 msgstr "Remove this face or fingerprint login?"
 
 #: src/components/blog/ShareButtons.tsx:46
-#: src/components/BrowserWarning.tsx:39
+#: src/components/BrowserWarning.tsx:46
 msgid "コピーしました"
 msgstr "Copied"
 
@@ -2264,13 +2270,13 @@ msgstr "Save or share your certificate"
 msgid "ご案内"
 msgstr "Information"
 
-#: src/components/landing/useHomeWords.ts:25
-msgid "さあ、はじめましょう"
-msgstr "Let's get started"
-
 #: src/components/JourneyFacts.tsx:50
 msgid "さあ、最初の一歩へ。このラリーのスタンプは、全部で{total}か所です。"
 msgstr "Take the first step. This rally has {total} stamp places."
+
+#: src/components/landing/useHomeWords.ts:25
+msgid "さあ、始めましょう"
+msgstr "Let's get started"
 
 #: src/components/admin/PhotoLibrary.tsx:177
 msgid "サイズ"
@@ -2351,7 +2357,7 @@ msgstr "Height of the sheet (change it with the up and down arrow keys)"
 msgid "システム状況"
 msgstr "System Status"
 
-#: src/components/landing/Journey.tsx:40
+#: src/components/landing/Journey.tsx:66
 #: src/components/settings/WelcomeFlow.tsx:112
 msgid "スキップ"
 msgstr "Skip"
@@ -2360,7 +2366,7 @@ msgstr "Skip"
 msgid "すぐ{turnWord}"
 msgstr "{turnWord} now"
 
-#: src/components/landing/ScrollCue.tsx:23
+#: src/components/landing/ScrollCue.tsx:38
 msgid "スクロール"
 msgstr "Scroll"
 
@@ -2449,7 +2455,6 @@ msgstr "The stamp timestamp is invalid. Please check your device's date and time
 msgid "スタンプの場所"
 msgstr "Stamp locations"
 
-#: src/components/landing/useHomeWords.ts:11
 #: src/components/RallyViews.tsx:269
 msgid "スタンプの場所の近くでボタンを押すと、スタンプが記録されます。現在地は、ボタンを押したときに1度だけ確かめ、記録には残しません。"
 msgstr "When you reach a stamp place, press the button to collect its stamp. We check your location once, at that moment, and never store it."
@@ -2492,7 +2497,7 @@ msgstr "No stamp can be collected here, but visitors can open the place's page. 
 #: src/components/RallyViews.tsx:173
 #: src/components/SiteHeader.tsx:100
 msgid "スタンプラリー"
-msgstr "Stamp rally"
+msgstr "Stamp Rally"
 
 #: src/components/RallyViews.tsx:272
 msgid "スタンプラリーは2種類あります。経塚をめぐる「経塚のラリー」と、コースごとの「コースのラリー」です。同じ場所で押したスタンプは、どちらのラリーにも数えられます。"
@@ -2582,12 +2587,16 @@ msgstr "Stamping is currently unavailable."
 msgid "スタンプ済み"
 msgstr "stamped"
 
+#: src/components/landing/useHomeWords.ts:11
+msgid "スタンプ設置場所の近くでボタンを押すと、スタンプが記録されます。現在地はボタンを押したときに一度だけ確認し、保存しません。"
+msgstr "Tap the button near a stamp spot to record your stamp. Your location is checked only once when you tap and is never stored."
+
 #: src/components/admin/useRouteDraft.ts:250
 msgid "すでに公開をやめた経由地があります（{names}）。「経由地」タブで確かめてください。"
 msgstr "These waypoints were already unpublished: {names}. Check them in the Waypoints tab."
 
-#: src/components/landing/Journey.tsx:51
-#: src/components/landing/Landing.tsx:326
+#: src/components/landing/Journey.tsx:86
+#: src/components/landing/Landing.tsx:473
 msgid "ストーリーを読む"
 msgstr "Read the story"
 
@@ -2985,10 +2994,6 @@ msgstr "Climb"
 msgid "のぼり {0}m"
 msgstr "Climb {0} m"
 
-#: src/components/landing/Landing.tsx:389
-msgid "のものです。"
-msgstr "."
-
 #: src/components/JourneyFacts.tsx:32
 msgid "の道のり"
 msgstr "Walking distance"
@@ -3178,6 +3183,10 @@ msgstr "Banner added."
 msgid "バナーを読み込めませんでした。しばらくしてから、ページを開き直してください。"
 msgstr "The banners could not be loaded. Please try opening the page again in a while."
 
+#: src/components/Breadcrumb.tsx:19
+msgid "パンくずリスト"
+msgstr "Breadcrumb"
+
 #: src/components/admin/AccessPointsEditor.tsx:67
 msgid "ひとこと（English）"
 msgstr "Short note (English)"
@@ -3280,9 +3289,9 @@ msgstr "Footer"
 msgid "プライバシーポリシー"
 msgstr "Privacy policy"
 
-#: src/components/InstallSteps.tsx:73
-msgid "ブラウザのメニュー（⋮ や ⋯）から、「ホーム画面に追加」または「アプリをインストール」をえらびます。"
-msgstr "From the browser's menu (⋮ or ⋯), choose \"Add to Home screen\" or \"Install app\"."
+#: src/components/InstallSteps.tsx:147
+msgid "ブラウザのメニュー（⋮ や ⋯）から、「ホーム画面に追加」または「アプリをインストール」を選択します。"
+msgstr "Open your browser menu (⋮ or ⋯) and select \"Add to Home Screen\" or \"Install app\"."
 
 #: src/components/settings/PrefsForm.tsx:129
 msgid "ふりがなをつける"
@@ -3346,7 +3355,6 @@ msgstr "Profile photo"
 #: src/app/(admin)/admin/pages/page.tsx:30
 #: src/app/(public)/blog/page.tsx:88
 #: src/components/admin/AdminNav.tsx:80
-#: src/components/Pager.tsx:19
 msgid "ページ"
 msgstr "Pages"
 
@@ -3393,9 +3401,13 @@ msgstr "This page couldn't be loaded. Please try again when you have a signal. A
 msgid "ページを離れますか？"
 msgstr "Leave this page?"
 
-#: src/components/Pager.tsx:24
+#: src/components/Pager.tsx:45
 msgid "ページ番号"
 msgstr "Page number"
+
+#: src/components/Pager.tsx:33
+msgid "ページ移動"
+msgstr "Pagination"
 
 #: src/components/admin/SiteSettingsForm.tsx:86
 msgid "ベースの地図"
@@ -3439,30 +3451,24 @@ msgstr "Home page sections"
 msgid "ホームへ戻る"
 msgstr "Back to home"
 
-#: src/components/InstallSteps.tsx:67
-msgid "ホーム画面に、葛城修験のアイコンが並びます。これで完了です。"
-msgstr "The Katsuragi Shugendō icon appears on your home screen. That is all."
+#: src/components/InstallSteps.tsx:135
+#: src/components/InstallSteps.tsx:141
+msgid "ホーム画面に葛城修験のアイコンが追加されたら完了です。"
+msgstr "Once the Katsuragi Shugen icon appears on your home screen, you're all set."
 
-#: src/components/InstallSteps.tsx:68
-msgid "ホーム画面に葛城修験のアイコンが並びます"
-msgstr "The Katsuragi Shugendō icon appears on your home screen"
-
-#: src/components/InstallNudge.tsx:85
+#: src/components/InstallNudge.tsx:108
+#: src/components/InstallSteps.tsx:81
+#: src/components/InstallSteps.tsx:100
 msgid "ホーム画面に追加"
 msgstr "Add to home screen"
 
-#: src/components/InstallNudge.tsx:87
-#: src/components/InstallSteps.tsx:39
-msgid "ホーム画面に追加しましょう"
-msgstr "Add it to your home screen"
+#: src/components/InstallSteps.tsx:84
+msgid "ホーム画面に追加すると、アプリのようにすぐ開けます。散策中もすぐに見返せて便利です。"
+msgstr "Add this site to your home screen to open it like an app-handy for quick checks while you walk."
 
-#: src/components/InstallSteps.tsx:50
-msgid "ホーム画面に追加する"
-msgstr "Add to home screen"
-
-#: src/components/InstallSteps.tsx:42
-msgid "ホーム画面に追加すると、アプリのようにすぐ開けます。山の中でも、探す手間がかかりません。"
-msgstr "Add it to your home screen to open it like an app, right away, even on the mountain."
+#: src/components/InstallNudge.tsx:112
+msgid "ホーム画面に追加できます"
+msgstr "Add to Home Screen"
 
 #: src/components/admin/RelationPicker.tsx:138
 msgid "ほかにもあります。もう少し入れて絞ってください。"
@@ -3605,9 +3611,9 @@ msgstr "Straight ahead"
 msgid "マップ"
 msgstr "Map"
 
-#: src/components/landing/LandingMap.tsx:103
-msgid "マップをひらく"
-msgstr "Open the map"
+#: src/components/landing/LandingMap.tsx:192
+msgid "マップを開く"
+msgstr "Open Map"
 
 #: src/components/SpotSheet.tsx:172
 msgid "まわりにあるもの"
@@ -3710,16 +3716,13 @@ msgstr "Places to visit"
 msgid "メニュー"
 msgstr "Menu"
 
-#: src/components/InstallSteps.tsx:60
-msgid "メニューの「ホーム画面に追加」を押します"
-msgstr "Tap \"Add to Home Screen\" in the menu"
-
 #: src/components/TabBar.tsx:156
 msgid "メニューをたたむ"
 msgstr "Collapse menu"
 
-#: src/components/InstallSteps.tsx:59
-msgid "メニューを下へ動かして、「ホーム画面に追加」を押します。"
+#: src/components/InstallSteps.tsx:117
+#: src/components/InstallSteps.tsx:123
+msgid "メニューを下にスクロールして、「ホーム画面に追加」をタップします。"
 msgstr "Scroll down the menu and tap \"Add to Home Screen\"."
 
 #: src/components/admin/AdminFrame.tsx:67
@@ -3859,6 +3862,10 @@ msgstr "Most viewed pages"
 msgid "よみ"
 msgstr "Reading"
 
+#: src/components/landing/Landing.tsx:565
+msgid "より引用しています。"
+msgstr "."
+
 #: src/app/(public)/sitemap/page.tsx:135
 #: src/components/SiteFooter.tsx:35
 #: src/components/SiteHeader.tsx:461
@@ -3952,8 +3959,8 @@ msgstr "Deleting a rally keeps visitors' stamps and finished courses. Only the c
 msgid "ラリーを直す（管理）"
 msgstr "Edit rally (admin)"
 
-#: src/components/landing/Journey.tsx:102
-#: src/components/landing/Landing.tsx:127
+#: src/components/landing/Journey.tsx:186
+#: src/components/landing/Landing.tsx:145
 #: src/components/RestoreStamps.tsx:44
 msgid "ラリーを見る"
 msgstr "See the rallies"
@@ -4059,8 +4066,8 @@ msgstr "Log out"
 #: src/components/auth/RegisterFlow.tsx:194
 #: src/components/blog/CommentSection.tsx:127
 #: src/components/GuestNag.tsx:88
-#: src/components/landing/Landing.tsx:133
-#: src/components/landing/LandingHero.tsx:86
+#: src/components/landing/Landing.tsx:154
+#: src/components/landing/LandingHero.tsx:142
 #: src/components/ProfileSettings.tsx:220
 #: src/components/SignInPrompt.tsx:26
 #: src/components/SignInPrompt.tsx:57
@@ -4446,7 +4453,7 @@ msgstr "About the effort stars"
 msgid "体力の目安と道のけわしさについて"
 msgstr "About the effort and trail difficulty ratings"
 
-#: src/components/landing/Landing.tsx:202
+#: src/components/landing/Landing.tsx:280
 msgid "体験"
 msgstr "Experiences"
 
@@ -4699,17 +4706,17 @@ msgstr "When set, this place's stamp shows this picture instead of the plain red
 msgid "入力内容に誤りがあります。確認の上、もう一度お試しください。"
 msgstr "Please check your input and try again."
 
-#: src/components/landing/LandingMap.tsx:58
-msgid "全{count}区間のある場所を示した図"
-msgstr "A diagram of where all {count} courses lie"
+#: src/components/landing/LandingMap.tsx:104
+msgid "全{count}区間の位置を示した地図"
+msgstr "Map showing the locations of all {count} sections."
 
-#: src/components/landing/Journey.tsx:58
-#: src/components/landing/Landing.tsx:329
+#: src/components/landing/Journey.tsx:95
+#: src/components/landing/Landing.tsx:478
 msgid "全{TOTAL_ROUTES}区間"
 msgstr "{TOTAL_ROUTES} sections"
 
-#: src/components/landing/Landing.tsx:287
-#: src/components/landing/Landing.tsx:363
+#: src/components/landing/Landing.tsx:423
+#: src/components/landing/Landing.tsx:534
 msgid "全{TOTAL_ROUTES}区間を見る"
 msgstr "See all {TOTAL_ROUTES} sections"
 
@@ -4717,10 +4724,13 @@ msgstr "See all {TOTAL_ROUTES} sections"
 msgid "全{total}か所のスタンプをそろえました"
 msgstr "Collected all {total} stamps"
 
-#: src/components/landing/useHomeWords.ts:13
 #: src/components/map/MapScreen.tsx:284
 msgid "全体の地図"
 msgstr "Whole map"
+
+#: src/components/landing/useHomeWords.ts:13
+msgid "全体マップ"
+msgstr "Overview Map"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1170
 #: src/components/admin/map-editor/MapEditor.tsx:1170
@@ -4732,8 +4742,8 @@ msgid "公式サイト"
 msgstr "Official site"
 
 #: src/components/landing/useHomeWords.ts:18
-msgid "公式サイトで、もっと知る"
-msgstr "Learn more on the official site"
+msgid "公式サイトで詳しく見る"
+msgstr "Learn More on the Official Site"
 
 #: src/components/admin/PageTextEditor.tsx:96
 #: src/components/admin/PublicSiteLink.tsx:18
@@ -4958,7 +4968,7 @@ msgstr "Photo “{0}” was not added ({1})"
 msgid "写真がない"
 msgstr "No photo"
 
-#: src/components/landing/Landing.tsx:385
+#: src/components/landing/Landing.tsx:556
 msgid "写真と文章の一部は、"
 msgstr "Some of the photos and text are from the "
 
@@ -5063,11 +5073,14 @@ msgstr "Before you go"
 #: src/app/(public)/rallies/page.tsx:80
 #: src/app/(public)/routes/page.tsx:67
 #: src/components/landing/TrailNotices.tsx:66
-#: src/components/landing/useHomeWords.ts:24
 #: src/components/RouteView.tsx:310
 #: src/components/SpotSheet.tsx:192
 msgid "出かける前に、公式の最新情報を確認してください。"
 msgstr "Check official sources before you go."
+
+#: src/components/landing/useHomeWords.ts:24
+msgid "出かける前に公式サイトで最新情報を確認してください。"
+msgstr "Check the official website for the latest updates before heading out."
 
 #: src/components/admin/PhotoListEditor.tsx:79
 msgid "出どころ（撮った人、使用条件）"
@@ -5110,6 +5123,10 @@ msgstr "Start"
 #: src/components/admin/RouteEditor.tsx:226
 msgid "分"
 msgstr "min"
+
+#: src/components/PointKindName.tsx:11
+msgid "分岐"
+msgstr "Divergence"
 
 #: src/components/admin/PhotoFocusPicker.tsx:49
 msgid "切り取られたときの見え方"
@@ -5286,7 +5303,7 @@ msgstr "Previous post"
 #: src/components/admin/CommentInbox.tsx:209
 #: src/components/admin/PhotoListEditor.tsx:83
 #: src/components/admin/RallyMemberPicker.tsx:110
-#: src/components/Pager.tsx:21
+#: src/components/Pager.tsx:42
 msgid "前へ"
 msgstr "Earlier"
 
@@ -5515,13 +5532,10 @@ msgstr "Right"
 msgid "右うしろ"
 msgstr "Back right"
 
-#: src/components/InstallSteps.tsx:64
-msgid "右上の「追加」を押します"
-msgstr "Tap \"Add\" at the top right"
-
-#: src/components/InstallSteps.tsx:63
-msgid "右上の「追加」を押します。"
-msgstr "Tap \"Add\" at the top right."
+#: src/components/InstallSteps.tsx:127
+#: src/components/InstallSteps.tsx:131
+msgid "右上の「追加」をタップします。"
+msgstr "Tap \"Add\" in the top right."
 
 #: src/components/navigation/NavigationHud.tsx:217
 msgid "右折"
@@ -5659,8 +5673,8 @@ msgid "和歌山県"
 msgstr "Wakayama"
 
 #: src/components/landing/useHomeWords.ts:15
-msgid "和泉山脈から金剛山地へ。大阪・和歌山・奈良の境にのびるこの山なみは、古くから「葛城」と呼ばれ、神の宿る山として敬われてきました。山で心身をきたえる修験道を開いたと伝わる役行者が、はじめて修行をしたのも、この山々だといわれています。"
-msgstr "From the Izumi range to the Kongo mountains, these ridges run along the borders of Osaka, Wakayama and Nara. They have long been called Katsuragi and revered as mountains where the gods dwell. It is said that En no Gyoja, who is believed to have founded Shugendo, the path of training in the mountains, first practised here."
+msgid "和泉山脈から金剛山地へ。大阪・和歌山・奈良の境にのびるこの山並みは、古くから「葛城」と呼ばれ、神の宿る山として敬われてきました。山で心身を鍛える修験道を開いたと伝わる役行者が、初めて修行をしたのも、この山々だといわれています。"
+msgstr "Stretching from the Izumi Mountains to the Kongo Range along the borders of Osaka, Wakayama, and Nara, these peaks have long been known as Katsuragi and revered as sacred mountains where deities dwell. It is said that En no Gyoja, the founder of Shugendo―a mountain ascetic tradition of physical and spiritual training first practiced here."
 
 #: src/components/map/PlacesPanel.tsx:56
 msgid "営業中・利用可"
@@ -5691,7 +5705,7 @@ msgstr "Country"
 msgid "国を選択してください"
 msgstr "Choose your country"
 
-#: src/components/landing/LandingMap.tsx:98
+#: src/components/landing/LandingMap.tsx:180
 msgid "国土地理院（地理院タイル）"
 msgstr "Geospatial Information Authority of Japan (GSI Tiles)"
 
@@ -6091,7 +6105,7 @@ msgstr "Seasonal"
 msgid "完了"
 msgstr "Done"
 
-#: src/components/landing/Landing.tsx:203
+#: src/components/landing/Landing.tsx:285
 msgid "宿泊"
 msgstr "Stay"
 
@@ -6159,13 +6173,13 @@ msgstr "Could not load the history."
 msgid "山では電波が届かないことがあります。入口で保存しておくと、電波がなくてもこの道の地図が開きます（数MB）。"
 msgstr "There may be no signal in the mountains. Save the map at the trailhead and it opens without a signal (a few MB)."
 
-#: src/components/landing/useHomeWords.ts:22
-msgid "山の中は、電波がつながりにくいことがあります。"
-msgstr "Mobile signal can be weak in the mountains."
-
 #: src/components/landing/useHomeWords.ts:21
-msgid "山道です。天候を確かめ、水や食べ物、歩きやすい靴を用意してください。"
-msgstr "These are mountain paths. Check the weather, and bring water, food and good walking shoes."
+msgid "山道が含まれます。事前に天候を確認し、飲み物・軽食、歩きやすい靴を用意してください。"
+msgstr "The routes include mountain trails. Check the weather in advance and bring water, snacks, and sturdy walking shoes."
+
+#: src/components/landing/useHomeWords.ts:22
+msgid "山間部は電波がつながりにくい場合があります。"
+msgstr "Mobile receiption may be weak or unavailable in mountain areas."
 
 #: src/components/admin/GradingFields.tsx:45
 msgid "岩場やガレ場、手を使う急な登り下りがある。道がわかりにくい所も多い。"
@@ -6547,8 +6561,8 @@ msgstr "A Japanese name is needed to create a new one"
 #: src/app/(public)/sitemap/page.tsx:114
 #: src/components/auth/LoginFlow.tsx:128
 #: src/components/GuestNag.tsx:85
-#: src/components/landing/Landing.tsx:121
-#: src/components/landing/LandingHero.tsx:77
+#: src/components/landing/Landing.tsx:133
+#: src/components/landing/LandingHero.tsx:130
 #: src/components/SignInPrompt.tsx:23
 #: src/components/SignInPrompt.tsx:51
 #: src/components/SiteHeader.tsx:395
@@ -6612,11 +6626,11 @@ msgstr "Enter the Japanese name."
 msgid "日本語の字幕です。もう一度送ると、置き換わります。字幕は動画の横に保存され、動画を入れ替えたときは、字幕も送りなおしてください。"
 msgstr "Japanese subtitles. Sending again replaces them. They are stored beside the video, so when you replace the video, send the subtitles again."
 
-#: src/components/landing/Landing.tsx:179
+#: src/components/landing/Landing.tsx:231
 msgid "日本遺産 葛城修験ストーリー"
 msgstr "The Japan Heritage Katsuragi Shugen Story"
 
-#: src/components/landing/Landing.tsx:168
+#: src/components/landing/Landing.tsx:213
 msgid "日本遺産「葛城修験」PR動画（180秒）"
 msgstr "Japan Heritage \"Katsuragi Shugen\" promotional video (180 seconds)"
 
@@ -6649,7 +6663,6 @@ msgid "時間を追加（昼休みなど）"
 msgstr "Add hours (e.g. a lunch break)"
 
 #: src/components/admin/PlacePanel.tsx:48
-#: src/components/PointKindName.tsx:11
 msgid "曲がり角"
 msgstr "Turn"
 
@@ -6665,8 +6678,8 @@ msgid "更新 {0}"
 msgstr "Updated {0}"
 
 #: src/components/StatusBanner.tsx:37
-msgid "更新 {updated}（日本時間）"
-msgstr "Updated {updated} (Japan time)"
+msgid "更新：{updated}（日本時間）"
+msgstr "Updated: {updated} (Japan Standard Time)"
 
 #: src/components/OfflinePack.tsx:119
 msgid "更新できませんでした。前に保存した地図は、そのまま使えます。"
@@ -6808,7 +6821,7 @@ msgstr "Web search"
 msgid "概要"
 msgstr "Overview"
 
-#: src/components/landing/Landing.tsx:181
+#: src/components/landing/Landing.tsx:234
 msgid "構成文化財"
 msgstr "Constituent cultural properties"
 
@@ -6890,7 +6903,7 @@ msgstr "Next post"
 
 #: src/app/(public)/blog/page.tsx:102
 #: src/components/admin/CommentInbox.tsx:213
-#: src/components/Pager.tsx:44
+#: src/components/Pager.tsx:70
 msgid "次へ"
 msgstr "Next"
 
@@ -6919,10 +6932,13 @@ msgstr "Next stop: {up} m up, {down} m down"
 msgid "止まっています"
 msgstr "Not working"
 
-#: src/components/landing/useHomeWords.ts:10
 #: src/components/RallyViews.tsx:266
 msgid "歩いて、スタンプを集めよう。"
 msgstr "Walk the trails and collect stamps."
+
+#: src/components/landing/useHomeWords.ts:10
+msgid "歩いてスタンプを集めよう。"
+msgstr "Walk the trail and collect stamps."
 
 #. placeholder {0}: leg.minutes
 #: src/components/map/MapScreen.tsx:445
@@ -6950,10 +6966,6 @@ msgstr "Walking time"
 #: src/components/RouteStats.tsx:54
 msgid "歩く時間・距離・登りと下りから、必要な体力を星1つ（やさしい）から星5つ（とても大変）で表した目安です。"
 msgstr "How much stamina the walk takes, from its time, distance, climb and descent: one star (easy) to five (very hard)."
-
-#: src/components/landing/useHomeWords.ts:12
-msgid "歩く道"
-msgstr "The path"
 
 #: src/components/navigation/NavFarCard.tsx:122
 msgid "歩く道を調べています…"
@@ -7016,8 +7028,8 @@ msgid "注意"
 msgstr "Caution"
 
 #: src/components/PointKindName.tsx:12
-msgid "注意の場所"
-msgstr "Caution spot"
+msgid "注意箇所"
+msgstr "Caution"
 
 #: src/components/landing/DeskPanel.tsx:36
 msgid "海"
@@ -7025,9 +7037,9 @@ msgstr "Sea"
 
 #. placeholder {0}: ridge.courses
 #. placeholder {1}: ridge.topM
-#: src/components/landing/Journey.tsx:90
-msgid "海から山へ。{0}区間の道の高さを、順につなげた線です。いちばん高いところは約{1}m。"
-msgstr "From the sea to the mountains: the height of {0} courses, joined in order. The highest point is about {1} m."
+#: src/components/landing/Journey.tsx:158
+msgid "海から山へ。{0}区間の標高を順につないだ線です。最高地点は約{1}m。"
+msgstr "From sea to mountain. An elevation profile connecting {0} sections in order, peaking at about {1} m."
 
 #: src/app/(admin)/admin/page.tsx:37
 #: src/components/auth/authUi.tsx:52
@@ -7149,9 +7161,9 @@ msgstr "Status note"
 msgid "状態は未確認"
 msgstr "Status not checked"
 
-#: src/components/Breadcrumb.tsx:12
-msgid "現在の場所"
-msgstr "You are here"
+#: src/components/StatusBanner.tsx:92
+msgid "現在はスタンプを押せません。"
+msgstr "Stamp cannot be collected here right now."
 
 #: src/components/useStampMessages.ts:13
 msgid "現在地の取得に時間がかかっています。空の開けた場所で、もう一度お試しください。"
@@ -7309,8 +7321,8 @@ msgid "登録に失敗しました。もう一度お試しください。"
 msgstr "Registration failed. Please try again."
 
 #: src/components/auth/RegisterFlow.tsx:192
-#: src/components/landing/Landing.tsx:131
-#: src/components/landing/LandingHero.tsx:84
+#: src/components/landing/Landing.tsx:149
+#: src/components/landing/LandingHero.tsx:137
 msgid "登録済みの方は"
 msgstr "Already registered?"
 
@@ -7586,8 +7598,8 @@ msgstr "about {n} km"
 msgid "約{n}m"
 msgstr "about {n} m"
 
-#: src/components/landing/Journey.tsx:59
-#: src/components/landing/Landing.tsx:330
+#: src/components/landing/Journey.tsx:99
+#: src/components/landing/Landing.tsx:482
 msgid "約{TRAIL_KM}km"
 msgstr "About {TRAIL_KM} km"
 
@@ -7606,8 +7618,8 @@ msgstr "End"
 #: src/components/admin/HomeTextFields.tsx:60
 #: src/components/admin/PlacePanel.tsx:47
 #: src/components/landing/DeskPanel.tsx:42
-#: src/components/landing/Journey.tsx:60
-#: src/components/landing/Landing.tsx:331
+#: src/components/landing/Journey.tsx:102
+#: src/components/landing/Landing.tsx:485
 #: src/components/map/MapScreenCanvas.tsx:655
 #: src/components/PointKindName.tsx:9
 msgid "経塚"
@@ -7776,6 +7788,11 @@ msgstr "Shall we go on?"
 #: src/components/ExpandableText.tsx:32
 msgid "続きを読む"
 msgstr "Read more"
+
+#: src/components/landing/Journey.tsx:98
+#: src/components/landing/Landing.tsx:481
+msgid "総距離"
+msgstr "Total Distance"
 
 #: src/components/admin/BlockEditor.tsx:359
 msgid "線（ここから下は注意書き）"
@@ -8037,7 +8054,7 @@ msgid "英語版の動画のリンク（YouTube、またはアップロードし
 msgstr "Link to the English video (YouTube, or an uploaded video)"
 
 #: src/app/layout.tsx:36
-#: src/components/landing/LandingHero.tsx:55
+#: src/components/landing/LandingHero.tsx:103
 msgid "葛城修験"
 msgstr "Katsuragi Shugen"
 
@@ -8059,7 +8076,7 @@ msgstr "The story of Katsuragi Shugen"
 msgid "葛城修験の地図"
 msgstr "Map of Katsuragi Shugen"
 
-#: src/components/landing/Landing.tsx:180
+#: src/components/landing/Landing.tsx:233
 msgid "葛城修験の基礎知識"
 msgstr "Basics of Katsuragi Shugen"
 
@@ -8075,7 +8092,7 @@ msgstr "News about the Katsuragi Shugen trail and the days we walked it."
 msgid "葛城修験の道のり"
 msgstr "The Journey of Katsuragi Shugen"
 
-#: src/components/landing/Landing.tsx:387
+#: src/components/landing/Landing.tsx:563
 msgid "葛城修験日本遺産活用推進協議会の公式サイト"
 msgstr "official site of the Katsuragi Shugen Japan Heritage Promotion Council"
 
@@ -8227,7 +8244,7 @@ msgstr "On the FAQ a heading is a question, and on How to play it is the name of
 msgid "見本の位置（目安です）"
 msgstr "Sample positions (rough)"
 
-#: src/components/landing/Landing.tsx:199
+#: src/components/landing/Landing.tsx:265
 msgid "観光"
 msgstr "Sightseeing"
 
@@ -8517,9 +8534,9 @@ msgstr "Add"
 msgid "追加するもの"
 msgstr "What to add"
 
-#: src/components/InstallNudge.tsx:93
-msgid "追加のしかた"
-msgstr "How to add it"
+#: src/components/InstallNudge.tsx:122
+msgid "追加手順"
+msgstr ";"
 
 #: src/components/admin/PhotoUpload.tsx:108
 #: src/components/admin/SubtitleUpload.tsx:62
@@ -8581,6 +8598,10 @@ msgstr "Closed"
 msgid "通行止めなどがあれば、ここに表示されます。"
 msgstr "Closures and the like will be shown here."
 
+#: src/components/landing/useHomeWords.ts:23
+msgid "通行止めなどで道が通れない場合は、無理をせず引き返しください。"
+msgstr "If a trail is closed or impassable, do not push forward-turn back safely."
+
 #: src/components/useErrorMessages.ts:44
 msgid "連携されていないアカウントで認証されました。連携済みのアカウントでお試しください。"
 msgstr "Verified with an unlinked account. Please try again with your linked account."
@@ -8622,10 +8643,6 @@ msgstr "Off the trail"
 #: src/components/admin/map-editor/MapEditor.tsx:310
 msgid "道が見つかりませんでした。ガイド点は残してあります。"
 msgstr "No way was found. The guide points are kept."
-
-#: src/components/landing/useHomeWords.ts:23
-msgid "道が通れないときは、無理をせず引き返してください。"
-msgstr "If the path is closed, do not push on. Turn back."
 
 #: src/components/admin/map-editor/MapEditor.tsx:953
 msgid "道すじ"
@@ -8853,11 +8870,6 @@ msgstr "Find duplicate places"
 msgid "金曜日"
 msgstr "Friday"
 
-#: src/components/landing/Journey.tsx:59
-#: src/components/landing/Landing.tsx:330
-msgid "長さ"
-msgstr "Length"
-
 #: src/components/admin/AdminListTable.tsx:210
 #: src/components/admin/BannerOrder.tsx:112
 #: src/components/admin/BlockEditor.tsx:561
@@ -8869,11 +8881,11 @@ msgstr "Length"
 #: src/components/admin/PhotoLibrary.tsx:130
 #: src/components/admin/SharedPlaces.tsx:181
 #: src/components/admin/Toaster.tsx:48
-#: src/components/BrowserWarning.tsx:42
+#: src/components/BrowserWarning.tsx:53
 #: src/components/Dismissible.tsx:53
 #: src/components/ExpandableText.tsx:32
 #: src/components/GuestClaim.tsx:85
-#: src/components/InstallNudge.tsx:104
+#: src/components/InstallNudge.tsx:146
 #: src/components/map/MapHelp.tsx:51
 #: src/components/map/MapHelp.tsx:55
 #: src/components/map/PlacesPanel.tsx:215

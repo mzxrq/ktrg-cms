@@ -34,7 +34,7 @@ export function StatusBanner({
       ) : null}
       {updated ? (
         <p className="mt-2 text-base text-muted">
-          <Trans>更新 {updated}（日本時間）</Trans>
+          <Trans>更新：{updated}（日本時間）</Trans>
         </p>
       ) : null}
     </>
@@ -70,7 +70,7 @@ export function StatusBanner({
           <StatusWord status="info" />
         </p>
         <p className="mt-2 text-lg font-bold">
-          <Trans>ここにはスタンプはありません。</Trans>
+          <Trans>この場所にスタンプ対象外です。</Trans>
         </p>
         {details}
       </section>
@@ -89,7 +89,7 @@ export function StatusBanner({
           <StatusWord status="closed" />
         </p>
         <p className="mt-2 text-lg font-bold">
-          <Trans>いまは、ここでスタンプを押せません。</Trans>
+          <Trans>現在はスタンプを押せません。</Trans>
         </p>
         {details}
       </div>

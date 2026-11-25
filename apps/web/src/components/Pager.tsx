@@ -4,7 +4,19 @@ import { useLingui } from "@lingui/react/macro";
 import { clampPage } from "@/lib/pager";
 
 /** Previous / next and "page [ 3 ] of 12": type a page number and press Enter (or leave the box) to go there. With one page it stays, greyed out, unless `hideWhenSingle`. */
-export function Pager({ page, pages, onPage, disabled = false, hideWhenSingle = false }: { page: number; pages: number; onPage: (page: number) => void; disabled?: boolean; hideWhenSingle?: boolean }) {
+export function Pager({
+  page,
+  pages,
+  onPage,
+  disabled = false,
+  hideWhenSingle = false,
+}: {
+  page: number;
+  pages: number;
+  onPage: (page: number) => void;
+  disabled?: boolean;
+  hideWhenSingle?: boolean;
+}) {
   const { t } = useLingui();
   if (pages <= 1 && hideWhenSingle) return null;
 
@@ -14,10 +26,19 @@ export function Pager({ page, pages, onPage, disabled = false, hideWhenSingle = 
     if (n === null || n === page) box.value = String(page);
     else onPage(n);
   };
-  const button = "tap-target rounded-full border-2 border-line px-5 text-lg font-bold disabled:opacity-50";
+  const button =
+    "tap-target rounded-full border-2 border-line px-5 text-lg font-bold disabled:opacity-50";
   return (
-    <nav aria-label={t`ページ`} className="flex flex-wrap items-center gap-3">
-      <button type="button" disabled={disabled || page <= 1} onClick={() => onPage(page - 1)} className={button}>
+    <nav
+      aria-label={t`ページ移動`}
+      className="flex flex-wrap items-center gap-3"
+    >
+      <button
+        type="button"
+        disabled={disabled || page <= 1}
+        onClick={() => onPage(page - 1)}
+        className={button}
+      >
         {t`前へ`}
       </button>
       <label className="flex items-center gap-2 text-lg font-bold">
@@ -40,7 +61,12 @@ export function Pager({ page, pages, onPage, disabled = false, hideWhenSingle = 
         />
         <span className="tabular-nums">/ {pages}</span>
       </label>
-      <button type="button" disabled={disabled || page >= pages} onClick={() => onPage(page + 1)} className={button}>
+      <button
+        type="button"
+        disabled={disabled || page >= pages}
+        onClick={() => onPage(page + 1)}
+        className={button}
+      >
         {t`次へ`}
       </button>
     </nav>

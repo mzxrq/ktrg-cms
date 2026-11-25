@@ -38,13 +38,20 @@ export function InstallNudge() {
   const started = useRef(0); // set on mount: Date.now() is not for render
   const dialog = useRef<HTMLDialogElement>(null);
   // The bar rises in and fades out (lib/motion), so putting it away is not a jump.
-  const { mounted: barMounted, ref: barRef } = usePresence<HTMLDivElement>(show, "rise");
+  const { mounted: barMounted, ref: barRef } = usePresence<HTMLDivElement>(
+    show,
+    "rise",
+  );
 
   useEffect(() => {
     started.current = Date.now();
     // Count this visit once per browser session.
     if (!readCookie(COUNTED)) {
-      writeCookie(VISITS, String((Number(readCookie(VISITS)) || 0) + 1), 31_536_000);
+      writeCookie(
+        VISITS,
+        String((Number(readCookie(VISITS)) || 0) + 1),
+        31_536_000,
+      );
       writeCookie(COUNTED, "1");
     }
   }, []);
@@ -52,20 +59,33 @@ export function InstallNudge() {
   useEffect(() => {
     const check = () => {
       const dismissedAt = Number(readCookie(DISMISSED));
-      const typing = document.activeElement?.closest("input, textarea, select, [contenteditable='true']") != null;
+      const typing =
+        document.activeElement?.closest(
+          "input, textarea, select, [contenteditable='true']",
+        ) != null;
       setShow(
         installNudgeShows({
-          phone: window.matchMedia("(pointer: coarse)").matches && window.innerWidth < 768,
-          installed: window.matchMedia("(display-mode: standalone)").matches || (navigator as { standalone?: boolean }).standalone === true,
+          phone:
+            window.matchMedia("(pointer: coarse)").matches &&
+            window.innerWidth < 768,
+          installed:
+            window.matchMedia("(display-mode: standalone)").matches ||
+            (navigator as { standalone?: boolean }).standalone === true,
           inAppBrowser: isInAppBrowser(navigator.userAgent),
           onMap: /^\/map\/?$/.test(pathname),
           visits: Number(readCookie(VISITS)) || 0,
           seconds: (Date.now() - started.current) / 1000,
-          dismissedDaysAgo: dismissedAt > 0 ? (Date.now() - dismissedAt) / DAY_MS : null,
+          dismissedDaysAgo:
+            dismissedAt > 0 ? (Date.now() - dismissedAt) / DAY_MS : null,
           dialogOpen: document.querySelector("dialog[open]") !== null,
           inputFocused: typing,
           // A stop page has the "Stamp here" button, the outbox says how many stamps wait, the navigation toast guides a walk.
-          blocked: /^\/spots\//.test(pathname) || document.querySelector("[data-stamp-outbox]") !== null || parseFloat(document.documentElement.style.getPropertyValue("--nav-toast")) > 0,
+          blocked:
+            /^\/spots\//.test(pathname) ||
+            document.querySelector("[data-stamp-outbox]") !== null ||
+            parseFloat(
+              document.documentElement.style.getPropertyValue("--nav-toast"),
+            ) > 0,
         }),
       );
     };
@@ -82,25 +102,47 @@ export function InstallNudge() {
   return (
     <>
       {barMounted ? (
-        <div ref={barRef} role="region" aria-label={t`ホーム画面に追加`} className="fixed inset-x-3 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-30 flex items-center gap-2 rounded-lg bg-paper px-3 py-2 shadow-2xl ring-1 ring-line/30 md:hidden">
+        <div
+          ref={barRef}
+          role="region"
+          aria-label={t`ホーム画面に追加`}
+          className="fixed inset-x-3 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-30 flex items-center gap-2 rounded-lg bg-paper px-3 py-2 shadow-2xl ring-1 ring-line/30 md:hidden"
+        >
           <p className="min-w-0 flex-1 text-base font-bold leading-snug">
-            <Trans>ホーム画面に追加しましょう</Trans>
+            <Trans>ホーム画面に追加できます</Trans>
           </p>
-          <button type="button" onClick={() => {
+          <button
+            type="button"
+            onClick={() => {
               setAsked(true);
               dialog.current?.showModal();
-            }} className="tap-target shrink-0 rounded-full bg-ink px-4 text-base font-bold text-paper">
-            <Trans>追加のしかた</Trans>
+            }}
+            className="tap-target shrink-0 rounded-full bg-ink px-4 text-base font-bold text-paper"
+          >
+            <Trans>追加手順</Trans>
           </button>
-          <button type="button" onClick={dismiss} aria-label={t`あとで`} className="tap-target shrink-0 rounded-full px-3 text-base font-bold text-muted underline">
+          <button
+            type="button"
+            onClick={dismiss}
+            aria-label={t`あとで`}
+            className="tap-target shrink-0 rounded-full px-3 text-base font-bold text-muted underline"
+          >
             <Trans>あとで</Trans>
           </button>
         </div>
       ) : null}
-      <dialog ref={dialog} aria-labelledby="install-title" className="m-auto w-[calc(100%-2rem)] max-w-md rounded-lg bg-paper p-5 text-ink backdrop:bg-black/60">
+      <dialog
+        ref={dialog}
+        aria-labelledby="install-title"
+        className="m-auto w-[calc(100%-2rem)] max-w-md rounded-lg bg-paper p-5 text-ink backdrop:bg-black/60"
+      >
         <div className="flex flex-col gap-4">
           {asked ? <InstallSteps titleId="install-title" /> : null}
-          <button type="button" onClick={() => dialog.current?.close()} className="tap-target flex min-h-12 w-full items-center justify-center rounded-full border-2 border-ink px-6 text-lg font-bold">
+          <button
+            type="button"
+            onClick={() => dialog.current?.close()}
+            className="tap-target flex min-h-12 w-full items-center justify-center rounded-full border-2 border-ink px-6 text-lg font-bold"
+          >
             <Trans>閉じる</Trans>
           </button>
         </div>
