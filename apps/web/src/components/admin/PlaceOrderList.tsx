@@ -4,15 +4,7 @@ import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { MenuIcon } from "@/components/icons";
 import type { PlaceDraft } from "@/lib/admin/route-draft";
-
-/** `keys` with `from` taken out and put where `to` stood (before it when moving up, after it when moving down). */
-export function movedKeys(keys: readonly string[], from: string, to: string): string[] {
-  const at = keys.indexOf(to);
-  if (from === to || at < 0 || !keys.includes(from)) return [...keys];
-  const rest = keys.filter((k) => k !== from);
-  rest.splice(at, 0, from);
-  return rest;
-}
+import { movedKeys } from "@/lib/admin/moved-keys";
 
 /**
  * The waypoints of the 経由地 tab as a short list beside the form: choose one to edit it, drag one to change the order.
