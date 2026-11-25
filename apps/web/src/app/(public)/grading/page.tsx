@@ -3,14 +3,25 @@ import { Trans } from "@lingui/react/macro";
 import { BackLink } from "@/components/BackLink";
 import { initLingui } from "@/i18n/server";
 import { Stars } from "@/components/Stars";
-import { PHYSICAL_LEVEL_UPPER_BOUNDS, STAR_COUNT, TECHNICAL_LEVELS, technicalStars } from "@/lib/grading";
+import {
+  PHYSICAL_LEVEL_UPPER_BOUNDS,
+  STAR_COUNT,
+  TECHNICAL_LEVELS,
+  technicalStars,
+} from "@/lib/grading";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
-  return { title: i18n.locale === "ja" ? "体力の目安と道のけわしさについて" : "About the effort and trail difficulty ratings" };
+  return {
+    title:
+      i18n.locale === "ja"
+        ? "体力の目安と道のけわしさについて"
+        : "About the effort and trail difficulty ratings",
+  };
 }
 
-const panel = "mx-4 flex flex-col gap-3 rounded-lg bg-surface p-5 text-lg leading-8";
+const panel =
+  "mx-4 flex flex-col gap-3 rounded-lg bg-surface p-5 text-lg leading-8";
 
 // How the two levels on a route are worked out. Written in our own words; the idea follows the mountain grading used in Nagano
 // Prefecture (信州 山のグレーディング). The numbers are a guide: the person who edits the route chooses the saved level.
@@ -20,17 +31,17 @@ export default async function GradingPage() {
   const technical: Record<(typeof TECHNICAL_LEVELS)[number], string> = ja
     ? {
         A: "整備された道で、迷いにくく、転んでも大きな事故になりにくい。",
-        B: "急な登り下りや、道がわかりにくい所がある。はしごや鎖がある所もある。",
-        C: "転落・滑落の危険がある所がある。地図を読む力と、ミスをしない注意が必要。",
-        D: "岩場やガレ場、手を使う急な登り下りがある。道がわかりにくい所も多い。",
-        E: "厳しい岩場や藪こぎが続く。道を自分で見つける技術と、高い判断力が必要。",
+        B: "急な登り下りや、道がわかりにくい所があり、転倒で転落・滑落につながる場所がある。",
+        C: "ハシゴや鎖場などがあり、転落・滑落の危険がある所がある。転滑落の危険や、案内表示が不十分な箇所がある。",
+        D: "岩場やガレ場、ハシゴ、鎖場、手を使う急な登り下りがある。人工的補助は限定的で、転滑落の危険個所が多い。",
+        E: "厳しい岩場や藪こぎが続き、緊張を強いられる。地図読み能力、ルートを自分で見つける技術と高度な判断力が必要。",
       }
     : {
-        A: "A well-kept trail that is easy to follow, where a fall is unlikely to be serious.",
-        B: "Steep climbs and descents, and some places that are hard to follow. Some places have ladders or chains.",
-        C: "Some places where a fall or slip could be dangerous. You need to be able to read a map and take care at every step.",
-        D: "Rocky ground, loose stones, and steep sections where you need your hands. Many places are hard to follow.",
-        E: "Long stretches of difficult rock or thick undergrowth. You must find your own way and make sound decisions.",
+        A: "Well-maintained trails that are easy to follow, where a fall is unlikely to cause serious injury.",
+        B: "Includes steep ascents and descents, sections that are hard to follow, and areas where a trip could lead to a dangerous fall or slide.",
+        C: "Features ladders, chains, and sections with a risk of falling or sliding. Trail signage may be inadequate in some areas.",
+        D: "Includes rocky terrain, scree slopes, ladders, chains, and steep climbs and descents requiring the use of your hands. Artificial aids are limited, and there are many areas with a risk of falling or sliding.",
+        E: "Sustained, demanding rocky terrain and bushwhacking that require constant concentration. Map-reading ability, route-finding skills, and advanced judgment are essential.",
       };
 
   return (
@@ -43,53 +54,82 @@ export default async function GradingPage() {
           <Trans>体力の目安と道のけわしさについて</Trans>
         </h1>
         <p className="text-lg leading-8">
-          <Trans>コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天候や体調によって、大変さの感じ方は変わります。</Trans>
+          <Trans>
+            コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星の数で表します。星が少ないほどやさしいコースです。コースをめぐるのが簡単なのか、大変なのかの目安を示す簡単な指標で、公式の情報ではありません。天候や体調によって、大変さの感じ方は変わります。
+          </Trans>
         </p>
       </div>
 
       <section id="physical" className={`${panel} scroll-mt-24`}>
         <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-          <Trans>体力の目安（星1〜5）</Trans>
+          <Trans>体力の目安（体力度）</Trans>
         </h2>
         <p>
-          <Trans>歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど、体力が必要です。</Trans>
+          <Trans>
+            鹿屋体育大学の山本正嘉教授らによる基準式を使用します。歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど体力を消耗します。
+          </Trans>
         </p>
         <p className="rounded-lg bg-paper p-4 font-bold">
-          <Trans>コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）</Trans>
+          <Trans>
+            コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km）
+            ＋ 0.6 × 下り（km）
+          </Trans>
         </p>
         <p>
-          <Trans>たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、星1つです。</Trans>
+          <Trans>
+            例えば、所要時間4時間・距離8km・登り500m・下り500mの場合、1.8×4 ＋
+            0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 となり、星1つとなります。
+          </Trans>
         </p>
         {/* Two of the prefecture's ten levels to a star: the constant's range for each star. */}
         <ul className="flex flex-col gap-1">
           {Array.from({ length: STAR_COUNT }, (_, i) => {
             const low = i === 0 ? null : PHYSICAL_LEVEL_UPPER_BOUNDS[2 * i - 1];
-            const high = i === STAR_COUNT - 1 ? null : PHYSICAL_LEVEL_UPPER_BOUNDS[2 * i + 1];
+            const high =
+              i === STAR_COUNT - 1
+                ? null
+                : PHYSICAL_LEVEL_UPPER_BOUNDS[2 * i + 1];
             return (
-              <li key={i} className="flex items-center justify-between gap-4 border-t border-line/30 pt-1 tabular-nums">
+              <li
+                key={i}
+                className="flex items-center justify-between gap-4 border-t border-line/30 pt-1 tabular-nums"
+              >
                 <span className="text-xl">
                   <Stars n={i + 1} />
                 </span>
-                <span>{low === null ? `〜 ${high}` : high === null ? `${low} 〜` : `${low} 〜 ${high}`}</span>
+                <span>
+                  {low === null
+                    ? `〜 ${high}`
+                    : high === null
+                      ? `${low} 〜`
+                      : `${low} 〜 ${high}`}
+                </span>
               </li>
             );
           })}
         </ul>
         <p className="text-base text-muted">
-          <Trans>数字は目安です。星の数は、この計算結果をもとに、このサイトの運営者がコースごとに決めています。</Trans>
+          <Trans>
+            数字は目安です。星の数は、この計算結果をもとに当サイトの運営者がコースごとに算出しています。
+          </Trans>
         </p>
       </section>
 
       <section id="technical" className={`${panel} scroll-mt-24`}>
         <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-          <Trans>道のけわしさ（星1〜5）</Trans>
+          <Trans>道のけわしさ（技術的難易度）</Trans>
         </h2>
-        <p>
-          <Trans>道のけわしさは計算では出せません。岩場やはしご・くさりの有無、道のわかりやすさなどを見て、このサイトの運営者が決めています。星1つがいちばん歩きやすく、星5つがいちばんけわしい道です。</Trans>
-        </p>
+        {/* <p>
+          <Trans>
+            道のけわしさは計算では出せません。岩場やはしご・くさりの有無、道のわかりやすさなどを見て、このサイトの運営者が決めています。星1つがいちばん歩きやすく、星5つがいちばんけわしい道です。
+          </Trans>
+        </p> */}
         <dl className="flex flex-col gap-2">
           {TECHNICAL_LEVELS.map((level) => (
-            <div key={level} className="flex gap-3 border-t border-line/30 pt-2">
+            <div
+              key={level}
+              className="flex gap-3 border-t border-line/30 pt-2"
+            >
               <dt className="shrink-0 text-xl">
                 <Stars n={technicalStars(level)} />
               </dt>
@@ -100,7 +140,9 @@ export default async function GradingPage() {
       </section>
 
       <p className="mx-4 text-base text-muted">
-        <Trans>この目安は、長野県の「信州 山のグレーディング」をもとにしています。</Trans>
+        <Trans>
+          この目安は、長野県の「信州 山のグレーディング」を参考にしています。
+        </Trans>
       </p>
     </div>
   );

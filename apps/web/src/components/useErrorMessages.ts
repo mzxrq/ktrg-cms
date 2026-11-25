@@ -53,7 +53,7 @@ export function useErrorMessages(): Record<ErrorKey, string> {
     // Stamping
     spot_closed: t`この場所は現在通行止めなどで閉鎖中のため、スタンプを押せません。`,
     too_far: t`対象の場所から離れています。近づいてからもう一度お試しください。`,
-    stamp_revoked: t`このスタンプは確認のため取り消されています。ご不明な点は運営までお問合せください。`,
+    stamp_revoked: t`このスタンプは確認のため取り消されています。ご不明な点は運営までお問い合わせください。`,
     stale_scan: t`スタンプを押してから48時間以上経過しているため、受け付けられませんでした。`,
     bad_time: t`スタンプの取得時刻が正しくありません。端末の日時設定を確認してください。`,
     gps_accuracy_poor: t`GPSの精度が低い状態です。空の明けた場所に移動してからもう一度お試しください。`,

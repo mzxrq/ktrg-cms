@@ -846,7 +846,7 @@ msgid "GPSの精度が低い状態です。空の明けた場所に移動して�
 msgstr ""
 
 #: src/components/useStampMessages.ts:15
-msgid "GPSの電波が弱いようです。空の開けた場所に動いて、もう一度お試しください。"
+msgid "GPSの精度が低い状態です。空の開けた場所に移動してからもう一度お試しください。"
 msgstr ""
 
 #: src/components/navigation/NavigationHud.tsx:308
@@ -1175,10 +1175,6 @@ msgstr ""
 msgid "いまの位置が、わかりません。空の開けた場所で、しばらくお待ちください。"
 msgstr ""
 
-#: src/components/useStampMessages.ts:12
-msgid "いまの位置が、わかりません。空の開けた場所で、もう一度お試しください。"
-msgstr ""
-
 #: src/components/navigation/NavigationHud.tsx:209
 #: src/components/RallyNearbyStamp.tsx:93
 #: src/components/StampHere.tsx:175
@@ -1261,6 +1257,10 @@ msgstr ""
 
 #: src/components/navigation/NavigationHud.tsx:230
 msgid "うしろ"
+msgstr ""
+
+#: src/components/useStampMessages.ts:27
+msgid "エラーが発生しました。しばらく時間をおいてからもう一度お試しください。"
 msgstr ""
 
 #: src/components/useErrorMessages.ts:89
@@ -1453,6 +1453,10 @@ msgstr ""
 msgid "ゲストのまま使う"
 msgstr ""
 
+#: src/components/useStampMessages.ts:22
+msgid "ゲスト状態で保存できるスタンプの上限に達しました。新規登録すると引き続き集められます。"
+msgstr ""
+
 #: src/components/useErrorMessages.ts:60
 msgid "ゲスト状態で保存できるスタンプの上限に達しました。新規登録すると続き集められます。"
 msgstr ""
@@ -1531,8 +1535,8 @@ msgstr ""
 msgid "コースにもどる"
 msgstr ""
 
-#: src/app/(public)/grading/page.tsx:46
-msgid "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星1つから5つで表します。星が少ないほどやさしいコースです。公式の情報ではありません。天候や体調によって、大変さの感じ方は変わります。"
+#: src/app/(public)/grading/page.tsx:57
+msgid "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星の数で表します。星が少ないほどやさしいコースです。コースをめぐるのが簡単なのか、大変なのかの目安を示す簡単な指標で、公式の情報ではありません。天候や体調によって、大変さの感じ方は変わります。"
 msgstr ""
 
 #: src/app/(public)/badges/page.tsx:44
@@ -1661,7 +1665,7 @@ msgstr ""
 msgid "コースを選ぶ"
 msgstr ""
 
-#: src/app/(public)/grading/page.tsx:40
+#: src/app/(public)/grading/page.tsx:51
 #: src/app/(public)/routes/[id]/page.tsx:40
 #: src/app/(public)/routes/[id]/page.tsx:59
 msgid "コース一覧"
@@ -1675,7 +1679,7 @@ msgstr ""
 msgid "コース名（日本語）"
 msgstr ""
 
-#: src/app/(public)/grading/page.tsx:58
+#: src/app/(public)/grading/page.tsx:73
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 msgstr ""
 
@@ -1738,15 +1742,12 @@ msgstr ""
 msgid "このアカウントに送る"
 msgstr ""
 
-#: src/components/useStampMessages.ts:24
-msgid "このアカウントは、いま制限されています。スタンプを押すことと、コメントを書くことはできません。"
-msgstr ""
-
 #: src/components/useErrorMessages.ts:43
 msgid "このアカウントはすでに別のアカウントと連携されています。"
 msgstr ""
 
 #: src/components/useErrorMessages.ts:76
+#: src/components/useStampMessages.ts:24
 msgid "このアカウントは現在制限されています。スタンプの取得やコメントの投稿はできません。"
 msgstr ""
 
@@ -1810,16 +1811,17 @@ msgstr ""
 msgid "このスタンプは、もう押してあります。"
 msgstr ""
 
-#: src/components/useStampMessages.ts:17
-msgid "このスタンプは、押してから時間がたちすぎているため、受け付けられませんでした（48時間まで）。"
-msgstr ""
-
 #: src/components/SpotSheet.tsx:96
 msgid "このスタンプは押しました"
 msgstr ""
 
 #: src/components/useErrorMessages.ts:56
-msgid "このスタンプは確認のため取り消されています。ご不明な点は運営までお問合せください。"
+#: src/components/useStampMessages.ts:23
+msgid "このスタンプは確認のため取り消されています。ご不明な点は運営までお問い合わせください。"
+msgstr ""
+
+#: src/components/useStampMessages.ts:19
+msgid "このスタンプラリーは現在開催されていません。"
 msgstr ""
 
 #: src/components/SampleNotice.tsx:52
@@ -1871,10 +1873,6 @@ msgstr ""
 #: src/components/RallyViews.tsx:133
 #: src/components/RallyViews.tsx:235
 msgid "このラリーのページを開く"
-msgstr ""
-
-#: src/components/useStampMessages.ts:19
-msgid "このラリーは、いまは行われていません。"
 msgstr ""
 
 #: src/components/admin/RallyEditor.tsx:208
@@ -1979,10 +1977,6 @@ msgstr ""
 msgid "この場所のスタンプの絵"
 msgstr ""
 
-#: src/components/useStampMessages.ts:23
-msgid "この場所のスタンプは、確認のため取り消されています。お困りの場合は運営にお問い合わせください。"
-msgstr ""
-
 #: src/components/map/MapScreen.tsx:613
 #: src/components/RallyBook.tsx:191
 msgid "この場所のページを開く"
@@ -1998,12 +1992,12 @@ msgstr ""
 msgid "この場所は、いまは閉鎖中です。"
 msgstr ""
 
-#: src/components/useStampMessages.ts:16
-msgid "この場所は、いまは閉鎖中です。スタンプは押せません。"
-msgstr ""
-
 #: src/components/useErrorMessages.ts:54
 msgid "この場所は現在通行止めなどで閉鎖中のため、スタンプを押せません。"
+msgstr ""
+
+#: src/components/useStampMessages.ts:16
+msgid "この場所は現在閉鎖中のため、スタンプを押せません。"
 msgstr ""
 
 #: src/components/admin/BlockEditor.tsx:131
@@ -2059,13 +2053,16 @@ msgstr ""
 msgid "この条件に合う場所はありません。"
 msgstr ""
 
-#: src/app/(public)/grading/page.tsx:103
-msgid "この目安は、長野県の「信州 山のグレーディング」をもとにしています。"
+#: src/app/(public)/grading/page.tsx:143
+msgid "この目安は、長野県の「信州 山のグレーディング」を参考にしています。"
 msgstr ""
 
 #: src/components/navigation/NavigationHud.tsx:248
-#: src/components/useStampMessages.ts:10
 msgid "この端末・ブラウザでは、位置情報を使えません。"
+msgstr ""
+
+#: src/components/useStampMessages.ts:10
+msgid "この端末・ブラウザでは位置情報を利用できません。"
 msgstr ""
 
 #: src/components/admin/StaffCheck.tsx:31
@@ -2449,6 +2446,7 @@ msgid "スタンプのバックアップリンク"
 msgstr ""
 
 #: src/components/useErrorMessages.ts:58
+#: src/components/useStampMessages.ts:18
 msgid "スタンプの取得時刻が正しくありません。端末の日時設定を確認してください。"
 msgstr ""
 
@@ -2530,10 +2528,6 @@ msgstr ""
 msgid "スタンプを押した人"
 msgstr ""
 
-#: src/components/useStampMessages.ts:18
-msgid "スタンプを押した時刻が正しくありません。端末の日付と時刻を確かめてください。"
-msgstr ""
-
 #: src/components/RallyNearbyStamp.tsx:93
 #: src/components/StampHere.tsx:182
 #: src/components/StampHere.tsx:217
@@ -2541,6 +2535,7 @@ msgid "スタンプを押しています…"
 msgstr ""
 
 #: src/components/useErrorMessages.ts:57
+#: src/components/useStampMessages.ts:17
 msgid "スタンプを押してから48時間以上経過しているため、受け付けられませんでした。"
 msgstr ""
 
@@ -2556,10 +2551,6 @@ msgstr ""
 #: src/components/StampHere.tsx:205
 #: src/components/StampHere.tsx:220
 msgid "スタンプを押す"
-msgstr ""
-
-#: src/components/useStampMessages.ts:20
-msgid "スタンプを押す機能は、まだ使えません。"
 msgstr ""
 
 #: src/components/admin/PlacePanel.tsx:163
@@ -2585,6 +2576,10 @@ msgstr ""
 
 #: src/components/admin/GoalsForm.tsx:16
 msgid "スタンプ数"
+msgstr ""
+
+#: src/components/useStampMessages.ts:20
+msgid "スタンプ機能は現在利用できません。"
 msgstr ""
 
 #: src/app/(public)/map/page.tsx:204
@@ -2748,10 +2743,6 @@ msgstr ""
 
 #: src/components/OfflinePack.tsx:59
 msgid "たった今"
-msgstr ""
-
-#: src/app/(public)/grading/page.tsx:61
-msgid "たとえば、4時間・距離8km・登り500m・下り500mなら、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 で、星1つです。"
 msgstr ""
 
 #: src/components/admin/useChecklistLabels.ts:22
@@ -3558,10 +3549,6 @@ msgstr ""
 msgid "まだ、ありません。"
 msgstr ""
 
-#: src/components/useStampMessages.ts:14
-msgid "まだ、この場所から遠いようです。場所の近くで、もう一度お試しください。"
-msgstr ""
-
 #: src/components/admin/DirectoryPicker.tsx:137
 msgid "まだ、ひもづけた場所はありません。"
 msgstr ""
@@ -3816,7 +3803,6 @@ msgstr ""
 
 #: src/app/(admin)/admin/routes/[id]/page.tsx:37
 #: src/app/(admin)/admin/routes/new/page.tsx:23
-#: src/components/ConfirmDialog.tsx:76
 #: src/components/navigation/NavPrompts.tsx:145
 #: src/components/SiteHeader.tsx:225
 msgid "もどる"
@@ -4092,10 +4078,6 @@ msgstr ""
 msgid "ログインがキャンセルされました。"
 msgstr ""
 
-#: src/components/useStampMessages.ts:21
-msgid "ログインが切れたようです。ログインしなおしてください。"
-msgstr ""
-
 #: src/components/StampHere.tsx:192
 msgid "ログインする"
 msgstr ""
@@ -4117,6 +4099,10 @@ msgstr ""
 
 #: src/components/useErrorMessages.ts:24
 msgid "ログインの有効期限が切れました。再度ログインしてください。"
+msgstr ""
+
+#: src/components/useStampMessages.ts:21
+msgid "ログインの有効期限が切れました。再度ログインをお試しください。"
 msgstr ""
 
 #: src/components/useErrorMessages.ts:39
@@ -4424,20 +4410,16 @@ msgstr ""
 msgid "位置を調べてスタンプを押す"
 msgstr ""
 
-#: src/components/useStampMessages.ts:13
-msgid "位置を調べるのに、時間がかかっています。空の開けた場所で、もう一度お試しください。"
-msgstr ""
-
 #: src/components/useErrorMessages.ts:63
 msgid "位置情報が公式情報で確認されていません。確認後、「位置を確認した」にチェックを入れてください"
 msgstr ""
 
-#: src/components/useStampMessages.ts:11
-msgid "位置情報が許可されていません。ブラウザの設定で、このサイトの位置情報を「許可」にしてから、もう一度お試しください。"
-msgstr ""
-
 #: src/components/navigation/NavigationHud.tsx:246
 msgid "位置情報が許可されていません。ブラウザの設定で、このサイトの位置情報を「許可」にしてください。"
+msgstr ""
+
+#: src/components/useStampMessages.ts:11
+msgid "位置情報の利用が許可されていません。ブラウザの設定でこのサイトの位置情報を許可してから、もう一度お試しください。"
 msgstr ""
 
 #: src/components/map/MapSheet.tsx:182
@@ -4458,15 +4440,15 @@ msgstr ""
 msgid "体力の目安"
 msgstr ""
 
-#: src/app/(public)/grading/page.tsx:52
-msgid "体力の目安（星1〜5）"
+#: src/app/(public)/grading/page.tsx:65
+msgid "体力の目安（体力度）"
 msgstr ""
 
 #: src/components/RouteStats.tsx:53
 msgid "体力の目安とは"
 msgstr ""
 
-#: src/app/(public)/grading/page.tsx:43
+#: src/app/(public)/grading/page.tsx:54
 msgid "体力の目安と道のけわしさについて"
 msgstr ""
 
@@ -4505,6 +4487,10 @@ msgstr ""
 
 #: src/components/admin/RouteEditor.tsx:253
 msgid "例：金剛山の山頂"
+msgstr ""
+
+#: src/app/(public)/grading/page.tsx:79
+msgid "例えば、所要時間4時間・距離8km・登り500m・下り500mの場合、1.8×4 ＋ 0.3×8 ＋ 10×0.5 ＋ 0.6×0.5 ＝ 14.9 となり、星1つとなります。"
 msgstr ""
 
 #: src/components/admin/AdminItemForm.tsx:332
@@ -5682,10 +5668,6 @@ msgstr ""
 msgid "和泉山脈から金剛山地へ。大阪・和歌山・奈良の境にのびるこの山なみは、古くから「葛城」と呼ばれ、神の宿る山として敬われてきました。山で心身をきたえる修験道を開いたと伝わる役行者が、はじめて修行をしたのも、この山々だといわれています。"
 msgstr ""
 
-#: src/components/useStampMessages.ts:27
-msgid "問題が発生しました。しばらくしてからもう一度お試しください。"
-msgstr ""
-
 #: src/components/map/PlacesPanel.tsx:56
 msgid "営業中・利用可"
 msgstr ""
@@ -6151,6 +6133,7 @@ msgid "寺社・経塚・行場などの名前は、辞書には任せず人が�
 msgstr ""
 
 #: src/components/useErrorMessages.ts:55
+#: src/components/useStampMessages.ts:14
 msgid "対象の場所から離れています。近づいてからもう一度お試しください。"
 msgstr ""
 
@@ -6294,6 +6277,7 @@ msgstr ""
 
 #: src/components/auth/RegisterFlow.tsx:131
 #: src/components/auth/RegisterFlow.tsx:152
+#: src/components/ConfirmDialog.tsx:97
 #: src/components/map/MapHelp.tsx:47
 #: src/components/map/MapScreen.tsx:268
 #: src/components/map/MapScreen.tsx:284
@@ -6440,6 +6424,7 @@ msgid "描く区間"
 msgstr ""
 
 #: src/components/useErrorMessages.ts:16
+#: src/components/useStampMessages.ts:25
 msgid "操作が集中しています。しばらく時間をおいてから再度お試しください。"
 msgstr ""
 
@@ -6459,8 +6444,8 @@ msgstr ""
 msgid "数字の丸をドラッグすると、経由地を動かせます。経由地のあいだの線は、道に沿って自動で引かれます。線をクリックすると、その区間の種類（歩く・船・手で描く など）を選べます。"
 msgstr ""
 
-#: src/app/(public)/grading/page.tsx:79
-msgid "数字は目安です。星の数は、この計算結果をもとに、このサイトの運営者がコースごとに決めています。"
+#: src/app/(public)/grading/page.tsx:112
+msgid "数字は目安です。星の数は、この計算結果をもとに当サイトの運営者がコースごとに算出しています。"
 msgstr ""
 
 #: src/components/admin/GoalsForm.tsx:39
@@ -6972,10 +6957,6 @@ msgstr ""
 msgid "歩く時間・距離・登りと下りから、必要な体力を星1つ（やさしい）から星5つ（とても大変）で表した目安です。"
 msgstr ""
 
-#: src/app/(public)/grading/page.tsx:55
-msgid "歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど、体力が必要です。"
-msgstr ""
-
 #: src/components/landing/useHomeWords.ts:12
 msgid "歩く道"
 msgstr ""
@@ -7178,9 +7159,17 @@ msgstr ""
 msgid "現在の場所"
 msgstr ""
 
+#: src/components/useStampMessages.ts:13
+msgid "現在地の取得に時間がかかっています。空の開けた場所で、もう一度お試しください。"
+msgstr ""
+
 #: src/components/RallyNearbyStamp.tsx:106
 #: src/components/StampHere.tsx:235
 msgid "現在地は記録に残しません。記録するのは、スタンプを押したことだけです。"
+msgstr ""
+
+#: src/components/useStampMessages.ts:12
+msgid "現在地を取得できませんでした。空の開けた場所で、もう一度お試しください。"
 msgstr ""
 
 #: src/components/map/MapScreenCanvas.tsx:710
@@ -7321,10 +7310,6 @@ msgstr ""
 msgid "登録なしで押したスタンプがあります"
 msgstr ""
 
-#: src/components/useStampMessages.ts:22
-msgid "登録なしで残せるスタンプの数が、上限になりました。新規登録すると、続けて集められます。"
-msgstr ""
-
 #: src/components/useErrorMessages.ts:33
 msgid "登録に失敗しました。もう一度お試しください。"
 msgstr ""
@@ -7395,10 +7380,6 @@ msgstr ""
 
 #: src/components/ProfileSettings.tsx:151
 msgid "知ったきっかけ"
-msgstr ""
-
-#: src/components/useStampMessages.ts:25
-msgid "短い間に何度も操作されました。しばらくしてからお試しください。"
 msgstr ""
 
 #: src/app/(admin)/admin/page.tsx:83
@@ -8589,11 +8570,8 @@ msgid "通る順に並べます。市・町・村は一覧から選びます。�
 msgstr ""
 
 #: src/components/useErrorMessages.ts:88
-msgid "通信エラーが発生しました。もう一度お試しください。"
-msgstr ""
-
 #: src/components/useStampMessages.ts:26
-msgid "通信できませんでした。電波の良い場所でもう一度お試しください。"
+msgid "通信エラーが発生しました。もう一度お試しください。"
 msgstr ""
 
 #: src/components/admin/PlacePanel.tsx:93
@@ -8677,16 +8655,12 @@ msgstr ""
 msgid "道のけわしさ"
 msgstr ""
 
-#: src/app/(public)/grading/page.tsx:85
-msgid "道のけわしさ（星1〜5）"
+#: src/app/(public)/grading/page.tsx:120
+msgid "道のけわしさ（技術的難易度）"
 msgstr ""
 
 #: src/components/RouteStats.tsx:57
 msgid "道のけわしさとは"
-msgstr ""
-
-#: src/app/(public)/grading/page.tsx:88
-msgid "道のけわしさは計算では出せません。岩場やはしご・くさりの有無、道のわかりやすさなどを見て、このサイトの運営者が決めています。星1つがいちばん歩きやすく、星5つがいちばんけわしい道です。"
 msgstr ""
 
 #: src/components/RouteView.tsx:127
@@ -9131,4 +9105,8 @@ msgstr ""
 
 #: src/components/map/MapSheet.tsx:182
 msgid "高い"
+msgstr ""
+
+#: src/app/(public)/grading/page.tsx:68
+msgid "鹿屋体育大学の山本正嘉教授らによる基準式を使用します。歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど体力を消耗します。"
 msgstr ""

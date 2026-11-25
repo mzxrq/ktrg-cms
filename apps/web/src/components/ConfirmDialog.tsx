@@ -22,7 +22,9 @@ type Asked = ConfirmAsk & { answer: (yes: boolean) => void };
 /** Our own window.confirm: resolves true only if the person chose `yes`. ConfirmHost in the root layout shows it. */
 export function confirmDialog(ask: ConfirmAsk): Promise<boolean> {
   return new Promise((answer) => {
-    window.dispatchEvent(new CustomEvent<Asked>(CONFIRM_EVENT, { detail: { ...ask, answer } }));
+    window.dispatchEvent(
+      new CustomEvent<Asked>(CONFIRM_EVENT, { detail: { ...ask, answer } }),
+    );
   });
 }
 
@@ -57,7 +59,12 @@ export function ConfirmHost() {
   };
 
   return (
-    <dialog ref={dialog} aria-labelledby="confirm-title" onClose={() => settle(false)} className="m-auto w-[calc(100%-2rem)] max-w-md rounded-lg bg-paper p-5 text-ink shadow-2xl backdrop:bg-black/50">
+    <dialog
+      ref={dialog}
+      aria-labelledby="confirm-title"
+      onClose={() => settle(false)}
+      className="m-auto w-[calc(100%-2rem)] max-w-md rounded-lg bg-paper p-5 text-ink shadow-2xl backdrop:bg-black/50"
+    >
       {asked ? (
         <>
           <div className="flex items-start gap-3">
@@ -65,17 +72,39 @@ export function ConfirmHost() {
               <WarningIcon />
             </span>
             <div className="min-w-0">
-              <h2 id="confirm-title" className="text-2xl font-bold leading-snug">
+              <h2
+                id="confirm-title"
+                className="text-2xl font-bold leading-snug"
+              >
                 {asked.title}
               </h2>
-              {asked.body ? <p className="mt-2 text-lg leading-snug">{asked.body}</p> : null}
+              {asked.body ? (
+                <p className="mt-2 text-lg leading-snug">{asked.body}</p>
+              ) : null}
             </div>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
-            <button type="button" autoFocus onClick={() => settle(false)} className={buttonStyle("secondary", "md", "flex flex-1 whitespace-nowrap")}>
-              {asked.no ?? t`もどる`}
+            <button
+              type="button"
+              autoFocus
+              onClick={() => settle(false)}
+              className={buttonStyle(
+                "secondary",
+                "md",
+                "flex flex-1 whitespace-nowrap",
+              )}
+            >
+              {asked.no ?? t`戻る`}
             </button>
-            <button type="button" onClick={() => settle(true)} className={buttonStyle("action", "md", "flex flex-1 whitespace-nowrap")}>
+            <button
+              type="button"
+              onClick={() => settle(true)}
+              className={buttonStyle(
+                "action",
+                "md",
+                "flex flex-1 whitespace-nowrap",
+              )}
+            >
               {asked.yes}
             </button>
           </div>
