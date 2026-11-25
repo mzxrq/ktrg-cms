@@ -41,7 +41,7 @@ export function ElevationChart({ line, elevations, rides = [], onHover }: { line
   const pathOf = (r: number[]) => r.map((i, k) => `${k === 0 ? "M" : "L"}${x(dist[i]!).toFixed(1)} ${y(ele[i]!).toFixed(1)}`).join(" ");
   const top = walked.map(pathOf).join(" ");
   const area = walked.map((r) => `${pathOf(r)} L${x(dist[r.at(-1)!]!).toFixed(1)} ${H - PAD} L${x(dist[r[0]!]!).toFixed(1)} ${H - PAD} Z`).join(" ");
-  const rideName: Record<RideSpan["mode"], string> = { ferry: t`船`, bus: t`バス`, train: t`電車`, other: t`ほかの乗り物` };
+  const rideName: Record<RideSpan["mode"], string> = { ferry: t`船`, bus: t`バス`, train: t`電車`, other: t`その他` };
   // One colour per stretch, placed at its middle: the browser blends between them.
   const stops = slopes.map((pct, i) => ({ at: totalM > 0 ? (dist[i]! + dist[i + 1]!) / 2 / totalM : 0, color: gradientColor(pct) }));
 
@@ -70,7 +70,7 @@ export function ElevationChart({ line, elevations, rides = [], onHover }: { line
   const at100 = index === null ? 0 : (x(dist[index]!) / W) * 100;
   const riding = index === null ? null : rideAt(profile.rides, dist[index]!);
   const pct = index === null ? null : slopes[Math.min(index, slopes.length - 1)]!;
-  const slopeWords = pct === null ? "" : Math.abs(pct) < 1 ? t`ほぼ平ら` : pct > 0 ? t`登り ${nf.format(Math.abs(pct))}%` : t`下り ${nf.format(Math.abs(pct))}%`;
+  const slopeWords = pct === null ? "" : Math.abs(pct) < 1 ? t`ほぼ平坦` : pct > 0 ? t`登り ${nf.format(Math.abs(pct))}%` : t`下り ${nf.format(Math.abs(pct))}%`;
   const here = index === null ? null : { e: Math.round(ele[index]!), k: km(dist[index]!) };
   // On a ridden stretch the place is read as the ride, never as a height.
   const reading = here === null ? null : riding ? t`${rideName[riding]} · ${here.k}km` : t`${here.e}m · ${here.k}km · ${slopeWords}`;
@@ -82,7 +82,7 @@ export function ElevationChart({ line, elevations, rides = [], onHover }: { line
   return (
     <figure className="flex flex-col gap-3 rounded-lg bg-surface p-4">
       <figcaption className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <span className="text-xl font-bold">{t`標高のようす`}</span>
+        <span className="text-xl font-bold">{t`高低差`}</span>
         <span className="flex flex-wrap gap-x-4 text-lg tabular-nums">
           <span>{t`最高 ${highest}m`}</span>
           <span>{t`最低 ${lowest}m`}</span>
@@ -93,7 +93,7 @@ export function ElevationChart({ line, elevations, rides = [], onHover }: { line
       <div
         role="slider"
         tabIndex={0}
-        aria-label={t`標高のグラフ。左右の矢印キーで、場所を動かせます。`}
+        aria-label={t`標高グラフ。左右の矢印キーで地点を移動できます。`}
         aria-valuemin={0}
         aria-valuemax={Math.round(totalM)}
         aria-valuenow={index === null ? undefined : Math.round(dist[index]!)}

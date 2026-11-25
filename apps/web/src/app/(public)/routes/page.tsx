@@ -38,7 +38,7 @@ export default async function RoutesPage({
       {/* On a phone the top bar carries the title; the heading stays here for screen readers and for a wider page. */}
       <section className="px-4 sr-only wide:not-sr-only">
         <h1 className="text-3xl font-bold wide:text-4xl">
-          <Trans>葛城修験の道</Trans>
+          <Trans>コース一覧</Trans>
         </h1>
       </section>
 
@@ -51,7 +51,7 @@ export default async function RoutesPage({
 
       {all.length === 0 ? (
         <EmptyState title={<Trans>コースの案内は準備中です。</Trans>}>
-          <Trans>公開できるようになったら、ここにコースが表示されます。</Trans>
+          <Trans>公開され次第、ここにコースが表示されます。</Trans>
         </EmptyState>
       ) : routes.length === 0 ? (
         <EmptyState title={<Trans>この地域のコースはまだありません。</Trans>}>
@@ -64,7 +64,7 @@ export default async function RoutesPage({
       )}
 
       <Notice>
-        <Trans>出かける前に、公式の最新情報を確認してください。</Trans>
+        <Trans>出かける前に公式サイトで最新情報を確認してください。</Trans>
       </Notice>
     </div>
   );

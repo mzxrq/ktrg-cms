@@ -271,8 +271,8 @@ export function RouteView({ route, locale, places, settings, placesFirst, labels
 
           {trail.length === 0 ? (
             <div className="order-7 @4xl:order-none">
-              <EmptyState title={<Trans>スタンプの場所は、まだ準備中です。</Trans>}>
-                <Trans>公開できるようになったら、ここに場所の一覧が表示されます。</Trans>
+              <EmptyState title={<Trans>スポット情報は準備中です。</Trans>}>
+                <Trans>公開され次第、ここにスポット一覧が表示されます。</Trans>
               </EmptyState>
             </div>
           ) : (
@@ -307,7 +307,7 @@ export function RouteView({ route, locale, places, settings, placesFirst, labels
       </div>
 
       <Notice>
-        <Trans>出かける前に、公式の最新情報を確認してください。</Trans>
+        <Trans>出かける前に公式サイトで最新情報を確認してください。</Trans>
       </Notice>
       <LastUpdated iso={route.updatedAt} locale={locale} className="px-4" />
     </div>

@@ -24,14 +24,14 @@ export function RouteStats({ route, compact = false, icons = false, inline = fal
   const items: { label: string; value: ReactNode; icon: ReactNode; short?: string; info?: "physical" | "technical" }[] = [];
   // The shape of the walk (通り抜け, 一周 or 往復), where the page chooses to say it: it reads as one more number of the
   // route. "歩き方: 片道" read oddly (2026-11-16, user's manager), like a ticket.
-  if (walkStyle) items.push({ label: t`コースの形`, icon: <RouteIcon />, value: walkStyle === "loop" ? t`一周` : walkStyle === "out_and_back" ? t`往復` : t`通り抜け` });
+  if (walkStyle) items.push({ label: t`コース形式`, icon: <RouteIcon />, value: walkStyle === "loop" ? t`一周` : walkStyle === "out_and_back" ? t`往復` : t`通り抜け` });
   if (route.distanceKm !== null) {
     const km = numbers.format(route.distanceKm);
     items.push({ label: t`距離`, icon: <RulerIcon />, value: t`${km}km` });
   }
   if (route.elevationGainM !== null) {
     const meters = numbers.format(route.elevationGainM);
-    items.push({ label: t`のぼり`, icon: <MountainIcon />, value: t`${meters}m` });
+    items.push({ label: t`登り`, icon: <MountainIcon />, value: t`${meters}m` });
   }
   if (route.expectedTimeMin !== null) {
     const hours = Math.floor(route.expectedTimeMin / 60);
@@ -45,17 +45,17 @@ export function RouteStats({ route, compact = false, icons = false, inline = fal
   // The grading levels when they are set; otherwise the editor's own words.
   // Shown as five stars, not 1-10 and A-E (lib/grading.ts); the exact levels are on /grading.
   if (route.physicalLevel !== null) items.push({ label: t`体力の目安`, short: t`体力`, icon: <ChartIcon />, value: <Stars n={physicalStars(route.physicalLevel)} />, info: "physical" });
-  if (route.technicalLevel !== null) items.push({ label: t`道のけわしさ`, short: t`道`, icon: <FlagIcon />, value: <Stars n={technicalStars(route.technicalLevel)} />, info: "technical" });
-  if (route.physicalLevel === null && route.technicalLevel === null && route.difficulty) items.push({ label: t`難しさ`, icon: <ChartIcon />, value: route.difficulty });
+  if (route.technicalLevel !== null) items.push({ label: t`道の険しさ`, short: t`険しさ`, icon: <FlagIcon />, value: <Stars n={technicalStars(route.technicalLevel)} />, info: "technical" });
+  if (route.physicalLevel === null && route.technicalLevel === null && route.difficulty) items.push({ label: t`難易度`, icon: <ChartIcon />, value: route.difficulty });
 
   const tip = (info: "physical" | "technical" | undefined) =>
     info === "physical" ? (
       <InfoTip label={t`体力の目安とは`} href="/grading#physical">
-        {t`歩く時間・距離・登りと下りから、必要な体力を星1つ（やさしい）から星5つ（とても大変）で表した目安です。`}
+        {t`歩行時間・距離・高低差から、必要な体力を星1（やさしい）～星5（とてもきつい）で表した目安です。`}
       </InfoTip>
     ) : info === "technical" ? (
-      <InfoTip label={t`道のけわしさとは`} href="/grading#technical">
-        {t`道の険しさや迷いやすさを、星1つ（整った歩きやすい道）から星5つ（岩場や手を使う所が多い道）で表した目安です。`}
+      <InfoTip label={t`道の険しさとは`} href="/grading#technical">
+        {t`道の険しさや迷いやすさを、星1（整備された歩きやすい道）～星5（岩場や手を使う箇所が多い道）で表した目安です。`}
       </InfoTip>
     ) : null;
 
@@ -69,7 +69,7 @@ export function RouteStats({ route, compact = false, icons = false, inline = fal
         <span aria-hidden="true" className="shrink-0 text-brand [&_svg]:size-5">
           {part.icon}
         </span>
-        {/* The short words (体力, 道 / Effort, Path) so the row fits beside the photo; the stars follow, a little smaller. */}
+        {/* The short words (体力, 険しさ / Effort, Path) so the row fits beside the photo; the stars follow, a little smaller. */}
         {part.info ? (
           <>
             {part.short ?? part.label} <span className="text-[0.85em]">{part.value}</span>

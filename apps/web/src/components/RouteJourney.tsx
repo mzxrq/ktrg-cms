@@ -69,7 +69,7 @@ export function RouteJourney({ journey, locale }: { journey: Journey; locale: st
           <Row badge={<StartGoalWords />} stop={start} locale={locale} tone="both" />
           <p className={note}>
             <WalkStyleChip style="loop" className="mr-2" />
-            <Trans>出発した場所に戻ってくる道です。</Trans>
+            <Trans>出発地点に戻るコースです。</Trans>
           </p>
         </>
       ) : style === "out_and_back" ? (
@@ -85,7 +85,7 @@ export function RouteJourney({ journey, locale }: { journey: Journey; locale: st
           ) : null}
           <p className={note}>
             <WalkStyleChip style="out_and_back" className="mr-2" />
-            <Trans>同じ道を行って、同じ道を戻ります。</Trans>
+            <Trans>行きと同じ道を戻ります。</Trans>
           </p>
         </>
       ) : (
@@ -100,7 +100,7 @@ export function RouteJourney({ journey, locale }: { journey: Journey; locale: st
           {style === "one_way" ? (
             <p className={note}>
               <WalkStyleChip style="one_way" className="mr-2" />
-              <Trans>帰りの方法は、下の交通の説明を見てください。</Trans>
+              <Trans>帰りの移動手段は、下のアクセス案内を確認してください。</Trans>
             </p>
           ) : null}
         </>

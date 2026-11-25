@@ -40,8 +40,8 @@ export default async function StoryPage() {
             <BackLink href="/">
               <Trans>ホーム</Trans>
             </BackLink>
-            <h1 className="max-w-[16em] font-serif text-4xl font-bold leading-snug @[42rem]:text-6xl">{TITLE[locale]}</h1>
-            <p className="max-w-[32em] text-lg text-muted">{locale === "en" ? "Katsuragi Shugen, in a few chapters." : "葛城修験を、いくつかの章で。"}</p>
+            <h1 className="max-w-[16em] font-serif text-4xl font-bold leading-snug @2xl:text-6xl">{TITLE[locale]}</h1>
+            <p className="max-w-[32em] text-lg text-muted">{locale === "en" ? "Tracing the history and living culture of Katsuragi Shugen, from its origins to today." : "海から山へ続く、葛城修験の物語。"}</p>
           </div>
         </header>
 
@@ -56,7 +56,7 @@ export default async function StoryPage() {
               id={`story-${i}`}
               // A longer, softer seam: the chapter starts lower so no word sits on the blend (--seam is the blend's height).
               // The sea chapter gets much more air: a tall quiet blue above its words, and a wide field of waves below that melts away.
-              className={ground === "story-ground-sea" ? "pt-56 pb-64 [--seam:16rem] [--waves:70%] @[42rem]:pt-80 @[42rem]:pb-80 @[42rem]:[--seam:22rem]" : "pt-32 [--seam:9rem] @[42rem]:pt-44 @[42rem]:[--seam:12rem]"}
+              className={ground === "story-ground-sea" ? "pt-56 pb-64 [--seam:16rem] [--waves:70%] @2xl:pt-80 @2xl:pb-80 @2xl:[--seam:22rem]" : "pt-32 [--seam:9rem] @2xl:pt-44 @2xl:[--seam:12rem]"}
               decoration={
                 <>
                   <SeamFade from={from} to={ground} />
@@ -89,12 +89,12 @@ export default async function StoryPage() {
         })}
 
         {/* The story ends on the team's mountains (as the landing's start chapter does), the source line standing above them. */}
-        <p className="story-ground-paper relative isolate overflow-hidden px-5 pb-[clamp(9rem,34vw,22rem)] pt-10 text-base text-muted @[42rem]:px-10">
+        <p className="story-ground-paper relative isolate overflow-hidden px-5 pb-[clamp(9rem,34vw,22rem)] pt-10 text-base text-muted @2xl:px-10">
           <span aria-hidden="true" className="outro-mountains pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[clamp(7rem,30vw,20rem)]" />
           <span className="mx-auto block w-full max-w-5xl">
-            {locale === "en" ? "The facts follow the official Japan Heritage site for Katsuragi Shugen: " : "内容は、日本遺産「葛城修験」の公式サイトをもとにしています。"}
+            {locale === "en" ? "Based on information from the Katsuragi Shugen Japan Heritage site." : "本ページの内容は、日本遺産・葛城修験の公式サイトを参考に作成しています。。"}
             <a href={STORY_SOURCE_URL} target="_blank" rel="noopener noreferrer" className="tap-target inline-flex items-center font-bold underline underline-offset-4">
-              {locale === "en" ? "official site" : "公式サイト"}
+              {locale === "en" ? "Visit official site" : "公式サイトへ"}
             </a>
           </span>
         </p>

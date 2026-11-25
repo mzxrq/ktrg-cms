@@ -66,10 +66,10 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <Link href="/welcome" className="tap-target mx-auto flex w-full max-w-5xl flex-col px-5 @[34rem]:px-6">
           <span className="flex flex-col rounded-lg bg-paper/80 p-5">
             <span className="text-xl font-bold text-accent">
-              <Trans>見やすさを設定しませんか</Trans>
+              <Trans>表示を見やすく設定しませんか？</Trans>
             </span>
             <span className="mt-1 text-lg">
-              <Trans>文字やボタンの大きさ、地図の見せ方を選べます。</Trans>
+              <Trans>文字やボタンの大きさを変更できます。</Trans>
             </span>
           </span>
         </Link>

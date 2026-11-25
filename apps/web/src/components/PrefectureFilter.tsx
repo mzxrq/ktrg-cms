@@ -34,7 +34,7 @@ export function PrefectureFilter({
     }`;
 
   return (
-    <nav aria-label={t`地域でしぼる`}>
+    <nav aria-label={t`地域で絞り込む`}>
       {/* One line. On a phone it scrolls sideways (the edges bleed to the screen's edge); from a tablet up it simply fits. */}
       <ul className="flex flex-nowrap gap-5 overflow-x-auto px-4 [scrollbar-width:none] md:flex-wrap md:overflow-visible [&::-webkit-scrollbar]:hidden">
         <li>

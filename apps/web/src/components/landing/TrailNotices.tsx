@@ -41,7 +41,7 @@ export function NoticeRows({ notices, locale }: { notices: TrailNotice[]; locale
                     <Localized value={pickText(locale, n.titleJa, n.titleEn)} />
                   </span>
                   <span className="text-base text-muted">
-                    {age === 0 ? <Trans>{checked} に確認（今日）</Trans> : <Trans>{checked} に確認（{age}日前）</Trans>}
+                    {age === 0 ? <Trans>確認日：{checked}（今日）</Trans> : <Trans>確認日：{checked}（{age}日前）</Trans>}
                   </span>
                 </span>
                 <span className="shrink-0 text-muted transition-transform group-open:rotate-90">
@@ -51,7 +51,7 @@ export function NoticeRows({ notices, locale }: { notices: TrailNotice[]; locale
               <div className="flex flex-col gap-2 pb-4">
                 {until ? (
                   <p className="text-base font-bold">
-                    <Trans>{until} まで</Trans>
+                    <Trans>{until}まで</Trans>
                   </p>
                 ) : null}
                 <p className="text-lg leading-7">
@@ -59,11 +59,11 @@ export function NoticeRows({ notices, locale }: { notices: TrailNotice[]; locale
                 </p>
                 {isWebUrl(n.sourceUrl) ? (
                   <a href={n.sourceUrl} target="_blank" rel="noopener noreferrer" className="tap-target inline-flex w-fit items-center text-lg font-bold underline">
-                    <Trans>出典: {source?.text ?? n.sourceNameJa}</Trans>
+                    <Trans>出典：{source?.text ?? n.sourceNameJa}</Trans>
                   </a>
                 ) : null}
                 <p className="text-base text-muted">
-                  <Trans>出かける前に、公式の最新情報を確認してください。</Trans>
+                  <Trans>出かける前に公式サイトで最新情報を確認してください。</Trans>
                 </p>
               </div>
             </details>

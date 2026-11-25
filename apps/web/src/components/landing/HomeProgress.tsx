@@ -46,9 +46,9 @@ export function HomeProgress({
         <div className="flex min-w-0 flex-col gap-4">
           <h2 id="home-next" className="text-2xl font-bold leading-snug">
             {route ? (
-              started ? <Trans>続きを歩きませんか？</Trans> : <Trans>はじめの道を歩きませんか？</Trans>
+              started ? <Trans>続きを歩きませんか？</Trans> : <Trans>最初のコースを歩いてみませんか？</Trans>
             ) : stamped > 0 && stamped >= total ? (
-              <Trans>すべてそろいました。</Trans>
+              <Trans>すべてのスタンプが集まりました。</Trans>
             ) : (
               <Trans>まだスタンプはありません。</Trans>
             )}
@@ -62,7 +62,7 @@ export function HomeProgress({
           {first ? (
             <div className="flex flex-col">
               <p className="text-lg text-muted">
-                <Trans>つぎの場所</Trans>
+                <Trans>次の場所</Trans>
               </p>
               {/* The one thing to tap: big, with the whole row as the target. */}
               <Link href={`/spots/${first.id}`} className="tap-target flex items-center justify-between gap-3 py-2">
@@ -118,7 +118,7 @@ export function HomeProgress({
         </p>
         {route ? (
           <ButtonLink href={`/routes/${route.id}`}>
-            <Trans>この道を見る</Trans>
+            <Trans>このコースを見る</Trans>
           </ButtonLink>
         ) : null}
       </div>

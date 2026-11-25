@@ -50,7 +50,7 @@ export function RoutePill({ route, name, place, photo, focus, brief = false }: {
       </span>
       {!soon && spotCount > 0 ? (
         <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-paper/90 px-1.5 py-0.5 tabular-nums text-ink">
-          <span className="sr-only">{stampedCount === null ? t`スタンプ場所 ${spotCount}か所` : t`スタンプ ${stampedCount} / ${spotCount}`}</span>
+          <span className="sr-only">{stampedCount === null ? t`スタンプ ${spotCount}か所` : t`スタンプ ${stampedCount} / ${spotCount}`}</span>
           {stampedCount === null ? (
             <>
               <Coin earned={false} size={20} />
