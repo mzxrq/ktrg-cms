@@ -3,11 +3,7 @@ import type { ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
 import { buttonStyle } from "@/components/button";
 import { Chapter } from "@/components/landing/Chapter";
-import {
-  EnNoGyoja,
-  SutraScroll,
-  StaffAndWaves,
-} from "@/components/landing/Decor";
+import { EnNoGyoja, SutraScroll, StaffAndWaves } from "@/components/landing/Decor";
 import { DeskPanel } from "@/components/landing/DeskPanel";
 import { JourneyFlow } from "@/components/landing/JourneyFlow";
 import { JourneyScene } from "@/components/landing/JourneyScene";
@@ -17,12 +13,7 @@ import type { RouteSummary } from "@/lib/content";
 import type { HomeSlot } from "@/lib/home-text";
 import { moundSealPoints, stageLine } from "@/lib/journey";
 import { panelPhotos } from "@/lib/landing-desktop";
-import {
-  MOUND_PLACES,
-  TOTAL_ROUTES,
-  TOTAL_STAMPS,
-  TRAIL_KM,
-} from "@/lib/rally";
+import { MOUND_PLACES, TOTAL_ROUTES, TOTAL_STAMPS, TRAIL_KM } from "@/lib/rally";
 import { RIDGE_HEIGHT, RIDGE_WIDTH, ridgePath } from "@/lib/ridge";
 
 /**
@@ -35,21 +26,7 @@ import { RIDGE_HEIGHT, RIDGE_WIDTH, ridgePath } from "@/lib/ridge";
  * adds to it, through the data-* markers: data-journey (the whole), data-beat 0..2, data-ridge (the line), data-seal.
  * The words are the editable home words, so an editor's text shows here too.
  */
-export function Journey({
-  slides,
-  routes,
-  locale,
-  w,
-  chapterPhotos = [],
-  flow = false,
-}: {
-  slides: BannerSlide[];
-  routes: RouteSummary[];
-  locale: string;
-  w: Record<HomeSlot, string>;
-  chapterPhotos?: (string | null)[];
-  /** The page scrolls on, nothing is pinned (JourneyFlow); off = the older pinned scene (詳細設定). */ flow?: boolean;
-}) {
+export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = false }: { slides: BannerSlide[]; routes: RouteSummary[]; locale: string; w: Record<HomeSlot, string>; chapterPhotos?: (string | null)[]; /** The page scrolls on, nothing is pinned (JourneyFlow); off = the older pinned scene (詳細設定). */ flow?: boolean }) {
   const ridge = ridgePath(routes);
   const line = stageLine(ridge);
   // One seal for every stamp place, grouped by mound: a mound with two places (3, 14, 28) gets a pair.
@@ -59,10 +36,7 @@ export function Journey({
   return (
     <Scene seals={TOTAL_STAMPS}>
       {/* For anyone who does not want the introduction: a real link, first in the tab order. */}
-      <a
-        href="#start-title"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-40 focus:rounded-full focus:bg-paper focus:px-4 focus:py-2 focus:text-lg focus:font-bold focus:text-ink focus:underline"
-      >
+      <a href="#start-title" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-40 focus:rounded-full focus:bg-paper focus:px-4 focus:py-2 focus:text-lg focus:font-bold focus:text-ink focus:underline">
         <Trans>スキップ</Trans>
       </a>
       <div data-journey-stage>
@@ -71,18 +45,9 @@ export function Journey({
         </div>
 
         <div data-beat="1">
-          <Chapter
-            horizontal={flow}
-            ground="story-ground-inverse"
-            heading={w.storyHeading}
-            id="story-title"
-            decoration={<StaffAndWaves />}
-          >
+          <Chapter horizontal={flow} ground="story-ground-inverse" heading={w.storyHeading} id="story-title" decoration={<StaffAndWaves />}>
             <p className="text-lg leading-9">{w.storyText}</p>
-            <Link
-              href="/story"
-              className="tap-target inline-flex items-center text-lg font-bold underline underline-offset-4"
-            >
+            <Link href="/story" className="tap-target inline-flex items-center text-lg font-bold underline underline-offset-4">
               <Trans>ストーリーを読む</Trans>
             </Link>
             {/* The drawing stands beside the facts, not under them: a taller beat would not fit the screen and the scene would
@@ -90,24 +55,13 @@ export function Journey({
             <div className="flex items-end gap-4">
               {/* One ruled row per fact on a phone (English values are longer), three columns from a wider box. */}
               <dl className="grid min-w-0 flex-1 grid-cols-1 gap-3 @[34rem]:grid-cols-3 @[34rem]:text-center">
-                <Fact
-                  term={<Trans>コース</Trans>}
-                  value={<Trans>全{TOTAL_ROUTES}区間</Trans>}
-                />
-                <Fact
-                  term={<Trans>総距離</Trans>}
-                  value={<Trans>約{TRAIL_KM}km</Trans>}
-                />
-                <Fact
-                  term={<Trans>経塚</Trans>}
-                  value={<Trans>{TOTAL_STAMPS}か所</Trans>}
-                />
+                <Fact term={<Trans>コース</Trans>} value={<Trans>全{TOTAL_ROUTES}区間</Trans>} />
+                <Fact term={<Trans>総距離</Trans>} value={<Trans>約{TRAIL_KM}km</Trans>} />
+                <Fact term={<Trans>経塚</Trans>} value={<Trans>{TOTAL_STAMPS}か所</Trans>} />
               </dl>
               <figure className="flex w-28 shrink-0 flex-col gap-1 @[34rem]:w-36">
                 <EnNoGyoja className="h-auto w-full" />
-                <figcaption className="text-base opacity-90">
-                  {w.storyCaption}
-                </figcaption>
+                <figcaption className="text-base opacity-90">{w.storyCaption}</figcaption>
               </figure>
             </div>
           </Chapter>
@@ -115,29 +69,10 @@ export function Journey({
 
         {/* The line of the whole trail and a seal for every sutra mound. The real profile when we hold one, else a plain straight
             line (never an invented one); the seals stand evenly along it, for the rally, not as places on a map. */}
-        <figure
-          data-ridge-stage
-          className="story-ground-inverse flex flex-col gap-3 px-5 pb-16 @[42rem]:px-10"
-        >
-          <div
-            className="relative mx-auto h-32 w-full max-w-5xl @[42rem]:h-44"
-            aria-hidden="true"
-          >
-            <svg
-              viewBox={`0 0 ${RIDGE_WIDTH} ${RIDGE_HEIGHT}`}
-              preserveAspectRatio="none"
-              className="absolute inset-0 size-full overflow-visible"
-            >
-              <path
-                data-ridge
-                d={line.d}
-                pathLength={1}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.5}
-                vectorEffect="non-scaling-stroke"
-                strokeLinejoin="round"
-              />
+        <figure data-ridge-stage className="story-ground-inverse flex flex-col gap-3 px-5 pb-16 @[42rem]:px-10">
+          <div className="relative mx-auto h-32 w-full max-w-5xl @[42rem]:h-44" aria-hidden="true">
+            <svg viewBox={`0 0 ${RIDGE_WIDTH} ${RIDGE_HEIGHT}`} preserveAspectRatio="none" className="absolute inset-0 size-full overflow-visible">
+              <path data-ridge d={line.d} pathLength={1} fill="none" stroke="currentColor" strokeWidth={1.5} vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
             </svg>
             {/* HTML dots on the line, so they stay round while the picture is stretched to the width. */}
             {seals.map(([x, y], i) => (
@@ -146,43 +81,24 @@ export function Journey({
                 data-seal
                 // The ring is the figure's own text colour (pale on the night stage, ink on paper): the shu fill alone is under 3:1 on night.
                 className="absolute size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-shu ring-1 ring-current @[42rem]:size-3 @[42rem]:ring-2"
-                style={{
-                  left: `${(x / RIDGE_WIDTH) * 100}%`,
-                  top: `${(y / RIDGE_HEIGHT) * 100}%`,
-                }}
+                style={{ left: `${(x / RIDGE_WIDTH) * 100}%`, top: `${(y / RIDGE_HEIGHT) * 100}%` }}
               />
             ))}
           </div>
           {ridge ? (
             <figcaption className="mx-auto w-full max-w-5xl text-base opacity-90">
               <Trans>
-                海から山へ。{ridge.courses}
-                区間の標高を順につないだ線です。最高地点は約{ridge.topM}m。
+                海から山へ。{ridge.courses}区間の標高を順につないだ線です。最高地点は約{ridge.topM}m。
               </Trans>
             </figcaption>
           ) : null}
         </figure>
 
         <div data-beat="2">
-          <Chapter
-            horizontal={flow}
-            ground="story-ground-surface"
-            heading={w.rallyHeading}
-            id="rally-title"
-            decoration={<SutraScroll />}
-          >
-            <p className="font-serif text-2xl font-bold leading-snug">
-              {w.rallyLead}
-            </p>
+          <Chapter horizontal={flow} ground="story-ground-surface" heading={w.rallyHeading} id="rally-title" decoration={<SutraScroll />}>
+            <p className="font-serif text-2xl font-bold leading-snug">{w.rallyLead}</p>
             <p className="text-lg leading-9">{w.rallyText}</p>
-            <Link
-              href="/rallies"
-              className={buttonStyle(
-                "secondary",
-                "lg",
-                "flex w-full @[34rem]:w-fit",
-              )}
-            >
+            <Link href="/rallies" className={buttonStyle("secondary", "lg", "flex w-full @[34rem]:w-fit")}>
               <Trans>ラリーを見る</Trans>
             </Link>
           </Chapter>
@@ -190,15 +106,7 @@ export function Journey({
 
         {/* A desktop's picture panel and step marker (drawn only there, only while the scene is live; see DeskPanel). The photos are
             course photos, then the first banner photo, then the trail photo of the Japan Heritage council. */}
-        <DeskPanel
-          photos={panelPhotos(
-            routes,
-            slides.find((s) => s.src)?.src ?? null,
-            "/home/top_slider_img01.jpg",
-            2,
-            chapterPhotos,
-          )}
-        />
+        <DeskPanel photos={panelPhotos(routes, slides.find((s) => s.src)?.src ?? null, "/home/top_slider_img01.jpg", 2, chapterPhotos)} />
       </div>
     </Scene>
   );

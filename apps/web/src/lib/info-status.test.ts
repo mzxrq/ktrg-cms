@@ -18,7 +18,7 @@ test("closed and information-only places are not stamp targets; open and caution
 test("an information place gets a calm panel and no stamp button, and an admin can set it", () => {
   const banner = read("components", "StatusBanner.tsx");
   expect(banner).toMatch(/status === "info"/);
-  expect(banner).toContain("ここにはスタンプはありません。");
+  expect(banner).toContain("この場所にスタンプ対象外です。");
   expect(read("components", "StampHere.tsx")).toMatch(/status === "info" \?/);
   expect(read("components", "admin", "PlacePanel.tsx")).toMatch(/<option value="info">/);
 });

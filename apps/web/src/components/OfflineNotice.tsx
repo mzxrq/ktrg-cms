@@ -19,21 +19,13 @@ function subscribe(onChange: () => void) {
 export function OfflineNotice() {
   const { t } = useLingui();
   // On the server, and before the browser has answered, assume there is a connection.
-  const online = useSyncExternalStore(
-    subscribe,
-    () => navigator.onLine,
-    () => true,
-  );
+  const online = useSyncExternalStore(subscribe, () => navigator.onLine, () => true);
   // The bar slides in and out of the page flow (lib/motion), so the page below it moves smoothly.
   const { mounted, ref } = usePresence<HTMLDivElement>(!online, "collapse");
   if (!mounted) return null;
 
   return (
-    <div
-      ref={ref}
-      role="status"
-      className="sticky top-[var(--top-clear)] z-40 mb-3 bg-ink px-4 py-3 text-center text-lg font-bold text-paper"
-    >
+    <div ref={ref} role="status" className="sticky top-[var(--top-clear)] z-40 mb-3 bg-ink px-4 py-3 text-center text-lg font-bold text-paper">
       {t`オフラインです。接続が回復すると再び利用できます。`}
     </div>
   );
