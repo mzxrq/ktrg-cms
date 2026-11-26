@@ -76,6 +76,13 @@ export const filterPill = (on: boolean) =>
     on ? "border-ink bg-lift" : "border-line bg-paper/95 shadow-sm hover:bg-surface"
   }`;
 
+/** A filter pill's ✓: its room is always kept, so turning a pill on or off never changes its size (user, 2026-11-26). */
+export const TickSlot = ({ on }: { on: boolean }) => (
+  <span aria-hidden="true" className="inline-flex size-5 shrink-0 items-center justify-center">
+    {on ? <TickIcon size={20} /> : null}
+  </span>
+);
+
 /** The buttons that turn a kind of place on or off. A group with no places is not offered. */
 export function PlaceChips({
   counts,
@@ -102,7 +109,7 @@ export function PlaceChips({
         const on = active.has(group);
         return (
           <button key={group} type="button" aria-pressed={on} onClick={() => onToggle(group)} className={filterPill(on)}>
-            {on ? <TickIcon size={20} /> : null}
+            <TickSlot on={on} />
             <PlaceGroupPicture group={group} size={24} />
             <span>{names[group]}</span>
             <span className="tabular-nums">{counts[group]}</span>

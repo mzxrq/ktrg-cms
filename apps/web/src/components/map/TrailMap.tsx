@@ -4,7 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import type { Map as MapLibreMap } from "maplibre-gl";
-import { ChevronIcon, ChevronLeftIcon, ExpandIcon, ListIcon, MinusIcon, PlusIcon, TickIcon, WarningIcon } from "@/components/icons";
+import { ChevronIcon, ChevronLeftIcon, ExpandIcon, ListIcon, MinusIcon, PlusIcon, WarningIcon } from "@/components/icons";
 import { SampleNoticeButton } from "@/components/SampleNotice";
 import { pinPhotoSrc } from "@/lib/pin-photo";
 import type { MapPhoto } from "@/lib/map-screen";
@@ -29,7 +29,7 @@ import type { PointKind } from "@/lib/point-kinds";
 import { groupCounts, groupOf, sortByDistance, type Coord, type MapPlace, type PlaceGroup } from "@/lib/places";
 import { createMarkerElement, createPlaceMarkerElement } from "./MapMarker";
 import { useCursorMarker } from "./useCursorMarker";
-import { PlaceCard, PlaceChips, PlaceList, filterPill } from "./PlacesPanel";
+import { PlaceCard, PlaceChips, PlaceList, TickSlot, filterPill } from "./PlacesPanel";
 import { StopCard } from "./StopCard";
 
 export interface MapStop {
@@ -479,7 +479,8 @@ export function TrailMap({
       </div>
       <div className={`flex flex-col gap-2 px-3 pb-2 print:hidden ${expanded ? "" : "@4xl:pointer-events-none @4xl:absolute @4xl:inset-x-2 @4xl:bottom-8 @4xl:z-10 @4xl:max-h-[calc(100%-4rem)] @4xl:p-0 @4xl:[&>*]:pointer-events-auto"}`}>
         {selectedStop || selectedPlace ? (
-          <div className="order-2 min-h-0 overflow-y-auto rounded-xl shadow-md @4xl:order-none">
+          // Under the map a stop's card joins the stepper, which already names it (below); this one is for over the map.
+          <div className={`order-2 min-h-0 overflow-y-auto rounded-xl shadow-md @4xl:order-none ${selectedStop && stepper ? "hidden @4xl:block" : ""}`}>
             {selectedStop ? (
               <StopCard
                 order={selectedStop.order}
@@ -503,7 +504,7 @@ export function TrailMap({
             {anyPlaces ? <PlaceChips className="contents" counts={counts} active={active} onToggle={toggleGroup} /> : null}
             {hasSide ? (
               <button type="button" aria-pressed={showSide} onClick={() => setShowSide((on) => !on)} className={filterPill(showSide)}>
-                {showSide ? <TickIcon size={20} /> : null}
+                <TickSlot on={showSide} />
                 {t`寄り道`}
               </button>
             ) : null}
@@ -515,7 +516,9 @@ export function TrailMap({
             ) : null}
           </div>
           {stepper ? (
-            <div role="group" aria-label={t`スポットを順に見る`} className="order-1 flex w-full shrink-0 items-center rounded-full border border-ink bg-paper/95 shadow-sm @4xl:order-none @4xl:w-auto">
+            // With a stop chosen, under the map, the pill grows into one block with that stop's card (no second name).
+            <div className={`order-1 w-full shrink-0 border border-ink bg-paper/95 shadow-sm @4xl:order-none @4xl:w-auto @4xl:rounded-full ${selectedStop ? "rounded-xl" : "rounded-full"}`}>
+            <div role="group" aria-label={t`スポットを順に見る`} className="flex items-center">
               {/* Under the map the bar says what it steps through, then the stop it is on; over the map it is just the arrows and count. */}
               <p className="min-w-0 flex-1 truncate pl-4 text-lg font-bold @4xl:hidden" lang={selectedStop?.nameLang}>
                 {selectedStop ? `${selectedStop.order ? `${selectedStop.order}. ` : ""}${selectedStop.name}` : t`スポットを順に見る`}
@@ -529,6 +532,22 @@ export function TrailMap({
               <button type="button" onClick={() => goToStop(1)} disabled={stopIndex === stops.length - 1} aria-label={t`次の場所`} className={hit}>
                 <ChevronIcon />
               </button>
+            </div>
+            {selectedStop ? (
+              <div className="border-t border-line px-4 pb-3 pt-2 @4xl:hidden">
+                <StopCard
+                  bare
+                  order={selectedStop.order}
+                  name={selectedStop.name}
+                  nameLang={selectedStop.nameLang}
+                  status={selectedStop.status}
+                  href={selectedStop.href}
+                  noStamp={selectedStop.noStamp}
+                  draft={draft}
+                  onClose={() => setSelected(null)}
+                />
+              </div>
+            ) : null}
             </div>
           ) : null}
         </div>

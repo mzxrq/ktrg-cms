@@ -17,6 +17,7 @@ export function StopCard({
   noStamp = false,
   draft,
   onClose,
+  bare = false,
 }: {
   /** null for a side trip (寄り道): no number. */
   order: number | null;
@@ -29,28 +30,36 @@ export function StopCard({
   draft: boolean;
   /** Given when the card lies over the map: a close button at its corner. */
   onClose?: () => void;
+  /** Inside the map's stepper, which already shows the name (user, 2026-11-26): no frame and no name; ✕ beside the status. */
+  bare?: boolean;
 }) {
   const { t } = useLingui();
+  const close = onClose ? (
+    <button type="button" onClick={onClose} aria-label={t`閉じる`} className="tap-target -mr-2 -mt-2 inline-flex shrink-0 items-center justify-center">
+      <XIcon />
+    </button>
+  ) : null;
   return (
-    <div className="flex flex-col gap-2 rounded-xl border-2 border-line bg-paper p-3" role="status">
+    <div className={bare ? "flex flex-col gap-2" : "flex flex-col gap-2 rounded-xl border-2 border-line bg-paper p-3"} role="status">
+      {bare ? null : (
+        <div className="flex items-start justify-between gap-2">
+          <p className="text-xl font-bold leading-snug">
+            {order === null ? "" : `${order}. `}<span lang={nameLang}>{name}</span>
+          </p>
+          {close}
+        </div>
+      )}
       <div className="flex items-start justify-between gap-2">
-        <p className="text-xl font-bold leading-snug">
-          {order === null ? "" : `${order}. `}<span lang={nameLang}>{name}</span>
+        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-lg">
+          <StatusWord status={status} />
+          {noStamp ? (
+            <span className="rounded-lg border-2 border-dashed border-line px-2 text-base font-bold">
+              <Trans>スタンプなし</Trans>
+            </span>
+          ) : null}
         </p>
-        {onClose ? (
-          <button type="button" onClick={onClose} aria-label={t`閉じる`} className="tap-target -mr-2 -mt-2 inline-flex shrink-0 items-center justify-center">
-            <XIcon />
-          </button>
-        ) : null}
+        {bare ? close : null}
       </div>
-      <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-lg">
-        <StatusWord status={status} />
-        {noStamp ? (
-          <span className="rounded-lg border-2 border-dashed border-line px-2 text-base font-bold">
-            <Trans>スタンプなし</Trans>
-          </span>
-        ) : null}
-      </p>
       {draft ? (
         <p className="flex items-start gap-2 text-base text-muted">
           <span className="shrink-0 text-caution">
