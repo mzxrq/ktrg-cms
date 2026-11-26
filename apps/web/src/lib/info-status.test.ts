@@ -23,10 +23,11 @@ test("an information place gets a calm panel and no stamp button, and an admin c
   expect(read("components", "admin", "PlacePanel.tsx")).toMatch(/<option value="info">/);
 });
 
+// The stamp button's line was reworded by the user (2026-11-26, text rewrite #628): このスポットにスタンプはありません。
 test("the new words exist in both languages", () => {
-  for (const [lang, a, b] of [["ja", "案内のみ", "ここにはスタンプはありません。"], ["en", "Information only", "There is no stamp here."]] as const) {
+  for (const [lang, a, b] of [["ja", "案内のみ", "このスポットにスタンプはありません。"], ["en", "Information only", "There is no stamp at this spot."]] as const) {
     const po = read("locales", `${lang}.po`);
     expect(po).toMatch(new RegExp(`msgid "案内のみ"\r?\nmsgstr "${a}"`));
-    expect(po).toMatch(new RegExp(`msgid "ここにはスタンプはありません。"\r?\nmsgstr "${b}"`));
+    expect(po).toMatch(new RegExp(`msgid "このスポットにスタンプはありません。"\r?\nmsgstr "${b}"`));
   }
 });
