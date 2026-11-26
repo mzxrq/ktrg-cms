@@ -25,6 +25,7 @@ import type { RouteDetail } from "@/lib/content";
 import type { MapSettings } from "@/lib/map-settings";
 import { municipalityName } from "@/lib/municipalities";
 import { pickText } from "@/lib/pick-text";
+import { flyStopOf } from "@/lib/fly-along";
 import { pointsAsPlaces } from "@/lib/point-places";
 import { isGuidanceOnly, journeyOf, roleLabel, stopRoles, trailStops, walkRows } from "@/lib/route-stops";
 import type { MapPlace } from "@/lib/places";
@@ -52,6 +53,8 @@ export function buildStops(
     if (roleWord) parts.push(roleWord);
     if (stamped) parts.push(labels.stamped);
     if (status === "closed") parts.push(labels.closed);
+    // Whether the fly-along stops here, and what it shows (the admin's settings, else automatic).
+    const fly = flyStopOf({ ...item, stampable: stop.type === "stamp" }, locale);
     return [
       {
         id: item.id,
@@ -68,6 +71,7 @@ export function buildStops(
         ...(item.stopBy ? { sideTrip: true } : {}),
         ...(stop.type === "point" ? { noStamp: true } : {}),
         ...(roles.has(item.id) ? { role: roles.get(item.id) } : {}),
+        ...(fly ? { fly } : {}),
       },
     ];
   });

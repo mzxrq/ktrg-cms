@@ -10,6 +10,7 @@ import type { RallyItem } from "./rally-model";
 import { samplePlaces } from "./sample-places";
 import { sampleRoutes, sampleSpots } from "./sample-content";
 import type { Sketch } from "./sketch";
+import type { FlySettings } from "./fly-along";
 import type { WalkStyle } from "./walk-style";
 import type { TechnicalLevel } from "./grading";
 import type { AccessPoint } from "./access-points";
@@ -90,6 +91,8 @@ export interface SpotListItem {
   photoCredit?: string | null;
   /** A picture used as this place's stamp, in place of the plain seal. */
   stampImageUrl?: string | null;
+  /** The fly-along (コースをたどる) as admin set it; left out when all automatic. */
+  fly?: FlySettings;
   /** Its place in the route's order together with the waypoints that have no stamp (lower comes first). */
   sortOrder?: number;
   /** What the place is (a sutra mound, a temple ...); left out when unknown. */
@@ -132,6 +135,8 @@ export interface RoutePoint {
   detachedLabelEn?: string | null;
   /** The waypoint it is worshipped from (遥拝), by name: the label when none was written. */
   stampFrom?: { nameJa: string; nameEn: string | null };
+  /** The fly-along (コースをたどる) as admin set it; left out when all automatic. */
+  fly?: FlySettings;
   position: SpotPosition | null;
   /** Its status (案内のみ, 閉鎖中 ...) and the editor's note; left out on old data, which means open. */
   status?: SpotStatus;

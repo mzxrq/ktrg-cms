@@ -10,6 +10,7 @@ import { prefectureOfCity } from "@/lib/municipalities";
 import type { AdminRoute, AdminSpot, Prefecture, SpotStatus, WalkStyle } from "./types";
 import { timesFromPrevious } from "../leg-times";
 import { estimateWalkMinutes } from "./walk-time";
+import type { FlySettings } from "../fly-along";
 
 // What the route editor holds while someone is typing and drawing: every field as the form shows it (text is "" when
 // empty), the line as points, and the points of the route in order. Pure, so the rules are tested without a browser.
@@ -582,6 +583,11 @@ export function infoPatch(on: boolean, p: Pick<PlaceDraft, "statusNoteJa" | "sta
 // ---- the live preview ---------------------------------------------------------------------------------------
 
 const nz = (v: string) => (v.trim() === "" ? null : v);
+// The fly-along settings for the preview, left out when all automatic (as the API mapping does).
+const flyOfDraft = (p: PlaceDraft): { fly: FlySettings } | Record<string, never> => {
+  const fly: FlySettings = { show: p.flyShow, seconds: p.flySeconds, photoUrl: nz(p.flyPhotoUrl), noteJa: nz(p.flyNoteJa), noteEn: nz(p.flyNoteEn) };
+  return Object.values(fly).some((v) => v !== null) ? { fly } : {};
+};
 
 const pointOf = (p: PlaceDraft, d: Pick<RouteDraft, "places">): RoutePoint => ({
   id: p.id ?? p.key,
@@ -589,7 +595,7 @@ const pointOf = (p: PlaceDraft, d: Pick<RouteDraft, "places">): RoutePoint => ({
   photoUrl: nz(p.photoUrl),
   photoCredit: nz(p.photoCredit),
   ...(p.stopBy ? { stopBy: true } : {}),
-  ...(p.detached ? { detached: true, detachedLabelJa: nz(p.detachedLabelJa), detachedLabelEn: nz(p.detachedLabelEn) } : {}),
+  ...(p.detached ? { detached: true, detachedLabelJa: nz(p.detachedLabelJa), detachedLabelEn: nz(p.detachedLabelEn) } : {}), ...flyOfDraft(p),
   kind: p.kind,
   nameJa: p.nameJa,
   nameEn: nz(p.nameEn),
@@ -653,7 +659,7 @@ export function previewRoute(d: RouteDraft, order: number): RouteDetail {
       photoUrl: nz(p.photoUrl),
       photoCredit: nz(p.photoCredit),
       ...(p.stopBy ? { stopBy: true } : {}),
-      ...(p.detached ? { detached: true, detachedLabelJa: nz(p.detachedLabelJa), detachedLabelEn: nz(p.detachedLabelEn) } : {}),
+      ...(p.detached ? { detached: true, detachedLabelJa: nz(p.detachedLabelJa), detachedLabelEn: nz(p.detachedLabelEn) } : {}), ...flyOfDraft(p),
       ...(times.get(p.id ?? p.key) ? { fromPrev: times.get(p.id ?? p.key) } : {}),
       position: p.lat !== null && p.lng !== null ? { lat: p.lat, lng: p.lng, verified: p.positionVerified } : null,
     })),

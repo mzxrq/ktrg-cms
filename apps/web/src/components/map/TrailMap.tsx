@@ -27,7 +27,7 @@ import { mapStyleSource } from "@/lib/large-map-style";
 import { GSI_DEM_SOURCE, registerGsiDem } from "@/lib/gsi-dem";
 import { motionLevel } from "@/lib/motion";
 import { setElevationCursor } from "@/lib/elevation-cursor";
-import { flightPath, flightSeconds, headingAt, heightAt, pointAt, turnToward } from "@/lib/fly-along";
+import { flightPath, flightSeconds, flightStops, headingAt, heightAt, pointAt, turnToward, type FlyStop } from "@/lib/fly-along";
 import type { MapSettings } from "@/lib/map-settings";
 import type { StopRole } from "@/lib/route-stops";
 import type { PointKind } from "@/lib/point-kinds";
@@ -36,6 +36,7 @@ import { createMarkerElement, createPlaceMarkerElement } from "./MapMarker";
 import { useCursorMarker } from "./useCursorMarker";
 import { PlaceCard, PlaceChips, PlaceList, TickBadge, filterPill } from "./PlacesPanel";
 import { StopCard } from "./StopCard";
+import { FlyCard } from "./FlyCard";
 
 export interface MapStop {
   id: string;
@@ -61,6 +62,8 @@ export interface MapStop {
   kind?: PointKind;
   /** The place's own uploaded photo: the pin's head shows it (see lib/pin-photo.ts). */
   photo?: MapPhoto | null;
+  /** The fly-along stops here and shows this (lib/fly-along.ts flyStopOf); left out when it flies past. */
+  fly?: FlyStop;
 }
 
 type Selection = { kind: "stop" | "place"; id: string } | null;
@@ -134,6 +137,9 @@ export function TrailMap({
   // The fly-along over the 3D map, and where it is (rounded, so the readout re-renders only when its words change).
   const [flying, setFlying] = useState(false);
   const [flightAt, setFlightAt] = useState<{ km: string; m: number | null } | null>(null);
+  // The waypoint the fly-along is paused at (its card shows), and 次へ's wish to go on before its seconds are up.
+  const [flyCardId, setFlyCardId] = useState<string | null>(null);
+  const skipPause = useRef(false);
   // Side trips (寄り道) are off at first: some places are worth a mention without being a stop on the way.
   const [showSide, setShowSide] = useState(false);
   const hasSide = sideLines.some((l) => l.length >= 2);
@@ -361,13 +367,39 @@ export function TrailMap({
     const path = flightPath(line ?? stops.map((s) => s.position));
     if (path.total === 0) return;
     const seconds = flightSeconds(path.total);
-    let started = 0;
+    // Where it pauses (2026-11-26, user): at each waypoint the admin left on (automatic: stamp places and side trips), for
+    // that waypoint's seconds, with its card; 次へ ends a pause early.
+    const pauses = flightStops(path, stops.filter((s) => s.fly).map((s) => ({ id: s.id, position: s.position })));
+    const pauseSeconds = new Map(stops.map((s) => [s.id, s.fly?.seconds ?? 0]));
+    let last = 0;
+    let d = 0;
+    let nextPause = 0;
+    let holdUntil = 0;
     let frame = 0;
     let bearing = headingAt(path, 0);
     let shown = "";
+    skipPause.current = false;
     const tick = (now: number) => {
-      if (!started) started = now;
-      const d = Math.min(path.total, ((now - started) / 1000 / seconds) * path.total);
+      const dt = last ? now - last : 0;
+      last = now;
+      if (holdUntil) {
+        if (now < holdUntil && !skipPause.current) {
+          frame = requestAnimationFrame(tick);
+          return;
+        }
+        holdUntil = 0;
+        skipPause.current = false;
+        setFlyCardId(null);
+      } else {
+        d = Math.min(path.total, d + (dt / 1000 / seconds) * path.total);
+      }
+      const pause = pauses[nextPause];
+      if (pause && d >= pause.d) {
+        d = pause.d;
+        nextPause++;
+        holdUntil = now + (pauseSeconds.get(pause.id) ?? 5) * 1000;
+        setFlyCardId(pause.id);
+      }
       const at = pointAt(path, d);
       bearing = turnToward(bearing, headingAt(path, d), 0.06);
       map.jumpTo({ center: [at.lng, at.lat], bearing, pitch: 60, zoom: 14.5 });
@@ -378,7 +410,7 @@ export function TrailMap({
         shown = `${next.km}|${next.m}`;
         setFlightAt(next);
       }
-      if (d >= path.total) setFlying(false);
+      if (d >= path.total && !holdUntil) setFlying(false);
       else frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
@@ -395,6 +427,7 @@ export function TrailMap({
       document.removeEventListener("visibilitychange", onHide);
       setElevationCursor(null);
       setFlightAt(null);
+      setFlyCardId(null);
       map.easeTo({ bearing: 0, duration: motionLevel() === "full" ? 600 : 0 });
     };
   }, [flying, expanded, terrain, mapGen, line, stops, lineElevations]);
@@ -475,6 +508,7 @@ export function TrailMap({
   }
 
   const stepper = stops.length > 1;
+  const flyCardStop = flyCardId ? stops.find((s) => s.id === flyCardId) : undefined;
 
   return (
     <section
@@ -574,6 +608,7 @@ export function TrailMap({
       {/* Enlarged: one layer over the whole map that lets touches through to it; the pills rise to the top row (order-first,
           mb-auto), the rest sits at the bottom, above the required map credit. */}
       <div className={`flex flex-col gap-2 px-3 print:hidden ${expanded ? "pointer-events-none absolute inset-0 z-10 justify-end pb-[calc(2.25rem+env(safe-area-inset-bottom,0px))] pt-[calc(0.75rem+var(--top-clear))] [&>*]:pointer-events-auto" : "pb-2 @4xl:pointer-events-none @4xl:absolute @4xl:inset-x-2 @4xl:bottom-8 @4xl:z-10 @4xl:max-h-[calc(100%-4rem)] @4xl:p-0 @4xl:[&>*]:pointer-events-auto"}`}>
+        {flyCardStop?.fly ? <FlyCard stop={flyCardStop} fly={flyCardStop.fly} onNext={() => (skipPause.current = true)} /> : null}
         {selectedStop || selectedPlace ? (
           // Under the map a stop's card joins the stepper, which already names it (below); this one is for over the map.
           <div className={`order-2 min-h-0 overflow-y-auto rounded-xl shadow-md @4xl:order-none ${selectedStop && stepper ? "hidden @4xl:block" : ""}`}>

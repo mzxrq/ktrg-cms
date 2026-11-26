@@ -1,4 +1,6 @@
-import { bearingDeg, cumulativeDistances, type LatLng } from "./navigation/geometry";
+import { bearingDeg, cumulativeDistances, projectOnLine, type LatLng } from "./navigation/geometry";
+import { pickText } from "./pick-text";
+import { plainRich } from "./rich-text";
 
 // The enlarged course map's fly-along (2026-11-26, user): the 3D camera follows the course from start to goal. Pure, so the
 // path maths is tested; TrailMap runs it frame by frame.
@@ -58,3 +60,65 @@ export function turnToward(prev: number, target: number, k: number): number {
 
 /** How long the flight takes: about 5 s a kilometre, never under 20 s or over a minute. */
 export const flightSeconds = (meters: number) => Math.min(60, Math.max(20, (meters / 1000) * 5));
+
+/** A waypoint's fly-along settings as admin set them (each null or missing: automatic). */
+export interface FlySettings {
+  show?: boolean | null;
+  seconds?: number | null;
+  photoUrl?: string | null;
+  noteJa?: string | null;
+  noteEn?: string | null;
+}
+
+/** What the flight shows when it stops at a waypoint. */
+export interface FlyStop {
+  seconds: number;
+  photo: string | null;
+  note: string | null;
+  noteLang: "ja" | "en";
+  /** A side trip or a place off the line: shown as worth a visit (寄り道におすすめ). */
+  recommended: boolean;
+}
+
+const NOTE_CHARS = 80;
+const shorten = (text: string) => (text.length > NOTE_CHARS ? `${text.slice(0, NOTE_CHARS).trimEnd()}…` : text);
+
+/**
+ * Whether the flight stops at a waypoint and what it shows there (null: it flies past). Automatic: it stops at stamp places
+ * and side trips. The card's line is the admin's own, else the start of the description; its photo the chosen one, else
+ * the main one.
+ */
+export function flyStopOf(
+  item: { stampable: boolean; stopBy?: boolean; photoUrl?: string | null; descriptionJa?: string | null; descriptionEn?: string | null; fly?: FlySettings },
+  locale: string,
+): FlyStop | null {
+  const fly = item.fly ?? {};
+  if (!(fly.show ?? (item.stampable || item.stopBy === true))) return null;
+  const own = pickText(locale, fly.noteJa ?? null, fly.noteEn ?? null);
+  const description = own ? null : pickText(locale, item.descriptionJa ?? null, item.descriptionEn ?? null);
+  const note = own ?? (description ? { text: shorten(plainRich(description.text).trim()), lang: description.lang } : null);
+  return {
+    seconds: Math.min(15, Math.max(3, fly.seconds ?? 5)),
+    photo: fly.photoUrl || item.photoUrl || null,
+    note: note?.text || null,
+    noteLang: note?.lang ?? "ja",
+    recommended: item.stopBy === true,
+  };
+}
+
+/**
+ * Where along the flight each stop comes, in walking order: each is matched to the line from the stop before onward, so a
+ * course that comes back the same way pauses on the right pass. A place off the line pauses where the line comes closest.
+ */
+export function flightStops(path: FlightPath, stops: readonly { id: string; position: LatLng }[]): { id: string; d: number }[] {
+  const line = path.points.map((p) => [p.lng, p.lat] as const);
+  const out: { id: string; d: number }[] = [];
+  let from = 0;
+  for (const stop of stops) {
+    const hit = projectOnLine(line, path.cum, stop.position, { fromM: from, toM: Number.POSITIVE_INFINITY });
+    if (!hit) continue;
+    out.push({ id: stop.id, d: hit.alongM });
+    from = hit.alongM;
+  }
+  return out;
+}
