@@ -9174,3 +9174,49 @@ msgstr ""
 #: src/app/(public)/places/[id]/page.tsx:100
 msgid "近くのコース・スポット"
 msgstr ""
+
+#: src/components/RallyViews.tsx:73
+msgid "おすすめのスタンプラリー"
+msgstr ""
+
+#: src/components/RallyViews.tsx:269
+msgid "スタンプスポットの付近でボタンを押すと、スタンプを獲得できます。現在地はボタンを押したときに1回だけ確認し、位置情報は保存されません。"
+msgstr ""
+
+#: src/components/RallyViews.tsx:108
+msgid "スタンプの進捗"
+msgstr ""
+
+#: src/components/RallyViews.tsx:272
+msgid "スタンプラリーは、経塚をめぐる「経塚ラリー」とコースことの「コースラリー」の2種類があります。同じスポットで獲得したスタンプは両方のラリーにカウントされます。"
+msgstr ""
+
+#: src/components/RallyViews.tsx:105
+msgid "すべて獲得しました！"
+msgstr ""
+
+#: src/components/RallyViews.tsx:84
+#: src/components/RallyViews.tsx:133
+#: src/components/RallyViews.tsx:235
+msgid "ラリーの詳細を見る"
+msgstr ""
+
+#: src/components/RallyViews.tsx:97
+msgid "最終スタンプ：{when}"
+msgstr ""
+
+#: src/components/RallyViews.tsx:159
+msgid "未獲得"
+msgstr ""
+
+#: src/components/RallyViews.tsx:112
+msgid "次"
+msgstr ""
+
+#: src/components/RallyViews.tsx:266
+msgid "歩いてスタンプを集めましょう"
+msgstr ""
+
+#: src/components/PlaceFacts.tsx:34
+msgid "現在の状況"
+msgstr ""

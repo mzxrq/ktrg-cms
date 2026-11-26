@@ -9168,3 +9168,49 @@ msgstr "No matching places found."
 #: src/app/(public)/places/[id]/page.tsx:100
 msgid "近くのコース・スポット"
 msgstr "Related courses & spots"
+
+#: src/components/RallyViews.tsx:73
+msgid "おすすめのスタンプラリー"
+msgstr "Featured rally"
+
+#: src/components/RallyViews.tsx:269
+msgid "スタンプスポットの付近でボタンを押すと、スタンプを獲得できます。現在地はボタンを押したときに1回だけ確認し、位置情報は保存されません。"
+msgstr "Tap the button when you're near a stamp spot to collect its stamp. Your location is checked once when you tap and is never stored."
+
+#: src/components/RallyViews.tsx:108
+msgid "スタンプの進捗"
+msgstr "Stamp progress"
+
+#: src/components/RallyViews.tsx:272
+msgid "スタンプラリーは、経塚をめぐる「経塚ラリー」とコースことの「コースラリー」の2種類があります。同じスポットで獲得したスタンプは両方のラリーにカウントされます。"
+msgstr "These are two kinds of stamp rallies: the Sutra Round rally covering the sutra mounds and Course rallies for each course. "
+
+#: src/components/RallyViews.tsx:105
+msgid "すべて獲得しました！"
+msgstr "All stamps collected!"
+
+#: src/components/RallyViews.tsx:84
+#: src/components/RallyViews.tsx:133
+#: src/components/RallyViews.tsx:235
+msgid "ラリーの詳細を見る"
+msgstr "View rally details"
+
+#: src/components/RallyViews.tsx:97
+msgid "最終スタンプ：{when}"
+msgstr "Last collected: {when}"
+
+#: src/components/RallyViews.tsx:159
+msgid "未獲得"
+msgstr "Not yet"
+
+#: src/components/RallyViews.tsx:112
+msgid "次"
+msgstr "Next"
+
+#: src/components/RallyViews.tsx:266
+msgid "歩いてスタンプを集めましょう"
+msgstr "Walk the trail and collect stamps"
+
+#: src/components/PlaceFacts.tsx:34
+msgid "現在の状況"
+msgstr "Status"
