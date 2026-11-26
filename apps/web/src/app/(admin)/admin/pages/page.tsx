@@ -19,15 +19,15 @@ export default async function PageTextList() {
   const { body } = await adminGet<{ ok: true; pages: Partial<Record<PageKey, PageText | null>> }>("/settings/pages");
   const pages = body?.ok ? body.pages : {};
   const names: Record<PageKey, { name: string; hint: string }> = {
-    home: { name: i18n._(msg`ホーム`), hint: i18n._(msg`トップページの見出しと説明です。`) },
-    faq: { name: i18n._(msg`よくあるご質問`), hint: i18n._(msg`質問と答えの一覧です。`) },
-    guide: { name: i18n._(msg`遊び方`), hint: i18n._(msg`はじめの説明と、手順（1、2、3…）です。`) },
-    terms: { name: i18n._(msg`利用規約`), hint: i18n._(msg`法的な文章です。管理者だけが直せます。`) },
-    privacy: { name: i18n._(msg`プライバシーポリシー`), hint: i18n._(msg`法的な文章です。管理者だけが直せます。`) },
+    home: { name: i18n._(msg`ホーム`), hint: i18n._(msg`トップページの見出しと説明。`) },
+    faq: { name: i18n._(msg`よくあるご質問`), hint: i18n._(msg`質問と回答の一覧。`) },
+    guide: { name: i18n._(msg`遊び方`), hint: i18n._(msg`導入文と利用手順`) },
+    terms: { name: i18n._(msg`利用規約`), hint: i18n._(msg`法的な文書。管理者のみ編集許可。`) },
+    privacy: { name: i18n._(msg`プライバシーポリシー`), hint: i18n._(msg`法的な文書。管理者のみ編集許可。`) },
   };
   return (
     <div className="flex max-w-4xl flex-col gap-5">
-      <AdminPageHeader title={<Trans>ページ</Trans>} intro={i18n._(msg`アプリにもともと入っている固定のページの文章を、ここで書きかえられます。何も書かなければ、もとの文章が表示されます。`)} />
+      <AdminPageHeader title={<Trans>ページ</Trans>} intro={i18n._(msg`アプリ標準の固定ページの本文を編集できます。未入力の場合はデフォルトの文章が表示されます。`)} />
       <ul className="flex flex-col gap-3">
         {(Object.keys(pages) as PageKey[]).map((key) => {
           const mine = pages[key];
@@ -40,7 +40,7 @@ export default async function PageTextList() {
                   <span className="block text-base text-muted">{names[key].hint}</span>
                 </span>
                 <span className="flex shrink-0 items-center gap-2 text-base font-bold">
-                  {own ? <Trans>書きかえ済み</Trans> : <Trans>もとの文章</Trans>}
+                  {own ? <Trans>編集済み</Trans> : <Trans>デフォルト</Trans>}
                   <ChevronIcon />
                 </span>
               </Link>
@@ -50,7 +50,7 @@ export default async function PageTextList() {
       </ul>
 
       <p className="border-t border-line pt-5 text-lg text-muted">
-        <Trans>自分でつくるページは、「記事とページ」で書きます（種類を「ページ」にします）。</Trans>{" "}
+        <Trans>新しくページを追加する場合は、「記事とページ」から作成してください（種類で「ページ」を選択）。</Trans>{" "}
         <Link href="/admin/posts" className="font-bold text-accent underline underline-offset-4">
           <Trans>記事とページへ</Trans>
         </Link>

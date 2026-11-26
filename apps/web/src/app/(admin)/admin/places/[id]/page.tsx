@@ -33,7 +33,7 @@ export default async function EditWaypointPage({ params }: { params: Promise<{ i
   return (
     <div className="flex max-w-4xl flex-col gap-4">
       <AdminBack href="/admin/places">
-        <Trans>経由地の一覧へ戻る</Trans>
+        <Trans>経由地一覧に戻る</Trans>
       </AdminBack>
       <p className="text-lg">
         <Trans>コース：{name}</Trans>{" "}

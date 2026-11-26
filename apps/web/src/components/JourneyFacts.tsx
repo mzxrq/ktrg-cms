@@ -29,13 +29,13 @@ export function JourneyFacts({ facts, compact = false }: { facts: Facts; compact
         {facts.km !== null ? (
           <li className={tile}>
             <b className={big}>{facts.km} km</b>
-            <span className="text-base text-muted">{t`の道のり`}</span>
+            <span className="text-base text-muted">{t`総距離`}</span>
           </li>
         ) : null}
         {timeText !== null ? (
           <li className={`${tile} grow-[1.5]`}>
             <b className={big}>{timeText}</b>
-            <span className="text-base text-muted">{t`歩く時間`}</span>
+            <span className="text-base text-muted">{t`歩行時間`}</span>
           </li>
         ) : null}
       </ul>
@@ -43,11 +43,11 @@ export function JourneyFacts({ facts, compact = false }: { facts: Facts; compact
         <>
           {/* The walker at the start of the path; the last stamp waits, dashed, at the other end. */}
           <div aria-hidden="true" className="relative h-10">
-            <div className="absolute inset-x-2 top-[34px] border-t-[3px] border-dotted border-line" />
+            <div className="absolute inset-x-2 top-8.5 border-t-[3px] border-dotted border-line" />
             <Walker className="absolute left-1 top-0 h-9 text-moss" />
-            <span className="absolute right-1 top-[26px] size-4 rounded-full border-2 border-dashed border-line" />
+            <span className="absolute right-1 top-6.5 size-4 rounded-full border-2 border-dashed border-line" />
           </div>
-          <p className="text-lg">{t`さあ、最初の一歩へ。このラリーのスタンプは、全部で${total}か所です。`}</p>
+          <p className="text-lg">{t`最初のスタンプを集めてみましょう。スポットは全${total}か所です。`}</p>
         </>
       )}
     </div>

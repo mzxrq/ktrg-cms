@@ -111,7 +111,7 @@ export function MapSheet({
   // (and the back button under it) can still be reached.
   const atTop = !panel && !belowBanner && height >= sheetHeightPx("full", available) - 1;
   // The handle says in words what a tap does (a thin grey bar alone is not understood by everyone).
-  const tapLabel = snap === "full" ? t`小さくして地図を見る` : snap === "half" ? t`もっと広げる` : t`広げる`;
+  const tapLabel = snap === "full" ? t`地図を見る` : snap === "half" ? t`さらに広げる` : t`広げる`;
   // Hidden (and not being pulled): after sliding down, nothing is drawn; the map screen shows a button to bring it back.
   // Coming back it slides up from the bottom instead of appearing at once, so it reads as one thing replacing another
   // (during a navigation: the controls go first, then the sheet rises).
@@ -138,7 +138,7 @@ export function MapSheet({
 
   return (
     <section
-      aria-label={t`情報`}
+      aria-label={t`詳細情報`}
       className={
         panel
           ? `absolute bottom-3 left-3 top-3 z-[5] flex flex-col overflow-hidden rounded-lg bg-paper shadow-[0_4px_24px_rgb(0_0_0/0.28)] transition-[width] motion-reduce:transition-none ${folded ? "w-[4.5rem]" : "w-[26rem] [@media(max-height:600px)]:w-[20rem]"}`
@@ -162,8 +162,8 @@ export function MapSheet({
           type="button"
           onClick={onFold}
           aria-expanded={!folded}
-          aria-label={folded ? t`ひらく` : t`たたむ`}
-          title={folded ? t`ひらく` : t`たたむ`}
+          aria-label={folded ? t`開く` : t`折りたたむ`}
+          title={folded ? t`開く` : t`折りたたむ`}
           className={`tap-target z-10 inline-flex items-center justify-center rounded-full border border-ink bg-paper text-ink hover:bg-surface ${folded ? "mx-auto mt-3 shrink-0" : "absolute right-3 top-3"}`}
         >
           <PanelIcon />
@@ -174,12 +174,12 @@ export function MapSheet({
       <div
         role="slider"
         tabIndex={0}
-        aria-label={t`シートの高さ（上下の矢印キーで変えられます）`}
+        aria-label={t`シートの高さ（上下の矢印キーで調整できます）`}
         aria-orientation="vertical"
         aria-valuemin={0}
         aria-valuemax={sheetSnaps.length - 1}
         aria-valuenow={sheetSnaps.indexOf(snap)}
-        aria-valuetext={snap === "hidden" ? t`隠す` : snap === "peek" ? t`低い` : snap === "half" ? t`半分` : t`高い`}
+        aria-valuetext={snap === "hidden" ? t`非表示` : snap === "peek" ? t`最小` : snap === "half" ? t`半分` : t`最大`}
         onPointerDown={down}
         onPointerMove={move}
         onPointerUp={up}

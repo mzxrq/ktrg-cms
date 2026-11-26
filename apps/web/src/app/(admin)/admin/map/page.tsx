@@ -23,12 +23,12 @@ export default async function OneMapPage({ searchParams }: { searchParams: Promi
 
   return (
     <div className="flex flex-col gap-4">
-      <AdminPageHeader title={<Trans>地図</Trans>} intro={i18n._(msg`すべてのコース、経由地、お店と施設を、一つの地図で見られます。コースを選ぶと、そのコースが手前に出て、地図がそこへ動きます。「このコースを編集する」で、線と経由地をこの画面のまま直せます。`)} />
+      <AdminPageHeader title={<Trans>地図</Trans>} intro={i18n._(msg`すべてのコース・経由地・店舗や施設をひとつの地図で確認できます。コースを選択すると前面に表示され、地図が該当エリアへ移動します。「このコースを編集」から、この画面のままでルートや経由地を編集できます。`)} />
       {routes ? (
         <OneMapLoader courses={routes.map(choiceOf)} initialChosen={course ?? null} locale={i18n.locale} />
       ) : (
         <p role="alert" className="rounded-lg border-l-4 border-danger bg-surface p-6 text-lg font-bold text-danger">
-          <Trans>読み込めませんでした。しばらくしてから、ページを開き直してください。</Trans>
+          <Trans>データを読み込めませんでした。時間をおいてページを再読み込みしてください。</Trans>
         </p>
       )}
     </div>

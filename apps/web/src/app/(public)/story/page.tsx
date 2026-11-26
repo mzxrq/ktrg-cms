@@ -10,7 +10,7 @@ import { TRAIL_KM } from "@/lib/rally";
 import { parseRuby } from "@/lib/ruby";
 import { STORY_SECTIONS, STORY_SOURCE_URL, storyParagraph } from "@/lib/story-text";
 
-const TITLE = { ja: "葛城修験のものがたり", en: "The story of Katsuragi Shugen" };
+const TITLE = { ja: "葛城修験の物語", en: "The story of Katsuragi Shugen" };
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();

@@ -36,7 +36,7 @@ export function ShareRoute({ route }: { route: { nameJa: string } }) {
         {t`共有`}
       </button>
       <span role="status" className="text-base font-bold text-muted">
-        {copied ? t`リンクをコピーしました` : ""}
+        {copied ? t`URLをコピーしました` : ""}
       </span>
     </div>
   );

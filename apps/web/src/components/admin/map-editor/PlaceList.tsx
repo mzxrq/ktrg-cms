@@ -68,10 +68,10 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
   };
   const mains = places.filter((p) => !p.stopBy && p.lat !== null);
   return (
-    <section aria-label={t`経由地の一覧`} className="flex min-w-0 flex-col gap-2">
+    <section aria-label={t`経由地一覧`} className="flex min-w-0 flex-col gap-2">
       <h3 className="text-lg font-bold">
         {t`経由地（${places.length}か所）`}
-        <span className="ml-3 text-sm font-normal text-muted">{t`スタンプ ${stamps}・そのほか ${others}`}</span>
+        <span className="ml-3 text-sm font-normal text-muted">{t`スタンプ ${stamps}・その他 ${others}`}</span>
       </h3>
       {/* Under the map, full width; on a very wide screen two columns of rows. A row shows the name, what the waypoint is (as
           icons) and the buttons to move, add after, place and remove it; choosing it opens the rest of its settings. */}
@@ -96,8 +96,8 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
                   value={p.name}
                   onChange={(e) => onPatchPlace(p.key, { nameJa: e.target.value })}
                   onFocus={() => onSelectPlace(p.key)}
-                  aria-label={t`名前`}
-                  placeholder={t`（名前がありません）`}
+                  aria-label={t`名称`}
+                  placeholder={t`（名称を入力）`}
                   maxLength={200}
                   className={`${fieldClass} w-full text-lg font-bold`}
                 />
@@ -108,20 +108,20 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
                   <button type="button" disabled={i === places.length - 1} onClick={() => move(i, 1)} aria-label={t`${label}を後ろへ`} title={t`順番を後ろへ`} className={iconButton(false)}>
                     <ArrowDownIcon size={22} />
                   </button>
-                  <button type="button" aria-pressed={insertAfter === p.key} onClick={() => onInsertAfter(p.key)} aria-label={t`${label}のすぐ次に、経由地を追加`} title={t`地図をクリックして、この経由地のすぐ次に新しい経由地を入れます`} className={iconButton(insertAfter === p.key)}>
+                  <button type="button" aria-pressed={insertAfter === p.key} onClick={() => onInsertAfter(p.key)} aria-label={t`${label}の次に経由地を追加`} title={t`地図をクリックして、この経由地の次に新しい経由地を追加します`} className={iconButton(insertAfter === p.key)}>
                     <PlusIcon />
                   </button>
                   {p.lat === null ? (
-                    <button type="button" aria-pressed={locating === p.key} onClick={() => onLocate(p.key)} aria-label={t`${label}の位置を、地図で決める`} title={locating === p.key ? t`地図をクリックしてください（もう一度押すと、やめます）` : t`地図で位置を決める`} className={iconButton(locating === p.key)}>
+                    <button type="button" aria-pressed={locating === p.key} onClick={() => onLocate(p.key)} aria-label={t`${label}の位置を地図で設定`} title={locating === p.key ? t`地図をクリックして位置を設定してください（もう一度押すとキャンセル）` : t`地図で位置を設定`} className={iconButton(locating === p.key)}>
                       <PinIcon />
                     </button>
                   ) : null}
                   <button
                     type="button"
                     onClick={() => onRemovePlace(p.key)}
-                    aria-label={t`${label}を消す`}
+                    aria-label={t`${label}を削除`}
                     aria-disabled={p.published}
-                    title={p.published ? t`公開中の経由地は削除できません。先に「経由地」タブで「公開をやめる」を押してください。` : t`消す`}
+                    title={p.published ? t`公開中の経由地は削除できません。先に「経由地」タブで非公開にしてください` : t`削除`}
                     className={`${iconButton(false)} ${p.published ? "cursor-not-allowed text-muted opacity-60" : "text-danger"}`}
                   >
                     <TrashIcon />
@@ -133,14 +133,14 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
               <div className="flex flex-wrap items-center gap-2 pl-12">
                 {p.stampable ? <Badge icon={<StampIcon />} text={t`スタンプ`} /> : null}
                 {p.stopBy && !p.detached ? <Badge icon={<RouteIcon />} text={t`寄り道`} /> : null}
-                {p.detached ? <Badge icon={<MountainIcon />} text={t`道とつながらない`} /> : null}
+                {p.detached ? <Badge icon={<MountainIcon />} text={t`ルート外`} /> : null}
                 {p.info ? <Badge icon={<InfoIcon />} text={t`案内のみ`} /> : null}
                 {p.published ? (
                   <span title={t`公開中の経由地は削除できません。編集すると下書きに戻ります。`} className="rounded-full bg-moss px-2.5 py-0.5 text-sm font-bold text-paper">
                     {t`公開中`}
                   </span>
                 ) : null}
-                {p.lat === null ? <span className="text-sm font-bold text-danger">{locating === p.key ? t`地図をクリックしてください` : t`位置なし`}</span> : null}
+                {p.lat === null ? <span className="text-sm font-bold text-danger">{locating === p.key ? t`地図をクリックしてください` : t`位置未設定`}</span> : null}
                 <button
                   type="button"
                   aria-expanded={open}
@@ -176,60 +176,60 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
                     <button type="button" aria-pressed={p.stopBy && !p.detached} onClick={() => onPatchPlace(p.key, p.stopBy && !p.detached ? { stopBy: false, detached: false } : { stopBy: true, detached: false })} className={chipToggle(p.stopBy && !p.detached)}>
                       {t`寄り道`}
                     </button>
-                    <button type="button" aria-pressed={!!p.detached} onClick={() => onPatchPlace(p.key, p.detached ? { stopBy: false, detached: false, stampSpotId: null } : { stopBy: true, detached: true })} className={chipToggle(!!p.detached)} title={t`行けない場所（遠くから拝む経塚など）。地図には出ますが、番号も線もつきません。利用者に見せる言葉は、経由地のタブで変えられます。`}>
-                      {t`道とつながらない`}
+                    <button type="button" aria-pressed={!!p.detached} onClick={() => onPatchPlace(p.key, p.detached ? { stopBy: false, detached: false, stampSpotId: null } : { stopBy: true, detached: true })} className={chipToggle(!!p.detached)} title={t`立ち入れない場所（遠くから遥拝する経塚など）。地図には表示されますが、番号やルート線は付きません。表示ラベルは「経由地」タブで変更できます。`}>
+                      {t`ルート外`}
                     </button>
-                    <button type="button" aria-pressed={!!p.info} onClick={() => onPatchPlace(p.key, { info: !p.info })} className={chipToggle(!!p.info)} title={t`見せるだけの場所です。スタンプは押せません。「現在、立ち入りできません」などを書けます。`}>
+                    <button type="button" aria-pressed={!!p.info} onClick={() => onPatchPlace(p.key, { info: !p.info })} className={chipToggle(!!p.info)}>
                       {t`案内のみ`}
                     </button>
                   </div>
                   {p.detached ? (
                     <div className="flex flex-col gap-2">
                       <label className="flex min-w-0 flex-col gap-1 text-base font-bold">
-                        {t`どこから拝む（スタンプを押す場所）`}
+                        {t`遥拝場所（スタンプを押す地点）`}
                         <select
                           value={p.stampFromKey ? (places.find((x) => x.key === p.stampFromKey)?.id ?? "") : ""}
                           disabled={!!p.id && places.some((x) => x.stampFromKey === p.key)}
                           onChange={(e) => onPatchPlace(p.key, { stampSpotId: e.target.value || null })}
                           className={`${fieldClass} w-full min-w-0 max-w-md`}
                         >
-                          <option value="">{t`ここで押す（選ばない）`}</option>
+                          <option value="">{t`この地点で押す（設定なし）`}</option>
                           {places
                             .filter((x) => x.key !== p.key && x.id && !x.stampFromKey)
                             .map((x) => (
                               <option key={x.key} value={x.id!}>
-                                {x.name || t`（名前がありません）`}
+                                {x.name || t`（名称未設定）`}
                               </option>
                             ))}
                         </select>
                       </label>
-                      <button type="button" aria-pressed={picking === p.key} onClick={() => onPick(p.key)} className={`${chipToggle(picking === p.key)} self-start`} title={t`地図で、拝む場所の経由地のピンを押してください（もう一度押すと、やめます）`}>
-                        {picking === p.key ? t`地図でピンを押してください` : t`地図で選ぶ`}
+                      <button type="button" aria-pressed={picking === p.key} onClick={() => onPick(p.key)} className={`${chipToggle(picking === p.key)} self-start`} title={t`地図上で遥拝場所となる経由地のピンをクリックしてください`}>
+                        {picking === p.key ? t`地図上のピンをクリック` : t`地図から選択`}
                       </button>
                     </div>
                   ) : null}
                   {p.key === firstStop && places.length >= 2 ? (
-                    <button type="button" onClick={() => onAddEndAt(p.key)} className={`${chipToggle(false)} self-start`} title={t`一周して、ここに戻るコースのとき: 同じ位置に、スタンプのない終点を追加します`}>
+                    <button type="button" onClick={() => onAddEndAt(p.key)} className={`${chipToggle(false)} self-start`} title={t`周回コースの場合、同じ位置にスタンプなしの終点を追加します。`}>
                       {t`同じ場所に終点を追加`}
                     </button>
                   ) : null}
                   {p.stopBy && !p.detached && mains.length > 0 ? (
                     <div className="flex flex-col gap-2">
                       <label className="flex min-w-0 flex-col gap-1 text-base font-bold">
-                        {t`サブコースの分岐点（ここから、この寄り道へ）`}
+                        {t`サブコースの分岐点`}
                         <select value={mainBefore(i)} onChange={(e) => branchTo(p.key, e.target.value)} className={`${fieldClass} w-full min-w-0 max-w-md`}>
                           <option value="" disabled>
-                            {t`選ぶ`}
+                            {t`選択してください`}
                           </option>
                           {mains.map((m) => (
                             <option key={m.key} value={m.key}>
-                              {m.name || t`（名前がありません）`}
+                              {m.name || t`（名称未設定）`}
                             </option>
                           ))}
                         </select>
                       </label>
-                      <button type="button" onClick={() => onDrawSubCourse(p.key)} className={`${chipToggle(false)} self-start`} title={t`この寄り道の点を選んで、分岐点からここまでの線を描きます。本線はそのまま続きます。`}>
-                        {t`サブコースの線を描く`}
+                      <button type="button" onClick={() => onDrawSubCourse(p.key)} className={`${chipToggle(false)} self-start`} title={t`分岐点からこの寄り道までのルート線を描画します（本線は維持されます）`}>
+                        {t`サブコースを描画`}
                       </button>
                     </div>
                   ) : null}
@@ -255,14 +255,14 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
                 </span>
                 <p className="min-w-0 text-lg font-bold">
                   {t`戻る：${to}`}
-                  <span className="block text-base font-normal text-muted">{t`${nameOfKey(l.from)} から、来た道を戻ります`}</span>
+                  <span className="block text-base font-normal text-muted">{t`${nameOfKey(l.from)} から来た道を戻ります`}</span>
                 </p>
                 <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                   <button type="button" onClick={() => back.onDraw(i)} className={chipToggle(open)}>
-                    {t`線を描く`}
+                    {t`ルートを描画`}
                   </button>
                   {i === back.legs.length - 1 ? (
-                    <button type="button" onClick={back.onRemoveLast} aria-label={t`いちばん後ろの戻りの線を消す`} title={t`いちばん後ろの戻りの線を消す`} className={`${iconButton(false)} text-danger`}>
+                    <button type="button" onClick={back.onRemoveLast} aria-label={t`末尾の戻りルートを削除`} title={t`末尾の戻りルートを削除`} className={`${iconButton(false)} text-danger`}>
                       <TrashIcon />
                     </button>
                   ) : null}
@@ -273,10 +273,9 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
         })}
         {back.options.length > 0 ? (
           <li className="flex min-w-0 flex-col gap-2 rounded-xl border-2 border-dashed border-line p-3">
-            <p className="text-base text-muted">{t`最後の経由地から、来た道を戻るときは、戻る先を選びます（例：14 → 5 → 4 → 1）。線はコースの道をそのまま使います。`}</p>
             <div className="flex flex-wrap items-center gap-2">
               <select aria-label={t`戻る先`} value={backTo} onChange={(e) => setBackTo(e.target.value)} className={fieldClass}>
-                <option value="">{t`戻る先を選ぶ`}</option>
+                <option value="">{t`戻る先を選択`}</option>
                 {back.options.map((key) => (
                   <option key={key} value={key}>
                     {nameOfKey(key)}
@@ -292,7 +291,7 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
                 }}
                 className={chipToggle(backTo !== "")}
               >
-                <UndoIcon /> {t`戻る道を足す`}
+                <UndoIcon /> {t`戻りルートを追加`}
               </button>
             </div>
           </li>

@@ -4,7 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import type { Map as MapLibreMap } from "maplibre-gl";
-import { ChevronIcon, ChevronLeftIcon, ExpandIcon, ListIcon, MinusIcon, PlusIcon, WarningIcon } from "@/components/icons";
+import { ChevronIcon, ChevronLeftIcon, ExpandIcon, ListIcon, MinusIcon, PlusIcon, TickIcon, WarningIcon } from "@/components/icons";
 import { SampleNoticeButton } from "@/components/SampleNotice";
 import { pinPhotoSrc } from "@/lib/pin-photo";
 import type { MapPhoto } from "@/lib/map-screen";
@@ -29,7 +29,7 @@ import type { PointKind } from "@/lib/point-kinds";
 import { groupCounts, groupOf, sortByDistance, type Coord, type MapPlace, type PlaceGroup } from "@/lib/places";
 import { createMarkerElement, createPlaceMarkerElement } from "./MapMarker";
 import { useCursorMarker } from "./useCursorMarker";
-import { PlaceCard, PlaceChips, PlaceList } from "./PlacesPanel";
+import { PlaceCard, PlaceChips, PlaceList, filterPill } from "./PlacesPanel";
 import { StopCard } from "./StopCard";
 
 export interface MapStop {
@@ -67,8 +67,9 @@ const NO_SIDE_LINES: Position[][] = [];
 // Keep every stop clear of the buttons: zoom buttons at the top right, the chip at the top left,
 // the "bigger" button and the credit line along the bottom.
 const FIT = { padding: { top: 76, bottom: 112, left: 56, right: 92 }, maxZoom: 16, animate: false } as const;
-// The two buttons beside the place chips take the chips' shape (a tile under the map, a pill over it), so the row reads as one set.
-const chipShape = "tap-target flex items-center gap-2 rounded-lg border border-ink px-3 py-2 text-lg font-bold leading-tight text-ink hover:bg-surface @4xl:rounded-full @4xl:py-1";
+// The facilities list is not a layer, so it reads as a link beside the layer pills (a pill-shaped paper ground over the map, where bare text would sit on the tiles).
+const listLink =
+  "tap-target inline-flex items-center gap-2 px-1 text-lg font-bold text-ink underline underline-offset-4 @4xl:rounded-full @4xl:bg-paper/95 @4xl:px-3 @4xl:shadow-sm";
 const buttonClass =
   "tap-target inline-flex items-center justify-center gap-2 rounded-full border border-ink bg-paper px-3 text-lg font-bold text-ink hover:bg-surface";
 // The small round controls laid over the map: a 48 px target (the older-reader rule) with a smaller circle drawn in it.
@@ -497,23 +498,28 @@ export function TrailMap({
         ) : null}
         {/* On a phone the row dissolves into the block (contents) so the stepper stays right under the map, then the stop's card, then the chips. */}
           <div className="contents @4xl:flex @4xl:flex-row @4xl:items-end @4xl:justify-between @4xl:gap-2">
-          {/* Under the map: one tidy two-column grid of the kinds of place and the two other buttons. Over the map (4xl): small chips that wrap. */}
-              <div className="order-3 grid min-w-0 grid-cols-2 gap-2 @4xl:order-none @4xl:flex @4xl:flex-wrap @4xl:gap-1.5">
-            {anyPlaces ? <PlaceChips compact className="contents @4xl:flex @4xl:flex-wrap @4xl:gap-1.5" counts={counts} active={active} onToggle={toggleGroup} /> : null}
+          {/* One strip of single-line layer pills that wraps (under the map and over it), so the elevation chart stays close to the map. */}
+          <div className="order-3 flex min-w-0 flex-wrap items-center gap-2 @4xl:order-none @4xl:gap-1.5">
+            {anyPlaces ? <PlaceChips className="contents" counts={counts} active={active} onToggle={toggleGroup} /> : null}
             {hasSide ? (
-              <button type="button" aria-pressed={showSide} onClick={() => setShowSide((on) => !on)} className={`${chipShape} w-full justify-start text-left @4xl:w-auto ${showSide ? "!bg-ink !text-paper" : "bg-paper/95 shadow-sm"}`}>
-                {t`寄り道の線を見る`}
+              <button type="button" aria-pressed={showSide} onClick={() => setShowSide((on) => !on)} className={filterPill(showSide)}>
+                {showSide ? <TickIcon size={20} /> : null}
+                {t`寄り道`}
               </button>
             ) : null}
             {sortedPlaces.length > 0 ? (
-              <button type="button" aria-expanded={listOpen} onClick={() => setListOpen((on) => !on)} className={`${chipShape} w-full justify-start bg-paper/95 text-left shadow-sm @4xl:w-auto`}>
+              <button type="button" aria-expanded={listOpen} onClick={() => setListOpen((on) => !on)} className={listLink}>
                 <ListIcon />
-                {t`まわりの場所`}
+                {t`周辺の施設`}
               </button>
             ) : null}
           </div>
           {stepper ? (
-            <div role="group" aria-label={t`場所を順に見る`} className="order-1 flex shrink-0 items-center self-end rounded-full border border-ink bg-paper/95 shadow-sm @4xl:order-none @4xl:self-auto">
+            <div role="group" aria-label={t`スポットを順に見る`} className="order-1 flex w-full shrink-0 items-center rounded-full border border-ink bg-paper/95 shadow-sm @4xl:order-none @4xl:w-auto">
+              {/* Under the map the bar says what it steps through, then the stop it is on; over the map it is just the arrows and count. */}
+              <p className="min-w-0 flex-1 truncate pl-4 text-lg font-bold @4xl:hidden" lang={selectedStop?.nameLang}>
+                {selectedStop ? `${selectedStop.order ? `${selectedStop.order}. ` : ""}${selectedStop.name}` : t`スポットを順に見る`}
+              </p>
               <button type="button" onClick={() => goToStop(-1)} disabled={stopIndex === 0} aria-label={t`前の場所`} className={hit}>
                 <ChevronLeftIcon />
               </button>

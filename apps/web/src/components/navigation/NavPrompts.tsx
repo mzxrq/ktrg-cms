@@ -60,7 +60,7 @@ export function ArrivalStrip({ name, nameLang, photo }: { name: string; nameLang
         {photo ? <Image src={photo.src} alt={photo.alt} fill sizes="4rem" className="object-cover" unoptimized={photo.src.startsWith("https://")} /> : null}
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-lg font-bold leading-tight text-accent">{t`着きました`}</p>
+        <p className="text-lg font-bold leading-tight text-accent">{t`到着しました`}</p>
         <p lang={nameLang} className="font-serif text-2xl font-bold leading-snug">
           {name}
         </p>
@@ -85,17 +85,17 @@ export function EndPrompt({ onEnd, onKeep }: { onEnd: () => void; onKeep: () => 
         </span>
         <div className="min-w-0">
           <h2 id="nav-end" className="text-2xl font-bold leading-snug">
-            {t`ナビを終えますか？`}
+            {t`ナビを終了しますか？`}
           </h2>
-          <p className="mt-2 text-lg leading-snug">{t`押したスタンプは消えません。`}</p>
+          <p className="mt-2 text-lg leading-snug">{t`獲得したスタンプは消えません。`}</p>
         </div>
       </div>
       <div data-nav-footer className="mt-4 flex shrink-0 flex-col gap-2">
         <button type="button" autoFocus onClick={onKeep} className={buttonStyle("primary", "md", "flex w-full")}>
-          {t`ナビをつづける`}
+          {t`ナビを続ける`}
         </button>
         <button type="button" onClick={onEnd} className={buttonStyle("secondary", "md", "flex w-full")}>
-          {t`ナビを終える`}
+          {t`ナビを終了`}
         </button>
       </div>
     </dialog>
@@ -133,16 +133,16 @@ export function PassedPrompt({ name, nameLang, onGoOn, onGoBack }: { name: strin
         <div className="flex min-h-0 flex-col gap-3 overflow-y-auto">
           <h2 id="nav-passed" className="text-xl font-bold leading-snug">
             <span lang={nameLang}>{name}</span>
-            {t`を通りすぎました`}
+            {t`を通り過ぎました`}
           </h2>
-          <p className="text-lg leading-snug">{t`次の場所へ進みますか？`}</p>
+          <p className="text-lg leading-snug">{t`次のスポットへ進みますか？`}</p>
         </div>
         <div data-nav-footer className="flex shrink-0 flex-col gap-3">
         <button type="button" onClick={onGoOn} className={buttonStyle("action", "lg", "flex w-full tabular-nums")}>
           {t`次へ進む（${left}秒）`}
         </button>
         <button type="button" onClick={onGoBack} className={buttonStyle("secondary", "md", "flex w-full")}>
-          {t`もどる`}
+          {t`戻る`}
         </button>
         </div>
       </section>
