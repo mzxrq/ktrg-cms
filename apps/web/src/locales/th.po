@@ -1305,7 +1305,9 @@ msgstr ""
 msgid "お店・食事"
 msgstr ""
 
+#: src/app/(public)/places/[id]/page.tsx:49
 #: src/app/(public)/places/page.tsx:12
+#: src/app/(public)/places/page.tsx:37
 #: src/components/admin/one-map/OneMap.tsx:394
 msgid "お店と施設"
 msgstr ""
@@ -1471,7 +1473,7 @@ msgstr ""
 msgid "コース（管理）"
 msgstr ""
 
-#. placeholder {0}: p.routes.join(i18n.locale === "ja" ? "、" : ", ")
+#. placeholder {0}: p.routes.join("、")
 #: src/components/places/DirectoryView.tsx:116
 msgid "コース{0}"
 msgstr ""
@@ -1664,10 +1666,6 @@ msgstr ""
 
 #: src/components/admin/useChecklistLabels.ts:11
 msgid "コース名（日本語）"
-msgstr ""
-
-#: src/app/(public)/places/page.tsx:40
-msgid "コース周辺のトイレや店舗・駅・バス停などを一覧で紹介しています。営業時間は変更になる場合があるため、出かける前にご確認ください。。"
 msgstr ""
 
 #: src/app/(public)/grading/page.tsx:73
@@ -2048,6 +2046,10 @@ msgstr ""
 
 #: src/app/(admin)/admin/visits/page.tsx:89
 msgid "この期間の記録は、まだありません。"
+msgstr ""
+
+#: src/components/places/DirectoryView.tsx:103
+msgid "この条件に合う場所はありません。"
 msgstr ""
 
 #: src/app/(public)/grading/page.tsx:143
@@ -4912,6 +4914,9 @@ msgid "最大"
 msgstr ""
 
 #: src/components/NearestPlaces.tsx:37
+msgid "最寄り"
+msgstr ""
+
 #: src/components/SpotSheet.tsx:183
 msgid "最寄りアクセス"
 msgstr ""
@@ -6227,8 +6232,6 @@ msgstr ""
 msgid "広げる"
 msgstr ""
 
-#: src/app/(public)/places/[id]/page.tsx:49
-#: src/app/(public)/places/page.tsx:37
 #: src/app/(public)/sitemap/page.tsx:67
 msgid "店舗・施設"
 msgstr ""
@@ -8381,10 +8384,6 @@ msgstr ""
 msgid "該当する場所はありません。"
 msgstr ""
 
-#: src/components/places/DirectoryView.tsx:103
-msgid "該当する店舗・施設はありません。"
-msgstr ""
-
 #: src/components/map/MapScreen.tsx:491
 #: src/components/map/MapScreen.tsx:538
 msgid "詳しく見る"
@@ -8553,16 +8552,16 @@ msgstr ""
 msgid "近くにスタンプの場所がありません。いちばん近いのは「{0}」で、{1}です。"
 msgstr ""
 
-#: src/app/(public)/places/[id]/page.tsx:100
-msgid "近くのコース・スポット"
-msgstr ""
-
 #: src/components/RallyNearbyStamp.tsx:93
 msgid "近くのスタンプを押す"
 msgstr ""
 
 #: src/components/RallyBook.tsx:182
 msgid "近くのトイレ"
+msgstr ""
+
+#: src/app/(public)/places/[id]/page.tsx:100
+msgid "近くの道"
 msgstr ""
 
 #: src/components/admin/BlockEditor.tsx:472
@@ -8728,6 +8727,10 @@ msgstr ""
 
 #: src/components/admin/GradingFields.tsx:89
 msgid "道の状態から、手で選びます。"
+msgstr ""
+
+#: src/app/(public)/places/page.tsx:40
+msgid "道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。"
 msgstr ""
 
 #: src/components/RouteStats.tsx:48
@@ -9158,4 +9161,16 @@ msgstr ""
 
 #: src/app/(public)/grading/page.tsx:68
 msgid "鹿屋体育大学の山本正嘉教授らによる基準式を使用します。歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど体力を消耗します。"
+msgstr ""
+
+#: src/app/(public)/places/page.tsx:40
+msgid "コース周辺のトイレや店舗・駅・バス停などを一覧で紹介しています。営業時間は変更になる場合があるため、出かける前にご確認ください。。"
+msgstr ""
+
+#: src/components/places/DirectoryView.tsx:103
+msgid "該当する店舗・施設はありません。"
+msgstr ""
+
+#: src/app/(public)/places/[id]/page.tsx:100
+msgid "近くのコース・スポット"
 msgstr ""
