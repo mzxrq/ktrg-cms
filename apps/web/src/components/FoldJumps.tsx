@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type MouseEvent, type ReactNode, type RefObject } from "react";
-import { activeSection } from "@/lib/active-section";
+import { activeSection, readingLine } from "@/lib/active-section";
 import { useLingui } from "@lingui/react/macro";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { BOOKMARK_ANCHOR } from "@/lib/page-anchors";
@@ -24,7 +24,7 @@ function useScrolledAbove(id: string): boolean {
   return above;
 }
 
-/** Which of these sections is being read (index, -1 above the first): the last whose top has reached the bar's bottom edge. */
+/** Which of these sections is being read (index, -1 above the first): see lib/active-section.ts. */
 function useActiveSection(ids: string[], bar: RefObject<HTMLElement | null>): number {
   const [active, setActive] = useState(-1);
   const key = ids.join(" ");
@@ -33,7 +33,7 @@ function useActiveSection(ids: string[], bar: RefObject<HTMLElement | null>): nu
     let frame = 0;
     const check = () => {
       frame = 0;
-      const line = (bar.current?.getBoundingClientRect().bottom ?? 0) + 8;
+      const line = readingLine(bar.current?.getBoundingClientRect().bottom ?? 0, window.innerHeight);
       setActive(activeSection(list.map((id) => document.getElementById(id)?.getBoundingClientRect().top ?? Infinity), line));
     };
     const onScroll = () => {
