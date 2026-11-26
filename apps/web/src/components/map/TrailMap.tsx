@@ -36,7 +36,7 @@ import { createMarkerElement, createPlaceMarkerElement } from "./MapMarker";
 import { useCursorMarker } from "./useCursorMarker";
 import { PlaceCard, PlaceChips, PlaceList, TickBadge, filterPill } from "./PlacesPanel";
 import { StopCard } from "./StopCard";
-import { FlyCard } from "./FlyCard";
+import { buttonStyle } from "@/components/button";
 
 export interface MapStop {
   id: string;
@@ -137,8 +137,7 @@ export function TrailMap({
   // The fly-along over the 3D map, and where it is (rounded, so the readout re-renders only when its words change).
   const [flying, setFlying] = useState(false);
   const [flightAt, setFlightAt] = useState<{ km: string; m: number | null } | null>(null);
-  // The waypoint the fly-along is paused at (its card shows), and 次へ's wish to go on before its seconds are up.
-  const [flyCardId, setFlyCardId] = useState<string | null>(null);
+  // The stepper's › while the fly-along is paused at a stop: go on before its seconds are up.
   const skipPause = useRef(false);
   // Side trips (寄り道) are off at first: some places are worth a mention without being a stop on the way.
   const [showSide, setShowSide] = useState(false);
@@ -389,7 +388,7 @@ export function TrailMap({
         }
         holdUntil = 0;
         skipPause.current = false;
-        setFlyCardId(null);
+        setSelected(null);
       } else {
         d = Math.min(path.total, d + (dt / 1000 / seconds) * path.total);
       }
@@ -398,7 +397,8 @@ export function TrailMap({
         d = pause.d;
         nextPause++;
         holdUntil = now + (pauseSeconds.get(pause.id) ?? 5) * 1000;
-        setFlyCardId(pause.id);
+        // The stop is chosen: the stepper names it and opens its card, as the arrows do.
+        setSelected({ kind: "stop", id: pause.id });
       }
       const at = pointAt(path, d);
       bearing = turnToward(bearing, headingAt(path, d), 0.06);
@@ -427,7 +427,6 @@ export function TrailMap({
       document.removeEventListener("visibilitychange", onHide);
       setElevationCursor(null);
       setFlightAt(null);
-      setFlyCardId(null);
       map.easeTo({ bearing: 0, duration: motionLevel() === "full" ? 600 : 0 });
     };
   }, [flying, expanded, terrain, mapGen, line, stops, lineElevations]);
@@ -508,7 +507,6 @@ export function TrailMap({
   }
 
   const stepper = stops.length > 1;
-  const flyCardStop = flyCardId ? stops.find((s) => s.id === flyCardId) : undefined;
 
   return (
     <section
@@ -585,6 +583,24 @@ export function TrailMap({
               <MinusIcon size={20} />
             </span>
           </button>
+          {/* 3D on the enlarged map, with the map's other controls (as map apps do); filled while on. */}
+          {expanded ? (
+            <button
+              type="button"
+              onClick={() => {
+                setTerrain((on) => !on);
+                setFlying(false);
+              }}
+              aria-pressed={terrain}
+              aria-label={t`立体の地図（3D）`}
+              title={t`立体の地図（3D）`}
+              className={hit}
+            >
+              <span className={`flex size-9 items-center justify-center rounded-full border border-ink text-base font-bold shadow-sm ${terrain ? "bg-ink text-paper" : "bg-paper/95 text-ink"}`}>
+                3D
+              </span>
+            </button>
+          ) : null}
           {expanded ? null : (
             <button ref={expandRef} type="button" onClick={() => setExpanded(true)} aria-label={t`大きく表示`} className={hit}>
               <span className={disc}>
@@ -608,7 +624,22 @@ export function TrailMap({
       {/* Enlarged: one layer over the whole map that lets touches through to it; the pills rise to the top row (order-first,
           mb-auto), the rest sits at the bottom, above the required map credit. */}
       <div className={`flex flex-col gap-2 px-3 print:hidden ${expanded ? "pointer-events-none absolute inset-0 z-10 justify-end pb-[calc(2.25rem+env(safe-area-inset-bottom,0px))] pt-[calc(0.75rem+var(--top-clear))] [&>*]:pointer-events-auto" : "pb-2 @4xl:pointer-events-none @4xl:absolute @4xl:inset-x-2 @4xl:bottom-8 @4xl:z-10 @4xl:max-h-[calc(100%-4rem)] @4xl:p-0 @4xl:[&>*]:pointer-events-auto"}`}>
-        {flyCardStop?.fly ? <FlyCard stop={flyCardStop} fly={flyCardStop.fly} onNext={() => (skipPause.current = true)} /> : null}
+        {/* The fly-along, labelled, just above the stepper it plays through (the stepper's card is its card at each stop). It
+            turns 3D on by itself. Only at the full motion level: a moving camera is a lot of motion. */}
+        {expanded && motionLevel() === "full" && stepper ? (
+          <button
+            type="button"
+            onClick={() => {
+              if (!flying) setTerrain(true);
+              setFlying((on) => !on);
+            }}
+            aria-pressed={flying}
+            className={buttonStyle("primary", "md", "order-1 inline-flex self-start shadow-md @4xl:order-none")}
+          >
+            {flying ? <StopIcon /> : <PlayIcon />}
+            {t`コースをたどる`}
+          </button>
+        ) : null}
         {selectedStop || selectedPlace ? (
           // Under the map a stop's card joins the stepper, which already names it (below); this one is for over the map.
           <div className={`order-2 min-h-0 overflow-y-auto rounded-xl shadow-md @4xl:order-none ${selectedStop && stepper ? "hidden @4xl:block" : ""}`}>
@@ -620,6 +651,7 @@ export function TrailMap({
                 status={selectedStop.status}
                 href={selectedStop.href}
                 noStamp={selectedStop.noStamp}
+                fly={selectedStop.fly}
                 draft={draft}
                 onClose={() => setSelected(null)}
               />
@@ -641,27 +673,8 @@ export function TrailMap({
             }`}
           >
             {expanded && draft ? <SampleNoticeButton /> : null}
-            {expanded ? (
-              <button
-                type="button"
-                onClick={() => {
-                  setTerrain((on) => !on);
-                  setFlying(false);
-                }}
-                aria-pressed={terrain}
-                className={filterPill(terrain)}
-              >
-                <TickBadge on={terrain} />
-                {t`立体の地図（3D）`}
-              </button>
-            ) : null}
-            {/* The fly-along: only over the 3D map, and only at the full motion level (a moving camera is a lot of motion). */}
-            {expanded && terrain && motionLevel() === "full" ? (
-              <button type="button" onClick={() => setFlying((on) => !on)} aria-pressed={flying} className={filterPill(flying)}>
-                {flying ? <StopIcon /> : <PlayIcon />}
-                {t`コースをたどる`}
-              </button>
-            ) : null}
+            {/* Only what to show on the map here; 3D is beside the zoom buttons and the fly-along above the stepper (user,
+                2026-11-26: controls are not filters). */}
             {anyPlaces ? <PlaceChips className="contents" counts={counts} active={active} onToggle={toggleGroup} /> : null}
             {hasSide ? (
               <button type="button" aria-pressed={showSide} onClick={() => setShowSide((on) => !on)} className={filterPill(showSide)}>
@@ -684,13 +697,13 @@ export function TrailMap({
               <p className="min-w-0 flex-1 truncate pl-4 text-lg font-bold @4xl:hidden" lang={selectedStop?.nameLang}>
                 {selectedStop ? `${selectedStop.order ? `${selectedStop.order}. ` : ""}${selectedStop.name}` : t`スポットを順に見る`}
               </p>
-              <button type="button" onClick={() => goToStop(-1)} disabled={stopIndex === 0} aria-label={t`前の場所`} className={hit}>
+              <button type="button" onClick={() => goToStop(-1)} disabled={stopIndex === 0 || flying} aria-label={t`前の場所`} className={hit}>
                 <ChevronLeftIcon />
               </button>
               <p aria-live="polite" className="min-w-[3.75rem] text-center text-lg font-bold tabular-nums">
                 {stopIndex === -1 ? "－" : stopIndex + 1} / {stops.length}
               </p>
-              <button type="button" onClick={() => goToStop(1)} disabled={stopIndex === stops.length - 1} aria-label={t`次の場所`} className={hit}>
+              <button type="button" onClick={() => (flying ? (skipPause.current = true) : goToStop(1))} disabled={!flying && stopIndex === stops.length - 1} aria-label={t`次の場所`} className={hit}>
                 <ChevronIcon />
               </button>
             </div>
@@ -704,6 +717,7 @@ export function TrailMap({
                   status={selectedStop.status}
                   href={selectedStop.href}
                   noStamp={selectedStop.noStamp}
+                  fly={selectedStop.fly}
                   draft={draft}
                   onClose={() => setSelected(null)}
                 />
