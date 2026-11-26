@@ -20,5 +20,5 @@ export function SideWord({
     const from = locale === "ja" ? item.stampFrom.nameJa : (item.stampFrom.nameEn ?? item.stampFrom.nameJa);
     return <Trans>{from}から遥拝</Trans>;
   }
-  return <Trans>道からはなれた場所</Trans>;
+  return <Trans>ルート外</Trans>;
 }

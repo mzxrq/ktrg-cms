@@ -30,17 +30,17 @@ export function SpotStats({ spot, place }: { spot: SpotDetail; place?: StopPlace
   if (place?.fromPrev) {
     const km = numbers.format(place.fromPrev.km);
     const minutes = place.fromPrev.minutes;
-    items.push({ label: t`前の場所から`, icon: <RulerIcon />, value: t`${km}km` });
+    items.push({ label: t`前のスポットから`, icon: <RulerIcon />, value: t`${km}km` });
     // A ferry or a bus between two stops is not walking.
-    items.push({ label: place.fromPrev.mode ? t`移動の時間` : t`歩く時間`, icon: <ClockIcon />, value: t`約${minutes}分` });
+    items.push({ label: place.fromPrev.mode ? t`移動時間` : t`徒歩時間`, icon: <ClockIcon />, value: t`約${minutes}分` });
   }
   items.push({
     label: t`スタンプ`,
     icon: <StampIcon />,
-    value: !stampable ? t`なし` : spot.stamped ? t`押しました` : t`押せます`,
+    value: !stampable ? t`なし` : spot.stamped ? t`獲得済み` : t`あり`,
   });
-  items.push({ label: t`いまの状態`, icon: <FlagIcon />, value: <StatusWord status={spot.status} /> });
-  if (spot.stopBy) items.push({ label: t`道から`, icon: <RouteIcon />, value: <SideWord item={spot} locale={i18n.locale} /> });
+  items.push({ label: t`状況`, icon: <FlagIcon />, value: <StatusWord status={spot.status} /> });
+  if (spot.stopBy) items.push({ label: t`ルート区分`, icon: <RouteIcon />, value: <SideWord item={spot} locale={i18n.locale} /> });
 
   return (
     <dl className="grid grid-cols-2 gap-x-4 gap-y-3">
