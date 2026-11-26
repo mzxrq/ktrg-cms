@@ -13,7 +13,7 @@ test("the menu is four titled groups on the framed rail ground, sign in is the b
   expect(header).toMatch(/buttonStyle\("action", "lg", "flex w-full"\)/);
   // Phones have the tablet's frame and 七宝 too (2026-11-26).
   expect(header).toMatch(/fixed inset-x-0 top-0[^"]*bg-rail/);
-  expect(header).toContain('panelGround("block")');
+  expect(header).toContain("{panelGround()}");
   expect(header).toMatch(/font-serif text-3xl font-bold text-accent/);
 });
 

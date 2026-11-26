@@ -54,11 +54,12 @@ function subscribeFold(listener: () => void) {
 // phone page, with a menu button instead of a tab bar). From 1024 px it is a sidebar fixed to the far left: the logo (a
 // link home), the tabs centred, the menu as one more item, and at the bottom `footer` (the language picker).
 /** The panel's ground: a thin double frame set in from the edge with a faint 七宝 inside it only (the margin outside
- *  stays plain, 2026-11-19). Decoration only. `show` is the variant it appears at (the desktop sidebar, the menu drawer). */
-export const panelGround = (show: string) => (
+ *  stays plain, 2026-11-19). Decoration only. `show` is the variant it appears at (the desktop sidebar); none = always (the
+ *  menu drawer). Never pass a plain "block": it ties with "hidden", and Tailwind's order lets "hidden" win. */
+export const panelGround = (show?: string) => (
   <span
     aria-hidden="true"
-    className={`pointer-events-none absolute inset-2 -z-10 hidden border-[3px] border-double border-on-rail/35 ${show}`}
+    className={`pointer-events-none absolute inset-2 -z-10 border-[3px] border-double border-on-rail/35 ${show ? `hidden ${show}` : ""}`}
   >
     <span className="pattern-shippo pattern-on-rail block size-full" />
     {/* The top and bottom lines open in the middle (2026-11-19, the user's idea): an open frame, not a box. */}
