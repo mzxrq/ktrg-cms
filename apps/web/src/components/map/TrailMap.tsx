@@ -11,6 +11,7 @@ import type { MapPhoto } from "@/lib/map-screen";
 import type { SpotStatus } from "@/lib/content";
 import {
   boundsOf,
+  gsiAttribution,
   lineFeature,
   markerKind,
   nextStopId,
@@ -23,6 +24,8 @@ import {
   type Position,
 } from "@/lib/map";
 import { mapStyleSource } from "@/lib/large-map-style";
+import { GSI_DEM_SOURCE, registerGsiDem } from "@/lib/gsi-dem";
+import { motionLevel } from "@/lib/motion";
 import type { MapSettings } from "@/lib/map-settings";
 import type { StopRole } from "@/lib/route-stops";
 import type { PointKind } from "@/lib/point-kinds";
@@ -62,6 +65,7 @@ type Selection = { kind: "stop" | "place"; id: string } | null;
 
 const LINE_SOURCE = "route";
 const SIDE_SOURCE = "route-side";
+const DEM_SOURCE = "gsi-dem";
 // A constant, not `[]` in the parameter list: a new array each render would rebuild the map each render.
 const NO_SIDE_LINES: Position[][] = [];
 // Keep every stop clear of the buttons: zoom buttons at the top right, the chip at the top left,
@@ -321,6 +325,25 @@ export function TrailMap({
     }
   }, [terrain, loaded, mapGen]);
 
+  // 3D (2026-11-26, user): on the enlarged map the terrain pill also raises the ground (GSI heights through lib/gsi-dem.ts,
+  // as the /map page's 3D) under a tilted view, so the course line lies on the real slopes. Flat and north-up again when it
+  // is turned off or the map closes (the visitor cannot rotate it back: dragRotate is off).
+  useEffect(() => {
+    const map = mapRef.current;
+    const ml = mlRef.current;
+    if (!map || !ml || !loaded) return;
+    const duration = motionLevel() === "full" ? 700 : 0;
+    if (terrain && expanded) {
+      registerGsiDem(ml);
+      if (!map.getSource(DEM_SOURCE)) map.addSource(DEM_SOURCE, { ...GSI_DEM_SOURCE, attribution: gsiAttribution });
+      map.setTerrain({ source: DEM_SOURCE, exaggeration: 1.5 });
+      map.easeTo({ pitch: 60, duration });
+    } else if (map.getTerrain()) {
+      map.setTerrain(null);
+      map.easeTo({ pitch: 0, bearing: 0, duration });
+    }
+  }, [terrain, expanded, loaded, mapGen]);
+
   // Expanded view: keep the page still behind it, close on Escape, and move focus sensibly.
   useEffect(() => {
     if (!expanded) return;
@@ -332,6 +355,7 @@ export function TrailMap({
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.classList.remove("overflow-hidden", "map-expanded");
+      setTerrain(false); // the small map on the page stays flat and plain
       opener?.focus();
     };
   }, [expanded]);
@@ -384,10 +408,6 @@ export function TrailMap({
   const fromLabel = selectedStop
     ? t`「${stopName}」から近い順`
     : t`コースの出発地点から近い順（まっすぐ測った距離です）`;
-  const terrainLabel =
-    settings.terrain === "relief"
-      ? terrain ? t`標高の色を消す` : t`標高の色を見る`
-      : terrain ? t`地形の陰影を消す` : t`地形の陰影を見る`;
   const anyPlaces = places.length > 0;
 
   if (failed) {
@@ -523,7 +543,7 @@ export function TrailMap({
             {expanded ? (
               <button type="button" onClick={() => setTerrain((on) => !on)} aria-pressed={terrain} className={filterPill(terrain)}>
                 <TickBadge on={terrain} />
-                {terrainLabel}
+                {t`立体の地図（3D）`}
               </button>
             ) : null}
             {anyPlaces ? <PlaceChips className="contents" counts={counts} active={active} onToggle={toggleGroup} /> : null}
