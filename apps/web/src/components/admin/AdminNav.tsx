@@ -138,10 +138,10 @@ export function AdminNav({ lists, isAdmin, footer }: { lists: { key: string; tit
                 aria-expanded={!shut.has(i)}
                 aria-controls={`admin-menu-${i}`}
                 onClick={() => flip(i)}
-                className="tap-target flex items-center justify-between gap-2 rounded-full px-4 text-left text-base font-bold text-muted hover:bg-surface lg:group-data-[folded=true]:hidden"
+                className="tap-target flex items-center justify-between gap-2 whitespace-nowrap rounded-full px-3 text-left text-sm font-bold text-muted hover:bg-surface lg:group-data-[folded=true]:hidden"
               >
                 {group.title}
-                {shut.has(i) ? <ChevronDownIcon size={20} /> : <ChevronUpIcon size={20} />}
+                {shut.has(i) ? <ChevronDownIcon size={16} /> : <ChevronUpIcon size={16} />}
               </button>
             ) : null}
             <div id={`admin-menu-${i}`} className={`${shut.has(i) ? "hidden lg:group-data-[folded=true]:flex" : "flex"} flex-col gap-1`}>

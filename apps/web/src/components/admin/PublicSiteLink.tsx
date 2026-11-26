@@ -16,9 +16,9 @@ export function PublicSiteLink() {
       target="_blank"
       rel="noreferrer"
       title={t`公開サイトで見る`}
-      className="tap-target inline-flex items-center justify-center gap-2 rounded-full border border-line px-4 text-base font-bold text-ink hover:bg-surface lg:group-data-[folded=true]:px-0 [&>svg]:shrink-0"
+      className="tap-target inline-flex items-center lg:flex-1 justify-center gap-1.5 rounded-full border border-line px-3 text-base font-bold text-ink hover:bg-surface lg:group-data-[folded=true]:flex-none lg:group-data-[folded=true]:px-0 [&>svg]:shrink-0"
     >
-      <ExternalIcon />
+      <ExternalIcon size={20} />
       <span className="whitespace-nowrap lg:group-data-[folded=true]:sr-only">{t`サイトで見る`}</span>
     </a>
   );
