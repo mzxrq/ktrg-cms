@@ -1020,7 +1020,8 @@ body.map-screen-active .site-footer {
     transition: none;
   }
 }
-/* The round menu button (TabBar) shows exactly while the tab bar is away, so the menu is never out of reach. */
+/* The floating menu button (TabBar, the tablet's look) shows exactly while the tab bar is away, so the menu is never out of
+   reach; the bar stays away while the menu is open, so the button stays to close it. */
 @media (max-width: 767px) {
   html[data-bars="hidden"]:not(:has([data-tabbar]:focus-within)) [data-menu-fab] {
     display: inline-flex;

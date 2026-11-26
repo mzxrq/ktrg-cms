@@ -86,14 +86,12 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
 
   // While reading on a phone, scrolling down tucks the tab bar away and scrolling up brings it
   // back (lib/scroll-bars.ts). It only sets <html data-bars="hidden">; the CSS decides who moves (phones only). A new page
-  // and an open menu always show them.
+  // shows them; an open menu keeps them as they were (opened from the round menu button, that button stays to close it).
   useEffect(() => {
     const root = document.documentElement;
-    if (open) {
-      delete root.dataset.bars;
-      return;
-    }
-    let state = initialBars(window.scrollY);
+    if (open) return;
+    // Carry on from where the bars were before the menu opened (a new page has already shown them, below).
+    let state = { ...initialBars(window.scrollY), hidden: root.dataset.bars === "hidden" };
     let frame = 0;
     const onScroll = () => {
       if (frame) return;
@@ -112,9 +110,11 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
     return () => {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(frame);
-      delete root.dataset.bars;
     };
   }, [open, pathname]);
+  // A new page (or leaving these pages) shows the bars again. Its cleanup runs before the effect above reads them.
+  // Kept to one line so the lines below (and the catalogs' line numbers) stay where they were.
+  useEffect(() => () => { delete document.documentElement.dataset.bars; }, [pathname]);
 
   const tabs = [
     { path: "/", label: t`ホーム`, icon: <HomeIcon /> },
@@ -204,7 +204,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
               }`}
             >
               {/* On a tablet, while the menu is open, this button is its close button (the drawer has none of its own there). */}
-              <span id="menu-word"
+              <span
                 className={`contents ${open ? "md:hidden wide:contents" : ""}`}
               >
                 <MenuIcon />
@@ -220,20 +220,19 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
           </li>
         </ul>
       </nav>
-      {/* While the tab bar is tucked away on a phone, the menu stays in reach: a round button at the top right, the
-          tablet's dark button without its word (2026-11-26, the boss's request). Shown only by the CSS (data-menu-fab).
-          Its name is the tab bar's own word メニュー (labelledby, so no new message; it sits after every message so the
-          catalogs' line numbers stay put). Opening the menu brings the tab bar back, which hides this button again. */}
+      {/* While the tab bar is tucked away on a phone, the menu stays in reach: the tablet's menu button, same look and
+          place (2026-11-26, the boss's request). Shown only by the CSS (data-menu-fab). The bar stays away while the menu
+          is open, so this button stays too and turns into 閉じる, as on a tablet. */}
       <button
         type="button"
         data-menu-fab
-        onClick={() => setOpen(true)}
-        aria-labelledby="menu-word"
+        onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-controls="site-menu"
-        className="tap-target fixed right-3 top-[calc(0.5rem+var(--top-clear))] z-40 hidden size-12 items-center justify-center rounded-full border border-line bg-rail text-ink shadow-[0_2px_10px_rgb(0_0_0/0.3)] print:hidden [&_svg]:size-6"
+        className="tap-target fixed right-3 top-[calc(0.25rem+var(--top-clear))] z-40 hidden min-h-11 items-center gap-4 rounded-xl border border-line bg-rail px-4 text-base font-bold leading-tight text-ink shadow-[0_2px_10px_rgb(0_0_0/0.3)] print:hidden [&_svg]:size-6"
       >
-        <MenuIcon />
+        {open ? <CloseIcon /> : <MenuIcon />}
+        {open ? t`閉じる` : t`メニュー`}
       </button>
       {/* Lined up with the tab pills (same side padding), clear of the frame at the bottom. */}
       {footer && !mini ? (
