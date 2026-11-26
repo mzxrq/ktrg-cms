@@ -46,7 +46,7 @@ export default async function PlacePage({ params }: Props) {
     <div className="page-narrow flex flex-col gap-6 pt-2">
       <div className="flex flex-wrap items-center gap-1 px-4">
         <Breadcrumb href="/places">
-          <Trans>お店と施設</Trans>
+          <Trans>店舗・施設</Trans>
         </Breadcrumb>
         <Breadcrumb href={`/places?group=${group}`}>
           <GroupName group={group} />
@@ -97,7 +97,7 @@ export default async function PlacePage({ params }: Props) {
       {course || near ? (
         <section className="flex flex-col gap-4 px-4">
           <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-            <Trans>近くの道</Trans>
+            <Trans>近くのコース・スポット</Trans>
           </h2>
           {near ? <SpotCard spot={near} locale={locale} /> : null}
           {course ? <RouteCard route={course} locale={locale} /> : null}

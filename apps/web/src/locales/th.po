@@ -1305,7 +1305,6 @@ msgstr ""
 msgid "お店・食事"
 msgstr ""
 
-#: src/app/(public)/places/[id]/page.tsx:49
 #: src/app/(public)/places/page.tsx:12
 #: src/components/admin/one-map/OneMap.tsx:394
 msgid "お店と施設"
@@ -1472,7 +1471,7 @@ msgstr ""
 msgid "コース（管理）"
 msgstr ""
 
-#. placeholder {0}: p.routes.join("、")
+#. placeholder {0}: p.routes.join(i18n.locale === "ja" ? "、" : ", ")
 #: src/components/places/DirectoryView.tsx:116
 msgid "コース{0}"
 msgstr ""
@@ -2049,10 +2048,6 @@ msgstr ""
 
 #: src/app/(admin)/admin/visits/page.tsx:89
 msgid "この期間の記録は、まだありません。"
-msgstr ""
-
-#: src/components/places/DirectoryView.tsx:103
-msgid "この条件に合う場所はありません。"
 msgstr ""
 
 #: src/app/(public)/grading/page.tsx:143
@@ -6232,6 +6227,7 @@ msgstr ""
 msgid "広げる"
 msgstr ""
 
+#: src/app/(public)/places/[id]/page.tsx:49
 #: src/app/(public)/places/page.tsx:37
 #: src/app/(public)/sitemap/page.tsx:67
 msgid "店舗・施設"
@@ -8385,6 +8381,10 @@ msgstr ""
 msgid "該当する場所はありません。"
 msgstr ""
 
+#: src/components/places/DirectoryView.tsx:103
+msgid "該当する店舗・施設はありません。"
+msgstr ""
+
 #: src/components/map/MapScreen.tsx:491
 #: src/components/map/MapScreen.tsx:538
 msgid "詳しく見る"
@@ -8553,16 +8553,16 @@ msgstr ""
 msgid "近くにスタンプの場所がありません。いちばん近いのは「{0}」で、{1}です。"
 msgstr ""
 
+#: src/app/(public)/places/[id]/page.tsx:100
+msgid "近くのコース・スポット"
+msgstr ""
+
 #: src/components/RallyNearbyStamp.tsx:93
 msgid "近くのスタンプを押す"
 msgstr ""
 
 #: src/components/RallyBook.tsx:182
 msgid "近くのトイレ"
-msgstr ""
-
-#: src/app/(public)/places/[id]/page.tsx:100
-msgid "近くの道"
 msgstr ""
 
 #: src/components/admin/BlockEditor.tsx:472
