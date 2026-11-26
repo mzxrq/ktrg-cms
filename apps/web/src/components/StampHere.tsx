@@ -134,7 +134,7 @@ export function StampHere({
         <div role="status" className="flex items-center gap-4 rounded-lg bg-surface p-4 shadow-lg">
           <StampFace state="stamped" number={1} image={stampImage} rough className="stamp-land h-16 w-16 shrink-0" />
           <div className="flex flex-col gap-1">
-            <p className="text-xl font-bold leading-snug">{phase.already ? t`このスタンプは、もう押してあります。` : t`スタンプを押しました！`}</p>
+            <p className="text-xl font-bold leading-snug">{phase.already ? t`このスタンプは獲得済みです。` : t`スタンプを押しました！`}</p>
             {phase.also.map((a) => {
               const name = i18n.locale === "ja" ? a.nameJa : (a.nameEn ?? a.nameJa);
               return (
@@ -152,8 +152,8 @@ export function StampHere({
     return (
       <div className={wrapper}>
         <div role="status" className="flex flex-col gap-1 rounded-lg bg-surface p-4 shadow-lg">
-          <p className="text-xl font-bold leading-snug">{t`電波が弱いか、つながらないため、あとで送ります。`}</p>
-          <p className="text-base leading-snug">{t`つながると、自動で送ります。そのときにサーバーが確かめるため、受け付けられないこともあります（場所が閉鎖中になったときなど）。`}</p>
+          <p className="text-xl font-bold leading-snug">{t`通信できないため、あとで自動送信します。`}</p>
+          <p className="text-base leading-snug">{t`電波が回復すると自動で送信されます。送信時に確認を行うため、スポットが閉鎖中になっている場合などは獲得できないことがあります。`}</p>
         </div>
       </div>
     );
@@ -172,7 +172,7 @@ export function StampHere({
           decides it, so it has no way out. */}
       {phase.name === "locating" ? (
         <LoadingOverlay
-          label={t`いまの位置を調べています…`}
+          label={t`現在地を取得中…`}
           onCancel={() => {
             attempt.current++;
             setPhase({ name: "idle" });
@@ -185,7 +185,7 @@ export function StampHere({
         <div role="alert" className="flex flex-col gap-1 rounded-lg border-2 border-caution bg-paper px-4 py-3 text-lg leading-7 shadow-lg">
           <p className="font-bold">{messages[phase.problem]}</p>
           {distance ? (
-            <p className="tabular-nums">{distance.unit === "km" ? t`いまの場所から、約${km}km` : t`いまの場所から、約${m}m`}</p>
+            <p className="tabular-nums">{distance.unit === "km" ? t`現在地から約${km}km` : t`現在地から約${m}m`}</p>
           ) : null}
           {phase.problem === "login_needed" ? (
             <Link href={loginHref} className="tap-target mt-1 inline-flex items-center font-bold text-accent underline underline-offset-4">
@@ -196,7 +196,7 @@ export function StampHere({
       ) : null}
 
       {status === "info" ? (
-        <p className="rounded-xl bg-paper/95 px-3 py-1 text-center text-base text-muted">{t`ここにはスタンプはありません。`}</p>
+        <p className="rounded-xl bg-paper/95 px-3 py-1 text-center text-base text-muted">{t`このスポットにスタンプはありません。`}</p>
       ) : status === "closed" ? (
         <>
           <div className="flex gap-2">
@@ -205,14 +205,14 @@ export function StampHere({
               {t`スタンプを押す`}
             </button>
           </div>
-          <p className="rounded-xl bg-paper/95 px-3 py-1 text-center text-base text-muted">{t`この場所は、いまは閉鎖中です。`}</p>
+          <p className="rounded-xl bg-paper/95 px-3 py-1 text-center text-base text-muted">{t`このスポットは現在閉鎖中です。`}</p>
         </>
       ) : (
         <div className="flex gap-2">
           {busy ? null : aside}
           <button type="button" disabled={busy} onClick={() => void press()} className={`${button} min-w-0 flex-1`} aria-live="polite">
             {phase.name === "locating"
-              ? t`いまの位置を調べています…`
+              ? t`現在地を確認中…`
               : phase.name === "sending"
                 ? t`スタンプを押しています…`
                 : phase.name === "problem"
@@ -229,16 +229,16 @@ export function StampHere({
         className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg bg-paper p-6 text-ink backdrop:bg-black/60"
       >
         <h2 id="stamp-explain-title" className="text-2xl font-bold">
-          {t`いまの位置を調べます`}
+          {t`現在地を確認します`}
         </h2>
-        <p className="mt-3 text-lg leading-8">{t`スタンプの場所の近くにいるかを確かめるため、スマートフォンの現在地を1度だけ調べます。`}</p>
-        <p className="mt-2 text-lg leading-8">{t`現在地は記録に残しません。記録するのは、スタンプを押したことだけです。`}</p>
+        <p className="mt-3 text-lg leading-8">{t`スタンプスポットの付近にいるか確認するため、現在地を1回だけ取得します。`}</p>
+        <p className="mt-2 text-lg leading-8">{t`位置情報は保存されません。記録されるのはスタンプの獲得履歴のみです。`}</p>
         <div className="mt-6 flex flex-col gap-3">
           <button type="button" onClick={() => void start()} className={button}>
-            {t`位置を調べてスタンプを押す`}
+            {t`現在地を確認してスタンプを押す`}
           </button>
           <button type="button" onClick={() => setPhase({ name: "idle" })} className={quietButton}>
-            {t`やめる`}
+            {t`キャンセル`}
           </button>
         </div>
       </dialog>

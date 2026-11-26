@@ -22,7 +22,7 @@ export function NearbyPlaces({ places }: { places: Nearby[] }) {
   const category = useCategoryNames();
   const distance = useDistanceText();
   return (
-    <ul aria-label={t`まわりの場所`} className="flex flex-col">
+    <ul aria-label={t`周辺の施設`} className="flex flex-col">
       {places.map((p) => (
         <li key={p.id} className="border-t border-line/30 first:border-t-0">
           <Link href={`/places/${p.id}`} className="flex items-center justify-between gap-3 py-3 no-underline">

@@ -57,7 +57,7 @@ export default async function EditPageText({ params }: { params: Promise<{ key: 
   return (
     <div className="flex max-w-6xl flex-col gap-4">
       <AdminBack href="/admin/pages">
-        <Trans>ページへ戻る</Trans>
+        <Trans>ページ一覧に戻る</Trans>
       </AdminBack>
       <PageTextEditor pageKey={key as PageKey} saved={saved} builtIn={builtIn} locale={i18n.locale} home={home} />
       {homeParts ? (
@@ -65,7 +65,7 @@ export default async function EditPageText({ params }: { params: Promise<{ key: 
           <HomeBanners meta={homeParts.meta} items={homeParts.banners} locale={i18n.locale} />
         ) : (
           <p role="alert" className="rounded-2xl bg-surface p-6 text-lg font-bold text-danger">
-            <Trans>バナーを読み込めませんでした。しばらくしてから、ページを開き直してください。</Trans>
+            <Trans>バナーを読み込めませんでした。時間をおいてページを再読み込みしてください。</Trans>
           </p>
         )
       ) : null}

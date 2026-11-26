@@ -93,19 +93,19 @@ export function SpotSheet({
         {spot.stamped === true ? (
           <div>
             <p className="text-xl font-bold text-moss">
-              <Trans>このスタンプは押しました</Trans>
+              <Trans>スタンプ獲得済み</Trans>
             </p>
             <p className="text-lg text-muted">
-              <Trans>スタンプ帳に入っています。</Trans>
+              <Trans>スタンプ帳に記録されています。</Trans>
             </p>
           </div>
         ) : (
           <div>
             <p className="text-xl font-bold">
-              <Trans>スタンプの場所</Trans>
+              <Trans>スタンプスポット</Trans>
             </p>
             <p className="text-lg text-muted">
-              <Trans>押し方: 場所の近くで、ボタンを押します（位置情報）</Trans>
+              <Trans>現地付近でボタンを押して獲得（位置情報を使用）</Trans>
             </p>
           </div>
         )}
@@ -169,7 +169,7 @@ export function SpotSheet({
         // The title stands over open space, the list sits in the capsule (design language: no title inside a card).
         <section className="px-4">
           <h2 className="mb-2 border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-            <Trans>まわりにあるもの</Trans>
+            <Trans>周辺の施設</Trans>
           </h2>
           <div className="rounded-lg bg-surface px-5 py-2">
             <NearbyPlaces places={nearby} />
@@ -180,17 +180,14 @@ export function SpotSheet({
       {nearest.length > 0 ? (
         <section className="px-4">
           <h2 className="mb-2 border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-            <Trans>最寄り</Trans>
+            <Trans>最寄りアクセス</Trans>
           </h2>
           <div className="rounded-lg bg-surface p-5">
             <NearestPlaces groups={nearest} />
           </div>
         </section>
       ) : null}
-
-      <Notice>
-        <Trans>出かける前に、公式の最新情報を確認してください。</Trans>
-      </Notice>
+      
       <LastUpdated iso={spot.updatedAt} locale={locale} className="px-4" />
 
       {stampable ? (
