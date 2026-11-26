@@ -16,7 +16,7 @@ import { buildLine, closeLineGaps } from "@/lib/admin/route-builder";
 import { roundLine, type SnapPoint } from "@/lib/admin/snap";
 import { boundsOf, editorBaseVisibility, editorBases, editorStyle, terrainLayerId, zoomLimits, type EditorBase } from "@/lib/map";
 import { type PointKind } from "@/lib/point-kinds";
-import { CursorIcon, FitIcon, GuideIcon, PencilIcon, PinIcon, RedoIcon, TerrainIcon, TrashIcon, UndoIcon } from "./icons";
+import { ChevronDownIcon, CursorIcon, FitIcon, GuideIcon, PencilIcon, PinIcon, RedoIcon, TerrainIcon, TrashIcon, UndoIcon, XIcon } from "@/components/admin/admin-icons";
 import { PlaceList } from "./PlaceList";
 import { CourseAreaEditor } from "../CourseAreaEditor";
 import type { Bounds } from "@/lib/route-geometry";
@@ -964,7 +964,7 @@ export function MapEditor(props: MapEditorProps) {
             onClick={() => setGpxMenu((v) => !v)}
             className="inline-flex h-11 min-h-0 min-w-0 items-center justify-center rounded-r-lg border border-l-paper/40 border-ink bg-ink px-2 text-sm font-bold text-paper"
           >
-            ▾
+            <ChevronDownIcon size={18} />
           </button>
           {gpxMenu ? (
             <div role="menu" className="absolute left-0 top-full z-30 mt-1 flex min-w-64 flex-col rounded-full border border-line bg-paper p-1 shadow-lg">
@@ -1258,7 +1258,7 @@ export function MapEditor(props: MapEditorProps) {
               ) : null}
             </div>
             <button type="button" onClick={() => setPanelOpen(false)} className={`${iconBtn} hidden lg:inline-flex`} title={t`一覧をしまう`} aria-label={t`一覧をしまう`}>
-              ✕
+              <XIcon size={20} />
             </button>
           </div>
           <div className="min-h-0 flex-1 overflow-y-auto p-3">

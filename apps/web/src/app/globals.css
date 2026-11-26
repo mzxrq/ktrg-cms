@@ -587,6 +587,11 @@ rt {
   text-decoration: underline;
 }
 
+/* The enlarged course map fills the screen: its credit stays clear of the iPhone's home line (the controls stop above it). */
+.trail-map[data-expanded] .maplibregl-ctrl-bottom-right {
+  bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* On a phone the navigation's panel lies across the bottom of the map: the required map credit stays above it. */
 @media (max-width: 767px) {
   body.map-nav-mode .trail-map .maplibregl-ctrl-bottom-right {
@@ -1020,6 +1025,29 @@ body.map-screen-active .site-footer {
     transition: none;
   }
 }
+/* The round menu button (TabBar) shows exactly while the tab bar is away, so the menu is never out of reach. The bar stays
+   away while the menu is open, so the button stays to close it and the menu carries the tabs instead (SiteHeader,
+   data-menu-tabs, the tablet's list). A sticky bar at the top (data-fab-room) keeps its right end clear of the button. */
+@media (max-width: 767px) {
+  html[data-bars="hidden"]:not(:has([data-tabbar]:focus-within)) [data-menu-fab] {
+    display: inline-flex;
+  }
+  html[data-bars="hidden"]:not(:has([data-tabbar]:focus-within)) [data-menu-tabs] {
+    display: block;
+  }
+  html[data-bars="hidden"]:not(:has([data-tabbar]:focus-within)) [data-fab-room] {
+    padding-right: 4rem;
+  }
+}
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  [data-menu-fab] {
+    transition: opacity 220ms var(--ease-enter), scale 220ms var(--ease-enter);
+    @starting-style {
+      opacity: 0;
+      scale: 0.8;
+    }
+  }
+}
 
 /* How much of the bottom the tab bar takes right now, for things fixed above it (the navigation's buttons): the bar on a
    phone, none from 768 px (a side rail) or when a chosen course hides it. Same 5.5rem as MapScreen's TAB_ROOM_REM. A var() with
@@ -1070,6 +1098,12 @@ body:has([data-sample-notice]) .cover-credit > details {
   body.map-tabs-hidden [data-tabbar] {
     display: none;
   }
+}
+/* The course page's enlarged map (TrailMap) is the whole screen: nothing floats over it, not the tab bar or the tablet's menu
+   button, the round menu button, back to top, the install bar nor the offline line (it would cover the ✕; the page under the
+   map still shows it) (2026-11-26). Its own ✕ brings them back. */
+body.map-expanded :is([data-tabbar], [data-menu-fab], [data-scroll-top], [data-install-nudge], [data-offline-notice]) {
+  display: none !important;
 }
 
 /* A course on the whole-trail map: a round number, with its name beside it once zoomed in. 44 px to tap, 36 px to see. Fixed

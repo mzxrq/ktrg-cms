@@ -4,13 +4,14 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import type { Map as MapLibreMap } from "maplibre-gl";
-import { ChevronIcon, ChevronLeftIcon, ExpandIcon, ListIcon, MinusIcon, PlusIcon, TickIcon, WarningIcon } from "@/components/icons";
+import { ChevronIcon, ChevronLeftIcon, CloseIcon, ExpandIcon, ListIcon, MinusIcon, PlayIcon, PlusIcon, StopIcon, WarningIcon } from "@/components/icons";
 import { SampleNoticeButton } from "@/components/SampleNotice";
 import { pinPhotoSrc } from "@/lib/pin-photo";
 import type { MapPhoto } from "@/lib/map-screen";
 import type { SpotStatus } from "@/lib/content";
 import {
   boundsOf,
+  gsiAttribution,
   lineFeature,
   markerKind,
   nextStopId,
@@ -23,14 +24,19 @@ import {
   type Position,
 } from "@/lib/map";
 import { mapStyleSource } from "@/lib/large-map-style";
+import { GSI_DEM_SOURCE, registerGsiDem } from "@/lib/gsi-dem";
+import { motionLevel } from "@/lib/motion";
+import { setElevationCursor } from "@/lib/elevation-cursor";
+import { flightPath, flightSeconds, flightStops, headingAt, heightAt, pointAt, turnToward, type FlyStop } from "@/lib/fly-along";
 import type { MapSettings } from "@/lib/map-settings";
 import type { StopRole } from "@/lib/route-stops";
 import type { PointKind } from "@/lib/point-kinds";
 import { groupCounts, groupOf, sortByDistance, type Coord, type MapPlace, type PlaceGroup } from "@/lib/places";
 import { createMarkerElement, createPlaceMarkerElement } from "./MapMarker";
 import { useCursorMarker } from "./useCursorMarker";
-import { PlaceCard, PlaceChips, PlaceList, filterPill } from "./PlacesPanel";
+import { PlaceCard, PlaceChips, PlaceList, TickBadge, filterPill } from "./PlacesPanel";
 import { StopCard } from "./StopCard";
+import { buttonStyle } from "@/components/button";
 
 export interface MapStop {
   id: string;
@@ -56,12 +62,15 @@ export interface MapStop {
   kind?: PointKind;
   /** The place's own uploaded photo: the pin's head shows it (see lib/pin-photo.ts). */
   photo?: MapPhoto | null;
+  /** The fly-along stops here and shows this (lib/fly-along.ts flyStopOf); left out when it flies past. */
+  fly?: FlyStop;
 }
 
 type Selection = { kind: "stop" | "place"; id: string } | null;
 
 const LINE_SOURCE = "route";
 const SIDE_SOURCE = "route-side";
+const DEM_SOURCE = "gsi-dem";
 // A constant, not `[]` in the parameter list: a new array each render would rebuild the map each render.
 const NO_SIDE_LINES: Position[][] = [];
 // Keep every stop clear of the buttons: zoom buttons at the top right, the chip at the top left,
@@ -70,6 +79,11 @@ const FIT = { padding: { top: 76, bottom: 112, left: 56, right: 92 }, maxZoom: 1
 // The facilities list is not a layer, so it reads as a link beside the layer pills (a pill-shaped paper ground over the map, where bare text would sit on the tiles).
 const listLink =
   "tap-target inline-flex items-center gap-2 px-1 text-lg font-bold text-ink underline underline-offset-4 @4xl:rounded-full @4xl:bg-paper/95 @4xl:px-3 @4xl:shadow-sm";
+// On the enlarged map it always lies on the tiles, so it always has the pill ground.
+const listLinkOverMap =
+  "tap-target inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-paper/95 px-3 text-lg font-bold text-ink underline underline-offset-4 shadow-sm";
+// Enlarged, the ✕ and pill row take the top and the stepper and credit the bottom (top-clear included roughly).
+const FIT_EXPANDED = { ...FIT, padding: { top: 132, bottom: 150, left: 40, right: 72 } } as const;
 const buttonClass =
   "tap-target inline-flex items-center justify-center gap-2 rounded-full border border-ink bg-paper px-3 text-lg font-bold text-ink hover:bg-surface";
 // The small round controls laid over the map: a 48 px target (the older-reader rule) with a smaller circle drawn in it.
@@ -92,9 +106,12 @@ export function TrailMap({
   draft,
   settings,
   placesFirst,
+  lineElevations,
 }: {
   stops: MapStop[];
   line: Position[] | null;
+  /** The height of each point of `line` (as the elevation chart), for the fly-along's readout. */
+  lineElevations?: (number | null)[] | null;
   /** Side trips (寄り道): thin dashed blue lines out to stop-by places. */
   sideLines?: Position[][];
   places: MapPlace[];
@@ -117,6 +134,11 @@ export function TrailMap({
   const [expanded, setExpanded] = useState(false);
   const [listOpen, setListOpen] = useState(false);
   const [terrain, setTerrain] = useState(false);
+  // The fly-along over the 3D map, and where it is (rounded, so the readout re-renders only when its words change).
+  const [flying, setFlying] = useState(false);
+  const [flightAt, setFlightAt] = useState<{ km: string; m: number | null } | null>(null);
+  // The stepper's › while the fly-along is paused at a stop: go on before its seconds are up.
+  const skipPause = useRef(false);
   // Side trips (寄り道) are off at first: some places are worth a mention without being a stop on the way.
   const [showSide, setShowSide] = useState(false);
   const hasSide = sideLines.some((l) => l.length >= 2);
@@ -295,7 +317,7 @@ export function TrailMap({
         ...(line ?? []),
         ...visiblePlaces.map((p) => p.position),
       ]);
-      if (bounds) map.fitBounds(bounds, FIT);
+      if (bounds) map.fitBounds(bounds, expanded ? FIT_EXPANDED : FIT);
     }, 150);
     return () => window.clearTimeout(timer);
   }, [expanded, loaded, mapGen, stops, line, visiblePlaces]);
@@ -316,17 +338,112 @@ export function TrailMap({
     }
   }, [terrain, loaded, mapGen]);
 
+  // 3D (2026-11-26, user): on the enlarged map the terrain pill also raises the ground (GSI heights through lib/gsi-dem.ts,
+  // as the /map page's 3D) under a tilted view, so the course line lies on the real slopes. Flat and north-up again when it
+  // is turned off or the map closes (the visitor cannot rotate it back: dragRotate is off).
+  useEffect(() => {
+    const map = mapRef.current;
+    const ml = mlRef.current;
+    if (!map || !ml || !loaded) return;
+    const duration = motionLevel() === "full" ? 700 : 0;
+    if (terrain && expanded) {
+      registerGsiDem(ml);
+      if (!map.getSource(DEM_SOURCE)) map.addSource(DEM_SOURCE, { ...GSI_DEM_SOURCE, attribution: gsiAttribution });
+      map.setTerrain({ source: DEM_SOURCE, exaggeration: 1.5 });
+      map.easeTo({ pitch: 60, duration });
+    } else if (map.getTerrain()) {
+      map.setTerrain(null);
+      map.easeTo({ pitch: 0, bearing: 0, duration });
+    }
+  }, [terrain, expanded, loaded, mapGen]);
+
+  // The fly-along (2026-11-26, user): the 3D camera follows the course from start to goal, looking ahead along it, with a dot
+  // and a readout of the distance and height. Any touch, drag or scroll on the map, the button again, turning 3D off, closing
+  // or leaving the page stops it; the view then turns north-up again. Only offered at the full motion level.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!flying || !map || !expanded || !terrain) return;
+    const path = flightPath(line ?? stops.map((s) => s.position));
+    if (path.total === 0) return;
+    const seconds = flightSeconds(path.total);
+    // Where it pauses (2026-11-26, user): at each waypoint the admin left on (automatic: stamp places and side trips), for
+    // that waypoint's seconds, with its card; 次へ ends a pause early.
+    const pauses = flightStops(path, stops.filter((s) => s.fly).map((s) => ({ id: s.id, position: s.position })));
+    const pauseSeconds = new Map(stops.map((s) => [s.id, s.fly?.seconds ?? 0]));
+    let last = 0;
+    let d = 0;
+    let nextPause = 0;
+    let holdUntil = 0;
+    let frame = 0;
+    let bearing = headingAt(path, 0);
+    let shown = "";
+    skipPause.current = false;
+    const tick = (now: number) => {
+      const dt = last ? now - last : 0;
+      last = now;
+      if (holdUntil) {
+        if (now < holdUntil && !skipPause.current) {
+          frame = requestAnimationFrame(tick);
+          return;
+        }
+        holdUntil = 0;
+        skipPause.current = false;
+        setSelected(null);
+      } else {
+        d = Math.min(path.total, d + (dt / 1000 / seconds) * path.total);
+      }
+      const pause = pauses[nextPause];
+      if (pause && d >= pause.d) {
+        d = pause.d;
+        nextPause++;
+        holdUntil = now + (pauseSeconds.get(pause.id) ?? 5) * 1000;
+        // The stop is chosen: the stepper names it and opens its card, as the arrows do.
+        setSelected({ kind: "stop", id: pause.id });
+      }
+      const at = pointAt(path, d);
+      bearing = turnToward(bearing, headingAt(path, d), 0.06);
+      map.jumpTo({ center: [at.lng, at.lat], bearing, pitch: 60, zoom: 14.5 });
+      setElevationCursor(at);
+      const height = heightAt(path, lineElevations, d);
+      const next = { km: (d / 1000).toFixed(1), m: height === null ? null : Math.round(height) };
+      if (`${next.km}|${next.m}` !== shown) {
+        shown = `${next.km}|${next.m}`;
+        setFlightAt(next);
+      }
+      if (d >= path.total && !holdUntil) setFlying(false);
+      else frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    const box = map.getCanvasContainer();
+    const interrupt = () => setFlying(false);
+    const onHide = () => document.hidden && setFlying(false);
+    box.addEventListener("pointerdown", interrupt);
+    box.addEventListener("wheel", interrupt, { passive: true });
+    document.addEventListener("visibilitychange", onHide);
+    return () => {
+      cancelAnimationFrame(frame);
+      box.removeEventListener("pointerdown", interrupt);
+      box.removeEventListener("wheel", interrupt);
+      document.removeEventListener("visibilitychange", onHide);
+      setElevationCursor(null);
+      setFlightAt(null);
+      map.easeTo({ bearing: 0, duration: motionLevel() === "full" ? 600 : 0 });
+    };
+  }, [flying, expanded, terrain, mapGen, line, stops, lineElevations]);
+
   // Expanded view: keep the page still behind it, close on Escape, and move focus sensibly.
   useEffect(() => {
     if (!expanded) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setExpanded(false);
     document.addEventListener("keydown", onKey);
-    document.body.classList.add("overflow-hidden");
+    document.body.classList.add("overflow-hidden", "map-expanded");
     closeRef.current?.focus();
     const opener = expandRef.current;
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.classList.remove("overflow-hidden");
+      document.body.classList.remove("overflow-hidden", "map-expanded");
+      setTerrain(false); // the small map on the page stays flat and plain
+      setFlying(false);
       opener?.focus();
     };
   }, [expanded]);
@@ -379,10 +496,6 @@ export function TrailMap({
   const fromLabel = selectedStop
     ? t`「${stopName}」から近い順`
     : t`コースの出発地点から近い順（まっすぐ測った距離です）`;
-  const terrainLabel =
-    settings.terrain === "relief"
-      ? terrain ? t`標高の色を消す` : t`標高の色を見る`
-      : terrain ? t`地形の陰影を消す` : t`地形の陰影を見る`;
   const anyPlaces = places.length > 0;
 
   if (failed) {
@@ -399,20 +512,22 @@ export function TrailMap({
     <section
       ref={sectionRef}
       aria-label={t`地図`}
-      className={expanded ? "trail-map fixed inset-0 z-30 flex flex-col gap-3 bg-paper p-3 pt-[calc(0.75rem+var(--top-clear))]" : "trail-map relative flex scroll-mt-2 flex-col gap-2 @4xl:h-full"}
+      // Enlarged (2026-11-26, user): the map is the whole screen, edge to edge, with every control floating on it: ✕ at the
+      // top left, the layer pills beside it, zoom at the top right, the stepper at the bottom. Its own @container, so from a
+      // wide screen it takes the over-the-map layout of the wide page.
+      data-expanded={expanded || undefined}
+      className={expanded ? "trail-map @container fixed inset-0 z-30 bg-paper" : "trail-map relative flex scroll-mt-2 flex-col gap-2 @4xl:h-full"}
     >
       {expanded ? (
-        <div className="flex items-center justify-between gap-2">
-          {draft ? <SampleNoticeButton /> : <span />}
-          <div className="flex items-center gap-2">
-            <button type="button" onClick={() => setTerrain((on) => !on)} aria-pressed={terrain} className={buttonClass}>
-              {terrainLabel}
-            </button>
-            <button ref={closeRef} type="button" onClick={() => setExpanded(false)} className={buttonClass}>
-              {t`閉じる`}
-            </button>
-          </div>
-        </div>
+        <button
+          ref={closeRef}
+          type="button"
+          onClick={() => setExpanded(false)}
+          aria-label={t`閉じる`}
+          className="tap-target absolute left-3 top-[calc(0.75rem+var(--top-clear))] z-20 inline-flex size-12 items-center justify-center rounded-full border border-ink bg-paper text-ink shadow-md print:hidden"
+        >
+          <CloseIcon />
+        </button>
       ) : null}
 
       {/* Everything the visitor works the map with lies on it (2026-11-11): the small zoom and full-screen buttons at the
@@ -421,7 +536,7 @@ export function TrailMap({
       <div
         className={
           expanded
-            ? "relative min-h-0 flex-1 overflow-hidden rounded-xl border-2 border-line"
+            ? "absolute inset-0 overflow-hidden"
             : "relative -mx-4 h-[min(62svh,40rem)] min-h-[20rem] overflow-hidden border-y-2 border-line @4xl:mx-0 @4xl:h-full @4xl:min-h-0 @4xl:border-0"
         }
       >
@@ -438,7 +553,8 @@ export function TrailMap({
         )}
 
         {draft ? (
-          <p className="absolute left-2 top-2 z-10 flex max-w-[calc(100%-4rem)] items-center gap-1.5 rounded-lg border-2 border-caution bg-paper px-2 py-1 text-base font-bold leading-tight">
+          // Enlarged: below the row of the ✕ and the pills.
+          <p className={`absolute z-10 flex max-w-[calc(100%-4rem)] items-center gap-1.5 rounded-lg border-2 border-caution bg-paper px-2 py-1 text-base font-bold leading-tight ${expanded ? "left-3 top-[calc(4.5rem+var(--top-clear))]" : "left-2 top-2"}`}>
             <span className="text-caution">
               <WarningIcon />
             </span>
@@ -446,7 +562,17 @@ export function TrailMap({
           </p>
         ) : null}
 
-        <div className="absolute right-1 top-1 z-10 flex flex-col print:hidden">
+        {/* Where the fly-along is: the distance from the start and the height there (from the line, as the elevation chart). */}
+        {flightAt ? (
+          <p
+            aria-live="off"
+            className={`absolute left-3 z-10 rounded-lg bg-paper/95 px-3 py-1 text-lg font-bold tabular-nums text-ink shadow-sm ${draft ? "top-[calc(7.5rem+var(--top-clear))]" : "top-[calc(4.5rem+var(--top-clear))]"}`}
+          >
+            {flightAt.m === null ? `${flightAt.km} km` : t`標高 ${flightAt.m} m・${flightAt.km} km`}
+          </p>
+        ) : null}
+
+        <div className={`absolute z-10 flex flex-col print:hidden ${expanded ? "right-2 top-[calc(0.5rem+var(--top-clear))]" : "right-1 top-1"}`}>
           <button type="button" onClick={() => zoom(1)} aria-label={t`拡大`} className={hit}>
             <span className={disc}>
               <PlusIcon size={20} />
@@ -457,6 +583,24 @@ export function TrailMap({
               <MinusIcon size={20} />
             </span>
           </button>
+          {/* 3D on the enlarged map, with the map's other controls (as map apps do); filled while on. */}
+          {expanded ? (
+            <button
+              type="button"
+              onClick={() => {
+                setTerrain((on) => !on);
+                setFlying(false);
+              }}
+              aria-pressed={terrain}
+              aria-label={t`立体の地図（3D）`}
+              title={t`立体の地図（3D）`}
+              className={hit}
+            >
+              <span className={`flex size-9 items-center justify-center rounded-full border border-ink text-base font-bold shadow-sm ${terrain ? "bg-ink text-paper" : "bg-paper/95 text-ink"}`}>
+                3D
+              </span>
+            </button>
+          ) : null}
           {expanded ? null : (
             <button ref={expandRef} type="button" onClick={() => setExpanded(true)} aria-label={t`大きく表示`} className={hit}>
               <span className={disc}>
@@ -467,7 +611,7 @@ export function TrailMap({
         </div>
 
         {listOpen && sortedPlaces.length > 0 ? (
-          <div className="absolute inset-0 z-20 overflow-y-auto bg-paper p-4">
+          <div className={`absolute inset-0 z-20 overflow-y-auto bg-paper p-4 ${expanded ? "pt-[calc(1rem+var(--top-clear))]" : ""}`}>
             <div className="mb-2 flex justify-end">
               <button type="button" onClick={() => setListOpen(false)} className={buttonClass}>
                 {t`閉じる`}
@@ -477,9 +621,28 @@ export function TrailMap({
           </div>
         ) : null}
       </div>
-      <div className={`flex flex-col gap-2 px-3 pb-2 print:hidden ${expanded ? "" : "@4xl:pointer-events-none @4xl:absolute @4xl:inset-x-2 @4xl:bottom-8 @4xl:z-10 @4xl:max-h-[calc(100%-4rem)] @4xl:p-0 @4xl:[&>*]:pointer-events-auto"}`}>
+      {/* Enlarged: one layer over the whole map that lets touches through to it; the pills rise to the top row (order-first,
+          mb-auto), the rest sits at the bottom, above the required map credit. */}
+      <div className={`flex flex-col gap-2 px-3 print:hidden ${expanded ? "pointer-events-none absolute inset-0 z-10 justify-end pb-[calc(2.25rem+env(safe-area-inset-bottom,0px))] pt-[calc(0.75rem+var(--top-clear))] [&>*]:pointer-events-auto" : "pb-2 @4xl:pointer-events-none @4xl:absolute @4xl:inset-x-2 @4xl:bottom-8 @4xl:z-10 @4xl:max-h-[calc(100%-4rem)] @4xl:p-0 @4xl:[&>*]:pointer-events-auto"}`}>
+        {/* The fly-along, labelled, just above the stepper it plays through (the stepper's card is its card at each stop). It
+            turns 3D on by itself. Only at the full motion level: a moving camera is a lot of motion. */}
+        {expanded && motionLevel() === "full" && stepper ? (
+          <button
+            type="button"
+            onClick={() => {
+              if (!flying) setTerrain(true);
+              setFlying((on) => !on);
+            }}
+            aria-pressed={flying}
+            className={buttonStyle("primary", "md", "order-1 inline-flex self-start shadow-md @4xl:order-none")}
+          >
+            {flying ? <StopIcon /> : <PlayIcon />}
+            {t`コースをたどる`}
+          </button>
+        ) : null}
         {selectedStop || selectedPlace ? (
-          <div className="order-2 min-h-0 overflow-y-auto rounded-xl shadow-md @4xl:order-none">
+          // Under the map a stop's card joins the stepper, which already names it (below); this one is for over the map.
+          <div className={`order-2 min-h-0 overflow-y-auto rounded-xl shadow-md @4xl:order-none ${selectedStop && stepper ? "hidden @4xl:block" : ""}`}>
             {selectedStop ? (
               <StopCard
                 order={selectedStop.order}
@@ -488,6 +651,7 @@ export function TrailMap({
                 status={selectedStop.status}
                 href={selectedStop.href}
                 noStamp={selectedStop.noStamp}
+                fly={selectedStop.fly}
                 draft={draft}
                 onClose={() => setSelected(null)}
               />
@@ -499,36 +663,66 @@ export function TrailMap({
         {/* On a phone the row dissolves into the block (contents) so the stepper stays right under the map, then the stop's card, then the chips. */}
           <div className="contents @4xl:flex @4xl:flex-row @4xl:items-end @4xl:justify-between @4xl:gap-2">
           {/* One strip of single-line layer pills that wraps (under the map and over it), so the elevation chart stays close to the map. */}
-          <div className="order-3 flex min-w-0 flex-wrap items-center gap-2 @4xl:order-none @4xl:gap-1.5">
+          {/* One line that scrolls sideways on a narrow screen (user, 2026-11-26: wrapped pills took too much room): under the
+              map, or enlarged as the top row between the ✕ and the zoom buttons. The padding leaves room for the ✓ badges. */}
+          <div
+            className={`flex min-w-0 items-center gap-2 @4xl:order-none @4xl:gap-1.5 ${
+              expanded
+                ? "order-first mb-auto ml-14 mr-12 flex-nowrap overflow-x-auto px-1.5 py-2 [scrollbar-width:none] [&_button]:shrink-0 @4xl:m-0 @4xl:flex-wrap @4xl:overflow-visible @4xl:py-0"
+                : "order-3 -mx-1.5 flex-nowrap overflow-x-auto px-1.5 py-2 [scrollbar-width:none] [&_button]:shrink-0 @4xl:mx-0 @4xl:flex-wrap @4xl:overflow-visible @4xl:p-0"
+            }`}
+          >
+            {expanded && draft ? <SampleNoticeButton /> : null}
+            {/* Only what to show on the map here; 3D is beside the zoom buttons and the fly-along above the stepper (user,
+                2026-11-26: controls are not filters). */}
             {anyPlaces ? <PlaceChips className="contents" counts={counts} active={active} onToggle={toggleGroup} /> : null}
             {hasSide ? (
               <button type="button" aria-pressed={showSide} onClick={() => setShowSide((on) => !on)} className={filterPill(showSide)}>
-                {showSide ? <TickIcon size={20} /> : null}
+                <TickBadge on={showSide} />
                 {t`寄り道`}
               </button>
             ) : null}
             {sortedPlaces.length > 0 ? (
-              <button type="button" aria-expanded={listOpen} onClick={() => setListOpen((on) => !on)} className={listLink}>
+              <button type="button" aria-expanded={listOpen} onClick={() => setListOpen((on) => !on)} className={expanded ? listLinkOverMap : listLink}>
                 <ListIcon />
                 {t`周辺の施設`}
               </button>
             ) : null}
           </div>
           {stepper ? (
-            <div role="group" aria-label={t`スポットを順に見る`} className="order-1 flex w-full shrink-0 items-center rounded-full border border-ink bg-paper/95 shadow-sm @4xl:order-none @4xl:w-auto">
+            // With a stop chosen, under the map, the pill grows into one block with that stop's card (no second name).
+            <div className={`order-1 w-full shrink-0 border border-ink bg-paper/95 shadow-sm @4xl:order-none @4xl:w-auto @4xl:rounded-full ${selectedStop ? "rounded-xl" : "rounded-full"}`}>
+            <div role="group" aria-label={t`スポットを順に見る`} className="flex items-center">
               {/* Under the map the bar says what it steps through, then the stop it is on; over the map it is just the arrows and count. */}
               <p className="min-w-0 flex-1 truncate pl-4 text-lg font-bold @4xl:hidden" lang={selectedStop?.nameLang}>
                 {selectedStop ? `${selectedStop.order ? `${selectedStop.order}. ` : ""}${selectedStop.name}` : t`スポットを順に見る`}
               </p>
-              <button type="button" onClick={() => goToStop(-1)} disabled={stopIndex === 0} aria-label={t`前の場所`} className={hit}>
+              <button type="button" onClick={() => goToStop(-1)} disabled={stopIndex === 0 || flying} aria-label={t`前の場所`} className={hit}>
                 <ChevronLeftIcon />
               </button>
               <p aria-live="polite" className="min-w-[3.75rem] text-center text-lg font-bold tabular-nums">
                 {stopIndex === -1 ? "－" : stopIndex + 1} / {stops.length}
               </p>
-              <button type="button" onClick={() => goToStop(1)} disabled={stopIndex === stops.length - 1} aria-label={t`次の場所`} className={hit}>
+              <button type="button" onClick={() => (flying ? (skipPause.current = true) : goToStop(1))} disabled={!flying && stopIndex === stops.length - 1} aria-label={t`次の場所`} className={hit}>
                 <ChevronIcon />
               </button>
+            </div>
+            {selectedStop ? (
+              <div className="border-t border-line px-4 pb-3 pt-2 @4xl:hidden">
+                <StopCard
+                  bare
+                  order={selectedStop.order}
+                  name={selectedStop.name}
+                  nameLang={selectedStop.nameLang}
+                  status={selectedStop.status}
+                  href={selectedStop.href}
+                  noStamp={selectedStop.noStamp}
+                  fly={selectedStop.fly}
+                  draft={draft}
+                  onClose={() => setSelected(null)}
+                />
+              </div>
+            ) : null}
             </div>
           ) : null}
         </div>

@@ -71,6 +71,11 @@ export interface PlaceBody {
   detachedLabelEn: string | null;
   stampSpotId: string | null;
   stampImageUrl: string | null;
+  flyShow: boolean | null;
+  flySeconds: number | null;
+  flyPhotoUrl: string | null;
+  flyNoteJa: string | null;
+  flyNoteEn: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
   photoSourceUrl: string | null;
@@ -169,6 +174,11 @@ export function placeBody(p: PlaceDraft): PlaceBody {
     detachedLabelEn: nullIfEmpty(p.detachedLabelEn),
     stampSpotId: p.stampSpotId,
     stampImageUrl: nullIfEmpty(p.stampImageUrl),
+    flyShow: p.flyShow,
+    flySeconds: p.flySeconds,
+    flyPhotoUrl: nullIfEmpty(p.flyPhotoUrl),
+    flyNoteJa: nullIfEmpty(p.flyNoteJa),
+    flyNoteEn: nullIfEmpty(p.flyNoteEn),
     photoUrl: nullIfEmpty(p.photoUrl),
     photoCredit: nullIfEmpty(p.photoCredit),
     photoSourceUrl: nullIfEmpty(p.photoSourceUrl),

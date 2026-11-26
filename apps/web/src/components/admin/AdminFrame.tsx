@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useSyncExternalStore, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { PanelIcon } from "@/components/icons";
+import { PanelIcon } from "@/components/admin/admin-icons";
 import { Toaster } from "./Toaster";
 
 const KEY = "admin-sidebar-hidden";

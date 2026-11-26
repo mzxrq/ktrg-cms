@@ -9,7 +9,7 @@ import { Decoration, DecorationSet } from "@tiptap/pm/view";
 import { EditorContent, NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer, useEditor, useEditorState, type Editor, type NodeViewProps } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useLingui } from "@lingui/react/macro";
-import { ChevronDownIcon, ChevronUpIcon, ImageIcon, LinkIcon, ListIcon, PinIcon, PlusIcon, TrashIcon, UndoIcon } from "@/components/icons";
+import { ChevronDownIcon, ChevronUpIcon, ImageIcon, LinkIcon, ListIcon, PinIcon, PlusIcon, TrashIcon, UndoIcon } from "@/components/admin/admin-icons";
 import { CardTitle, PageCard, PlaceBlock } from "@/lib/admin/card-nodes";
 import { fetchRelation } from "@/lib/admin/lists/relation-lookup";
 import { noteProblems, noteSpots, renumberNotes } from "@/lib/admin/footnotes";

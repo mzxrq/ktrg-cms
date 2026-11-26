@@ -4,7 +4,7 @@ import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { initLingui } from "@/i18n/server";
 import { adminGet } from "@/lib/admin/admin-fetch";
-import { ChevronIcon } from "@/components/icons";
+import { ChevronIcon } from "@/components/admin/admin-icons";
 import type { PageKey, PageText } from "@/lib/page-text";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 

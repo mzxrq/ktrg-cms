@@ -4,7 +4,7 @@ import { useLingui } from "@lingui/react/macro";
 import { useAccessTypeNames, AccessIcon } from "@/components/AccessList";
 import { accessServes, accessTypes, gsiMapUrl, isAccessType, MAX_ACCESS_POINTS, newAccessPoint, type AccessPoint } from "@/lib/access-points";
 import { Check, Field, inputClass, NumberInput, TextInput } from "./fields";
-import { ArrowDownIcon, ArrowUpIcon, PlusIcon } from "@/components/icons";
+import { ArrowDownIcon, ArrowUpIcon, PlusIcon } from "@/components/admin/admin-icons";
 
 /**
  * How to get there, as rows: pick the kind (train, bus, ferry ...), then the place and a short note in Japanese and

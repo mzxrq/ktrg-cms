@@ -3,7 +3,7 @@
 import { useLingui } from "@lingui/react/macro";
 import { Fragment, type ReactNode } from "react";
 import { isKanji, isPerKanji, partsFor, serializeRuby, type RubyPart } from "@/lib/ruby";
-import { LinkIcon, ScissorsIcon } from "../icons";
+import { LinkIcon, ScissorsIcon } from "@/components/admin/admin-icons";
 
 // Round, icon only: it sits in the gap between two reading boxes, which says what it joins.
 const link = "inline-flex size-11 min-h-0 min-w-0 items-center justify-center rounded-full border border-line text-ink hover:bg-surface [&_svg]:size-5";

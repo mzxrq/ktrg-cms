@@ -3,7 +3,7 @@
 import { useLingui } from "@lingui/react/macro";
 import { addPeriod, copyDay, hasBackward, hoursText, isBackward, MAX_PERIODS, parseHours, removePeriod, setClosed, setTime } from "@/lib/admin/opening-hours";
 import { inputClass, TextInput } from "./fields";
-import { PlusIcon } from "@/components/icons";
+import { PlusIcon } from "@/components/admin/admin-icons";
 
 const button = "tap-target rounded-full border border-line px-4 text-base font-bold disabled:opacity-40";
 

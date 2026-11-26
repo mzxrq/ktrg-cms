@@ -6,7 +6,7 @@ import { pointKinds, stampableByDefault, type PointKind } from "@/lib/point-kind
 import type { PlaceDraft } from "@/lib/admin/route-draft";
 import { inputClass, NumberInput } from "./fields";
 import { useKindLabels } from "./PlacePanel";
-import { PlusIcon } from "@/components/icons";
+import { PlusIcon } from "@/components/admin/admin-icons";
 
 /** Column widths in px: #, name, kind, stamp, latitude, longitude, delete. Drag the edge of a heading to change one. */
 const DEFAULT_WIDTHS = [48, 260, 200, 110, 150, 150, 100];

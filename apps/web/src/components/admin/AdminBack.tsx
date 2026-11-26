@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ChevronLeftIcon } from "@/components/icons";
+import { ChevronLeftIcon } from "@/components/admin/admin-icons";
 
 /** The way back to a list at the top of an admin page: a button, so it is easy to see. */
 export function AdminBack({ href, children }: { href: string; children: ReactNode }) {

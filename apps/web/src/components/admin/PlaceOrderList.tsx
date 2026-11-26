@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { MenuIcon } from "@/components/icons";
+import { MenuIcon } from "@/components/admin/admin-icons";
 import type { PlaceDraft } from "@/lib/admin/route-draft";
 import { movedKeys } from "@/lib/admin/moved-keys";
 

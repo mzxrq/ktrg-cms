@@ -183,6 +183,18 @@ export const AutoThemeIcon = () => (
   </Icon>
 );
 
+export const PlayIcon = () => (
+  <Icon>
+    <path d="M8 5.5v13l10.5-6.5z" />
+  </Icon>
+);
+
+export const StopIcon = () => (
+  <Icon>
+    <rect x="7" y="7" width="10" height="10" rx="1.5" />
+  </Icon>
+);
+
 export const MenuIcon = () => (
   <Icon>
     <path d="M4 7h16" />

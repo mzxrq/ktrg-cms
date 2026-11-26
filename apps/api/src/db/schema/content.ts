@@ -212,6 +212,12 @@ export const spots = pgTable(
     stampImageUrl: text("stamp_image_url"),
     // More photos of the place, in order (the first photo above is its main one).
     photos: jsonb("photos").$type<SpotPhoto[]>().notNull().default(sql`'[]'::jsonb`),
+    // The fly-along over the 3D course map (コースをたどる, 2026-11-26, user), set per waypoint in admin: whether the flight
+    // stops here (null: automatic, yes for stamp places and side trips), for how many seconds (null: 5) and which of its
+    // photos the card shows (null: the main one). Its own short line is spot_translations.fly_note.
+    flyShow: boolean("fly_show"),
+    flySeconds: smallint("fly_seconds"),
+    flyPhotoUrl: text("fly_photo_url"),
     status: spotStatus("status").notNull().default("open"),
     statusUpdatedAt: timestamp("status_updated_at", { withTimezone: true }),
     // Order within the route (the design doc does not specify one).
@@ -228,6 +234,7 @@ export const spots = pgTable(
     check("spots_lat_range", sql`${t.lat} is null or ${t.lat} between -90 and 90`),
     check("spots_lng_range", sql`${t.lng} is null or ${t.lng} between -180 and 180`),
     check("spots_coordinates_together", sql`(${t.lat} is null) = (${t.lng} is null)`),
+    check("spots_fly_seconds_range", sql`${t.flySeconds} is null or ${t.flySeconds} between 3 and 15`),
     check("spots_stamp_lat_range", sql`${t.stampLat} is null or ${t.stampLat} between -90 and 90`),
     check("spots_stamp_lng_range", sql`${t.stampLng} is null or ${t.stampLng} between -180 and 180`),
     check("spots_stamp_point_together", sql`(${t.stampLat} is null) = (${t.stampLng} is null)`),
@@ -619,6 +626,8 @@ export const spotTranslations = pgTable(
     statusNote: text("status_note"),
     // What visitors read on a place not connected to the route (empty: a default, 道からはなれた場所).
     detachedLabel: text("detached_label"),
+    // The short line the fly-along's card shows here (empty: the start of the description).
+    flyNote: text("fly_note"),
     source: text("source"),
     // What the main photo shows (本殿, 鳥居), shown with its credit.
     photoName: text("photo_name"),

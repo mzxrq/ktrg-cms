@@ -247,6 +247,71 @@ export function PlacePanel(p: PlacePanelProps) {
             {p.invalidPhoto ? <p role="alert" className="text-base font-bold text-danger">{t`写真のリンクは、https:// で始まるものだけ使えます。`}</p> : null}
           </Group>
 
+          {/* 2026-11-26, user: the visitor's fly-along over the 3D course map stops at waypoints and shows a card; how, per waypoint. */}
+          <Group title={t`コースをたどる`}>
+            <Field
+              label={t`ここで止まる`}
+              htmlFor={`${id}-fly-show`}
+              hint={t`立体の地図で「コースをたどる」を再生したとき、ここで止まって紹介するかどうかです。自動では、スタンプの場所と寄り道で止まります。`}
+            >
+              <select
+                id={`${id}-fly-show`}
+                value={place.flyShow === null ? "" : place.flyShow ? "yes" : "no"}
+                onChange={(e) => p.onChange({ flyShow: e.target.value === "" ? null : e.target.value === "yes" })}
+                className={`${inputClass} max-w-md`}
+              >
+                <option value="">{t`自動`}</option>
+                <option value="yes">{t`止まる`}</option>
+                <option value="no">{t`止まらない`}</option>
+              </select>
+            </Field>
+            <Field label={t`止まる長さ（秒）`} htmlFor={`${id}-fly-seconds`}>
+              <div className="flex items-center gap-3">
+                <input
+                  id={`${id}-fly-seconds`}
+                  type="range"
+                  min={3}
+                  max={15}
+                  step={1}
+                  value={place.flySeconds ?? 5}
+                  onChange={(e) => p.onChange({ flySeconds: Number(e.target.value) })}
+                  className="h-10 w-full max-w-sm accent-[var(--color-brand)]"
+                />
+                <span className="w-20 text-lg font-bold tabular-nums">{place.flySeconds ?? 5} s</span>
+              </div>
+            </Field>
+            <Field label={t`見せる写真`} htmlFor={`${id}-fly-photo`}>
+              <select
+                id={`${id}-fly-photo`}
+                value={place.flyPhotoUrl}
+                onChange={(e) => p.onChange({ flyPhotoUrl: e.target.value })}
+                className={`${inputClass} max-w-md`}
+              >
+                <option value="">{t`メインの写真`}</option>
+                {place.photos
+                  .filter((x) => x.url.trim() !== "" && x.url !== place.photoUrl)
+                  .map((x, i) => (
+                    <option key={x.url} value={x.url}>
+                      {x.nameJa?.trim() || t`写真 ${i + 2}`}
+                    </option>
+                  ))}
+              </select>
+            </Field>
+            <PhotoSlot url={place.flyPhotoUrl || place.photoUrl} className="max-w-48" />
+            <MultilingualField
+              id={`${id}-fly-note`}
+              label={t`紹介のひとこと`}
+              field="flyNote"
+              ja={place.flyNoteJa}
+              en={place.flyNoteEn}
+              translations={place.translations}
+              onJa={(v) => p.onChange({ flyNoteJa: v })}
+              onEn={(v) => p.onChange({ flyNoteEn: v })}
+              onTranslations={(v) => p.onChange({ translations: v })}
+            />
+            <p className="text-base text-muted">{t`空のままなら、説明のはじめの部分を見せます。`}</p>
+          </Group>
+
           <Group title={t`位置`}>
             <div className="flex flex-wrap gap-4">
               <Field label={t`緯度`} htmlFor={`${id}-lat`}>

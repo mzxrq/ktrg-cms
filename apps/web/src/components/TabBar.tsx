@@ -54,11 +54,12 @@ function subscribeFold(listener: () => void) {
 // phone page, with a menu button instead of a tab bar). From 1024 px it is a sidebar fixed to the far left: the logo (a
 // link home), the tabs centred, the menu as one more item, and at the bottom `footer` (the language picker).
 /** The panel's ground: a thin double frame set in from the edge with a faint 七宝 inside it only (the margin outside
- *  stays plain, 2026-11-19). Decoration only. `show` is the variant it appears at (the desktop sidebar, the menu drawer). */
-export const panelGround = (show: string) => (
+ *  stays plain, 2026-11-19). Decoration only. `show` is the variant it appears at (the desktop sidebar); none = always (the
+ *  menu drawer). Never pass a plain "block": it ties with "hidden", and Tailwind's order lets "hidden" win. */
+export const panelGround = (show?: string) => (
   <span
     aria-hidden="true"
-    className={`pointer-events-none absolute inset-2 -z-10 hidden border-[3px] border-double border-on-rail/35 ${show}`}
+    className={`pointer-events-none absolute inset-2 -z-10 border-[3px] border-double border-on-rail/35 ${show ? `hidden ${show}` : ""}`}
   >
     <span className="pattern-shippo pattern-on-rail block size-full" />
     {/* The top and bottom lines open in the middle (2026-11-19, the user's idea): an open frame, not a box. */}
@@ -86,14 +87,12 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
 
   // While reading on a phone, scrolling down tucks the tab bar away and scrolling up brings it
   // back (lib/scroll-bars.ts). It only sets <html data-bars="hidden">; the CSS decides who moves (phones only). A new page
-  // and an open menu always show them.
+  // shows them; an open menu keeps them as they were (opened from the round menu button, that button stays to close it).
   useEffect(() => {
     const root = document.documentElement;
-    if (open) {
-      delete root.dataset.bars;
-      return;
-    }
-    let state = initialBars(window.scrollY);
+    if (open) return;
+    // Carry on from where the bars were before the menu opened (a new page has already shown them, below).
+    let state = { ...initialBars(window.scrollY), hidden: root.dataset.bars === "hidden" };
     let frame = 0;
     const onScroll = () => {
       if (frame) return;
@@ -112,9 +111,11 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
     return () => {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(frame);
-      delete root.dataset.bars;
     };
   }, [open, pathname]);
+  // A new page (or leaving these pages) shows the bars again. Its cleanup runs before the effect above reads them.
+  // Kept to one line so the lines below (and the catalogs' line numbers) stay where they were.
+  useEffect(() => () => { delete document.documentElement.dataset.bars; }, [pathname]);
 
   const tabs = [
     { path: "/", label: t`ホーム`, icon: <HomeIcon /> },
@@ -220,6 +221,20 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
           </li>
         </ul>
       </nav>
+      {/* While the tab bar is tucked away on a phone, the menu stays in reach: a round menu button at the top right, in the
+          tablet button's colours (2026-11-26, the boss's request). Shown only by the CSS (data-menu-fab). The bar stays
+          away while the menu is open, so the menu then carries the tabs (data-menu-tabs) and this button closes it. */}
+      <button
+        type="button"
+        data-menu-fab
+        onClick={() => setOpen(!open)}
+        aria-label={open ? t`閉じる` : t`メニュー`}
+        aria-expanded={open}
+        aria-controls="site-menu"
+        className="tap-target fixed right-3 top-[calc(0.25rem+var(--top-clear))] z-40 hidden size-12 items-center justify-center rounded-full border border-line bg-rail text-ink shadow-[0_2px_10px_rgb(0_0_0/0.3)] print:hidden [&_svg]:size-6"
+      >
+        {open ? <CloseIcon /> : <MenuIcon />}
+      </button>
       {/* Lined up with the tab pills (same side padding), clear of the frame at the bottom. */}
       {footer && !mini ? (
         <div className="hidden px-[29px] pb-[29px] pt-4 wide:block">

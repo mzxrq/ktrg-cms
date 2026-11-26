@@ -7,11 +7,13 @@ import { join } from "node:path";
 const src = join(import.meta.dir, "..");
 const read = (...p: string[]) => readFileSync(join(src, ...p), "utf8");
 
-test("the menu is four titled groups on the paper ground, sign in is the brand button, links are ink rows", () => {
+test("the menu is four titled groups on the framed rail ground, sign in is the brand button, links are ink rows", () => {
   const header = read("components", "SiteHeader.tsx");
   for (const title of ["アカウント", "その他", "表示・設定", "このアプリについて"]) expect(header).toContain(`<MenuGroup title={t\`${title}\`}>`);
   expect(header).toMatch(/buttonStyle\("action", "lg", "flex w-full"\)/);
-  expect(header).toMatch(/fixed inset-0 overflow-y-auto[^"]*bg-paper/);
+  // Phones have the tablet's frame and 七宝 too (2026-11-26).
+  expect(header).toMatch(/fixed inset-x-0 top-0[^"]*bg-rail/);
+  expect(header).toContain("{panelGround()}");
   expect(header).toMatch(/font-serif text-3xl font-bold text-accent/);
 });
 

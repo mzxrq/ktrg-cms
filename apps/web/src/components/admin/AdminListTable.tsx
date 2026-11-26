@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
+import { ChevronIcon } from "@/components/admin/admin-icons";
 import { Pager } from "@/components/Pager";
 import { useErrorMessages } from "@/components/useErrorMessages";
 import { Chip } from "./Chip";
@@ -276,7 +277,7 @@ export function AdminListTable({
       {filterFields.length > 0 ? (
         <details className="group md:hidden" open={pickedCount > 0 || undefined}>
           <summary className="tap-target flex w-fit cursor-pointer list-none items-center gap-2 text-base font-bold text-accent [&::-webkit-details-marker]:hidden">
-            <span aria-hidden="true" className="transition-transform group-open:rotate-90">▸</span>
+            <span aria-hidden="true" className="inline-flex transition-transform group-open:rotate-90"><ChevronIcon size={18} /></span>
             {t`絞りこみ`}
             {pickedCount > 0 ? <span className="rounded-full bg-ink px-2 text-sm text-paper">{pickedCount}</span> : null}
           </summary>
@@ -292,7 +293,7 @@ export function AdminListTable({
       {otherFilters.length > 0 ? (
         <details className="group hidden md:block" open={otherPicked > 0 || undefined}>
           <summary className="tap-target flex w-fit cursor-pointer list-none items-center gap-2 text-base font-bold text-accent [&::-webkit-details-marker]:hidden">
-            <span aria-hidden="true" className="transition-transform group-open:rotate-90">▸</span>
+            <span aria-hidden="true" className="inline-flex transition-transform group-open:rotate-90"><ChevronIcon size={18} /></span>
             {t`ほかの絞りこみ`}
             {otherPicked > 0 ? <span className="rounded-full bg-ink px-2 text-sm text-paper">{otherPicked}</span> : null}
           </summary>

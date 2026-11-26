@@ -114,6 +114,13 @@ export interface SpotRow {
   stampSpotId: string | null;
   /** A picture used as this place's stamp. */
   stampImageUrl: string | null;
+  /** The fly-along (コースをたどる): stops here (null: automatic, yes for stamp places and side trips), for this many seconds
+   *  (3-15, null: 5), showing this photo (one of its photos, null: the main one) and this short line (null: the description). */
+  flyShow: boolean | null;
+  flySeconds: number | null;
+  flyPhotoUrl: string | null;
+  flyNoteJa: string | null;
+  flyNoteEn: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
   /** The page the main photo was found on. */
@@ -209,6 +216,13 @@ export interface SpotFields {
   stampSpotId: string | null;
   /** A picture used as this place's stamp. */
   stampImageUrl: string | null;
+  /** The fly-along (コースをたどる): stops here (null: automatic, yes for stamp places and side trips), for this many seconds
+   *  (3-15, null: 5), showing this photo (one of its photos, null: the main one) and this short line (null: the description). */
+  flyShow: boolean | null;
+  flySeconds: number | null;
+  flyPhotoUrl: string | null;
+  flyNoteJa: string | null;
+  flyNoteEn: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
   /** The page the main photo was found on. */

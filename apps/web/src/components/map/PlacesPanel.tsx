@@ -72,9 +72,18 @@ export function useDistanceText() {
 
 /** One map layer toggle: a single-line pill; on = a soft lifted fill, a thicker ink border and a tick (not a solid ink block, which outweighed the map). */
 export const filterPill = (on: boolean) =>
-  `tap-target inline-flex items-center gap-2 whitespace-nowrap rounded-full border-2 px-3 py-1 text-lg font-bold leading-tight text-ink ${
+  `tap-target relative inline-flex items-center gap-2 whitespace-nowrap rounded-full border-2 px-3 py-1 text-lg font-bold leading-tight text-ink ${
     on ? "border-ink bg-lift" : "border-line bg-paper/95 shadow-sm hover:bg-surface"
   }`;
+
+/** A filter pill's ✓ when it is on: a small badge on the pill's top-left corner, laid over it, so turning a pill on or off
+ *  never changes its size and an off pill has no empty gap (user, 2026-11-26). The pressed state is aria-pressed. */
+export const TickBadge = ({ on }: { on: boolean }) =>
+  on ? (
+    <span aria-hidden="true" className="absolute -left-1.5 -top-1.5 grid size-6 place-items-center rounded-full bg-ink text-paper shadow-sm">
+      <TickIcon size={16} />
+    </span>
+  ) : null;
 
 /** The buttons that turn a kind of place on or off. A group with no places is not offered. */
 export function PlaceChips({
@@ -102,7 +111,7 @@ export function PlaceChips({
         const on = active.has(group);
         return (
           <button key={group} type="button" aria-pressed={on} onClick={() => onToggle(group)} className={filterPill(on)}>
-            {on ? <TickIcon size={20} /> : null}
+            <TickBadge on={on} />
             <PlaceGroupPicture group={group} size={24} />
             <span>{names[group]}</span>
             <span className="tabular-nums">{counts[group]}</span>

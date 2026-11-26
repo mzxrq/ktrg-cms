@@ -7,7 +7,7 @@ import { findPlacePhotos, type PhotoCandidate } from "@/lib/admin/place-photos";
 import { photoLinkLooksValid } from "@/lib/admin/save-plan";
 import { PhotoSlot } from "./PhotoSlot";
 import { PhotoUpload } from "./PhotoUpload";
-import { ArrowDownIcon, ArrowUpIcon } from "@/components/icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@/components/admin/admin-icons";
 import { TextInput } from "./fields";
 import { addPhoto, fromList, makeMain, MAX_PHOTOS, movePhoto, patchPhoto, removePhoto, toList, type ListPhoto, type StoredPhotos } from "@/lib/admin/photo-list";
 import { photoName } from "./PhotoField";

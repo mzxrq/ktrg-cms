@@ -8,6 +8,7 @@ import type { PlaceItem, Prefecture, RouteDetail, RoutePoint, RouteSummary, Spot
 import { placeCategories, placeStatuses } from "./places";
 import { isPointKind } from "./point-kinds";
 import { areaFromBounds, sketchFromPoints } from "./route-geometry";
+import type { FlySettings } from "./fly-along";
 import type { Sketch } from "./sketch";
 import { timesFromPrevious, type LegTime } from "./leg-times";
 
@@ -57,6 +58,12 @@ export function routeSummaryFromApi(r: PublicRoute, order: number, stampedCount 
   };
 }
 
+/** The admin's fly-along settings for a waypoint, or nothing when every one is automatic. */
+function flyFromApi(s: PublicSpot): { fly: FlySettings } | Record<string, never> {
+  const fly: FlySettings = { show: s.flyShow ?? null, seconds: s.flySeconds ?? null, photoUrl: s.flyPhotoUrl ?? null, noteJa: s.flyNoteJa ?? null, noteEn: s.flyNoteEn ?? null };
+  return Object.values(fly).some((v) => v !== null) ? { fly } : {};
+}
+
 export function spotListItemFromApi(s: PublicSpot, stamped = false): SpotListItem {
   return {
     id: s.id,
@@ -78,6 +85,7 @@ export function spotListItemFromApi(s: PublicSpot, stamped = false): SpotListIte
     photoCredit: s.photoCredit ?? null,
     stampImageUrl: s.stampImageUrl ?? null,
     sortOrder: s.sortOrder,
+    ...flyFromApi(s),
   };
 }
 
@@ -129,6 +137,7 @@ export function routePointFromApi(s: PublicSpot): RoutePoint | null {
     status: s.status,
     statusNoteJa: s.statusNoteJa ?? null,
     statusNoteEn: s.statusNoteEn ?? null,
+    ...flyFromApi(s),
     position: s.position ? { lat: s.position.lat, lng: s.position.lng, verified: true } : null,
   };
 }
