@@ -102,6 +102,12 @@ export interface AdminSpot {
   /** The waypoint of this course it is worshipped from (遥拝). */
   stampSpotId?: string | null;
   stampImageUrl?: string | null;
+  /** The fly-along (コースをたどる): null = automatic / 5 s / the main photo / the description. */
+  flyShow?: boolean | null;
+  flySeconds?: number | null;
+  flyPhotoUrl?: string | null;
+  flyNoteJa?: string | null;
+  flyNoteEn?: string | null;
   photoUrl: string | null;
   photoCredit?: string | null;
   photoSourceUrl?: string | null;
