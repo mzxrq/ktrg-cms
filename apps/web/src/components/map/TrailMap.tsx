@@ -510,12 +510,13 @@ export function TrailMap({
         {/* On a phone the row dissolves into the block (contents) so the stepper stays right under the map, then the stop's card, then the chips. */}
           <div className="contents @4xl:flex @4xl:flex-row @4xl:items-end @4xl:justify-between @4xl:gap-2">
           {/* One strip of single-line layer pills that wraps (under the map and over it), so the elevation chart stays close to the map. */}
-          {/* Enlarged on a narrow screen: the top row between the ✕ and the zoom buttons, one line that scrolls sideways. */}
+          {/* One line that scrolls sideways on a narrow screen (user, 2026-11-26: wrapped pills took too much room): under the
+              map, or enlarged as the top row between the ✕ and the zoom buttons. The padding leaves room for the ✓ badges. */}
           <div
             className={`flex min-w-0 items-center gap-2 @4xl:order-none @4xl:gap-1.5 ${
               expanded
                 ? "order-first mb-auto ml-14 mr-12 flex-nowrap overflow-x-auto px-1.5 py-2 [scrollbar-width:none] [&_button]:shrink-0 @4xl:m-0 @4xl:flex-wrap @4xl:overflow-visible @4xl:py-0"
-                : "order-3 flex-wrap"
+                : "order-3 -mx-1.5 flex-nowrap overflow-x-auto px-1.5 py-2 [scrollbar-width:none] [&_button]:shrink-0 @4xl:mx-0 @4xl:flex-wrap @4xl:overflow-visible @4xl:p-0"
             }`}
           >
             {expanded && draft ? <SampleNoticeButton /> : null}
