@@ -9157,13 +9157,21 @@ msgstr "高低差"
 msgid "鹿屋体育大学の山本正嘉教授らによる基準式を使用します。歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど体力を消耗します。"
 msgstr "鹿屋体育大学の山本正嘉教授らによる基準式を使用します。歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど体力を消耗します。"
 
-#: src/components/RallyViews.tsx:73
-msgid "おすすめのスタンプラリー"
-msgstr "おすすめのスタンプラリー"
-
 #: src/app/(public)/places/page.tsx:40
 msgid "コース周辺のトイレや店舗・駅・バス停などを一覧で紹介しています。営業時間は変更になる場合があるため、出かける前にご確認ください。。"
 msgstr "コース周辺のトイレや店舗・駅・バス停などを一覧で紹介しています。営業時間は変更になる場合があるため、出かける前にご確認ください。。"
+
+#: src/components/places/DirectoryView.tsx:103
+msgid "該当する店舗・施設はありません。"
+msgstr "該当する店舗・施設はありません。"
+
+#: src/app/(public)/places/[id]/page.tsx:100
+msgid "近くのコース・スポット"
+msgstr "近くのコース・スポット"
+
+#: src/components/RallyViews.tsx:73
+msgid "おすすめのスタンプラリー"
+msgstr "おすすめのスタンプラリー"
 
 #: src/components/RallyViews.tsx:269
 msgid "スタンプスポットの付近でボタンを押すと、スタンプを獲得できます。現在地はボタンを押したときに1回だけ確認し、位置情報は保存されません。"
@@ -9206,11 +9214,3 @@ msgstr "歩いてスタンプを集めましょう"
 #: src/components/PlaceFacts.tsx:34
 msgid "現在の状況"
 msgstr "現在の状況"
-
-#: src/components/places/DirectoryView.tsx:103
-msgid "該当する店舗・施設はありません。"
-msgstr "該当する店舗・施設はありません。"
-
-#: src/app/(public)/places/[id]/page.tsx:100
-msgid "近くのコース・スポット"
-msgstr "近くのコース・スポット"
