@@ -1020,6 +1020,21 @@ body.map-screen-active .site-footer {
     transition: none;
   }
 }
+/* The round menu button (TabBar) shows exactly while the tab bar is away, so the menu is never out of reach. */
+@media (max-width: 767px) {
+  html[data-bars="hidden"]:not(:has([data-tabbar]:focus-within)) [data-menu-fab] {
+    display: inline-flex;
+  }
+}
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  [data-menu-fab] {
+    transition: opacity 220ms var(--ease-enter), scale 220ms var(--ease-enter);
+    @starting-style {
+      opacity: 0;
+      scale: 0.8;
+    }
+  }
+}
 
 /* How much of the bottom the tab bar takes right now, for things fixed above it (the navigation's buttons): the bar on a
    phone, none from 768 px (a side rail) or when a chosen course hides it. Same 5.5rem as MapScreen's TAB_ROOM_REM. A var() with

@@ -204,7 +204,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
               }`}
             >
               {/* On a tablet, while the menu is open, this button is its close button (the drawer has none of its own there). */}
-              <span
+              <span id="menu-word"
                 className={`contents ${open ? "md:hidden wide:contents" : ""}`}
               >
                 <MenuIcon />
@@ -220,6 +220,21 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
           </li>
         </ul>
       </nav>
+      {/* While the tab bar is tucked away on a phone, the menu stays in reach: a round button at the top right, the
+          tablet's dark button without its word (2026-11-26, the boss's request). Shown only by the CSS (data-menu-fab).
+          Its name is the tab bar's own word メニュー (labelledby, so no new message; it sits after every message so the
+          catalogs' line numbers stay put). Opening the menu brings the tab bar back, which hides this button again. */}
+      <button
+        type="button"
+        data-menu-fab
+        onClick={() => setOpen(true)}
+        aria-labelledby="menu-word"
+        aria-expanded={open}
+        aria-controls="site-menu"
+        className="tap-target fixed right-3 top-[calc(0.5rem+var(--top-clear))] z-40 hidden size-12 items-center justify-center rounded-full border border-line bg-rail text-ink shadow-[0_2px_10px_rgb(0_0_0/0.3)] print:hidden [&_svg]:size-6"
+      >
+        <MenuIcon />
+      </button>
       {/* Lined up with the tab pills (same side padding), clear of the frame at the bottom. */}
       {footer && !mini ? (
         <div className="hidden px-[29px] pb-[29px] pt-4 wide:block">
