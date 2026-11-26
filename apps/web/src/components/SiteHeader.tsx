@@ -109,10 +109,16 @@ export function SiteHeader({
   const hidden = onLanding && !onMap && !open;
   // 768 px and up: the menu is a drawer beside the rail, and the page behind it may scroll.
   const wide = () => window.matchMedia("(min-width: 768px)").matches;
+  // On a phone the menu comes from where it was opened (user, 2026-11-26): up from the tab bar while the bar is on screen,
+  // down from the top when the bar is away (the round menu button at the top).
+  const tabBarShown = () => {
+    const bar = document.querySelector("[data-tabbar]")?.getBoundingClientRect();
+    return !!bar && bar.height > 0 && bar.top < window.innerHeight - 1;
+  };
   // The panel and the dimmed backdrop stay on screen while they leave (motion level permitting), then go.
   const { mounted: panelMounted, ref: panelRef } = usePresence<HTMLDivElement>(
     open,
-    () => (wide() ? "pop" : "drop"),
+    () => (wide() ? "pop" : tabBarShown() ? "rise" : "drop"),
   );
   const { mounted: backdropMounted, ref: backdropRef } =
     usePresence<HTMLDivElement>(open, "fade");
