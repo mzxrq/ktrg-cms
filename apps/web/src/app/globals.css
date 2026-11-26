@@ -587,6 +587,11 @@ rt {
   text-decoration: underline;
 }
 
+/* The enlarged course map fills the screen: its credit stays clear of the iPhone's home line (the controls stop above it). */
+.trail-map[data-expanded] .maplibregl-ctrl-bottom-right {
+  bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* On a phone the navigation's panel lies across the bottom of the map: the required map credit stays above it. */
 @media (max-width: 767px) {
   body.map-nav-mode .trail-map .maplibregl-ctrl-bottom-right {

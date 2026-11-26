@@ -4,7 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import type { Map as MapLibreMap } from "maplibre-gl";
-import { ChevronIcon, ChevronLeftIcon, ExpandIcon, ListIcon, MinusIcon, PlusIcon, WarningIcon } from "@/components/icons";
+import { ChevronIcon, ChevronLeftIcon, CloseIcon, ExpandIcon, ListIcon, MinusIcon, PlusIcon, WarningIcon } from "@/components/icons";
 import { SampleNoticeButton } from "@/components/SampleNotice";
 import { pinPhotoSrc } from "@/lib/pin-photo";
 import type { MapPhoto } from "@/lib/map-screen";
@@ -399,20 +399,22 @@ export function TrailMap({
     <section
       ref={sectionRef}
       aria-label={t`地図`}
-      className={expanded ? "trail-map fixed inset-0 z-30 flex flex-col gap-3 bg-paper p-3 pt-[calc(0.75rem+var(--top-clear))]" : "trail-map relative flex scroll-mt-2 flex-col gap-2 @4xl:h-full"}
+      // Enlarged (2026-11-26, user): the map is the whole screen, edge to edge, with every control floating on it: ✕ at the
+      // top left, the layer pills beside it, zoom at the top right, the stepper at the bottom. Its own @container, so from a
+      // wide screen it takes the over-the-map layout of the wide page.
+      data-expanded={expanded || undefined}
+      className={expanded ? "trail-map @container fixed inset-0 z-30 bg-paper" : "trail-map relative flex scroll-mt-2 flex-col gap-2 @4xl:h-full"}
     >
       {expanded ? (
-        <div className="flex items-center justify-between gap-2">
-          {draft ? <SampleNoticeButton /> : <span />}
-          <div className="flex items-center gap-2">
-            <button type="button" onClick={() => setTerrain((on) => !on)} aria-pressed={terrain} className={buttonClass}>
-              {terrainLabel}
-            </button>
-            <button ref={closeRef} type="button" onClick={() => setExpanded(false)} className={buttonClass}>
-              {t`閉じる`}
-            </button>
-          </div>
-        </div>
+        <button
+          ref={closeRef}
+          type="button"
+          onClick={() => setExpanded(false)}
+          aria-label={t`閉じる`}
+          className="tap-target absolute left-3 top-[calc(0.75rem+var(--top-clear))] z-20 inline-flex size-12 items-center justify-center rounded-full border border-ink bg-paper text-ink shadow-md print:hidden"
+        >
+          <CloseIcon />
+        </button>
       ) : null}
 
       {/* Everything the visitor works the map with lies on it (2026-11-11): the small zoom and full-screen buttons at the
@@ -421,7 +423,7 @@ export function TrailMap({
       <div
         className={
           expanded
-            ? "relative min-h-0 flex-1 overflow-hidden rounded-xl border-2 border-line"
+            ? "absolute inset-0 overflow-hidden"
             : "relative -mx-4 h-[min(62svh,40rem)] min-h-[20rem] overflow-hidden border-y-2 border-line @4xl:mx-0 @4xl:h-full @4xl:min-h-0 @4xl:border-0"
         }
       >
@@ -438,7 +440,8 @@ export function TrailMap({
         )}
 
         {draft ? (
-          <p className="absolute left-2 top-2 z-10 flex max-w-[calc(100%-4rem)] items-center gap-1.5 rounded-lg border-2 border-caution bg-paper px-2 py-1 text-base font-bold leading-tight">
+          // Enlarged: below the row of the ✕ and the pills.
+          <p className={`absolute z-10 flex max-w-[calc(100%-4rem)] items-center gap-1.5 rounded-lg border-2 border-caution bg-paper px-2 py-1 text-base font-bold leading-tight ${expanded ? "left-3 top-[calc(4.5rem+var(--top-clear))]" : "left-2 top-2"}`}>
             <span className="text-caution">
               <WarningIcon />
             </span>
@@ -446,7 +449,7 @@ export function TrailMap({
           </p>
         ) : null}
 
-        <div className="absolute right-1 top-1 z-10 flex flex-col print:hidden">
+        <div className={`absolute z-10 flex flex-col print:hidden ${expanded ? "right-2 top-[calc(0.5rem+var(--top-clear))]" : "right-1 top-1"}`}>
           <button type="button" onClick={() => zoom(1)} aria-label={t`拡大`} className={hit}>
             <span className={disc}>
               <PlusIcon size={20} />
@@ -467,7 +470,7 @@ export function TrailMap({
         </div>
 
         {listOpen && sortedPlaces.length > 0 ? (
-          <div className="absolute inset-0 z-20 overflow-y-auto bg-paper p-4">
+          <div className={`absolute inset-0 z-20 overflow-y-auto bg-paper p-4 ${expanded ? "pt-[calc(1rem+var(--top-clear))]" : ""}`}>
             <div className="mb-2 flex justify-end">
               <button type="button" onClick={() => setListOpen(false)} className={buttonClass}>
                 {t`閉じる`}
@@ -477,7 +480,9 @@ export function TrailMap({
           </div>
         ) : null}
       </div>
-      <div className={`flex flex-col gap-2 px-3 pb-2 print:hidden ${expanded ? "" : "@4xl:pointer-events-none @4xl:absolute @4xl:inset-x-2 @4xl:bottom-8 @4xl:z-10 @4xl:max-h-[calc(100%-4rem)] @4xl:p-0 @4xl:[&>*]:pointer-events-auto"}`}>
+      {/* Enlarged: one layer over the whole map that lets touches through to it; the pills rise to the top row (order-first,
+          mb-auto), the rest sits at the bottom, above the required map credit. */}
+      <div className={`flex flex-col gap-2 px-3 print:hidden ${expanded ? "pointer-events-none absolute inset-0 z-10 justify-end pb-[calc(2.25rem+env(safe-area-inset-bottom,0px))] pt-[calc(0.75rem+var(--top-clear))] [&>*]:pointer-events-auto" : "pb-2 @4xl:pointer-events-none @4xl:absolute @4xl:inset-x-2 @4xl:bottom-8 @4xl:z-10 @4xl:max-h-[calc(100%-4rem)] @4xl:p-0 @4xl:[&>*]:pointer-events-auto"}`}>
         {selectedStop || selectedPlace ? (
           // Under the map a stop's card joins the stepper, which already names it (below); this one is for over the map.
           <div className={`order-2 min-h-0 overflow-y-auto rounded-xl shadow-md @4xl:order-none ${selectedStop && stepper ? "hidden @4xl:block" : ""}`}>
@@ -500,7 +505,21 @@ export function TrailMap({
         {/* On a phone the row dissolves into the block (contents) so the stepper stays right under the map, then the stop's card, then the chips. */}
           <div className="contents @4xl:flex @4xl:flex-row @4xl:items-end @4xl:justify-between @4xl:gap-2">
           {/* One strip of single-line layer pills that wraps (under the map and over it), so the elevation chart stays close to the map. */}
-          <div className="order-3 flex min-w-0 flex-wrap items-center gap-2 @4xl:order-none @4xl:gap-1.5">
+          {/* Enlarged on a narrow screen: the top row between the ✕ and the zoom buttons, one line that scrolls sideways. */}
+          <div
+            className={`flex min-w-0 items-center gap-2 @4xl:order-none @4xl:gap-1.5 ${
+              expanded
+                ? "order-first mb-auto ml-14 mr-12 flex-nowrap overflow-x-auto py-1 [scrollbar-width:none] @4xl:m-0 @4xl:flex-wrap @4xl:overflow-visible @4xl:py-0"
+                : "order-3 flex-wrap"
+            }`}
+          >
+            {expanded && draft ? <SampleNoticeButton /> : null}
+            {expanded ? (
+              <button type="button" onClick={() => setTerrain((on) => !on)} aria-pressed={terrain} className={filterPill(terrain)}>
+                <TickSlot on={terrain} />
+                {terrainLabel}
+              </button>
+            ) : null}
             {anyPlaces ? <PlaceChips className="contents" counts={counts} active={active} onToggle={toggleGroup} /> : null}
             {hasSide ? (
               <button type="button" aria-pressed={showSide} onClick={() => setShowSide((on) => !on)} className={filterPill(showSide)}>
