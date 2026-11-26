@@ -55,22 +55,22 @@ export default async function SitemapPage() {
           <Trans>ホーム</Trans>
         </LinkRow>
         <LinkRow href="/story">
-          <Trans>葛城修験のものがたり</Trans>
+          <Trans>葛城修験の物語</Trans>
         </LinkRow>
       </Group>
 
       <Group title={<Trans>マップ</Trans>}>
         <LinkRow href="/map">
-          <Trans>葛城修験の地図</Trans>
+          <Trans>全体マップ</Trans>
         </LinkRow>
         <LinkRow href="/places">
-          <Trans>お店と施設</Trans>
+          <Trans>店舗・施設</Trans>
         </LinkRow>
       </Group>
 
       <Group title={<Trans>コース</Trans>}>
         <LinkRow href="/routes">
-          <Trans>コースの一覧</Trans>
+          <Trans>コース一覧</Trans>
         </LinkRow>
         {routes.filter((route) => route.status === "ready").map((route) => (
           <LinkRow key={route.id} href={`/routes/${route.id}`}>
@@ -81,16 +81,16 @@ export default async function SitemapPage() {
 
       <Group title={<Trans>ブログ</Trans>}>
         <LinkRow href="/blog">
-          <Trans>ブログの一覧</Trans>
+          <Trans>ブログ一覧</Trans>
         </LinkRow>
         <LinkRow href="/notices">
           <Trans>お知らせ</Trans>
         </LinkRow>
       </Group>
 
-      <Group title={<Trans>ラリー</Trans>}>
+      <Group title={<Trans>スタンプラリー</Trans>}>
         <LinkRow href="/rallies">
-          <Trans>ラリーとスタンプ</Trans>
+          <Trans>スタンプ一覧</Trans>
         </LinkRow>
         <LinkRow href="/badges">
           <Trans>バッジ</Trans>
@@ -114,16 +114,19 @@ export default async function SitemapPage() {
           <Trans>新規登録</Trans>
         </LinkRow>
         <LinkRow href="/settings">
-          <Trans>見やすさの設定</Trans>
+          <Trans>表示設定</Trans>
         </LinkRow>
         <LinkRow href="/settings/passkeys">
-          <Trans>ログインの方法</Trans>
+          <Trans>ログイン方法</Trans>
         </LinkRow>
       </Group>
 
       <Group title={<Trans>ご案内</Trans>}>
         <LinkRow href="/faq">
           <Trans>よくあるご質問</Trans>
+        </LinkRow>
+        <LinkRow href="/status">
+          <Trans>システム状況</Trans>
         </LinkRow>
         <LinkRow href="/terms">
           <Trans>利用規約</Trans>

@@ -10,11 +10,11 @@ export function MapHelp() {
   const dialog = useRef<HTMLDialogElement>(null);
   const [step, setStep] = useState(0);
   const steps: { name: string; how: string }[] = [
-    { name: t`区間を見る`, how: t`区間を選ぶと、道とスタンプの場所が見えます。` },
-    { name: t`動かす`, how: t`1本の指でなぞります。` },
-    { name: t`大きくする・小さくする`, how: t`2本の指を広げたり、せばめたりします。` },
-    { name: t`傾ける`, how: t`3本の指で、上下になぞります。` },
-    { name: t`画面をつけたまま`, how: t`ナビのあいだは、画面が消えません。上の太陽のボタンで切りかえます。電池を多く使うので、長いコースでは電池の残りに気をつけてください。` },
+    { name: t`コースを見る`, how: t`コースを選ぶと、ルートとスタンプスポットが表示されます。` },
+    { name: t`地図の動かす`, how: t`指1本でなぞって動かします。` },
+    { name: t`拡大・縮小`, how: t`指2本で画面を広げたり狭めたり縮めたりします。` },
+    { name: t`地図を傾ける`, how: t`指3本で上下になぞります。` },
+    { name: t`画面を消さない`, how: t`ナビ中は画面が消えません。上の太陽ボタンで切り替えられます。電池の減りが早くなるため、長いコースでは残量にご注意ください。` },
   ];
   const current = steps[step]!;
   const last = step === steps.length - 1;
@@ -52,7 +52,7 @@ export function MapHelp() {
               </button>
             )}
             <button type="button" onClick={() => (last ? dialog.current?.close() : setStep(step + 1))} className={buttonStyle("primary", "md", "flex w-full")}>
-              {last ? t`閉じる` : t`つぎへ`}
+              {last ? t`閉じる` : t`次へ`}
             </button>
           </div>
         </div>

@@ -56,14 +56,14 @@ export function StopCard({
           <span className="shrink-0 text-caution">
             <WarningIcon />
           </span>
-          <Trans>この場所の位置は仮のもので、まだ確認されていません。</Trans>
+          <Trans>位置情報は未確認です（仮の位置を表示しています）。</Trans>
         </p>
       ) : null}
       <Link
         href={href}
         className={buttonStyle("primary", "md", "inline-flex self-start")}
       >
-        <Trans>この場所を見る</Trans>
+        <Trans>詳細を見る</Trans>
       </Link>
     </div>
   );

@@ -66,8 +66,8 @@ export function OfflinePack({ routeId, area, settings }: { routeId: string; area
         type="button"
         aria-expanded={open}
         aria-controls="offline-pack-card"
-        aria-label={t`オフラインで使う`}
-        title={t`オフラインで使う`}
+        aria-label={t`オフライン保存`}
+        title={t`オフライン保存`}
         onClick={() => setOpen(!open)}
         className="tap-target inline-flex items-center justify-center gap-1.5 rounded-full border border-ink bg-paper px-3 text-base font-bold text-ink hover:bg-surface aria-expanded:bg-surface print:hidden"
       >
@@ -80,11 +80,11 @@ export function OfflinePack({ routeId, area, settings }: { routeId: string; area
         <span aria-hidden="true" className="text-accent">
           <DownloadIcon />
         </span>
-        {t`オフラインで使う`}
+        {t`オフライン保存`}
       </h2>
       {progress ? (
         <div role="status" className="flex flex-col gap-2">
-          <p className="text-lg font-bold">{t`地図を保存しています… ${percent}%`}</p>
+          <p className="text-lg font-bold">{t`地図を保存中… ${percent}%`}</p>
           <div aria-hidden="true" className="h-3 overflow-hidden rounded-full bg-paper">
             <div className="h-full rounded-full bg-moss" style={{ width: `${percent}%` }} />
           </div>
@@ -96,7 +96,6 @@ export function OfflinePack({ routeId, area, settings }: { routeId: string; area
             {t`保存済み`}
             <span className="text-base font-normal text-muted">{t`（${ageText}・${megabytes(pack.bytes)} MB）`}</span>
           </p>
-          <p className="text-base text-muted">{t`電波がなくても、この道の地図が開きます。`}</p>
           <div className="flex gap-2">
             <button type="button" onClick={save} className={secondary}>
               {t`更新`}
@@ -108,7 +107,7 @@ export function OfflinePack({ routeId, area, settings }: { routeId: string; area
         </>
       ) : (
         <>
-          <p className="text-base text-muted">{t`山では電波が届かないことがあります。入口で保存しておくと、電波がなくてもこの道の地図が開きます（数MB）。`}</p>
+          <p className="text-base text-muted">{t`山中では電波が届かないことがあります。出発前に保存しておくと、オフラインでもこのコースの地図を表示できます（数MB）`}</p>
           <button type="button" onClick={save} className={buttonStyle("action", "md", "inline-flex w-full")}>
             {t`地図を保存`}
           </button>
@@ -116,7 +115,7 @@ export function OfflinePack({ routeId, area, settings }: { routeId: string; area
       )}
       {failed ? (
         <p role="alert" className="text-base font-bold text-danger">
-          {pack ? t`更新できませんでした。前に保存した地図は、そのまま使えます。` : t`保存できませんでした。電波の良い場所でもう一度お試しください。`}
+          {pack ? t`更新できませんでした。保存済みの地図はそのまま使えます。` : t`保存できませんでした。電波の良い場所でもう一度お試しください。`}
         </p>
       ) : null}
     </section>

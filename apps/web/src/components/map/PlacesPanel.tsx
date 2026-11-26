@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { WarningIcon } from "@/components/icons";
+import { TickIcon, WarningIcon } from "@/components/icons";
 import { Pager } from "@/components/Pager";
 import { PlaceGroupPicture, PlaceIcon } from "@/components/PlaceIcon";
 import { RichText } from "@/components/RichText";
@@ -70,13 +70,18 @@ export function useDistanceText() {
   };
 }
 
+/** One map layer toggle: a single-line pill; on = a soft lifted fill, a thicker ink border and a tick (not a solid ink block, which outweighed the map). */
+export const filterPill = (on: boolean) =>
+  `tap-target inline-flex items-center gap-2 whitespace-nowrap rounded-full border-2 px-3 py-1 text-lg font-bold leading-tight text-ink ${
+    on ? "border-ink bg-lift" : "border-line bg-paper/95 shadow-sm hover:bg-surface"
+  }`;
+
 /** The buttons that turn a kind of place on or off. A group with no places is not offered. */
 export function PlaceChips({
   counts,
   active,
   onToggle,
   label,
-  compact = false,
   className,
 }: {
   counts: Partial<Record<PlaceGroup, number>>;
@@ -84,9 +89,7 @@ export function PlaceChips({
   onToggle: (group: PlaceGroup) => void;
   /** What the group of buttons is for, read out by screen readers (by default: showing the places on the map). */
   label?: string;
-  /** Small chips that wrap, for laying over the map (the default is a two-column grid of large ones). */
-  compact?: boolean;
-  /** Replaces the wrapper's layout classes (the TrailMap lays the chips in its own grid with the other buttons). */
+  /** Replaces the wrapper's layout classes (the TrailMap lays the chips in one strip with its other toggles). */
   className?: string;
 }) {
   const { t } = useLingui();
@@ -94,23 +97,15 @@ export function PlaceChips({
   const offered = placeGroups.filter((g) => (counts[g] ?? 0) > 0);
   if (offered.length === 0) return null;
   return (
-    <div role="group" aria-label={label ?? t`まわりの場所を地図に出す`} className={className ?? (compact ? "flex flex-wrap gap-1.5" : "grid grid-cols-2 gap-2")}>
+    <div role="group" aria-label={label ?? t`周辺の施設を地図に出す`} className={className ?? "flex flex-wrap gap-1.5"}>
       {offered.map((group) => {
         const on = active.has(group);
         return (
-          <button
-            key={group}
-            type="button"
-            aria-pressed={on}
-            onClick={() => onToggle(group)}
-            className={`tap-target flex border border-ink text-left text-lg font-bold leading-tight ${compact ? "flex-wrap items-center gap-x-2 gap-y-1 rounded-lg px-3 py-2 @4xl:flex-nowrap @4xl:gap-2 @4xl:rounded-full @4xl:py-1" : "items-center gap-2 rounded-full px-3 py-1"} ${
-              on ? "bg-ink text-paper" : compact ? "bg-paper/95 text-ink shadow-sm hover:bg-surface" : "bg-paper text-ink hover:bg-surface"
-            }`}
-          >
+          <button key={group} type="button" aria-pressed={on} onClick={() => onToggle(group)} className={filterPill(on)}>
+            {on ? <TickIcon size={20} /> : null}
             <PlaceGroupPicture group={group} size={24} />
-            {/* A tile under the map (icon and count above, the name across the full width below); one pill over it. */}
-            <span className={compact ? "order-3 w-full min-w-0 @4xl:order-none @4xl:w-auto @4xl:flex-1" : "min-w-0 flex-1"}>{names[group]}</span>
-            <span className={`tabular-nums ${compact ? "ml-auto @4xl:ml-0" : ""}`}>{counts[group]}</span>
+            <span>{names[group]}</span>
+            <span className="tabular-nums">{counts[group]}</span>
           </button>
         );
       })}
@@ -141,8 +136,8 @@ export function PlaceList({
   const here = Math.min(page, pages);
   const shown = pageSlice(items, here, FIRST_ROWS);
   return (
-    <section aria-label={t`まわりの場所`}>
-      <h3 className="text-xl font-bold">{t`まわりの場所`}</h3>
+    <section aria-label={t`周辺の施設`}>
+      <h3 className="text-xl font-bold">{t`周辺の施設`}</h3>
       <p className="mt-1 text-base text-muted">{fromLabel}</p>
       <ul className="mt-2 border-t-2 border-line">
         {shown.map((place) => (

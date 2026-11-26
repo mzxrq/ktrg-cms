@@ -254,7 +254,7 @@ export function MapScreen({
 
   const homeHeader = (
     <div>
-      <h1 className="sr-only font-serif text-2xl font-bold leading-snug text-accent wide:not-sr-only">{t`区間の一覧`}</h1>
+      <h1 className="sr-only font-serif text-2xl font-bold leading-snug text-accent wide:not-sr-only">{t`コースの一覧`}</h1>
       <div className="wide:hidden">
         <RouteChips routes={routes} onChoose={chooseRoute} selectedId={routeId} />
       </div>
@@ -281,7 +281,7 @@ export function MapScreen({
           </>
         ) : null
       }
-      backLabel={stop ? t`戻る` : navigating ? t`ナビにもどる` : t`全体の地図`}
+      backLabel={stop ? t`戻る` : navigating ? t`ナビに戻る` : t`全体マップ`}
       onBack={!stop && navigating ? () => window.dispatchEvent(new Event(NAV_RESUME_EVENT)) : back}
     />
   ) : null;
@@ -341,7 +341,7 @@ export function MapScreen({
           className={`tap-target fixed ${navToastPx > 0 ? "bottom-[calc(var(--tabbar-room)+var(--bar-inset)+var(--nav-toast)+0.25rem)]" : "bottom-[calc(5rem+env(safe-area-inset-bottom))]"} left-3 z-[6] md:absolute md:bottom-[calc(1rem+var(--nav-toast,0px))] flex items-center gap-2 rounded-full bg-paper px-4 text-lg font-bold text-ink shadow-[0_4px_16px_rgb(0_0_0/0.28)]`}
         >
           <ChevronUpIcon size={22} />
-          {route ? t`区間の情報を見る` : t`区間の一覧を見る`}
+          {route ? t`コース情報を見る` : t`コース一覧を見る`}
         </button>
       ) : null}
       <MapSheet panel={wide} folded={wide && folded} onFold={() => setFolded(!folded)} rail={<RouteChips column routes={routes} onChoose={chooseRoute} selectedId={routeId} />} snap={snap} onSnap={setSnap} available={available} belowBanner={!wide && navBannerPx > 0} tabPx={bottomPx} header={showDetailInSheet ? null : homeHeader} contentKey={`${routeId ?? ""}/${stopId ?? ""}/${place?.id ?? ""}`}>
@@ -365,7 +365,7 @@ function RouteChips({ routes, onChoose, selectedId, column = false }: { routes: 
   const { t } = useLingui();
   const ordered = [...routes].sort((a, b) => a.order - b.order);
   return (
-    <div role="group" aria-label={t`区間をえらぶ`} className={column ? "mt-2 flex min-h-0 flex-1 flex-col items-center gap-2 overflow-y-auto pb-3 [scrollbar-width:thin]" : "-mx-4 mt-2 flex gap-2 overflow-x-auto px-4 pb-2"}>
+    <div role="group" aria-label={t`コースを選択`} className={column ? "mt-2 flex min-h-0 flex-1 flex-col items-center gap-2 overflow-y-auto pb-3 [scrollbar-width:thin]" : "-mx-4 mt-2 flex gap-2 overflow-x-auto px-4 pb-2"}>
       {ordered.map((r) => {
         const order = r.order;
         const name = r.name;
@@ -420,10 +420,10 @@ function StopRows({ route, onChooseStop }: { route: MapScreenRoute; onChooseStop
   const { t } = useLingui();
   const [all, setAll] = useState(false);
   const shown = all ? route.spots : route.spots.slice(0, STOPS_SHOWN);
-  const rides = { ferry: (n: number) => t`船で約${n}分`, bus: (n: number) => t`バスで約${n}分`, train: (n: number) => t`電車で約${n}分`, other: (n: number) => t`乗り物で約${n}分` };
+  const rides = { ferry: (n: number) => t`船で約${n}分`, bus: (n: number) => t`バスで約${n}分`, train: (n: number) => t`電車で約${n}分`, other: (n: number) => t`交通機関で約${n}分` };
   return (
     <section>
-      <h2 className="pb-2 text-xl font-bold">{t`スタンプの場所`}</h2>
+      <h2 className="pb-2 text-xl font-bold">{t`スタンプスポット`}</h2>
       <ol className="flex flex-col gap-2">
         {shown.map((spot) => {
           const onMap = route.stops?.some((x) => x.id === spot.id) ?? false;
@@ -441,8 +441,8 @@ function StopRows({ route, onChooseStop }: { route: MapScreenRoute; onChooseStop
                 </span>
                 <span className="mt-0.5 flex flex-wrap items-center gap-x-3 text-base leading-snug">
                   <StatusWord status={spot.status} />
-                  {spot.stamped === true ? <span className="font-bold">{t`押した`}</span> : null}
-                  {leg ? <span className="tabular-nums">{leg.mode ? rides[leg.mode](leg.minutes) : t`歩いて約${leg.minutes}分`}</span> : null}
+                  {spot.stamped === true ? <span className="font-bold">{t`スタンプ済み`}</span> : null}
+                  {leg ? <span className="tabular-nums">{leg.mode ? rides[leg.mode](leg.minutes) : t`徒歩約${leg.minutes}分`}</span> : null}
                 </span>
               </span>
               <span className={`absolute right-3 top-3 grid size-8 place-items-center rounded-full text-lg font-bold tabular-nums ${spot.stamped ? "bg-shu text-on-shu" : "badge-pattern bg-brand-strong text-on-brand-strong"}`}>{spot.order}</span>
@@ -466,11 +466,11 @@ function StopRows({ route, onChooseStop }: { route: MapScreenRoute; onChooseStop
       </ol>
       {route.spots.length > STOPS_SHOWN ? (
         <button type="button" onClick={() => setAll(!all)} aria-expanded={all} className={buttonStyle("secondary", "md", "mt-2 flex w-full")}>
-          {all ? t`少なく見る` : t`すべて見る（${route.spots.length}か所）`}
+          {all ? t`折りたたむ` : t`すべて見る（${route.spots.length}か所）`}
         </button>
       ) : null}
-      {route.spots.some((s) => s.fromPrev) ? <p className="pt-2 text-base leading-snug text-muted">{t`時間は、前の場所から休まず歩いたときの目安です。実際とは違うことがあります。`}</p> : null}
-      {route.stops ? null : <p className="pt-2 text-base text-muted">{t`地図の上の場所は、準備中です。`}</p>}
+      {route.spots.some((s) => s.fromPrev) ? <p className="pt-2 text-base leading-snug text-muted">{t`所要時間は前のスポットからの目安です（休憩を含みません）。実際と異なる場合があります。`}</p> : null}
+      {route.stops ? null : <p className="pt-2 text-base text-muted">{t`地図上のスポット表示は準備中です。`}</p>}
     </section>
   );
 }
@@ -493,7 +493,7 @@ function RoutePanel({
   );
   return (
     <div className="flex flex-col gap-4 px-4">
-      {route.status === "soon" ? <p className="rounded-lg bg-surface p-4 text-lg font-bold">{t`この区間は、準備中です。`}</p> : null}
+      {route.status === "soon" ? <p className="rounded-lg bg-surface p-4 text-lg font-bold">{t`このコースは準備中です。`}</p> : null}
 
       <RouteStats route={route} compact />
 
@@ -507,7 +507,7 @@ function RoutePanel({
       {route.spots.length > 0 ? (
         <StopRows key={route.id} route={route} onChooseStop={onChooseStop} />
       ) : route.status === "ready" ? (
-        <p className="rounded-lg bg-surface p-4 text-lg">{t`スタンプの場所は、まだ準備中です。`}</p>
+        <p className="rounded-lg bg-surface p-4 text-lg">{t`スタンプスポットは準備中です。`}</p>
       ) : null}
 
       {route.elevations ? <ElevationProfile elevations={route.elevations} distanceKm={route.distanceKm} routeLine={fetched?.line} lineElevations={fetched?.elevations} rides={route.rides} /> : null}
@@ -535,7 +535,7 @@ function PointPanel({ point }: { point: MapScreenPoint }) {
       ) : null}
       {point.directory ? (
         <Link href={`/places/${point.id}`} className={buttonStyle("secondary", "md", "flex")}>
-          {t`くわしく見る`}
+          {t`詳しく見る`}
         </Link>
       ) : null}
     </div>
@@ -578,7 +578,7 @@ function StopPanel({
           <span className="shrink-0 text-caution">
             <WarningIcon />
           </span>
-          {t`この場所の位置は仮のもので、まだ確認されていません。`}
+          {t`位置情報は未確認です（仮の位置を表示しています）。`}
         </p>
       ) : null}
 
@@ -591,7 +591,7 @@ function StopPanel({
       {stop.stamped === true ? (
         <div className="flex items-center gap-4">
           <StampFace state="stamped" number={showNumber ? (stop.order ?? undefined) : undefined} rough className="h-14 w-14 shrink-0" />
-          <p className="text-xl font-bold">{t`スタンプを押しました`}</p>
+          <p className="text-xl font-bold">{t`スタンプ獲得済み`}</p>
         </div>
       ) : null}
 
@@ -610,7 +610,7 @@ function StopPanel({
       )}
 
       <Link href={stop.href} className={linkButton}>
-        {t`この場所のページを開く`}
+        {t`スポット詳細を見る`}
       </Link>
     </div>
   );
