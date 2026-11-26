@@ -25,7 +25,7 @@ export function OfflineNotice() {
   if (!mounted) return null;
 
   return (
-    <div ref={ref} role="status" data-fab-room className="sticky top-[var(--top-clear)] z-40 mb-3 bg-ink px-4 py-3 text-center text-lg font-bold text-paper">
+    <div ref={ref} role="status" data-fab-room data-offline-notice className="sticky top-[var(--top-clear)] z-40 mb-3 bg-ink px-4 py-3 text-center text-lg font-bold text-paper">
       {t`オフラインです。接続が回復すると再び利用できます。`}
     </div>
   );

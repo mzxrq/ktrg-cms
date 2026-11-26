@@ -70,6 +70,11 @@ const FIT = { padding: { top: 76, bottom: 112, left: 56, right: 92 }, maxZoom: 1
 // The facilities list is not a layer, so it reads as a link beside the layer pills (a pill-shaped paper ground over the map, where bare text would sit on the tiles).
 const listLink =
   "tap-target inline-flex items-center gap-2 px-1 text-lg font-bold text-ink underline underline-offset-4 @4xl:rounded-full @4xl:bg-paper/95 @4xl:px-3 @4xl:shadow-sm";
+// On the enlarged map it always lies on the tiles, so it always has the pill ground.
+const listLinkOverMap =
+  "tap-target inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-paper/95 px-3 text-lg font-bold text-ink underline underline-offset-4 shadow-sm";
+// Enlarged, the ✕ and pill row take the top and the stepper and credit the bottom (top-clear included roughly).
+const FIT_EXPANDED = { ...FIT, padding: { top: 132, bottom: 150, left: 40, right: 72 } } as const;
 const buttonClass =
   "tap-target inline-flex items-center justify-center gap-2 rounded-full border border-ink bg-paper px-3 text-lg font-bold text-ink hover:bg-surface";
 // The small round controls laid over the map: a 48 px target (the older-reader rule) with a smaller circle drawn in it.
@@ -295,7 +300,7 @@ export function TrailMap({
         ...(line ?? []),
         ...visiblePlaces.map((p) => p.position),
       ]);
-      if (bounds) map.fitBounds(bounds, FIT);
+      if (bounds) map.fitBounds(bounds, expanded ? FIT_EXPANDED : FIT);
     }, 150);
     return () => window.clearTimeout(timer);
   }, [expanded, loaded, mapGen, stops, line, visiblePlaces]);
@@ -509,7 +514,7 @@ export function TrailMap({
           <div
             className={`flex min-w-0 items-center gap-2 @4xl:order-none @4xl:gap-1.5 ${
               expanded
-                ? "order-first mb-auto ml-14 mr-12 flex-nowrap overflow-x-auto py-1 [scrollbar-width:none] @4xl:m-0 @4xl:flex-wrap @4xl:overflow-visible @4xl:py-0"
+                ? "order-first mb-auto ml-14 mr-12 flex-nowrap overflow-x-auto py-1 [scrollbar-width:none] [&_button]:shrink-0 @4xl:m-0 @4xl:flex-wrap @4xl:overflow-visible @4xl:py-0"
                 : "order-3 flex-wrap"
             }`}
           >
@@ -528,7 +533,7 @@ export function TrailMap({
               </button>
             ) : null}
             {sortedPlaces.length > 0 ? (
-              <button type="button" aria-expanded={listOpen} onClick={() => setListOpen((on) => !on)} className={listLink}>
+              <button type="button" aria-expanded={listOpen} onClick={() => setListOpen((on) => !on)} className={expanded ? listLinkOverMap : listLink}>
                 <ListIcon />
                 {t`周辺の施設`}
               </button>

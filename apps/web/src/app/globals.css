@@ -1100,8 +1100,9 @@ body:has([data-sample-notice]) .cover-credit > details {
   }
 }
 /* The course page's enlarged map (TrailMap) is the whole screen: nothing floats over it, not the tab bar or the tablet's menu
-   button, the round menu button, nor back to top (2026-11-26). Its own 閉じる brings them back. */
-body.map-expanded :is([data-tabbar], [data-menu-fab], [data-scroll-top]) {
+   button, the round menu button, back to top, the install bar nor the offline line (it would cover the ✕; the page under the
+   map still shows it) (2026-11-26). Its own ✕ brings them back. */
+body.map-expanded :is([data-tabbar], [data-menu-fab], [data-scroll-top], [data-install-nudge], [data-offline-notice]) {
   display: none !important;
 }
 

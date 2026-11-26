@@ -82,7 +82,7 @@ export function InstallNudge() {
   return (
     <>
       {barMounted ? (
-        <div ref={barRef} role="region" aria-label={t`ホーム画面に追加`} className="fixed inset-x-3 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-30 flex items-center gap-2 rounded-lg bg-paper px-3 py-2 shadow-2xl ring-1 ring-line/30 md:hidden">
+        <div ref={barRef} data-install-nudge role="region" aria-label={t`ホーム画面に追加`} className="fixed inset-x-3 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-30 flex items-center gap-2 rounded-lg bg-paper px-3 py-2 shadow-2xl ring-1 ring-line/30 md:hidden">
           <p className="min-w-0 flex-1 text-base font-bold leading-snug">
             <Trans>ホーム画面に追加できます</Trans>
           </p>
