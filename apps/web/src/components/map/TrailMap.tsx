@@ -637,7 +637,7 @@ export function TrailMap({
             className={buttonStyle("primary", "md", "order-1 inline-flex self-start shadow-md @4xl:order-none")}
           >
             {flying ? <StopIcon /> : <PlayIcon />}
-            {t`コースをたどる`}
+            {t`ルート再生`}
           </button>
         ) : null}
         {selectedStop || selectedPlace ? (

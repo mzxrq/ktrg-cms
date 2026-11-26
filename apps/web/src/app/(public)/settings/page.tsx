@@ -9,7 +9,7 @@ import { getViewer } from "@/lib/viewer";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
-  return { title: i18n._(msg`見やすさの設定`) };
+  return { title: i18n._(msg`表示設定`) };
 }
 
 // What the visitor can change for themselves: how big the text and buttons are, and how the map
@@ -25,11 +25,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
         <Trans>ホーム</Trans>
       </BackLink>
       <h1 className="font-serif text-3xl font-bold text-accent">
-        <Trans>見やすさの設定</Trans>
+        <Trans>表示設定</Trans>
       </h1>
-      <p className="text-lg">
-        <Trans>文字やボタンの大きさ、地図の見せ方を選べます。大きさは、選ぶとすぐに変わります。</Trans>
-      </p>
       <PrefsForm initial={prefs} signedIn={viewer.signedIn} mode="settings" next={home} />
     </div>
   );
