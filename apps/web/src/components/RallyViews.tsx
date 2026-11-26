@@ -70,7 +70,7 @@ export function FeaturedRally({ rally, locale, account, routes = [] }: { rally: 
     const facts = journeyFacts(rally, routes);
     return (
       <section className="flex flex-col gap-3 px-4">
-        <SectionBanner>{t`はじめのラリー`}</SectionBanner>
+        <SectionBanner>{t`おすすめのスタンプラリー`}</SectionBanner>
         <div className="pattern-shippo overflow-hidden rounded-lg bg-surface">
           <div className="relative aspect-[16/9]">
             <RoutePhoto src={facts.photoUrl} alt={name} focus={facts.photoFocus} />
@@ -81,7 +81,7 @@ export function FeaturedRally({ rally, locale, account, routes = [] }: { rally: 
             <h2 className="text-2xl font-bold leading-snug">{name}</h2>
             <JourneyFacts facts={facts} />
             <Link href={`/rallies/${rally.id}`} className={buttonStyle("primary", "lg", "flex w-full")}>
-              <Trans>最初の場所を見る</Trans>
+              <Trans>ラリーの詳細を見る</Trans>
             </Link>
           </div>
         </div>
@@ -94,7 +94,7 @@ export function FeaturedRally({ rally, locale, account, routes = [] }: { rally: 
       <SectionBanner>{rally.lastStampedAt ? t`いまのラリー` : t`はじめのラリー`}</SectionBanner>
       <div className="pattern-shippo rounded-lg bg-surface p-5">
         {rally.lastStampedAt ? (
-          <p className="text-base text-muted">{t`最後に押した日時　${when}`}</p>
+          <p className="text-base text-muted">{t`最終スタンプ：${when}`}</p>
         ) : null}
         <h2 className="mt-1 text-2xl font-bold leading-snug">{nameOf(locale, rally.nameJa, rally.nameEn)}</h2>
         <p className="mt-3 text-6xl font-bold leading-none tabular-nums text-accent">
@@ -102,14 +102,14 @@ export function FeaturedRally({ rally, locale, account, routes = [] }: { rally: 
           <span className="ml-2 text-3xl text-muted">/ {rally.total}</span>
         </p>
         <p className="mt-2 text-xl font-bold">
-          {remaining === 0 ? t`すべてそろいました。` : stamped === 0 ? t`まだスタンプはありません。` : t`あと${remaining}か所`}
+          {remaining === 0 ? t`すべて獲得しました！` : stamped === 0 ? t`まだスタンプはありません。` : t`あと${remaining}か所`}
         </p>
         <div className="mt-3">
-          <PathProgress stamped={stamped} total={rally.total} label={t`スタンプの進み具合`} />
+          <PathProgress stamped={stamped} total={rally.total} label={t`スタンプの進捗`} />
         </div>
         {next ? (
           <p className="mt-3 text-lg">
-            <span className="text-muted">{t`つぎ`}　</span>
+            <span className="text-muted mr-2">{t`次`}</span>
             <span className="font-bold">
               {next.number}. {nextName}
             </span>
@@ -130,7 +130,7 @@ export function FeaturedRally({ rally, locale, account, routes = [] }: { rally: 
         </div>
         {account && rally.total > 0 && stamped === rally.total ? <CertificateButton title={nameOf(locale, rally.nameJa, rally.nameEn)} total={rally.total} locale={locale} /> : null}
         <Link href={`/rallies/${rally.id}`} className="tap-target mt-3 inline-flex items-center gap-1 text-lg font-bold text-accent underline underline-offset-4">
-          <Trans>このラリーのページを開く</Trans>
+          <Trans>ラリーの詳細を見る</Trans>
           <ChevronIcon />
         </Link>
       </div>
@@ -156,7 +156,7 @@ export function SlotList({ rally, locale }: { rally: RallyItem; locale: string }
           <span className="min-w-0 flex-1 text-lg leading-snug">{nameOf(locale, slot.nameJa, slot.nameEn)}</span>
           {slot.stamped === null ? null : (
             <span className={`shrink-0 text-lg font-bold ${slot.stamped ? "text-moss" : "text-muted"}`}>
-              {slot.stamped ? t`押した` : t`まだ`}
+              {slot.stamped ? t`獲得済み` : t`未獲得`}
             </span>
           )}
         </li>
@@ -232,7 +232,7 @@ export function RallyCard({ rally, locale, account, routes = [] }: { rally: Rall
         ) : null}
         <div className="border-t-2 border-line px-4 py-3">
           <Link href={`/rallies/${rally.id}`} className="tap-target inline-flex items-center gap-1 text-lg font-bold text-accent underline underline-offset-4">
-            <Trans>このラリーのページを開く</Trans>
+            <Trans>ラリーの詳細を見る</Trans>
             <ChevronIcon />
           </Link>
         </div>
@@ -263,13 +263,13 @@ export function RallyHero() {
     <section className="@container pattern-shippo relative isolate mx-4 flex flex-col gap-3 overflow-hidden rounded-lg bg-surface p-6 wide:p-8">
       <SutraScroll />
       <p className="font-serif text-2xl font-bold leading-snug text-accent wide:text-3xl">
-        <Trans>歩いて、スタンプを集めよう。</Trans>
+        <Trans>歩いてスタンプを集めましょう</Trans>
       </p>
       <p className="max-w-[32em] text-lg leading-8">
-        <Trans>スタンプの場所の近くでボタンを押すと、スタンプが記録されます。現在地は、ボタンを押したときに1度だけ確かめ、記録には残しません。</Trans>
+        <Trans>スタンプスポットの付近でボタンを押すと、スタンプを獲得できます。現在地はボタンを押したときに1回だけ確認し、位置情報は保存されません。</Trans>
       </p>
       <p className="max-w-[32em] text-lg leading-8">
-        <Trans>スタンプラリーは2種類あります。経塚をめぐる「経塚のラリー」と、コースごとの「コースのラリー」です。同じ場所で押したスタンプは、どちらのラリーにも数えられます。</Trans>
+        <Trans>スタンプラリーは、経塚をめぐる「経塚ラリー」とコースことの「コースラリー」の2種類があります。同じスポットで獲得したスタンプは両方のラリーにカウントされます。</Trans>
       </p>
       <div aria-hidden="true" className="mt-1 flex items-center gap-3">
         <Seal state="stamped" className="size-14" />

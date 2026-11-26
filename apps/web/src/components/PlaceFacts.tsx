@@ -25,13 +25,13 @@ export function PlaceFacts({ place }: { place: PlaceFactsData }) {
   const category = useCategoryNames();
   const status = useStatusNames();
   const rows: [string, React.ReactNode][] = [
-    [t`名前`, place.name],
+    [t`名称`, place.name],
     [t`種類`, category[place.category]],
     ...(place.address ? ([[t`住所`, place.address]] as [string, React.ReactNode][]) : []),
     ...(place.phone ? ([[t`電話番号`, <a key="tel" href={`tel:${place.phone.replace(/[^\d+]/g, "")}`} className="font-bold text-accent underline underline-offset-4">{place.phone}</a>]] as [string, React.ReactNode][]) : []),
     ...(place.hours ? ([[t`営業時間`, place.hours]] as [string, React.ReactNode][]) : []),
     ...(place.closedDays ? ([[t`休業日`, place.closedDays]] as [string, React.ReactNode][]) : []),
-    [t`いまの状態`, place.checked ? `${status[place.status]}（${place.checked}）` : status[place.status]],
+    [t`現在の状況`, place.checked ? `${status[place.status]}（${place.checked}確認）` : status[place.status]],
     ...(place.website ? ([[t`Webサイト`, <a key="web" href={place.website} target="_blank" rel="noopener noreferrer" className="break-all font-bold text-accent underline underline-offset-4">{place.website}</a>]] as [string, React.ReactNode][]) : []),
   ];
   return (

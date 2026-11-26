@@ -890,10 +890,6 @@ msgstr "Enter a link that starts with https://. If left empty, no video is shown
 msgid "ID: {0}"
 msgstr "ID: {0}"
 
-#: src/components/SiteHeader.tsx:303
-msgid "Menu"
-msgstr "Menu"
-
 #: src/components/admin/VideoUpload.tsx:95
 msgid "MP4（H.264）かWebM、200MBまで。スマホで見やすいよう、書き出しは720p・1.5〜2Mbps程度（8分で100MB前後）がおすすめです。ffmpegなら：ffmpeg -i 元.mp4 -vf scale=-2:720 -c:v libx264 -b:v 1800k -c:a aac -b:a 96k -movflags +faststart 出力.mp4"
 msgstr "MP4 (H.264) or WebM, up to 200 MB. For phones, export at about 720p and 1.5–2 Mbps (around 100 MB for 8 minutes). With ffmpeg: ffmpeg -i in.mp4 -vf scale=-2:720 -c:v libx264 -b:v 1800k -c:a aac -b:a 96k -movflags +faststart out.mp4"
@@ -1170,7 +1166,6 @@ msgstr "We will check your location"
 #: src/components/admin/CommentInbox.tsx:102
 #: src/components/admin/PlacePanel.tsx:286
 #: src/components/admin/PlacePanel.tsx:287
-#: src/components/PlaceFacts.tsx:34
 msgid "いまの状態"
 msgstr "Current status"
 
@@ -1241,6 +1236,10 @@ msgstr "Complete when every chosen stamp waypoint is stamped (like the sutra mou
 #: src/app/(public)/page.tsx:52
 msgid "おかえりなさい。"
 msgstr "Welcome back."
+
+#: src/components/RallyViews.tsx:73
+msgid "おすすめのスタンプラリー"
+msgstr "Featured rally"
 
 #: src/components/admin/HomeSectionsForm.tsx:65
 msgid "オフ（ふつう）では、ページと一緒にスクロールします。"
@@ -1873,11 +1872,6 @@ msgstr "An account with this email address already exists. Sign in with email, t
 msgid "このメールアドレスは使用できません。すでに別のアカウントで登録されているか、このアカウントに設定済みです。"
 msgstr "This email address can't be used. It may already be registered to another account, or your account already has an email set."
 
-#: src/components/RallyViews.tsx:133
-#: src/components/RallyViews.tsx:235
-msgid "このラリーのページを開く"
-msgstr "Open this rally's page"
-
 #: src/components/admin/RallyEditor.tsx:208
 msgid "このラリーを削除"
 msgstr "Delete this rally"
@@ -2428,6 +2422,10 @@ msgstr "Courses with the most stamps"
 msgid "スタンプスポット"
 msgstr "Stamp spots"
 
+#: src/components/RallyViews.tsx:269
+msgid "スタンプスポットの付近でボタンを押すと、スタンプを獲得できます。現在地はボタンを押したときに1回だけ確認し、位置情報は保存されません。"
+msgstr "Tap the button when you're near a stamp spot to collect its stamp. Your location is checked once when you tap and is never stored."
+
 #: src/components/StampHere.tsx:234
 msgid "スタンプスポットの付近にいるか確認するため、現在地を1回だけ取得します。"
 msgstr "We'll check your device's location once to verify that you're near this stamp spot."
@@ -2455,10 +2453,6 @@ msgstr "Stamp backup link"
 msgid "スタンプの取得時刻が正しくありません。端末の日時設定を確認してください。"
 msgstr "The stamp timestamp is invalid. Please check your device's date and time settings."
 
-#: src/components/RallyViews.tsx:269
-msgid "スタンプの場所の近くでボタンを押すと、スタンプが記録されます。現在地は、ボタンを押したときに1度だけ確かめ、記録には残しません。"
-msgstr "When you reach a stamp place, press the button to collect its stamp. We check your location once, at that moment, and never store it."
-
 #: src/components/RallyNearbyStamp.tsx:95
 msgid "スタンプの場所の近くで押してください。現在地は1度だけ確かめ、記録には残しません。"
 msgstr "Press this when you are at a stamp place. We check your location once and never store it."
@@ -2477,9 +2471,12 @@ msgid "スタンプの記録を読めませんでした。"
 msgstr "Your stamps could not be read."
 
 #: src/app/(public)/rallies/[id]/page.tsx:142
-#: src/components/RallyViews.tsx:108
 #: src/components/RallyViews.tsx:199
 msgid "スタンプの進み具合"
+msgstr "Stamp progress"
+
+#: src/components/RallyViews.tsx:108
+msgid "スタンプの進捗"
 msgstr "Stamp progress"
 
 #: src/components/admin/PlacePanel.tsx:166
@@ -2495,8 +2492,8 @@ msgid "スタンプラリー"
 msgstr "Stamp Rally"
 
 #: src/components/RallyViews.tsx:272
-msgid "スタンプラリーは2種類あります。経塚をめぐる「経塚のラリー」と、コースごとの「コースのラリー」です。同じ場所で押したスタンプは、どちらのラリーにも数えられます。"
-msgstr "There are two kinds of stamp rally: the sutra mound rally, which takes you to the sutra mounds (kyōzuka), and a course rally for each course. A stamp counts in every rally that includes its place."
+msgid "スタンプラリーは、経塚をめぐる「経塚ラリー」とコースことの「コースラリー」の2種類があります。同じスポットで獲得したスタンプは両方のラリーにカウントされます。"
+msgstr "These are two kinds of stamp rallies: the Sutra Round rally covering the sutra mounds and Course rallies for each course. "
 
 #. placeholder {0}: step.added
 #: src/components/GuestClaim.tsx:82
@@ -2612,10 +2609,6 @@ msgstr "Read the story"
 msgid "すべて"
 msgstr "All"
 
-#: src/components/RallyViews.tsx:105
-msgid "すべてそろいました。"
-msgstr "You have all the stamps."
-
 #: src/components/admin/map-editor/MapEditor.tsx:1130
 msgid "すべてなめらか"
 msgstr "All smooth"
@@ -2659,6 +2652,10 @@ msgstr "Clear all"
 #: src/components/admin/map-editor/MapEditor.tsx:1105
 msgid "すべて消す"
 msgstr "Remove all"
+
+#: src/components/RallyViews.tsx:105
+msgid "すべて獲得しました！"
+msgstr "All stamps collected!"
 
 #: src/components/landing/TrailNotices.tsx:93
 msgid "すべて見る"
@@ -2773,7 +2770,6 @@ msgid "チェックを入れると、「経由地をつないで道をつくる�
 msgstr "When this is checked, \"Connect the waypoints\" skips this point. Instead, you can draw a side-trip line (thin blue dashes) on the map from the previous waypoint to this place. Put a waypoint at the fork, then list this place right after it."
 
 #: src/components/RallyTrail.tsx:39
-#: src/components/RallyViews.tsx:112
 #: src/components/StampGrid.tsx:77
 #: src/components/StampGrid.tsx:99
 #: src/components/StampGrid.tsx:109
@@ -3030,7 +3026,6 @@ msgstr "If this is your first time, an account is made for you. If an email addr
 msgid "はじめての設定"
 msgstr "First-time set-up"
 
-#: src/components/RallyViews.tsx:73
 #: src/components/RallyViews.tsx:94
 msgid "はじめのラリー"
 msgstr "First rally"
@@ -3543,7 +3538,6 @@ msgstr "Start by dragging a GPX file here or pressing \"Load a GPX file\". To en
 #: src/components/admin/RouteEditor.tsx:452
 #: src/components/RallyBook.tsx:131
 #: src/components/RallyTrail.tsx:39
-#: src/components/RallyViews.tsx:159
 #: src/components/StampLegend.tsx:10
 msgid "まだ"
 msgstr "Not yet"
@@ -3703,6 +3697,7 @@ msgid "めぐる場所"
 msgstr "Places to visit"
 
 #: src/components/admin/AdminNav.tsx:115
+#: src/components/SiteHeader.tsx:303
 #: src/components/TabBar.tsx:211
 msgid "メニュー"
 msgstr "Menu"
@@ -3914,6 +3909,12 @@ msgstr "What is in the rally was saved."
 #: src/components/admin/RallyEditor.tsx:145
 msgid "ラリーの名前"
 msgstr "Rally name"
+
+#: src/components/RallyViews.tsx:84
+#: src/components/RallyViews.tsx:133
+#: src/components/RallyViews.tsx:235
+msgid "ラリーの詳細を見る"
+msgstr "View rally details"
 
 #: src/app/(admin)/admin/rallies/page.tsx:23
 msgid "ラリーは、コースを集めてつくるか、経由地を集めてつくります。名前を押すと、名前・公開・中身を直せます。"
@@ -4897,10 +4898,6 @@ msgstr "Ready to walk your first course?"
 msgid "最初のスタンプを集めてみましょう。スポットは全{total}か所です。"
 msgstr "Let's collect your first stamp. There are {total} spots in this rally."
 
-#: src/components/RallyViews.tsx:84
-msgid "最初の場所を見る"
-msgstr "See the first place"
-
 #: src/components/map/MapSheet.tsx:182
 msgid "最大"
 msgstr "Full"
@@ -4915,8 +4912,8 @@ msgid "最小"
 msgstr "Minimized"
 
 #: src/components/RallyViews.tsx:97
-msgid "最後に押した日時　{when}"
-msgstr "Last stamped: {when}"
+msgid "最終スタンプ：{when}"
+msgstr "Last collected: {when}"
 
 #: src/components/pages/PageViews.tsx:158
 msgid "最終更新"
@@ -5545,7 +5542,6 @@ msgstr "An earlier row has the same number"
 #: src/components/admin/RallyEditor.tsx:142
 #: src/components/admin/RallyList.tsx:131
 #: src/components/admin/RouteTable.tsx:169
-#: src/components/PlaceFacts.tsx:28
 msgid "名前"
 msgstr "Name"
 
@@ -5626,6 +5622,7 @@ msgid "名前順"
 msgstr "Name"
 
 #: src/components/admin/map-editor/PlaceList.tsx:99
+#: src/components/PlaceFacts.tsx:28
 msgid "名称"
 msgstr "Name"
 
@@ -6364,7 +6361,6 @@ msgstr "Turnaround"
 
 #: src/components/RallyBook.tsx:126
 #: src/components/RallyTrail.tsx:39
-#: src/components/RallyViews.tsx:159
 #: src/components/StampLegend.tsx:9
 msgid "押した"
 msgstr "Stamped"
@@ -6752,6 +6748,10 @@ msgstr "Not entered"
 msgid "未回答"
 msgstr "Not answered"
 
+#: src/components/RallyViews.tsx:159
+msgid "未獲得"
+msgstr "Not yet"
+
 #: src/components/ProfileSettings.tsx:145
 msgid "未設定"
 msgstr "Not set"
@@ -6882,6 +6882,10 @@ msgstr "Width"
 msgid "欄には、いまサイトに出ている文章が入っています。書きかえた欄だけが保存されます。写真はバナー、コースはコース、お知らせはお知らせの画面で変えられます。"
 msgstr "Each box holds the words the site shows now. Only the boxes you change are saved. Photos are changed in Banners, courses in Courses, and notices in Notices."
 
+#: src/components/RallyViews.tsx:112
+msgid "次"
+msgstr "Next"
+
 #: src/components/navigation/NavigationHud.tsx:332
 msgid "次のスタンプの場所"
 msgstr "Next stamp place"
@@ -6942,8 +6946,8 @@ msgid "止まっています"
 msgstr "Not working"
 
 #: src/components/RallyViews.tsx:266
-msgid "歩いて、スタンプを集めよう。"
-msgstr "Walk the trails and collect stamps."
+msgid "歩いてスタンプを集めましょう"
+msgstr "Walk the trail and collect stamps"
 
 #: src/components/landing/useHomeWords.ts:10
 msgid "歩いてスタンプを集めよう。"
@@ -7174,9 +7178,14 @@ msgstr "Status"
 msgid "獲得したスタンプは消えません。"
 msgstr "Your collected stamps will be kept."
 
+#: src/components/RallyViews.tsx:159
 #: src/components/SpotStats.tsx:40
 msgid "獲得済み"
 msgstr "Collected"
+
+#: src/components/PlaceFacts.tsx:34
+msgid "現在の状況"
+msgstr "Status"
 
 #: src/components/StatusBanner.tsx:92
 msgid "現在はスタンプを押せません。"

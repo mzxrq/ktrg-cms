@@ -300,7 +300,7 @@ export function SiteHeader({
             <div className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5 md:px-[15px] md:py-[1.75rem]">
               {/* On a desktop the drawer has its own close button at the top; on a tablet the menu button turns into it. */}
               <div className="flex items-center justify-between gap-2 md:hidden wide:flex wide:justify-end">
-                <h1 className="font-serif text-3xl font-bold text-accent md:hidden">{t`Menu`}</h1>
+                <h1 className="font-serif text-3xl font-bold text-accent md:hidden">{t`メニュー`}</h1>
                 {/* On a phone the Menu tab below closes it; the popover has no tab to press. */}
                 <button
                   type="button"
