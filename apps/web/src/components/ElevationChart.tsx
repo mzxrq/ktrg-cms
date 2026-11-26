@@ -41,7 +41,7 @@ export function ElevationChart({ line, elevations, rides = [], onHover }: { line
   const pathOf = (r: number[]) => r.map((i, k) => `${k === 0 ? "M" : "L"}${x(dist[i]!).toFixed(1)} ${y(ele[i]!).toFixed(1)}`).join(" ");
   const top = walked.map(pathOf).join(" ");
   const area = walked.map((r) => `${pathOf(r)} L${x(dist[r.at(-1)!]!).toFixed(1)} ${H - PAD} L${x(dist[r[0]!]!).toFixed(1)} ${H - PAD} Z`).join(" ");
-  const rideName: Record<RideSpan["mode"], string> = { ferry: t`船`, bus: t`バス`, train: t`電車`, other: t`その他` };
+  const rideName: Record<RideSpan["mode"], string> = { ferry: t`フェリー`, bus: t`バス`, train: t`電車`, other: t`その他` };
   // One colour per stretch, placed at its middle: the browser blends between them.
   const stops = slopes.map((pct, i) => ({ at: totalM > 0 ? (dist[i]! + dist[i + 1]!) / 2 / totalM : 0, color: gradientColor(pct) }));
 

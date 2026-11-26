@@ -510,7 +510,7 @@ export function MapScreenCanvas({
           number: String(order),
           name: named?.has(r.id) ? name : null,
           nameSide: named?.get(r.id),
-          label: state === "done" ? t`${order}. ${name}（スタンプ完了）` : state === "soon" ? t`${order}. ${name}（準備中）` : t`${order}. ${name}`,
+          label: state === "done" ? t`${order}. ${name}（スタンプ済み）` : state === "soon" ? t`${order}. ${name}（準備中）` : t`${order}. ${name}`,
           state,
           onSelect: () => onSelectRoute(r.id),
         }),
@@ -608,7 +608,7 @@ export function MapScreenCanvas({
   };
 
   if (failed) {
-    return <p className="absolute inset-x-4 top-[calc(5rem+var(--top-clear))] z-10 rounded-lg bg-surface p-4 text-lg">{t`この端末では地図を表示できません。下の一覧から区間を選べます。`}</p>;
+    return <p className="absolute inset-x-4 top-[calc(5rem+var(--top-clear))] z-10 rounded-lg bg-surface p-4 text-lg">{t`この端末では地図を表示できません。下の一覧からコースを選択できます。`}</p>;
   }
 
   return (
@@ -621,7 +621,7 @@ export function MapScreenCanvas({
 
       <div
         role="group"
-        aria-label={t`地図に出すもの`}
+        aria-label={t`地図の表示切替`}
         style={{ marginLeft: coveredLeftPx }}
         // A mouse has no swipe and the bar is hidden: the wheel and a drag move the row too (touch scrolls it natively).
         onWheel={(e) => {
@@ -652,7 +652,7 @@ export function MapScreenCanvas({
       >
         {offeredLayers(routes).map((layer) => {
           const on = layers.has(layer);
-          const name = layer === "courses" ? t`コース` : layer === "mounds" ? t`経塚` : layer === "side" ? t`寄り道の線` : groupNames[layer];
+          const name = layer === "courses" ? t`コース` : layer === "mounds" ? t`経塚` : layer === "side" ? t`寄り道ルート` : groupNames[layer];
           return (
             <button
               key={layer}
@@ -673,7 +673,7 @@ export function MapScreenCanvas({
           <span className="text-caution">
             <WarningIcon />
           </span>
-          {t`見本の位置（目安です）`}
+          {t`仮の位置を表示中（目安）`}
         </p>
       ) : null}
 
@@ -694,7 +694,7 @@ export function MapScreenCanvas({
           type="button"
           onClick={toggleTilt}
           aria-pressed={flat}
-          aria-label={flat ? t`地図を傾ける` : t`地図を平らにする（北が上）`}
+          aria-label={flat ? t`地図を傾ける` : t`地図を2D表示にする（北が上）`}
           className="tap-target inline-flex items-center justify-center rounded-full border border-ink bg-paper text-ink hover:bg-surface"
         >
           <svg viewBox="0 0 24 24" aria-hidden="true" className="size-7 transition-transform" style={{ transform: `rotate(${-camera.bearing}deg) scaleY(${flat ? 1 : 0.8})` }}>
@@ -707,7 +707,7 @@ export function MapScreenCanvas({
             type="button"
             onClick={startFollowing}
             aria-pressed={following}
-            aria-label={t`現在地を真ん中にする（進む向きが上）`}
+            aria-label={t`現在地を中心に表示（進行方向が上）`}
             className={`tap-target inline-flex items-center justify-center rounded-full border border-ink ${following ? "bg-ink text-paper" : "bg-paper text-ink hover:bg-surface"}`}
           >
             <svg viewBox="0 0 24 24" aria-hidden="true" className="size-6" fill="none" stroke="currentColor" strokeWidth="2.2">

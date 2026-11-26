@@ -159,7 +159,7 @@ function Leg({ km, spot }: { km: number | null; spot: SpotListItem | null }) {
     <p className="text-base text-muted tabular-nums" style={{ paddingLeft: COLUMN }}>
       {ride ? (
         mode === "ferry" ? (
-          <Trans>船で約{minutes}分</Trans>
+          <Trans>フェリーで約{minutes}分</Trans>
         ) : mode === "bus" ? (
           <Trans>バスで約{minutes}分</Trans>
         ) : mode === "train" ? (
@@ -168,7 +168,7 @@ function Leg({ km, spot }: { km: number | null; spot: SpotListItem | null }) {
           <Trans>乗り物で約{minutes}分</Trans>
         )
       ) : minutes !== undefined ? (
-        <Trans>{shownKm} km・歩いて約{minutes}分</Trans>
+        <Trans>{shownKm} km・徒歩約{minutes}分</Trans>
       ) : (
         <Trans>{shownKm} km</Trans>
       )}
@@ -207,7 +207,7 @@ function StampMeta({ spot, locale }: { spot: SpotListItem; locale: string }) {
       <StatusWord status={spot.status} />
       {spot.stamped === true ? (
         <span className="font-bold text-ink">
-          <Trans>押した</Trans>
+          <Trans>スタンプ済み</Trans>
         </span>
       ) : null}
     </span>
