@@ -220,19 +220,19 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
           </li>
         </ul>
       </nav>
-      {/* While the tab bar is tucked away on a phone, the menu stays in reach: the tablet's menu button, same look and
-          place (2026-11-26, the boss's request). Shown only by the CSS (data-menu-fab). The bar stays away while the menu
-          is open, so this button stays too and turns into 閉じる, as on a tablet. */}
+      {/* While the tab bar is tucked away on a phone, the menu stays in reach: a round menu button at the top right, in the
+          tablet button's colours (2026-11-26, the boss's request). Shown only by the CSS (data-menu-fab). The bar stays
+          away while the menu is open, so the menu then carries the tabs (data-menu-tabs) and this button closes it. */}
       <button
         type="button"
         data-menu-fab
         onClick={() => setOpen(!open)}
+        aria-label={open ? t`閉じる` : t`メニュー`}
         aria-expanded={open}
         aria-controls="site-menu"
-        className="tap-target fixed right-3 top-[calc(0.25rem+var(--top-clear))] z-40 hidden min-h-11 items-center gap-4 rounded-xl border border-line bg-rail px-4 text-base font-bold leading-tight text-ink shadow-[0_2px_10px_rgb(0_0_0/0.3)] print:hidden [&_svg]:size-6"
+        className="tap-target fixed right-3 top-[calc(0.25rem+var(--top-clear))] z-40 hidden size-12 items-center justify-center rounded-full border border-line bg-rail text-ink shadow-[0_2px_10px_rgb(0_0_0/0.3)] print:hidden [&_svg]:size-6"
       >
         {open ? <CloseIcon /> : <MenuIcon />}
-        {open ? t`閉じる` : t`メニュー`}
       </button>
       {/* Lined up with the tab pills (same side padding), clear of the frame at the bottom. */}
       {footer && !mini ? (

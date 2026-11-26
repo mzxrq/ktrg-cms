@@ -291,12 +291,13 @@ export function SiteHeader({
             e.target.closest("a") &&
             setOpen(false)
           }
-          className="fixed inset-0 overflow-y-auto overscroll-contain bg-paper z-20 pb-28 pt-[var(--top-clear)] md:overflow-hidden md:bg-rail md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-r md:border-line/30 md:pb-0 md:pt-0 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
+          // On a phone: from below the status bar (a top border that size) down to the tab bar's top, or the bottom while it is away.
+          className="fixed inset-x-0 top-0 bottom-[calc(var(--tabbar-room)+var(--bar-inset))] z-20 overflow-hidden border-t-[length:var(--top-clear)] border-t-rail bg-rail md:inset-auto md:inset-y-0 md:right-auto md:w-[26rem] md:border-t-0 md:border-r md:border-line/30 md:shadow-[8px_0_24px_rgb(0_0_0/0.18)]"
         >
-          {/* From 768 px the drawer has the sidebar's frame, which stays put while the menu scrolls inside it. */}
-          {panelGround("md:block")}
+          {/* The drawer has the sidebar's frame, which stays put while the menu scrolls inside it (phones too since 2026-11-26). */}
+          {panelGround("block")}
           {/* The menu scrolls inside the frame only, fading out just inside its lines. */}
-          <div className="md:absolute md:inset-[14px] md:overflow-y-auto md:overscroll-contain md:[scrollbar-width:none] md:[mask-image:linear-gradient(transparent,#000_1.5rem,#000_calc(100%-1.5rem),transparent)] wide:[scrollbar-width:thin]">
+          <div className="absolute inset-[14px] overflow-y-auto overscroll-contain [scrollbar-width:none] [mask-image:linear-gradient(transparent,#000_1.5rem,#000_calc(100%-1.5rem),transparent)] wide:[scrollbar-width:thin]">
             <div className="mx-auto flex max-w-xl flex-col gap-8 px-4 py-5 md:px-[15px] md:py-[1.75rem]">
               {/* On a desktop the drawer has its own close button at the top; on a tablet the menu button turns into it. */}
               <div className="flex items-center justify-between gap-2 md:hidden wide:flex wide:justify-end">
@@ -312,9 +313,11 @@ export function SiteHeader({
                 </button>
               </div>
 
-              {/* A tablet has no tab bar and no sidebar: the tabs lead the menu. */}
+              {/* A tablet has no tab bar and no sidebar: the tabs lead the menu. So does a phone's, opened from the round
+                  button while the tab bar is away (globals.css, data-menu-tabs). */}
               <nav
                 aria-label={t`メインメニュー`}
+                data-menu-tabs
                 className="hidden md:block wide:hidden"
               >
                 <ul className="flex flex-col gap-2">

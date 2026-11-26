@@ -1020,11 +1020,18 @@ body.map-screen-active .site-footer {
     transition: none;
   }
 }
-/* The floating menu button (TabBar, the tablet's look) shows exactly while the tab bar is away, so the menu is never out of
-   reach; the bar stays away while the menu is open, so the button stays to close it. */
+/* The round menu button (TabBar) shows exactly while the tab bar is away, so the menu is never out of reach. The bar stays
+   away while the menu is open, so the button stays to close it and the menu carries the tabs instead (SiteHeader,
+   data-menu-tabs, the tablet's list). A sticky bar at the top (data-fab-room) keeps its right end clear of the button. */
 @media (max-width: 767px) {
   html[data-bars="hidden"]:not(:has([data-tabbar]:focus-within)) [data-menu-fab] {
     display: inline-flex;
+  }
+  html[data-bars="hidden"]:not(:has([data-tabbar]:focus-within)) [data-menu-tabs] {
+    display: block;
+  }
+  html[data-bars="hidden"]:not(:has([data-tabbar]:focus-within)) [data-fab-room] {
+    padding-right: 4rem;
   }
 }
 @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
