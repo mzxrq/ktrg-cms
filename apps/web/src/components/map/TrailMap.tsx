@@ -29,7 +29,7 @@ import type { PointKind } from "@/lib/point-kinds";
 import { groupCounts, groupOf, sortByDistance, type Coord, type MapPlace, type PlaceGroup } from "@/lib/places";
 import { createMarkerElement, createPlaceMarkerElement } from "./MapMarker";
 import { useCursorMarker } from "./useCursorMarker";
-import { PlaceCard, PlaceChips, PlaceList, TickSlot, filterPill } from "./PlacesPanel";
+import { PlaceCard, PlaceChips, PlaceList, TickBadge, filterPill } from "./PlacesPanel";
 import { StopCard } from "./StopCard";
 
 export interface MapStop {
@@ -514,21 +514,21 @@ export function TrailMap({
           <div
             className={`flex min-w-0 items-center gap-2 @4xl:order-none @4xl:gap-1.5 ${
               expanded
-                ? "order-first mb-auto ml-14 mr-12 flex-nowrap overflow-x-auto py-1 [scrollbar-width:none] [&_button]:shrink-0 @4xl:m-0 @4xl:flex-wrap @4xl:overflow-visible @4xl:py-0"
+                ? "order-first mb-auto ml-14 mr-12 flex-nowrap overflow-x-auto px-1.5 py-2 [scrollbar-width:none] [&_button]:shrink-0 @4xl:m-0 @4xl:flex-wrap @4xl:overflow-visible @4xl:py-0"
                 : "order-3 flex-wrap"
             }`}
           >
             {expanded && draft ? <SampleNoticeButton /> : null}
             {expanded ? (
               <button type="button" onClick={() => setTerrain((on) => !on)} aria-pressed={terrain} className={filterPill(terrain)}>
-                <TickSlot on={terrain} />
+                <TickBadge on={terrain} />
                 {terrainLabel}
               </button>
             ) : null}
             {anyPlaces ? <PlaceChips className="contents" counts={counts} active={active} onToggle={toggleGroup} /> : null}
             {hasSide ? (
               <button type="button" aria-pressed={showSide} onClick={() => setShowSide((on) => !on)} className={filterPill(showSide)}>
-                <TickSlot on={showSide} />
+                <TickBadge on={showSide} />
                 {t`寄り道`}
               </button>
             ) : null}
