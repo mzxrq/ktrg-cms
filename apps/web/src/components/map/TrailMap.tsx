@@ -4,7 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import type { Map as MapLibreMap } from "maplibre-gl";
-import { ChevronIcon, ChevronLeftIcon, CloseIcon, ExpandIcon, ListIcon, MinusIcon, PlusIcon, WarningIcon } from "@/components/icons";
+import { ChevronIcon, ChevronLeftIcon, CloseIcon, ExpandIcon, ListIcon, MinusIcon, PlayIcon, PlusIcon, StopIcon, WarningIcon } from "@/components/icons";
 import { SampleNoticeButton } from "@/components/SampleNotice";
 import { pinPhotoSrc } from "@/lib/pin-photo";
 import type { MapPhoto } from "@/lib/map-screen";
@@ -26,6 +26,8 @@ import {
 import { mapStyleSource } from "@/lib/large-map-style";
 import { GSI_DEM_SOURCE, registerGsiDem } from "@/lib/gsi-dem";
 import { motionLevel } from "@/lib/motion";
+import { setElevationCursor } from "@/lib/elevation-cursor";
+import { flightPath, flightSeconds, headingAt, heightAt, pointAt, turnToward } from "@/lib/fly-along";
 import type { MapSettings } from "@/lib/map-settings";
 import type { StopRole } from "@/lib/route-stops";
 import type { PointKind } from "@/lib/point-kinds";
@@ -101,9 +103,12 @@ export function TrailMap({
   draft,
   settings,
   placesFirst,
+  lineElevations,
 }: {
   stops: MapStop[];
   line: Position[] | null;
+  /** The height of each point of `line` (as the elevation chart), for the fly-along's readout. */
+  lineElevations?: (number | null)[] | null;
   /** Side trips (寄り道): thin dashed blue lines out to stop-by places. */
   sideLines?: Position[][];
   places: MapPlace[];
@@ -126,6 +131,9 @@ export function TrailMap({
   const [expanded, setExpanded] = useState(false);
   const [listOpen, setListOpen] = useState(false);
   const [terrain, setTerrain] = useState(false);
+  // The fly-along over the 3D map, and where it is (rounded, so the readout re-renders only when its words change).
+  const [flying, setFlying] = useState(false);
+  const [flightAt, setFlightAt] = useState<{ km: string; m: number | null } | null>(null);
   // Side trips (寄り道) are off at first: some places are worth a mention without being a stop on the way.
   const [showSide, setShowSide] = useState(false);
   const hasSide = sideLines.some((l) => l.length >= 2);
@@ -344,6 +352,53 @@ export function TrailMap({
     }
   }, [terrain, expanded, loaded, mapGen]);
 
+  // The fly-along (2026-11-26, user): the 3D camera follows the course from start to goal, looking ahead along it, with a dot
+  // and a readout of the distance and height. Any touch, drag or scroll on the map, the button again, turning 3D off, closing
+  // or leaving the page stops it; the view then turns north-up again. Only offered at the full motion level.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!flying || !map || !expanded || !terrain) return;
+    const path = flightPath(line ?? stops.map((s) => s.position));
+    if (path.total === 0) return;
+    const seconds = flightSeconds(path.total);
+    let started = 0;
+    let frame = 0;
+    let bearing = headingAt(path, 0);
+    let shown = "";
+    const tick = (now: number) => {
+      if (!started) started = now;
+      const d = Math.min(path.total, ((now - started) / 1000 / seconds) * path.total);
+      const at = pointAt(path, d);
+      bearing = turnToward(bearing, headingAt(path, d), 0.06);
+      map.jumpTo({ center: [at.lng, at.lat], bearing, pitch: 60, zoom: 14.5 });
+      setElevationCursor(at);
+      const height = heightAt(path, lineElevations, d);
+      const next = { km: (d / 1000).toFixed(1), m: height === null ? null : Math.round(height) };
+      if (`${next.km}|${next.m}` !== shown) {
+        shown = `${next.km}|${next.m}`;
+        setFlightAt(next);
+      }
+      if (d >= path.total) setFlying(false);
+      else frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    const box = map.getCanvasContainer();
+    const interrupt = () => setFlying(false);
+    const onHide = () => document.hidden && setFlying(false);
+    box.addEventListener("pointerdown", interrupt);
+    box.addEventListener("wheel", interrupt, { passive: true });
+    document.addEventListener("visibilitychange", onHide);
+    return () => {
+      cancelAnimationFrame(frame);
+      box.removeEventListener("pointerdown", interrupt);
+      box.removeEventListener("wheel", interrupt);
+      document.removeEventListener("visibilitychange", onHide);
+      setElevationCursor(null);
+      setFlightAt(null);
+      map.easeTo({ bearing: 0, duration: motionLevel() === "full" ? 600 : 0 });
+    };
+  }, [flying, expanded, terrain, mapGen, line, stops, lineElevations]);
+
   // Expanded view: keep the page still behind it, close on Escape, and move focus sensibly.
   useEffect(() => {
     if (!expanded) return;
@@ -356,6 +411,7 @@ export function TrailMap({
       document.removeEventListener("keydown", onKey);
       document.body.classList.remove("overflow-hidden", "map-expanded");
       setTerrain(false); // the small map on the page stays flat and plain
+      setFlying(false);
       opener?.focus();
     };
   }, [expanded]);
@@ -474,6 +530,16 @@ export function TrailMap({
           </p>
         ) : null}
 
+        {/* Where the fly-along is: the distance from the start and the height there (from the line, as the elevation chart). */}
+        {flightAt ? (
+          <p
+            aria-live="off"
+            className={`absolute left-3 z-10 rounded-lg bg-paper/95 px-3 py-1 text-lg font-bold tabular-nums text-ink shadow-sm ${draft ? "top-[calc(7.5rem+var(--top-clear))]" : "top-[calc(4.5rem+var(--top-clear))]"}`}
+          >
+            {flightAt.m === null ? `${flightAt.km} km` : t`標高 ${flightAt.m} m・${flightAt.km} km`}
+          </p>
+        ) : null}
+
         <div className={`absolute z-10 flex flex-col print:hidden ${expanded ? "right-2 top-[calc(0.5rem+var(--top-clear))]" : "right-1 top-1"}`}>
           <button type="button" onClick={() => zoom(1)} aria-label={t`拡大`} className={hit}>
             <span className={disc}>
@@ -541,9 +607,24 @@ export function TrailMap({
           >
             {expanded && draft ? <SampleNoticeButton /> : null}
             {expanded ? (
-              <button type="button" onClick={() => setTerrain((on) => !on)} aria-pressed={terrain} className={filterPill(terrain)}>
+              <button
+                type="button"
+                onClick={() => {
+                  setTerrain((on) => !on);
+                  setFlying(false);
+                }}
+                aria-pressed={terrain}
+                className={filterPill(terrain)}
+              >
                 <TickBadge on={terrain} />
                 {t`立体の地図（3D）`}
+              </button>
+            ) : null}
+            {/* The fly-along: only over the 3D map, and only at the full motion level (a moving camera is a lot of motion). */}
+            {expanded && terrain && motionLevel() === "full" ? (
+              <button type="button" onClick={() => setFlying((on) => !on)} aria-pressed={flying} className={filterPill(flying)}>
+                {flying ? <StopIcon /> : <PlayIcon />}
+                {t`コースをたどる`}
               </button>
             ) : null}
             {anyPlaces ? <PlaceChips className="contents" counts={counts} active={active} onToggle={toggleGroup} /> : null}

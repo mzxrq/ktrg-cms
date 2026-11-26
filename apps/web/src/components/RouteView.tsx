@@ -299,7 +299,7 @@ export function RouteView({ route, locale, places, settings, placesFirst, labels
           <div className={MAP_COLUMN}>
             <section id="map" className="order-8 px-4 scroll-mt-[calc(5rem+var(--top-clear))] @4xl:order-none @4xl:h-full @4xl:px-0">
               <Fold open className="fold-bare" title={<span className="border-l-4 border-brand pl-3 font-serif text-accent"><Trans>地図</Trans></span>}>
-                <TrailMapLoader stops={stops} line={route.line} sideLines={route.sideLines?.map((s) => s.line)} places={mapPlaces} draft={draftPositions} settings={settings} placesFirst={placesFirst} />
+                <TrailMapLoader stops={stops} line={route.line} sideLines={route.sideLines?.map((s) => s.line)} places={mapPlaces} draft={draftPositions} settings={settings} placesFirst={placesFirst} lineElevations={route.lineElevations} />
               </Fold>
             </section>
           </div>
