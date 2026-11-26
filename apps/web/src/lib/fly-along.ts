@@ -80,8 +80,9 @@ export interface FlyStop {
   recommended: boolean;
 }
 
-const NOTE_CHARS = 80;
-const shorten = (text: string) => (text.length > NOTE_CHARS ? `${text.slice(0, NOTE_CHARS).trimEnd()}…` : text);
+// The card clamps the line to three lines (CSS line-clamp draws the ellipsis), so this only keeps the text from being huge.
+const NOTE_CHARS = 300;
+const shorten = (text: string) => text.slice(0, NOTE_CHARS).trimEnd();
 
 /**
  * Whether the flight stops at a waypoint and what it shows there (null: it flies past). Automatic: it stops at stamp places

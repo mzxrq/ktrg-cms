@@ -48,8 +48,10 @@ test("the card shows the admin's line and photo, else the start of the descripti
   const item = { stampable: true, photoUrl: "https://x/main.jpg", descriptionJa: "**大きな**楠があります。".repeat(10), descriptionEn: null };
   const auto = flyStopOf(item, "en")!;
   expect(auto).toMatchObject({ seconds: 5, photo: "https://x/main.jpg", noteLang: "ja" });
-  expect(auto.note!.startsWith("大きな楠があります。")).toBe(true);
-  expect(auto.note!.endsWith("…")).toBe(true);
+  // The words only (no markup), capped; the card's CSS clamps it to three lines.
+  expect(auto.note!.startsWith("大きな楠があります。大きな楠")).toBe(true);
+  expect(auto.note!.includes("*")).toBe(false);
+  expect(flyStopOf({ ...item, descriptionJa: "あ".repeat(500) }, "ja")!.note!.length).toBe(300);
   const own = flyStopOf({ ...item, fly: { seconds: 40, photoUrl: "https://x/2.jpg", noteJa: "急な登り", noteEn: "Steep climb" } }, "en")!;
   expect(own).toMatchObject({ seconds: 15, photo: "https://x/2.jpg", note: "Steep climb", noteLang: "en" });
 });
