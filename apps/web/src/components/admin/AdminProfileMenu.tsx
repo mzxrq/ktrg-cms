@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { ChevronDownIcon, ChevronUpIcon, MoonIcon, SunIcon } from "@/components/admin/admin-icons";
+import { ChevronDownIcon, ChevronUpIcon, FingerprintIcon, GearIcon, HomeIcon, LogOutIcon, MoonIcon, SunIcon, UserIcon } from "@/components/admin/admin-icons";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { logOut } from "@/lib/auth-client";
 import { parseTheme, themeCookieString } from "@/lib/theme";
@@ -36,7 +36,6 @@ export function useAdminLightDefault() {
 export function AdminProfileMenu({ name, role }: { name: string | null; role: "editor" | "admin" | null }) {
   const { t } = useLingui();
   const [open, setOpen] = useState(false);
-  const [account, setAccount] = useState(false);
   const [place, setPlace] = useState<CSSProperties>({});
   const button = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
@@ -44,7 +43,7 @@ export function AdminProfileMenu({ name, role }: { name: string | null; role: "e
   const toggle = () => {
     const r = button.current?.getBoundingClientRect();
     if (!open && r) {
-      const width = Math.min(288, window.innerWidth - 16);
+      const width = Math.min(320, window.innerWidth - 16);
       const left = Math.max(8, Math.min(r.left, window.innerWidth - width - 8));
       const upward = r.top > window.innerHeight / 2;
       setPlace(upward ? { left, width, bottom: window.innerHeight - r.top + 8 } : { left, width, top: r.bottom + 8 });
@@ -90,11 +89,13 @@ export function AdminProfileMenu({ name, role }: { name: string | null; role: "e
     router.refresh(); // the signed-out page, not a cached signed-in one
   };
   const shown = name ?? (role === "admin" ? t`管理者` : t`編集者`);
-  const row = "tap-target flex items-center rounded-full px-4 text-lg font-bold hover:bg-surface";
+  // Plain rows with an icon, grouped under small headings with a line between groups: easier to scan than bold pills.
+  const row = "tap-target flex items-center gap-3 rounded-lg px-3 text-base hover:bg-surface [&>svg]:shrink-0 [&>svg]:text-muted";
+  const heading = "mt-2 border-t border-line px-3 pb-1 pt-3 text-base font-bold text-muted";
 
   return (
     <div className="lg:w-full">
-      <button ref={button} type="button" aria-expanded={open} aria-controls={id} onClick={toggle} className="tap-target flex items-center gap-2 rounded-full border border-line px-2 pr-3 text-left hover:bg-surface lg:w-full">
+      <button ref={button} type="button" aria-expanded={open} aria-controls={id} onClick={toggle} className="tap-target flex items-center gap-2 rounded-full border border-line bg-surface px-2 pr-3 text-left hover:bg-line/40 lg:w-full">
         <span aria-hidden className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-selected text-lg font-bold text-on-selected">
           {shown.slice(0, 1)}
         </span>
@@ -105,37 +106,42 @@ export function AdminProfileMenu({ name, role }: { name: string | null; role: "e
         <span className="lg:group-data-[folded=true]:hidden">{open ? <ChevronUpIcon size={20} /> : <ChevronDownIcon size={20} />}</span>
       </button>
       {open ? (
-        <div ref={panel} id={id} style={place} className="fixed z-50 flex max-h-[80vh] flex-col gap-1 overflow-y-auto rounded-2xl border border-line bg-paper p-2 shadow-xl">
+        <div ref={panel} id={id} style={place} className="fixed z-50 flex max-h-[80vh] flex-col overflow-y-auto rounded-2xl border border-line bg-paper p-2 shadow-xl">
           <Link href="/" className={row} onClick={() => setOpen(false)}>
+            <HomeIcon size={20} />
             {t`サイトのトップへ`}
           </Link>
-          <button type="button" aria-expanded={account} onClick={() => setAccount(!account)} className={`${row} justify-between text-left`}>
-            {t`アカウントの設定`}
-            {account ? <ChevronUpIcon size={20} /> : <ChevronDownIcon size={20} />}
-          </button>
-          {account ? (
-            <div className="flex flex-col gap-1 pl-3">
-              <Link href="/profile" className={row} onClick={() => setOpen(false)}>
-                {t`プロフィール（名前・写真）`}
-              </Link>
-              <Link href="/settings" className={row} onClick={() => setOpen(false)}>
-                {t`見やすさの設定`}
-              </Link>
-              <Link href="/settings/passkeys" className={row} onClick={() => setOpen(false)}>
-                {t`顔・指紋のログイン`}
-              </Link>
-            </div>
-          ) : null}
-          <div className="flex flex-wrap items-center gap-2 px-2 py-1">
+          <p className={heading}>{t`アカウント`}</p>
+          <Link href="/profile" className={row} onClick={() => setOpen(false)}>
+            <UserIcon size={20} />
+            {t`プロフィール（名前・写真）`}
+          </Link>
+          <Link href="/settings" className={row} onClick={() => setOpen(false)}>
+            <GearIcon size={20} />
+            {t`見やすさの設定`}
+          </Link>
+          <Link href="/settings/passkeys" className={row} onClick={() => setOpen(false)}>
+            <FingerprintIcon size={20} />
+            {t`顔・指紋のログイン`}
+          </Link>
+          <p className={heading}>{t`表示・設定`}</p>
+          <div className="flex items-center justify-between gap-3 px-3 py-1">
+            <span className="text-base">{t`言語`}</span>
             <LocaleSwitcher />
-            <button type="button" aria-pressed={dark} onClick={() => setDark(!dark)} className="inline-flex min-h-12 items-center gap-1.5 rounded-full border border-line px-3.5 text-base font-bold hover:bg-surface [&>svg]:size-5">
+          </div>
+          <div className="flex items-center justify-between gap-3 px-3 py-1">
+            <span className="text-base">{t`テーマ`}</span>
+            <button type="button" aria-pressed={dark} onClick={() => setDark(!dark)} className="inline-flex min-h-12 items-center gap-1.5 rounded-lg border border-line px-3.5 text-base font-bold hover:bg-surface [&>svg]:size-5">
               {dark ? <MoonIcon /> : <SunIcon />}
               {dark ? t`ダーク` : t`ライト`}
             </button>
           </div>
-          <button type="button" onClick={() => void signOut()} className={`${row} text-left text-danger`}>
-            {t`ログアウト`}
-          </button>
+          <div className="mt-2 border-t border-line pt-2">
+            <button type="button" onClick={() => void signOut()} className={`${row} w-full text-left text-danger`}>
+              <LogOutIcon size={20} />
+              {t`ログアウト`}
+            </button>
+          </div>
         </div>
       ) : null}
     </div>

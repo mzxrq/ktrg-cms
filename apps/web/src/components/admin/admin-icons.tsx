@@ -16,12 +16,15 @@ import {
   Clock,
   ExternalLink,
   FileText,
+  Fingerprint,
   Flag,
   Globe,
+  House,
   Image,
   Info,
   Link,
   List,
+  LogOut,
   Map,
   MapPin,
   Maximize,
@@ -77,15 +80,18 @@ export const CommentIcon = lucide(MessageSquare, "CommentIcon");
 export const CursorIcon = lucide(MousePointer2, "CursorIcon");
 export const DocumentIcon = lucide(FileText, "DocumentIcon");
 export const ExternalIcon = lucide(ExternalLink, "ExternalIcon");
+export const FingerprintIcon = lucide(Fingerprint, "FingerprintIcon");
 export const FitIcon = lucide(Maximize, "FitIcon");
 export const FlagIcon = lucide(Flag, "FlagIcon");
 export const GearIcon = lucide(Settings, "GearIcon");
 export const GlobeIcon = lucide(Globe, "GlobeIcon");
 export const GuideIcon = lucide(BookOpen, "GuideIcon");
+export const HomeIcon = lucide(House, "HomeIcon");
 export const ImageIcon = lucide(Image, "ImageIcon");
 export const InfoIcon = lucide(Info, "InfoIcon");
 export const LinkIcon = lucide(Link, "LinkIcon");
 export const ListIcon = lucide(List, "ListIcon");
+export const LogOutIcon = lucide(LogOut, "LogOutIcon");
 export const MapIcon = lucide(Map, "MapIcon");
 export const MenuIcon = lucide(Menu, "MenuIcon");
 export const MoonIcon = lucide(Moon, "MoonIcon");

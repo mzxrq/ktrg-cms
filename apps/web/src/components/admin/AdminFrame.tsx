@@ -50,7 +50,7 @@ export function AdminFrame({ aside, children }: { aside: ReactNode; children: Re
   return (
     <Sidebar.Provider value={{ hidden, toggle }}>
       <div className={`min-h-screen bg-paper text-ink lg:grid ${hidden ? "lg:grid-cols-[5rem_1fr]" : "lg:grid-cols-[16rem_1fr]"}`}>
-        <aside id="admin-sidebar" data-folded={hidden} className={`group flex flex-wrap items-center gap-2 border-b border-line p-4 lg:flex lg:flex-col lg:flex-nowrap lg:items-stretch lg:gap-0 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r ${hidden ? "lg:p-2" : ""}`}>
+        <aside id="admin-sidebar" data-folded={hidden} className={`group flex flex-wrap items-center gap-2 border-b border-line p-4 lg:flex lg:flex-col lg:flex-nowrap lg:items-stretch lg:gap-0 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r lg:pb-0 ${hidden ? "lg:p-2 lg:pb-0" : ""}`}>
           {aside}
         </aside>
         <div className="min-w-0">{children}</div>

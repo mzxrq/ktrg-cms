@@ -21,7 +21,7 @@ export function AdminShell({ name, role, lists, children }: { name: string | nul
           </div>
           <AdminNav lists={lists} isAdmin={role === "admin"} footer={null} />
           {/* Always in sight: in the top bar on a phone, at the foot of the menu on a wide screen. */}
-          <div className="ml-auto lg:sticky lg:bottom-0 lg:ml-0 lg:mt-auto lg:border-t lg:border-line lg:bg-paper lg:pt-3">
+          <div className="ml-auto lg:sticky lg:bottom-0 lg:z-10 lg:ml-0 lg:mt-auto lg:border-t lg:border-line lg:bg-paper lg:py-3 lg:group-data-[folded=true]:py-2">
             <AdminProfileMenu name={name} role={role} />
           </div>
           {/* Light before the first paint (admin screens do not follow the device); see AdminProfileMenu. */}
