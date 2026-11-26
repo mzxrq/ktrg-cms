@@ -1307,7 +1307,6 @@ msgstr ""
 
 #: src/app/(public)/places/[id]/page.tsx:49
 #: src/app/(public)/places/page.tsx:12
-#: src/app/(public)/places/page.tsx:37
 #: src/components/admin/one-map/OneMap.tsx:394
 msgid "お店と施設"
 msgstr ""
@@ -1666,6 +1665,10 @@ msgstr ""
 
 #: src/components/admin/useChecklistLabels.ts:11
 msgid "コース名（日本語）"
+msgstr ""
+
+#: src/app/(public)/places/page.tsx:40
+msgid "コース周辺のトイレや店舗・駅・バス停などを一覧で紹介しています。営業時間は変更になる場合があるため、出かける前にご確認ください。。"
 msgstr ""
 
 #: src/app/(public)/grading/page.tsx:73
@@ -4914,9 +4917,6 @@ msgid "最大"
 msgstr ""
 
 #: src/components/NearestPlaces.tsx:37
-msgid "最寄り"
-msgstr ""
-
 #: src/components/SpotSheet.tsx:183
 msgid "最寄りアクセス"
 msgstr ""
@@ -6232,6 +6232,7 @@ msgstr ""
 msgid "広げる"
 msgstr ""
 
+#: src/app/(public)/places/page.tsx:37
 #: src/app/(public)/sitemap/page.tsx:67
 msgid "店舗・施設"
 msgstr ""
@@ -8727,10 +8728,6 @@ msgstr ""
 
 #: src/components/admin/GradingFields.tsx:89
 msgid "道の状態から、手で選びます。"
-msgstr ""
-
-#: src/app/(public)/places/page.tsx:40
-msgid "道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。"
 msgstr ""
 
 #: src/components/RouteStats.tsx:48

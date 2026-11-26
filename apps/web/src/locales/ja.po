@@ -1301,7 +1301,6 @@ msgstr "お店・食事"
 
 #: src/app/(public)/places/[id]/page.tsx:49
 #: src/app/(public)/places/page.tsx:12
-#: src/app/(public)/places/page.tsx:37
 #: src/components/admin/one-map/OneMap.tsx:394
 msgid "お店と施設"
 msgstr "お店と施設"
@@ -1661,6 +1660,10 @@ msgstr "コース一覧を見る"
 #: src/components/admin/useChecklistLabels.ts:11
 msgid "コース名（日本語）"
 msgstr "コース名（日本語）"
+
+#: src/app/(public)/places/page.tsx:40
+msgid "コース周辺のトイレや店舗・駅・バス停などを一覧で紹介しています。営業時間は変更になる場合があるため、出かける前にご確認ください。。"
+msgstr "コース周辺のトイレや店舗・駅・バス停などを一覧で紹介しています。営業時間は変更になる場合があるため、出かける前にご確認ください。。"
 
 #: src/app/(public)/grading/page.tsx:73
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
@@ -4908,9 +4911,6 @@ msgid "最大"
 msgstr "最大"
 
 #: src/components/NearestPlaces.tsx:37
-msgid "最寄り"
-msgstr "最寄り"
-
 #: src/components/SpotSheet.tsx:183
 msgid "最寄りアクセス"
 msgstr "最寄りアクセス"
@@ -6226,6 +6226,7 @@ msgstr "年代"
 msgid "広げる"
 msgstr "広げる"
 
+#: src/app/(public)/places/page.tsx:37
 #: src/app/(public)/sitemap/page.tsx:67
 msgid "店舗・施設"
 msgstr "店舗・施設"
@@ -8722,10 +8723,6 @@ msgstr "道の探索サービスが使えなかったため、地図の道（国
 #: src/components/admin/GradingFields.tsx:89
 msgid "道の状態から、手で選びます。"
 msgstr "道の状態から、手で選びます。"
-
-#: src/app/(public)/places/page.tsx:40
-msgid "道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。"
-msgstr "道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。"
 
 #: src/components/RouteStats.tsx:48
 msgid "道の険しさ"

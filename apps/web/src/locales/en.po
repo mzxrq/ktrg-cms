@@ -1301,7 +1301,6 @@ msgstr "Shops and food"
 
 #: src/app/(public)/places/[id]/page.tsx:49
 #: src/app/(public)/places/page.tsx:12
-#: src/app/(public)/places/page.tsx:37
 #: src/components/admin/one-map/OneMap.tsx:394
 msgid "お店と施設"
 msgstr "Shops and facilities"
@@ -1662,6 +1661,10 @@ msgstr "Courses"
 msgid "コース名（日本語）"
 msgstr "Course name (Japanese)"
 
+#: src/app/(public)/places/page.tsx:40
+msgid "コース周辺のトイレや店舗・駅・バス停などを一覧で紹介しています。営業時間は変更になる場合があるため、出かける前にご確認ください。。"
+msgstr "Browse toilets, shops, stations, and bus stops along the courses. Opening hours may change, so please check before heading out."
+
 #: src/app/(public)/grading/page.tsx:73
 msgid "コース定数 ＝ 1.8 × 時間（h） ＋ 0.3 × 距離（km） ＋ 10 × 登り（km） ＋ 0.6 × 下り（km）"
 msgstr "Score = 1.8 × hours + 0.3 × distance (km) + 10 × climb (km) + 0.6 × descent (km)"
@@ -1823,7 +1826,7 @@ msgstr "There is no stamp at this spot."
 
 #: src/components/StampHere.tsx:208
 msgid "このスポットは現在閉鎖中です。"
-msgstr ""
+msgstr "This spot is currently closed."
 
 #: src/components/SampleNotice.tsx:52
 #: src/components/SampleNotice.tsx:79
@@ -2432,7 +2435,7 @@ msgstr "Stamp spots"
 
 #: src/components/StampHere.tsx:234
 msgid "スタンプスポットの付近にいるか確認するため、現在地を1回だけ取得します。"
-msgstr ""
+msgstr "We'll check your device's location once to verify that you're near this stamp spot."
 
 #: src/components/map/MapScreen.tsx:510
 msgid "スタンプスポットは準備中です。"
@@ -4414,7 +4417,7 @@ msgstr "Location access isn't allowed. Please allow location access for this sit
 
 #: src/components/StampHere.tsx:235
 msgid "位置情報は保存されません。記録されるのはスタンプの獲得履歴のみです。"
-msgstr ""
+msgstr "Your location is never stored - only your stamp record is saved."
 
 #: src/components/map/MapScreen.tsx:581
 #: src/components/map/StopCard.tsx:59
@@ -4908,9 +4911,6 @@ msgid "最大"
 msgstr "Full"
 
 #: src/components/NearestPlaces.tsx:37
-msgid "最寄り"
-msgstr "Nearest"
-
 #: src/components/SpotSheet.tsx:183
 msgid "最寄りアクセス"
 msgstr "Neareast Access"
@@ -6226,6 +6226,7 @@ msgstr "Age"
 msgid "広げる"
 msgstr "Expand"
 
+#: src/app/(public)/places/page.tsx:37
 #: src/app/(public)/sitemap/page.tsx:67
 msgid "店舗・施設"
 msgstr "Shops & Facilities"
@@ -7187,11 +7188,11 @@ msgstr "Stamp cannot be collected here right now."
 
 #: src/components/StampHere.tsx:188
 msgid "現在地から約{km}km"
-msgstr ""
+msgstr "About {km}km away"
 
 #: src/components/StampHere.tsx:188
 msgid "現在地から約{m}m"
-msgstr ""
+msgstr "About {m}m away"
 
 #: src/components/useStampMessages.ts:13
 msgid "現在地の取得に時間がかかっています。空の開けた場所で、もう一度お試しください。"
@@ -7211,19 +7212,19 @@ msgstr "Couldn't get your location. Please try again in an open area."
 
 #: src/components/StampHere.tsx:175
 msgid "現在地を取得中…"
-msgstr ""
+msgstr "Getting your location..."
 
 #: src/components/StampHere.tsx:238
 msgid "現在地を確認してスタンプを押す"
-msgstr ""
+msgstr "Check location & collect stamp"
 
 #: src/components/StampHere.tsx:232
 msgid "現在地を確認します"
-msgstr ""
+msgstr "Check your location"
 
 #: src/components/StampHere.tsx:215
 msgid "現在地を確認中…"
-msgstr ""
+msgstr "Checking your location..."
 
 #: src/components/navigation/NavigationHud.tsx:308
 msgid "現在地を調べています…"
@@ -8633,7 +8634,7 @@ msgstr "Connection error. Please try again where you have a signal."
 
 #: src/components/StampHere.tsx:155
 msgid "通信できないため、あとで自動送信します。"
-msgstr ""
+msgstr "No connection - your stamp will be sent automatically later."
 
 #: src/components/admin/PlacePanel.tsx:93
 msgid "通常"
@@ -8722,10 +8723,6 @@ msgstr "The route service could not be used, so the way was found on GSI's trail
 #: src/components/admin/GradingFields.tsx:89
 msgid "道の状態から、手で選びます。"
 msgstr "Choose by hand, based on the condition of the path."
-
-#: src/app/(public)/places/page.tsx:40
-msgid "道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。"
-msgstr "Toilets, shops, stations, bus stops and more near the trail. Opening hours can change, so check before you go."
 
 #: src/components/RouteStats.tsx:48
 msgid "道の険しさ"
@@ -8996,7 +8993,7 @@ msgstr "{0} stamps could not be sent for lack of signal. This account already ha
 
 #: src/components/StampHere.tsx:156
 msgid "電波が回復すると自動で送信されます。送信時に確認を行うため、スポットが閉鎖中になっている場合などは獲得できないことがあります。"
-msgstr ""
+msgstr "It will be sent automatically once you're back online. Because it's verified when sent, it may not be accepted if the spot has since closed."
 
 #. placeholder {0}: phase.place
 #: src/components/RallyNearbyStamp.tsx:127
