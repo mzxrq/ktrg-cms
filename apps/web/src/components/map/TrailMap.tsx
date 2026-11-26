@@ -320,12 +320,12 @@ export function TrailMap({
     if (!expanded) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setExpanded(false);
     document.addEventListener("keydown", onKey);
-    document.body.classList.add("overflow-hidden");
+    document.body.classList.add("overflow-hidden", "map-expanded");
     closeRef.current?.focus();
     const opener = expandRef.current;
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.classList.remove("overflow-hidden");
+      document.body.classList.remove("overflow-hidden", "map-expanded");
       opener?.focus();
     };
   }, [expanded]);

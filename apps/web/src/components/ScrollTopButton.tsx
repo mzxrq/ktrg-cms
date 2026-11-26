@@ -24,6 +24,7 @@ export function ScrollTopButton() {
   return (
     <button
       type="button"
+      data-scroll-top
       aria-label={t`ページの先頭へ`}
       title={t`ページの先頭へ`}
       onClick={() => window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" })}

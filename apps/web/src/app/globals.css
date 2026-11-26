@@ -1094,6 +1094,11 @@ body:has([data-sample-notice]) .cover-credit > details {
     display: none;
   }
 }
+/* The course page's enlarged map (TrailMap) is the whole screen: nothing floats over it, not the tab bar or the tablet's menu
+   button, the round menu button, nor back to top (2026-11-26). Its own 閉じる brings them back. */
+body.map-expanded :is([data-tabbar], [data-menu-fab], [data-scroll-top]) {
+  display: none !important;
+}
 
 /* A course on the whole-trail map: a round number, with its name beside it once zoomed in. 44 px to tap, 36 px to see. Fixed
    colours, like the route line: the map tiles do not change with the theme. Finished uses the deep red, not the brand red,
