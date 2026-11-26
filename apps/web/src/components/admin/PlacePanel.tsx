@@ -3,6 +3,7 @@
 import { useRef, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { pointKinds, stampableByDefault, type PointKind } from "@/lib/point-kinds";
+import { usePointKindNames } from "@/components/PointKindName";
 import { infoPatch, publishBlockers, type PlaceDraft, type PublishBlocker } from "@/lib/admin/route-draft";
 import type { SpotStatus } from "@/lib/admin/types";
 import { RubyEditor } from "./RubyEditor";
@@ -39,28 +40,6 @@ export interface PlacePanelProps {
   stampFrom?: { choices: { id: string; name: string }[]; isHub: boolean };
 }
 
-/** The words for what a waypoint can be. */
-export function useKindLabels(): Record<PointKind, string> {
-  const { t } = useLingui();
-  return {
-    temple: t`寺社`,
-    mound: t`経塚`,
-    turn: t`曲がり角`,
-    danger: t`危険な所`,
-    view: t`見どころ`,
-    toilet: t`トイレ`,
-    rest_area: t`休憩所`,
-    drinking_water: t`水場`,
-    vending_machine: t`自動販売機`,
-    bus_stop: t`バス停`,
-    station: t`駅`,
-    parking: t`駐車場`,
-    ferry: t`港・フェリー乗り場`,
-    campsite: t`キャンプ場`,
-    other: t`その他`,
-  };
-}
-
 /**
  * One place on the route. The short form (name, text, photo, position, kind) is what most edits need; the stamp
  * settings (range, status, permission) are folded away. What still stops it being published is always visible.
@@ -80,7 +59,7 @@ export function PlacePanel(p: PlacePanelProps) {
   const { t } = useLingui();
   const { place } = p;
   const blockers = publishBlockers(place, p.dirty);
-  const kindName = useKindLabels();
+  const kindName = usePointKindNames();
   const isStamp = place.stampable;
   const isInfo = place.status === "info";
   const blockerText: Record<PublishBlocker, string> = {

@@ -1,10 +1,10 @@
 import { useLingui } from "@lingui/react/macro";
 import type { PointKind } from "@/lib/point-kinds";
 
-/** What a waypoint is, in words (a toilet, a station ...), for the list of places on a route page. */
-export function PointKindName({ kind }: { kind: PointKind }) {
+/** What a waypoint is, in words (a toilet, a station ...): the one list for the site and the admin. */
+export function usePointKindNames(): Record<PointKind, string> {
   const { t } = useLingui();
-  const names: Record<PointKind, string> = {
+  return {
     temple: t`寺社`,
     mound: t`経塚`,
     view: t`見どころ`,
@@ -21,5 +21,8 @@ export function PointKindName({ kind }: { kind: PointKind }) {
     campsite: t`キャンプ場`,
     other: t`その他`,
   };
-  return <>{names[kind]}</>;
+}
+
+export function PointKindName({ kind }: { kind: PointKind }) {
+  return <>{usePointKindNames()[kind]}</>;
 }
