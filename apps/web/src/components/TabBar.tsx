@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useSyncExternalStore, type ReactNode } from "react";
+import { useEffect, useRef, useSyncExternalStore, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import {
   CloseIcon,
@@ -85,6 +85,22 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
   );
   const mini = foldedByHand || low;
 
+  // The bar's real height (its padding for the phone's home line included), for the phone menu to end exactly on top of it
+  // (globals.css --menu-bottom). --tabbar-room is a rounder 5.5rem kept for things floating above the bar, and the menu
+  // ended above a strip of the page with it (2026-11-26, live).
+  const navRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav || typeof ResizeObserver === "undefined") return;
+    const root = document.documentElement;
+    const watch = new ResizeObserver(() => root.style.setProperty("--tabbar-h", `${nav.offsetHeight}px`));
+    watch.observe(nav);
+    return () => {
+      watch.disconnect();
+      root.style.removeProperty("--tabbar-h");
+    };
+  }, []);
+
   // While reading on a phone, scrolling down tucks the tab bar away and scrolling up brings it
   // back (lib/scroll-bars.ts). It only sets <html data-bars="hidden">; the CSS decides who moves (phones only). A new page
   // shows them; an open menu keeps them as they were (opened from the round menu button, that button stays to close it).
@@ -162,6 +178,7 @@ export function TabBar({ footer }: { footer?: ReactNode }) {
         </button>
       )}
       <nav
+        ref={navRef}
         aria-label={t`メインメニュー`}
         data-tabbar
         className={`fixed inset-x-0 bottom-0 z-40 border-t border-line/30 bg-paper px-1 min-[400px]:px-3 pt-1.5 md:inset-x-auto md:bottom-auto md:right-3 md:top-[calc(0.25rem+var(--top-clear))] md:border-t-0 md:bg-transparent md:p-0 wide:static wide:flex wide:h-auto wide:w-full wide:flex-1 wide:flex-col wide:self-auto ${low ? "wide:pt-1" : "wide:pt-4"} ${mini ? "wide:px-2" : "wide:px-[29px]"}`}

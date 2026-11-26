@@ -1076,6 +1076,21 @@ body.map-screen-active .site-footer {
     --bar-inset: 0px;
   }
 }
+/* Where the phone menu (SiteHeader) ends: right on top of the tab bar, at its measured height (TabBar sets --tabbar-h; the
+   5.5rem is only a first guess), or at the bottom of the screen while the bar is away or hidden. From 768 px the menu is a
+   drawer the full height of the screen and does not read this. */
+:root {
+  --menu-bottom: 0px;
+}
+@media (max-width: 767px) {
+  :root {
+    --menu-bottom: var(--tabbar-h, 5.5rem);
+  }
+  html[data-bars="hidden"]:not(:has([data-tabbar]:focus-within)),
+  body.map-tabs-hidden {
+    --menu-bottom: 0px;
+  }
+}
 
 /* The cover photo's © button: in the top bar's row, level with the back button (the bar starts below the status bar in the
    installed app). Where the sample notice button holds that corner (sample content only), one row lower. */
