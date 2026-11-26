@@ -157,6 +157,12 @@ const spotProps = {
   detachedLabelEn: nullable(t.String({ maxLength: 100 })),
   stampSpotId: nullable(t.String({ format: "uuid" })),
   stampImageUrl: nullable(t.String({ maxLength: 500 })),
+  // The fly-along (コースをたどる): stop here or not (null: automatic), how long, which photo, its own short line.
+  flyShow: t.Union([t.Boolean(), t.Null()]),
+  flySeconds: nullable(t.Integer({ minimum: 3, maximum: 15 })),
+  flyPhotoUrl: nullable(t.String({ maxLength: 500 })),
+  flyNoteJa: nullable(t.String({ maxLength: 200 })),
+  flyNoteEn: nullable(t.String({ maxLength: 200 })),
   photoUrl: nullable(t.String({ maxLength: 500 })),
   photoCredit: nullable(t.String({ maxLength: 500 })),
   photoSourceUrl: nullable(t.String({ maxLength: 500 })),
@@ -168,7 +174,7 @@ const spotProps = {
   status,
   statusNoteJa: nullable(t.String({ maxLength: 1000 })),
   statusNoteEn: nullable(t.String({ maxLength: 1000 })),
-  translations: translationsSchema({ name: 200, description: 20000, history: 20000, statusNote: 1000, source: 2000 }),
+  translations: translationsSchema({ name: 200, description: 20000, history: 20000, statusNote: 1000, source: 2000, flyNote: 200 }),
   permissionConfirmed: t.Boolean(),
   permissionNote: nullable(t.String({ maxLength: 500 })),
 };

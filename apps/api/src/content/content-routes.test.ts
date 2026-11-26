@@ -189,6 +189,19 @@ describe("an admin edits a route and its places", () => {
     expect((await patch({ accessPoints: [row("javascript:alert(1)")] }, next)).status).toBe(422);
   });
 
+  test("a waypoint's fly-along stays 3 to 15 seconds or empty, and its switch is yes, no or automatic", async () => {
+    const { call, cookie, route } = await created();
+    const made = (await (await call("POST", `/admin/routes/${route.id}/spots`, { cookie, body: { nameJa: "孝子駅" } })).json()) as Json;
+    const s = made.spot as Json;
+    const patch = (body: object) => call("PATCH", `/admin/spots/${s.id as string}`, { cookie, body: { updatedAt: s.updatedAt, ...body } });
+    expect((await patch({ flySeconds: 2 })).status).toBe(422);
+    expect((await patch({ flySeconds: 16 })).status).toBe(422);
+    expect((await patch({ flyShow: "yes" })).status).toBe(422);
+    expect((await patch({ flyNoteJa: "あ".repeat(201) })).status).toBe(422);
+    const body = (await (await patch({ flySeconds: 15, flyShow: null })).json()) as Json;
+    expect(body.spot).toMatchObject({ flySeconds: 15, flyShow: null });
+  });
+
   test("a route's far distance is 500 m to 200 km or empty, and visitors get it", async () => {
     const { call, cookie, route } = await created();
     const patch = (body: unknown, updatedAt: string) => call("PATCH", `/admin/routes/${route.id}`, { cookie, body: { updatedAt, ...(body as object) } });

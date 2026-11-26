@@ -627,3 +627,30 @@ describe("a place not connected to the route", () => {
     expect(back.ok && back.value).toMatchObject({ stopBy: false, detached: false });
   });
 });
+
+// 2026-11-26, user: the fly-along (コースをたどる) is set per waypoint in admin and reaches visitors.
+describe("a waypoint's fly-along settings", () => {
+  test("are saved trimmed, reach visitors once published, and empty means automatic", async () => {
+    const r = await route();
+    const ok = { positionVerified: true, positionSource: "公式", permissionConfirmed: true };
+    const s = await spot(r.id, { lat: 34.3, lng: 135.1, stampable: true, ...ok });
+    expect(s).toMatchObject({ flyShow: null, flySeconds: null, flyPhotoUrl: null, flyNoteJa: null, flyNoteEn: null });
+    const set = await svc.updateSpot(ADMIN, s.id, s.updatedAt, {
+      flyShow: false, flySeconds: 9, flyPhotoUrl: "https://example.com/a.jpg", flyNoteJa: " ここから急な登りです ", flyNoteEn: "  ",
+    });
+    if (!set.ok) throw new Error(set.reason);
+    expect(set.value).toMatchObject({ flyShow: false, flySeconds: 9, flyPhotoUrl: "https://example.com/a.jpg", flyNoteJa: "ここから急な登りです", flyNoteEn: null });
+    const published = await svc.publishSpot(ADMIN, s.id);
+    if (!published.ok) throw new Error(published.reason);
+    expect(await svc.publicSpot(s.id)).toMatchObject({ flyShow: false, flySeconds: 9, flyPhotoUrl: "https://example.com/a.jpg", flyNoteJa: "ここから急な登りです", flyNoteEn: null });
+    const back = await svc.updateSpot(ADMIN, s.id, published.value.updatedAt, { flyShow: null, flySeconds: null, flyPhotoUrl: "" });
+    expect(back.ok && back.value).toMatchObject({ flyShow: null, flySeconds: null, flyPhotoUrl: null });
+  });
+
+  test("a photo from a host that is not allowed is refused", async () => {
+    const limited = createContentService({ store: mem.store, photoHosts: ["photos.example.com"] });
+    const r = await route();
+    const s = await spot(r.id);
+    expect(await limited.updateSpot(ADMIN, s.id, s.updatedAt, { flyPhotoUrl: "https://elsewhere.example/a.jpg" })).toEqual({ ok: false, reason: "invalid_photo_url" });
+  });
+});

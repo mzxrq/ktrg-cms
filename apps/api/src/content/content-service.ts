@@ -49,6 +49,12 @@ export interface PublicSpot {
   /** The waypoint it is worshipped from (遥拝), where its stamp is pressed: published and with a checked position, else null. */
   stampFrom: { id: string; nameJa: string; nameEn: string | null; position: { lat: number; lng: number } } | null;
   stampImageUrl: string | null;
+  /** The fly-along (コースをたどる): see SpotRow. Null means automatic / 5 s / the main photo / the description. */
+  flyShow: boolean | null;
+  flySeconds: number | null;
+  flyPhotoUrl: string | null;
+  flyNoteJa: string | null;
+  flyNoteEn: string | null;
   photoUrl: string | null;
   photoCredit: string | null;
   photoSourceUrl: string | null;
@@ -258,6 +264,11 @@ function toPublicSpot(s: SpotRow, from?: SpotRow | null): PublicSpot {
     detachedLabelEn: s.detachedLabelEn,
     stampFrom: stampFromOf(from),
     stampImageUrl: s.stampImageUrl,
+    flyShow: s.flyShow,
+    flySeconds: s.flySeconds,
+    flyPhotoUrl: s.flyPhotoUrl,
+    flyNoteJa: s.flyNoteJa,
+    flyNoteEn: s.flyNoteEn,
     photoUrl: s.photoUrl,
     photoCredit: s.photoCredit,
     photoSourceUrl: s.photoSourceUrl,
@@ -415,7 +426,7 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       if (!n) return bad("validation_failed");
       out.nameJa = n;
     }
-    for (const k of ["nameEn", "nameKana", "descriptionJa", "descriptionEn", "historyJa", "historyEn", "statusNoteJa", "statusNoteEn", "permissionNote", "positionSource", "sourceJa", "sourceEn", "photoCredit", "photoNameJa", "photoNameEn", "detachedLabelJa", "detachedLabelEn"] as const) {
+    for (const k of ["nameEn", "nameKana", "descriptionJa", "descriptionEn", "historyJa", "historyEn", "statusNoteJa", "statusNoteEn", "permissionNote", "positionSource", "sourceJa", "sourceEn", "photoCredit", "photoNameJa", "photoNameEn", "detachedLabelJa", "detachedLabelEn", "flyNoteJa", "flyNoteEn"] as const) {
       const v = text(input[k]);
       if (v !== undefined) out[k] = v;
     }
@@ -446,6 +457,13 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       const v = text(input.stampImageUrl);
       if (v && !isPhotoUrl(v, photoHosts)) return bad("invalid_photo_url");
       out.stampImageUrl = v;
+    }
+    if (input.flyShow !== undefined) out.flyShow = input.flyShow;
+    if (input.flySeconds !== undefined) out.flySeconds = input.flySeconds;
+    if (input.flyPhotoUrl !== undefined) {
+      const v = text(input.flyPhotoUrl);
+      if (v && !isPhotoUrl(v, photoHosts)) return bad("invalid_photo_url");
+      out.flyPhotoUrl = v;
     }
     if (input.photos !== undefined) {
       const photos: NonNullable<SpotFields["photos"]> = [];
