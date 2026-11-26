@@ -49,7 +49,7 @@ export function DirectoryView({
   /** Every course for the filter: number and name in the visitor's language. */
   routes: { order: number; name: string }[];
 }) {
-  const { t } = useLingui();
+  const { t, i18n } = useLingui();
   const groupNames = useGroupNames();
   const categoryNames = useCategoryNames();
   const statusNames = useStatusNames();
@@ -100,7 +100,7 @@ export function DirectoryView({
       </p>
 
       {rows.length === 0 ? (
-        <p className="mx-4 rounded-lg bg-surface p-5 text-lg wide:mx-0">{t`この条件に合う場所はありません。`}</p>
+        <p className="mx-4 rounded-lg bg-surface p-5 text-lg wide:mx-0">{t`該当する店舗・施設はありません。`}</p>
       ) : (
         <ul className="list-in mx-4 flex flex-col gap-3 wide:mx-0">
           {rows.map((p) => (
@@ -113,7 +113,7 @@ export function DirectoryView({
                   </span>
                   <span className="flex flex-wrap gap-x-3 text-base text-muted">
                     <span>{categoryNames[p.category]}</span>
-                    {p.routes.length > 0 ? <span>{t`コース${p.routes.join("、")}`}</span> : null}
+                    {p.routes.length > 0 ? <span>{t`コース${p.routes.join(i18n.locale === "ja" ? "、" : ", ")}`}</span> : null}
                     {p.status === "closed" || p.status === "seasonal" ? <span className="font-bold text-ink">{statusNames[p.status]}</span> : null}
                   </span>
                   {p.hours ? <span className="block text-base">{p.hours}</span> : null}

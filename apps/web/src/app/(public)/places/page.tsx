@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+  import type { Metadata } from "next";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { BackLink } from "@/components/BackLink";
@@ -34,10 +34,10 @@ export default async function PlacesPage({ searchParams }: Props) {
         </BackLink>
         <div className="flex flex-col gap-2">
           <h1 className="font-serif text-3xl font-bold text-accent">
-            <Trans>お店と施設</Trans>
+            <Trans>店舗・施設</Trans>
           </h1>
           <p className="max-w-prose text-lg leading-8 text-muted">
-            <Trans>道の近くのトイレ、お店、駅やバス停などです。営業時間は変わることがあるので、出かける前に確かめてください。</Trans>
+            <Trans>コース周辺のトイレや店舗・駅・バス停などを一覧で紹介しています。営業時間は変更になる場合があるため、出かける前にご確認ください。。</Trans>
           </p>
         </div>
       </div>

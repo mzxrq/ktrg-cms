@@ -1823,7 +1823,7 @@ msgstr "There is no stamp at this spot."
 
 #: src/components/StampHere.tsx:208
 msgid "このスポットは現在閉鎖中です。"
-msgstr ""
+msgstr "This spot is currently closed."
 
 #: src/components/SampleNotice.tsx:52
 #: src/components/SampleNotice.tsx:79
@@ -2432,7 +2432,7 @@ msgstr "Stamp spots"
 
 #: src/components/StampHere.tsx:234
 msgid "スタンプスポットの付近にいるか確認するため、現在地を1回だけ取得します。"
-msgstr ""
+msgstr "We'll check your device's location once to verify that you're near this stamp spot."
 
 #: src/components/map/MapScreen.tsx:510
 msgid "スタンプスポットは準備中です。"
@@ -4414,7 +4414,7 @@ msgstr "Location access isn't allowed. Please allow location access for this sit
 
 #: src/components/StampHere.tsx:235
 msgid "位置情報は保存されません。記録されるのはスタンプの獲得履歴のみです。"
-msgstr ""
+msgstr "Your location is never stored - only your stamp record is saved."
 
 #: src/components/map/MapScreen.tsx:581
 #: src/components/map/StopCard.tsx:59
@@ -7187,11 +7187,11 @@ msgstr "Stamp cannot be collected here right now."
 
 #: src/components/StampHere.tsx:188
 msgid "現在地から約{km}km"
-msgstr ""
+msgstr "About {km}km away"
 
 #: src/components/StampHere.tsx:188
 msgid "現在地から約{m}m"
-msgstr ""
+msgstr "About {m}m away"
 
 #: src/components/useStampMessages.ts:13
 msgid "現在地の取得に時間がかかっています。空の開けた場所で、もう一度お試しください。"
@@ -7211,19 +7211,19 @@ msgstr "Couldn't get your location. Please try again in an open area."
 
 #: src/components/StampHere.tsx:175
 msgid "現在地を取得中…"
-msgstr ""
+msgstr "Getting your location..."
 
 #: src/components/StampHere.tsx:238
 msgid "現在地を確認してスタンプを押す"
-msgstr ""
+msgstr "Check location & collect stamp"
 
 #: src/components/StampHere.tsx:232
 msgid "現在地を確認します"
-msgstr ""
+msgstr "Check your location"
 
 #: src/components/StampHere.tsx:215
 msgid "現在地を確認中…"
-msgstr ""
+msgstr "Checking your location..."
 
 #: src/components/navigation/NavigationHud.tsx:308
 msgid "現在地を調べています…"
@@ -8633,7 +8633,7 @@ msgstr "Connection error. Please try again where you have a signal."
 
 #: src/components/StampHere.tsx:155
 msgid "通信できないため、あとで自動送信します。"
-msgstr ""
+msgstr "No connection - your stamp will be sent automatically later."
 
 #: src/components/admin/PlacePanel.tsx:93
 msgid "通常"
@@ -8996,7 +8996,7 @@ msgstr "{0} stamps could not be sent for lack of signal. This account already ha
 
 #: src/components/StampHere.tsx:156
 msgid "電波が回復すると自動で送信されます。送信時に確認を行うため、スポットが閉鎖中になっている場合などは獲得できないことがあります。"
-msgstr ""
+msgstr "It will be sent automatically once you're back online. Because it's verified when sent, it may not be accepted if the spot has since closed."
 
 #. placeholder {0}: phase.place
 #: src/components/RallyNearbyStamp.tsx:127
@@ -9156,3 +9156,15 @@ msgstr "Elevation Profile"
 #: src/app/(public)/grading/page.tsx:68
 msgid "鹿屋体育大学の山本正嘉教授らによる基準式を使用します。歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど体力を消耗します。"
 msgstr "We use the standard formula developed by Professor Masayoshi Yamamoto and his colleagues at the National Insitute of Fitness and Sports in Kanoya. Using walking time, distance, and total ascent and descent, we calculate a figure called the \"Course Constant\". The higher this number, the more physically demanding the course is"
+
+#: src/app/(public)/places/page.tsx:40
+msgid "コース周辺のトイレや店舗・駅・バス停などを一覧で紹介しています。営業時間は変更になる場合があるため、出かける前にご確認ください。。"
+msgstr "Browse toilets, shops, stations, and bus stops along the courses. Opening hours may change, so please check before heading out."
+
+#: src/components/places/DirectoryView.tsx:103
+msgid "該当する店舗・施設はありません。"
+msgstr "No matching places found."
+
+#: src/app/(public)/places/[id]/page.tsx:100
+msgid "近くのコース・スポット"
+msgstr "Related courses & spots"

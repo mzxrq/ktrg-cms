@@ -92,7 +92,7 @@ export default async function StoryPage() {
         <p className="story-ground-paper relative isolate overflow-hidden px-5 pb-[clamp(9rem,34vw,22rem)] pt-10 text-base text-muted @2xl:px-10">
           <span aria-hidden="true" className="outro-mountains pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[clamp(7rem,30vw,20rem)]" />
           <span className="mx-auto block w-full max-w-5xl">
-            {locale === "en" ? "Based on information from the Katsuragi Shugen Japan Heritage site." : "本ページの内容は、日本遺産・葛城修験の公式サイトを参考に作成しています。。"}
+            {locale === "en" ? "Based on information from the Katsuragi Shugen Japan Heritage site." : "本ページの内容は、日本遺産・葛城修験の公式サイトを参考に作成しています。"}
             <a href={STORY_SOURCE_URL} target="_blank" rel="noopener noreferrer" className="tap-target inline-flex items-center font-bold underline underline-offset-4">
               {locale === "en" ? "Visit official site" : "公式サイトへ"}
             </a>

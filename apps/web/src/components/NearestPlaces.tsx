@@ -34,7 +34,7 @@ export function NearestPlaces({ groups }: { groups: NearestGroup[] }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div role="tablist" aria-label={t`最寄り`} className="flex flex-wrap gap-2">
+      <div role="tablist" aria-label={t`最寄りアクセス`} className="flex flex-wrap gap-2">
         {groups.map((g) => (
           <button
             key={g.category}
