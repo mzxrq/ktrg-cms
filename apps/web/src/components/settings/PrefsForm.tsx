@@ -46,10 +46,10 @@ export function PrefsForm({
   }, [prefs]);
 
   const sizes: Record<TextSize, { name: string; hint: string }> = {
-    small: { name: t`小さい`, hint: t`文字だけ小さくなります。ボタンの大きさは、ふつうのままです。` },
-    standard: { name: t`ふつう`, hint: t`ふつうの大きさです。` },
-    large: { name: t`大きい`, hint: t`文字もボタンも、少し大きくなります。` },
-    xlarge: { name: t`とても大きい`, hint: t`文字もボタンも、いちばん大きくなります。` },
+    small: { name: t`小さい`, hint: t`文字のみ小さくなります。ボタンの大きさは標準のままです。` },
+    standard: { name: t`標準`, hint: t`標準の大きさです。` },
+    large: { name: t`大きい`, hint: t`文字とボタンが少し大きくなります。` },
+    xlarge: { name: t`特大`, hint: t`文字とボタンが最も大きくなります。` },
   };
 
   async function save(value: Prefs): Promise<boolean> {
@@ -57,7 +57,7 @@ export function PrefsForm({
     setMessage(null);
     const onAccount = await persistPrefs(value, signedIn);
     setSaving(false);
-    if (!onAccount) setMessage(t`この端末には保存しました。つながったときに、アカウントにも保存されます。`);
+    if (!onAccount) setMessage(t`この端末には保存しました。`);
     return onAccount;
   }
 
@@ -111,7 +111,7 @@ export function PrefsForm({
               >
                 <input type="radio" name="size" value={size} checked={on} onChange={() => setPrefs({ ...prefs, size })} className="sr-only" />
                 <span aria-hidden="true" className="font-serif font-bold leading-none" style={{ fontSize: sample[size] }}>
-                  あ
+                  {t`あ`}
                 </span>
                 <span className="text-lg font-bold">{sizes[size].name}</span>
               </label>
@@ -124,23 +124,20 @@ export function PrefsForm({
       </fieldset>
 
       <fieldset className="flex flex-col gap-3">
-        <legend className="mb-2 border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">{t`見やすさ`}</legend>
+        <legend className="mb-2 border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">{t`表示と操作`}</legend>
         <div className={list}>
-          {switchRow("furigana", t`ふりがなをつける`, t`ページの漢字すべてに、読みがなをつけます。`)}
-          {switchRow("contrast", t`くっきり表示`, t`文字と背景の差を大きくし、線を太く、リンクに下線をつけます。`)}
+          {switchRow("furigana", t`ふりがな表示`, "")}
+          {switchRow("contrast", t`くっきり表示`, "")}
           <div className="tap-target flex items-center gap-4 px-4 py-3">
             <span className="min-w-0 flex-1">
-              <span className="block text-lg font-bold">{t`動き`}</span>
-              <span className="mt-0.5 block text-base text-muted">{t`アニメーションや、ふわっと動く表示の量を選びます。`}</span>
+              <span className="block text-lg font-bold">{t`アニメーション`}</span>
             </span>
             <MotionSelect prefs={prefs} onChange={setPrefs} />
           </div>
-          {/* The stamp sound: kept on this device only and changed at once (not part of 保存), off until chosen. It moved here
-              from the menu, which now keeps only theme and language (2026-11-19). */}
           <label className="tap-target flex cursor-pointer items-center gap-4 px-4 py-3">
             <span className="min-w-0 flex-1">
-              <span className="block text-lg font-bold">{t`音`}</span>
-              <span className="mt-0.5 block text-base text-muted">{t`スタンプを押したときに音を鳴らします。この端末だけの設定です。`}</span>
+              <span className="block text-lg font-bold">{t`効果音`}</span>
+              <span className="mt-0.5 block text-base text-muted">{t`スタンプ獲得時に効果音を鳴らします（この端末のみ有効）。`}</span>
             </span>
             <input type="checkbox" role="switch" checked={sound} onChange={(e) => setSound(e.target.checked)} className="shrink-0" />
           </label>
@@ -148,12 +145,12 @@ export function PrefsForm({
       </fieldset>
 
       <fieldset className="flex flex-col gap-3">
-        <legend className="mb-2 border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">{t`地図の見せ方`}</legend>
+        <legend className="mb-2 border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">{t`地図の表示`}</legend>
         <div className={list}>
         {switchRow(
           "placesOnMap",
-          t`まわりの場所を最初から出す`,
-          t`トイレやお店などを、地図を開いたときから表示します。`,
+          t`周辺施設を最初から表示`,
+          "",
         )}
         </div>
       </fieldset>
@@ -167,7 +164,7 @@ export function PrefsForm({
       {mode === "setup" ? (
         <div className="flex flex-col gap-3">
           <button type="button" disabled={saving} onClick={() => finishSetup(prefs)} className={primaryButton}>
-            {t`この設定ではじめる`}
+            {t`この設定で始める`}
           </button>
           <button
             type="button"
@@ -175,9 +172,9 @@ export function PrefsForm({
             onClick={() => finishSetup({ ...defaultPrefs, setupDone: true })}
             className={secondaryButton}
           >
-            {t`あとで決める`}
+            {t`あとで設定する`}
           </button>
-          <p className="text-lg text-muted">{t`あとからでも、「メニュー」の「見やすさの設定」で変えられます。`}</p>
+          <p className="text-lg text-muted">{t`設定はあとから「メニュー」の「表示設定」で変更できます。`}</p>
         </div>
       ) : (
         <button type="button" disabled={saving} onClick={saveSettings} className={primaryButton}>
