@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { confirmDialog } from "@/components/ConfirmDialog";
-import { ClosedIcon, TickIcon, TrashIcon } from "@/components/icons";
+import { ClosedIcon, TickIcon, TrashIcon } from "@/components/admin/admin-icons";
 import { RoutePhoto } from "@/components/RoutePhoto";
 import { useErrorMessages } from "@/components/useErrorMessages";
 import { afterChange, COMMENT_TABS, commentPageOf, inboxQuery, initialOf, type CommentItem, type CommentPage, type CommentStatus, type CommentTab } from "@/lib/admin/comment-inbox";

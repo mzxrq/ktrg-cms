@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useSyncExternalStore } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { AlertIcon, TickIcon, XIcon } from "@/components/icons";
+import { AlertIcon, TickIcon, XIcon } from "@/components/admin/admin-icons";
 import { readToast, showToast, subscribeToast, type Toast } from "@/lib/admin/toast";
 import { enter, leave } from "@/lib/motion";
 

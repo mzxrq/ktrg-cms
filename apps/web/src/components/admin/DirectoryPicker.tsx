@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
+import { ChevronIcon } from "@/components/admin/admin-icons";
 import { useErrorMessages } from "@/components/useErrorMessages";
 import { useCategoryNames } from "@/components/map/PlacesPanel";
 import { pickList, type DirectoryPlace } from "@/lib/admin/directory-pick";
@@ -122,7 +123,7 @@ export function NearbyPlacesManager({ routeId, from }: { routeId: string; from: 
   return (
     <details aria-label={t`周辺の場所`} className="group rounded-xl border border-line bg-paper p-4">
       <summary className="tap-target flex cursor-pointer list-none items-center gap-2 text-lg font-bold [&::-webkit-details-marker]:hidden">
-        <span aria-hidden="true" className="transition-transform group-open:rotate-90">▸</span>
+        <span aria-hidden="true" className="inline-flex transition-transform group-open:rotate-90"><ChevronIcon size={18} /></span>
         {t`周辺の場所（駐車場・自販機・トイレなど）`}
         {linked ? <span className="rounded-full bg-surface px-2 text-base">{linked.length}</span> : null}
       </summary>

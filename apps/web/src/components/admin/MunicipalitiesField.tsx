@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from "@/components/icons";
+import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from "@/components/admin/admin-icons";
 import { buttonStyle } from "@/components/button";
 import { englishCityName, municipalities, splitCities, towns, type MunicipalityPrefecture } from "@/lib/municipalities";
 import { Field, inputClass, TextInput } from "./fields";

@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import type { Sort } from "@/lib/admin/lists/sort";
-import { ArrowDownIcon, ArrowUpIcon, SortIcon } from "@/components/icons";
+import { ArrowDownIcon, ArrowUpIcon, SortIcon } from "@/components/admin/admin-icons";
 
 // The pieces every admin list screen is made of, so the generic lists and the route and rally lists look and work alike.
 

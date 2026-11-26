@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { WarningIcon } from "@/components/icons";
+import { WarningIcon } from "@/components/admin/admin-icons";
 import { initLingui } from "@/i18n/server";
 import { adminGet } from "@/lib/admin/admin-fetch";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";

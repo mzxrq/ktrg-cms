@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { ClockIcon } from "@/components/icons";
+import { ClockIcon } from "@/components/admin/admin-icons";
 
 // The video links a route had before (kept each time the link is replaced or removed), so a mistake can be put back.
 // Putting one back only fills the field: the editor still saves it like any other change.

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { ChevronDownIcon, ChevronUpIcon, MoonIcon, SunIcon } from "@/components/icons";
+import { ChevronDownIcon, ChevronUpIcon, MoonIcon, SunIcon } from "@/components/admin/admin-icons";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { logOut } from "@/lib/auth-client";
 import { parseTheme, themeCookieString } from "@/lib/theme";

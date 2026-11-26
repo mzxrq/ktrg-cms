@@ -4,9 +4,9 @@ import { useState, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { pointKinds, type PointKind } from "@/lib/point-kinds";
 import { useKindLabels } from "../PlacePanel";
-import { TrashIcon, UndoIcon } from "./icons";
-import { ArrowDownIcon, ArrowUpIcon, ChevronDownIcon, ChevronUpIcon, InfoIcon, MountainIcon, PlusIcon, RouteIcon, StampIcon } from "@/components/icons";
-import { PinIcon } from "./icons";
+import { TrashIcon, UndoIcon } from "@/components/admin/admin-icons";
+import { ArrowDownIcon, ArrowUpIcon, ChevronDownIcon, ChevronUpIcon, InfoIcon, MountainIcon, PlusIcon, RouteIcon, StampIcon } from "@/components/admin/admin-icons";
+import { PinIcon } from "@/components/admin/admin-icons";
 import type { MapEditorProps } from "./MapEditor";
 
 const fieldClass = "h-11 min-h-0 min-w-36 rounded-full border border-line bg-paper px-2 text-base";

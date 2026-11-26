@@ -11,7 +11,7 @@ import { changedFields, formValues, missingRequired, toPayload, type FormValues 
 import { listRequest, type ListAnswer, type ListPage, type OneItem } from "@/lib/admin/lists/list-client";
 import { translationsChange, type Translations } from "@/lib/admin/content-locales";
 import { RubyEditor } from "./RubyEditor";
-import { TickIcon } from "@/components/icons";
+import { TickIcon } from "@/components/admin/admin-icons";
 import { adminTab, adminTabRow, Check, Field, inputClass, MultilingualField, NumberInput, Section, TextInput } from "./fields";
 import { HoursInput } from "./HoursInput";
 import { PhotoField } from "./PhotoField";

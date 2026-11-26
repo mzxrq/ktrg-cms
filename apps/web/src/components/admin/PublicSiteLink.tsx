@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useLingui } from "@lingui/react/macro";
-import { ExternalIcon } from "@/components/icons";
+import { ExternalIcon } from "@/components/admin/admin-icons";
 import { publicPathFor } from "@/lib/admin/public-path";
 
 /** At the top of the admin menu, beside the fold button; folded, only its icon shows. */

@@ -2,7 +2,7 @@
 
 import { useId, useState, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { InfoIcon } from "@/components/icons";
+import { InfoIcon } from "@/components/admin/admin-icons";
 
 /**
  * A label with its explanation tucked behind an (i) button. Tapping the button opens the explanation right under the label

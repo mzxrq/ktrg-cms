@@ -8,7 +8,7 @@ import { errorKeyFromApi, isServerCode, type ErrorKey } from "@/lib/api-error";
 import { pageCount, pageSlice } from "@/lib/pager";
 import { fileName, filterPhotos, formatSize, sortPhotos, type LibraryPhoto, type SortDir, type SortKey } from "@/lib/admin/photo-library";
 import { inputClass } from "./fields";
-import { ChevronDownIcon, ChevronUpIcon, XIcon } from "@/components/icons";
+import { ChevronDownIcon, ChevronUpIcon, XIcon } from "@/components/admin/admin-icons";
 import { readJson } from "@/lib/read-json";
 
 const PAGE = 30;

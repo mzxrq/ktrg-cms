@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { BlockEditorLoader } from "./BlockEditorLoader";
 import { ADDED_LOCALES, LOCALE_NAMES, MAX_LANGUAGES, moveLanguage, nextLanguage, startLanguages, withTranslation, type AddedLocale, type Translations } from "@/lib/admin/content-locales";
-import { PlusIcon } from "@/components/icons";
+import { PlusIcon } from "@/components/admin/admin-icons";
 import { InfoTip } from "./InfoTip";
 
 // The small pieces every admin form is made of. Big controls, a visible label, and a hint line when it helps.

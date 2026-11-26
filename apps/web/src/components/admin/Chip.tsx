@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Tone } from "@/lib/admin/lists/config";
-import { AlertIcon, TickIcon, XIcon } from "@/components/icons";
+import { AlertIcon, TickIcon, XIcon } from "@/components/admin/admin-icons";
 
 // A short state in a list ("Published", "Administrator"). The text is always the plain ink colour; the tone shows in the
 // border and in a mark before the word, so it never depends on colour alone.
