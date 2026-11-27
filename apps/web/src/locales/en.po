@@ -1953,7 +1953,7 @@ msgstr "Other stamps collectible here: {0}"
 msgid "この場所にスタンプ対象外です。"
 msgstr "No stamp is available at this spot."
 
-#: src/components/RallyBook.tsx:191
+#: src/components/RallyBook.tsx:176
 msgid "この場所のページを開く"
 msgstr "Open this place's page"
 
@@ -2128,8 +2128,8 @@ msgstr "This goes live at once and changes the map for every visitor. Save it?"
 msgid "この設定は、本番のサイトにすぐ反映されます。保存しますか？"
 msgstr "This setting takes effect on the live site at once. Save it?"
 
-#: src/components/SpotSheet.tsx:113
-#: src/components/SpotSheet.tsx:129
+#: src/components/SpotText.tsx:26
+#: src/components/SpotText.tsx:42
 msgid "この説明は日本語のみです。"
 msgstr "This description is in Japanese only."
 
@@ -2737,11 +2737,11 @@ msgstr "Next"
 msgid "つぎにもらえそうなバッジ"
 msgstr "The badge closest to hand"
 
-#: src/components/RallyBook.tsx:129
+#: src/components/RallyBook.tsx:131
 msgid "つぎに押す場所"
 msgstr "Your next stamp"
 
-#: src/components/RallyBook.tsx:162
+#: src/components/RallyBook.tsx:147
 msgid "つぎの場所まで"
 msgstr "To the next place"
 
@@ -3465,7 +3465,7 @@ msgid "まず、GPXファイルをここにドラッグするか「GPXファイ�
 msgstr "Start by dragging a GPX file here or pressing \"Load a GPX file\". To enter by hand, place waypoints with \"Add waypoint\", then draw the path leg by leg with \"Draw path\"."
 
 #: src/components/admin/RouteEditor.tsx:435
-#: src/components/RallyBook.tsx:131
+#: src/components/RallyBook.tsx:133
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:10
 msgid "まだ"
@@ -4834,7 +4834,7 @@ msgid "最大"
 msgstr "Full"
 
 #: src/components/NearestPlaces.tsx:37
-#: src/components/SpotSheet.tsx:170
+#: src/components/SpotSheet.tsx:128
 msgid "最寄りアクセス"
 msgstr "Neareast Access"
 
@@ -4868,7 +4868,7 @@ msgstr "Highest {highest}m"
 #: src/components/admin/useChecklistLabels.ts:19
 #: src/components/landing/HeroSlides.tsx:68
 #: src/components/SpotGallery.tsx:16
-#: src/components/SpotSheet.tsx:149
+#: src/components/SpotSheet.tsx:107
 #: src/components/Zoomable.tsx:100
 msgid "写真"
 msgstr "Photos"
@@ -5027,7 +5027,7 @@ msgstr "Credit text"
 #: src/components/admin/RouteEditor.tsx:290
 #: src/components/admin/RouteEditor.tsx:291
 #: src/components/RouteView.tsx:224
-#: src/components/SpotSheet.tsx:138
+#: src/components/SpotText.tsx:51
 msgid "出典"
 msgstr "Source"
 
@@ -5218,7 +5218,7 @@ msgid "前の動画のリンク"
 msgstr "Earlier video links"
 
 #: src/components/map/TrailMap.tsx:637
-#: src/components/RallyBook.tsx:196
+#: src/components/RallyBook.tsx:181
 msgid "前の場所"
 msgstr "Previous place"
 
@@ -5572,7 +5572,7 @@ msgstr "Nearby places (parking, vending machines, toilets ...)"
 #: src/components/map/PlacesPanel.tsx:149
 #: src/components/map/TrailMap.tsx:625
 #: src/components/NearbyPlaces.tsx:25
-#: src/components/SpotSheet.tsx:159
+#: src/components/SpotSheet.tsx:117
 msgid "周辺の施設"
 msgstr "Nearby places"
 
@@ -6285,13 +6285,13 @@ msgstr "Collapse"
 msgid "折り返し"
 msgstr "Turnaround"
 
-#: src/components/RallyBook.tsx:126
+#: src/components/RallyBook.tsx:128
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:9
 msgid "押した"
 msgstr "Stamped"
 
-#: src/components/RallyBook.tsx:124
+#: src/components/RallyBook.tsx:126
 msgid "押した日時　{when}"
 msgstr "Stamped　{when}"
 
@@ -6823,7 +6823,7 @@ msgid "次の写真"
 msgstr "Next photo"
 
 #: src/components/map/TrailMap.tsx:643
-#: src/components/RallyBook.tsx:204
+#: src/components/RallyBook.tsx:189
 msgid "次の場所"
 msgstr "Next place"
 
@@ -6907,7 +6907,6 @@ msgstr "Walking Time"
 msgid "歩行時間・距離・高低差から、必要な体力を星1（やさしい）～星5（とてもきつい）で表した目安です。"
 msgstr "Estimates the physical effort required based on walking time, distance, and elevation change, from 1 star (easy) to 5 stars (very strenuous)."
 
-#: src/components/RallyBook.tsx:153
 #: src/components/RouteView.tsx:128
 msgid "歴史"
 msgstr "History"
@@ -6917,7 +6916,7 @@ msgstr "History"
 #: src/components/admin/RouteEditor.tsx:280
 #: src/components/admin/useChecklistLabels.ts:17
 #: src/components/RouteView.tsx:208
-#: src/components/SpotSheet.tsx:122
+#: src/components/SpotText.tsx:35
 msgid "歴史・由来"
 msgstr "History and background"
 
@@ -8075,7 +8074,7 @@ msgid "行きと同じ道を戻ります。"
 msgstr "You'll return along the same trail."
 
 #: src/components/navigation/NavFarCard.tsx:50
-#: src/components/RallyBook.tsx:173
+#: src/components/RallyBook.tsx:158
 msgid "行き方"
 msgstr "How to get there"
 
@@ -8359,7 +8358,7 @@ msgstr "The verification code is invalid or has expired."
 #: src/components/admin/HomeTextFields.tsx:36
 #: src/components/admin/InfoTip.tsx:22
 #: src/components/admin/PlacePanel.tsx:111
-#: src/components/SpotSheet.tsx:105
+#: src/components/SpotText.tsx:18
 msgid "説明"
 msgstr "About this place"
 
@@ -8506,7 +8505,7 @@ msgstr "Related courses & spots"
 msgid "近くのスタンプを押す"
 msgstr "Stamp the place near me"
 
-#: src/components/RallyBook.tsx:182
+#: src/components/RallyBook.tsx:167
 msgid "近くのトイレ"
 msgstr "Nearest toilet"
 
@@ -8875,7 +8874,7 @@ msgstr "Friday"
 #: src/components/map/TrailMap.tsx:463
 #: src/components/map/TrailMap.tsx:554
 #: src/components/ProfileSettings.tsx:271
-#: src/components/RallyBook.tsx:202
+#: src/components/RallyBook.tsx:187
 #: src/components/SampleNotice.tsx:65
 #: src/components/SiteHeader.tsx:318
 #: src/components/StampOutbox.tsx:156

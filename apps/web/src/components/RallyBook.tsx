@@ -15,7 +15,9 @@ import { moveTo, turnIn, walkSeconds } from "@/lib/rally-motion";
 import { isDone } from "@/lib/rally-trail";
 import { ChevronIcon } from "./icons";
 import { RoutePhoto } from "./RoutePhoto";
-import { StatusWord } from "./StatusWord";
+import { RichText } from "./RichText";
+import { SpotText } from "./SpotText";
+import { StatusBanner } from "./StatusBanner";
 import { Walker } from "./Walker";
 
 const subscribeWide = (onChange: () => void) => watchQuery(WIDE_QUERY, onChange);
@@ -132,30 +134,13 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
                 ) : null}
               </p>
 
-              {page.status !== "open" ? (
-                <div className="flex flex-col gap-1 rounded-xl bg-surface p-3">
-                  <StatusWord status={page.status} />
-                  {note ? (
-                    <p lang={note.lang} className="text-base leading-snug">
-                      {note.text}
-                    </p>
-                  ) : null}
+              {/* The same status block and words as the place's own page (StatusBanner, SpotText): links and notes included. */}
+              {page.status !== "open" || note ? (
+                <div className="-mx-5 px-1">
+                  <StatusBanner status={page.status} noteJa={page.statusNoteJa} noteEn={page.statusNoteEn} updatedAt={null} locale={locale} />
                 </div>
               ) : null}
-
-              {line ? (
-                <p lang={line.lang} className="text-lg leading-relaxed">
-                  {line.text}
-                </p>
-              ) : null}
-              {history ? (
-                <section className="flex flex-col gap-1">
-                  <h3 className={label}>{t`歴史`}</h3>
-                  <p lang={history.lang} className="text-base leading-relaxed">
-                    {history.text}
-                  </p>
-                </section>
-              ) : null}
+              <SpotText description={line} history={history} className="" level={3} />
 
               {page.next && nextName ? (
                 <p className="text-base">
@@ -171,9 +156,9 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
               {access ? (
                 <section className="flex flex-col gap-1">
                   <h3 className={label}>{t`行き方`}</h3>
-                  <p lang={access.lang} className="text-base leading-relaxed">
-                    {access.text}
-                  </p>
+                  <div lang={access.lang} className="whitespace-pre-line text-base leading-relaxed">
+                    <RichText text={access.text} lang={access.lang} />
+                  </div>
                 </section>
               ) : null}
 

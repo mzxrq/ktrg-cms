@@ -1,4 +1,5 @@
 import type { ComponentProps } from "react";
+import { SpotText } from "./SpotText";
 import { StampCard } from "./StopParts";
 import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
@@ -11,7 +12,6 @@ import { NearbyPlaces, type Nearby } from "./NearbyPlaces";
 import { LastUpdated } from "@/components/LastUpdated";
 import { NearestPlaces, type NearestGroup } from "./NearestPlaces";
 import { Notice } from "./Notice";
-import { RichText } from "./RichText";
 import { SpotGallery } from "./SpotGallery";
 import { StampHere } from "./StampHere";
 import { StatusBanner } from "./StatusBanner";
@@ -99,49 +99,7 @@ export function SpotSheet({
         </p>
       ) : null}
 
-      {description ? (
-        <section className="px-4">
-          <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-            <Trans>説明</Trans>
-          </h2>
-          {/* Editors type plain text; line breaks are kept. Never raw HTML. */}
-          <div className="mt-2 max-w-prose whitespace-pre-line text-lg leading-8">
-            <RichText text={description.text} lang={description.lang} />
-          </div>
-          {description.fallback ? (
-            <p className="mt-2 text-base text-muted">
-              <Trans>この説明は日本語のみです。</Trans>
-            </p>
-          ) : null}
-        </section>
-      ) : null}
-
-      {history ? (
-        <section className="px-4">
-          <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-            <Trans>歴史・由来</Trans>
-          </h2>
-          <div className="mt-2 max-w-prose whitespace-pre-line text-lg leading-8">
-            <RichText text={history.text} lang={history.lang} />
-          </div>
-          {history.fallback ? (
-            <p className="mt-2 text-base text-muted">
-              <Trans>この説明は日本語のみです。</Trans>
-            </p>
-          ) : null}
-        </section>
-      ) : null}
-
-      {source ? (
-        <section className="px-4">
-          <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-            <Trans>出典</Trans>
-          </h2>
-          <div className="mt-2 max-w-prose whitespace-pre-line text-base leading-7 text-muted">
-            <RichText text={source.text} lang={source.lang} />
-          </div>
-        </section>
-      ) : null}
+      <SpotText description={description} history={history} source={source} />
 
       {gallery.length > 0 ? (
         <section className="px-4">

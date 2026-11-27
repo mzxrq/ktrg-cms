@@ -1953,7 +1953,7 @@ msgstr "この地点で獲得できる他のスタンプ：{0}"
 msgid "この場所にスタンプ対象外です。"
 msgstr "この場所にスタンプ対象外です。"
 
-#: src/components/RallyBook.tsx:191
+#: src/components/RallyBook.tsx:176
 msgid "この場所のページを開く"
 msgstr "この場所のページを開く"
 
@@ -2128,8 +2128,8 @@ msgstr "この設定は、本番のサイトにすぐ反映されます。すべ
 msgid "この設定は、本番のサイトにすぐ反映されます。保存しますか？"
 msgstr "この設定は、本番のサイトにすぐ反映されます。保存しますか？"
 
-#: src/components/SpotSheet.tsx:113
-#: src/components/SpotSheet.tsx:129
+#: src/components/SpotText.tsx:26
+#: src/components/SpotText.tsx:42
 msgid "この説明は日本語のみです。"
 msgstr "この説明は日本語のみです。"
 
@@ -2737,11 +2737,11 @@ msgstr "つぎ"
 msgid "つぎにもらえそうなバッジ"
 msgstr "つぎにもらえそうなバッジ"
 
-#: src/components/RallyBook.tsx:129
+#: src/components/RallyBook.tsx:131
 msgid "つぎに押す場所"
 msgstr "つぎに押す場所"
 
-#: src/components/RallyBook.tsx:162
+#: src/components/RallyBook.tsx:147
 msgid "つぎの場所まで"
 msgstr "つぎの場所まで"
 
@@ -3465,7 +3465,7 @@ msgid "まず、GPXファイルをここにドラッグするか「GPXファイ�
 msgstr "まず、GPXファイルをここにドラッグするか「GPXファイルから読み込む」を押してください。手で入れるときは「経由地を置く」で経由地を入れ、「線を描く」で区間ごとに道すじを描きます。"
 
 #: src/components/admin/RouteEditor.tsx:435
-#: src/components/RallyBook.tsx:131
+#: src/components/RallyBook.tsx:133
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:10
 msgid "まだ"
@@ -4834,7 +4834,7 @@ msgid "最大"
 msgstr "最大"
 
 #: src/components/NearestPlaces.tsx:37
-#: src/components/SpotSheet.tsx:170
+#: src/components/SpotSheet.tsx:128
 msgid "最寄りアクセス"
 msgstr "最寄りアクセス"
 
@@ -4868,7 +4868,7 @@ msgstr "最高 {highest}m"
 #: src/components/admin/useChecklistLabels.ts:19
 #: src/components/landing/HeroSlides.tsx:68
 #: src/components/SpotGallery.tsx:16
-#: src/components/SpotSheet.tsx:149
+#: src/components/SpotSheet.tsx:107
 #: src/components/Zoomable.tsx:100
 msgid "写真"
 msgstr "写真"
@@ -5027,7 +5027,7 @@ msgstr "出どころの文字"
 #: src/components/admin/RouteEditor.tsx:290
 #: src/components/admin/RouteEditor.tsx:291
 #: src/components/RouteView.tsx:224
-#: src/components/SpotSheet.tsx:138
+#: src/components/SpotText.tsx:51
 msgid "出典"
 msgstr "出典"
 
@@ -5218,7 +5218,7 @@ msgid "前の動画のリンク"
 msgstr "前の動画のリンク"
 
 #: src/components/map/TrailMap.tsx:637
-#: src/components/RallyBook.tsx:196
+#: src/components/RallyBook.tsx:181
 msgid "前の場所"
 msgstr "前の場所"
 
@@ -5572,7 +5572,7 @@ msgstr "周辺の場所（駐車場・自販機・トイレなど）"
 #: src/components/map/PlacesPanel.tsx:149
 #: src/components/map/TrailMap.tsx:625
 #: src/components/NearbyPlaces.tsx:25
-#: src/components/SpotSheet.tsx:159
+#: src/components/SpotSheet.tsx:117
 msgid "周辺の施設"
 msgstr "周辺の施設"
 
@@ -6285,13 +6285,13 @@ msgstr "折りたたむ"
 msgid "折り返し"
 msgstr "折り返し"
 
-#: src/components/RallyBook.tsx:126
+#: src/components/RallyBook.tsx:128
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:9
 msgid "押した"
 msgstr "押した"
 
-#: src/components/RallyBook.tsx:124
+#: src/components/RallyBook.tsx:126
 msgid "押した日時　{when}"
 msgstr "押した日時　{when}"
 
@@ -6823,7 +6823,7 @@ msgid "次の写真"
 msgstr "次の写真"
 
 #: src/components/map/TrailMap.tsx:643
-#: src/components/RallyBook.tsx:204
+#: src/components/RallyBook.tsx:189
 msgid "次の場所"
 msgstr "次の場所"
 
@@ -6907,7 +6907,6 @@ msgstr "歩行時間"
 msgid "歩行時間・距離・高低差から、必要な体力を星1（やさしい）～星5（とてもきつい）で表した目安です。"
 msgstr "歩行時間・距離・高低差から、必要な体力を星1（やさしい）～星5（とてもきつい）で表した目安です。"
 
-#: src/components/RallyBook.tsx:153
 #: src/components/RouteView.tsx:128
 msgid "歴史"
 msgstr "歴史"
@@ -6917,7 +6916,7 @@ msgstr "歴史"
 #: src/components/admin/RouteEditor.tsx:280
 #: src/components/admin/useChecklistLabels.ts:17
 #: src/components/RouteView.tsx:208
-#: src/components/SpotSheet.tsx:122
+#: src/components/SpotText.tsx:35
 msgid "歴史・由来"
 msgstr "歴史・由来"
 
@@ -8075,7 +8074,7 @@ msgid "行きと同じ道を戻ります。"
 msgstr "行きと同じ道を戻ります。"
 
 #: src/components/navigation/NavFarCard.tsx:50
-#: src/components/RallyBook.tsx:173
+#: src/components/RallyBook.tsx:158
 msgid "行き方"
 msgstr "行き方"
 
@@ -8359,7 +8358,7 @@ msgstr "認証コードが正しくないか、有効期限が切れています
 #: src/components/admin/HomeTextFields.tsx:36
 #: src/components/admin/InfoTip.tsx:22
 #: src/components/admin/PlacePanel.tsx:111
-#: src/components/SpotSheet.tsx:105
+#: src/components/SpotText.tsx:18
 msgid "説明"
 msgstr "説明"
 
@@ -8506,7 +8505,7 @@ msgstr "近くのコース・スポット"
 msgid "近くのスタンプを押す"
 msgstr "近くのスタンプを押す"
 
-#: src/components/RallyBook.tsx:182
+#: src/components/RallyBook.tsx:167
 msgid "近くのトイレ"
 msgstr "近くのトイレ"
 
@@ -8875,7 +8874,7 @@ msgstr "金曜日"
 #: src/components/map/TrailMap.tsx:463
 #: src/components/map/TrailMap.tsx:554
 #: src/components/ProfileSettings.tsx:271
-#: src/components/RallyBook.tsx:202
+#: src/components/RallyBook.tsx:187
 #: src/components/SampleNotice.tsx:65
 #: src/components/SiteHeader.tsx:318
 #: src/components/StampOutbox.tsx:156
