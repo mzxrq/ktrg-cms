@@ -129,6 +129,8 @@ export async function mockStamp(mock: StampMock): Promise<StampResult> {
       return { ok: false, failure: "rally_not_active" };
     case "notready":
       return { ok: false, failure: "not_ready" };
+    case "yohai": // one press giving two more stamps (遥拝), to see the seals land one after another
+      return { ok: true, already: false, also: [{ nameJa: "第1経塚", nameEn: null }, { nameJa: "赤井戸", nameEn: null }] };
     default:
       return { ok: true, already: false };
   }

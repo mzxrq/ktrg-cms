@@ -12,6 +12,7 @@ import { announceProgress, type StampProgress } from "@/lib/stamp-progress";
 import { track } from "@/lib/track";
 import { LoadingOverlay } from "./LoadingOverlay";
 import { StampFace } from "./StampFace";
+import { AlsoSeals, alsoSealsMs } from "./AlsoSeals";
 import { useLiveStatus } from "./useLiveStatus";
 import { useStampMessages } from "./useStampMessages";
 import { buttonStyle } from "@/components/button";
@@ -33,6 +34,8 @@ const button = buttonStyle("action", "lg", "flex w-full shadow-lg");
 const quietButton = buttonStyle("secondary", "lg", "flex w-full");
 /** How long the stamp-press moment lasts (.stamp-press in globals.css). */
 const STAMP_PRESS_MS = 1700;
+// How long the big seal of the press holds before it fades (StampProgressPopup opens then, too).
+const PRESS_HOLD_MS = 1400;
 /** How long the "sent later" words stay before navigation moves on; the waiting count stays on screen after that. */
 const QUEUED_READ_MS = 4000;
 
@@ -104,9 +107,11 @@ export function StampHere({
       }
       track("stamp", { already: result.already, finishedCourse: (result.finished?.routeIds.length ?? 0) > 0 });
       window.dispatchEvent(new Event("ktrg:stamped")); // the sign-up reminder for a visitor with no account listens
-      if (!result.already && progress) announceProgress({ ...progress, after: progress.before + 1 });
+      // Extra seals (遥拝) land one after another once the press is done; the progress popup and moving on wait for them.
+      const alsoMs = result.already ? 0 : alsoSealsMs(result.also?.length ?? 0);
+      if (!result.already && progress) window.setTimeout(() => announceProgress({ ...progress, after: progress.before + 1 }), alsoMs);
       // Moving on takes this button off the screen, and the press with it: the press plays first.
-      window.setTimeout(() => onStamped?.(), result.already ? 0 : STAMP_PRESS_MS);
+      window.setTimeout(() => onStamped?.(), result.already ? 0 : STAMP_PRESS_MS + alsoMs);
       router.refresh();
     } else if (result.failure === "network" && !mock && (await getOutbox().enqueue(spotId, position.reading, progress))) {
       // No signal: the stamp waits on this phone and is sent when the app is online (the server still decides then).
@@ -131,19 +136,12 @@ export function StampHere({
     return (
       <div className={wrapper}>
         {phase.already ? null : <StampPress image={stampImage} />}
-        <div role="status" className="flex items-center gap-4 rounded-lg bg-surface p-4 shadow-lg">
-          <StampFace state="stamped" number={1} image={stampImage} rough className="stamp-land h-16 w-16 shrink-0" />
-          <div className="flex flex-col gap-1">
+        <div role="status" className="flex flex-col gap-3 rounded-lg bg-surface py-4 shadow-lg">
+          <div className="flex items-center gap-4 px-4">
+            <StampFace state="stamped" number={1} image={stampImage} rough className="stamp-land h-16 w-16 shrink-0" />
             <p className="text-xl font-bold leading-snug">{phase.already ? t`このスタンプは獲得済みです。` : t`スタンプを押しました！`}</p>
-            {phase.also.map((a) => {
-              const name = i18n.locale === "ja" ? a.nameJa : (a.nameEn ?? a.nameJa);
-              return (
-                <p key={a.nameJa} className="text-lg leading-snug">
-                  {t`「${name}」のスタンプも押しました。`}
-                </p>
-              );
-            })}
           </div>
+          <AlsoSeals also={phase.also} startMs={phase.already ? 0 : PRESS_HOLD_MS} />
         </div>
       </div>
     );

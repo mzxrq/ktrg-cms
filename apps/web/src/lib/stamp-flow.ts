@@ -173,7 +173,7 @@ export function distanceParts(metres: number): { value: number; unit: "m" | "km"
 }
 
 /** Development only: the screens can be reviewed with `?stamp=far` and so on, without a stamping API. */
-export const stampMocks = ["ok", "already", "far", "weak", "closed", "inactive", "notready", "denied", "unavailable", "timeout"] as const;
+export const stampMocks = ["ok", "already", "far", "weak", "closed", "inactive", "notready", "yohai", "denied", "unavailable", "timeout"] as const;
 export type StampMock = (typeof stampMocks)[number];
 
 export function isStampMock(value: unknown): value is StampMock {
