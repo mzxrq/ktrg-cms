@@ -110,6 +110,8 @@ export interface PublicSpot {
   detachedLabelEn?: string | null;
   /** The waypoint it is worshipped from (遥拝), where its stamp is pressed; null or missing: at the place. */
   stampFrom?: { id: string; nameJa: string; nameEn: string | null; position: { lat: number; lng: number }; status?: "open" | "caution" | "closed" | "info" } | null;
+  /** The places whose stamp is pressed here right now (他の獲得できるスタンプ); older APIs leave it out. */
+  stampedHere?: { id: string; nameJa: string; nameEn: string | null }[];
   stampImageUrl?: string | null;
   /** The fly-along (コースをたどる): null = automatic / 5 s / the main photo / the description. */
   flyShow?: boolean | null;

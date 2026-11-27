@@ -193,6 +193,8 @@ export interface GalleryPhoto {
 
 export interface SpotDetail extends SpotListItem {
   routeId: string;
+  /** The places whose stamp is pressed here right now (他の獲得できるスタンプ). Left out by sample data. */
+  stampedHere?: { id: string; nameJa: string; nameEn: string | null }[];
   /** How the Japanese name is read, typed by a person. */
   nameKana?: string | null;
   routeNameJa: string;

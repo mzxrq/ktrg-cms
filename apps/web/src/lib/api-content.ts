@@ -72,7 +72,9 @@ export function spotListItemFromApi(s: PublicSpot, stamped = false): SpotListIte
     status: s.status,
     ...(isPointKind(s.kind) ? { kind: s.kind } : {}),
     ...(s.stopBy ? { stopBy: true } : {}),
-    ...(s.detached ? { detached: true, detachedLabelJa: s.detachedLabelJa ?? null, detachedLabelEn: s.detachedLabelEn ?? null, ...(s.stampFrom ? { stampFrom: { nameJa: s.stampFrom.nameJa, nameEn: s.stampFrom.nameEn, status: s.stampFrom.status } } : {}) } : {}),
+    ...(s.detached ? { detached: true, detachedLabelJa: s.detachedLabelJa ?? null, detachedLabelEn: s.detachedLabelEn ?? null } : {}),
+    // Also an on-trail place's 閉鎖時のスタンプ地点: its page follows that waypoint's status while it is closed.
+    ...(s.stampFrom ? { stampFrom: { nameJa: s.stampFrom.nameJa, nameEn: s.stampFrom.nameEn, status: s.stampFrom.status } } : {}),
     stampable: s.stampable,
     stamped,
     position: s.position ? { lat: s.position.lat, lng: s.position.lng, verified: true } : null,
@@ -133,7 +135,9 @@ export function routePointFromApi(s: PublicSpot): RoutePoint | null {
     photoCredit: s.photoCredit ?? null,
     sortOrder: s.sortOrder,
     ...(s.stopBy ? { stopBy: true } : {}),
-    ...(s.detached ? { detached: true, detachedLabelJa: s.detachedLabelJa ?? null, detachedLabelEn: s.detachedLabelEn ?? null, ...(s.stampFrom ? { stampFrom: { nameJa: s.stampFrom.nameJa, nameEn: s.stampFrom.nameEn, status: s.stampFrom.status } } : {}) } : {}),
+    ...(s.detached ? { detached: true, detachedLabelJa: s.detachedLabelJa ?? null, detachedLabelEn: s.detachedLabelEn ?? null } : {}),
+    // Also an on-trail place's 閉鎖時のスタンプ地点: its page follows that waypoint's status while it is closed.
+    ...(s.stampFrom ? { stampFrom: { nameJa: s.stampFrom.nameJa, nameEn: s.stampFrom.nameEn, status: s.stampFrom.status } } : {}),
     status: s.status,
     statusNoteJa: s.statusNoteJa ?? null,
     statusNoteEn: s.statusNoteEn ?? null,
@@ -210,6 +214,7 @@ export function spotDetailFromApi(s: PublicSpot, route: Pick<PublicRoute, "id" |
     photoNameJa: s.photoNameJa ?? null,
     photoNameEn: s.photoNameEn ?? null,
     gallery: s.photos ?? [],
+    stampedHere: s.stampedHere ?? [],
   };
 }
 

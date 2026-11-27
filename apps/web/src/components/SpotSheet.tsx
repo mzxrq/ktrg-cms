@@ -50,8 +50,9 @@ export function SpotSheet({
 }) {
   // A place without a stamp has a page to read, but no stamp card and no stamp button.
   const stampable = spot.stampable !== false;
-  // A 遥拝 place's stamp is pressed at its waypoint, so the waypoint's status decides it (2026-11-27, user); its own 情報のみ still means none.
-  const stampStatus = spot.stampFrom?.status && spot.status !== "info" ? spot.stampFrom.status : spot.status;
+  // As the server (stamp-store): a 遥拝 place always, any other place only while closed (閉鎖時のスタンプ地点).
+  const usesStampFrom = !!spot.stampFrom?.status && spot.status !== "info" && (spot.detached === true || spot.status === "closed");
+  const stampStatus = usesStampFrom ? spot.stampFrom!.status! : spot.status;
   const description = pickText(locale, spot.descriptionJa, spot.descriptionEn);
   const history = pickText(locale, spot.historyJa ?? null, spot.historyEn ?? null);
   const source = pickText(locale, spot.sourceJa ?? null, spot.sourceEn ?? null);
@@ -112,6 +113,12 @@ export function SpotSheet({
           </div>
         )}
       </section>
+      ) : null}
+      {/* A waypoint other places are stamped at (遥拝, or a closed place's 閉鎖時のスタンプ地点): one press gives those too. */}
+      {stampable && spot.stampedHere?.length ? (
+        <p className="mx-4 -mt-4 text-lg">
+          <Trans>他の獲得できるスタンプ：{spot.stampedHere.map((p) => (locale === "ja" ? p.nameJa : (p.nameEn ?? p.nameJa))).join(locale === "ja" ? "、" : ", ")}</Trans>
+        </p>
       ) : null}
 
       {description ? (

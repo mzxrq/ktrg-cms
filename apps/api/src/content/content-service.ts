@@ -49,6 +49,8 @@ export interface PublicSpot {
   detachedLabelEn: string | null;
   /** The waypoint it is worshipped from (遥拝), where its stamp is pressed: published and with a checked position, else null. */
   stampFrom: { id: string; nameJa: string; nameEn: string | null; position: { lat: number; lng: number }; status: SpotStatus } | null;
+  /** The places whose stamp is pressed here right now (他の獲得できるスタンプ). */
+  stampedHere: { id: string; nameJa: string; nameEn: string | null }[];
   stampImageUrl: string | null;
   /** The fly-along (コースをたどる): see SpotRow. Null means automatic / 5 s / the main photo / the description. */
   flyShow: boolean | null;
@@ -243,7 +245,13 @@ const stampFromOf = (from: SpotRow | null | undefined): PublicSpot["stampFrom"] 
     ? { id: from.id, nameJa: from.nameJa, nameEn: from.nameEn, position: { lat: from.lat, lng: from.lng }, status: from.status }
     : null;
 
-function toPublicSpot(s: SpotRow, from?: SpotRow | null): PublicSpot {
+/** The places whose stamp is pressed at this waypoint right now (遥拝 always, any other place while closed), for its page. */
+const stampedAt = (id: string, places: SpotRow[]): PublicSpot["stampedHere"] =>
+  places
+    .filter((p) => p.published && p.stampable && p.stampSpotId === id && p.status !== "info" && (p.detached || p.status === "closed"))
+    .map((p) => ({ id: p.id, nameJa: p.nameJa, nameEn: p.nameEn }));
+
+function toPublicSpot(s: SpotRow, from?: SpotRow | null, here: PublicSpot["stampedHere"] = []): PublicSpot {
   const showPosition = s.positionVerified && s.lat !== null && s.lng !== null;
   return {
     id: s.id,
@@ -264,6 +272,7 @@ function toPublicSpot(s: SpotRow, from?: SpotRow | null): PublicSpot {
     detachedLabelJa: s.detachedLabelJa,
     detachedLabelEn: s.detachedLabelEn,
     stampFrom: stampFromOf(from),
+    stampedHere: here,
     stampImageUrl: s.stampImageUrl,
     flyShow: s.flyShow,
     flySeconds: s.flySeconds,
@@ -671,7 +680,7 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       const points = published.filter((s) => !s.stampable);
       // A side trip is shown only once the place it leads to is published, like the place itself.
       const byId = new Map(found.spots.map((s) => [s.id, s]));
-      const pub = (s: SpotRow) => toPublicSpot(s, s.stampSpotId ? byId.get(s.stampSpotId) : null);
+      const pub = (s: SpotRow) => toPublicSpot(s, s.stampSpotId ? byId.get(s.stampSpotId) : null, stampedAt(s.id, found.spots));
       return { route: toPublicRoute(found.route, stamps.length, true, new Set(published.map((s) => s.id))), spots: stamps.map(pub), points: points.map(pub) };
     },
 
@@ -691,7 +700,10 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
     async publicSpot(id: string): Promise<PublicSpot | null> {
       const s = await store.getSpot(id);
       if (!s || !s.published) return null;
-      return toPublicSpot(s, s.stampSpotId ? await store.getSpot(s.stampSpotId) : null);
+      const from = s.stampSpotId ? await store.getSpot(s.stampSpotId) : null;
+      // Only a waypoint can have places stamped at it; one more read for those (same course, see stampFromOk).
+      const here = s.stampSpotId ? [] : stampedAt(s.id, (await store.getRoute(s.routeId))?.spots ?? []);
+      return toPublicSpot(s, from, here);
     },
   };
 }
