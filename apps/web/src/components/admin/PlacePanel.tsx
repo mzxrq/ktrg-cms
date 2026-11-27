@@ -37,7 +37,7 @@ export interface PlacePanelProps {
   /** A map to place it on, under the numbers (the route editor has its own map tab). */
   positionMap?: ReactNode;
   /** Waypoints it may be worshipped from (遥拝), see stampFromChoices. */
-  stampFrom?: { choices: { id: string; name: string }[]; isHub: boolean };
+  stampFrom?: { choices: { id: string; name: string }[]; isHub: boolean; here: string[] };
 }
 
 /**
@@ -62,6 +62,18 @@ export function PlacePanel(p: PlacePanelProps) {
   const kindName = usePointKindNames();
   const isStamp = place.stampable;
   const isInfo = place.status === "info";
+  const here = (p.stampFrom?.here ?? []).join("、");
+  // The waypoint its stamp is pressed at: 遥拝場所 for a place off the trail, 閉鎖時のスタンプ地点 for any other.
+  const stampSelect = (selectId: string) => (
+    <select id={selectId} value={place.stampSpotId ?? ""} disabled={p.stampFrom?.isHub} onChange={(e) => p.onChange({ stampSpotId: e.target.value || null })} className={`${inputClass} max-w-md`}>
+      <option value="">{t`この地点で押す（指定なし）`}</option>
+      {(p.stampFrom?.choices ?? []).map((c) => (
+        <option key={c.id} value={c.id}>
+          {c.name || t`（名称未設定）`}
+        </option>
+      ))}
+    </select>
+  );
   const blockerText: Record<PublishBlocker, string> = {
     unsaved: t`先に「経由地を保存」を押してください。`,
     no_coordinates: t`位置を設定してください（地図上で指定するか、緯度・経度を入力します）。`,
@@ -144,6 +156,15 @@ export function PlacePanel(p: PlacePanelProps) {
             }
             hint={isStamp ? t`現地に到着した利用者がスタンプを獲得できます。公開には現地の許可確認が必要です。` : t`スタンプ対象外となります（詳細ページは表示されます）。公開には現地の許可確認が必要です。`}
           />
+          {/* 2026-11-27, user: when a path is lost (a landslide), the stamp moves to a waypoint chosen here while the place is
+              closed. A 遥拝 place sets its waypoint below instead. No hint (user: too many hints already). */}
+          {isStamp && !place.detached ? (
+            <Field label={t`閉鎖時のスタンプ地点`} htmlFor={`${id}-closed-from`}>
+              {stampSelect(`${id}-closed-from`)}
+            </Field>
+          ) : null}
+          {/* Others are stamped here. The wording is the user's to write (2026-11-27): placeholder until then. */}
+          {p.stampFrom?.here.length ? <p className="text-base">{t`［文言未定：この経由地で押せる他のスタンプ］${here}`}</p> : null}
 
           <InfoTip
             indent
@@ -171,14 +192,7 @@ export function PlacePanel(p: PlacePanelProps) {
               {/* 2026-11-20, user: 第1経塚 is stamped from 第4砲台, 第22経塚 from 水分神社. Chosen from the course's waypoints, never
                   typed: the stamp is checked at that waypoint's own checked position, and one press there gives both stamps. */}
               <Field label={t`遥拝場所`} htmlFor={`${id}-stamp-from`} hint={p.stampFrom?.isHub ? t`他の経由地の遥拝場所に設定されているため、指定できません。` : t`指定した経由地でスタンプを押すと、この地点のスタンプも同時に獲得できます（地図上のピン位置は変わりません）。保存済みの経由地から選択できます。`}>
-                <select id={`${id}-stamp-from`} value={place.stampSpotId ?? ""} disabled={p.stampFrom?.isHub} onChange={(e) => p.onChange({ stampSpotId: e.target.value || null })} className={`${inputClass} max-w-md`}>
-                  <option value="">{t`この地点で押す（指定なし）`}</option>
-                  {(p.stampFrom?.choices ?? []).map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name || t`（名称未設定）`}
-                    </option>
-                  ))}
-                </select>
+                {stampSelect(`${id}-stamp-from`)}
               </Field>
               <div className="hidden sm:block" />
               <Field label={t`表示ラベル（日本語）`} htmlFor={`${id}-detached-ja`} hint={t`未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルートから離れた場所」と表示されます。`}>

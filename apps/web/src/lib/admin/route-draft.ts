@@ -678,12 +678,12 @@ export function previewRoute(d: RouteDraft, order: number): RouteDetail {
 
 /**
  * The waypoints a place may be worshipped from (遥拝): saved ones of the same course, not itself, and not one that is itself
- * worshipped from somewhere (one step only, as the server checks). `isHub`: others are worshipped from this place, so it
- * cannot point anywhere itself.
+ * worshipped from somewhere (one step only, as the server checks). `isHub`: others are stamped at this place (遥拝, or as
+ * their 閉鎖時のスタンプ地点), so it cannot point anywhere itself; `here` names them.
  */
-export function stampFromChoices(places: readonly PlaceDraft[], key: string): { choices: { id: string; name: string }[]; isHub: boolean } {
+export function stampFromChoices(places: readonly PlaceDraft[], key: string): { choices: { id: string; name: string }[]; isHub: boolean; here: string[] } {
   const self = places.find((p) => p.key === key);
-  const isHub = !!self?.id && places.some((p) => p.stampSpotId === self.id);
+  const here = self?.id ? places.filter((p) => p.stampSpotId === self.id).map((p) => p.nameJa) : [];
   const choices = places.filter((p) => p.key !== key && p.id !== null && p.stampSpotId === null).map((p) => ({ id: p.id!, name: p.nameJa }));
-  return { choices, isHub };
+  return { choices, isHub: here.length > 0, here };
 }
