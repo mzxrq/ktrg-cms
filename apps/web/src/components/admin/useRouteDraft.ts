@@ -4,6 +4,7 @@ import { useEffect, useMemo, useReducer, useRef, useState, useSyncExternalStore 
 import { useLingui } from "@lingui/react/macro";
 import { skipsPublishedWarning } from "./PublishedEditDialog";
 import { useUnsavedGuard } from "./useUnsavedGuard";
+import { usePlaceSave } from "./usePlaceSave";
 import { useErrorMessages } from "@/components/useErrorMessages";
 import { api } from "@/lib/api";
 import { outcome } from "@/lib/admin/admin-client";
@@ -34,6 +35,7 @@ export function useRouteDraft(
 ) {
   const { t } = useLingui();
   const messages = useErrorMessages();
+  const placeSave = usePlaceSave();
   const [state, dispatch] = useReducer(draftReducer, initial, initialState);
   const draft = state.present;
   const [saved, setSaved] = useState<RouteDraft>(initial);
@@ -293,33 +295,14 @@ export function useRouteDraft(
     const target: RouteDraft = { ...before, places: isNew ? [...before.places, place] : before.places.map((p) => (p.key === key ? place : p)) };
     setBusyKey(key);
     setMessage(null);
-    let current = before.places.find((p) => p.key === key) ?? null;
-    let failure: string | null = null;
-    let wasPublished = false;
-    for (const step of planSave(target, before)) {
-      if (step.op === "unpublishSpot") {
-        const res = await outcome(api.admin.spots({ id: step.id }).unpublish.post());
-        if (!res.ok) { failure = messages[res.key]; break; }
-        current = { ...placeFromServer(res.data.spot), key };
-        wasPublished = true;
-      } else if (step.op === "createSpot") {
-        const res = await outcome(api.admin.routes({ id: before.id }).spots.post(step.body));
-        if (!res.ok) { failure = messages[res.key]; break; }
-        current = { ...placeFromServer(res.data.spot), key };
-      } else if (step.op === "updateSpot") {
-        const res = await outcome(api.admin.spots({ id: step.id }).patch({ updatedAt: current!.updatedAt!, ...step.body }));
-        if (!res.ok) { failure = messages[res.key]; break; }
-        current = { ...placeFromServer(res.data.spot), key };
-      }
-    }
+    const { current, toast } = await placeSave.savePlace(target, before, key);
     if (current && current !== (before.places.find((p) => p.key === key) ?? null)) {
       // Whatever was saved before a failure is on the server: take it over, so the next try has fresh times.
       const saved = current;
       dispatch({ type: "savedPlace", key, place: saved });
       setSavedCopy({ ...savedRef.current, places: isNew && !savedRef.current.places.some((p) => p.key === key) ? [...savedRef.current.places, saved] : savedRef.current.places.map((p) => (p.key === key ? saved : p)) });
     }
-    if (failure) setMessage({ kind: "error", text: wasPublished ? `${failure} ${t`この経由地は公開をやめました。`}` : failure });
-    else setMessage({ kind: "ok", text: wasPublished ? t`保存しました。この経由地は下書きに戻っています。もう一度「公開する」を押してください。` : t`この経由地を保存しました。` });
+    setMessage(toast);
     setBusyKey(null);
   }
 
@@ -356,14 +339,12 @@ export function useRouteDraft(
     if (!place?.id || busyKey) return;
     setBusyKey(key);
     setMessage(null);
-    const call = publish ? api.admin.spots({ id: place.id }).publish.post() : api.admin.spots({ id: place.id }).unpublish.post();
-    const res = await outcome(call);
-    if (res.ok) {
-      const next: PlaceDraft = { ...placeFromServer(res.data.spot), key };
+    const { next, toast } = await placeSave.publishPlace(place.id, key, publish);
+    if (next) {
       dispatch({ type: "savedPlace", key, place: next });
       setSavedCopy({ ...savedRef.current, places: savedRef.current.places.map((p) => (p.key === key ? next : p)) });
-      setMessage({ kind: "ok", text: publish ? t`公開しました。` : t`公開をやめました。` });
-    } else setMessage({ kind: "error", text: messages[res.key] });
+    }
+    setMessage(toast);
     setBusyKey(null);
   }
 

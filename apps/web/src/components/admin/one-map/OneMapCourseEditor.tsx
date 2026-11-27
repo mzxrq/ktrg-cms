@@ -3,16 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { confirmDialog } from "@/components/ConfirmDialog";
 import { useErrorMessages } from "@/components/useErrorMessages";
 import { api } from "@/lib/api";
 import { outcome } from "@/lib/admin/admin-client";
 import { draftFromServer, type RouteDraft } from "@/lib/admin/route-draft";
 import { showToast } from "@/lib/admin/toast";
 import type { AdminRoute, AdminSpot } from "@/lib/admin/types";
-import { formatUpdated } from "@/lib/format";
-import { CourseMapEditor, RestoreOffer } from "../CourseMapEditor";
-import { PublishedEditDialog } from "../PublishedEditDialog";
+import { CourseMapEditor, PublishedEditGuard, RestoreOffer, SaveButton, SaveState, useConfirmRemoval } from "../CourseMapEditor";
 import { useRouteDraft } from "../useRouteDraft";
 
 type Props = { courseId: string; routeNames: Record<string, string>; locale: string; onDirtyChange: (dirty: boolean) => void; onSaved: () => void; onClose: () => void };
@@ -67,7 +64,7 @@ function Editor({ initial, sharedWith, routeNames, locale, onDirtyChange, onSave
       }),
     onCreated: () => {}, // a new course from the map is step 6
   });
-  const { draft, saved, dirty, saving, busyKey, pendingEdit, setPendingEdit, dispatch, save } = d;
+  const { draft, saved, dirty, saving } = d;
 
   useEffect(() => onDirtyChange(dirty), [dirty, onDirtyChange]);
   useEffect(() => () => onDirtyChange(false), [onDirtyChange]);
@@ -79,36 +76,20 @@ function Editor({ initial, sharedWith, routeNames, locale, onDirtyChange, onSave
     onSaved();
   }, [saved, onSaved]);
 
-  const confirmRemoval = async (key: string) => {
-    const p = draft.places.find((x) => x.key === key);
-    const others = p?.id ? sharedWith[p.id] : undefined;
-    if (!p || !others) return true;
-    const name = p.nameJa;
-    const where = others.map((r) => routeNames[r]).filter(Boolean).join(", ");
-    return confirmDialog({ title: t`経由地を消しますか？`, body: t`「${name}」は、ほかのコース（${where}）にも置いてあります。消すと、そこからも消えます。よろしいですか？`, yes: t`消す` });
-  };
+  const confirmRemoval = useConfirmRemoval(draft, sharedWith, routeNames, locale);
 
   return (
     <div className={`flex flex-col gap-4 ${saving ? "[&_fieldset]:pointer-events-none" : ""}`} aria-busy={saving}>
-      <PublishedEditDialog
-        name={pendingEdit ? draft.places.find((p) => p.key === pendingEdit.key)?.nameJa || t`名前のない経由地` : null}
-        onProceed={() => {
-          if (pendingEdit) dispatch(pendingEdit.action);
-          setPendingEdit(null);
-        }}
-        onCancel={() => setPendingEdit(null)}
-      />
+      <PublishedEditGuard d={d} />
       <div className="sticky top-0 z-20 flex flex-wrap items-center gap-3 border-b border-line bg-paper py-3">
         <p className="min-w-0 flex-1 text-lg" aria-live="polite">
           <span className="font-bold">{t`「${draft.nameJa}」を編集中`}</span>{" "}
-          <span className="text-muted">{dirty ? t`保存していない変更があります` : t`保存済み（更新 ${formatUpdated(locale, draft.updatedAt ?? new Date().toISOString())}）`}</span>
+          <span className="text-muted"><SaveState d={d} locale={locale} /></span>
         </p>
         <button type="button" onClick={onClose} className="tap-target rounded-full border border-line px-5 text-lg font-bold">
           {t`編集をやめる`}
         </button>
-        <button type="button" disabled={!dirty || saving || busyKey !== null} onClick={save} className="tap-target rounded-full bg-ink px-8 text-xl font-bold text-paper disabled:opacity-40">
-          {saving ? t`保存中…` : t`保存する`}
-        </button>
+        <SaveButton d={d} />
       </div>
       <RestoreOffer d={d} initial={initial} locale={locale} />
       <CourseMapEditor d={d} confirmRemoval={confirmRemoval} />
