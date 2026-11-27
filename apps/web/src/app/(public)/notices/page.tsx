@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CheckOfficial } from "@/components/CheckOfficial";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { BackLink } from "@/components/BackLink";
@@ -26,7 +27,7 @@ export default async function NoticesPage() {
           <Trans>お知らせ</Trans>
         </h1>
         <p className="max-w-prose text-lg leading-8 text-muted">
-          <Trans>出かける前に、公式の最新情報を確認してください。</Trans>
+          <CheckOfficial />
         </p>
       </div>
       {notices.length === 0 ? (

@@ -2,15 +2,14 @@
 
 import { useRef, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { pointKinds, stampableByDefault, type PointKind } from "@/lib/point-kinds";
 import { usePointKindNames } from "@/components/PointKindName";
-import { infoPatch, publishBlockers, type PlaceDraft, type PublishBlocker } from "@/lib/admin/route-draft";
+import { publishBlockers, type PlaceDraft, type PublishBlocker } from "@/lib/admin/route-draft";
 import type { SpotStatus } from "@/lib/admin/types";
 import { RubyEditor } from "./RubyEditor";
 import { Check, Field, inputClass, MultilingualField, NumberInput, TextInput } from "./fields";
 import { PhotoListEditor } from "./PhotoListEditor";
-import { InfoTip } from "./InfoTip";
 import { PhotoSlot } from "./PhotoSlot";
+import { WaypointTypeFields } from "./WaypointTypeFields";
 import { PhotoUpload } from "./PhotoUpload";
 
 export interface PlacePanelProps {
@@ -37,7 +36,7 @@ export interface PlacePanelProps {
   /** A map to place it on, under the numbers (the route editor has its own map tab). */
   positionMap?: ReactNode;
   /** Waypoints it may be worshipped from (遥拝), see stampFromChoices. */
-  stampFrom?: { choices: { id: string; name: string }[]; isHub: boolean };
+  stampFrom: { choices: { id: string; name: string }[]; isHub: boolean; here: string[] };
 }
 
 /**
@@ -116,89 +115,7 @@ export function PlacePanel(p: PlacePanelProps) {
           </Group>
 
           <Group title={t`種類とスタンプ`}>
-          <Field label={t`種類`} htmlFor={`${id}-kind`}>
-            <select
-              id={`${id}-kind`}
-              value={place.kind}
-              // A new waypoint's switch follows the kind; a saved one keeps what was chosen for it.
-              onChange={(e) => {
-                const kind = e.target.value as PointKind;
-                p.onChange(place.id === null ? { kind, stampable: stampableByDefault(kind) } : { kind });
-              }}
-              className={`${inputClass} max-w-xs`}
-            >
-              {pointKinds.map((k) => (
-                <option key={k} value={k}>
-                  {kindName[k]}
-                </option>
-              ))}
-            </select>
-          </Field>
-
-          <InfoTip
-            indent
-            label={
-              <Check id={`${id}-stampable`} checked={place.stampable} onChange={(v) => p.onChange({ stampable: v })}>
-                {t`スタンプ対象`}
-              </Check>
-            }
-            hint={isStamp ? t`現地に到着した利用者がスタンプを獲得できます。公開には現地の許可確認が必要です。` : t`スタンプ対象外となります（詳細ページは表示されます）。公開には現地の許可確認が必要です。`}
-          />
-
-          <InfoTip
-            indent
-            label={
-              <Check id={`${id}-stopby`} checked={place.stopBy && !place.detached} onChange={(v) => p.onChange(v ? { stopBy: true, detached: false } : { stopBy: false, detached: false })}>
-                {t`寄り道（ルートから少し外れた任意の立ち寄り先）`}
-              </Check>
-            }
-            hint={t`チェックを入れると、自動ルート生成の対象から外れます。代わりに、直前の経由地からこの地点までの寄り道ルート（青い点線）を地図上で描画できます。分岐点となる経由地の直後に配置してください。`}
-          />
-
-          {/* 2026-11-17, user: a place nobody can walk to (a mound worshipped from afar) is not a side trip. Stored as a side trip
-              that is also detached, so it is left out of the walk the same way, but no path is drawn to it. */}
-          <InfoTip
-            indent
-            label={
-              <Check id={`${id}-detached`} checked={place.detached} onChange={(v) => p.onChange(v ? { stopBy: true, detached: true } : { stopBy: false, detached: false, stampSpotId: null })}>
-                {t`ルート外`}
-              </Check>
-            }
-            hint={t`地図には表示されますが、番号やルート線は付かず、総距離・歩行時間にも含まれません。下の表示ラベルが「寄り道」の代わりに表示されます。`}
-          />
-          {place.detached ? (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {/* 2026-11-20, user: 第1経塚 is stamped from 第4砲台, 第22経塚 from 水分神社. Chosen from the course's waypoints, never
-                  typed: the stamp is checked at that waypoint's own checked position, and one press there gives both stamps. */}
-              <Field label={t`遥拝場所`} htmlFor={`${id}-stamp-from`} hint={p.stampFrom?.isHub ? t`他の経由地の遥拝場所に設定されているため、指定できません。` : t`指定した経由地でスタンプを押すと、この地点のスタンプも同時に獲得できます（地図上のピン位置は変わりません）。保存済みの経由地から選択できます。`}>
-                <select id={`${id}-stamp-from`} value={place.stampSpotId ?? ""} disabled={p.stampFrom?.isHub} onChange={(e) => p.onChange({ stampSpotId: e.target.value || null })} className={`${inputClass} max-w-md`}>
-                  <option value="">{t`この地点で押す（指定なし）`}</option>
-                  {(p.stampFrom?.choices ?? []).map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name || t`（名称未設定）`}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-              <div className="hidden sm:block" />
-              <Field label={t`表示ラベル（日本語）`} htmlFor={`${id}-detached-ja`} hint={t`未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルートから離れた場所」と表示されます。`}>
-                <TextInput id={`${id}-detached-ja`} value={place.detachedLabelJa} onChange={(v) => p.onChange({ detachedLabelJa: v })} maxLength={100} placeholder={t`省略可`} />
-              </Field>
-              <Field label={t`表示ラベル（英語・任意）`} htmlFor={`${id}-detached-en`}>
-                <TextInput id={`${id}-detached-en`} lang="en" value={place.detachedLabelEn} onChange={(v) => p.onChange({ detachedLabelEn: v })} maxLength={100} placeholder="Can stay empty" />
-              </Field>
-            </div>
-          ) : null}
-
-          <InfoTip
-            indent
-            label={
-              <Check id={`${id}-info`} checked={isInfo} onChange={(v) => p.onChange(infoPatch(v, place))}>
-                {t`案内のみ（スタンプなし）`}
-              </Check>
-            }
-            hint={t`表示専用の地点です（立ち入り禁止の場所などに使用）。スタンプ対象外となり、コースやラリーのスポット数にも含まれません。「状況の補足」に「現在立ち入り禁止」などを記載してください。公開に現地の許可確認は不要です。`}
-          />
+          <WaypointTypeFields place={place} onChange={p.onChange} stampFrom={p.stampFrom} />
 
           {isInfo ? null : isStamp || place.stampImageUrl ? (
             <div className="flex flex-col gap-2">
@@ -292,19 +209,19 @@ export function PlacePanel(p: PlacePanelProps) {
 
           <Group title={t`位置`}>
             <div className="flex flex-wrap gap-4">
-              <Field label={t`緯度`} htmlFor={`${id}-lat`}>
+              <Field label={t`緯度`} htmlFor={`${id}-lat`} required>
                 <NumberInput id={`${id}-lat`} value={place.lat} min={-90} max={90} onChange={(v) => p.onChange({ lat: v })} />
               </Field>
-              <Field label={t`経度`} htmlFor={`${id}-lng`}>
+              <Field label={t`経度`} htmlFor={`${id}-lng`} required>
                 <NumberInput id={`${id}-lng`} value={place.lng} min={-180} max={180} onChange={(v) => p.onChange({ lng: v })} />
               </Field>
             </div>
             <p className="text-base text-muted">{t`位置情報は公式データをもとに設定し、地図上で確認してください（推測での入力は不可）。`}</p>
             {p.positionMap}
-            <Check id={`${id}-verified`} checked={place.positionVerified} disabled={place.lat === null} onChange={(v) => p.onChange({ positionVerified: v })}>
+            <Check id={`${id}-verified`} checked={place.positionVerified} disabled={place.lat === null} onChange={(v) => p.onChange({ positionVerified: v })} required>
               {t`位置確認済み`}
             </Check>
-            <Field label={t`確認元の情報源（サイト名・URLなど）`} htmlFor={`${id}-source`}>
+            <Field label={t`確認元の情報源（サイト名・URLなど）`} htmlFor={`${id}-source`} required>
               <TextInput id={`${id}-source`} value={place.positionSource} onChange={(v) => p.onChange({ positionSource: v })} maxLength={500} />
             </Field>
           </Group>
@@ -333,12 +250,12 @@ export function PlacePanel(p: PlacePanelProps) {
                   <option value="closed">{statusName.closed}</option>
                   <option value="info">{statusName.info}</option>
                 </select>
-                <MultilingualField id={`${id}-note`} label={t`状況の補足`} field="statusNote" ja={place.statusNoteJa} en={place.statusNoteEn} translations={place.translations} onJa={(v) => p.onChange({ statusNoteJa: v })} onEn={(v) => p.onChange({ statusNoteEn: v })} onTranslations={(v) => p.onChange({ translations: v })} />
+                <MultilingualField id={`${id}-note`} label={t`状況の補足`} field="statusNote" ja={place.statusNoteJa} en={place.statusNoteEn} translations={place.translations} onJa={(v) => p.onChange({ statusNoteJa: v })} onEn={(v) => p.onChange({ statusNoteEn: v })} onTranslations={(v) => p.onChange({ translations: v })} required={isInfo} />
               </fieldset>
 
               <fieldset className="flex flex-col gap-3">
                 <legend className="text-base font-bold">{t`現地の許可`}</legend>
-                <Check id={`${id}-permission`} checked={place.permissionConfirmed} onChange={(v) => p.onChange({ permissionConfirmed: v })}>
+                <Check id={`${id}-permission`} checked={place.permissionConfirmed} onChange={(v) => p.onChange({ permissionConfirmed: v })} required={!isInfo}>
                   {t`許可確認済み`}
                 </Check>
                 <Field label={t`許可元・担当者`} htmlFor={`${id}-permnote`}>

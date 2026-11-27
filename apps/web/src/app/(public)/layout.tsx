@@ -62,7 +62,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
             signedIn={viewer.signedIn}
             staff={viewer.role === "editor" || viewer.role === "admin"}
             locale={i18n.locale}
-            profile={{ publicId: viewer.publicId, deletionDueAt: viewer.deletionDueAt, name: viewer.name, origin: viewer.origin, originPlace: viewer.originPlace, ageRange: viewer.ageRange, gender: viewer.gender, foundVia: viewer.foundVia }}
+            profile={{ publicId: viewer.publicId, deletionDueAt: viewer.deletionDueAt, name: viewer.name, avatarUrl: viewer.avatarUrl ?? null, origin: viewer.origin, originPlace: viewer.originPlace, ageRange: viewer.ageRange, gender: viewer.gender, foundVia: viewer.foundVia }}
             sample={sample}
           />
           <OfflineNotice />

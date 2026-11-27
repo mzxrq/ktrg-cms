@@ -1,5 +1,6 @@
 import { Trans } from "@lingui/react/macro";
-import { pickText, type SpotStatus } from "@/lib/content";
+import { pickText } from "@/lib/pick-text";
+import type { SpotStatus } from "@/lib/content";
 import { formatUpdated } from "@/lib/format";
 import { StatusWord } from "./StatusWord";
 import { Localized } from "./Localized";
@@ -15,12 +16,15 @@ export function StatusBanner({
   noteEn,
   updatedAt,
   locale,
+  stampOpen = false,
 }: {
   status: SpotStatus;
   noteJa: string | null;
   noteEn: string | null;
   updatedAt: string | null;
   locale: string;
+  /** Closed, but its stamp is still collected elsewhere (遥拝, from its open waypoint): no "no stamp" line. */
+  stampOpen?: boolean;
 }) {
   const note = pickText(locale, noteJa, noteEn);
   const updated = updatedAt ? formatUpdated(locale, updatedAt) : null;
@@ -88,9 +92,11 @@ export function StatusBanner({
         <p className="text-2xl">
           <StatusWord status="closed" />
         </p>
-        <p className="mt-2 text-lg font-bold">
-          <Trans>現在はスタンプを押せません。</Trans>
-        </p>
+        {stampOpen ? null : (
+          <p className="mt-2 text-lg font-bold">
+            <Trans>現在はスタンプを押せません。</Trans>
+          </p>
+        )}
         {details}
       </div>
     </section>

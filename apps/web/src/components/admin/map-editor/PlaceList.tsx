@@ -2,8 +2,6 @@
 
 import { useState, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { pointKinds, type PointKind } from "@/lib/point-kinds";
-import { usePointKindNames } from "@/components/PointKindName";
 import { TrashIcon, UndoIcon } from "@/components/admin/admin-icons";
 import { ArrowDownIcon, ArrowUpIcon, ChevronDownIcon, ChevronUpIcon, InfoIcon, MountainIcon, PlusIcon, RouteIcon, StampIcon } from "@/components/admin/admin-icons";
 import { PinIcon } from "@/components/admin/admin-icons";
@@ -28,7 +26,7 @@ function Badge({ icon, text }: { icon: ReactNode; text: string }) {
 }
 
 /** Every waypoint of the route in one list: its name, its kind and its two switches can all be changed here. */
-export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, onPatchPlace, onAddEndAt, onReorderPlaces, insertAfter, onInsertAfter, onDrawSubCourse, locating, onLocate, picking, onPick, back }: Pick<MapEditorProps, "places" | "selectedKey" | "onSelectPlace" | "onRemovePlace" | "onPatchPlace" | "onAddEndAt" | "onReorderPlaces"> & {
+export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, onPatchPlace, onAddEndAt, onReorderPlaces, placeSettings, insertAfter, onInsertAfter, onDrawSubCourse, locating, onLocate, picking, onPick, back }: Pick<MapEditorProps, "places" | "selectedKey" | "onSelectPlace" | "onRemovePlace" | "onPatchPlace" | "onAddEndAt" | "onReorderPlaces" | "placeSettings"> & {
   /** The place whose 遥拝 waypoint is being chosen on the map, and how to start or stop that. */
   picking: string | null;
   onPick: (key: string) => void;
@@ -42,7 +40,6 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
   back: { legs: { from: string; to: string }[]; activeIndex: number; options: string[]; onAdd: (toKey: string) => void; onRemoveLast: () => void; onDraw: (index: number) => void };
 }) {
   const { t } = useLingui();
-  const kindName = usePointKindNames();
   const [backTo, setBackTo] = useState("");
   const nameOfKey = (key: string) => {
     const p = places.find((x) => x.key === key);
@@ -157,57 +154,12 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
 
               {open ? (
                 <div className="flex flex-col gap-3 rounded-lg bg-surface p-3" onClick={(e) => e.stopPropagation()}>
-                  <label className="flex flex-col gap-1 text-base font-bold">
-                    {t`種類`}
-                    <select value={p.kind} onChange={(e) => onPatchPlace(p.key, { kind: e.target.value as PointKind })} className={`${fieldClass} w-full max-w-xs`}>
-                      {pointKinds.map((k) => (
-                        <option key={k} value={k}>
-                          {kindName[k]}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    <button type="button" aria-pressed={p.stampable} onClick={() => onPatchPlace(p.key, { stampable: !p.stampable })} className={chipToggle(p.stampable)}>
-                      {t`スタンプ`}
-                    </button>
-                    {/* 寄り道 and 道とつながらない are one choice of three (on the way / side trip / not connected): a detached place is
-                        stored as a side trip, so 寄り道 lights only for a plain one, and pressing it on a detached place makes it plain. */}
-                    <button type="button" aria-pressed={p.stopBy && !p.detached} onClick={() => onPatchPlace(p.key, p.stopBy && !p.detached ? { stopBy: false, detached: false } : { stopBy: true, detached: false })} className={chipToggle(p.stopBy && !p.detached)}>
-                      {t`寄り道`}
-                    </button>
-                    <button type="button" aria-pressed={!!p.detached} onClick={() => onPatchPlace(p.key, p.detached ? { stopBy: false, detached: false, stampSpotId: null } : { stopBy: true, detached: true })} className={chipToggle(!!p.detached)} title={t`立ち入れない場所（遠くから遥拝する経塚など）。地図には表示されますが、番号やルート線は付きません。表示ラベルは「経由地」タブで変更できます。`}>
-                      {t`ルート外`}
-                    </button>
-                    <button type="button" aria-pressed={!!p.info} onClick={() => onPatchPlace(p.key, { info: !p.info })} className={chipToggle(!!p.info)}>
-                      {t`案内のみ`}
-                    </button>
-                  </div>
-                  {p.detached ? (
-                    <div className="flex flex-col gap-2">
-                      <label className="flex min-w-0 flex-col gap-1 text-base font-bold">
-                        {t`遥拝場所（スタンプを押す地点）`}
-                        <select
-                          value={p.stampFromKey ? (places.find((x) => x.key === p.stampFromKey)?.id ?? "") : ""}
-                          disabled={!!p.id && places.some((x) => x.stampFromKey === p.key)}
-                          onChange={(e) => onPatchPlace(p.key, { stampSpotId: e.target.value || null })}
-                          className={`${fieldClass} w-full min-w-0 max-w-md`}
-                        >
-                          <option value="">{t`この地点で押す（設定なし）`}</option>
-                          {places
-                            .filter((x) => x.key !== p.key && x.id && !x.stampFromKey)
-                            .map((x) => (
-                              <option key={x.key} value={x.id!}>
-                                {x.name || t`（名称未設定）`}
-                              </option>
-                            ))}
-                        </select>
-                      </label>
-                      <button type="button" aria-pressed={picking === p.key} onClick={() => onPick(p.key)} className={`${chipToggle(picking === p.key)} self-start`} title={t`地図上で遥拝場所となる経由地のピンをクリックしてください`}>
-                        {picking === p.key ? t`地図上のピンをクリック` : t`地図から選択`}
-                      </button>
-                    </div>
-                  ) : null}
+                  {placeSettings(
+                    p.key,
+                    <button type="button" aria-pressed={picking === p.key} onClick={() => onPick(p.key)} className={`${chipToggle(picking === p.key)} self-start`} title={t`地図上で遥拝場所となる経由地のピンをクリックしてください`}>
+                      {picking === p.key ? t`地図上のピンをクリック` : t`地図から選択`}
+                    </button>,
+                  )}
                   {p.key === firstStop && places.length >= 2 ? (
                     <button type="button" onClick={() => onAddEndAt(p.key)} className={`${chipToggle(false)} self-start`} title={t`周回コースの場合、同じ位置にスタンプなしの終点を追加します。`}>
                       {t`同じ場所に終点を追加`}

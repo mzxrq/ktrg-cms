@@ -1,9 +1,11 @@
 "use client";
 
+import { StatusBanner } from "@/components/StatusBanner";
+import { DraftPositionNote, NoStampChip, StampCard } from "@/components/StopParts";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore, } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { ChevronUpIcon, WarningIcon } from "@/components/icons";
+import { ChevronUpIcon } from "@/components/icons";
 import { ElevationProfile } from "@/components/ElevationProfile";
 import { PlaceLine } from "@/components/PlaceLine";
 import { RichText } from "@/components/RichText";
@@ -13,9 +15,7 @@ import { useRouteLine } from "./useRouteLine";
 import { useCategoryNames } from "./PlacesPanel";
 import { NAV_HANDOFF_MS, NAV_RESUME_EVENT, NavigationResume, NavigationStart } from "@/components/navigation/NavigationHud";
 import { useNavigation } from "@/components/navigation/NavigationProvider";
-import { StampFace } from "@/components/StampFace";
 import { StatusWord } from "@/components/StatusWord";
-import { formatUpdated } from "@/lib/format";
 import { LOW_QUERY, WIDE_QUERY, watchQuery } from "@/lib/screen";
 import { mapMemory, resumeFrom } from "@/lib/map-memory";
 import { sheetHeightPx, type MapScreenPoint, type MapScreenRoute, type MapScreenStop, type SheetSnap } from "@/lib/map-screen";
@@ -559,28 +559,14 @@ function StopPanel({
   stampMock?: StampMock;
 }) {
   const { t } = useLingui();
-  const updated = stop.statusUpdatedAt ? formatUpdated(locale, stop.statusUpdatedAt) : "";
   return (
     <div className="flex flex-col gap-5 px-4">
-      <p className="text-xl">
-        <StatusWord status={stop.status} />
-      </p>
+      {/* The same pieces as the stop's own page (SpotSheet) and the course map's card (StopCard). */}
+      <div className="-mx-4">
+        <StatusBanner status={stop.status} noteJa={stop.statusNoteJa} noteEn={stop.statusNoteEn} updatedAt={stop.statusUpdatedAt} locale={locale} />
+      </div>
 
-      {stop.statusNote ? (
-        <p className="rounded-lg border-2 border-line p-3 text-lg leading-7">
-          {stop.statusNote}
-          {stop.statusUpdatedAt ? <span className="block text-base text-muted">{t`${updated} 更新`}</span> : null}
-        </p>
-      ) : null}
-
-      {route.draft ? (
-        <p className="flex items-start gap-2 text-base text-muted">
-          <span className="shrink-0 text-caution">
-            <WarningIcon />
-          </span>
-          {t`位置情報は未確認です（仮の位置を表示しています）。`}
-        </p>
-      ) : null}
+      {route.draft ? <DraftPositionNote /> : null}
 
       {stop.description ? (
         <div className="whitespace-pre-line text-lg leading-8">
@@ -588,25 +574,21 @@ function StopPanel({
         </div>
       ) : null}
 
-      {stop.stamped === true ? (
-        <div className="flex items-center gap-4">
-          <StampFace state="stamped" number={showNumber ? (stop.order ?? undefined) : undefined} rough className="h-14 w-14 shrink-0" />
-          <p className="text-xl font-bold">{t`スタンプ獲得済み`}</p>
-        </div>
-      ) : null}
-
       {stop.noStamp ? (
-        <p className="self-start rounded-lg border-2 border-dashed border-line px-2 text-base font-bold">{t`スタンプなし`}</p>
+        <NoStampChip className="self-start" />
       ) : (
-        <StampHere
-          spotId={stop.id}
-          status={stop.status}
-          alreadyStamped={stop.stamped === true}
-          loginHref={loginHref}
-          mock={stampMock}
-          inSheet
-          progress={route.stops ? { rallyName: route.name, place: stop.name, before: route.stops.filter((s) => !s.noStamp && s.stamped === true).length, total: route.stops.filter((s) => !s.noStamp).length } : undefined}
-        />
+        <>
+          <StampCard stamped={stop.stamped === true} number={showNumber ? (stop.order ?? undefined) : undefined} />
+          <StampHere
+            spotId={stop.id}
+            status={stop.status}
+            alreadyStamped={stop.stamped === true}
+            loginHref={loginHref}
+            mock={stampMock}
+            inSheet
+            progress={route.stops ? { rallyName: route.name, place: stop.name, before: route.stops.filter((s) => !s.noStamp && s.stamped === true).length, total: route.stops.filter((s) => !s.noStamp).length } : undefined}
+          />
+        </>
       )}
 
       <Link href={stop.href} className={linkButton}>

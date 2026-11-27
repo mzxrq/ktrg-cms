@@ -1,5 +1,6 @@
 "use client";
 
+import { AlsoSeals } from "./AlsoSeals";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
@@ -114,13 +115,12 @@ export function RallyNearbyStamp({ places, held, locale, rallyName, quiet = fals
         </div>
       </dialog>
       {phase.name === "done" ? (
-        <p role="status" className="rounded-lg bg-surface p-4 text-xl font-bold leading-snug">
-          {phase.already ? t`「${phase.place}」のスタンプは、もう押してあります。` : t`「${phase.place}」のスタンプを押しました！`}
-          {phase.also.map((a) => {
-            const name = i18n.locale === "ja" ? a.nameJa : (a.nameEn ?? a.nameJa);
-            return <span key={a.nameJa} className="mt-1 block text-lg font-normal">{t`「${name}」のスタンプも押しました。`}</span>;
-          })}
-        </p>
+        <div role="status" className="flex flex-col gap-3 rounded-lg bg-surface py-4">
+          <p className="px-4 text-xl font-bold leading-snug">
+            {phase.already ? t`「${phase.place}」のスタンプは、もう押してあります。` : t`「${phase.place}」のスタンプを押しました！`}
+          </p>
+          <AlsoSeals also={phase.also} />
+        </div>
       ) : null}
       {phase.name === "queued" ? (
         <p role="status" className="rounded-lg bg-surface p-4 text-lg font-bold leading-snug">

@@ -39,7 +39,7 @@ export function InfoTip({ label, href, children }: { label: string; href: string
       >
         <p className="mb-3">{children}</p>
         <Link href={href} className="font-bold text-white underline underline-offset-4">
-          {t`くわしく見る`}
+          {t`詳しく見る`}
         </Link>
       </div>
     </>

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { CheckOfficial } from "@/components/CheckOfficial";
 import { Trans } from "@lingui/react/macro";
 import { ElevationProfile } from "@/components/ElevationProfile";
 import { EmptyState } from "@/components/EmptyState";
@@ -182,7 +183,7 @@ export function RouteView({ route, locale, places, settings, placesFirst, labels
               <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-3">
                 {bookmarkable ? (
                   <span id={BOOKMARK_ANCHOR}>
-                    <BookmarkButton routeId={route.id} />
+                    <BookmarkButton id={route.id} />
                   </span>
                 ) : null}
                 {offline}
@@ -311,7 +312,7 @@ export function RouteView({ route, locale, places, settings, placesFirst, labels
       </div>
 
       <Notice>
-        <Trans>出かける前に公式サイトで最新情報を確認してください。</Trans>
+        <CheckOfficial />
       </Notice>
       <LastUpdated iso={route.updatedAt} locale={locale} className="px-4" />
     </div>

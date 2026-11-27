@@ -1,4 +1,6 @@
 import type { ComponentProps } from "react";
+import { SpotText } from "./SpotText";
+import { StampCard } from "./StopParts";
 import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
 import { pickText, type SpotDetail } from "@/lib/content";
@@ -10,9 +12,7 @@ import { NearbyPlaces, type Nearby } from "./NearbyPlaces";
 import { LastUpdated } from "@/components/LastUpdated";
 import { NearestPlaces, type NearestGroup } from "./NearestPlaces";
 import { Notice } from "./Notice";
-import { RichText } from "./RichText";
 import { SpotGallery } from "./SpotGallery";
-import { StampFace } from "./StampFace";
 import { StampHere } from "./StampHere";
 import { StatusBanner } from "./StatusBanner";
 import type { StampMock } from "@/lib/stamp-flow";
@@ -50,6 +50,9 @@ export function SpotSheet({
 }) {
   // A place without a stamp has a page to read, but no stamp card and no stamp button.
   const stampable = spot.stampable !== false;
+  // As the server (stamp-store): a 遥拝 place always, any other place only while closed (閉鎖時のスタンプ地点).
+  const usesStampFrom = !!spot.stampFrom?.status && spot.status !== "info" && (spot.detached === true || spot.status === "closed");
+  const stampStatus = usesStampFrom ? spot.stampFrom!.status! : spot.status;
   const description = pickText(locale, spot.descriptionJa, spot.descriptionEn);
   const history = pickText(locale, spot.historyJa ?? null, spot.historyEn ?? null);
   const source = pickText(locale, spot.sourceJa ?? null, spot.sourceEn ?? null);
@@ -83,78 +86,20 @@ export function SpotSheet({
 
       {/* The grid already says the status; the block is for what needs more: caution, closed, or a note. */}
       {spot.status !== "open" || spot.statusNoteJa || spot.statusNoteEn ? (
-        <StatusBanner status={spot.status} noteJa={spot.statusNoteJa} noteEn={spot.statusNoteEn} updatedAt={spot.statusUpdatedAt} locale={locale} />
+        <StatusBanner status={spot.status} noteJa={spot.statusNoteJa} noteEn={spot.statusNoteEn} updatedAt={spot.statusUpdatedAt} locale={locale} stampOpen={stampStatus !== "closed"} />
       ) : null}
 
       {stampable ? (
-      <section className="mx-4 flex items-center gap-4 rounded-lg bg-surface p-4">
-        {/* Once stamped, the card says so with the stamp itself, in place of how to stamp (2026-11-18, user). */}
-        <StampFace state={spot.stamped === true ? "stamped" : "empty"} image={spot.stampImageUrl} className="h-14 w-14 shrink-0 rounded-full!" />
-        {spot.stamped === true ? (
-          <div>
-            <p className="text-xl font-bold text-moss">
-              <Trans>スタンプ獲得済み</Trans>
-            </p>
-            <p className="text-lg text-muted">
-              <Trans>スタンプ帳に記録されています。</Trans>
-            </p>
-          </div>
-        ) : (
-          <div>
-            <p className="text-xl font-bold">
-              <Trans>スタンプスポット</Trans>
-            </p>
-            <p className="text-lg text-muted">
-              <Trans>現地付近でボタンを押して獲得（位置情報を使用）</Trans>
-            </p>
-          </div>
-        )}
-      </section>
+      <StampCard className="mx-4" stamped={spot.stamped === true} image={spot.stampImageUrl} />
+      ) : null}
+      {/* A waypoint other places are stamped at (遥拝, or a closed place's 閉鎖時のスタンプ地点): one press gives those too. */}
+      {stampable && spot.stampedHere?.length ? (
+        <p className="mx-4 -mt-4 text-lg">
+          <Trans>他の獲得できるスタンプ：{spot.stampedHere.map((p) => (locale === "ja" ? p.nameJa : (p.nameEn ?? p.nameJa))).join(locale === "ja" ? "、" : ", ")}</Trans>
+        </p>
       ) : null}
 
-      {description ? (
-        <section className="px-4">
-          <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-            <Trans>説明</Trans>
-          </h2>
-          {/* Editors type plain text; line breaks are kept. Never raw HTML. */}
-          <div className="mt-2 max-w-prose whitespace-pre-line text-lg leading-8">
-            <RichText text={description.text} lang={description.lang} />
-          </div>
-          {description.fallback ? (
-            <p className="mt-2 text-base text-muted">
-              <Trans>この説明は日本語のみです。</Trans>
-            </p>
-          ) : null}
-        </section>
-      ) : null}
-
-      {history ? (
-        <section className="px-4">
-          <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-            <Trans>歴史・由来</Trans>
-          </h2>
-          <div className="mt-2 max-w-prose whitespace-pre-line text-lg leading-8">
-            <RichText text={history.text} lang={history.lang} />
-          </div>
-          {history.fallback ? (
-            <p className="mt-2 text-base text-muted">
-              <Trans>この説明は日本語のみです。</Trans>
-            </p>
-          ) : null}
-        </section>
-      ) : null}
-
-      {source ? (
-        <section className="px-4">
-          <h2 className="border-l-4 border-brand pl-3 font-serif text-xl font-bold text-accent">
-            <Trans>出典</Trans>
-          </h2>
-          <div className="mt-2 max-w-prose whitespace-pre-line text-base leading-7 text-muted">
-            <RichText text={source.text} lang={source.lang} />
-          </div>
-        </section>
-      ) : null}
+      <SpotText description={description} history={history} source={source} />
 
       {gallery.length > 0 ? (
         <section className="px-4">
@@ -191,7 +136,7 @@ export function SpotSheet({
       <LastUpdated iso={spot.updatedAt} locale={locale} className="px-4" />
 
       {stampable ? (
-        <StampHere spotId={spot.id} status={spot.status} alreadyStamped={spot.stamped === true} stampImage={spot.stampImageUrl} loginHref={loginHref} mock={stampMock} progress={stampProgress} />
+        <StampHere spotId={spot.id} status={stampStatus} alreadyStamped={spot.stamped === true} stampImage={spot.stampImageUrl} loginHref={loginHref} mock={stampMock} progress={stampProgress} />
       ) : null}
     </article>
   );

@@ -1,10 +1,11 @@
 "use client";
 
+import { DraftPositionNote, NoStampChip } from "@/components/StopParts";
 import Link from "next/link";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { StatusWord } from "@/components/StatusWord";
 import type { SpotStatus } from "@/lib/content";
-import { WarningIcon, XIcon } from "@/components/icons";
+import { XIcon } from "@/components/icons";
 import { buttonStyle } from "@/components/button";
 import type { FlyStop } from "@/lib/fly-along";
 
@@ -64,11 +65,7 @@ export function StopCard({
           <div className="flex items-start justify-between gap-2">
             <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-lg">
               <StatusWord status={status} />
-              {noStamp ? (
-                <span className="rounded-lg border-2 border-dashed border-line px-2 text-base font-bold">
-                  <Trans>スタンプなし</Trans>
-                </span>
-              ) : null}
+              {noStamp ? <NoStampChip /> : null}
             </p>
             {bare ? close : null}
           </div>
@@ -82,14 +79,7 @@ export function StopCard({
               {fly.note}
             </p>
           ) : null}
-          {draft ? (
-            <p className="flex items-start gap-2 text-base text-muted">
-              <span className="shrink-0 text-caution">
-                <WarningIcon />
-              </span>
-              <Trans>位置情報は未確認です（仮の位置を表示しています）。</Trans>
-            </p>
-          ) : null}
+          {draft ? <DraftPositionNote /> : null}
           <Link
             href={href}
             className={buttonStyle("primary", "md", "inline-flex self-start")}

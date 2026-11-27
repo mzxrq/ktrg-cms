@@ -11,7 +11,7 @@ import type { AdminRoute, AdminRouteSummary, AdminSharedSpot, AdminSpot } from "
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
-  return { title: i18n._(msg`コースを直す（管理）`) };
+  return { title: i18n._(msg`コース編集（管理）`) };
 }
 
 export default async function EditRoutePage({ params }: { params: Promise<{ id: string }> }) {
@@ -26,7 +26,7 @@ export default async function EditRoutePage({ params }: { params: Promise<{ id: 
   if (one.status !== 200 || !one.body?.ok) {
     return (
       <p role="alert" className="rounded-2xl bg-surface p-6 text-lg font-bold text-danger">
-        <Trans>コースを読み込めませんでした。しばらくしてから、ページを開き直してください。</Trans>
+        <Trans>コースを読み込めませんでした。しばらくしてから再度お試しください。</Trans>
       </p>
     );
   }
@@ -34,7 +34,7 @@ export default async function EditRoutePage({ params }: { params: Promise<{ id: 
 
   return (
     <div className="flex flex-col gap-4">
-      <RouteEditor back={<AdminBack href="/admin/routes"><Trans>もどる</Trans></AdminBack>} initial={draftFromServer(one.body.route, one.body.spots)} order={order || 1}
+      <RouteEditor back={<AdminBack href="/admin/routes"><Trans>戻る</Trans></AdminBack>} initial={draftFromServer(one.body.route, one.body.spots)} order={order || 1}
         locale={i18n.locale}
         shared={one.body.shared ?? []}
         sharedWith={one.body.sharedWith ?? {}}

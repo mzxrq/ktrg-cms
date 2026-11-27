@@ -104,7 +104,7 @@ export interface SpotListItem {
   detachedLabelJa?: string | null;
   detachedLabelEn?: string | null;
   /** The waypoint it is worshipped from (遥拝), by name: the label when none was written. */
-  stampFrom?: { nameJa: string; nameEn: string | null };
+  stampFrom?: { nameJa: string; nameEn: string | null; status?: SpotStatus };
   /** A stamp can be collected here; false (or left out for sample data it is true) for a place with no stamp. */
   stampable?: boolean;
   /** The walk from the stop before this one: left out for the first stop or when the line does not fit the stops. */
@@ -134,7 +134,7 @@ export interface RoutePoint {
   detachedLabelJa?: string | null;
   detachedLabelEn?: string | null;
   /** The waypoint it is worshipped from (遥拝), by name: the label when none was written. */
-  stampFrom?: { nameJa: string; nameEn: string | null };
+  stampFrom?: { nameJa: string; nameEn: string | null; status?: SpotStatus };
   /** The fly-along (コースをたどる) as admin set it; left out when all automatic. */
   fly?: FlySettings;
   position: SpotPosition | null;
@@ -193,6 +193,8 @@ export interface GalleryPhoto {
 
 export interface SpotDetail extends SpotListItem {
   routeId: string;
+  /** The places whose stamp is pressed here right now (他の獲得できるスタンプ). Left out by sample data. */
+  stampedHere?: { id: string; nameJa: string; nameEn: string | null }[];
   /** How the Japanese name is read, typed by a person. */
   nameKana?: string | null;
   routeNameJa: string;

@@ -85,7 +85,7 @@ export function FoldJumps({ routeId, items }: { routeId: string | null; items: {
       {/* Beside the title list but out of the way at first: it grows in when the bookmark button above has scrolled off. */}
       {routeId ? (
         <div className={`shrink-0 transition-[max-width,opacity] motion-reduce:transition-none ${scrolledAbove ? "max-w-20 overflow-visible pl-4 pr-2 opacity-100" : "max-w-0 overflow-hidden opacity-0"}`} inert={!scrolledAbove}>
-          <BookmarkButton routeId={routeId} compact />
+          <BookmarkButton id={routeId} compact />
         </div>
       ) : null}
       <ul ref={list} className="flex min-w-0 overflow-x-auto px-1 [scrollbar-width:none]">

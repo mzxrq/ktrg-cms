@@ -10,7 +10,7 @@ import { NearbyPlaces, type Nearby } from "@/components/NearbyPlaces";
 import { CreditCaption } from "@/components/PhotoCredit";
 import { PlaceFacts } from "@/components/PlaceFacts";
 import { PlaceIcon } from "@/components/PlaceIcon";
-import { SaveBookmark } from "@/components/SaveBookmark";
+import { BookmarkButton } from "@/components/BookmarkButton";
 import { RichBody } from "@/components/RichBody";
 import { RoutePhoto } from "@/components/RoutePhoto";
 import { SectionBanner } from "@/components/SectionBanner";
@@ -18,7 +18,7 @@ import { Avatar } from "@/components/blog/Avatar";
 import { CommentSection } from "@/components/blog/CommentSection";
 import { RouteCard, SpotCard } from "@/components/blog/LinkedCards";
 import { PostRow } from "@/components/blog/PostRow";
-import { ShareButtons } from "@/components/blog/ShareButtons";
+import { ShareButtons } from "@/components/ShareButtons";
 import { initLingui } from "@/i18n/server";
 import { getSpot, inlinePlaces, listPlaces, listRoutes, mentionsPlace } from "@/lib/content";
 import { formatDay } from "@/lib/format";
@@ -122,7 +122,7 @@ export default async function BlogPostPage({ params }: Props) {
         <h1 className="max-w-4xl text-2xl font-bold leading-snug md:text-3xl">
           <Localized value={title} />
         </h1>
-        <SaveBookmark id={post.id} wide={false} />
+        <BookmarkButton id={post.id} />
         <p className="flex flex-wrap items-center gap-x-4 gap-y-2 text-lg text-muted">
           {author ? (
             <span className="flex items-center gap-2">

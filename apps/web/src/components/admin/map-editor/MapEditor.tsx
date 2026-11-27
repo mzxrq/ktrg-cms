@@ -51,17 +51,10 @@ export interface EditorPlace {
   info?: boolean;
 }
 
-/** What the list under the map can change on a waypoint. */
+/** What the list under the map changes on a waypoint by itself; the rest of its settings come from placeSettings. */
 export interface PlacePatch {
   nameJa?: string;
-  kind?: PointKind;
-  stampable?: boolean;
-  stopBy?: boolean;
-  /** Not connected to the route (遥拝); turned off with stopBy. */
-  detached?: boolean;
-  /** 案内のみ on or off (the editor fills in the status and the ready-made note). */
-  info?: boolean;
-  /** The saved waypoint it is worshipped from (遥拝), or null. */
+  /** The saved waypoint it is worshipped from (遥拝), or null: chosen by clicking its pin. */
   stampSpotId?: string | null;
 }
 
@@ -107,6 +100,8 @@ export interface MapEditorProps {
   onSelectPlace: (key: string | null) => void;
   /** Changes a waypoint's name, kind, stamp switch or side-trip switch. */
   onPatchPlace: (key: string, patch: PlacePatch) => void;
+  /** The open waypoint's 種類 and switches (WaypointTypeFields, the same as the 経由地 tab), with the map's 遥拝 pick button. */
+  placeSettings: (key: string, pickOnMap: ReactNode) => ReactNode;
   /** The course's box on the visitors' overview map (コースの範囲), edited on this same map; left out where there is none. */
   area?: { value: Bounds | null; onChange: (area: Bounds | null) => void };
   /** Asks the route-finding service for a walking line through these points (the editor says what went wrong). */
@@ -263,14 +258,14 @@ export function MapEditor(props: MapEditorProps) {
   const setAnchorIdx = (index: number | null) => setAnchorAt(index === null ? null : { from: activeId, index });
   const activeLeg = activePair ? legOf(props.legs, activePair.from.key, activePair.to.key) : undefined;
   const activePath = useMemo(() => (activeLeg ? pathOfLeg(activeLeg) : NO_PATH), [activeLeg]);
-  const nameOf = useMemo(() => new Map(props.places.map((p) => [p.key, p.name || t`（名前がありません）`])), [props.places, t]);
+  const nameOf = useMemo(() => new Map(props.places.map((p) => [p.key, p.name || t`（名称未設定）`])), [props.places, t]);
 
   // ---- what the handlers do (created each render so they see this render's state; the map calls them through `actions`) ----
   /** Edits the path of the chosen leg (a leg that has none yet starts from no points) and saves the result as that leg. */
   function editPath(update: (p: Path) => Path) {
     if (!activePair) return;
     const next = update(activePath);
-    // Drawn by hand (手で描く): no `auto`, so from now on the editor never routes it on its own.
+    // Drawn by hand (手描き): no `auto`, so from now on the editor never routes it on its own.
     setLeg({ ...legFromPath(activePair.from, activePair.to, next), ...(activeLeg?.via ? { via: activeLeg.via } : {}) });
   }
 
@@ -278,7 +273,7 @@ export function MapEditor(props: MapEditorProps) {
    * Finds the way of the chosen leg again through these guide points (Navivi's via points): the route-finding service is given the
    * two stops with the guide points between them, so it cannot pick a shorter but worse way. The guide points stay on the leg for
    * the next time. When no way is found the guide points are kept and the line is left as it was. This is one search of the
-   * route-finding service (a limited allowance shared by everyone), so it runs only when the person asks (the 道を探す button),
+   * route-finding service (a limited allowance shared by everyone), so it runs only when the person asks (the ルートを検索 button),
    * never on its own after a guide point is added, moved or removed.
    */
   async function routeThroughGuides(via: GuidePoint[]) {
@@ -288,7 +283,7 @@ export function MapEditor(props: MapEditorProps) {
     const keep = { ...(own?.ride ? { ride: own.ride } : {}), ...(activePair.side ? { side: true as const } : {}), ...(via.length > 0 ? { via } : {}) };
     const points = guideRoute(from, to, via);
     setWorking(true);
-    setNote(via.length > 0 ? t`ガイド点を通る道を調べています…` : t`道を調べています…`);
+    setNote(via.length > 0 ? t`ガイド点を通るルートを検索しています…` : t`ルートを検索しています…`);
     let line: LngLatEle[] | null = null;
     let message = "";
     let fellBack = false;
@@ -307,22 +302,22 @@ export function MapEditor(props: MapEditorProps) {
     setWorking(false);
     if (!line) {
       setLeg({ from: from.key, to: to.key, points: own?.points ?? [[from.lng, from.lat], [to.lng, to.lat]], ...keep });
-      return setNote(message || t`道が見つかりませんでした。ガイド点は残してあります。`);
+      return setNote(message || t`ルートが見つかりませんでした。ガイド点はそのまま残っています。`);
     }
     setLeg({ from: from.key, to: to.key, points: withEnds(simplify(roundLine(line), MAX_POINTS), from, to), ...keep });
     setNote(
       fellBack
-        ? t`道の探索サービスが使えなかったため、地図の道（国土地理院）で探しました。いつもと違う道になることがあります。形をよく確かめてください。「元に戻す」で、もとの線にもどせます。`
-        : t`ガイド点を通るように、道を引きなおしました。形を確かめてから、保存してください。「元に戻す」で、もとの線にもどせます。`,
+        ? t`ルート検索サービスが利用できなかったため、国土地理院の地図データからルートを作成しました。通常と異なるルートになる場合があるため、形状を確認してください。「元に戻す」で元のルートに戻せます。`
+        : t`ガイド点を通るルートを再作成しました。形状を確認してから保存してください。「元に戻す」で元のルートに戻せます。`,
     );
   }
 
-  /** Puts the guide points on the chosen leg (a leg with no line yet is made straight). It does not search: the 道を探す button does. */
+  /** Puts the guide points on the chosen leg (a leg with no line yet is made straight). It does not search: the ルートを検索 button does. */
   function changeGuides(via: GuidePoint[]) {
     if (!activePair) return;
     const base: Leg = activeLeg ?? { from: activePair.from.key, to: activePair.to.key, points: [[activePair.from.lng, activePair.from.lat], [activePair.to.lng, activePair.to.lat]] };
     setLeg({ ...base, via: via.length > 0 ? via : undefined }); // (an undefined member is not saved)
-    setNote(via.length > 0 ? t`ガイド点を変えました。「道を探す」を押すと、この点を通る道を探します（探すのは1回だけです）。` : t`ガイド点をすべて消しました。線はそのままです。`);
+    setNote(via.length > 0 ? t`ガイド点を変更しました。「ルートを検索」を押すと、これらの点を通るルートを検索します（押したときのみ1回検索）。` : t`ガイド点をすべて削除しました。ルート線はそのままです。`);
   }
 
   function makeActions(): Actions {
@@ -348,7 +343,7 @@ export function MapEditor(props: MapEditorProps) {
       if (m === "guide") {
         if (!activePair) return;
         const cur = activeLeg?.via ?? [];
-        if (cur.length >= MAX_GUIDE_POINTS) return setNote(t`ガイド点は、1つの区間に${MAX_GUIDE_POINTS}個までです。`);
+        if (cur.length >= MAX_GUIDE_POINTS) return setNote(t`ガイド点は1区間につき${MAX_GUIDE_POINTS}個までです。`);
         changeGuides(insertGuidePoint(activePair.from, activePair.to, cur, [e.lngLat.lng, e.lngLat.lat]));
         return;
       }
@@ -399,7 +394,7 @@ export function MapEditor(props: MapEditorProps) {
       setAfterOff(false);
       if (tool === "select") return setMode("pan");
       if (tool === "place") return setMode("place");
-      if (pairs.length === 0) return setNote(tool === "guide" ? t`ガイド点を置くには、先に経由地を2つ以上置いてください（寄り道は数えません）。` : t`線を描くには、先に経由地を2つ以上置いてください（寄り道は数えません）。`);
+      if (pairs.length === 0) return setNote(tool === "guide" ? t`ガイド点を配置するには、先に経由地を2か所以上配置してください（寄り道は除く）。` : t`線を描くには、先に経由地を2か所以上配置してください（寄り道は除く）。`);
       if (!activePair) setActiveId(firstLeg(pairs, props.legs, props.selectedKey));
       setMode(tool === "guide" ? "guide" : "draw");
     },
@@ -520,7 +515,7 @@ export function MapEditor(props: MapEditorProps) {
       el.dataset.smooth = String(!!activePath.curves[i]);
       el.dataset.selected = String(i === anchorIdx);
       el.setAttribute("aria-label", `${i + 1}`);
-      el.title = eraser ? t`クリックで、この点を消します` : t`ドラッグで動かします。クリックで選び、ダブルクリックでなめらかな点と角の点を切り替えます。`;
+      el.title = eraser ? t`クリックでこの点を削除` : t`ドラッグで移動。クリックで選択、ダブルクリックで曲線と角を切り替えます。`;
       el.addEventListener("click", (event) => {
         event.stopPropagation();
         actions.current.clickAnchor(i);
@@ -555,7 +550,7 @@ export function MapEditor(props: MapEditorProps) {
       el.className = guideClass;
       const no = i + 1;
       el.setAttribute("aria-label", t`ガイド点 ${no}`);
-      el.title = mode === "guide" ? t`ドラッグで動かします。クリックで消します。` : t`ガイド点（道を探すときの目印）。「ガイド点」の道具で動かしたり消したりできます。`;
+      el.title = mode === "guide" ? t`ドラッグで移動、クリックで削除します。` : t`ガイド点（ルート検索の経由ポイント）。「ガイド点」ツールで移動・削除できます。`;
       el.addEventListener("click", (event) => {
         event.stopPropagation();
         actions.current.clickGuide(i);
@@ -626,10 +621,10 @@ export function MapEditor(props: MapEditorProps) {
       }
       entry.marker.setLngLat([p.lng!, p.lat!]);
       entry.el.dataset.published = String(p.published);
-      entry.el.title = p.published ? `${p.name}（公開中）` : p.name;
+      entry.el.title = p.published ? t`${p.name}（公開中）` : p.name;
       entry.el.setAttribute("aria-pressed", String(p.key === props.selectedKey));
     }
-  }, [props.places, props.selectedKey, ready]);
+  }, [props.places, props.selectedKey, ready, t]);
 
   // ---- 遥拝: a dashed link from a place to the waypoint it is worshipped from (where its stamp is pressed).
   useEffect(() => {
@@ -726,19 +721,19 @@ export function MapEditor(props: MapEditorProps) {
     setWaypoints(null);
     if (file.size > 20_000_000) return setNote(t`ファイルが大きすぎます（20MBまで）。`);
     const parsed = parseGpx(await file.text());
-    if (!parsed.ok) return setNote(t`GPXファイルを読み込めませんでした。道すじ（トラック）か、名前のついた地点が入ったファイルを選んでください。`);
+    if (!parsed.ok) return setNote(t`GPXファイルを読み込めませんでした。トラック（ルート線）または名称付きの地点が含まれるファイルを選択してください。`);
     if (parsed.points.length >= 2) {
       props.onLine(simplify(parsed.points, MAX_POINTS));
       setTimeout(fit, 100);
       setNote(
         pairs.length >= 1
-          ? t`GPXファイルを読み込み、経由地ごとの区間に分けました（最初の経由地より前と、最後の経由地より後は入りません）。形を確かめてから、保存してください。`
-          : t`GPXファイルを読み込みました。経由地を2つ以上置くと、経由地ごとの区間に分かれます。`,
+          ? t`GPXファイルを読み込み、経由地ごとの区間に分割しました（最初と最後の経由地の外側は除外されます）。形状を確認してから保存してください。`
+          : t`GPXファイルを読み込みました。経由地を2か所以上配置すると、経由地ごとの区間に分割されます。`,
       );
     }
     if (parsed.waypoints.length > 0) {
       setWaypoints(parsed.waypoints);
-      if (parsed.points.length < 2) setNote(t`GPXファイルに道すじはありませんでした。名前のついた地点だけ見つかりました。`);
+      if (parsed.points.length < 2) setNote(t`GPXファイルにルート線（トラック）はありませんでした。名称付きの地点のみ見つかりました。`);
     }
   }
 
@@ -748,13 +743,13 @@ export function MapEditor(props: MapEditorProps) {
     setNote(null);
     if (file.size > 20_000_000) return setNote(t`ファイルが大きすぎます（20MBまで）。`);
     const parsed = parseGpx(await file.text());
-    if (!parsed.ok || parsed.points.length < 2) return setNote(t`GPXファイルを読み込めませんでした。道すじ（トラック）の入ったファイルを選んでください。`);
+    if (!parsed.ok || parsed.points.length < 2) return setNote(t`GPXファイルを読み込めませんでした。トラック（ルート線）が含まれるファイルを選択してください。`);
     const r = applyGpxElevations(props.line, parsed.points);
-    if (!r) return setNote(t`このGPXファイルには、標高のある道すじがないか、今の線とほとんど重なっていません。`);
+    if (!r) return setNote(t`このGPXファイルには標高データ付きのトラックがないか、現在のルート線とほとんど一致していません。`);
     props.onHeights(r.points);
     const total = props.line.length;
     const matched = r.matched;
-    setNote(t`標高を入れました。線の${total}点のうち、${matched}点がGPXの道すじに重なっていました（ほかの点は、前後の高さから補いました）。線の形は変えていません。保存してください。`);
+    setNote(t`標高データを取り込みました。全${total}点のうち${matched}点がGPXのトラックと一致しました（その他の点は前後の標高から補完しています）。ルートの形状は変更していません。保存してください。`);
   }
 
 
@@ -818,8 +813,8 @@ export function MapEditor(props: MapEditorProps) {
     setFound(null);
     const hits = await searchPlaces(query);
     setSearching(false);
-    if (hits === null) return setNote(t`場所を探すサービスにつながりませんでした。しばらくしてから、もう一度お試しください。`);
-    if (hits.length === 0) return setNote(t`その名前の場所は見つかりませんでした。`);
+    if (hits === null) return setNote(t`地名検索サービスに接続できませんでした。しばらくしてからもう一度お試しください。`);
+    if (hits.length === 0) return setNote(t`該当する場所が見つかりませんでした。`);
     setNote(null);
     setFound(hits);
   }
@@ -843,7 +838,7 @@ export function MapEditor(props: MapEditorProps) {
   function addWaypoints() {
     if (!waypoints) return;
     props.onAddPlaces(waypoints.map((w) => ({ key: crypto.randomUUID(), name: w.name, lat: w.lat, lng: w.lng })));
-    setNote(t`${waypoints.length}か所を、経由地として追加しました。名前や種類は「経由地」で直せます。`);
+    setNote(t`${waypoints.length}か所を経由地として追加しました。名称や種類は「経由地」タブで編集できます。`);
     setWaypoints(null);
   }
 
@@ -866,7 +861,7 @@ export function MapEditor(props: MapEditorProps) {
   };
 
   const legLabel = (pair: { from: Stop; to: Stop; side?: true; back?: true }) => `${pair.side ? t`【サブコース】` : pair.back ? t`【戻り】` : ""}${nameOf.get(pair.from.key) ?? ""} → ${nameOf.get(pair.to.key) ?? ""}`;
-  const rideName: Record<RideMode, string> = { ferry: t`船`, bus: t`バス`, train: t`電車`, other: t`ほかの乗り物` };
+  const rideName: Record<RideMode, string> = { ferry: t`船`, bus: t`バス`, train: t`電車`, other: t`その他` };
   /** Ride (a ferry from a port ...) for this long: a straight hop between the two stops. */
   function setRide(mode: RideMode, minutes: number) {
     if (!activePair) return;
@@ -875,7 +870,7 @@ export function MapEditor(props: MapEditorProps) {
     setLeg({ ...base, points: [[from.lng, from.lat], [to.lng, to.lat]], ride: { mode, minutes: Math.min(1440, Math.max(1, Math.round(minutes))) } });
   }
   /**
-   * What the chosen leg is (2026-11-20, user): 歩く follows the trails by itself, a ride is a straight hop, 手で描く turns the
+   * What the chosen leg is (2026-11-20, user): 歩く follows the trails by itself, a ride is a straight hop, 手描き turns the
    * line it has into points to drag at once (the draw tool opens on it) and is never routed again on its own.
    */
   function setKind(kind: RideMode | "walk" | "hand") {
@@ -917,48 +912,48 @@ export function MapEditor(props: MapEditorProps) {
   const afterName = insertAfter ? (nameOf.get(insertAfter) ?? "") : "";
   const locatingName = locating ? nameOf.get(locating) ?? "" : "";
   const hint = locating
-    ? t`地図をクリックすると、「${locatingName}」の位置を決めます。やめるには、もう一度ボタンを押すか、Escキーを押します。`
+    ? t`地図をクリックして「${locatingName}」の位置を指定してください。キャンセルするには、もう一度ボタンを押すか Esc キーを押します。`
     : looseLine
-    ? t`この線は、経由地の順番や位置と合わないため、区間に分けていません。経由地の順番と位置を直してから「区間に分ける」を押すか、区間を描くと、その区間から線が置き換わります（「元に戻す」で戻せます）。`
+    ? t`このルート線は経由地の順番や位置と一致しないため、区間分割されていません。経由地を修正して「区間に分割」を押すか、各区間を描き直してください（「元に戻す」で戻せます）。`
     : mode === "place"
       ? insertAfter
-        ? t`地図をクリックすると、「${afterName}」のすぐ次に経由地を置きます。`
-        : t`地図をクリックすると、その位置に経由地を置きます。`
+        ? t`地図をクリックすると、「${afterName}」の直後に経由地を追加します。`
+        : t`地図をクリックして、経由地を追加します。`
       : mode === "guide"
         ? !activePair
-          ? t`ガイド点を置きたい区間（経由地と経由地のあいだ）を選んでください。`
-          : t`地図をクリックすると、道を探すときの目印（ガイド点）を置きます。ガイド点は、訪れる人には見えません。点はドラッグで動かせ、クリックで消えます。置いたり動かしたりしても、道は探しません。並べ終わったら「道を探す」を押してください（探すのは1回だけです）。`
+          ? t`ガイド点を配置する区間（経由地間）を選択してください。`
+          : t`地図をクリックして目印（ガイド点）を配置します（利用者には非表示）。ドラッグで移動、クリックで削除し、最後に「ルートを検索」を押してください。`
       : mode === "draw"
         ? !activePair
-          ? t`描きたい区間（経由地と経由地のあいだ）を選んでください。`
+          ? t`描画する区間（経由地間）を選択してください。`
           : eraser
-            ? t`消したい点をクリックします。`
+            ? t`削除したい点をクリックしてください。`
             : anchorIdx !== null
-              ? t`新しい点は、選んだ点（${chosenNo}番）のあとに入ります。もう一度クリックすると、選びなおせます。`
-              : t`地図をクリックして、この区間に点を置いていきます。点はドラッグで動かせます。ダブルクリックで、なめらかな点と角の点が切り替わります。`
+              ? t`新しい点は選択中の点（${chosenNo}番）の次に追加されます。もう一度クリックすると選択を解除できます。`
+              : t`地図をクリックして点を追加します。ドラッグで移動、ダブルクリックで曲線と角を切り替えられます。`
         : selectedSide && activePair
-          ? t`寄り道の点を選んでいます。サブコースの線（${legName}）は、右の一覧の「サブコースの線を描く」か、「線を描く」で描けます。本線の点をクリックする必要はありません。`
+          ? t`寄り道を選択中です。サブコースのルート（${legName}）は、一覧の「サブコースの線を描く」または「線を描く」ツールで描画できます。`
         : activePair
-          ? t`「${legName}」を選んでいます。この区間の点をドラッグして動かせます。地図の何もない所をクリックすると、選びなおせます。`
+          ? t`「${legName}」を選択中です。点をドラッグしてルートを調整できます。地図の空白部分をクリックすると選択を解除できます。`
           : hasLine
-            ? t`線をクリックすると、その区間を選べます。数字の丸をドラッグすると、経由地を動かせます。`
+            ? t`ルート線をクリックすると区間を選択できます。ピンをドラッグすると経由地を移動できます。`
             : hasPlaces
-              ? t`数字の丸をドラッグすると、経由地を動かせます。経由地のあいだの線は、道に沿って自動で引かれます。線をクリックすると、その区間の種類（歩く・船・手で描く など）を選べます。`
-              : t`まず、GPXファイルをここにドラッグするか「GPXファイルから読み込む」を押してください。手で入れるときは「経由地を置く」で経由地を入れ、「線を描く」で区間ごとに道すじを描きます。`;
+              ? t`ピンをドラッグすると経由地を移動できます。経由地間のルートは自動で生成され、線をクリックすると移動手段や手描きに変更できます。`
+              : t`GPXファイルをここにドロップするか、「GPXを読み込む」から取り込んでください。手動で作成する場合は「経由地を追加」で地点を置き、「線を描く」でルートを描画します。`;
 
   return (
     // The map takes the full width; the waypoint list follows under it (beside it, both were cramped; user, 2026-11-17).
     <div className="flex flex-col gap-3">
       <div className="flex min-w-0 flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t`道すじ`}>
+      <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t`ルート操作`}>
         {/* One button for the GPX file; its arrow offers the other thing to do with one (take only the heights). */}
         <div className="relative inline-flex">
           <button type="button" onClick={() => fileInput.current?.click()} className="inline-flex h-11 min-h-0 min-w-0 items-center justify-center rounded-l-lg border border-line bg-ink px-3 text-sm font-bold text-paper">
-            {t`GPXファイルから読み込む`}
+            {t`GPXを読み込む`}
           </button>
           <button
             type="button"
-            aria-label={t`GPXの読み込みかた`}
+            aria-label={t`GPXの読み込みオプション`}
             aria-haspopup="menu"
             aria-expanded={gpxMenu}
             onClick={() => setGpxMenu((v) => !v)}
@@ -969,7 +964,7 @@ export function MapEditor(props: MapEditorProps) {
           {gpxMenu ? (
             <div role="menu" className="absolute left-0 top-full z-30 mt-1 flex min-w-64 flex-col rounded-full border border-line bg-paper p-1 shadow-lg">
               <button type="button" role="menuitem" onClick={() => { setGpxMenu(false); fileInput.current?.click(); }} className="rounded-md px-3 py-2 text-left text-sm font-bold hover:bg-surface">
-                {t`線と標高を読み込む`}
+                {t`ルートと標高を読み込む`}
               </button>
               <button
                 type="button"
@@ -977,15 +972,15 @@ export function MapEditor(props: MapEditorProps) {
                 disabled={!hasLine}
                 onClick={() => { setGpxMenu(false); heightsInput.current?.click(); }}
                 className="rounded-md px-3 py-2 text-left text-sm font-bold hover:bg-surface disabled:opacity-50"
-                title={t`GPXファイルから標高だけを取り出して、今の線に入れます（線の形は変わりません）`}
+                title={t`GPXファイルから標高データのみを取り込み、現在のルートに反映します（ルートの形状は変わりません）`}
               >
-                {t`標高だけ取り込む（線は変えない）`}
+                {t`標高のみ取り込む（ルートは維持）`}
               </button>
             </div>
           ) : null}
         </div>
         <input ref={fileInput} type="file" accept=".gpx,application/gpx+xml,text/xml,application/xml" onChange={onFile} className="sr-only" tabIndex={-1} aria-hidden="true" />
-        <span className="text-sm text-muted">{working ? t`道を調べています…` : t`経由地のあいだの線は、道に沿って自動で引かれます。`}</span>
+        <span className="text-sm text-muted">{working ? t`ルートを検索しています…` : t`経由地間のルートは自動で生成されます。`}</span>
         <div className="flex basis-full flex-wrap gap-2 empty:hidden">
         <input
           ref={heightsInput}
@@ -1000,8 +995,8 @@ export function MapEditor(props: MapEditorProps) {
           aria-hidden="true"
         />
         {looseLine ? (
-          <button type="button" onClick={props.onSplitLine} className={`${chipClass} w-full`} title={t`今ある線を、経由地の順に区間へ切り分けます（経由地が線と合わないと、まっすぐな部分ができます）`}>
-            {t`区間に分ける`}
+          <button type="button" onClick={props.onSplitLine} className={`${chipClass} w-full`} title={t`現在のルート線を経由地の順に区間分割します（経由地が線と離れている場合は直線になります）`}>
+            {t`区間に分割`}
           </button>
         ) : null}
         </div>
@@ -1018,30 +1013,30 @@ export function MapEditor(props: MapEditorProps) {
         className="flex flex-wrap items-center gap-2"
       >
         <label htmlFor="map-search" className="sr-only">
-          {t`場所の名前で探す`}
+          {t`地名・スポット名で検索`}
         </label>
         <input
           id="map-search"
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder={t`場所の名前で探す（例：西念寺）`}
+          placeholder={t`地名・スポット名で検索`}
           className="tap-target min-w-0 basis-40 flex-1 rounded-full border border-line bg-paper px-4 text-lg"
         />
         <button type="submit" disabled={searching || !query.trim()} className={`${toolClass} border-line bg-paper`}>
-          {searching ? t`探しています…` : t`探す`}
+          {searching ? t`検索中…` : t`検索`}
         </button>
       </form>
       {found ? (
-        <ul aria-label={t`見つかった場所`} className="absolute left-0 right-0 top-full z-30 mt-1 flex max-h-80 flex-col gap-1 overflow-y-auto rounded-xl border border-line bg-paper p-2 shadow-xl">
+        <ul aria-label={t`検索結果`} className="absolute left-0 right-0 top-full z-30 mt-1 flex max-h-80 flex-col gap-1 overflow-y-auto rounded-xl border border-line bg-paper p-2 shadow-xl">
           {found.map((h, i) => (
             <li key={i} className="flex flex-wrap items-center gap-2 p-1">
               <span className="min-w-0 flex-1 break-words text-base">{h.name}</span>
               <button type="button" onClick={() => showHit(h)} className={`${toolClass} border-line bg-paper`}>
-                {t`地図を動かす`}
+                {t`地図で表示`}
               </button>
               <button type="button" onClick={() => props.onAddPlace(h.lat, h.lng)} className={`${toolClass} border-line bg-paper`}>
-                {t`ここに経由地を置く`}
+                {t`ここに経由地を追加`}
               </button>
             </li>
           ))}
@@ -1076,19 +1071,19 @@ export function MapEditor(props: MapEditorProps) {
       >
         <div ref={container} className="h-full w-full" />
         <div className="absolute left-3 top-3 flex flex-col items-start gap-2">
-          <div role="toolbar" aria-label={t`地図の道具`} className={`${floatClass} grid max-w-[calc(100%-4.5rem)] grid-cols-[repeat(2,max-content)] sm:flex sm:flex-wrap`}>
-            {toolButton("select", t`選ぶ・動かす`, "V", <CursorIcon />)}
-            {toolButton("place", t`経由地を置く`, "P", <PinIcon />)}
+          <div role="toolbar" aria-label={t`地図ツール`} className={`${floatClass} grid max-w-[calc(100%-4.5rem)] grid-cols-[repeat(2,max-content)] sm:flex sm:flex-wrap`}>
+            {toolButton("select", t`選択・移動`, "V", <CursorIcon />)}
+            {toolButton("place", t`経由地を追加`, "P", <PinIcon />)}
             {toolButton("draw", t`線を描く`, "L", <PencilIcon />)}
             {toolButton("guide", t`ガイド点`, "G", <GuideIcon />)}
           </div>
           {mode === "draw" || mode === "guide" ? (
-            <div role="group" aria-label={mode === "guide" ? t`ガイド点を置く` : t`区間を描く`} className={`${floatClass} max-w-[calc(100vw-6rem)] flex-wrap`}>
+            <div role="group" aria-label={mode === "guide" ? t`ガイド点を追加` : t`区間を描く`} className={`${floatClass} max-w-[calc(100vw-6rem)] flex-wrap`}>
               <label htmlFor="leg-pick" className="sr-only">
                 {t`描く区間`}
               </label>
               <select id="leg-pick" value={activeId ?? ""} onChange={(e) => pickLeg(e.target.value)} className="h-11 min-h-0 max-w-64 truncate rounded-full border border-line bg-paper px-2 text-sm font-bold">
-                <option value="">{t`区間を選ぶ`}</option>
+                <option value="">{t`区間を選択`}</option>
                 {pairs.map((pair) => (
                   <option key={pairId(pair)} value={pairId(pair)}>
                     {`${legOf(props.legs, pair.from.key, pair.to.key) ? "● " : "○ "}${legLabel(pair)}${timeText(pair)}`}
@@ -1098,25 +1093,25 @@ export function MapEditor(props: MapEditorProps) {
               {activePair && mode === "guide" ? (
                 <>
                   <span className="px-1 text-sm tabular-nums">{t`ガイド点 ${guideCount}`}</span>
-                  <button type="button" disabled={working || guideCount === 0} onClick={() => void routeThroughGuides(activeLeg?.via ?? [])} className={`${iconBtn} bg-ink text-paper hover:bg-ink`} title={t`いまのガイド点を通る道を、1回だけ探します`}>
-                    {working ? t`探しています…` : t`道を探す`}
+                  <button type="button" disabled={working || guideCount === 0} onClick={() => void routeThroughGuides(activeLeg?.via ?? [])} className={`${iconBtn} bg-ink text-paper hover:bg-ink`} title={t`現在のガイド点を通るルートを検索します）`}>
+                    {working ? t`検索中…` : t`ルートを検索`}
                   </button>
-                  <button type="button" disabled={working || guideCount === 0} onClick={() => changeGuides([])} className={`${iconBtn} text-danger`} title={t`ガイド点をすべて消します（線はそのままです）`}>
-                    {t`すべて消す`}
+                  <button type="button" disabled={working || guideCount === 0} onClick={() => changeGuides([])} className={`${iconBtn} text-danger`} title={t`ガイド点をすべて削除します（ルート線は維持されます）`}>
+                    {t`すべて削除`}
                   </button>
-                  <button type="button" onClick={() => fitLeg(activeId)} className={iconBtn} title={t`この区間を見る`} aria-label={t`この区間を見る`}>
+                  <button type="button" onClick={() => fitLeg(activeId)} className={iconBtn} title={t`この区間を表示`} aria-label={t`この区間を表示`}>
                     <FitIcon />
                   </button>
                 </>
               ) : null}
               {activePair && mode === "draw" ? (
                 <>
-                  <div className="flex items-center rounded-lg bg-surface p-0.5" role="group" aria-label={t`点の操作`}>
+                  <div className="flex items-center rounded-lg bg-surface p-0.5" role="group" aria-label={t`点の編集`}>
                     <button type="button" aria-pressed={!eraser} onClick={() => setEraser(false)} className={`${iconBtn} ${!eraser ? "bg-paper shadow-sm" : "text-muted"}`}>
-                      {t`点を置く`}
+                      {t`点を追加`}
                     </button>
-                    <button type="button" aria-pressed={eraser} aria-keyshortcuts="E" title={t`点を消す (E)`} onClick={() => setEraser(true)} className={`${iconBtn} ${eraser ? "bg-paper text-danger shadow-sm" : "text-muted"}`}>
-                      {t`点を消す`}
+                    <button type="button" aria-pressed={eraser} aria-keyshortcuts="E" title={t`点を削除 (E)`} onClick={() => setEraser(true)} className={`${iconBtn} ${eraser ? "bg-paper text-danger shadow-sm" : "text-muted"}`}>
+                      {t`点を削除`}
                     </button>
                   </div>
                   <button
@@ -1124,13 +1119,13 @@ export function MapEditor(props: MapEditorProps) {
                     aria-pressed={isAllSmooth(activePath.curves)}
                     onClick={() => editPath((p) => setAllCurves(p, !isAllSmooth(p.curves)))}
                     disabled={activePath.anchors.length === 0}
-                    title={t`すべての点を、なめらかな点にします（もう一度押すと、角の点に戻ります）`}
+                    title={t`すべての点を滑らかな曲線にします（もう一度押すと角に戻ります）`}
                     className={`${iconBtn} ${isAllSmooth(activePath.curves) ? "bg-ink text-paper hover:bg-ink" : ""}`}
                   >
-                    {t`すべてなめらか`}
+                    {t`すべて曲線にする`}
                   </button>
                   <span className="px-1 text-sm tabular-nums">{t`点 ${pointCount}`}</span>
-                  <button type="button" onClick={() => fitLeg(activeId)} className={iconBtn} title={t`この区間を見る`} aria-label={t`この区間を見る`}>
+                  <button type="button" onClick={() => fitLeg(activeId)} className={iconBtn} title={t`この区間を表示`} aria-label={t`この区間を表示`}>
                     <FitIcon />
                   </button>
                 </>
@@ -1142,14 +1137,14 @@ export function MapEditor(props: MapEditorProps) {
           ) : null}
         </div>
         <div className="absolute bottom-8 left-3 flex flex-wrap gap-2">
-          <div className={floatClass} role="group" aria-label={t`やり直し`}>
+          <div className={floatClass} role="group" aria-label={t`編集操作`}>
             <button type="button" disabled={!props.canUndo} onClick={props.onUndo} className={iconBtn} title={t`元に戻す`} aria-label={t`元に戻す`}>
               <UndoIcon />
             </button>
             <button type="button" disabled={!props.canRedo} onClick={props.onRedo} className={iconBtn} title={t`やり直す`} aria-label={t`やり直す`}>
               <RedoIcon />
             </button>
-            <button type="button" disabled={props.line.length === 0 && !activeLeg} onClick={clearLine} className={`${iconBtn} text-danger`} title={activePair ? t`選んだ区間の線を消す` : t`線をすべて消す`} aria-label={activePair ? t`選んだ区間の線を消す` : t`線をすべて消す`}>
+            <button type="button" disabled={props.line.length === 0 && !activeLeg} onClick={clearLine} className={`${iconBtn} text-danger`} title={activePair ? t`選択中の区間の線を削除` : t`線をすべて削除`} aria-label={activePair ? t`選択中の区間の線を削除` : t`線をすべて削除`}>
               <TrashIcon />
             </button>
           </div>
@@ -1160,14 +1155,14 @@ export function MapEditor(props: MapEditorProps) {
               </button>
             ))}
           </div>
-          <div className={floatClass} role="group" aria-label={t`見え方`}>
+          <div className={floatClass} role="group" aria-label={t`表示操作`}>
             <button type="button" onClick={() => mapRef.current?.zoomIn()} className={`${iconBtn} text-xl`} title={t`拡大`} aria-label={t`拡大`}>
               ＋
             </button>
             <button type="button" onClick={() => mapRef.current?.zoomOut()} className={`${iconBtn} text-xl`} title={t`縮小`} aria-label={t`縮小`}>
               －
             </button>
-            <button type="button" onClick={fit} className={iconBtn} title={t`全体を見る`} aria-label={t`全体を見る`}>
+            <button type="button" onClick={fit} className={iconBtn} title={t`全体を表示`} aria-label={t`全体を表示`}>
               <FitIcon />
             </button>
             <button type="button" aria-pressed={terrain} onClick={toggleTerrain} className={`${iconBtn} ${terrain ? "bg-ink text-paper hover:bg-ink" : ""}`} title={t`地形の陰影`} aria-label={t`地形の陰影`}>
@@ -1175,28 +1170,28 @@ export function MapEditor(props: MapEditorProps) {
             </button>
           </div>
         </div>
-        {dropping ? <p className="absolute inset-0 flex items-center justify-center bg-paper/80 text-xl font-bold">{t`GPXファイルをここで離すと、読み込みます`}</p> : null}
+        {dropping ? <p className="absolute inset-0 flex items-center justify-center bg-paper/80 text-xl font-bold">{t`GPXファイルをここにドロップして読み込み`}</p> : null}
         {!ready ? <p className="absolute inset-0 flex items-center justify-center text-lg">{t`地図を読み込み中…`}</p> : null}
         {activePair ? (
-          <div role="group" aria-label={t`選んだ区間`} className="absolute bottom-[5.5rem] left-3 z-10 flex max-w-[calc(100%-1.5rem)] flex-wrap items-center gap-2 rounded-xl border border-line bg-paper/95 px-3 py-2 shadow-lg lg:max-w-[calc(100%-29rem)]">
+          <div role="group" aria-label={t`選択中の区間`} className="absolute bottom-[5.5rem] left-3 z-10 flex max-w-[calc(100%-1.5rem)] flex-wrap items-center gap-2 rounded-xl border border-line bg-paper/95 px-3 py-2 shadow-lg lg:max-w-[calc(100%-29rem)]">
             <span className="min-w-0 flex-1 basis-60 truncate text-sm font-bold" title={legName} aria-live="polite">
-              {t`選んだ区間：${legName}`}
+              {t`選択中：${legName}`}
             </span>
             {activePair && !activePair.side ? (
-            <span className="flex items-center gap-1" role="group" aria-label={t`この区間の移動`}>
+            <span className="flex items-center gap-1" role="group" aria-label={t`移動手段`}>
               <select
-                aria-label={t`この区間の種類`}
+                aria-label={t`区間の種類`}
                 value={activeLeg?.ride ? activeLeg.ride.mode : !activeLeg || activeLeg.auto ? "walk" : "hand"}
                 onChange={(e) => setKind(e.target.value as RideMode | "walk" | "hand")}
                 className="h-11 min-h-0 rounded-full border border-line bg-paper px-2 text-sm font-bold"
               >
-                <option value="walk">{t`歩く（道に沿って自動）`}</option>
+                <option value="walk">{t`徒歩（自動ルート）`}</option>
                 {RIDE_MODES.map((m) => (
                   <option key={m} value={m}>
                     {rideName[m]}
                   </option>
                 ))}
-                <option value="hand">{t`手で描く`}</option>
+                <option value="hand">{t`手描き`}</option>
               </select>
               {activeLeg?.ride ? (
                 <>
@@ -1204,7 +1199,7 @@ export function MapEditor(props: MapEditorProps) {
                     type="number"
                     min={1}
                     max={1440}
-                    aria-label={t`かかる時間（分）`}
+                    aria-label={t`所要時間（分）`}
                     value={activeLeg.ride.minutes}
                     onChange={(e) => setRide(activeLeg.ride!.mode, Number(e.target.value) || 1)}
                     className="h-11 min-h-0 w-20 rounded-full border border-line bg-paper px-2 text-sm font-bold"
@@ -1214,20 +1209,20 @@ export function MapEditor(props: MapEditorProps) {
               ) : null}
             </span>
           ) : null}
-            <button type="button" onClick={() => setActiveId(null)} className={chipClass} title={t`区間の選択をやめて、全体を対象にします`}>
-              {t`選択をやめる`}
+            <button type="button" onClick={() => setActiveId(null)} className={chipClass} title={t`区間の選択を解除します`}>
+              {t`選択を解除`}
             </button>
           </div>
         ) : null}
         {waypoints ? (
-          <div role="group" aria-label={t`GPXの地点`} className="absolute left-1/2 top-20 z-20 flex w-[min(28rem,calc(100%-2rem))] -translate-x-1/2 flex-col gap-3 rounded-xl border border-line bg-paper p-4 shadow-xl">
-            <p className="text-lg font-bold">{t`名前のついた地点が${waypoints.length}か所ありました。経由地として追加しますか？`}</p>
+          <div role="group" aria-label={t`GPXの地点データ`} className="absolute left-1/2 top-20 z-20 flex w-[min(28rem,calc(100%-2rem))] -translate-x-1/2 flex-col gap-3 rounded-xl border border-line bg-paper p-4 shadow-xl">
+            <p className="text-lg font-bold">{t`名称付きの地点が${waypoints.length}か所見つかりました。経由地として追加しますか？`}</p>
             <ul className="max-h-40 list-disc overflow-auto pl-6 text-base">
               {waypoints.map((w, i) => (
-                <li key={i}>{w.name || t`（名前なし）`}</li>
+                <li key={i}>{w.name || t`（名称未設定）`}</li>
               ))}
             </ul>
-            <p className="text-base text-muted">{t`位置は「確認していない」状態で入ります。公開する前に、公式の情報で確かめてください。`}</p>
+            <p className="text-base text-muted">{t`追加した地点は「位置未確認」の状態になります。公開前に公式情報で位置を確認してください。`}</p>
             <div className="flex gap-2">
               <button type="button" onClick={addWaypoints} className="tap-target rounded-full bg-ink px-6 text-lg font-bold text-paper">
                 {t`追加する`}
@@ -1240,14 +1235,14 @@ export function MapEditor(props: MapEditorProps) {
         ) : null}
         {!panelOpen ? (
           <button type="button" onClick={() => setPanelOpen(true)} className={`${floatClass} absolute right-3 top-3 z-10 hidden px-3 text-sm font-bold lg:flex`}>
-            {t`一覧を出す`}
+            {t`パネルを開く`}
           </button>
         ) : null}
       </div>
       {panelOpen ? (
         <aside aria-label={t`経由地とコースの範囲`} className="mt-3 flex flex-col rounded-2xl border border-line bg-paper lg:absolute lg:bottom-3 lg:right-3 lg:top-3 lg:z-10 lg:mt-0 lg:w-[26rem] lg:bg-paper/95 lg:shadow-xl">
           <div className="flex items-center gap-2 border-b border-line p-2">
-            <div role="tablist" aria-label={t`一覧の中身`} className="flex flex-1 rounded-full bg-surface p-1">
+            <div role="tablist" aria-label={t`パネル切り替え`} className="flex flex-1 rounded-full bg-surface p-1">
               <button type="button" role="tab" aria-selected={panel === "places"} onClick={() => setPanel("places")} className={`min-h-10 flex-1 rounded-full px-3 text-sm font-bold ${panel === "places" ? "bg-paper shadow-sm" : "text-muted"}`}>
                 {t`経由地`}
               </button>
@@ -1257,11 +1252,12 @@ export function MapEditor(props: MapEditorProps) {
                 </button>
               ) : null}
             </div>
-            <button type="button" onClick={() => setPanelOpen(false)} className={`${iconBtn} hidden lg:inline-flex`} title={t`一覧をしまう`} aria-label={t`一覧をしまう`}>
+            <button type="button" onClick={() => setPanelOpen(false)} className={`${iconBtn} hidden lg:inline-flex`} title={t`パネルを閉じる`} aria-label={t`パネルを閉じる`}>
               <XIcon size={20} />
             </button>
           </div>
-          <div className="min-h-0 flex-1 overflow-y-auto p-3">
+          {/* relative: hidden screen-reader text (sr-only, absolute) deep in a long list is clipped here; without it it stretched the page (2026-11-27). */}
+          <div className="relative min-h-0 flex-1 overflow-y-auto p-3">
             {panel === "area" && props.area ? (
               <CourseAreaEditor
                 area={props.area.value}
@@ -1321,7 +1317,7 @@ export function MapEditor(props: MapEditorProps) {
                   }}
                 />
             ) : (
-              <p className="text-base text-muted">{t`経由地は、まだありません。地図の「経由地を置く」で置けます。`}</p>
+              <p className="text-base text-muted">{t`経由地がまだありません。「経由地を追加」ツールで地図上に配置できます。`}</p>
             )}
           </div>
         </aside>
@@ -1329,10 +1325,10 @@ export function MapEditor(props: MapEditorProps) {
       </div>
 
       <p className="text-lg font-bold tabular-nums">
-        {props.line.length >= 2 ? t`線の長さ ${props.distanceKm ?? 0} km` : t`線は、まだありません。`}
+        {props.line.length >= 2 ? t`総距離 ${props.distanceKm ?? 0} km` : t`ルート線がまだありません。`}
         {props.climbM !== null && props.line.length >= 2 ? <span className="ml-4">{t`登り ${props.climbM} m`}</span> : null}
-        {props.elevationStatus === "loading" ? <span className="ml-4 text-base font-normal text-muted">{t`標高を調べています…`}</span> : null}
-        {props.elevationStatus === "partial" ? <span className="ml-4 text-base font-normal text-muted">{t`標高が調べられない場所があります。`}</span> : null}
+        {props.elevationStatus === "loading" ? <span className="ml-4 text-base font-normal text-muted">{t`標高を取得中…`}</span> : null}
+        {props.elevationStatus === "partial" ? <span className="ml-4 text-base font-normal text-muted">{t`一部の地点で標高を取得できませんでした。`}</span> : null}
       </p>
 
       </div>

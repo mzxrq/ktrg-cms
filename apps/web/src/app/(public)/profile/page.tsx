@@ -27,7 +27,7 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
       </h1>
       {viewer.signedIn ? (
         <>
-          <ProfileCard publicId={viewer.publicId} deletionDueAt={viewer.deletionDueAt} locale={i18n.locale} name={viewer.name} origin={viewer.origin} originPlace={viewer.originPlace} ageRange={viewer.ageRange} gender={viewer.gender} foundVia={viewer.foundVia} email={viewer.email} />
+          <ProfileCard publicId={viewer.publicId} deletionDueAt={viewer.deletionDueAt} locale={i18n.locale} name={viewer.name} avatarUrl={viewer.avatarUrl ?? null} origin={viewer.origin} originPlace={viewer.originPlace} ageRange={viewer.ageRange} gender={viewer.gender} foundVia={viewer.foundVia} email={viewer.email} />
           {viewer.role === "editor" || viewer.role === "admin" ? (
             <>
               <Link prefetch={false} href="/admin" className={buttonStyle("primary", "lg", "mx-4 flex")}>

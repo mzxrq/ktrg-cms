@@ -13,13 +13,11 @@ import { walkedStats, type TextField, type RouteDraft, stampFromChoices } from "
 import { RubyEditor } from "./RubyEditor";
 import { draftProblems, placeChanged, type DraftProblem } from "@/lib/admin/save-plan";
 import { useRouteDraft } from "./useRouteDraft";
-import { CourseMapEditor, RestoreOffer } from "./CourseMapEditor";
+import { CourseMapEditor, PublishedEditGuard, RestoreOffer, SaveButton, SaveState, useConfirmRemoval } from "./CourseMapEditor";
 import type { AdminSharedSpot } from "@/lib/admin/types";
-import { formatUpdated } from "@/lib/format";
 import { adminTab, adminTabRow, Check, Field, inputClass, MultilingualField, NumberInput, Section, TextInput } from "./fields";
 import { LivePreview } from "./LivePreview";
 import { walkStyleOf } from "@/lib/walk-style";
-import { PublishedEditDialog } from "./PublishedEditDialog";
 import { AccessPointsEditor } from "./AccessPointsEditor";
 import { GradingFields } from "./GradingFields";
 import { MunicipalitiesField } from "./MunicipalitiesField";
@@ -83,14 +81,14 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
     onCreated: (id) => router.replace(`/admin/routes/${id}`),
   });
   const {
-    dispatch, draft, saved, dirty, saving, busyKey, problems, setMessage, selectedKey, setSelectedKey,
-    pendingEdit, setPendingEdit, guarded, save, savePlace, unpublishAll, setPublished,
+    dispatch, draft, saved, saving, busyKey, problems, setMessage, selectedKey, setSelectedKey,
+    guarded, savePlace, unpublishAll, setPublished,
   } = d;
   const isNew = draft.id === null;
 
   async function deleteRoute() {
     if (!draft.id || saving) return;
-    if (!(await confirmDialog({ title: t`削除しますか？`, body: t`このコースを削除します。元に戻せません。よろしいですか？`, yes: t`削除する` }))) return;
+    if (!(await confirmDialog({ title: t`削除しますか？`, body: t`このコースを削除します。この操作は取り消せません。よろしいですか？`, yes: t`削除する` }))) return;
     const res = await outcome(api.admin.routes({ id: draft.id }).delete());
     if (res.ok) router.replace(`/admin/routes`);
     else setMessage({ kind: "error", text: messages[res.key] });
@@ -100,13 +98,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
   const savedByKey = useMemo(() => new Map(saved.places.map((p) => [p.key, p])), [saved.places]);
   // Places of this course that other courses hold too: listed in the shared block, and removing one asks first.
   const lent = draft.places.flatMap((p) => (p.id && sharedWith[p.id] ? [{ key: p.key, name: locale === "en" && p.nameEn ? p.nameEn : p.nameJa, routeIds: sharedWith[p.id]! }] : []));
-  const confirmRemoval = async (key: string) => {
-    const one = lent.find((x) => x.key === key);
-    if (!one) return true;
-    const name = one.name;
-    const where = one.routeIds.map((id) => routeNames[id]).filter(Boolean).join(", ");
-    return confirmDialog({ title: t`経由地を消しますか？`, body: t`「${name}」は、ほかのコース（${where}）にも置いてあります。消すと、そこからも消えます。よろしいですか？`, yes: t`消す` });
-  };
+  const confirmRemoval = useConfirmRemoval(draft, sharedWith, routeNames, locale);
   const problemOf = (kind: DraftProblem["kind"], key?: string) => problems.some((p) => p.kind === kind && (!("key" in p) || p.key === key));
   // A walk that comes back to where it began (周回 or 往復); its first waypoint on the way is the start and the goal.
   const comesBack = draft.walkStyle === "loop" || draft.walkStyle === "out_and_back";
@@ -140,28 +132,19 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
 
   return (
     <div className={`flex flex-col gap-5 ${saving ? "[&_fieldset]:pointer-events-none" : ""}`} aria-busy={saving} style={{ "--head": `${headHeight}px` } as CSSProperties}>
-      <PublishedEditDialog
-        name={pendingEdit ? (draft.places.find((p) => p.key === pendingEdit.key)?.nameJa || t`名前のない経由地`) : null}
-        onProceed={() => {
-          if (pendingEdit) dispatch(pendingEdit.action);
-          setPendingEdit(null);
-        }}
-        onCancel={() => setPendingEdit(null)}
-      />
+      <PublishedEditGuard d={d} />
       {/* Title bar: always in reach, with the one button that matters and the tabs. On a narrow window the name goes on its own line under the
           buttons (squeezed beside them it would be one letter wide), and the saved line wraps instead of being pushed out. */}
       <div ref={head} className="sticky top-0 z-20 -mx-4 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-line bg-paper px-4 pt-3 lg:-mx-8 lg:px-8">
         {back}
-        <h1 className="order-last min-w-0 basis-full break-words text-2xl font-bold lg:order-none lg:basis-0 lg:flex-1">{isNew ? t`新しいコース` : draft.nameJa || t`（名前がありません）`}</h1>
+        <h1 className="order-last min-w-0 basis-full break-words text-2xl font-bold lg:order-none lg:basis-0 lg:flex-1">{isNew ? t`新規コース` : draft.nameJa || t`（名称未設定）`}</h1>
         <p className="order-last min-w-0 basis-full text-base text-muted lg:order-none lg:basis-auto lg:flex-none" aria-live="polite">
-          {dirty ? t`保存していない変更があります` : isNew ? "" : t`保存済み（更新 ${formatUpdated(locale, draft.updatedAt ?? new Date().toISOString())}）`}
+          <SaveState d={d} locale={locale} isNew={isNew} />
         </p>
-        <button type="button" disabled={!dirty || saving || busyKey !== null} onClick={save} className="tap-target rounded-full bg-ink px-8 text-xl font-bold text-paper disabled:opacity-40">
-          {saving ? t`保存中…` : t`保存する`}
-        </button>
+        <SaveButton d={d} />
         {/* The tabs stay in the bar, so another part of the course is one click away however far down the page is. */}
         <div className="order-last flex basis-full items-center gap-3">
-          <nav aria-label={t`編集する内容`} className={`${adminTabRow} min-w-0 flex-1`} role="tablist">
+          <nav aria-label={t`編集タブ`} className={`${adminTabRow} min-w-0 flex-1`} role="tablist">
             {TABS.map((id) => (
               <button
                 key={id}
@@ -180,7 +163,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
             ))}
           </nav>
           {section !== "map" ? (
-            <button type="button" aria-pressed={preview} onClick={() => setPreview(!preview)} className={`tap-target shrink-0 rounded-xl border px-4 text-lg font-bold ${preview ? "border-ink bg-ink text-paper" : "border-line"}`}>
+            <button type="button" aria-pressed={preview} onClick={() => setPreview(!preview)} className={`tap-target shrink-0 rounded-full border px-5 text-lg font-bold ${preview ? "border-ink bg-ink text-paper" : "border-line"}`}>
               {t`プレビュー`}
             </button>
           ) : null}
@@ -195,34 +178,34 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
           <div id="editor-panel" role="tabpanel" aria-labelledby={`tab-${section}`} className="flex flex-col gap-5">
             {section === "overview" ? (
               <>
-                <Section title={t`基本`}>
-                  <MultilingualField id="route-name" field="name" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`コースの名前`} ja={draft.nameJa} en={draft.nameEn} onJa={text("nameJa")} onEn={text("nameEn")} required invalid={problemOf("route_name")} />
-                  <Field label={t`コースの名前の読み（ふりがな）`} htmlFor="ruby-0" hint={t`読みを入れた漢字の上に、小さく表示されます（ひらがな）。`}>
+                <Section title={t`基本情報`}>
+                  <MultilingualField id="route-name" field="name" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`コース名`} ja={draft.nameJa} en={draft.nameEn} onJa={text("nameJa")} onEn={text("nameEn")} required invalid={problemOf("route_name")} />
+                  <Field label={t`コース名のふりがな（読み）`} htmlFor="ruby-0" hint={t`入力した漢字の上にふりがなが小さく表示されます（ひらがな）。`}>
                     <RubyEditor name={draft.nameJa} value={draft.nameKana} onChange={text("nameKana")} />
                   </Field>
-                  {problemOf("route_name") ? <p role="alert" className="text-base font-bold text-danger">{t`日本語の名前を入れてください。`}</p> : null}
+                  {problemOf("route_name") ? <p role="alert" className="text-base font-bold text-danger">{t`日本語のコース名を入力してください。`}</p> : null}
                   <div className="grid gap-4 sm:grid-cols-2">
                     <MunicipalitiesField id="route-muni" invalid={problemOf("route_municipalities")} value={draft.municipalities} onChange={(value) => dispatch({ type: "municipalities", value })} />
-                    <Field label={t`歩き方`} htmlFor="route-walk-style" hint={t`「スタート・ゴール」の見せ方が変わります。`}>
+                    <Field label={t`コース形式`} htmlFor="route-walk-style" hint={t`スタート・ゴールの表示が変わります。`}>
                       <select id="route-walk-style" value={draft.walkStyle ?? ""} onChange={(e) => dispatch({ type: "walkStyle", value: walkStyleOf(e.target.value) })} className={inputClass}>
                         <option value="">{t`未選択`}</option>
-                        <option value="one_way">{t`片道（別の場所へ）`}</option>
-                        <option value="loop">{t`周回（元の場所へ）`}</option>
-                        <option value="out_and_back">{t`往復（同じ道）`}</option>
+                        <option value="one_way">{t`片道（別地点がゴール）`}</option>
+                        <option value="loop">{t`周回（出発地点に戻る）`}</option>
+                        <option value="out_and_back">{t`往復（同じルートを戻る）`}</option>
                       </select>
                     </Field>
                   </div>
                 </Section>
 
-                <Section title={t`数字`}>
+                <Section title={t`距離・時間・難易度`}>
                   <div className="grid gap-4 sm:grid-cols-3">
-                    <Field label={t`距離`} htmlFor="route-distance" hint={distanceAuto ? t`線から自動で作られます。ここでは変えられません。` : draft.distanceManual ? t`手入力（空にすると、線から自動）` : t`線を引くと、自動で入ります。`}>
+                    <Field label={t`距離`} htmlFor="route-distance" hint={distanceAuto ? t`ルート線から自動計算されます（ここでは編集できません）。` : draft.distanceManual ? t`手動入力（空にするとルート線から自動計算）` : t`ルート線を引くと自動で入力されます。`}>
                       <NumberInput id="route-distance" value={draft.distanceKm} min={0} max={2000} suffix="km" readOnly={distanceAuto} onChange={(v) => dispatch({ type: "distance", value: v })} />
                     </Field>
-                    <Field label={t`登り（獲得標高）`} htmlFor="route-climb" hint={climbAuto ? t`線の標高から自動で作られます。ここでは変えられません。` : draft.climbManual ? t`手入力（空にすると、標高から自動）` : t`線を引くと、標高から自動で入ります。`}>
+                    <Field label={t`獲得標高（登り）`} htmlFor="route-climb" hint={climbAuto ? t`ルートの標高から自動計算されます（ここでは編集できません）。` : draft.climbManual ? t`手動入力（空にすると標高から自動計算）` : t`ルート線を引くと標高から自動で入力されます。`}>
                       <NumberInput id="route-climb" value={draft.elevationGainM} min={0} max={10000} integer suffix="m" readOnly={climbAuto} onChange={(v) => dispatch({ type: "climb", value: v })} />
                     </Field>
-                    <Field label={t`歩く時間`} htmlFor="route-time" hint={timeAuto ? t`距離と登りから自動で作られます。ここでは変えられません。` : draft.timeManual ? t`手入力（空にすると、距離と登りから自動）` : t`距離と登りから自動で計算`}>
+                    <Field label={t`徒歩時間`} htmlFor="route-time" hint={timeAuto ? t`距離と獲得標高から自動計算されます（ここでは編集できません）。` : draft.timeManual ? t`手動入力（空にすると距離と獲得標高から自動計算）` : t`距離と獲得標高から自動計算されます。`}>
                       <NumberInput id="route-time" value={draft.expectedTimeMin} min={0} max={20000} integer suffix={t`分`} readOnly={timeAuto} onChange={(v) => dispatch({ type: "time", value: v })} />
                     </Field>
                   </div>
@@ -235,9 +218,9 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                   {/* Kept only while a course still has old text here, so it can be cleared; the stars replace it. */}
                   {draft.difficulty !== "" || saved.difficulty !== "" ? (
                   <details className="rounded-xl border border-line bg-paper px-4 py-2" open>
-                    <summary className="cursor-pointer text-base font-bold">{t`むずかしさを、ひとことで書く（任意）`}</summary>
+                    <summary className="cursor-pointer text-base font-bold">{t`難易度の自由記述（任意）`}</summary>
                     <div className="mt-2">
-                      <Field label={t`むずかしさ（ひとこと）`} htmlFor="route-difficulty" hint={t`入れた文字が、そのまま表示されます。体力の目安・道のけわしさを選んだときは、そちらを先に表示します。`}>
+                      <Field label={t`難易度（自由記述）`} htmlFor="route-difficulty">
                         <TextInput id="route-difficulty" value={draft.difficulty} onChange={text("difficulty")} maxLength={100} />
                       </Field>
                     </div>
@@ -246,28 +229,28 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                 </Section>
 
                 <Section title={t`写真`}>
-                  <Field label={t`コースの写真`} htmlFor="route-photo">
+                  <Field label={t`コース写真`} htmlFor="route-photo">
                     <PhotoField id="route-photo" url={draft.photoUrl} onChange={text("photoUrl")} invalid={problemOf("photo_link")}>
-                      <Field label={t`名前（写っているもの）`} htmlFor="route-photo-name" hint={t`大きな写真の下に、出どころと一緒に表示されます。`}>
+                      <Field label={t`写真のタイトル（被写体）`} htmlFor="route-photo-name" hint={t`大きな写真の下にクレジットと一緒に表示されます。`}>
                         <div className="grid gap-2 sm:grid-cols-2">
                           <TextInput id="route-photo-name" value={draft.photoNameJa} onChange={text("photoNameJa")} maxLength={200} placeholder={t`例：金剛山の山頂`} />
-                          <TextInput id="route-photo-name-en" lang="en" value={draft.photoNameEn} onChange={text("photoNameEn")} maxLength={200} placeholder={t`英語（なくてもよい）`} ariaLabel={t`名前（英語）`} />
+                          <TextInput id="route-photo-name-en" lang="en" value={draft.photoNameEn} onChange={text("photoNameEn")} maxLength={200} placeholder={t`英語（任意）`} ariaLabel={t`写真のタイトル（英語）`} />
                         </div>
                       </Field>
-                      <Field label={t`写真の出どころ`} htmlFor="route-photo-credit" hint={t`写真の上や下に ℹ︎ と一緒に表示されます。左に撮った人や使用条件を、右に写真を載せているページのリンク（なくてもよい）を入れます。`}>
+                      <Field label={t`クレジット・出典`} htmlFor="route-photo-credit" hint={t`写真の上下に ℹ︎ アイコン付きで表示されます。左に撮影者やライセンス、右に掲載元ページのURL（任意）を入力してください。`}>
                         <CreditInput id="route-photo-credit" value={draft.photoCredit} onChange={text("photoCredit")} placeholder={t`例：山田太郎, CC BY-SA 4.0`} />
                       </Field>
                     </PhotoField>
                     <PhotoFocusPicker url={draft.photoUrl} focus={draft.photoFocus} onChange={(value) => dispatch({ type: "photoFocus", value })} />
                   </Field>
-                  {problemOf("photo_link") ? <p role="alert" className="text-base font-bold text-danger">{t`写真のリンクは、https:// で始まるものだけ使えます。`}</p> : null}
+                  {problemOf("photo_link") ? <p role="alert" className="text-base font-bold text-danger">{t`写真URLは https:// で始まる形式で入力してください。`}</p> : null}
                 </Section>
 
                 <Section title={t`動画`}>
-                  <Field label={t`動画のリンク（YouTube、またはアップロードした動画）`} htmlFor="route-video" hint={t`https:// で始まるリンクを入れます。空にすると、動画は表示されません。`}>
+                  <Field label={t`動画URL（YouTube またはアップロード動画）`} htmlFor="route-video" hint={t`https:// で始まるURLを入力してください。空にすると動画は表示されません。`}>
                     <TextInput id="route-video" value={draft.videoUrl} onChange={text("videoUrl")} maxLength={500} invalid={problemOf("video_link")} />
                   </Field>
-                  {problemOf("video_link") ? <p role="alert" className="text-base font-bold text-danger">{t`YouTube、またはアップロードした動画の、https:// で始まるリンクにしてください。`}</p> : null}
+                  {problemOf("video_link") ? <p role="alert" className="text-base font-bold text-danger">{t`YouTube またはアップロード動画の https:// で始まるURLを入力してください。`}</p> : null}
                   <VideoUpload onUploaded={text("videoUrl")} />
                   {parseVideoFile(draft.videoUrl) ? <SubtitleUpload videoUrl={draft.videoUrl} uploaded={draft.videoSubtitles} onUploaded={() => dispatch({ type: "videoSubtitles", value: true })} /> : null}
                   <VideoPreview url={draft.videoUrl} title={draft.nameJa} subtitles={draft.videoSubtitles} language="ja" />
@@ -275,10 +258,10 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                 </Section>
 
                 <Section title={t`英語版の動画`}>
-                  <Field label={t`英語版の動画のリンク（YouTube、またはアップロードした動画）`} htmlFor="route-video-en" hint={t`英語でサイトを見ている人に、日本語の動画のかわりに表示されます。空にすると、日本語の動画がそのまま表示されます。`}>
+                  <Field label={t`英語版動画URL（YouTube またはアップロード動画）`} htmlFor="route-video-en" hint={t`英語版ページで日本語動画の代わりに表示されます。未入力の場合は日本語動画がそのまま表示されます。`}>
                     <TextInput id="route-video-en" value={draft.videoUrlEn} onChange={text("videoUrlEn")} maxLength={500} invalid={problemOf("video_link_en")} />
                   </Field>
-                  {problemOf("video_link_en") ? <p role="alert" className="text-base font-bold text-danger">{t`YouTube、またはアップロードした動画の、https:// で始まるリンクにしてください。`}</p> : null}
+                  {problemOf("video_link_en") ? <p role="alert" className="text-base font-bold text-danger">{t`YouTube またはアップロード動画の https:// で始まるURLを入力してください。`}</p> : null}
                   <VideoUpload onUploaded={text("videoUrlEn")} />
                   {parseVideoFile(draft.videoUrlEn) ? <SubtitleUpload language="en" videoUrl={draft.videoUrlEn} uploaded={draft.videoSubtitlesEn} onUploaded={() => dispatch({ type: "videoSubtitlesEn", value: true })} /> : null}
                   <VideoPreview url={draft.videoUrlEn} title={draft.nameEn || draft.nameJa} subtitles={draft.videoSubtitlesEn} language="en" />
@@ -291,29 +274,29 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
             {section === "text" ? (
               <>
                 <Section title={t`コースの説明`}>
-                  <MultilingualField id="route-desc" field="description" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`コースの説明`} ja={draft.descriptionJa} en={draft.descriptionEn} onJa={text("descriptionJa")} onEn={text("descriptionEn")} long="short" />
+                  <MultilingualField id="route-desc" field="description" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`コースの説明`} ja={draft.descriptionJa} en={draft.descriptionEn} onJa={text("descriptionJa")} onEn={text("descriptionEn")} long="short" required />
                 </Section>
                 <Section title={t`歴史・由来`}>
                   <MultilingualField id="route-history" field="history" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`歴史・由来`} ja={draft.historyJa} en={draft.historyEn} onJa={text("historyJa")} onEn={text("historyEn")} long="short" />
                 </Section>
                 <Section title={t`アクセス・交通`}>
-                  <Field label={t`遠いとみなす距離`} htmlFor="route-far" hint={t`コースからこれより離れていると、ナビは歩く道ではなく、電車やバスでの行き方を案内します。空なら 5 km。`}>
+                  <Field label={t`徒歩案内の距離上限`} htmlFor="route-far" hint={t`現在地がコースからこの距離以上離れている場合、徒歩ではなく電車・バスでのアクセスを案内します（未入力時は 5 km）。`}>
                     <NumberInput id="route-far" value={draft.farDistanceM} min={500} max={200000} integer suffix="m" onChange={(v) => dispatch({ type: "farDistanceM", value: v })} />
                   </Field>
                   <AccessPointsEditor value={draft.accessPoints} onChange={(value) => dispatch({ type: "accessPoints", value })} />
                   <MultilingualField id="route-access" field="access" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`アクセス・交通の補足`} ja={draft.accessJa} en={draft.accessEn} onJa={text("accessJa")} onEn={text("accessEn")} long="short" />
-                  <p className="text-base text-muted">{t`上の一覧に入らない行き方（乗りかえ、時刻、帰りの方法など）を、自由に書きます。`}</p>
+                  <p className="text-base text-muted">{t`上の一覧に収まらないアクセス情報（乗り換え、時刻、帰路の案内など）を自由に記入できます。`}</p>
                 </Section>
                 <Section title={t`出典`}>
                   <MultilingualField id="route-source" field="source" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`出典`} ja={draft.sourceJa} en={draft.sourceEn} onJa={text("sourceJa")} onEn={text("sourceEn")} long="short" />
-                  <p className="text-base text-muted">{t`この文章のもとにした資料や、確かめた公式サイトを書きます。コースのページの下に表示されます。`}</p>
+                  <p className="text-base text-muted">{t`本文の参考資料や確認した公式サイトを記載します。コース詳細ページの下部に表示されます。`}</p>
                 </Section>
               </>
             ) : null}
 
             {section === "map" ? (
               <>
-              <Section title={t`地図と線`} id="map-section">
+              <Section title={t`地図・ルート`} id="map-section">
                 {draft.id ? (
                   <NearbyPlacesManager
                     routeId={draft.id}
@@ -330,7 +313,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
 
             {section === "places" ? (
               <Section title={t`経由地（${draft.places.length}か所）`}>
-                <div role="group" aria-label={t`場所の見せ方`} className="flex flex-wrap gap-2">
+                <div role="group" aria-label={t`表示形式`} className="flex flex-wrap gap-2">
                   {(["table", "detail"] as const).map((v) => (
                     <button
                       key={v}
@@ -339,21 +322,21 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                       onClick={() => setPlacesView(v)}
                       className={`tap-target rounded-full border-2 px-5 text-lg font-bold ${placesView === v ? "border-ink bg-ink text-paper" : "border-line"}`}
                     >
-                      {v === "table" ? t`表でまとめて入力` : t`1か所ずつ詳しく`}
+                      {v === "table" ? t`表形式で一括入力` : t`1か所ずつ詳細編集`}
                     </button>
                   ))}
                 </div>
                 {firstAlong ? (
-                  // The same setting as 歩き方 in 基本 (周回 / 往復 come back to the start): visitors then see this place as the start and again as the goal, one page and one stamp.
+                  // The same setting as コース形式 in 基本情報 (周回 / 往復 come back to the start): visitors then see this place as the start and again as the goal, one page and one stamp.
                   <div className="rounded-xl border border-line bg-paper px-4">
                     <Check
                       id="route-start-is-goal"
                       checked={comesBack}
                       onChange={(on) => dispatch({ type: "walkStyle", value: on ? (draft.walkStyle === "out_and_back" ? "out_and_back" : "loop") : "one_way" })}
                     >
-                      {t`「${firstAlong.nameJa || t`1番目の経由地`}」をゴールにもする（出発した場所にもどる）`}
+                      {t`「${firstAlong.nameJa || t`1番目の経由地`}」をゴールにも設定する（出発地点に戻る）`}
                     </Check>
-                    {comesBack ? <p className="pb-3 text-base text-muted">{t`もどりの経由地を別に作る必要はありません。利用者には、スタートとゴールの両方にこの場所が表示されます。`}</p> : null}
+                    {comesBack ? <p className="pb-3 text-base text-muted">{t`戻り用の経由地を別に作成する必要はありません。利用者にはスタートとゴールの両方にこのスポットが表示されます。`}</p> : null}
                   </div>
                 ) : null}
                 {placesView === "table" ? (
@@ -367,9 +350,9 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                   />
                 ) : draft.places.length === 0 ? (
                   <p className="rounded-xl bg-paper p-4 text-lg">
-                    {t`まだありません。`}{" "}
+                    {t`経由地がまだありません。`}{" "}
                     <button type="button" onClick={() => setSection("map")} className="font-bold text-accent underline underline-offset-4">
-                      {t`「地図と線」で経由地を置く`}
+                      {t`「地図・ルート」で経由地を追加`}
                     </button>
                   </p>
                 ) : (
@@ -420,26 +403,26 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                     </ol>
                   </div>
                 )}
-                {problems.some((p) => p.kind === "place_position") ? <p role="alert" className="text-base font-bold text-danger">{t`緯度と経度は、両方入れるか、両方空にしてください。`}</p> : null}
+                {problems.some((p) => p.kind === "place_position") ? <p role="alert" className="text-base font-bold text-danger">{t`緯度と経度は両方入力するか、両方空にしてください。`}</p> : null}
                 {draft.id ? <SharedPlaces routeId={draft.id} initial={shared} lent={lent} routeNames={routeNames} locale={locale} /> : null}
                 {draft.places.some((p) => p.id && p.published) ? (
                   <div className="flex flex-wrap items-center gap-3 rounded-xl border border-line bg-paper p-3">
                     <button type="button" disabled={busyKey !== null} onClick={() => void unpublishAll()} className="tap-target rounded-full border-2 border-danger px-5 text-lg font-bold text-danger disabled:opacity-40">
-                      {busyKey === "all" ? t`処理しています…` : t`すべての公開をやめる`}
+                      {busyKey === "all" ? t`処理中…` : t`すべて非公開にする`}
                     </button>
-                    <p className="min-w-0 flex-1 text-base text-muted">{t`公開中の経由地をまとめて下書きに戻します。コースは「準備中」として、一覧に残ります。`}</p>
+                    <p className="min-w-0 flex-1 text-base text-muted">{t`公開中の経由地をすべて下書きに戻します。コースは「準備中」として一覧に残ります。`}</p>
                   </div>
                 ) : null}
               </Section>
             ) : null}
 
             {section === "check" ? (
-              <Section title={t`公開前のチェック`}>
-                <p className="text-base text-muted">{t`保存していない内容も含めて調べています。`}</p>
+              <Section title={t`公開前チェック`}>
+                <p className="text-base text-muted">{t`未保存の変更も含めてチェックしています。`}</p>
                 {(
                   [
-                    [true, t`必要なこと`],
-                    [false, t`あると、もっとよいこと`],
+                    [true, t`必須項目`],
+                    [false, t`推奨項目`],
                   ] as const
                 ).map(([required, title]) => (
                   <div key={String(required)} className="flex flex-col gap-2">
@@ -449,7 +432,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
                         .filter((i) => i.required === required)
                         .map((i) => (
                           <li key={i.id} className="flex flex-wrap items-center gap-3 rounded-xl bg-paper p-3">
-                            <span className={`w-20 shrink-0 rounded-full px-3 py-1 text-center text-base font-bold ${i.done ? "bg-moss text-paper" : required ? "bg-danger text-paper" : "bg-surface"}`}>{i.done ? t`できた` : t`まだ`}</span>
+                            <span className={`w-20 shrink-0 rounded-full px-3 py-1 text-center text-base font-bold ${i.done ? "bg-moss text-paper" : required ? "bg-danger text-paper" : "bg-surface"}`}>{i.done ? t`完了` : t`未完了`}</span>
                             <span className="min-w-0 flex-1 text-lg">{labels.item[i.id]}</span>
                             {!i.done ? (
                               <button type="button" onClick={() => setSection(i.tab)} className="tap-target rounded-full border border-line px-4 text-base font-bold">

@@ -17,8 +17,13 @@ test("the stop title is Mincho in the readable red and keeps its furigana", () =
 test("every group title on the stop page has the brand bar", () => {
   const sheet = read("components", "SpotSheet.tsx");
   const h2s = [...sheet.matchAll(/<h2 className="([^"]*)"/g)].map((m) => m[1]);
-  expect(h2s.length).toBeGreaterThanOrEqual(6);
+  expect(h2s.length).toBeGreaterThanOrEqual(3);
   for (const c of h2s) expect(c).toContain(GROUP_TITLE);
+  // 説明, 歴史・由来 and 出典 come from SpotText (shared with the rally's book page): its titles carry the same bar.
+  expect(sheet).toMatch(/<SpotText /);
+  const text = read("components", "SpotText.tsx");
+  expect(text).toContain(`const heading = "${GROUP_TITLE}";`);
+  expect([...text.matchAll(/<H className=\{heading\}>/g)].length).toBe(3);
 });
 
 test("stop page panels are capsules", () => {
