@@ -20,7 +20,7 @@ export function WaypointTypeFields({ place, onChange, stampFrom, pickOnMap }: {
   /** The map editor's "choose the 遥拝 place on the map" button, shown under the list of them. */
   pickOnMap?: ReactNode;
 }) {
-  const { t } = useLingui();
+  const { t, i18n } = useLingui();
   const kindName = usePointKindNames();
   const id = useId();
   const isStamp = place.stampable;
@@ -73,7 +73,7 @@ export function WaypointTypeFields({ place, onChange, stampFrom, pickOnMap }: {
         </Field>
       ) : null}
       {/* Others are stamped here. The wording is the user's to write (2026-11-27): placeholder until then. */}
-      {stampFrom.here.length ? <p className="text-base">{t`［文言未定：この経由地で押せる他のスタンプ］${stampFrom.here.join("、")}`}</p> : null}
+      {stampFrom.here.length ? <p className="text-base">{t`この地点で獲得できる他のスタンプ：${stampFrom.here.join(i18n.locale === "ja" ? "、" : ", ")}`}</p> : null}
 
       <InfoTip
         indent
@@ -100,15 +100,15 @@ export function WaypointTypeFields({ place, onChange, stampFrom, pickOnMap }: {
         <div className="flex flex-col gap-3">
           {/* 2026-11-20, user: 第1経塚 is stamped from 第4砲台, 第22経塚 from 水分神社. Chosen from the course's waypoints, never
               typed: the stamp is checked at that waypoint's own checked position, and one press there gives both stamps. */}
-          <Field label={t`遥拝場所`} htmlFor={`${id}-stamp-from`} hint={stampFrom.isHub ? t`他の経由地の遥拝場所に設定されているため、指定できません。` : t`指定した経由地でスタンプを押すと、この地点のスタンプも同時に獲得できます（地図上のピン位置は変わりません）。保存済みの経由地から選択できます。`}>
+          <Field label={t`遥拝場所`} htmlFor={`${id}-stamp-from`} hint={stampFrom.isHub ? t`他の経由地のスタンプ地点に設定されているため、指定できません。` : t`指定した経由地でスタンプを押すと、この地点のスタンプも同時に獲得できます（地図上のピン位置は変わりません）。保存済みの経由地から選択できます。`}>
             {stampSelect(`${id}-stamp-from`)}
           </Field>
           {stampFrom.isHub ? null : pickOnMap}
-          <Field label={t`表示ラベル（日本語）`} htmlFor={`${id}-detached-ja`} hint={t`未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルートから離れた場所」と表示されます。`}>
+          <Field label={t`表示ラベル（日本語）`} htmlFor={`${id}-detached-ja`} hint={t`未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルート外」と表示されます。`}>
             <TextInput id={`${id}-detached-ja`} value={place.detachedLabelJa} onChange={(v) => onChange({ detachedLabelJa: v })} maxLength={100} placeholder={t`省略可`} />
           </Field>
           <Field label={t`表示ラベル（英語・任意）`} htmlFor={`${id}-detached-en`}>
-            <TextInput id={`${id}-detached-en`} lang="en" value={place.detachedLabelEn} onChange={(v) => onChange({ detachedLabelEn: v })} maxLength={100} placeholder="Can stay empty" />
+            <TextInput id={`${id}-detached-en`} lang="en" value={place.detachedLabelEn} onChange={(v) => onChange({ detachedLabelEn: v })} maxLength={100} placeholder="Optional" />
           </Field>
         </div>
       ) : null}
