@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CheckOfficial } from "@/components/CheckOfficial";
 import type { Metadata } from "next";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -64,7 +65,7 @@ export default async function RoutesPage({
       )}
 
       <Notice>
-        <Trans>出かける前に公式サイトで最新情報を確認してください。</Trans>
+        <CheckOfficial />
       </Notice>
     </div>
   );

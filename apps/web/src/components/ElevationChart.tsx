@@ -81,15 +81,7 @@ export function ElevationChart({ line, elevations, rides = [], onHover }: { line
 
   return (
     <figure className="flex flex-col gap-3 rounded-lg bg-surface p-4">
-      <figcaption className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <span className="text-xl font-bold">{t`高低差`}</span>
-        <span className="flex flex-wrap gap-x-4 text-lg tabular-nums">
-          <span>{t`最高 ${highest}m`}</span>
-          <span>{t`最低 ${lowest}m`}</span>
-          <span>{t`登り ${up}m`}</span>
-          <span>{t`下り ${down}m`}</span>
-        </span>
-      </figcaption>
+      <ElevationHeading highest={highest} lowest={lowest} up={up} down={down} />
       <div
         role="slider"
         tabIndex={0}
@@ -151,5 +143,22 @@ export function ElevationChart({ line, elevations, rides = [], onHover }: { line
         <span>{t`登り`}</span>
       </div>
     </figure>
+  );
+}
+
+/** The chart's caption: 高低差 with the highest and lowest points, and the climb up and down when they are known. Shared by
+ *  ElevationProfile's simple drawing, so both read the same. */
+export function ElevationHeading({ highest, lowest, up, down }: { highest: number; lowest: number; up?: number; down?: number }) {
+  const { t } = useLingui();
+  return (
+    <figcaption className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+      <span className="text-xl font-bold">{t`高低差`}</span>
+      <span className="flex flex-wrap gap-x-4 text-lg tabular-nums">
+        <span>{t`最高 ${highest}m`}</span>
+        <span>{t`最低 ${lowest}m`}</span>
+        {up === undefined ? null : <span>{t`登り ${up}m`}</span>}
+        {down === undefined ? null : <span>{t`下り ${down}m`}</span>}
+      </span>
+    </figcaption>
   );
 }

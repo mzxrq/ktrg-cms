@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CheckOfficial } from "@/components/CheckOfficial";
 import Link from "next/link";
 import { msg } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -77,7 +78,7 @@ export default async function StampsPage({ searchParams }: { searchParams: Promi
       ) : null}
 
       <Notice>
-        <Trans>出かける前に、公式の最新情報を確認してください。</Trans>
+        <CheckOfficial />
       </Notice>
     </div>
   );
