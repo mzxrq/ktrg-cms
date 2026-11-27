@@ -7,11 +7,11 @@ import { outcome } from "@/lib/admin/admin-client";
 import { editorPlacesOf } from "@/lib/admin/editor-places";
 import type { LngLatEle } from "@/lib/admin/line";
 import { writeBackup } from "@/lib/admin/draft-backup";
-import { infoPatch, type RouteDraft } from "@/lib/admin/route-draft";
+import { stampFromChoices, type RouteDraft } from "@/lib/admin/route-draft";
 import { formatUpdated } from "@/lib/format";
-import { stampableByDefault } from "@/lib/point-kinds";
 import { Check, Field, TextInput } from "./fields";
 import { MapEditorLoader } from "./map-editor/MapEditorLoader";
+import { WaypointTypeFields } from "./WaypointTypeFields";
 import type { useRouteDraft } from "./useRouteDraft";
 
 /** One course's map editor and its line check, on a `useRouteDraft` draft. Shared by the course page and the one map. */
@@ -81,13 +81,10 @@ export function CourseMapEditor({ d, confirmRemoval }: { d: ReturnType<typeof us
         }}
         onSelectPlace={setSelectedKey}
         area={{ value: draft.area, onChange: (value) => dispatch({ type: "area", value }) }}
-        onPatchPlace={(key, patch) => {
+        onPatchPlace={(key, patch) => guarded(key, { type: "place", key, patch })}
+        placeSettings={(key, pickOnMap) => {
           const p = draft.places.find((x) => x.key === key);
-          // A new waypoint's stamp switch follows its kind; a saved one keeps what was chosen for it.
-          if (!p) return;
-          const { info, ...rest } = patch;
-          const base = rest.kind && p.id === null ? { ...rest, stampable: stampableByDefault(rest.kind) } : rest;
-          guarded(key, { type: "place", key, patch: info === undefined ? base : { ...base, ...infoPatch(info, p) } });
+          return p ? <WaypointTypeFields place={p} onChange={(patch) => guarded(key, { type: "place", key, patch })} stampFrom={stampFromChoices(draft.places, key)} pickOnMap={pickOnMap} /> : null;
         }}
         onSnap={async (points) => {
           const res = await outcome(api.admin["route-snap"].post({ points }));

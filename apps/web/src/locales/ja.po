@@ -16,26 +16,25 @@ msgstr "（{ageText}・{0} MB）"
 msgid "（公式サイト、新しいタブで開きます）"
 msgstr "（公式サイト、新しいタブで開きます）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:266
+#: src/components/admin/map-editor/MapEditor.tsx:261
 #: src/components/admin/PlaceOrderList.tsx:63
 #: src/components/admin/RouteEditor.tsx:155
 msgid "（名前がありません）"
 msgstr "（名前がありません）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1227
+#: src/components/admin/map-editor/MapEditor.tsx:1222
 #: src/components/admin/one-map/OneMap.tsx:344
 msgid "（名前なし）"
 msgstr "（名前なし）"
 
-#: src/components/admin/map-editor/PlaceList.tsx:100
+#: src/components/admin/map-editor/PlaceList.tsx:97
 msgid "（名称を入力）"
 msgstr "（名称を入力）"
 
-#: src/components/admin/map-editor/PlaceList.tsx:201
-#: src/components/admin/map-editor/PlaceList.tsx:226
-#: src/components/admin/PlacePanel.tsx:92
-#: src/components/admin/PlacePanel.tsx:95
-#: src/components/admin/PlacePanel.tsx:178
+#: src/components/admin/map-editor/PlaceList.tsx:178
+#: src/components/admin/PlacePanel.tsx:91
+#: src/components/admin/PlacePanel.tsx:94
+#: src/components/admin/WaypointTypeFields.tsx:33
 msgid "（名称未設定）"
 msgstr "（名称未設定）"
 
@@ -56,6 +55,11 @@ msgstr "（達成）"
 msgid "（題名なし）"
 msgstr "（題名なし）"
 
+#. placeholder {0}: stampFrom.here.join("、")
+#: src/components/admin/WaypointTypeFields.tsx:76
+msgid "［文言未定：この経由地で押せる他のスタンプ］{0}"
+msgstr "［文言未定：この経由地で押せる他のスタンプ］{0}"
+
 #. placeholder {0}: rideName[riding]
 #. placeholder {1}: here.k
 #: src/components/ElevationChart.tsx:76
@@ -63,7 +67,7 @@ msgid "{0} · {1}km"
 msgstr "{0} · {1}km"
 
 #. placeholder {0}: nameOfKey(l.from)
-#: src/components/admin/map-editor/PlaceList.tsx:258
+#: src/components/admin/map-editor/PlaceList.tsx:210
 msgid "{0} から来た道を戻ります"
 msgstr "{0} から来た道を戻ります"
 
@@ -99,7 +103,7 @@ msgid "{0}か所、すべてそろいました。"
 msgstr "{0}か所、すべてそろいました。"
 
 #. placeholder {0}: waypoints.length
-#: src/components/admin/map-editor/MapEditor.tsx:846
+#: src/components/admin/map-editor/MapEditor.tsx:841
 msgid "{0}か所を、経由地として追加しました。名前や種類は「経由地」で直せます。"
 msgstr "{0}か所を、経由地として追加しました。名前や種類は「経由地」で直せます。"
 
@@ -307,11 +311,11 @@ msgstr "{label}（管理）"
 msgid "{label}でしぼりこむ"
 msgstr "{label}でしぼりこむ"
 
-#: src/components/admin/map-editor/PlaceList.tsx:115
+#: src/components/admin/map-editor/PlaceList.tsx:112
 msgid "{label}の位置を地図で設定"
 msgstr "{label}の位置を地図で設定"
 
-#: src/components/admin/map-editor/PlaceList.tsx:111
+#: src/components/admin/map-editor/PlaceList.tsx:108
 msgid "{label}の次に経由地を追加"
 msgstr "{label}の次に経由地を追加"
 
@@ -319,15 +323,15 @@ msgstr "{label}の次に経由地を追加"
 msgid "{label}の言語"
 msgstr "{label}の言語"
 
-#: src/components/admin/map-editor/PlaceList.tsx:122
+#: src/components/admin/map-editor/PlaceList.tsx:119
 msgid "{label}を削除"
 msgstr "{label}を削除"
 
-#: src/components/admin/map-editor/PlaceList.tsx:105
+#: src/components/admin/map-editor/PlaceList.tsx:102
 msgid "{label}を前へ"
 msgstr "{label}を前へ"
 
-#: src/components/admin/map-editor/PlaceList.tsx:108
+#: src/components/admin/map-editor/PlaceList.tsx:105
 msgid "{label}を後ろへ"
 msgstr "{label}を後ろへ"
 
@@ -343,11 +347,11 @@ msgstr "{meters}m"
 msgid "{minutes}分"
 msgstr "{minutes}分"
 
-#: src/components/admin/map-editor/MapEditor.tsx:903
+#: src/components/admin/map-editor/MapEditor.tsx:898
 msgid "{minutes}分（{km} km）"
 msgstr "{minutes}分（{km} km）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:898
+#: src/components/admin/map-editor/MapEditor.tsx:893
 msgid "{mode} {minutes}分"
 msgstr "{mode} {minutes}分"
 
@@ -547,12 +551,12 @@ msgid "{v}m"
 msgstr "{v}m"
 
 #. placeholder {0}: phase.place
-#: src/components/RallyNearbyStamp.tsx:118
+#: src/components/RallyNearbyStamp.tsx:120
 msgid "「{0}」のスタンプは、もう押してあります。"
 msgstr "「{0}」のスタンプは、もう押してあります。"
 
 #. placeholder {0}: phase.place
-#: src/components/RallyNearbyStamp.tsx:118
+#: src/components/RallyNearbyStamp.tsx:120
 msgid "「{0}」のスタンプを押しました！"
 msgstr "「{0}」のスタンプを押しました！"
 
@@ -595,12 +599,11 @@ msgstr "「{0}」を編集中"
 msgid "「{label}」は公開中です。編集すると、この経由地は下書きに戻ります。保存した時点から、利用者には表示されなくなります（スタンプの記録は残ります）。"
 msgstr "「{label}」は公開中です。編集すると、この経由地は下書きに戻ります。保存した時点から、利用者には表示されなくなります（スタンプの記録は残ります）。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:942
+#: src/components/admin/map-editor/MapEditor.tsx:937
 msgid "「{legName}」を選んでいます。この区間の点をドラッグして動かせます。地図の何もない所をクリックすると、選びなおせます。"
 msgstr "「{legName}」を選んでいます。この区間の点をドラッグして動かせます。地図の何もない所をクリックすると、選びなおせます。"
 
-#: src/components/RallyNearbyStamp.tsx:121
-#: src/components/StampHere.tsx:142
+#: src/components/AlsoSeals.tsx:25
 msgid "「{name}」のスタンプも押しました。"
 msgstr "「{name}」のスタンプも押しました。"
 
@@ -613,7 +616,7 @@ msgstr "「{name}」は、ほかのコース（{where}）にも置いてあり�
 msgid "「{stopName}」から近い順"
 msgstr "「{stopName}」から近い順"
 
-#: src/components/admin/PlacePanel.tsx:70
+#: src/components/admin/PlacePanel.tsx:69
 msgid "「「状況の補足」（日本語）を入力してください。「現在立ち入り禁止」など、訪問者に伝えたい内容を記載します。"
 msgstr "「「状況の補足」（日本語）を入力してください。「現在立ち入り禁止」など、訪問者に伝えたい内容を記載します。"
 
@@ -687,11 +690,11 @@ msgstr "「経由地でつくる」に変えます。えらんだ経由地のス
 msgid "「追加」か、空の行で「/」を押すと、入れられるものの一覧が出ます。"
 msgstr "「追加」か、空の行で「/」を押すと、入れられるものの一覧が出ます。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:868
+#: src/components/admin/map-editor/MapEditor.tsx:863
 msgid "【サブコース】"
 msgstr "【サブコース】"
 
-#: src/components/admin/map-editor/MapEditor.tsx:868
+#: src/components/admin/map-editor/MapEditor.tsx:863
 msgid "【戻り】"
 msgstr "【戻り】"
 
@@ -752,11 +755,11 @@ msgstr "2本の指で地図を動かします"
 msgid "30代"
 msgstr "30代"
 
-#: src/components/admin/PlacePanel.tsx:234
+#: src/components/admin/PlacePanel.tsx:151
 msgid "3Dマップでルートを再生した際、この地点で一時停止して紹介カードを表示するかどうかを設定します。「自動」ではスタンプスポットと寄り道で停止します。"
 msgstr "3Dマップでルートを再生した際、この地点で一時停止して紹介カードを表示するかどうかを設定します。「自動」ではスタンプスポットと寄り道で停止します。"
 
-#: src/components/admin/PlacePanel.tsx:230
+#: src/components/admin/PlacePanel.tsx:147
 msgid "3D再生の設定"
 msgstr "3D再生の設定"
 
@@ -841,43 +844,43 @@ msgstr "GPSの精度が低い状態です。空の開けた場所に移動して
 msgid "GPSの電波が弱いようです。空の開けた場所に動いてください。"
 msgstr "GPSの電波が弱いようです。空の開けた場所に動いてください。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1223
+#: src/components/admin/map-editor/MapEditor.tsx:1218
 msgid "GPXの地点"
 msgstr "GPXの地点"
 
-#: src/components/admin/map-editor/MapEditor.tsx:961
+#: src/components/admin/map-editor/MapEditor.tsx:956
 msgid "GPXの読み込みかた"
 msgstr "GPXの読み込みかた"
 
-#: src/components/admin/map-editor/MapEditor.tsx:980
+#: src/components/admin/map-editor/MapEditor.tsx:975
 msgid "GPXファイルから標高だけを取り出して、今の線に入れます（線の形は変わりません）"
 msgstr "GPXファイルから標高だけを取り出して、今の線に入れます（線の形は変わりません）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:957
+#: src/components/admin/map-editor/MapEditor.tsx:952
 msgid "GPXファイルから読み込む"
 msgstr "GPXファイルから読み込む"
 
-#: src/components/admin/map-editor/MapEditor.tsx:741
+#: src/components/admin/map-editor/MapEditor.tsx:736
 msgid "GPXファイルに道すじはありませんでした。名前のついた地点だけ見つかりました。"
 msgstr "GPXファイルに道すじはありませんでした。名前のついた地点だけ見つかりました。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1178
+#: src/components/admin/map-editor/MapEditor.tsx:1173
 msgid "GPXファイルをここで離すと、読み込みます"
 msgstr "GPXファイルをここで離すと、読み込みます"
 
-#: src/components/admin/map-editor/MapEditor.tsx:735
+#: src/components/admin/map-editor/MapEditor.tsx:730
 msgid "GPXファイルを読み込み、経由地ごとの区間に分けました（最初の経由地より前と、最後の経由地より後は入りません）。形を確かめてから、保存してください。"
 msgstr "GPXファイルを読み込み、経由地ごとの区間に分けました（最初の経由地より前と、最後の経由地より後は入りません）。形を確かめてから、保存してください。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:736
+#: src/components/admin/map-editor/MapEditor.tsx:731
 msgid "GPXファイルを読み込みました。経由地を2つ以上置くと、経由地ごとの区間に分かれます。"
 msgstr "GPXファイルを読み込みました。経由地を2つ以上置くと、経由地ごとの区間に分かれます。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:729
+#: src/components/admin/map-editor/MapEditor.tsx:724
 msgid "GPXファイルを読み込めませんでした。道すじ（トラック）か、名前のついた地点が入ったファイルを選んでください。"
 msgstr "GPXファイルを読み込めませんでした。道すじ（トラック）か、名前のついた地点が入ったファイルを選んでください。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:751
+#: src/components/admin/map-editor/MapEditor.tsx:746
 msgid "GPXファイルを読み込めませんでした。道すじ（トラック）の入ったファイルを選んでください。"
 msgstr "GPXファイルを読み込めませんでした。道すじ（トラック）の入ったファイルを選んでください。"
 
@@ -955,7 +958,7 @@ msgstr "YouTube、またはアップロードした動画の、https:// で始�
 msgid "あ"
 msgstr "あ"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1159
+#: src/components/admin/map-editor/MapEditor.tsx:1154
 msgid "アウトドア"
 msgstr "アウトドア"
 
@@ -1143,7 +1146,7 @@ msgstr "いまいる場所から、いちばん近いスタンプの場所まで
 msgid "いますぐはじめる"
 msgstr "いますぐはじめる"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1101
+#: src/components/admin/map-editor/MapEditor.tsx:1096
 msgid "いまのガイド点を通る道を、1回だけ探します"
 msgstr "いまのガイド点を通る道を、1回だけ探します"
 
@@ -1160,16 +1163,16 @@ msgid "いまの位置が、わかりません。空の開けた場所で、し�
 msgstr "いまの位置が、わかりません。空の開けた場所で、しばらくお待ちください。"
 
 #: src/components/navigation/NavigationHud.tsx:209
-#: src/components/RallyNearbyStamp.tsx:93
+#: src/components/RallyNearbyStamp.tsx:94
 msgid "いまの位置を調べています…"
 msgstr "いまの位置を調べています…"
 
-#: src/components/RallyNearbyStamp.tsx:103
+#: src/components/RallyNearbyStamp.tsx:104
 msgid "いまの位置を調べます"
 msgstr "いまの位置を調べます"
 
 #: src/components/admin/CommentInbox.tsx:102
-#: src/components/admin/PlacePanel.tsx:329
+#: src/components/admin/PlacePanel.tsx:246
 msgid "いまの状態"
 msgstr "いまの状態"
 
@@ -1334,59 +1337,59 @@ msgstr "カード"
 msgid "カードを消す"
 msgstr "カードを消す"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1083
+#: src/components/admin/map-editor/MapEditor.tsx:1078
 msgid "ガイド点"
 msgstr "ガイド点"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1100
+#: src/components/admin/map-editor/MapEditor.tsx:1095
 msgid "ガイド点 {guideCount}"
 msgstr "ガイド点 {guideCount}"
 
-#: src/components/admin/map-editor/MapEditor.tsx:557
+#: src/components/admin/map-editor/MapEditor.tsx:552
 msgid "ガイド点 {no}"
 msgstr "ガイド点 {no}"
 
-#: src/components/admin/map-editor/MapEditor.tsx:558
+#: src/components/admin/map-editor/MapEditor.tsx:553
 msgid "ガイド点（道を探すときの目印）。「ガイド点」の道具で動かしたり消したりできます。"
 msgstr "ガイド点（道を探すときの目印）。「ガイド点」の道具で動かしたり消したりできます。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:351
+#: src/components/admin/map-editor/MapEditor.tsx:346
 msgid "ガイド点は、1つの区間に{MAX_GUIDE_POINTS}個までです。"
 msgstr "ガイド点は、1つの区間に{MAX_GUIDE_POINTS}個までです。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:325
+#: src/components/admin/map-editor/MapEditor.tsx:320
 msgid "ガイド点をすべて消しました。線はそのままです。"
 msgstr "ガイド点をすべて消しました。線はそのままです。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1104
+#: src/components/admin/map-editor/MapEditor.tsx:1099
 msgid "ガイド点をすべて消します（線はそのままです）"
 msgstr "ガイド点をすべて消します（線はそのままです）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:325
+#: src/components/admin/map-editor/MapEditor.tsx:320
 msgid "ガイド点を変えました。「道を探す」を押すと、この点を通る道を探します（探すのは1回だけです）。"
 msgstr "ガイド点を変えました。「道を探す」を押すと、この点を通る道を探します（探すのは1回だけです）。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:929
+#: src/components/admin/map-editor/MapEditor.tsx:924
 msgid "ガイド点を置きたい区間（経由地と経由地のあいだ）を選んでください。"
 msgstr "ガイド点を置きたい区間（経由地と経由地のあいだ）を選んでください。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1086
+#: src/components/admin/map-editor/MapEditor.tsx:1081
 msgid "ガイド点を置く"
 msgstr "ガイド点を置く"
 
-#: src/components/admin/map-editor/MapEditor.tsx:402
+#: src/components/admin/map-editor/MapEditor.tsx:397
 msgid "ガイド点を置くには、先に経由地を2つ以上置いてください（寄り道は数えません）。"
 msgstr "ガイド点を置くには、先に経由地を2つ以上置いてください（寄り道は数えません）。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:316
+#: src/components/admin/map-editor/MapEditor.tsx:311
 msgid "ガイド点を通るように、道を引きなおしました。形を確かめてから、保存してください。「元に戻す」で、もとの線にもどせます。"
 msgstr "ガイド点を通るように、道を引きなおしました。形を確かめてから、保存してください。「元に戻す」で、もとの線にもどせます。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:291
+#: src/components/admin/map-editor/MapEditor.tsx:286
 msgid "ガイド点を通る道を調べています…"
 msgstr "ガイド点を通る道を調べています…"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1207
+#: src/components/admin/map-editor/MapEditor.tsx:1202
 msgid "かかる時間（分）"
 msgstr "かかる時間（分）"
 
@@ -1394,7 +1397,7 @@ msgstr "かかる時間（分）"
 msgid "カフェ・喫茶"
 msgstr "カフェ・喫茶"
 
-#: src/components/StampHere.tsx:241
+#: src/components/StampHere.tsx:239
 msgid "キャンセル"
 msgstr "キャンセル"
 
@@ -1406,7 +1409,7 @@ msgstr "キャンプ場"
 msgid "くっきり表示"
 msgstr "くっきり表示"
 
-#: src/components/admin/map-editor/MapEditor.tsx:523
+#: src/components/admin/map-editor/MapEditor.tsx:518
 msgid "クリックで、この点を消します"
 msgstr "クリックで、この点を消します"
 
@@ -1562,7 +1565,7 @@ msgid "コースの画面で開く"
 msgstr "コースの画面で開く"
 
 #: src/components/admin/CourseAreaEditor.tsx:294
-#: src/components/admin/map-editor/MapEditor.tsx:1256
+#: src/components/admin/map-editor/MapEditor.tsx:1251
 msgid "コースの範囲"
 msgstr "コースの範囲"
 
@@ -1695,7 +1698,7 @@ msgstr "ゴール"
 msgid "ゴール側"
 msgstr "ゴール側"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1044
+#: src/components/admin/map-editor/MapEditor.tsx:1039
 msgid "ここに経由地を置く"
 msgstr "ここに経由地を置く"
 
@@ -1715,7 +1718,7 @@ msgstr "ここはページに表示されません"
 msgid "この{days}日間"
 msgstr "この{days}日間"
 
-#: src/components/admin/map-editor/MapEditor.tsx:753
+#: src/components/admin/map-editor/MapEditor.tsx:748
 msgid "このGPXファイルには、標高のある道すじがないか、今の線とほとんど重なっていません。"
 msgstr "このGPXファイルには、標高のある道すじがないか、今の線とほとんど重なっていません。"
 
@@ -1800,7 +1803,7 @@ msgstr "このコースを選ぶ"
 msgid "このコメントを削除します。元に戻せません。"
 msgstr "このコメントを削除します。元に戻せません。"
 
-#: src/components/StampHere.tsx:137
+#: src/components/StampHere.tsx:142
 msgid "このスタンプは獲得済みです。"
 msgstr "このスタンプは獲得済みです。"
 
@@ -1813,11 +1816,11 @@ msgstr "このスタンプは確認のため取り消されています。ご不
 msgid "このスタンプラリーは現在開催されていません。"
 msgstr "このスタンプラリーは現在開催されていません。"
 
-#: src/components/StampHere.tsx:199
+#: src/components/StampHere.tsx:197
 msgid "このスポットにスタンプはありません。"
 msgstr "このスポットにスタンプはありません。"
 
-#: src/components/StampHere.tsx:208
+#: src/components/StampHere.tsx:206
 msgid "このスポットは現在閉鎖中です。"
 msgstr "このスポットは現在閉鎖中です。"
 
@@ -1932,11 +1935,11 @@ msgstr "この区間のスタンプは、すべて押しました。"
 msgid "この区間のナビに切り替える"
 msgstr "この区間のナビに切り替える"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1186
+#: src/components/admin/map-editor/MapEditor.tsx:1181
 msgid "この区間の移動"
 msgstr "この区間の移動"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1188
+#: src/components/admin/map-editor/MapEditor.tsx:1183
 msgid "この区間の種類"
 msgstr "この区間の種類"
 
@@ -1953,10 +1956,10 @@ msgstr "この区間は、準備中です。"
 msgid "この区間は遠くにあります。電車やバスで向かいましょう。"
 msgstr "この区間は遠くにあります。電車やバスで向かいましょう。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1107
-#: src/components/admin/map-editor/MapEditor.tsx:1107
-#: src/components/admin/map-editor/MapEditor.tsx:1133
-#: src/components/admin/map-editor/MapEditor.tsx:1133
+#: src/components/admin/map-editor/MapEditor.tsx:1102
+#: src/components/admin/map-editor/MapEditor.tsx:1102
+#: src/components/admin/map-editor/MapEditor.tsx:1128
+#: src/components/admin/map-editor/MapEditor.tsx:1128
 msgid "この区間を見る"
 msgstr "この区間を見る"
 
@@ -1964,15 +1967,11 @@ msgstr "この区間を見る"
 msgid "この地域のコースはまだありません。"
 msgstr "この地域のコースはまだありません。"
 
-#: src/components/admin/PlacePanel.tsx:175
+#: src/components/admin/WaypointTypeFields.tsx:30
 msgid "この地点で押す（指定なし）"
 msgstr "この地点で押す（指定なし）"
 
-#: src/components/admin/map-editor/PlaceList.tsx:196
-msgid "この地点で押す（設定なし）"
-msgstr "この地点で押す（設定なし）"
-
-#: src/components/StatusBanner.tsx:73
+#: src/components/StatusBanner.tsx:76
 msgid "この場所にスタンプ対象外です。"
 msgstr "この場所にスタンプ対象外です。"
 
@@ -2103,11 +2102,11 @@ msgstr "この範囲には多すぎて、すべては表示できません。地
 msgid "この範囲のコース"
 msgstr "この範囲のコース"
 
-#: src/components/admin/PlacePanel.tsx:320
+#: src/components/admin/PlacePanel.tsx:237
 msgid "この経由地から指定した半径内にいる場合、スタンプを獲得できます。"
 msgstr "この経由地から指定した半径内にいる場合、スタンプを獲得できます。"
 
-#: src/components/admin/PlacePanel.tsx:360
+#: src/components/admin/PlacePanel.tsx:277
 msgid "この経由地は公開されています。"
 msgstr "この経由地は公開されています。"
 
@@ -2120,7 +2119,7 @@ msgstr "この経由地は公開をやめました。"
 msgid "この経由地を保存しました。"
 msgstr "この経由地を保存しました。"
 
-#: src/components/admin/PlacePanel.tsx:404
+#: src/components/admin/PlacePanel.tsx:321
 msgid "この経由地を削除"
 msgstr "この経由地を削除"
 
@@ -2128,7 +2127,7 @@ msgstr "この経由地を削除"
 msgid "この経由地を編集する"
 msgstr "この経由地を編集する"
 
-#: src/components/admin/map-editor/MapEditor.tsx:922
+#: src/components/admin/map-editor/MapEditor.tsx:917
 msgid "この線は、経由地の順番や位置と合わないため、区間に分けていません。経由地の順番と位置を直してから「区間に分ける」を押すか、区間を描くと、その区間から線が置き換わります（「元に戻す」で戻せます）。"
 msgstr "この線は、経由地の順番や位置と合わないため、区間に分けていません。経由地の順番と位置を直してから「区間に分ける」を押すか、区間を描くと、その区間から線が置き換わります（「元に戻す」で戻せます）。"
 
@@ -2157,8 +2156,8 @@ msgstr "この設定は、本番のサイトにすぐ反映されます。すべ
 msgid "この設定は、本番のサイトにすぐ反映されます。保存しますか？"
 msgstr "この設定は、本番のサイトにすぐ反映されます。保存しますか？"
 
-#: src/components/SpotSheet.tsx:126
-#: src/components/SpotSheet.tsx:142
+#: src/components/SpotSheet.tsx:135
+#: src/components/SpotSheet.tsx:151
 msgid "この説明は日本語のみです。"
 msgstr "この説明は日本語のみです。"
 
@@ -2303,11 +2302,11 @@ msgstr "さがしています…"
 msgid "さがす"
 msgstr "さがす"
 
-#: src/components/admin/map-editor/PlaceList.tsx:219
+#: src/components/admin/map-editor/PlaceList.tsx:171
 msgid "サブコースの分岐点"
 msgstr "サブコースの分岐点"
 
-#: src/components/admin/map-editor/PlaceList.tsx:232
+#: src/components/admin/map-editor/PlaceList.tsx:184
 msgid "サブコースを描画"
 msgstr "サブコースを描画"
 
@@ -2366,8 +2365,7 @@ msgstr "スタッフが確認すると、ここに表示されます。"
 
 #: src/app/(admin)/admin/page.tsx:77
 #: src/app/(public)/rallies/[id]/page.tsx:176
-#: src/components/admin/map-editor/PlaceList.tsx:134
-#: src/components/admin/map-editor/PlaceList.tsx:172
+#: src/components/admin/map-editor/PlaceList.tsx:131
 #: src/components/admin/PlaceTable.tsx:138
 #: src/components/JourneyFacts.tsx:27
 #: src/components/SiteHeader.tsx:336
@@ -2396,11 +2394,11 @@ msgstr "スタンプ {spotCount}か所"
 msgid "スタンプ {stampedCount} / {spotCount}"
 msgstr "スタンプ {stampedCount} / {spotCount}"
 
-#: src/components/admin/map-editor/PlaceList.tsx:74
+#: src/components/admin/map-editor/PlaceList.tsx:71
 msgid "スタンプ {stamps}・その他 {others}"
 msgstr "スタンプ {stamps}・その他 {others}"
 
-#: src/components/admin/PlacePanel.tsx:315
+#: src/components/admin/PlacePanel.tsx:232
 msgid "スタンプ・状態・許可の設定"
 msgstr "スタンプ・状態・許可の設定"
 
@@ -2409,7 +2407,7 @@ msgid "スタンプが多いコース"
 msgstr "スタンプが多いコース"
 
 #: src/components/map/MapScreen.tsx:426
-#: src/components/SpotSheet.tsx:105
+#: src/components/SpotSheet.tsx:108
 msgid "スタンプスポット"
 msgstr "スタンプスポット"
 
@@ -2417,7 +2415,7 @@ msgstr "スタンプスポット"
 msgid "スタンプスポットの付近でボタンを押すと、スタンプを獲得できます。現在地はボタンを押したときに1回だけ確認し、位置情報は保存されません。"
 msgstr "スタンプスポットの付近でボタンを押すと、スタンプを獲得できます。現在地はボタンを押したときに1回だけ確認し、位置情報は保存されません。"
 
-#: src/components/StampHere.tsx:234
+#: src/components/StampHere.tsx:232
 msgid "スタンプスポットの付近にいるか確認するため、現在地を1回だけ取得します。"
 msgstr "スタンプスポットの付近にいるか確認するため、現在地を1回だけ取得します。"
 
@@ -2444,11 +2442,11 @@ msgstr "スタンプのバックアップリンク"
 msgid "スタンプの取得時刻が正しくありません。端末の日時設定を確認してください。"
 msgstr "スタンプの取得時刻が正しくありません。端末の日時設定を確認してください。"
 
-#: src/components/RallyNearbyStamp.tsx:95
+#: src/components/RallyNearbyStamp.tsx:96
 msgid "スタンプの場所の近くで押してください。現在地は1度だけ確かめ、記録には残しません。"
 msgstr "スタンプの場所の近くで押してください。現在地は1度だけ確かめ、記録には残しません。"
 
-#: src/components/RallyNearbyStamp.tsx:105
+#: src/components/RallyNearbyStamp.tsx:106
 msgid "スタンプの場所の近くにいるかを確かめるため、スマートフォンの現在地を1度だけ調べます。"
 msgstr "スタンプの場所の近くにいるかを確かめるため、スマートフォンの現在地を1度だけ調べます。"
 
@@ -2502,9 +2500,9 @@ msgstr "スタンプをもどす"
 msgid "スタンプを押した人"
 msgstr "スタンプを押した人"
 
-#: src/components/RallyNearbyStamp.tsx:93
-#: src/components/StampHere.tsx:182
-#: src/components/StampHere.tsx:217
+#: src/components/RallyNearbyStamp.tsx:94
+#: src/components/StampHere.tsx:180
+#: src/components/StampHere.tsx:215
 msgid "スタンプを押しています…"
 msgstr "スタンプを押しています…"
 
@@ -2513,13 +2511,13 @@ msgstr "スタンプを押しています…"
 msgid "スタンプを押してから48時間以上経過しているため、受け付けられませんでした。"
 msgstr "スタンプを押してから48時間以上経過しているため、受け付けられませんでした。"
 
-#: src/components/StampHere.tsx:137
+#: src/components/StampHere.tsx:142
 #: src/components/StampProgressPopup.tsx:50
 msgid "スタンプを押しました！"
 msgstr "スタンプを押しました！"
 
-#: src/components/StampHere.tsx:205
-#: src/components/StampHere.tsx:220
+#: src/components/StampHere.tsx:203
+#: src/components/StampHere.tsx:218
 msgid "スタンプを押す"
 msgstr "スタンプを押す"
 
@@ -2535,15 +2533,15 @@ msgstr "スタンプ一覧"
 msgid "スタンプ場所 {spotCount}か所"
 msgstr "スタンプ場所 {spotCount}か所"
 
-#: src/components/admin/PlacePanel.tsx:142
+#: src/components/admin/WaypointTypeFields.tsx:63
 msgid "スタンプ対象"
 msgstr "スタンプ対象"
 
-#: src/components/admin/PlacePanel.tsx:145
+#: src/components/admin/WaypointTypeFields.tsx:66
 msgid "スタンプ対象外となります（詳細ページは表示されます）。公開には現地の許可確認が必要です。"
 msgstr "スタンプ対象外となります（詳細ページは表示されます）。公開には現地の許可確認が必要です。"
 
-#: src/components/SpotSheet.tsx:99
+#: src/components/SpotSheet.tsx:102
 msgid "スタンプ帳に記録されています。"
 msgstr "スタンプ帳に記録されています。"
 
@@ -2568,11 +2566,11 @@ msgid "スタンプ獲得時に効果音を鳴らします（この端末のみ�
 msgstr "スタンプ獲得時に効果音を鳴らします（この端末のみ有効）。"
 
 #: src/components/map/MapScreen.tsx:594
-#: src/components/SpotSheet.tsx:96
+#: src/components/SpotSheet.tsx:99
 msgid "スタンプ獲得済み"
 msgstr "スタンプ獲得済み"
 
-#: src/components/admin/PlacePanel.tsx:320
+#: src/components/admin/PlacePanel.tsx:237
 msgid "スタンプ獲得範囲（m）"
 msgstr "スタンプ獲得範囲（m）"
 
@@ -2600,7 +2598,7 @@ msgstr "ストーリーを読む"
 msgid "すべて"
 msgstr "すべて"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1130
+#: src/components/admin/map-editor/MapEditor.tsx:1125
 msgid "すべてなめらか"
 msgstr "すべてなめらか"
 
@@ -2632,7 +2630,7 @@ msgstr "すべての公開をやめる"
 msgid "すべての名前に読みがあります。"
 msgstr "すべての名前に読みがあります。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1127
+#: src/components/admin/map-editor/MapEditor.tsx:1122
 msgid "すべての点を、なめらかな点にします（もう一度押すと、角の点に戻ります）"
 msgstr "すべての点を、なめらかな点にします（もう一度押すと、角の点に戻ります）"
 
@@ -2640,7 +2638,7 @@ msgstr "すべての点を、なめらかな点にします（もう一度押す
 msgid "すべて外す"
 msgstr "すべて外す"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1105
+#: src/components/admin/map-editor/MapEditor.tsx:1100
 msgid "すべて消す"
 msgstr "すべて消す"
 
@@ -2704,7 +2702,7 @@ msgstr "そのまま"
 msgid "その他"
 msgstr "その他"
 
-#: src/components/admin/map-editor/MapEditor.tsx:822
+#: src/components/admin/map-editor/MapEditor.tsx:817
 msgid "その名前の場所は見つかりませんでした。"
 msgstr "その名前の場所は見つかりませんでした。"
 
@@ -2755,7 +2753,7 @@ msgstr "たった今"
 msgid "チェック"
 msgstr "チェック"
 
-#: src/components/admin/PlacePanel.tsx:155
+#: src/components/admin/WaypointTypeFields.tsx:85
 msgid "チェックを入れると、自動ルート生成の対象から外れます。代わりに、直前の経由地からこの地点までの寄り道ルート（青い点線）を地図上で描画できます。分岐点となる経由地の直後に配置してください。"
 msgstr "チェックを入れると、自動ルート生成の対象から外れます。代わりに、直前の経由地からこの地点までの寄り道ルート（青い点線）を地図上で描画できます。分岐点となる経由地の直後に配置してください。"
 
@@ -2913,11 +2911,11 @@ msgstr "となりの漢字と、ひとつの読みにします（例：粉 ＋ �
 msgid "ドラッグで列の幅を変えます（ダブルクリックで元に戻します）"
 msgstr "ドラッグで列の幅を変えます（ダブルクリックで元に戻します）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:558
+#: src/components/admin/map-editor/MapEditor.tsx:553
 msgid "ドラッグで動かします。クリックで消します。"
 msgstr "ドラッグで動かします。クリックで消します。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:523
+#: src/components/admin/map-editor/MapEditor.tsx:518
 msgid "ドラッグで動かします。クリックで選び、ダブルクリックでなめらかな点と角の点を切り替えます。"
 msgstr "ドラッグで動かします。クリックで選び、ダブルクリックでなめらかな点と角の点を切り替えます。"
 
@@ -3013,7 +3011,7 @@ msgid "はじめの日"
 msgstr "はじめの日"
 
 #: src/components/AccessList.tsx:9
-#: src/components/admin/map-editor/MapEditor.tsx:869
+#: src/components/admin/map-editor/MapEditor.tsx:864
 #: src/components/ElevationChart.tsx:44
 msgid "バス"
 msgstr "バス"
@@ -3184,8 +3182,8 @@ msgstr "ひな形をダウンロード"
 msgid "ファイルから取り込む"
 msgstr "ファイルから取り込む"
 
-#: src/components/admin/map-editor/MapEditor.tsx:727
-#: src/components/admin/map-editor/MapEditor.tsx:749
+#: src/components/admin/map-editor/MapEditor.tsx:722
+#: src/components/admin/map-editor/MapEditor.tsx:744
 msgid "ファイルが大きすぎます（20MBまで）。"
 msgstr "ファイルが大きすぎます（20MBまで）。"
 
@@ -3261,7 +3259,7 @@ msgstr "プライバシーポリシー"
 msgid "ブラウザのメニュー（⋮ や ⋯）から、「ホーム画面に追加」または「アプリをインストール」を選択します。"
 msgstr "ブラウザのメニュー（⋮ や ⋯）から、「ホーム画面に追加」または「アプリをインストール」を選択します。"
 
-#: src/components/admin/PlacePanel.tsx:109
+#: src/components/admin/PlacePanel.tsx:108
 msgid "ふりがな（読み）"
 msgstr "ふりがな（読み）"
 
@@ -3468,7 +3466,7 @@ msgstr "ほかのコースの経由地を加える"
 msgid "ほかのユーザーは先に保存しました。ページを再読み込みしてからやり直してください。"
 msgstr "ほかのユーザーは先に保存しました。ページを再読み込みしてからやり直してください。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:869
+#: src/components/admin/map-editor/MapEditor.tsx:864
 msgid "ほかの乗り物"
 msgstr "ほかの乗り物"
 
@@ -3496,7 +3494,7 @@ msgstr "ほかの記事"
 msgid "ほぼ平坦"
 msgstr "ほぼ平坦"
 
-#: src/components/admin/map-editor/MapEditor.tsx:947
+#: src/components/admin/map-editor/MapEditor.tsx:942
 msgid "まず、GPXファイルをここにドラッグするか「GPXファイルから読み込む」を押してください。手で入れるときは「経由地を置く」で経由地を入れ、「線を描く」で区間ごとに道すじを描きます。"
 msgstr "まず、GPXファイルをここにドラッグするか「GPXファイルから読み込む」を押してください。手で入れるときは「経由地を置く」で経由地を入れ、「線を描く」で区間ごとに道すじを描きます。"
 
@@ -3644,7 +3642,7 @@ msgstr "メールを追加すると、端末をなくしたときも、メール
 msgid "メールを開いて番号を見たら、この画面にもどって入力してください。届かないときは、迷惑メールのフォルダも見てください。"
 msgstr "メールを開いて番号を見たら、この画面にもどって入力してください。届かないときは、迷惑メールのフォルダも見てください。"
 
-#: src/components/admin/PlacePanel.tsx:269
+#: src/components/admin/PlacePanel.tsx:186
 msgid "メインの写真"
 msgstr "メインの写真"
 
@@ -3710,7 +3708,7 @@ msgid "もう一度確認する"
 msgstr "もう一度確認する"
 
 #: src/app/offline/page.tsx:43
-#: src/components/StampHere.tsx:219
+#: src/components/StampHere.tsx:217
 msgid "もう一度試す"
 msgstr "もう一度試す"
 
@@ -3762,7 +3760,7 @@ msgstr "もらったバッジの数"
 #: src/components/auth/ReauthDialog.tsx:113
 #: src/components/LoadingOverlay.tsx:26
 #: src/components/ProfileSettings.tsx:291
-#: src/components/RallyNearbyStamp.tsx:112
+#: src/components/RallyNearbyStamp.tsx:113
 #: src/components/settings/PasskeyManager.tsx:139
 #: src/components/settings/PasskeyManager.tsx:213
 #: src/components/settings/PasswordMethod.tsx:92
@@ -3779,12 +3777,12 @@ msgstr "やや右"
 msgid "やや左"
 msgstr "やや左"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1145
+#: src/components/admin/map-editor/MapEditor.tsx:1140
 msgid "やり直し"
 msgstr "やり直し"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1149
-#: src/components/admin/map-editor/MapEditor.tsx:1149
+#: src/components/admin/map-editor/MapEditor.tsx:1144
+#: src/components/admin/map-editor/MapEditor.tsx:1144
 msgid "やり直す"
 msgstr "やり直す"
 
@@ -3983,7 +3981,7 @@ msgstr "ルートに沿わせる機能は現在利用できません。管理者
 msgid "ルートを取得できませんでした。しばらく時間をおいてから再度お試しください。"
 msgstr "ルートを取得できませんでした。しばらく時間をおいてから再度お試しください。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:262
+#: src/components/admin/map-editor/PlaceList.tsx:214
 msgid "ルートを描画"
 msgstr "ルートを描画"
 
@@ -3995,9 +3993,8 @@ msgstr "ルート再生"
 msgid "ルート区分"
 msgstr "ルート区分"
 
-#: src/components/admin/map-editor/PlaceList.tsx:136
-#: src/components/admin/map-editor/PlaceList.tsx:180
-#: src/components/admin/PlacePanel.tsx:164
+#: src/components/admin/map-editor/PlaceList.tsx:133
+#: src/components/admin/WaypointTypeFields.tsx:94
 #: src/components/SideWord.tsx:23
 msgid "ルート外"
 msgstr "ルート外"
@@ -4037,7 +4034,7 @@ msgstr "ログイン"
 msgid "ログインがキャンセルされました。"
 msgstr "ログインがキャンセルされました。"
 
-#: src/components/StampHere.tsx:192
+#: src/components/StampHere.tsx:190
 msgid "ログインする"
 msgstr "ログインする"
 
@@ -4092,7 +4089,7 @@ msgstr "一周"
 msgid "一度に取り込める数をこえています（{writes} 回の保存が必要で、上限は {IMPORT_WRITE_LIMIT} 回です）。ファイルを分けて、時間をおいて取り込んでください。"
 msgstr "一度に取り込める数をこえています（{writes} 回の保存が必要で、上限は {IMPORT_WRITE_LIMIT} 回です）。ファイルを分けて、時間をおいて取り込んでください。"
 
-#: src/components/admin/PlacePanel.tsx:232
+#: src/components/admin/PlacePanel.tsx:149
 msgid "一時停止の設定"
 msgstr "一時停止の設定"
 
@@ -4108,7 +4105,7 @@ msgstr "一覧"
 msgid "一覧にない地名"
 msgstr "一覧にない地名"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1250
+#: src/components/admin/map-editor/MapEditor.tsx:1245
 msgid "一覧の中身"
 msgstr "一覧の中身"
 
@@ -4117,12 +4114,12 @@ msgstr "一覧の中身"
 msgid "一覧へ戻る"
 msgstr "一覧へ戻る"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1260
-#: src/components/admin/map-editor/MapEditor.tsx:1260
+#: src/components/admin/map-editor/MapEditor.tsx:1255
+#: src/components/admin/map-editor/MapEditor.tsx:1255
 msgid "一覧をしまう"
 msgstr "一覧をしまう"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1243
+#: src/components/admin/map-editor/MapEditor.tsx:1238
 msgid "一覧を出す"
 msgstr "一覧を出す"
 
@@ -4164,7 +4161,7 @@ msgstr "下り {down}m"
 #: src/components/admin/one-map/OneMap.tsx:311
 #: src/components/admin/one-map/OneMap.tsx:346
 #: src/components/admin/PlaceOrderList.tsx:69
-#: src/components/admin/PlacePanel.tsx:98
+#: src/components/admin/PlacePanel.tsx:97
 #: src/components/admin/RallyEditor.tsx:124
 #: src/components/admin/RallyList.tsx:59
 #: src/components/admin/RallyList.tsx:75
@@ -4264,7 +4261,7 @@ msgstr "交通機関で約{n}分"
 msgid "今、お知らせはありません。"
 msgstr "今、お知らせはありません。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1003
+#: src/components/admin/map-editor/MapEditor.tsx:998
 msgid "今ある線を、経由地の順に区間へ切り分けます（経由地が線と合わないと、まっすぐな部分ができます）"
 msgstr "今ある線を、経由地の順に区間へ切り分けます（経由地が線と合わないと、まっすぐな部分ができます）"
 
@@ -4284,7 +4281,12 @@ msgstr "今後はこの確認を表示しない"
 msgid "他にログイン方法がないため削除できません。先にメールアドレス、または別の端末の顔・指紋認証を登録してください。"
 msgstr "他にログイン方法がないため削除できません。先にメールアドレス、または別の端末の顔・指紋認証を登録してください。"
 
-#: src/components/admin/PlacePanel.tsx:173
+#. placeholder {0}: spot.stampedHere.map((p) => (locale === "ja" ? p.nameJa : (p.nameEn ?? p.nameJa))).join(locale === "ja" ? "、" : ", ")
+#: src/components/SpotSheet.tsx:120
+msgid "他の獲得できるスタンプ：{0}"
+msgstr "他の獲得できるスタンプ：{0}"
+
+#: src/components/admin/WaypointTypeFields.tsx:103
 msgid "他の経由地の遥拝場所に設定されているため、指定できません。"
 msgstr "他の経由地の遥拝場所に設定されているため、指定できません。"
 
@@ -4314,7 +4316,7 @@ msgstr "休業中"
 msgid "休業日"
 msgstr "休業日"
 
-#: src/components/admin/PlacePanel.tsx:293
+#: src/components/admin/PlacePanel.tsx:210
 msgid "位置"
 msgstr "位置"
 
@@ -4334,7 +4336,7 @@ msgstr "位置の地図"
 msgid "位置は{ageS}秒前のものです。"
 msgstr "位置は{ageS}秒前のものです。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1230
+#: src/components/admin/map-editor/MapEditor.tsx:1225
 msgid "位置は「確認していない」状態で入ります。公開する前に、公式の情報で確かめてください。"
 msgstr "位置は「確認していない」状態で入ります。公開する前に、公式の情報で確かめてください。"
 
@@ -4354,11 +4356,11 @@ msgstr "位置を確認した情報源（サイトの名やURL）を入力して
 msgid "位置を確認していない"
 msgstr "位置を確認していない"
 
-#: src/components/admin/PlacePanel.tsx:67
+#: src/components/admin/PlacePanel.tsx:66
 msgid "位置を設定してください（地図上で指定するか、緯度・経度を入力します）。"
 msgstr "位置を設定してください（地図上で指定するか、緯度・経度を入力します）。"
 
-#: src/components/RallyNearbyStamp.tsx:109
+#: src/components/RallyNearbyStamp.tsx:110
 msgid "位置を調べてスタンプを押す"
 msgstr "位置を調べてスタンプを押す"
 
@@ -4374,11 +4376,11 @@ msgstr "位置情報が許可されていません。ブラウザの設定で、
 msgid "位置情報の利用が許可されていません。ブラウザの設定でこのサイトの位置情報を許可してから、もう一度お試しください。"
 msgstr "位置情報の利用が許可されていません。ブラウザの設定でこのサイトの位置情報を許可してから、もう一度お試しください。"
 
-#: src/components/StampHere.tsx:235
+#: src/components/StampHere.tsx:233
 msgid "位置情報は保存されません。記録されるのはスタンプの獲得履歴のみです。"
 msgstr "位置情報は保存されません。記録されるのはスタンプの獲得履歴のみです。"
 
-#: src/components/admin/PlacePanel.tsx:302
+#: src/components/admin/PlacePanel.tsx:219
 msgid "位置情報は公式データをもとに設定し、地図上で確認してください（推測での入力は不可）。"
 msgstr "位置情報は公式データをもとに設定し、地図上で確認してください（推測での入力は不可）。"
 
@@ -4387,11 +4389,11 @@ msgstr "位置情報は公式データをもとに設定し、地図上で確認
 msgid "位置情報は未確認です（仮の位置を表示しています）。"
 msgstr "位置情報は未確認です（仮の位置を表示しています）。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:143
+#: src/components/admin/map-editor/PlaceList.tsx:140
 msgid "位置未設定"
 msgstr "位置未設定"
 
-#: src/components/admin/PlacePanel.tsx:305
+#: src/components/admin/PlacePanel.tsx:222
 msgid "位置確認済み"
 msgstr "位置確認済み"
 
@@ -4496,7 +4498,7 @@ msgstr "保存していない変更があります。先に保存してくださ
 msgid "保存していない変更は消えます。"
 msgstr "保存していない変更は消えます。"
 
-#: src/components/admin/CourseMapEditor.tsx:121
+#: src/components/admin/CourseMapEditor.tsx:118
 msgid "保存していない編集が、このブラウザに残っています（{offeredAt}）。戻しますか？"
 msgstr "保存していない編集が、このブラウザに残っています（{offeredAt}）。戻しますか？"
 
@@ -4558,7 +4560,7 @@ msgstr "保存しました。次に確認する場所はありません。"
 msgid "保存する"
 msgstr "保存する"
 
-#: src/components/admin/PlacePanel.tsx:356
+#: src/components/admin/PlacePanel.tsx:273
 msgid "保存するとこの経由地は下書きに戻ります。"
 msgstr "保存するとこの経由地は下書きに戻ります。"
 
@@ -4609,19 +4611,19 @@ msgstr "保存済み"
 msgid "保存済み（更新 {0}）"
 msgstr "保存済み（更新 {0}）"
 
-#: src/components/admin/PlacePanel.tsx:243
+#: src/components/admin/PlacePanel.tsx:160
 msgid "停止する"
 msgstr "停止する"
 
-#: src/components/admin/PlacePanel.tsx:247
+#: src/components/admin/PlacePanel.tsx:164
 msgid "停止時間（秒）"
 msgstr "停止時間（秒）"
 
 #: src/components/admin/BlockEditor.tsx:518
 #: src/components/admin/CommentInbox.tsx:70
 #: src/components/admin/LargeStyleUpload.tsx:55
-#: src/components/admin/map-editor/MapEditor.tsx:1146
-#: src/components/admin/map-editor/MapEditor.tsx:1146
+#: src/components/admin/map-editor/MapEditor.tsx:1141
+#: src/components/admin/map-editor/MapEditor.tsx:1141
 msgid "元に戻す"
 msgstr "元に戻す"
 
@@ -4630,11 +4632,11 @@ msgstr "元に戻す"
 msgid "元のページ"
 msgstr "元のページ"
 
-#: src/components/admin/PlacePanel.tsx:66
+#: src/components/admin/PlacePanel.tsx:65
 msgid "先に「経由地を保存」を押してください。"
 msgstr "先に「経由地を保存」を押してください。"
 
-#: src/components/admin/PlacePanel.tsx:356
+#: src/components/admin/PlacePanel.tsx:273
 msgid "先にコースを保存してください。"
 msgstr "先にコースを保存してください。"
 
@@ -4698,8 +4700,8 @@ msgstr "全{total}か所のスタンプをそろえました"
 msgid "全体マップ"
 msgstr "全体マップ"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1170
-#: src/components/admin/map-editor/MapEditor.tsx:1170
+#: src/components/admin/map-editor/MapEditor.tsx:1165
+#: src/components/admin/map-editor/MapEditor.tsx:1165
 msgid "全体を見る"
 msgstr "全体を見る"
 
@@ -4711,7 +4713,7 @@ msgstr "公式サイト"
 msgid "公式サイトで詳しく見る"
 msgstr "公式サイトで詳しく見る"
 
-#: src/components/admin/PlacePanel.tsx:68
+#: src/components/admin/PlacePanel.tsx:67
 msgid "公式情報で位置を確認し、「位置確認済み」にチェックを入れて情報源を入力してください。"
 msgstr "公式情報で位置を確認し、「位置確認済み」にチェックを入れて情報源を入力してください。"
 
@@ -4736,7 +4738,7 @@ msgstr "公開しました。"
 
 #: src/components/admin/CommentInbox.tsx:135
 #: src/components/admin/CommentInbox.tsx:173
-#: src/components/admin/PlacePanel.tsx:368
+#: src/components/admin/PlacePanel.tsx:285
 #: src/components/admin/RallyEditor.tsx:131
 msgid "公開する"
 msgstr "公開する"
@@ -4758,7 +4760,7 @@ msgid "公開は、作ったあとのラリーの画面からできます。"
 msgstr "公開は、作ったあとのラリーの画面からできます。"
 
 #. placeholder {0}: blockers.filter((b) => b !== "unsaved").length
-#: src/components/admin/PlacePanel.tsx:101
+#: src/components/admin/PlacePanel.tsx:100
 msgid "公開まであと{0}項目"
 msgstr "公開まであと{0}項目"
 
@@ -4780,9 +4782,9 @@ msgstr "公開をやめる"
 #: src/components/admin/BannerOrder.tsx:105
 #: src/components/admin/CommentInbox.tsx:30
 #: src/components/admin/CommentInbox.tsx:31
-#: src/components/admin/map-editor/PlaceList.tsx:140
+#: src/components/admin/map-editor/PlaceList.tsx:137
 #: src/components/admin/PlaceOrderList.tsx:69
-#: src/components/admin/PlacePanel.tsx:98
+#: src/components/admin/PlacePanel.tsx:97
 #: src/components/admin/RallyEditor.tsx:124
 #: src/components/admin/RallyList.tsx:59
 #: src/components/admin/RallyList.tsx:75
@@ -4811,11 +4813,11 @@ msgstr "公開中のラリーは、からにできません。1つ以上えら�
 msgid "公開中の経由地"
 msgstr "公開中の経由地"
 
-#: src/components/admin/map-editor/PlaceList.tsx:124
+#: src/components/admin/map-editor/PlaceList.tsx:121
 msgid "公開中の経由地は削除できません。先に「経由地」タブで非公開にしてください"
 msgstr "公開中の経由地は削除できません。先に「経由地」タブで非公開にしてください"
 
-#: src/components/admin/map-editor/PlaceList.tsx:139
+#: src/components/admin/map-editor/PlaceList.tsx:136
 msgid "公開中の経由地は削除できません。編集すると下書きに戻ります。"
 msgstr "公開中の経由地は削除できません。編集すると下書きに戻ります。"
 
@@ -4827,7 +4829,7 @@ msgstr "公開中の経由地は消せません。先に「公開をやめる」
 msgid "公開中の経由地をまとめて下書きに戻します。コースは「準備中」として、一覧に残ります。"
 msgstr "公開中の経由地をまとめて下書きに戻します。コースは「準備中」として、一覧に残ります。"
 
-#: src/components/admin/PlacePanel.tsx:407
+#: src/components/admin/PlacePanel.tsx:324
 msgid "公開中の経由地を削除するには、先に「非公開にする」を押してください。"
 msgstr "公開中の経由地を削除するには、先に「非公開にする」を押してください。"
 
@@ -4881,7 +4883,7 @@ msgid "最大"
 msgstr "最大"
 
 #: src/components/NearestPlaces.tsx:37
-#: src/components/SpotSheet.tsx:183
+#: src/components/SpotSheet.tsx:192
 msgid "最寄りアクセス"
 msgstr "最寄りアクセス"
 
@@ -4909,20 +4911,20 @@ msgstr "最高 {highest}m"
 #: src/app/(public)/places/[id]/page.tsx:91
 #: src/components/admin/BlockEditor.tsx:358
 #: src/components/admin/BlockEditor.tsx:505
-#: src/components/admin/map-editor/MapEditor.tsx:1159
-#: src/components/admin/PlacePanel.tsx:218
+#: src/components/admin/map-editor/MapEditor.tsx:1154
+#: src/components/admin/PlacePanel.tsx:135
 #: src/components/admin/RouteEditor.tsx:248
 #: src/components/admin/SiteSettingsForm.tsx:44
 #: src/components/admin/useChecklistLabels.ts:19
 #: src/components/landing/HeroSlides.tsx:68
 #: src/components/SpotGallery.tsx:16
-#: src/components/SpotSheet.tsx:162
+#: src/components/SpotSheet.tsx:171
 #: src/components/Zoomable.tsx:100
 msgid "写真"
 msgstr "写真"
 
 #. placeholder {0}: i + 2
-#: src/components/admin/PlacePanel.tsx:274
+#: src/components/admin/PlacePanel.tsx:191
 msgid "写真 {0}"
 msgstr "写真 {0}"
 
@@ -4946,7 +4948,7 @@ msgstr "写真（準備中）"
 msgid "写真「{0}」は入りませんでした（{1}）"
 msgstr "写真「{0}」は入りませんでした（{1}）"
 
-#: src/components/admin/PlacePanel.tsx:226
+#: src/components/admin/PlacePanel.tsx:143
 msgid "写真URLは https:// で始まる形式で入力してください。"
 msgstr "写真URLは https:// で始まる形式で入力してください。"
 
@@ -5078,11 +5080,11 @@ msgstr "出どころのリンク（なくてもよい）"
 msgid "出どころの文字"
 msgstr "出どころの文字"
 
-#: src/components/admin/PlacePanel.tsx:114
+#: src/components/admin/PlacePanel.tsx:113
 #: src/components/admin/RouteEditor.tsx:307
 #: src/components/admin/RouteEditor.tsx:308
 #: src/components/RouteView.tsx:223
-#: src/components/SpotSheet.tsx:151
+#: src/components/SpotSheet.tsx:160
 msgid "出典"
 msgstr "出典"
 
@@ -5103,7 +5105,7 @@ msgstr "出発地点に戻るコースです。"
 msgid "出発点"
 msgstr "出発点"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1212
+#: src/components/admin/map-editor/MapEditor.tsx:1207
 #: src/components/admin/RouteEditor.tsx:226
 msgid "分"
 msgstr "分"
@@ -5112,7 +5114,7 @@ msgstr "分"
 msgid "分岐"
 msgstr "分岐"
 
-#: src/components/admin/map-editor/PlaceList.tsx:231
+#: src/components/admin/map-editor/PlaceList.tsx:183
 msgid "分岐点からこの寄り道までのルート線を描画します（本線は維持されます）"
 msgstr "分岐点からこの寄り道までのルート線を描画します（本線は維持されます）"
 
@@ -5199,8 +5201,8 @@ msgstr "制限中"
 #: src/components/admin/fields.tsx:157
 #: src/components/admin/FuriganaWords.tsx:160
 #: src/components/admin/HoursInput.tsx:36
-#: src/components/admin/map-editor/PlaceList.tsx:124
-#: src/components/admin/PlacePanel.tsx:211
+#: src/components/admin/map-editor/PlaceList.tsx:121
+#: src/components/admin/PlacePanel.tsx:128
 #: src/components/admin/PlaceTable.tsx:141
 #: src/components/admin/PlaceTable.tsx:206
 #: src/components/admin/RallyEditor.tsx:205
@@ -5398,7 +5400,7 @@ msgstr "区切りの線"
 msgid "区間と地図"
 msgstr "区間と地図"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1004
+#: src/components/admin/map-editor/MapEditor.tsx:999
 msgid "区間に分ける"
 msgstr "区間に分ける"
 
@@ -5406,15 +5408,15 @@ msgstr "区間に分ける"
 msgid "区間の見出し"
 msgstr "区間の見出し"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1217
+#: src/components/admin/map-editor/MapEditor.tsx:1212
 msgid "区間の選択をやめて、全体を対象にします"
 msgstr "区間の選択をやめて、全体を対象にします"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1086
+#: src/components/admin/map-editor/MapEditor.tsx:1081
 msgid "区間を描く"
 msgstr "区間を描く"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1091
+#: src/components/admin/map-editor/MapEditor.tsx:1086
 msgid "区間を選ぶ"
 msgstr "区間を選ぶ"
 
@@ -5510,7 +5512,7 @@ msgstr "合計"
 msgid "同じ名前で、位置が近い（150m以内、または位置が未入力）場所を、グループにして出します。各グループの先頭が、いちばん情報がそろっている場所です（残すのにおすすめ）。"
 msgstr "同じ名前で、位置が近い（150m以内、または位置が未入力）場所を、グループにして出します。各グループの先頭が、いちばん情報がそろっている場所です（残すのにおすすめ）。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:213
+#: src/components/admin/map-editor/PlaceList.tsx:165
 msgid "同じ場所に終点を追加"
 msgstr "同じ場所に終点を追加"
 
@@ -5563,7 +5565,7 @@ msgid "名前なし"
 msgstr "名前なし"
 
 #. placeholder {0}: waypoints.length
-#: src/components/admin/map-editor/MapEditor.tsx:1224
+#: src/components/admin/map-editor/MapEditor.tsx:1219
 msgid "名前のついた地点が{0}か所ありました。経由地として追加しますか？"
 msgstr "名前のついた地点が{0}か所ありました。経由地として追加しますか？"
 
@@ -5599,7 +5601,7 @@ msgstr "名前を変える"
 msgid "名前順"
 msgstr "名前順"
 
-#: src/components/admin/map-editor/PlaceList.tsx:99
+#: src/components/admin/map-editor/PlaceList.tsx:96
 #: src/components/PlaceFacts.tsx:28
 msgid "名称"
 msgstr "名称"
@@ -5608,7 +5610,7 @@ msgstr "名称"
 msgid "周回（元の場所へ）"
 msgstr "周回（元の場所へ）"
 
-#: src/components/admin/map-editor/PlaceList.tsx:212
+#: src/components/admin/map-editor/PlaceList.tsx:164
 msgid "周回コースの場合、同じ位置にスタンプなしの終点を追加します。"
 msgstr "周回コースの場合、同じ位置にスタンプなしの終点を追加します。"
 
@@ -5628,7 +5630,7 @@ msgstr "周辺の場所（駐車場・自販機・トイレなど）"
 #: src/components/map/PlacesPanel.tsx:149
 #: src/components/map/TrailMap.tsx:688
 #: src/components/NearbyPlaces.tsx:25
-#: src/components/SpotSheet.tsx:172
+#: src/components/SpotSheet.tsx:181
 msgid "周辺の施設"
 msgstr "周辺の施設"
 
@@ -5722,7 +5724,7 @@ msgstr "地図"
 msgid "地図（管理）"
 msgstr "地図（管理）"
 
-#: src/components/admin/map-editor/PlaceList.tsx:207
+#: src/components/admin/map-editor/PlaceList.tsx:160
 msgid "地図から選択"
 msgstr "地図から選択"
 
@@ -5730,14 +5732,14 @@ msgstr "地図から選択"
 msgid "地図で位置を見る（新しいタブ）"
 msgstr "地図で位置を見る（新しいタブ）"
 
-#: src/components/admin/map-editor/PlaceList.tsx:115
+#: src/components/admin/map-editor/PlaceList.tsx:112
 msgid "地図で位置を設定"
 msgstr "地図で位置を設定"
 
 #: src/app/(public)/blog/[id]/page.tsx:189
 #: src/app/(public)/places/[id]/page.tsx:84
 #: src/components/PlaceDialog.tsx:30
-#: src/components/SpotSheet.tsx:79
+#: src/components/SpotSheet.tsx:82
 msgid "地図で見る"
 msgstr "地図で見る"
 
@@ -5746,7 +5748,7 @@ msgstr "地図で見る"
 msgid "地図と線"
 msgstr "地図と線"
 
-#: src/components/admin/PlacePanel.tsx:167
+#: src/components/admin/WaypointTypeFields.tsx:97
 msgid "地図には表示されますが、番号やルート線は付かず、総距離・歩行時間にも含まれません。下の表示ラベルが「寄り道」の代わりに表示されます。"
 msgstr "地図には表示されますが、番号やルート線は付かず、総距離・歩行時間にも含まれません。下の表示ラベルが「寄り道」の代わりに表示されます。"
 
@@ -5766,7 +5768,7 @@ msgstr "地図の使い方"
 msgid "地図の動かす"
 msgstr "地図の動かす"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1156
+#: src/components/admin/map-editor/MapEditor.tsx:1151
 msgid "地図の種類"
 msgstr "地図の種類"
 
@@ -5796,7 +5798,7 @@ msgstr "地図の見出し"
 msgid "地図の見本"
 msgstr "地図の見本"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1079
+#: src/components/admin/map-editor/MapEditor.tsx:1074
 msgid "地図の道具"
 msgstr "地図の道具"
 
@@ -5804,19 +5806,19 @@ msgstr "地図の道具"
 msgid "地図を2D表示にする（北が上）"
 msgstr "地図を2D表示にする（北が上）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:938
+#: src/components/admin/map-editor/MapEditor.tsx:933
 msgid "地図をクリックして、この区間に点を置いていきます。点はドラッグで動かせます。ダブルクリックで、なめらかな点と角の点が切り替わります。"
 msgstr "地図をクリックして、この区間に点を置いていきます。点はドラッグで動かせます。ダブルクリックで、なめらかな点と角の点が切り替わります。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:111
+#: src/components/admin/map-editor/PlaceList.tsx:108
 msgid "地図をクリックして、この経由地の次に新しい経由地を追加します"
 msgstr "地図をクリックして、この経由地の次に新しい経由地を追加します"
 
-#: src/components/admin/map-editor/PlaceList.tsx:143
+#: src/components/admin/map-editor/PlaceList.tsx:140
 msgid "地図をクリックしてください"
 msgstr "地図をクリックしてください"
 
-#: src/components/admin/map-editor/PlaceList.tsx:115
+#: src/components/admin/map-editor/PlaceList.tsx:112
 msgid "地図をクリックして位置を設定してください（もう一度押すとキャンセル）"
 msgstr "地図をクリックして位置を設定してください（もう一度押すとキャンセル）"
 
@@ -5824,19 +5826,19 @@ msgstr "地図をクリックして位置を設定してください（もう一
 msgid "地図をクリックするか、ピンを動かすと、緯度・経度が入ります。"
 msgstr "地図をクリックするか、ピンを動かすと、緯度・経度が入ります。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:925
+#: src/components/admin/map-editor/MapEditor.tsx:920
 msgid "地図をクリックすると、「{afterName}」のすぐ次に経由地を置きます。"
 msgstr "地図をクリックすると、「{afterName}」のすぐ次に経由地を置きます。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:920
+#: src/components/admin/map-editor/MapEditor.tsx:915
 msgid "地図をクリックすると、「{locatingName}」の位置を決めます。やめるには、もう一度ボタンを押すか、Escキーを押します。"
 msgstr "地図をクリックすると、「{locatingName}」の位置を決めます。やめるには、もう一度ボタンを押すか、Escキーを押します。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:926
+#: src/components/admin/map-editor/MapEditor.tsx:921
 msgid "地図をクリックすると、その位置に経由地を置きます。"
 msgstr "地図をクリックすると、その位置に経由地を置きます。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:930
+#: src/components/admin/map-editor/MapEditor.tsx:925
 msgid "地図をクリックすると、道を探すときの目印（ガイド点）を置きます。ガイド点は、訪れる人には見えません。点はドラッグで動かせ、クリックで消えます。置いたり動かしたりしても、道は探しません。並べ終わったら「道を探す」を押してください（探すのは1回だけです）。"
 msgstr "地図をクリックすると、道を探すときの目印（ガイド点）を置きます。ガイド点は、訪れる人には見えません。点はドラッグで動かせ、クリックで消えます。置いたり動かしたりしても、道は探しません。並べ終わったら「道を探す」を押してください（探すのは1回だけです）。"
 
@@ -5853,7 +5855,7 @@ msgstr "地図を保存中… {percent}%"
 msgid "地図を傾ける"
 msgstr "地図を傾ける"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1041
+#: src/components/admin/map-editor/MapEditor.tsx:1036
 msgid "地図を動かす"
 msgstr "地図を動かす"
 
@@ -5870,7 +5872,7 @@ msgstr "地図を見やすくする"
 msgid "地図を見る"
 msgstr "地図を見る"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1179
+#: src/components/admin/map-editor/MapEditor.tsx:1174
 #: src/components/admin/map-editor/MapEditorLoader.tsx:11
 #: src/components/admin/one-map/OneMapLoader.tsx:11
 #: src/components/map/MapScreenCanvas.tsx:620
@@ -5880,7 +5882,7 @@ msgstr "地図を見る"
 msgid "地図を読み込み中…"
 msgstr "地図を読み込み中…"
 
-#: src/components/admin/map-editor/PlaceList.tsx:206
+#: src/components/admin/map-editor/PlaceList.tsx:159
 msgid "地図上で遥拝場所となる経由地のピンをクリックしてください"
 msgstr "地図上で遥拝場所となる経由地のピンをクリックしてください"
 
@@ -5888,7 +5890,7 @@ msgstr "地図上で遥拝場所となる経由地のピンをクリックして
 msgid "地図上のスポット表示は準備中です。"
 msgstr "地図上のスポット表示は準備中です。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:207
+#: src/components/admin/map-editor/PlaceList.tsx:160
 msgid "地図上のピンをクリック"
 msgstr "地図上のピンをクリック"
 
@@ -5908,8 +5910,8 @@ msgstr "地域で絞り込む"
 msgid "地形の濃さ"
 msgstr "地形の濃さ"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1173
-#: src/components/admin/map-editor/MapEditor.tsx:1173
+#: src/components/admin/map-editor/MapEditor.tsx:1168
+#: src/components/admin/map-editor/MapEditor.tsx:1168
 msgid "地形の陰影"
 msgstr "地形の陰影"
 
@@ -5917,7 +5919,7 @@ msgstr "地形の陰影"
 msgid "基本"
 msgstr "基本"
 
-#: src/components/admin/PlacePanel.tsx:107
+#: src/components/admin/PlacePanel.tsx:106
 msgid "基本情報"
 msgstr "基本情報"
 
@@ -5939,11 +5941,11 @@ msgstr "場所の名前（English）"
 msgid "場所の名前（日本語）"
 msgstr "場所の名前（日本語）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1021
+#: src/components/admin/map-editor/MapEditor.tsx:1016
 msgid "場所の名前で探す"
 msgstr "場所の名前で探す"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1028
+#: src/components/admin/map-editor/MapEditor.tsx:1023
 msgid "場所の名前で探す（例：西念寺）"
 msgstr "場所の名前で探す（例：西念寺）"
 
@@ -5951,7 +5953,7 @@ msgstr "場所の名前で探す（例：西念寺）"
 msgid "場所の見せ方"
 msgstr "場所の見せ方"
 
-#: src/components/admin/map-editor/MapEditor.tsx:821
+#: src/components/admin/map-editor/MapEditor.tsx:816
 msgid "場所を探すサービスにつながりませんでした。しばらくしてから、もう一度お試しください。"
 msgstr "場所を探すサービスにつながりませんでした。しばらくしてから、もう一度お試しください。"
 
@@ -6074,7 +6076,7 @@ msgstr "字幕を入れました。動画を再生して確かめてください
 msgid "季節営業"
 msgstr "季節営業"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1139
+#: src/components/admin/map-editor/MapEditor.tsx:1134
 msgid "完了"
 msgstr "完了"
 
@@ -6082,14 +6084,13 @@ msgstr "完了"
 msgid "宿泊"
 msgstr "宿泊"
 
-#: src/components/admin/map-editor/PlaceList.tsx:135
-#: src/components/admin/map-editor/PlaceList.tsx:177
+#: src/components/admin/map-editor/PlaceList.tsx:132
 #: src/components/map/TrailMap.tsx:682
 #: src/components/SideWord.tsx:16
 msgid "寄り道"
 msgstr "寄り道"
 
-#: src/components/admin/PlacePanel.tsx:152
+#: src/components/admin/WaypointTypeFields.tsx:82
 msgid "寄り道（ルートから少し外れた任意の立ち寄り先）"
 msgstr "寄り道（ルートから少し外れた任意の立ち寄り先）"
 
@@ -6097,7 +6098,7 @@ msgstr "寄り道（ルートから少し外れた任意の立ち寄り先）"
 msgid "寄り道におすすめ"
 msgstr "寄り道におすすめ"
 
-#: src/components/admin/map-editor/MapEditor.tsx:940
+#: src/components/admin/map-editor/MapEditor.tsx:935
 msgid "寄り道の点を選んでいます。サブコースの線（{legName}）は、右の一覧の「サブコースの線を描く」か、「線を描く」で描けます。本線の点をクリックする必要はありません。"
 msgstr "寄り道の点を選んでいます。サブコースの線（{legName}）は、右の一覧の「サブコースの線を描く」か、「線を描く」で描けます。本線の点をクリックする必要はありません。"
 
@@ -6118,7 +6119,7 @@ msgstr "寺社・経塚・行場などの名前は、辞書には任せず人が
 msgid "対象の場所から離れています。近づいてからもう一度お試しください。"
 msgstr "対象の場所から離れています。近づいてからもう一度お試しください。"
 
-#: src/components/admin/PlacePanel.tsx:205
+#: src/components/admin/PlacePanel.tsx:122
 msgid "専用スタンプ画像"
 msgstr "専用スタンプ画像"
 
@@ -6263,11 +6264,11 @@ msgstr "急な登り下りや、道がわかりにくい所がある。はしご
 msgid "性別"
 msgstr "性別"
 
-#: src/components/admin/CourseMapEditor.tsx:107
+#: src/components/admin/CourseMapEditor.tsx:104
 msgid "情報源を入れないと、「確認した」は保存されません。"
 msgstr "情報源を入れないと、「確認した」は保存されません。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:294
+#: src/components/admin/map-editor/PlaceList.tsx:246
 msgid "戻りルートを追加"
 msgstr "戻りルートを追加"
 
@@ -6281,15 +6282,15 @@ msgstr "戻りルートを追加"
 msgid "戻る"
 msgstr "戻る"
 
-#: src/components/admin/map-editor/PlaceList.tsx:257
+#: src/components/admin/map-editor/PlaceList.tsx:209
 msgid "戻る：{to}"
 msgstr "戻る：{to}"
 
-#: src/components/admin/map-editor/PlaceList.tsx:277
+#: src/components/admin/map-editor/PlaceList.tsx:229
 msgid "戻る先"
 msgstr "戻る先"
 
-#: src/components/admin/map-editor/PlaceList.tsx:278
+#: src/components/admin/map-editor/PlaceList.tsx:230
 msgid "戻る先を選択"
 msgstr "戻る先を選択"
 
@@ -6297,7 +6298,7 @@ msgstr "戻る先を選択"
 msgid "所要時間は前のスポットからの目安です（休憩を含みません）。実際と異なる場合があります。"
 msgstr "所要時間は前のスポットからの目安です（休憩を含みません）。実際と異なる場合があります。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1199
+#: src/components/admin/map-editor/MapEditor.tsx:1194
 msgid "手で描く"
 msgstr "手で描く"
 
@@ -6363,8 +6364,8 @@ msgstr "押すと、アカウントと、集めたスタンプなどの記録を
 msgid "担当 {0}"
 msgstr "担当 {0}"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1164
-#: src/components/admin/map-editor/MapEditor.tsx:1164
+#: src/components/admin/map-editor/MapEditor.tsx:1159
+#: src/components/admin/map-editor/MapEditor.tsx:1159
 #: src/components/map/MapScreenCanvas.tsx:686
 #: src/components/map/TrailMap.tsx:576
 msgid "拡大"
@@ -6390,7 +6391,7 @@ msgstr "指2本で画面を広げたり狭めたり縮めたりします。"
 msgid "指3本で上下になぞります。"
 msgstr "指3本で上下になぞります。"
 
-#: src/components/admin/PlacePanel.tsx:173
+#: src/components/admin/WaypointTypeFields.tsx:103
 msgid "指定した経由地でスタンプを押すと、この地点のスタンプも同時に獲得できます（地図上のピン位置は変わりません）。保存済みの経由地から選択できます。"
 msgstr "指定した経由地でスタンプを押すと、この地点のスタンプも同時に獲得できます（地図上のピン位置は変わりません）。保存済みの経由地から選択できます。"
 
@@ -6398,20 +6399,20 @@ msgstr "指定した経由地でスタンプを押すと、この地点のスタ
 msgid "指定しない"
 msgstr "指定しない"
 
-#: src/components/admin/CourseMapEditor.tsx:141
+#: src/components/admin/CourseMapEditor.tsx:138
 #: src/components/admin/useDiscardCheck.ts:20
 msgid "捨てる"
 msgstr "捨てる"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1032
-#: src/components/admin/map-editor/MapEditor.tsx:1102
+#: src/components/admin/map-editor/MapEditor.tsx:1027
+#: src/components/admin/map-editor/MapEditor.tsx:1097
 #: src/components/admin/PhotoListEditor.tsx:119
 #: src/components/admin/RelationPicker.tsx:139
 msgid "探しています…"
 msgstr "探しています…"
 
 #: src/components/admin/CommentInbox.tsx:120
-#: src/components/admin/map-editor/MapEditor.tsx:1032
+#: src/components/admin/map-editor/MapEditor.tsx:1027
 msgid "探す"
 msgstr "探す"
 
@@ -6419,11 +6420,11 @@ msgstr "探す"
 msgid "推測されやすいパスワードは使用できません。別のパスワードを設定してください。"
 msgstr "推測されやすいパスワードは使用できません。別のパスワードを設定してください。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:933
+#: src/components/admin/map-editor/MapEditor.tsx:928
 msgid "描きたい区間（経由地と経由地のあいだ）を選んでください。"
 msgstr "描きたい区間（経由地と経由地のあいだ）を選んでください。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1088
+#: src/components/admin/map-editor/MapEditor.tsx:1083
 msgid "描く区間"
 msgstr "描く区間"
 
@@ -6444,7 +6445,7 @@ msgstr "数字"
 msgid "数字で書いてください"
 msgstr "数字で書いてください"
 
-#: src/components/admin/map-editor/MapEditor.tsx:946
+#: src/components/admin/map-editor/MapEditor.tsx:941
 msgid "数字の丸をドラッグすると、経由地を動かせます。経由地のあいだの線は、道に沿って自動で引かれます。線をクリックすると、その区間の種類（歩く・船・手で描く など）を選べます。"
 msgstr "数字の丸をドラッグすると、経由地を動かせます。経由地のあいだの線は、道に沿って自動で引かれます。線をクリックすると、その区間の種類（歩く・船・手で描く など）を選べます。"
 
@@ -6522,7 +6523,7 @@ msgstr "新しいラリー"
 msgid "新しいラリー（管理）"
 msgstr "新しいラリー（管理）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:937
+#: src/components/admin/map-editor/MapEditor.tsx:932
 msgid "新しい点は、選んだ点（{chosenNo}番）のあとに入ります。もう一度クリックすると、選びなおせます。"
 msgstr "新しい点は、選んだ点（{chosenNo}番）のあとに入ります。もう一度クリックすると、選びなおせます。"
 
@@ -6660,7 +6661,7 @@ msgstr "更新"
 msgid "更新 {0}"
 msgstr "更新 {0}"
 
-#: src/components/StatusBanner.tsx:37
+#: src/components/StatusBanner.tsx:40
 msgid "更新：{updated}（日本時間）"
 msgstr "更新：{updated}（日本時間）"
 
@@ -6711,7 +6712,7 @@ msgstr "木曜日"
 
 #: src/components/admin/PlaceOrderList.tsx:65
 #: src/components/admin/PlaceOrderList.tsx:66
-#: src/components/admin/PlacePanel.tsx:99
+#: src/components/admin/PlacePanel.tsx:98
 msgid "未保存"
 msgstr "未保存"
 
@@ -6720,7 +6721,7 @@ msgstr "未保存"
 msgid "未入力"
 msgstr "未入力"
 
-#: src/components/admin/PlacePanel.tsx:184
+#: src/components/admin/WaypointTypeFields.tsx:107
 msgid "未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルートから離れた場所」と表示されます。"
 msgstr "未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルートから離れた場所」と表示されます。"
 
@@ -6741,8 +6742,8 @@ msgstr "未設定"
 msgid "未選択"
 msgstr "未選択"
 
-#: src/components/admin/map-editor/PlaceList.tsx:265
-#: src/components/admin/map-editor/PlaceList.tsx:265
+#: src/components/admin/map-editor/PlaceList.tsx:217
+#: src/components/admin/map-editor/PlaceList.tsx:217
 msgid "末尾の戻りルートを削除"
 msgstr "末尾の戻りルートを削除"
 
@@ -6794,14 +6795,13 @@ msgstr "条件をやめる"
 msgid "東"
 msgstr "東"
 
-#: src/components/admin/map-editor/PlaceList.tsx:137
-#: src/components/admin/map-editor/PlaceList.tsx:183
-#: src/components/admin/PlacePanel.tsx:72
+#: src/components/admin/map-editor/PlaceList.tsx:134
+#: src/components/admin/PlacePanel.tsx:71
 #: src/components/StatusWord.tsx:21
 msgid "案内のみ"
 msgstr "案内のみ"
 
-#: src/components/admin/PlacePanel.tsx:197
+#: src/components/admin/WaypointTypeFields.tsx:120
 msgid "案内のみ（スタンプなし）"
 msgstr "案内のみ（スタンプなし）"
 
@@ -6817,7 +6817,7 @@ msgstr "概要"
 msgid "構成文化財"
 msgstr "構成文化財"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1159
+#: src/components/admin/map-editor/MapEditor.tsx:1154
 #: src/components/admin/SiteSettingsForm.tsx:41
 #: src/components/settings/PrefsForm.tsx:50
 msgid "標準"
@@ -6829,7 +6829,7 @@ msgstr "標準"
 msgid "標高 {0} m・{1} km"
 msgstr "標高 {0} m・{1} km"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1335
+#: src/components/admin/map-editor/MapEditor.tsx:1330
 msgid "標高が調べられない場所があります。"
 msgstr "標高が調べられない場所があります。"
 
@@ -6841,15 +6841,15 @@ msgstr "標高グラフ。左右の矢印キーで地点を移動できます。
 msgid "標高グラフ（{lowest}m～{highest}m）"
 msgstr "標高グラフ（{lowest}m～{highest}m）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:982
+#: src/components/admin/map-editor/MapEditor.tsx:977
 msgid "標高だけ取り込む（線は変えない）"
 msgstr "標高だけ取り込む（線は変えない）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:757
+#: src/components/admin/map-editor/MapEditor.tsx:752
 msgid "標高を入れました。線の{total}点のうち、{matched}点がGPXの道すじに重なっていました（ほかの点は、前後の高さから補いました）。線の形は変えていません。保存してください。"
 msgstr "標高を入れました。線の{total}点のうち、{matched}点がGPXの道すじに重なっていました（ほかの点は、前後の高さから補いました）。線の形は変えていません。保存してください。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1334
+#: src/components/admin/map-editor/MapEditor.tsx:1329
 msgid "標高を調べています…"
 msgstr "標高を調べています…"
 
@@ -6940,7 +6940,7 @@ msgstr "歩いて行く道を見る"
 msgid "歩き方"
 msgstr "歩き方"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1193
+#: src/components/admin/map-editor/MapEditor.tsx:1188
 msgid "歩く（道に沿って自動）"
 msgstr "歩く（道に沿って自動）"
 
@@ -6969,12 +6969,12 @@ msgstr "歩行時間・距離・高低差から、必要な体力を星1（や�
 msgid "歴史"
 msgstr "歴史"
 
-#: src/components/admin/PlacePanel.tsx:113
+#: src/components/admin/PlacePanel.tsx:112
 #: src/components/admin/RouteEditor.tsx:296
 #: src/components/admin/RouteEditor.tsx:297
 #: src/components/admin/useChecklistLabels.ts:17
 #: src/components/RouteView.tsx:207
-#: src/components/SpotSheet.tsx:135
+#: src/components/SpotSheet.tsx:144
 msgid "歴史・由来"
 msgstr "歴史・由来"
 
@@ -7010,7 +7010,7 @@ msgstr "法的な文書。管理者のみ編集許可。"
 msgid "注の文がありません"
 msgstr "注の文がありません"
 
-#: src/components/admin/PlacePanel.tsx:72
+#: src/components/admin/PlacePanel.tsx:71
 #: src/components/StatusWord.tsx:31
 msgid "注意"
 msgstr "注意"
@@ -7042,7 +7042,7 @@ msgstr "海外から来ました"
 msgid "海岸線と境目だけの、いちばん静かな地図です。"
 msgstr "海岸線と境目だけの、いちばん静かな地図です。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:935
+#: src/components/admin/map-editor/MapEditor.tsx:930
 msgid "消したい点をクリックします。"
 msgstr "消したい点をクリックします。"
 
@@ -7059,7 +7059,7 @@ msgstr "消す"
 msgid "消すと、その端末では、顔や指紋でログインできなくなります。ほかにログインの方法があるときだけ、消せます。"
 msgstr "消すと、その端末では、顔や指紋でログインできなくなります。ほかにログインの方法があるときだけ、消せます。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1159
+#: src/components/admin/map-editor/MapEditor.tsx:1154
 #: src/components/admin/SiteSettingsForm.tsx:42
 msgid "淡色"
 msgstr "淡色"
@@ -7098,23 +7098,23 @@ msgstr "火〜金に同じ時間を入れる"
 msgid "火曜日"
 msgstr "火曜日"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1132
+#: src/components/admin/map-editor/MapEditor.tsx:1127
 msgid "点 {pointCount}"
 msgstr "点 {pointCount}"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1114
+#: src/components/admin/map-editor/MapEditor.tsx:1109
 msgid "点の操作"
 msgstr "点の操作"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1119
+#: src/components/admin/map-editor/MapEditor.tsx:1114
 msgid "点を消す"
 msgstr "点を消す"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1118
+#: src/components/admin/map-editor/MapEditor.tsx:1113
 msgid "点を消す (E)"
 msgstr "点を消す (E)"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1116
+#: src/components/admin/map-editor/MapEditor.tsx:1111
 msgid "点を置く"
 msgstr "点を置く"
 
@@ -7135,7 +7135,7 @@ msgstr "特大"
 msgid "状態"
 msgstr "状態"
 
-#: src/components/admin/PlacePanel.tsx:315
+#: src/components/admin/PlacePanel.tsx:232
 msgid "状態・許可の設定"
 msgstr "状態・許可の設定"
 
@@ -7147,7 +7147,7 @@ msgstr "状態は未確認"
 msgid "状況"
 msgstr "状況"
 
-#: src/components/admin/PlacePanel.tsx:336
+#: src/components/admin/PlacePanel.tsx:253
 msgid "状況の補足"
 msgstr "状況の補足"
 
@@ -7160,20 +7160,20 @@ msgstr "獲得したスタンプは消えません。"
 msgid "獲得済み"
 msgstr "獲得済み"
 
-#: src/components/admin/PlacePanel.tsx:330
+#: src/components/admin/PlacePanel.tsx:247
 #: src/components/PlaceFacts.tsx:34
 msgid "現在の状況"
 msgstr "現在の状況"
 
-#: src/components/StatusBanner.tsx:92
+#: src/components/StatusBanner.tsx:96
 msgid "現在はスタンプを押せません。"
 msgstr "現在はスタンプを押せません。"
 
-#: src/components/StampHere.tsx:188
+#: src/components/StampHere.tsx:186
 msgid "現在地から約{km}km"
 msgstr "現在地から約{km}km"
 
-#: src/components/StampHere.tsx:188
+#: src/components/StampHere.tsx:186
 msgid "現在地から約{m}m"
 msgstr "現在地から約{m}m"
 
@@ -7181,7 +7181,7 @@ msgstr "現在地から約{m}m"
 msgid "現在地の取得に時間がかかっています。空の開けた場所で、もう一度お試しください。"
 msgstr "現在地の取得に時間がかかっています。空の開けた場所で、もう一度お試しください。"
 
-#: src/components/RallyNearbyStamp.tsx:106
+#: src/components/RallyNearbyStamp.tsx:107
 msgid "現在地は記録に残しません。記録するのは、スタンプを押したことだけです。"
 msgstr "現在地は記録に残しません。記録するのは、スタンプを押したことだけです。"
 
@@ -7193,19 +7193,19 @@ msgstr "現在地を中心に表示（進行方向が上）"
 msgid "現在地を取得できませんでした。空の開けた場所で、もう一度お試しください。"
 msgstr "現在地を取得できませんでした。空の開けた場所で、もう一度お試しください。"
 
-#: src/components/StampHere.tsx:175
+#: src/components/StampHere.tsx:173
 msgid "現在地を取得中…"
 msgstr "現在地を取得中…"
 
-#: src/components/StampHere.tsx:238
+#: src/components/StampHere.tsx:236
 msgid "現在地を確認してスタンプを押す"
 msgstr "現在地を確認してスタンプを押す"
 
-#: src/components/StampHere.tsx:232
+#: src/components/StampHere.tsx:230
 msgid "現在地を確認します"
 msgstr "現在地を確認します"
 
-#: src/components/StampHere.tsx:215
+#: src/components/StampHere.tsx:213
 msgid "現在地を確認中…"
 msgstr "現在地を確認中…"
 
@@ -7213,11 +7213,11 @@ msgstr "現在地を確認中…"
 msgid "現在地を調べています…"
 msgstr "現在地を調べています…"
 
-#: src/components/admin/PlacePanel.tsx:145
+#: src/components/admin/WaypointTypeFields.tsx:66
 msgid "現地に到着した利用者がスタンプを獲得できます。公開には現地の許可確認が必要です。"
 msgstr "現地に到着した利用者がスタンプを獲得できます。公開には現地の許可確認が必要です。"
 
-#: src/components/admin/PlacePanel.tsx:340
+#: src/components/admin/PlacePanel.tsx:257
 msgid "現地の許可"
 msgstr "現地の許可"
 
@@ -7225,11 +7225,11 @@ msgstr "現地の許可"
 msgid "現地の許可が確認されていません。許可を得たうえで「許可確認済み」にチェックを入れてください。"
 msgstr "現地の許可が確認されていません。許可を得たうえで「許可確認済み」にチェックを入れてください。"
 
-#: src/components/admin/PlacePanel.tsx:69
+#: src/components/admin/PlacePanel.tsx:68
 msgid "現地の許可を確認し、「許可確認済み」にチェックを入れてください。"
 msgstr "現地の許可を確認し、「許可確認済み」にチェックを入れてください。"
 
-#: src/components/SpotSheet.tsx:108
+#: src/components/SpotSheet.tsx:111
 msgid "現地付近でボタンを押して獲得（位置情報を使用）"
 msgstr "現地付近でボタンを押して獲得（位置情報を使用）"
 
@@ -7301,7 +7301,7 @@ msgid "登り"
 msgstr "登り"
 
 #. placeholder {0}: props.climbM
-#: src/components/admin/map-editor/MapEditor.tsx:1333
+#: src/components/admin/map-editor/MapEditor.tsx:1328
 msgid "登り {0} m"
 msgstr "登り {0} m"
 
@@ -7416,7 +7416,7 @@ msgstr "直すところは、ありません。"
 msgid "直す場所を見る"
 msgstr "直す場所を見る"
 
-#: src/components/admin/PlacePanel.tsx:185
+#: src/components/admin/WaypointTypeFields.tsx:108
 msgid "省略可"
 msgstr "省略可"
 
@@ -7428,7 +7428,7 @@ msgstr "知ったきっかけ"
 msgid "確認が必要なスタンプ：{flagged}件"
 msgstr "確認が必要なスタンプ：{flagged}件"
 
-#: src/components/admin/CourseMapEditor.tsx:104
+#: src/components/admin/CourseMapEditor.tsx:101
 msgid "確認した情報源（サイト名やリンク）"
 msgstr "確認した情報源（サイト名やリンク）"
 
@@ -7441,7 +7441,7 @@ msgstr "確認した日：{checkedOn}"
 msgid "確認した時刻：{0}（日本時間）"
 msgstr "確認した時刻：{0}（日本時間）"
 
-#: src/components/admin/CourseMapEditor.tsx:100
+#: src/components/admin/CourseMapEditor.tsx:97
 msgid "確認していない線は、利用者には表示されません。公式の地図などと見比べてから、チェックを入れてください。"
 msgstr "確認していない線は、利用者には表示されません。公式の地図などと見比べてから、チェックを入れてください。"
 
@@ -7465,7 +7465,7 @@ msgstr "確認の番号を送る"
 msgid "確認中…"
 msgstr "確認中…"
 
-#: src/components/admin/PlacePanel.tsx:307
+#: src/components/admin/PlacePanel.tsx:224
 msgid "確認元の情報源（サイト名・URLなど）"
 msgstr "確認元の情報源（サイト名・URLなど）"
 
@@ -7510,19 +7510,18 @@ msgid "稜線"
 msgstr "稜線"
 
 #: src/components/admin/DirectoryPicker.tsx:158
-#: src/components/admin/map-editor/PlaceList.tsx:161
-#: src/components/admin/PlacePanel.tsx:119
 #: src/components/admin/PlaceTable.tsx:137
 #: src/components/admin/RallyList.tsx:107
 #: src/components/admin/RallyList.tsx:132
 #: src/components/admin/RallyList.tsx:132
+#: src/components/admin/WaypointTypeFields.tsx:40
 #: src/components/PlaceFacts.tsx:29
 #: src/components/places/DirectoryView.tsx:58
 #: src/components/SpotStats.tsx:25
 msgid "種類"
 msgstr "種類"
 
-#: src/components/admin/PlacePanel.tsx:118
+#: src/components/admin/PlacePanel.tsx:117
 msgid "種類とスタンプ"
 msgstr "種類とスタンプ"
 
@@ -7537,10 +7536,6 @@ msgstr "空から撮った写真の地図です。"
 #: src/components/admin/HomeTextFields.tsx:100
 msgid "空のままにすると、コースの写真が使われます。日本語の欄に入れた写真は、英語の画面でも使われます。"
 msgstr "空のままにすると、コースの写真が使われます。日本語の欄に入れた写真は、英語の画面でも使われます。"
-
-#: src/components/admin/map-editor/PlaceList.tsx:179
-msgid "立ち入れない場所（遠くから遥拝する経塚など）。地図には表示されますが、番号やルート線は付きません。表示ラベルは「経由地」タブで変更できます。"
-msgstr "立ち入れない場所（遠くから遥拝する経塚など）。地図には表示されますが、番号やルート線は付きません。表示ラベルは「経由地」タブで変更できます。"
 
 #: src/components/admin/SiteSettingsForm.tsx:126
 #: src/components/map/TrailMap.tsx:595
@@ -7635,11 +7630,11 @@ msgstr "約{m}分"
 msgid "約{minutes}分"
 msgstr "約{minutes}分"
 
-#: src/components/RallyNearbyStamp.tsx:81
+#: src/components/RallyNearbyStamp.tsx:82
 msgid "約{n}km"
 msgstr "約{n}km"
 
-#: src/components/RallyNearbyStamp.tsx:81
+#: src/components/RallyNearbyStamp.tsx:82
 msgid "約{n}m"
 msgstr "約{n}m"
 
@@ -7652,7 +7647,7 @@ msgstr "約{TRAIL_KM}km"
 msgid "納経帳"
 msgstr "納経帳"
 
-#: src/components/admin/PlacePanel.tsx:282
+#: src/components/admin/PlacePanel.tsx:199
 msgid "紹介コメント"
 msgstr "紹介コメント"
 
@@ -7683,13 +7678,13 @@ msgstr "経塚ラリー"
 
 #: src/components/admin/AccessPointsEditor.tsx:78
 #: src/components/admin/CourseAreaEditor.tsx:280
-#: src/components/admin/PlacePanel.tsx:298
+#: src/components/admin/PlacePanel.tsx:215
 #: src/components/admin/PlaceTable.tsx:140
 msgid "経度"
 msgstr "経度"
 
 #: src/components/admin/FuriganaOverview.tsx:143
-#: src/components/admin/map-editor/MapEditor.tsx:1252
+#: src/components/admin/map-editor/MapEditor.tsx:1247
 #: src/components/admin/useChecklistLabels.ts:22
 msgid "経由地"
 msgstr "経由地"
@@ -7706,7 +7701,7 @@ msgstr "経由地（{0}）"
 
 #. placeholder {0}: draft.places.length
 #. placeholder {0}: places.length
-#: src/components/admin/map-editor/PlaceList.tsx:73
+#: src/components/admin/map-editor/PlaceList.tsx:70
 #: src/components/admin/RouteEditor.tsx:332
 msgid "経由地（{0}か所）"
 msgstr "経由地（{0}か所）"
@@ -7727,11 +7722,11 @@ msgstr "経由地でつくったラリー：えらんだ経由地のスタンプ
 msgid "経由地でつくる"
 msgstr "経由地でつくる"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1248
+#: src/components/admin/map-editor/MapEditor.tsx:1243
 msgid "経由地とコースの範囲"
 msgstr "経由地とコースの範囲"
 
-#: src/components/admin/map-editor/MapEditor.tsx:988
+#: src/components/admin/map-editor/MapEditor.tsx:983
 msgid "経由地のあいだの線は、道に沿って自動で引かれます。"
 msgstr "経由地のあいだの線は、道に沿って自動で引かれます。"
 
@@ -7764,7 +7759,7 @@ msgstr "経由地の順番を変えた"
 msgid "経由地は、まだありません。"
 msgstr "経由地は、まだありません。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1324
+#: src/components/admin/map-editor/MapEditor.tsx:1319
 msgid "経由地は、まだありません。地図の「経由地を置く」で置けます。"
 msgstr "経由地は、まだありません。地図の「経由地を置く」で置けます。"
 
@@ -7776,7 +7771,7 @@ msgstr "経由地ラリーにはスタンプ対象の経由地を、コースラ
 msgid "経由地を作った"
 msgstr "経由地を作った"
 
-#: src/components/admin/PlacePanel.tsx:354
+#: src/components/admin/PlacePanel.tsx:271
 msgid "経由地を保存"
 msgstr "経由地を保存"
 
@@ -7801,7 +7796,7 @@ msgstr "経由地を直した"
 msgid "経由地を直す（管理）"
 msgstr "経由地を直す（管理）"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1081
+#: src/components/admin/map-editor/MapEditor.tsx:1076
 msgid "経由地を置く"
 msgstr "経由地を置く"
 
@@ -7809,7 +7804,7 @@ msgstr "経由地を置く"
 msgid "経由地を置くと、近い順に並びます。"
 msgstr "経由地を置くと、近い順に並びます。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:71
+#: src/components/admin/map-editor/PlaceList.tsx:68
 msgid "経由地一覧"
 msgstr "経由地一覧"
 
@@ -7817,7 +7812,7 @@ msgstr "経由地一覧"
 msgid "経由地一覧に戻る"
 msgstr "経由地一覧に戻る"
 
-#: src/components/admin/PlacePanel.tsx:108
+#: src/components/admin/PlacePanel.tsx:107
 msgid "経由地名"
 msgstr "経由地名"
 
@@ -7859,7 +7854,7 @@ msgstr "線から下は、いちばん下の注意書きになります。"
 msgid "線から自動で作られます。ここでは変えられません。"
 msgstr "線から自動で作られます。ここでは変えられません。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:972
+#: src/components/admin/map-editor/MapEditor.tsx:967
 msgid "線と標高を読み込む"
 msgstr "線と標高を読み込む"
 
@@ -7875,25 +7870,25 @@ msgstr "線の太さ"
 msgid "線の標高から自動で作られます。ここでは変えられません。"
 msgstr "線の標高から自動で作られます。ここでは変えられません。"
 
-#: src/components/admin/CourseMapEditor.tsx:99
+#: src/components/admin/CourseMapEditor.tsx:96
 msgid "線の確認"
 msgstr "線の確認"
 
 #. placeholder {0}: props.distanceKm ?? 0
-#: src/components/admin/map-editor/MapEditor.tsx:1332
+#: src/components/admin/map-editor/MapEditor.tsx:1327
 msgid "線の長さ {0} km"
 msgstr "線の長さ {0} km"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1332
+#: src/components/admin/map-editor/MapEditor.tsx:1327
 msgid "線は、まだありません。"
 msgstr "線は、まだありません。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:944
+#: src/components/admin/map-editor/MapEditor.tsx:939
 msgid "線をクリックすると、その区間を選べます。数字の丸をドラッグすると、経由地を動かせます。"
 msgstr "線をクリックすると、その区間を選べます。数字の丸をドラッグすると、経由地を動かせます。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1152
-#: src/components/admin/map-editor/MapEditor.tsx:1152
+#: src/components/admin/map-editor/MapEditor.tsx:1147
+#: src/components/admin/map-editor/MapEditor.tsx:1147
 msgid "線をすべて消す"
 msgstr "線をすべて消す"
 
@@ -7905,15 +7900,15 @@ msgstr "線を引くと、標高から自動で入ります。"
 msgid "線を引くと、自動で入ります。"
 msgstr "線を引くと、自動で入ります。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1082
+#: src/components/admin/map-editor/MapEditor.tsx:1077
 msgid "線を描く"
 msgstr "線を描く"
 
-#: src/components/admin/map-editor/MapEditor.tsx:402
+#: src/components/admin/map-editor/MapEditor.tsx:397
 msgid "線を描くには、先に経由地を2つ以上置いてください（寄り道は数えません）。"
 msgstr "線を描くには、先に経由地を2つ以上置いてください（寄り道は数えません）。"
 
-#: src/components/admin/CourseMapEditor.tsx:102
+#: src/components/admin/CourseMapEditor.tsx:99
 msgid "線を確認した"
 msgstr "線を確認した"
 
@@ -7940,11 +7935,11 @@ msgstr "編集をつづける"
 msgid "編集をやめる"
 msgstr "編集をやめる"
 
-#: src/components/admin/CourseMapEditor.tsx:127
+#: src/components/admin/CourseMapEditor.tsx:124
 msgid "編集を戻しました。内容を確かめて、「保存する」を押してください。"
 msgstr "編集を戻しました。内容を確かめて、「保存する」を押してください。"
 
-#: src/components/admin/CourseMapEditor.tsx:131
+#: src/components/admin/CourseMapEditor.tsx:128
 msgid "編集を戻す"
 msgstr "編集を戻す"
 
@@ -7963,7 +7958,7 @@ msgstr "編集者・管理者は、メールまたは顔・指紋認証でログ
 
 #: src/components/admin/AccessPointsEditor.tsx:75
 #: src/components/admin/CourseAreaEditor.tsx:276
-#: src/components/admin/PlacePanel.tsx:295
+#: src/components/admin/PlacePanel.tsx:212
 #: src/components/admin/PlaceTable.tsx:139
 msgid "緯度"
 msgstr "緯度"
@@ -7984,8 +7979,8 @@ msgstr "緯度と経度は、両方書いてください"
 msgid "縦の長さ"
 msgstr "縦の長さ"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1167
-#: src/components/admin/map-editor/MapEditor.tsx:1167
+#: src/components/admin/map-editor/MapEditor.tsx:1162
+#: src/components/admin/map-editor/MapEditor.tsx:1162
 #: src/components/map/MapScreenCanvas.tsx:686
 #: src/components/map/TrailMap.tsx:581
 msgid "縮小"
@@ -8015,7 +8010,7 @@ msgstr "自分のアカウントは制限または削除することはできま
 msgid "自分の権限は変更できません。他の管理者に依頼してください。"
 msgstr "自分の権限は変更できません。他の管理者に依頼してください。"
 
-#: src/components/admin/PlacePanel.tsx:242
+#: src/components/admin/PlacePanel.tsx:159
 #: src/components/ThemeSwitcher.tsx:30
 msgid "自動"
 msgstr "自動"
@@ -8038,7 +8033,7 @@ msgstr "自動の切り替えを止める"
 msgid "自動販売機"
 msgstr "自動販売機"
 
-#: src/components/admin/map-editor/MapEditor.tsx:869
+#: src/components/admin/map-editor/MapEditor.tsx:864
 msgid "船"
 msgstr "船"
 
@@ -8187,7 +8182,7 @@ msgstr "表示している読み"
 msgid "表示する"
 msgstr "表示する"
 
-#: src/components/admin/PlacePanel.tsx:262
+#: src/components/admin/PlacePanel.tsx:179
 msgid "表示する写真"
 msgstr "表示する写真"
 
@@ -8195,11 +8190,11 @@ msgstr "表示する写真"
 msgid "表示と操作"
 msgstr "表示と操作"
 
-#: src/components/admin/PlacePanel.tsx:184
+#: src/components/admin/WaypointTypeFields.tsx:107
 msgid "表示ラベル（日本語）"
 msgstr "表示ラベル（日本語）"
 
-#: src/components/admin/PlacePanel.tsx:187
+#: src/components/admin/WaypointTypeFields.tsx:110
 msgid "表示ラベル（英語・任意）"
 msgstr "表示ラベル（英語・任意）"
 
@@ -8211,7 +8206,7 @@ msgstr "表示を見やすく設定しませんか？"
 msgid "表示名に使用できない文字が含まれているか、40文字を超えています。"
 msgstr "表示名に使用できない文字が含まれているか、40文字を超えています。"
 
-#: src/components/admin/PlacePanel.tsx:200
+#: src/components/admin/WaypointTypeFields.tsx:123
 msgid "表示専用の地点です（立ち入り禁止の場所などに使用）。スタンプ対象外となり、コースやラリーのスポット数にも含まれません。「状況の補足」に「現在立ち入り禁止」などを記載してください。公開に現地の許可確認は不要です。"
 msgstr "表示専用の地点です（立ち入り禁止の場所などに使用）。スタンプ対象外となり、コースやラリーのスポット数にも含まれません。「状況の補足」に「現在立ち入り禁止」などを記載してください。公開に現地の許可確認は不要です。"
 
@@ -8233,7 +8228,7 @@ msgstr "補足（日本語）"
 msgid "西"
 msgstr "西"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1163
+#: src/components/admin/map-editor/MapEditor.tsx:1158
 msgid "見え方"
 msgstr "見え方"
 
@@ -8241,7 +8236,7 @@ msgstr "見え方"
 msgid "見つかった写真"
 msgstr "見つかった写真"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1036
+#: src/components/admin/map-editor/MapEditor.tsx:1031
 msgid "見つかった場所"
 msgstr "見つかった場所"
 
@@ -8362,11 +8357,11 @@ msgstr "訪れる人の、全体の地図に出る四角です。ふだんは、
 msgid "訪問者が見る地図（マップ画面、コースのページ）の見た目です。地図を作る管理画面の地図は、見やすさのため、いつも「標準」です。"
 msgstr "訪問者が見る地図（マップ画面、コースのページ）の見た目です。地図を作る管理画面の地図は、見やすさのため、いつも「標準」です。"
 
-#: src/components/admin/map-editor/PlaceList.tsx:153
+#: src/components/admin/map-editor/PlaceList.tsx:150
 msgid "設定"
 msgstr "設定"
 
-#: src/components/admin/PlacePanel.tsx:206
+#: src/components/admin/PlacePanel.tsx:123
 msgid "設定すると、標準の赤いスタンプの代わりにこの画像が表示されます。正方形・背景透過の画像を推奨します。"
 msgstr "設定すると、標準の赤いスタンプの代わりにこの画像が表示されます。正方形・背景透過の画像を推奨します。"
 
@@ -8374,15 +8369,15 @@ msgstr "設定すると、標準の赤いスタンプの代わりにこの画像
 msgid "設定はあとから「メニュー」の「表示設定」で変更できます。"
 msgstr "設定はあとから「メニュー」の「表示設定」で変更できます。"
 
-#: src/components/admin/PlacePanel.tsx:344
+#: src/components/admin/PlacePanel.tsx:261
 msgid "許可元・担当者"
 msgstr "許可元・担当者"
 
-#: src/components/admin/PlacePanel.tsx:316
+#: src/components/admin/PlacePanel.tsx:233
 msgid "許可未確認"
 msgstr "許可未確認"
 
-#: src/components/admin/PlacePanel.tsx:342
+#: src/components/admin/PlacePanel.tsx:259
 msgid "許可確認済み"
 msgstr "許可確認済み"
 
@@ -8422,8 +8417,8 @@ msgstr "認証コードが正しくないか、有効期限が切れています
 #: src/components/admin/HomeTextFields.tsx:22
 #: src/components/admin/HomeTextFields.tsx:36
 #: src/components/admin/InfoTip.tsx:22
-#: src/components/admin/PlacePanel.tsx:112
-#: src/components/SpotSheet.tsx:118
+#: src/components/admin/PlacePanel.tsx:111
+#: src/components/SpotSheet.tsx:127
 msgid "説明"
 msgstr "説明"
 
@@ -8566,7 +8561,7 @@ msgstr "近くにスタンプの場所がありません。いちばん近いの
 msgid "近くのコース・スポット"
 msgstr "近くのコース・スポット"
 
-#: src/components/RallyNearbyStamp.tsx:93
+#: src/components/RallyNearbyStamp.tsx:94
 msgid "近くのスタンプを押す"
 msgstr "近くのスタンプを押す"
 
@@ -8579,7 +8574,7 @@ msgstr "近くのトイレ"
 msgid "追加"
 msgstr "追加"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1236
+#: src/components/admin/map-editor/MapEditor.tsx:1231
 msgid "追加しない"
 msgstr "追加しない"
 
@@ -8587,7 +8582,7 @@ msgstr "追加しない"
 msgid "追加しました"
 msgstr "追加しました"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1233
+#: src/components/admin/map-editor/MapEditor.tsx:1228
 #: src/components/admin/PhotoListEditor.tsx:140
 msgid "追加する"
 msgstr "追加する"
@@ -8647,15 +8642,15 @@ msgstr "通る順に並べます。市・町・村は一覧から選びます。
 msgid "通信エラーが発生しました。もう一度お試しください。"
 msgstr "通信エラーが発生しました。もう一度お試しください。"
 
-#: src/components/StampHere.tsx:155
+#: src/components/StampHere.tsx:153
 msgid "通信できないため、あとで自動送信します。"
 msgstr "通信できないため、あとで自動送信します。"
 
-#: src/components/admin/PlacePanel.tsx:72
+#: src/components/admin/PlacePanel.tsx:71
 msgid "通常"
 msgstr "通常"
 
-#: src/components/admin/PlacePanel.tsx:72
+#: src/components/admin/PlacePanel.tsx:71
 #: src/components/landing/TrailNotices.tsx:37
 msgid "通行止め"
 msgstr "通行止め"
@@ -8668,7 +8663,7 @@ msgstr "通行止めなどがあれば、ここに表示されます。"
 msgid "通行止めなどで道が通れない場合は、無理をせず引き返しください。"
 msgstr "通行止めなどで道が通れない場合は、無理をせず引き返しください。"
 
-#: src/components/admin/PlacePanel.tsx:244
+#: src/components/admin/PlacePanel.tsx:161
 msgid "通過する"
 msgstr "通過する"
 
@@ -8698,11 +8693,11 @@ msgstr "過去{0}日"
 msgid "道からはずれています"
 msgstr "道からはずれています"
 
-#: src/components/admin/map-editor/MapEditor.tsx:310
+#: src/components/admin/map-editor/MapEditor.tsx:305
 msgid "道が見つかりませんでした。ガイド点は残してあります。"
 msgstr "道が見つかりませんでした。ガイド点は残してあります。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:953
+#: src/components/admin/map-editor/MapEditor.tsx:948
 msgid "道すじ"
 msgstr "道すじ"
 
@@ -8731,7 +8726,7 @@ msgstr "道の外・歩ける道"
 msgid "道の外・直線"
 msgstr "道の外・直線"
 
-#: src/components/admin/map-editor/MapEditor.tsx:315
+#: src/components/admin/map-editor/MapEditor.tsx:310
 msgid "道の探索サービスが使えなかったため、地図の道（国土地理院）で探しました。いつもと違う道になることがあります。形をよく確かめてください。「元に戻す」で、もとの線にもどせます。"
 msgstr "道の探索サービスが使えなかったため、地図の道（国土地理院）で探しました。いつもと違う道になることがあります。形をよく確かめてください。「元に戻す」で、もとの線にもどせます。"
 
@@ -8766,12 +8761,12 @@ msgstr "道まで {0}（{1}）"
 msgid "道や建物、記号が細かく描かれた、いちばん詳しい地図です。"
 msgstr "道や建物、記号が細かく描かれた、いちばん詳しい地図です。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1102
+#: src/components/admin/map-editor/MapEditor.tsx:1097
 msgid "道を探す"
 msgstr "道を探す"
 
-#: src/components/admin/map-editor/MapEditor.tsx:291
-#: src/components/admin/map-editor/MapEditor.tsx:988
+#: src/components/admin/map-editor/MapEditor.tsx:286
+#: src/components/admin/map-editor/MapEditor.tsx:983
 msgid "道を調べています…"
 msgstr "道を調べています…"
 
@@ -8803,13 +8798,9 @@ msgstr "達成日"
 msgid "遠いとみなす距離"
 msgstr "遠いとみなす距離"
 
-#: src/components/admin/PlacePanel.tsx:173
+#: src/components/admin/WaypointTypeFields.tsx:103
 msgid "遥拝場所"
 msgstr "遥拝場所"
-
-#: src/components/admin/map-editor/PlaceList.tsx:189
-msgid "遥拝場所（スタンプを押す地点）"
-msgstr "遥拝場所（スタンプを押す地点）"
 
 #: src/components/admin/GradingFields.tsx:67
 #: src/components/admin/GradingFields.tsx:97
@@ -8824,7 +8815,7 @@ msgstr "選ばない（すべて同じ太さで表示）"
 msgid "選びなおす"
 msgstr "選びなおす"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1080
+#: src/components/admin/map-editor/MapEditor.tsx:1075
 msgid "選ぶ・動かす"
 msgstr "選ぶ・動かす"
 
@@ -8854,16 +8845,16 @@ msgstr "選んだファイルの中にありません"
 msgid "選んだもの"
 msgstr "選んだもの"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1181
+#: src/components/admin/map-editor/MapEditor.tsx:1176
 msgid "選んだ区間"
 msgstr "選んだ区間"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1183
+#: src/components/admin/map-editor/MapEditor.tsx:1178
 msgid "選んだ区間：{legName}"
 msgstr "選んだ区間：{legName}"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1152
-#: src/components/admin/map-editor/MapEditor.tsx:1152
+#: src/components/admin/map-editor/MapEditor.tsx:1147
+#: src/components/admin/map-editor/MapEditor.tsx:1147
 msgid "選んだ区間の線を消す"
 msgstr "選んだ区間の線を消す"
 
@@ -8882,11 +8873,11 @@ msgstr "選んだ読みを承認する（{0}件）"
 msgid "選んでください"
 msgstr "選んでください"
 
-#: src/components/admin/map-editor/PlaceList.tsx:222
+#: src/components/admin/map-editor/PlaceList.tsx:174
 msgid "選択してください"
 msgstr "選択してください"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1218
+#: src/components/admin/map-editor/MapEditor.tsx:1213
 msgid "選択をやめる"
 msgstr "選択をやめる"
 
@@ -8928,8 +8919,8 @@ msgstr "金曜日"
 #: src/components/admin/BlockEditor.tsx:599
 #: src/components/admin/BlockEditor.tsx:612
 #: src/components/admin/HomeBanners.tsx:32
-#: src/components/admin/map-editor/MapEditor.tsx:1050
-#: src/components/admin/map-editor/PlaceList.tsx:153
+#: src/components/admin/map-editor/MapEditor.tsx:1045
+#: src/components/admin/map-editor/PlaceList.tsx:150
 #: src/components/admin/PhotoLibrary.tsx:130
 #: src/components/admin/SharedPlaces.tsx:181
 #: src/components/admin/Toaster.tsx:48
@@ -8971,6 +8962,10 @@ msgstr "閉店・撤去"
 msgid "閉鎖中"
 msgstr "閉鎖中"
 
+#: src/components/admin/WaypointTypeFields.tsx:71
+msgid "閉鎖時のスタンプ地点"
+msgstr "閉鎖時のスタンプ地点"
+
 #: src/components/map/MapSheet.tsx:165
 #: src/components/map/MapSheet.tsx:166
 #: src/components/TabBar.tsx:174
@@ -9007,7 +9002,7 @@ msgstr "難易度"
 msgid "電波がなくて送れなかったスタンプが{0}件あります。このアカウントには、すでに{1}個のスタンプがあります。このアカウントに送りますか？"
 msgstr "電波がなくて送れなかったスタンプが{0}件あります。このアカウントには、すでに{1}個のスタンプがあります。このアカウントに送りますか？"
 
-#: src/components/StampHere.tsx:156
+#: src/components/StampHere.tsx:154
 msgid "電波が回復すると自動で送信されます。送信時に確認を行うため、スポットが閉鎖中になっている場合などは獲得できないことがあります。"
 msgstr "電波が回復すると自動で送信されます。送信時に確認を行うため、スポットが閉鎖中になっている場合などは獲得できないことがあります。"
 
@@ -9025,7 +9020,7 @@ msgid "電話番号"
 msgstr "電話番号"
 
 #: src/components/AccessList.tsx:9
-#: src/components/admin/map-editor/MapEditor.tsx:869
+#: src/components/admin/map-editor/MapEditor.tsx:864
 #: src/components/ElevationChart.tsx:44
 msgid "電車"
 msgstr "電車"
@@ -9042,7 +9037,7 @@ msgstr "電車で約{minutes}分"
 msgid "電車で約{n}分"
 msgstr "電車で約{n}分"
 
-#: src/components/admin/PlacePanel.tsx:362
+#: src/components/admin/PlacePanel.tsx:279
 msgid "非公開にする"
 msgstr "非公開にする"
 
@@ -9075,13 +9070,13 @@ msgstr "順"
 msgid "順番"
 msgstr "順番"
 
-#: src/components/admin/map-editor/PlaceList.tsx:105
-#: src/components/admin/PlacePanel.tsx:396
+#: src/components/admin/map-editor/PlaceList.tsx:102
+#: src/components/admin/PlacePanel.tsx:313
 msgid "順番を前へ"
 msgstr "順番を前へ"
 
-#: src/components/admin/map-editor/PlaceList.tsx:108
-#: src/components/admin/PlacePanel.tsx:399
+#: src/components/admin/map-editor/PlaceList.tsx:105
+#: src/components/admin/PlacePanel.tsx:316
 msgid "順番を後ろへ"
 msgstr "順番を後ろへ"
 

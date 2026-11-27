@@ -51,17 +51,10 @@ export interface EditorPlace {
   info?: boolean;
 }
 
-/** What the list under the map can change on a waypoint. */
+/** What the list under the map changes on a waypoint by itself; the rest of its settings come from placeSettings. */
 export interface PlacePatch {
   nameJa?: string;
-  kind?: PointKind;
-  stampable?: boolean;
-  stopBy?: boolean;
-  /** Not connected to the route (遥拝); turned off with stopBy. */
-  detached?: boolean;
-  /** 案内のみ on or off (the editor fills in the status and the ready-made note). */
-  info?: boolean;
-  /** The saved waypoint it is worshipped from (遥拝), or null. */
+  /** The saved waypoint it is worshipped from (遥拝), or null: chosen by clicking its pin. */
   stampSpotId?: string | null;
 }
 
@@ -107,6 +100,8 @@ export interface MapEditorProps {
   onSelectPlace: (key: string | null) => void;
   /** Changes a waypoint's name, kind, stamp switch or side-trip switch. */
   onPatchPlace: (key: string, patch: PlacePatch) => void;
+  /** The open waypoint's 種類 and switches (WaypointTypeFields, the same as the 経由地 tab), with the map's 遥拝 pick button. */
+  placeSettings: (key: string, pickOnMap: ReactNode) => ReactNode;
   /** The course's box on the visitors' overview map (コースの範囲), edited on this same map; left out where there is none. */
   area?: { value: Bounds | null; onChange: (area: Bounds | null) => void };
   /** Asks the route-finding service for a walking line through these points (the editor says what went wrong). */
