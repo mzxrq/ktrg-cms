@@ -30,7 +30,7 @@ export default async function PasskeysPage({ searchParams }: { searchParams: Pro
           <p className="text-lg">
             <Trans>この端末で設定すると、顔や指紋で、メールを待たずにログインできます。画面に「パスキー」と出ることがありますが、同じものです。</Trans>
           </p>
-          <LoginMethods locale={i18n.locale} />
+          <LoginMethods locale={i18n.locale} staff={viewer.role === "admin" || viewer.role === "editor"} />
         </>
       ) : (
         <SignInPrompt />

@@ -4,7 +4,7 @@ import { useLingui } from "@lingui/react/macro";
 import { useAgeRangeNames, useFoundViaNames, useGenderNames } from "@/components/auth/AboutYou";
 import { useOriginNames } from "@/components/auth/authUi";
 import { placeName } from "@/lib/origin-places";
-import { UserIcon } from "@/components/icons";
+import { Avatar } from "@/components/blog/Avatar";
 import { formatPublicId, type AgeRange, type FoundVia, type Gender, type Origin } from "@/lib/auth-flow";
 
 export interface ProfileCardProps {
@@ -13,6 +13,8 @@ export interface ProfileCardProps {
   deletionDueAt: string | null;
   locale: string;
   name: string | null;
+  /** Their photo (staff set one for the blog byline); without it the first letter of the name. */
+  avatarUrl?: string | null;
   origin: Origin | null;
   originPlace?: string | null;
   ageRange: AgeRange | null;
@@ -28,7 +30,7 @@ export interface ProfileCardProps {
  * Who is signed in, as a card: the name, what they said about themselves, and their ID. Only shows; changing anything and
  * deleting the account happen on the profile page (ProfileSettings). `readOnly` is the small version for the menu.
  */
-export function ProfileCard({ publicId, name, origin, originPlace = null, ageRange, gender, foundVia, email, readOnly = false }: ProfileCardProps) {
+export function ProfileCard({ publicId, name, avatarUrl = null, origin, originPlace = null, ageRange, gender, foundVia, email, readOnly = false }: ProfileCardProps) {
   const { t, i18n } = useLingui();
   const originNames = useOriginNames();
   const ageNames = useAgeRangeNames();
@@ -38,9 +40,7 @@ export function ProfileCard({ publicId, name, origin, originPlace = null, ageRan
 
   return (
     <section aria-label={t`プロフィール`} className={`mx-4 flex items-center rounded-lg bg-surface ${readOnly ? "gap-3 p-3" : "pattern-shippo gap-4 p-5"}`}>
-      <span className={`flex shrink-0 items-center justify-center rounded-full bg-brand text-on-brand ${readOnly ? "size-10 [&_svg]:size-5" : "size-14 [&_svg]:size-7"}`}>
-        <UserIcon />
-      </span>
+      <Avatar src={avatarUrl} name={name} size={readOnly ? 40 : 56} />
       <div className="min-w-0 flex-1">
         <p className={`break-words font-bold leading-snug ${readOnly ? "text-lg" : "text-xl"}`}>{name ?? t`お名前は未設定です`}</p>
         <p className={`text-muted ${text}`}>{(originPlace && placeName(originPlace, i18n.locale)) || (origin ? originNames[origin] : t`どちらからかは未設定です`)}</p>

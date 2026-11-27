@@ -949,7 +949,7 @@ msgid "アウトドア"
 msgstr "Outdoors"
 
 #: src/app/(public)/sitemap/page.tsx:103
-#: src/components/admin/AdminProfileMenu.tsx:114
+#: src/components/admin/AdminProfileMenu.tsx:118
 #: src/components/SiteHeader.tsx:360
 msgid "アカウント"
 msgstr "Account"
@@ -2240,7 +2240,7 @@ msgstr "Site and server"
 msgid "サイトに反映しますか？"
 msgstr "Publish this to the site?"
 
-#: src/components/admin/AdminProfileMenu.tsx:112
+#: src/components/admin/AdminProfileMenu.tsx:116
 msgid "サイトのトップへ"
 msgstr "Go to the site's home"
 
@@ -2674,7 +2674,7 @@ msgstr "Other"
 msgid "その名前の場所は見つかりませんでした。"
 msgstr "No place with that name was found."
 
-#: src/components/admin/AdminProfileMenu.tsx:136
+#: src/components/admin/AdminProfileMenu.tsx:140
 #: src/components/ThemeSwitcher.tsx:30
 msgid "ダーク"
 msgstr "Dark"
@@ -2804,7 +2804,7 @@ msgstr "Database (stamps, sign-in, content)"
 msgid "データを読み込めませんでした。時間をおいてページを再読み込みしてください。"
 msgstr "Failed to load data. Please wait a moment and reload the page."
 
-#: src/components/admin/AdminProfileMenu.tsx:133
+#: src/components/admin/AdminProfileMenu.tsx:137
 #: src/components/SiteHeader.tsx:435
 msgid "テーマ"
 msgstr "Theme"
@@ -3275,12 +3275,12 @@ msgstr "Blog"
 #: src/app/(public)/profile/page.tsx:26
 #: src/app/(public)/settings/passkeys/page.tsx:23
 #: src/app/(public)/sitemap/page.tsx:105
-#: src/components/ProfileCard.tsx:40
+#: src/components/ProfileCard.tsx:42
 #: src/components/ProfileSettings.tsx:190
 msgid "プロフィール"
 msgstr "Profile"
 
-#: src/components/admin/AdminProfileMenu.tsx:117
+#: src/components/admin/AdminProfileMenu.tsx:121
 msgid "プロフィール（名前・写真）"
 msgstr "Profile (name and photo)"
 
@@ -3778,7 +3778,7 @@ msgstr "."
 msgid "ライセンス情報"
 msgstr "Licenses"
 
-#: src/components/admin/AdminProfileMenu.tsx:136
+#: src/components/admin/AdminProfileMenu.tsx:140
 #: src/components/ThemeSwitcher.tsx:30
 msgid "ライト"
 msgstr "Light"
@@ -3965,7 +3965,7 @@ msgstr "Route"
 msgid "ルート外"
 msgstr "Off-route"
 
-#: src/components/admin/AdminProfileMenu.tsx:142
+#: src/components/admin/AdminProfileMenu.tsx:146
 #: src/components/SiteHeader.tsx:387
 msgid "ログアウト"
 msgstr "Log out"
@@ -7519,8 +7519,8 @@ msgstr "Only administrators can use the admin area. If you need access, tell an 
 msgid "管理画面を開く"
 msgstr "Open the admin area"
 
-#: src/components/admin/AdminProfileMenu.tsx:91
-#: src/components/admin/AdminProfileMenu.tsx:104
+#: src/components/admin/AdminProfileMenu.tsx:95
+#: src/components/admin/AdminProfileMenu.tsx:106
 msgid "管理者"
 msgstr "Admin"
 
@@ -7888,8 +7888,8 @@ msgstr "Restore edits"
 msgid "編集済み"
 msgstr "Edited"
 
-#: src/components/admin/AdminProfileMenu.tsx:91
-#: src/components/admin/AdminProfileMenu.tsx:104
+#: src/components/admin/AdminProfileMenu.tsx:95
+#: src/components/admin/AdminProfileMenu.tsx:106
 msgid "編集者"
 msgstr "Editor"
 
@@ -8110,7 +8110,7 @@ msgstr "Delete table"
 msgid "表示"
 msgstr "View"
 
-#: src/components/admin/AdminProfileMenu.tsx:127
+#: src/components/admin/AdminProfileMenu.tsx:131
 #: src/components/SiteHeader.tsx:430
 msgid "表示・設定"
 msgstr "Display & Settings"
@@ -8197,7 +8197,7 @@ msgstr "Nothing found."
 msgid "見どころ"
 msgstr "Point of interest"
 
-#: src/components/admin/AdminProfileMenu.tsx:121
+#: src/components/admin/AdminProfileMenu.tsx:125
 #: src/components/SiteHeader.tsx:456
 msgid "見やすさの設定"
 msgstr "Display settings"
@@ -8255,7 +8255,7 @@ msgstr "Word added. Visitors will see it."
 msgid "言葉を加える"
 msgstr "Add a word"
 
-#: src/components/admin/AdminProfileMenu.tsx:129
+#: src/components/admin/AdminProfileMenu.tsx:133
 #: src/components/LocaleSwitcher.tsx:20
 #: src/components/LocaleSwitcher.tsx:55
 #: src/components/SiteHeader.tsx:442
@@ -9047,7 +9047,7 @@ msgstr "Sign up with face or fingerprint"
 msgid "顔・指紋で登録する"
 msgstr "Continue"
 
-#: src/components/admin/AdminProfileMenu.tsx:125
+#: src/components/admin/AdminProfileMenu.tsx:129
 msgid "顔・指紋のログイン"
 msgstr "Passkeys"
 

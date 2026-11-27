@@ -85,7 +85,7 @@ function EmailMethod({ email, locale, onAdded }: { email: string | null; locale:
   );
 }
 
-export function LoginMethods({ locale }: { locale: string }) {
+export function LoginMethods({ locale, staff = false }: { locale: string; /** Admins and editors: no password and no Google/LINE/Apple (the server refuses both), so neither is offered. */ staff?: boolean }) {
   const language = locale === "en" ? "en" : "ja";
   // undefined while asking the server; an unknown answer never blocks, the server has the last word.
   const [email, setEmail] = useState<string | null | undefined>(undefined);
@@ -107,8 +107,8 @@ export function LoginMethods({ locale }: { locale: string }) {
     <div className="flex flex-col gap-6">
       {email !== undefined ? <EmailMethod email={email} locale={language} onAdded={setEmail} /> : null}
       <PasskeyManager locale={locale} hasEmail={email !== null} />
-      {email !== undefined ? <PasswordMethod hasEmail={email !== null} /> : null}
-      <SsoMethods />
+      {email !== undefined && !staff ? <PasswordMethod hasEmail={email !== null} /> : null}
+      {staff ? null : <SsoMethods />}
     </div>
   );
 }

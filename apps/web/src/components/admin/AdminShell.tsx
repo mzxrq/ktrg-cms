@@ -9,7 +9,7 @@ const adminLightScript = "if(!document.documentElement.dataset.theme)document.do
 
 // The frame of every admin page: a menu on the left (folded behind a button on a narrow screen) that ends with who is signed
 // in, the language and the theme, and the page itself. Its top holds the way to the same page on the site visitors see.
-export function AdminShell({ name, role, lists, children }: { name: string | null; role: "editor" | "admin" | null; lists: { key: string; title: string }[]; children: ReactNode }) {
+export function AdminShell({ name, avatarUrl = null, role, lists, children }: { name: string | null; avatarUrl?: string | null; role: "editor" | "admin" | null; lists: { key: string; title: string }[]; children: ReactNode }) {
   return (
     <AdminFrame
       aside={
@@ -22,7 +22,7 @@ export function AdminShell({ name, role, lists, children }: { name: string | nul
           <AdminNav lists={lists} isAdmin={role === "admin"} footer={null} />
           {/* Always in sight: in the top bar on a phone, at the foot of the menu on a wide screen. */}
           <div className="ml-auto lg:sticky lg:bottom-0 lg:z-10 lg:ml-0 lg:mt-auto lg:border-t lg:border-line lg:bg-paper lg:py-3 lg:group-data-[folded=true]:py-2">
-            <AdminProfileMenu name={name} role={role} />
+            <AdminProfileMenu name={name} avatarUrl={avatarUrl} role={role} />
           </div>
           {/* Light before the first paint (admin screens do not follow the device); see AdminProfileMenu. */}
           <script dangerouslySetInnerHTML={{ __html: adminLightScript }} />
