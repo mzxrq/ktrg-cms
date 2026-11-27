@@ -897,7 +897,8 @@ describe.skipIf(!url)("seed on real PostgreSQL", () => {
       const [route] = await tx.select().from(routes).orderBy(asc(routes.sortOrder)).offset(3).limit(1);
       const [a, b] = await tx.select().from(spots).where(eq(spots.routeId, route!.id)).orderBy(asc(spots.sortOrder));
       await tx.update(spots).set({ lat: 34.2, lng: 135.05, published: false, positionVerified: true, permissionConfirmed: true }).where(eq(spots.id, b!.id));
-      await tx.update(spots).set({ lat: 34.3, lng: 135.1, stampSpotId: b!.id }).where(eq(spots.id, a!.id));
+      // A 遥拝 place is off the route (detached, always also a side trip): since #631 only such a place, or a closed one, is stamped at its waypoint.
+      await tx.update(spots).set({ lat: 34.3, lng: 135.1, stampSpotId: b!.id, detached: true, stopBy: true }).where(eq(spots.id, a!.id));
       // The waypoint it is worshipped from is still a draft: nowhere to stamp yet.
       expect(await store.findSpot(a!.id)).toMatchObject({ lat: null, lng: null });
       await tx.update(spots).set({ published: true }).where(eq(spots.id, b!.id));
@@ -905,6 +906,11 @@ describe.skipIf(!url)("seed on real PostgreSQL", () => {
       expect(await store.findSpot(b!.id)).toMatchObject({ lat: 34.2, lng: 135.05 });
       const many = await store.findSpots([a!.id, b!.id]);
       expect(many.find((s) => s.id === a!.id)).toMatchObject({ lat: 34.2, lng: 135.05 });
+      // On the trail and open, a place with a 閉鎖時のスタンプ地点 is stamped at its own position until it closes.
+      await tx.update(spots).set({ detached: false, stopBy: false }).where(eq(spots.id, a!.id));
+      expect(await store.findSpot(a!.id)).toMatchObject({ lat: 34.3, lng: 135.1, stampSpotId: null });
+      await tx.update(spots).set({ status: "closed" }).where(eq(spots.id, a!.id));
+      expect(await store.findSpot(a!.id)).toMatchObject({ lat: 34.2, lng: 135.05, stampSpotId: b!.id });
     });
   });
 
