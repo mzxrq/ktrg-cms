@@ -19,10 +19,15 @@ export function createMemoryStampStore(audit: AuditWriter, opts: { now?: () => D
   const uuid = () => `00000000-0000-4000-8000-${String(++n).padStart(12, "0")}`;
   const nothing = () => ({ routeIds: [], rallyIds: [] });
 
-  // As the SQL store: a 遥拝 place's stamp follows its waypoint's status (its own 情報のみ aside). Positions are set by the tests.
+  // As the SQL store: a place stamped at its waypoint (遥拝 always, any other place while closed) takes the waypoint's
+  // position, range and status; otherwise its link is not in use.
   const asStamped = (s: StampSpot): StampSpot => {
-    const from = s.stampSpotId && s.status !== "info" ? spots.get(s.stampSpotId) : undefined;
-    return from ? { ...s, status: from.status, statusUpdatedAt: from.statusUpdatedAt ?? null } : s;
+    const uses = !!s.stampSpotId && s.status !== "info" && (s.detached === true || s.status === "closed");
+    const from = uses ? spots.get(s.stampSpotId!) : undefined;
+    if (!uses) return { ...s, stampSpotId: null };
+    return from
+      ? { ...s, lat: from.lat, lng: from.lng, radiusM: from.radiusM, status: from.status, statusUpdatedAt: from.statusUpdatedAt ?? null }
+      : { ...s, lat: null, lng: null };
   };
   const store: StampStore = {
     async findSpot(id) {
@@ -34,7 +39,7 @@ export function createMemoryStampStore(audit: AuditWriter, opts: { now?: () => D
     },
     async linkedSpots(spot) {
       const hub = spot.stampSpotId ?? spot.id;
-      return [...spots.values()].filter((s) => s.id !== spot.id && (s.id === hub || s.stampSpotId === hub)).map((s) => ({ ...asStamped(s), nameJa: s.id, nameEn: null }));
+      return [...spots.values()].map(asStamped).filter((s) => s.id !== spot.id && (s.id === hub || s.stampSpotId === hub)).map((s) => ({ ...s, nameJa: s.id, nameEn: null }));
     },
     async awardMany(userId, items) {
       let added = 0;

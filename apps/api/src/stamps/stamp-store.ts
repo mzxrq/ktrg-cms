@@ -10,22 +10,27 @@ import { withTravel, type Fix } from "./travel";
 /** The waypoint a place is worshipped from (遥拝). */
 const stampFrom = alias(spots, "stamp_from");
 
+// Whether a place's stamp is pressed at the waypoint it points to (spots.stamp_spot_id): always for a place worshipped from
+// afar (遥拝, 道とつながらない), and for any other place only while it is closed, e.g. a path lost to a landslide (2026-11-27,
+// user). A place set to 情報のみ offers no stamp at all.
+const usesStampFrom = sql`(${spots.stampSpotId} is not null and ${spots.status} <> 'info' and (${spots.detached} or ${spots.status} = 'closed'))`;
+
 const spotColumns = {
   id: spots.id,
   routeId: spots.routeId,
   published: spots.published,
   stampable: spots.stampable,
   positionVerified: spots.positionVerified,
-  // Where the stamp is pressed: the place itself, or for a place worshipped from afar (遥拝) the waypoint it points to, only
-  // while that one is published with a checked position (otherwise nowhere, so the place cannot be stamped).
-  lat: sql<number | null>`case when ${spots.stampSpotId} is null then ${spots.lat} when ${stampFrom.published} and ${stampFrom.positionVerified} then ${stampFrom.lat} end`.mapWith(Number),
-  lng: sql<number | null>`case when ${spots.stampSpotId} is null then ${spots.lng} when ${stampFrom.published} and ${stampFrom.positionVerified} then ${stampFrom.lng} end`.mapWith(Number),
-  radiusM: spots.radiusM,
-  // Whether the stamp can be pressed follows where it is pressed (2026-11-27, user): a 遥拝 place closed itself is still
-  // stamped from its open waypoint, and not while that waypoint is closed. Its own 情報のみ still means no stamp.
-  status: sql<StampSpot["status"]>`case when ${spots.stampSpotId} is null or ${spots.status} = 'info' then ${spots.status} else ${stampFrom.status} end`.mapWith(spots.status),
-  statusUpdatedAt: sql<Date | null>`case when ${spots.stampSpotId} is null or ${spots.status} = 'info' then ${spots.statusUpdatedAt} else ${stampFrom.statusUpdatedAt} end`.mapWith(spots.statusUpdatedAt),
-  stampSpotId: spots.stampSpotId,
+  // Where, how near and whether the stamp can be pressed all follow where it is pressed: the place itself, or its waypoint
+  // (only while that one is published with a checked position, otherwise nowhere, so the place cannot be stamped). The
+  // waypoint's range decides for every place stamped there (user, 2026-11-27).
+  lat: sql<number | null>`case when not ${usesStampFrom} then ${spots.lat} when ${stampFrom.published} and ${stampFrom.positionVerified} then ${stampFrom.lat} end`.mapWith(Number),
+  lng: sql<number | null>`case when not ${usesStampFrom} then ${spots.lng} when ${stampFrom.published} and ${stampFrom.positionVerified} then ${stampFrom.lng} end`.mapWith(Number),
+  radiusM: sql<number>`case when ${usesStampFrom} then ${stampFrom.radiusM} else ${spots.radiusM} end`.mapWith(Number),
+  status: sql<StampSpot["status"]>`case when ${usesStampFrom} then ${stampFrom.status} else ${spots.status} end`.mapWith(spots.status),
+  statusUpdatedAt: sql<Date | null>`case when ${usesStampFrom} then ${stampFrom.statusUpdatedAt} else ${spots.statusUpdatedAt} end`.mapWith(spots.statusUpdatedAt),
+  // Only while in use, so one press links exactly the places stamped at the same waypoint.
+  stampSpotId: sql<string | null>`case when ${usesStampFrom} then ${spots.stampSpotId} end`,
 };
 
 const nameJa = alias(spotTranslations, "name_ja");
@@ -50,7 +55,7 @@ export function createDrizzleStampStore(db: Db): StampStore {
         .leftJoin(stampFrom, eq(stampFrom.id, spots.stampSpotId))
         .leftJoin(nameJa, and(eq(nameJa.spotId, spots.id), eq(nameJa.locale, "ja")))
         .leftJoin(nameEn, and(eq(nameEn.spotId, spots.id), eq(nameEn.locale, "en")))
-        .where(and(or(eq(spots.id, hub), eq(spots.stampSpotId, hub)), ne(spots.id, spot.id)));
+        .where(and(or(eq(spots.id, hub), and(eq(spots.stampSpotId, hub), usesStampFrom)), ne(spots.id, spot.id)));
       return rows.map((r) => ({ ...r, nameJa: r.nameJa ?? "", nameEn: r.nameEn }));
     },
 

@@ -14,8 +14,11 @@ export interface StampSpot {
   lng: number | null;
   radiusM: number;
   status: SpotStatus;
-  /** The waypoint it is worshipped from (遥拝); lat/lng above are already that waypoint's. */
+  /** The waypoint its stamp is pressed at, only while in use (遥拝 always, any other place while closed); lat/lng, radius
+   *  and status above are then already that waypoint's. */
   stampSpotId?: string | null;
+  /** 道とつながらない (遥拝): its waypoint is always used. Only the in-memory test store reads it; the SQL store works it out. */
+  detached?: boolean;
   /** When the status last changed: an offline stamp pressed before a closure is still accepted. */
   statusUpdatedAt?: Date | null;
 }

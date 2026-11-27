@@ -101,9 +101,9 @@ describe("collecting a stamp", () => {
     const { stamp, cookies, call, mem } = await setup();
     const MOUND = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
     const CLOSED = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
-    // The store gives a 遥拝 place the waypoint's position already (see stamp-store), so here it stands at HERE too.
-    mem.spots.set(MOUND, spot({ id: MOUND, stampSpotId: SPOT_ID }));
-    mem.spots.set(CLOSED, spot({ id: CLOSED, stampSpotId: SPOT_ID, status: "closed" }));
+    // 遥拝 places (道とつながらない): their own position and range do not matter, the waypoint's do (see stamp-store).
+    mem.spots.set(MOUND, spot({ id: MOUND, stampSpotId: SPOT_ID, detached: true, lat: 0, lng: 0, radiusM: 1 }));
+    mem.spots.set(CLOSED, spot({ id: CLOSED, stampSpotId: SPOT_ID, detached: true, status: "closed" }));
     const first = (await (await stamp(cookies.alice)).json()) as Json;
     // A 遥拝 place closed itself is still stamped from its open waypoint (2026-11-27, user).
     expect(first.stamp.also.map((s: Json) => s.spotId).sort()).toEqual([MOUND, CLOSED].sort());
@@ -120,11 +120,22 @@ describe("collecting a stamp", () => {
     const { stamp, cookies, answer, mem } = await setup();
     const MOUND = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
     const INFO = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
-    mem.spots.set(MOUND, spot({ id: MOUND, stampSpotId: SPOT_ID }));
-    mem.spots.set(INFO, spot({ id: INFO, stampSpotId: SPOT_ID, status: "info" }));
+    mem.spots.set(MOUND, spot({ id: MOUND, stampSpotId: SPOT_ID, detached: true }));
+    mem.spots.set(INFO, spot({ id: INFO, stampSpotId: SPOT_ID, detached: true, status: "info" }));
     expect((((await (await stamp(cookies.alice)).json()) as Json).stamp.also as Json[]).map((s) => s.spotId)).toEqual([MOUND]);
     mem.spots.set(SPOT_ID, { ...mem.spots.get(SPOT_ID)!, status: "closed", statusUpdatedAt: new Date() });
     expect(await answer(await stamp(cookies.bob, { spotId: MOUND }))).toEqual([409, "spot_closed"]);
+  });
+
+  test("閉鎖時のスタンプ地点: an on-trail place is stamped at its waypoint only while it is closed", async () => {
+    const { stamp, cookies, answer, mem } = await setup();
+    const TRAIL = "ffffffff-ffff-4fff-8fff-ffffffffffff";
+    // Far from HERE, with a fallback at SPOT_ID (which stands at HERE).
+    mem.spots.set(TRAIL, spot({ id: TRAIL, stampSpotId: SPOT_ID, lat: 34.5, lng: 135.5 }));
+    expect((((await (await stamp(cookies.alice)).json()) as Json).stamp.also ?? []) as Json[]).toEqual([]); // open: not here
+    expect(await answer(await stamp(cookies.alice, { spotId: TRAIL }))).toEqual([409, "too_far"]); // open: at the place itself
+    mem.spots.set(TRAIL, { ...mem.spots.get(TRAIL)!, status: "closed", statusUpdatedAt: new Date() });
+    expect((((await (await stamp(cookies.bob)).json()) as Json).stamp.also as Json[]).map((s) => s.spotId)).toEqual([TRAIL]);
   });
 
   test("user B never sees user A's stamps, and stamps for themselves only", async () => {
