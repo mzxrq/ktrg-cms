@@ -988,7 +988,6 @@ msgid "アカウント設定"
 msgstr "Account settings"
 
 #: src/app/(admin)/admin/page.tsx:67
-#: src/components/RallyBook.tsx:158
 #: src/components/RouteView.tsx:131
 msgid "アクセス"
 msgstr "Visits"
@@ -1399,6 +1398,10 @@ msgstr "Click to remove this point"
 #: src/components/landing/Landing.tsx:200
 msgid "グルメ"
 msgstr "Gourmet"
+
+#: src/components/InfoTip.tsx:42
+msgid "くわしく見る"
+msgstr "Learn more"
 
 #: src/components/GuestNag.tsx:91
 msgid "ゲストのまま使う"
@@ -1949,6 +1952,10 @@ msgstr "Other stamps collectible here: {0}"
 #: src/components/StatusBanner.tsx:77
 msgid "この場所にスタンプ対象外です。"
 msgstr "No stamp is available at this spot."
+
+#: src/components/RallyBook.tsx:176
+msgid "この場所のページを開く"
+msgstr "Open this place's page"
 
 #: src/components/map/PlacesPanel.tsx:261
 msgid "この場所の位置は仮のもので、まだ確認されていません。"
@@ -2730,6 +2737,14 @@ msgstr "Next"
 msgid "つぎにもらえそうなバッジ"
 msgstr "The badge closest to hand"
 
+#: src/components/RallyBook.tsx:131
+msgid "つぎに押す場所"
+msgstr "Your next stamp"
+
+#: src/components/RallyBook.tsx:147
+msgid "つぎの場所まで"
+msgstr "To the next place"
+
 #: src/components/auth/RegisterFlow.tsx:128
 #: src/components/auth/RegisterFlow.tsx:184
 #: src/components/settings/WelcomeFlow.tsx:165
@@ -3450,6 +3465,7 @@ msgid "まず、GPXファイルをここにドラッグするか「GPXファイ�
 msgstr "Start by dragging a GPX file here or pressing \"Load a GPX file\". To enter by hand, place waypoints with \"Add waypoint\", then draw the path leg by leg with \"Draw path\"."
 
 #: src/components/admin/RouteEditor.tsx:435
+#: src/components/RallyBook.tsx:133
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:10
 msgid "まだ"
@@ -5184,10 +5200,6 @@ msgstr "Ask to delete"
 msgid "削除を取り消す"
 msgstr "Cancel deletion"
 
-#: src/components/RallyBook.tsx:181
-msgid "前のスポット"
-msgstr "Previous spot"
-
 #: src/components/SpotStats.tsx:33
 msgid "前のスポットから"
 msgstr "From previous spot"
@@ -5206,6 +5218,7 @@ msgid "前の動画のリンク"
 msgstr "Earlier video links"
 
 #: src/components/map/TrailMap.tsx:637
+#: src/components/RallyBook.tsx:181
 msgid "前の場所"
 msgstr "Previous place"
 
@@ -6271,10 +6284,15 @@ msgstr "Collapse"
 msgid "折り返し"
 msgstr "Turnaround"
 
+#: src/components/RallyBook.tsx:128
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:9
 msgid "押した"
 msgstr "Stamped"
+
+#: src/components/RallyBook.tsx:126
+msgid "押した日時　{when}"
+msgstr "Stamped　{when}"
 
 #: src/components/ProfileSettings.tsx:284
 msgid "押すと、アカウントと、集めたスタンプなどの記録を、3日後にすべて消します。"
@@ -6649,7 +6667,6 @@ msgstr "If left blank, visitors will see \"Worshipped from [waypoint]\" when a v
 msgid "未回答"
 msgstr "Not answered"
 
-#: src/components/RallyBook.tsx:133
 #: src/components/RallyViews.tsx:159
 msgid "未獲得"
 msgstr "Not yet"
@@ -6751,7 +6768,7 @@ msgstr "Standard"
 msgid "標高 {0} m・{1} km"
 msgstr "Elev {0} m · {1} km"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1330
+#: src/components/admin/map-editor/MapEditor.tsx:1331
 msgid "標高が調べられない場所があります。"
 msgstr "Elevation could not be found for some points."
 
@@ -6771,7 +6788,7 @@ msgstr "Take only the elevation (the line stays)"
 msgid "標高を入れました。線の{total}点のうち、{matched}点がGPXの道すじに重なっていました（ほかの点は、前後の高さから補いました）。線の形は変えていません。保存してください。"
 msgstr "Elevations added. {matched} of the line's {total} points lay on the GPX track (the others were filled in from the heights either side). The line's shape is unchanged. Remember to save."
 
-#: src/components/admin/map-editor/MapEditor.tsx:1329
+#: src/components/admin/map-editor/MapEditor.tsx:1330
 msgid "標高を調べています…"
 msgstr "Looking up elevation…"
 
@@ -6792,8 +6809,6 @@ msgid "次のスタンプの場所"
 msgstr "Next stamp place"
 
 #: src/components/landing/HomeProgress.tsx:65
-#: src/components/RallyBook.tsx:131
-#: src/components/RallyBook.tsx:189
 msgid "次のスポット"
 msgstr "Next spot"
 
@@ -6801,16 +6816,13 @@ msgstr "Next spot"
 msgid "次のスポットへ進みますか？"
 msgstr "Continue to the next spot?"
 
-#: src/components/RallyBook.tsx:147
-msgid "次のスポットまで"
-msgstr "To next spot"
-
 #: src/components/landing/HeroSlides.tsx:92
 #: src/components/Zoomable.tsx:140
 msgid "次の写真"
 msgstr "Next photo"
 
 #: src/components/map/TrailMap.tsx:643
+#: src/components/RallyBook.tsx:189
 msgid "次の場所"
 msgstr "Next place"
 
@@ -7083,11 +7095,6 @@ msgstr "Status note"
 msgid "獲得したスタンプは消えません。"
 msgstr "Your collected stamps will be kept."
 
-#: src/components/RallyBook.tsx:126
-msgid "獲得日時：{when}"
-msgstr "Collected: {when}"
-
-#: src/components/RallyBook.tsx:128
 #: src/components/RallyViews.tsx:159
 #: src/components/SpotStats.tsx:40
 msgid "獲得済み"
@@ -7234,7 +7241,7 @@ msgid "登り"
 msgstr "Up"
 
 #. placeholder {0}: props.climbM
-#: src/components/admin/map-editor/MapEditor.tsx:1328
+#: src/components/admin/map-editor/MapEditor.tsx:1329
 msgid "登り {0} m"
 msgstr "Climb {0} m"
 
@@ -7692,7 +7699,7 @@ msgstr "Reordered the waypoints"
 msgid "経由地は、まだありません。"
 msgstr "No waypoints yet."
 
-#: src/components/admin/map-editor/MapEditor.tsx:1319
+#: src/components/admin/map-editor/MapEditor.tsx:1320
 msgid "経由地は、まだありません。地図の「経由地を置く」で置けます。"
 msgstr "No waypoints yet. Place them with \"Place a waypoint\" on the map."
 
@@ -7807,11 +7814,11 @@ msgid "線の確認"
 msgstr "Line check"
 
 #. placeholder {0}: props.distanceKm ?? 0
-#: src/components/admin/map-editor/MapEditor.tsx:1327
+#: src/components/admin/map-editor/MapEditor.tsx:1328
 msgid "線の長さ {0} km"
 msgstr "Line length {0} km"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1327
+#: src/components/admin/map-editor/MapEditor.tsx:1328
 msgid "線は、まだありません。"
 msgstr "There is no line yet."
 
@@ -8066,6 +8073,7 @@ msgid "行きと同じ道を戻ります。"
 msgstr "You'll return along the same trail."
 
 #: src/components/navigation/NavFarCard.tsx:50
+#: src/components/RallyBook.tsx:158
 msgid "行き方"
 msgstr "How to get there"
 
@@ -8320,7 +8328,6 @@ msgstr "No matching places."
 msgid "該当する店舗・施設はありません。"
 msgstr "No matching places found."
 
-#: src/components/InfoTip.tsx:42
 #: src/components/map/MapScreen.tsx:491
 #: src/components/map/MapScreen.tsx:538
 msgid "詳しく見る"
@@ -8331,7 +8338,6 @@ msgid "詳細"
 msgstr "Details"
 
 #: src/components/map/StopCard.tsx:87
-#: src/components/RallyBook.tsx:176
 msgid "詳細を見る"
 msgstr "View details"
 
@@ -9092,3 +9098,15 @@ msgstr "Elevation Profile"
 #: src/app/(public)/grading/page.tsx:68
 msgid "鹿屋体育大学の山本正嘉教授らによる基準式を使用します。歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど体力を消耗します。"
 msgstr "We use the standard formula developed by Professor Masayoshi Yamamoto and his colleagues at the National Insitute of Fitness and Sports in Kanoya. Using walking time, distance, and total ascent and descent, we calculate a figure called the \"Course Constant\". The higher this number, the more physically demanding the course is"
+
+#: src/components/RallyBook.tsx:181
+msgid "前のスポット"
+msgstr "Previous spot"
+
+#: src/components/RallyBook.tsx:147
+msgid "次のスポットまで"
+msgstr "To next spot"
+
+#: src/components/RallyBook.tsx:126
+msgid "獲得日時：{when}"
+msgstr "Collected: {when}"

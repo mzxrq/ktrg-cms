@@ -988,7 +988,6 @@ msgid "アカウント設定"
 msgstr "アカウント設定"
 
 #: src/app/(admin)/admin/page.tsx:67
-#: src/components/RallyBook.tsx:158
 #: src/components/RouteView.tsx:131
 msgid "アクセス"
 msgstr "アクセス"
@@ -1399,6 +1398,10 @@ msgstr "クリックで、この点を消します"
 #: src/components/landing/Landing.tsx:200
 msgid "グルメ"
 msgstr "グルメ"
+
+#: src/components/InfoTip.tsx:42
+msgid "くわしく見る"
+msgstr "くわしく見る"
 
 #: src/components/GuestNag.tsx:91
 msgid "ゲストのまま使う"
@@ -1949,6 +1952,10 @@ msgstr "この地点で獲得できる他のスタンプ：{0}"
 #: src/components/StatusBanner.tsx:77
 msgid "この場所にスタンプ対象外です。"
 msgstr "この場所にスタンプ対象外です。"
+
+#: src/components/RallyBook.tsx:176
+msgid "この場所のページを開く"
+msgstr "この場所のページを開く"
 
 #: src/components/map/PlacesPanel.tsx:261
 msgid "この場所の位置は仮のもので、まだ確認されていません。"
@@ -2730,6 +2737,14 @@ msgstr "つぎ"
 msgid "つぎにもらえそうなバッジ"
 msgstr "つぎにもらえそうなバッジ"
 
+#: src/components/RallyBook.tsx:131
+msgid "つぎに押す場所"
+msgstr "つぎに押す場所"
+
+#: src/components/RallyBook.tsx:147
+msgid "つぎの場所まで"
+msgstr "つぎの場所まで"
+
 #: src/components/auth/RegisterFlow.tsx:128
 #: src/components/auth/RegisterFlow.tsx:184
 #: src/components/settings/WelcomeFlow.tsx:165
@@ -3450,6 +3465,7 @@ msgid "まず、GPXファイルをここにドラッグするか「GPXファイ�
 msgstr "まず、GPXファイルをここにドラッグするか「GPXファイルから読み込む」を押してください。手で入れるときは「経由地を置く」で経由地を入れ、「線を描く」で区間ごとに道すじを描きます。"
 
 #: src/components/admin/RouteEditor.tsx:435
+#: src/components/RallyBook.tsx:133
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:10
 msgid "まだ"
@@ -5184,10 +5200,6 @@ msgstr "削除を依頼する"
 msgid "削除を取り消す"
 msgstr "削除を取り消す"
 
-#: src/components/RallyBook.tsx:181
-msgid "前のスポット"
-msgstr "前のスポット"
-
 #: src/components/SpotStats.tsx:33
 msgid "前のスポットから"
 msgstr "前のスポットから"
@@ -5206,6 +5218,7 @@ msgid "前の動画のリンク"
 msgstr "前の動画のリンク"
 
 #: src/components/map/TrailMap.tsx:637
+#: src/components/RallyBook.tsx:181
 msgid "前の場所"
 msgstr "前の場所"
 
@@ -6271,10 +6284,15 @@ msgstr "折りたたむ"
 msgid "折り返し"
 msgstr "折り返し"
 
+#: src/components/RallyBook.tsx:128
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:9
 msgid "押した"
 msgstr "押した"
+
+#: src/components/RallyBook.tsx:126
+msgid "押した日時　{when}"
+msgstr "押した日時　{when}"
 
 #: src/components/ProfileSettings.tsx:284
 msgid "押すと、アカウントと、集めたスタンプなどの記録を、3日後にすべて消します。"
@@ -6649,7 +6667,6 @@ msgstr "未入力の場合、遥拝場所が設定されていれば「〇〇か
 msgid "未回答"
 msgstr "未回答"
 
-#: src/components/RallyBook.tsx:133
 #: src/components/RallyViews.tsx:159
 msgid "未獲得"
 msgstr "未獲得"
@@ -6751,7 +6768,7 @@ msgstr "標準"
 msgid "標高 {0} m・{1} km"
 msgstr "標高 {0} m・{1} km"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1330
+#: src/components/admin/map-editor/MapEditor.tsx:1331
 msgid "標高が調べられない場所があります。"
 msgstr "標高が調べられない場所があります。"
 
@@ -6771,7 +6788,7 @@ msgstr "標高だけ取り込む（線は変えない）"
 msgid "標高を入れました。線の{total}点のうち、{matched}点がGPXの道すじに重なっていました（ほかの点は、前後の高さから補いました）。線の形は変えていません。保存してください。"
 msgstr "標高を入れました。線の{total}点のうち、{matched}点がGPXの道すじに重なっていました（ほかの点は、前後の高さから補いました）。線の形は変えていません。保存してください。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1329
+#: src/components/admin/map-editor/MapEditor.tsx:1330
 msgid "標高を調べています…"
 msgstr "標高を調べています…"
 
@@ -6792,8 +6809,6 @@ msgid "次のスタンプの場所"
 msgstr "次のスタンプの場所"
 
 #: src/components/landing/HomeProgress.tsx:65
-#: src/components/RallyBook.tsx:131
-#: src/components/RallyBook.tsx:189
 msgid "次のスポット"
 msgstr "次のスポット"
 
@@ -6801,16 +6816,13 @@ msgstr "次のスポット"
 msgid "次のスポットへ進みますか？"
 msgstr "次のスポットへ進みますか？"
 
-#: src/components/RallyBook.tsx:147
-msgid "次のスポットまで"
-msgstr "次のスポットまで"
-
 #: src/components/landing/HeroSlides.tsx:92
 #: src/components/Zoomable.tsx:140
 msgid "次の写真"
 msgstr "次の写真"
 
 #: src/components/map/TrailMap.tsx:643
+#: src/components/RallyBook.tsx:189
 msgid "次の場所"
 msgstr "次の場所"
 
@@ -7083,11 +7095,6 @@ msgstr "状況の補足"
 msgid "獲得したスタンプは消えません。"
 msgstr "獲得したスタンプは消えません。"
 
-#: src/components/RallyBook.tsx:126
-msgid "獲得日時：{when}"
-msgstr "獲得日時：{when}"
-
-#: src/components/RallyBook.tsx:128
 #: src/components/RallyViews.tsx:159
 #: src/components/SpotStats.tsx:40
 msgid "獲得済み"
@@ -7234,7 +7241,7 @@ msgid "登り"
 msgstr "登り"
 
 #. placeholder {0}: props.climbM
-#: src/components/admin/map-editor/MapEditor.tsx:1328
+#: src/components/admin/map-editor/MapEditor.tsx:1329
 msgid "登り {0} m"
 msgstr "登り {0} m"
 
@@ -7692,7 +7699,7 @@ msgstr "経由地の順番を変えた"
 msgid "経由地は、まだありません。"
 msgstr "経由地は、まだありません。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1319
+#: src/components/admin/map-editor/MapEditor.tsx:1320
 msgid "経由地は、まだありません。地図の「経由地を置く」で置けます。"
 msgstr "経由地は、まだありません。地図の「経由地を置く」で置けます。"
 
@@ -7807,11 +7814,11 @@ msgid "線の確認"
 msgstr "線の確認"
 
 #. placeholder {0}: props.distanceKm ?? 0
-#: src/components/admin/map-editor/MapEditor.tsx:1327
+#: src/components/admin/map-editor/MapEditor.tsx:1328
 msgid "線の長さ {0} km"
 msgstr "線の長さ {0} km"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1327
+#: src/components/admin/map-editor/MapEditor.tsx:1328
 msgid "線は、まだありません。"
 msgstr "線は、まだありません。"
 
@@ -8066,6 +8073,7 @@ msgid "行きと同じ道を戻ります。"
 msgstr "行きと同じ道を戻ります。"
 
 #: src/components/navigation/NavFarCard.tsx:50
+#: src/components/RallyBook.tsx:158
 msgid "行き方"
 msgstr "行き方"
 
@@ -8320,7 +8328,6 @@ msgstr "該当する場所はありません。"
 msgid "該当する店舗・施設はありません。"
 msgstr "該当する店舗・施設はありません。"
 
-#: src/components/InfoTip.tsx:42
 #: src/components/map/MapScreen.tsx:491
 #: src/components/map/MapScreen.tsx:538
 msgid "詳しく見る"
@@ -8331,7 +8338,6 @@ msgid "詳細"
 msgstr "詳細"
 
 #: src/components/map/StopCard.tsx:87
-#: src/components/RallyBook.tsx:176
 msgid "詳細を見る"
 msgstr "詳細を見る"
 
@@ -9092,3 +9098,15 @@ msgstr "高低差"
 #: src/app/(public)/grading/page.tsx:68
 msgid "鹿屋体育大学の山本正嘉教授らによる基準式を使用します。歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど体力を消耗します。"
 msgstr "鹿屋体育大学の山本正嘉教授らによる基準式を使用します。歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど体力を消耗します。"
+
+#: src/components/RallyBook.tsx:181
+msgid "前のスポット"
+msgstr "前のスポット"
+
+#: src/components/RallyBook.tsx:147
+msgid "次のスポットまで"
+msgstr "次のスポットまで"
+
+#: src/components/RallyBook.tsx:126
+msgid "獲得日時：{when}"
+msgstr "獲得日時：{when}"

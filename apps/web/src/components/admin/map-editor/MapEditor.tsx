@@ -1256,7 +1256,8 @@ export function MapEditor(props: MapEditorProps) {
               <XIcon size={20} />
             </button>
           </div>
-          <div className="min-h-0 flex-1 overflow-y-auto p-3">
+          {/* relative: hidden screen-reader text (sr-only, absolute) deep in a long list is clipped here; without it it stretched the page (2026-11-27). */}
+          <div className="relative min-h-0 flex-1 overflow-y-auto p-3">
             {panel === "area" && props.area ? (
               <CourseAreaEditor
                 area={props.area.value}
