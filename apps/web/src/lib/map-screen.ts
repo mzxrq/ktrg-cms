@@ -75,7 +75,9 @@ export interface MapScreenStop {
   /** The spot's own page, with the locale. */
   href: string;
   description: string | null;
-  statusNote: string | null;
+  /** The status note in both languages: StatusBanner picks one and marks an untranslated one. */
+  statusNoteJa: string | null;
+  statusNoteEn: string | null;
   /** ISO timestamp of the last status change. */
   statusUpdatedAt: string | null;
   photo: MapPhoto | null;

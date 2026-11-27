@@ -1,4 +1,5 @@
 import type { ComponentProps } from "react";
+import { StampCard } from "./StopParts";
 import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
 import { pickText, type SpotDetail } from "@/lib/content";
@@ -12,7 +13,6 @@ import { NearestPlaces, type NearestGroup } from "./NearestPlaces";
 import { Notice } from "./Notice";
 import { RichText } from "./RichText";
 import { SpotGallery } from "./SpotGallery";
-import { StampFace } from "./StampFace";
 import { StampHere } from "./StampHere";
 import { StatusBanner } from "./StatusBanner";
 import type { StampMock } from "@/lib/stamp-flow";
@@ -90,29 +90,7 @@ export function SpotSheet({
       ) : null}
 
       {stampable ? (
-      <section className="mx-4 flex items-center gap-4 rounded-lg bg-surface p-4">
-        {/* Once stamped, the card says so with the stamp itself, in place of how to stamp (2026-11-18, user). */}
-        <StampFace state={spot.stamped === true ? "stamped" : "empty"} image={spot.stampImageUrl} className="h-14 w-14 shrink-0 rounded-full!" />
-        {spot.stamped === true ? (
-          <div>
-            <p className="text-xl font-bold text-moss">
-              <Trans>スタンプ獲得済み</Trans>
-            </p>
-            <p className="text-lg text-muted">
-              <Trans>スタンプ帳に記録されています。</Trans>
-            </p>
-          </div>
-        ) : (
-          <div>
-            <p className="text-xl font-bold">
-              <Trans>スタンプスポット</Trans>
-            </p>
-            <p className="text-lg text-muted">
-              <Trans>現地付近でボタンを押して獲得（位置情報を使用）</Trans>
-            </p>
-          </div>
-        )}
-      </section>
+      <StampCard className="mx-4" stamped={spot.stamped === true} image={spot.stampImageUrl} />
       ) : null}
       {/* A waypoint other places are stamped at (遥拝, or a closed place's 閉鎖時のスタンプ地点): one press gives those too. */}
       {stampable && spot.stampedHere?.length ? (

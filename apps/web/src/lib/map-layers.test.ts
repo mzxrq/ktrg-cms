@@ -14,7 +14,7 @@ const stop = (id: string, kind?: MapScreenStop["kind"]): MapScreenStop => ({
   status: "open",
   href: "/",
   description: null,
-  statusNote: null,
+  statusNoteJa: null, statusNoteEn: null,
   statusUpdatedAt: null,
   photo: null,
 });

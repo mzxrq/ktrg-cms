@@ -116,7 +116,6 @@ async function mapRoutes(routes: RouteSummary[], places: PlaceItem[], viewer: Vi
                 if (roleWord) parts.push(roleWord);
                 if (stamped) parts.push(words.stamped);
                 if (status === "closed") parts.push(words.closed);
-                const note = pickText(locale, item.statusNoteJa ?? null, item.statusNoteEn ?? null);
                 return {
                   id: item.id,
                   order: t.number,
@@ -132,7 +131,8 @@ async function mapRoutes(routes: RouteSummary[], places: PlaceItem[], viewer: Vi
                   status,
                   href: `/spots/${item.id}`,
                   description: pickText(locale, item.descriptionJa ?? null, item.descriptionEn ?? null)?.text ?? null,
-                  statusNote: note?.text ?? null,
+                  statusNoteJa: item.statusNoteJa ?? null,
+                  statusNoteEn: item.statusNoteEn ?? null,
                   statusUpdatedAt: t.type === "stamp" ? t.spot.statusUpdatedAt ?? null : null,
                   photo: item.photoUrl ? { src: item.photoUrl, alt: spotName.text, credit: item.photoCredit ?? null } : null,
                 };
