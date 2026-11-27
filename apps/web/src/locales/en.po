@@ -6768,7 +6768,7 @@ msgstr "Standard"
 msgid "標高 {0} m・{1} km"
 msgstr "Elev {0} m · {1} km"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1330
+#: src/components/admin/map-editor/MapEditor.tsx:1331
 msgid "標高が調べられない場所があります。"
 msgstr "Elevation could not be found for some points."
 
@@ -6788,7 +6788,7 @@ msgstr "Take only the elevation (the line stays)"
 msgid "標高を入れました。線の{total}点のうち、{matched}点がGPXの道すじに重なっていました（ほかの点は、前後の高さから補いました）。線の形は変えていません。保存してください。"
 msgstr "Elevations added. {matched} of the line's {total} points lay on the GPX track (the others were filled in from the heights either side). The line's shape is unchanged. Remember to save."
 
-#: src/components/admin/map-editor/MapEditor.tsx:1329
+#: src/components/admin/map-editor/MapEditor.tsx:1330
 msgid "標高を調べています…"
 msgstr "Looking up elevation…"
 
@@ -7241,7 +7241,7 @@ msgid "登り"
 msgstr "Up"
 
 #. placeholder {0}: props.climbM
-#: src/components/admin/map-editor/MapEditor.tsx:1328
+#: src/components/admin/map-editor/MapEditor.tsx:1329
 msgid "登り {0} m"
 msgstr "Climb {0} m"
 
@@ -7699,7 +7699,7 @@ msgstr "Reordered the waypoints"
 msgid "経由地は、まだありません。"
 msgstr "No waypoints yet."
 
-#: src/components/admin/map-editor/MapEditor.tsx:1319
+#: src/components/admin/map-editor/MapEditor.tsx:1320
 msgid "経由地は、まだありません。地図の「経由地を置く」で置けます。"
 msgstr "No waypoints yet. Place them with \"Place a waypoint\" on the map."
 
@@ -7814,11 +7814,11 @@ msgid "線の確認"
 msgstr "Line check"
 
 #. placeholder {0}: props.distanceKm ?? 0
-#: src/components/admin/map-editor/MapEditor.tsx:1327
+#: src/components/admin/map-editor/MapEditor.tsx:1328
 msgid "線の長さ {0} km"
 msgstr "Line length {0} km"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1327
+#: src/components/admin/map-editor/MapEditor.tsx:1328
 msgid "線は、まだありません。"
 msgstr "There is no line yet."
 

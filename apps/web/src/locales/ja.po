@@ -6768,7 +6768,7 @@ msgstr "標準"
 msgid "標高 {0} m・{1} km"
 msgstr "標高 {0} m・{1} km"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1330
+#: src/components/admin/map-editor/MapEditor.tsx:1331
 msgid "標高が調べられない場所があります。"
 msgstr "標高が調べられない場所があります。"
 
@@ -6788,7 +6788,7 @@ msgstr "標高だけ取り込む（線は変えない）"
 msgid "標高を入れました。線の{total}点のうち、{matched}点がGPXの道すじに重なっていました（ほかの点は、前後の高さから補いました）。線の形は変えていません。保存してください。"
 msgstr "標高を入れました。線の{total}点のうち、{matched}点がGPXの道すじに重なっていました（ほかの点は、前後の高さから補いました）。線の形は変えていません。保存してください。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1329
+#: src/components/admin/map-editor/MapEditor.tsx:1330
 msgid "標高を調べています…"
 msgstr "標高を調べています…"
 
@@ -7241,7 +7241,7 @@ msgid "登り"
 msgstr "登り"
 
 #. placeholder {0}: props.climbM
-#: src/components/admin/map-editor/MapEditor.tsx:1328
+#: src/components/admin/map-editor/MapEditor.tsx:1329
 msgid "登り {0} m"
 msgstr "登り {0} m"
 
@@ -7699,7 +7699,7 @@ msgstr "経由地の順番を変えた"
 msgid "経由地は、まだありません。"
 msgstr "経由地は、まだありません。"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1319
+#: src/components/admin/map-editor/MapEditor.tsx:1320
 msgid "経由地は、まだありません。地図の「経由地を置く」で置けます。"
 msgstr "経由地は、まだありません。地図の「経由地を置く」で置けます。"
 
@@ -7814,11 +7814,11 @@ msgid "線の確認"
 msgstr "線の確認"
 
 #. placeholder {0}: props.distanceKm ?? 0
-#: src/components/admin/map-editor/MapEditor.tsx:1327
+#: src/components/admin/map-editor/MapEditor.tsx:1328
 msgid "線の長さ {0} km"
 msgstr "線の長さ {0} km"
 
-#: src/components/admin/map-editor/MapEditor.tsx:1327
+#: src/components/admin/map-editor/MapEditor.tsx:1328
 msgid "線は、まだありません。"
 msgstr "線は、まだありません。"
 
