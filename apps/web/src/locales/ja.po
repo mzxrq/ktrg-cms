@@ -55,11 +55,6 @@ msgstr "（達成）"
 msgid "（題名なし）"
 msgstr "（題名なし）"
 
-#. placeholder {0}: stampFrom.here.join("、")
-#: src/components/admin/WaypointTypeFields.tsx:76
-msgid "［文言未定：この経由地で押せる他のスタンプ］{0}"
-msgstr "［文言未定：この経由地で押せる他のスタンプ］{0}"
-
 #. placeholder {0}: rideName[riding]
 #. placeholder {1}: here.k
 #: src/components/ElevationChart.tsx:76
@@ -1606,6 +1601,7 @@ msgstr "コースを直した"
 msgid "コースを直す（管理）"
 msgstr "コースを直す（管理）"
 
+#: src/components/landing/HomeProgress.tsx:121
 #: src/components/map/MapHelp.tsx:13
 #: src/components/RallyViews.tsx:251
 msgid "コースを見る"
@@ -1772,10 +1768,6 @@ msgstr "このコースを削除します。元に戻せません。よろしい
 #: src/components/admin/one-map/OneMap.tsx:262
 msgid "このコースを編集する"
 msgstr "このコースを編集する"
-
-#: src/components/landing/HomeProgress.tsx:121
-msgid "このコースを見る"
-msgstr "このコースを見る"
 
 #: src/components/admin/one-map/OneMap.tsx:320
 msgid "このコースを選ぶ"
@@ -1951,6 +1943,11 @@ msgstr "この地域のコースはまだありません。"
 #: src/components/admin/WaypointTypeFields.tsx:30
 msgid "この地点で押す（指定なし）"
 msgstr "この地点で押す（指定なし）"
+
+#. placeholder {0}: stampFrom.here.join(i18n.locale === "ja" ? "、" : ", ")
+#: src/components/admin/WaypointTypeFields.tsx:76
+msgid "この地点で獲得できる他のスタンプ：{0}"
+msgstr "この地点で獲得できる他のスタンプ：{0}"
 
 #: src/components/StatusBanner.tsx:77
 msgid "この場所にスタンプ対象外です。"
@@ -2343,6 +2340,7 @@ msgstr "スタッフが確認すると、ここに表示されます。"
 #: src/components/admin/map-editor/PlaceList.tsx:131
 #: src/components/admin/PlaceTable.tsx:138
 #: src/components/JourneyFacts.tsx:27
+#: src/components/landing/HomeProgress.tsx:110
 #: src/components/SiteHeader.tsx:336
 #: src/components/SpotStats.tsx:38
 #: src/components/TabBar.tsx:140
@@ -2589,8 +2587,8 @@ msgid "すべてのコースを見る"
 msgstr "すべてのコースを見る"
 
 #: src/components/landing/HomeProgress.tsx:51
-msgid "すべてのスタンプが集まりました。"
-msgstr "すべてのスタンプが集まりました。"
+msgid "すべてのスタンプを獲得しました！"
+msgstr "すべてのスタンプを獲得しました！"
 
 #: src/components/admin/RouteEditor.tsx:411
 msgid "すべての公開をやめる"
@@ -3792,7 +3790,6 @@ msgstr "ライト"
 #: src/app/(public)/rallies/page.tsx:37
 #: src/components/admin/AdminNav.tsx:75
 #: src/components/BookmarkList.tsx:55
-#: src/components/landing/HomeProgress.tsx:110
 #: src/components/pages/PageViews.tsx:33
 msgid "ラリー"
 msgstr "ラリー"
@@ -4251,8 +4248,8 @@ msgid "他の獲得できるスタンプ：{0}"
 msgstr "他の獲得できるスタンプ：{0}"
 
 #: src/components/admin/WaypointTypeFields.tsx:103
-msgid "他の経由地の遥拝場所に設定されているため、指定できません。"
-msgstr "他の経由地の遥拝場所に設定されているため、指定できません。"
+msgid "他の経由地のスタンプ地点に設定されているため、指定できません。"
+msgstr "他の経由地のスタンプ地点に設定されているため、指定できません。"
 
 #: src/components/map/TrailMap.tsx:498
 msgid "仮のコース・位置（未確認）"
@@ -6664,8 +6661,8 @@ msgid "未入力"
 msgstr "未入力"
 
 #: src/components/admin/WaypointTypeFields.tsx:107
-msgid "未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルートから離れた場所」と表示されます。"
-msgstr "未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルートから離れた場所」と表示されます。"
+msgid "未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルート外」と表示されます。"
+msgstr "未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルート外」と表示されます。"
 
 #: src/app/(admin)/admin/page.tsx:39
 msgid "未回答"
@@ -6812,6 +6809,10 @@ msgstr "次"
 msgid "次のスタンプの場所"
 msgstr "次のスタンプの場所"
 
+#: src/components/landing/HomeProgress.tsx:65
+msgid "次のスポット"
+msgstr "次のスポット"
+
 #: src/components/navigation/NavPrompts.tsx:138
 msgid "次のスポットへ進みますか？"
 msgstr "次のスポットへ進みますか？"
@@ -6821,7 +6822,6 @@ msgstr "次のスポットへ進みますか？"
 msgid "次の写真"
 msgstr "次の写真"
 
-#: src/components/landing/HomeProgress.tsx:65
 #: src/components/map/TrailMap.tsx:643
 #: src/components/RallyBook.tsx:204
 msgid "次の場所"
@@ -9100,24 +9100,3 @@ msgstr "高低差"
 #: src/app/(public)/grading/page.tsx:68
 msgid "鹿屋体育大学の山本正嘉教授らによる基準式を使用します。歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど体力を消耗します。"
 msgstr "鹿屋体育大学の山本正嘉教授らによる基準式を使用します。歩く時間、距離、登りと下りの高さから、「コース定数」という数字を出します。この数字が大きいほど体力を消耗します。"
-
-#. placeholder {0}: stampFrom.here.join(i18n.locale === "ja" ? "、" : ", ")
-#: src/components/admin/WaypointTypeFields.tsx:76
-msgid "この地点で獲得できる他のスタンプ：{0}"
-msgstr "この地点で獲得できる他のスタンプ：{0}"
-
-#: src/components/landing/HomeProgress.tsx:51
-msgid "すべてのスタンプを獲得しました！"
-msgstr "すべてのスタンプを獲得しました！"
-
-#: src/components/admin/WaypointTypeFields.tsx:103
-msgid "他の経由地のスタンプ地点に設定されているため、指定できません。"
-msgstr "他の経由地のスタンプ地点に設定されているため、指定できません。"
-
-#: src/components/admin/WaypointTypeFields.tsx:107
-msgid "未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルート外」と表示されます。"
-msgstr "未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルート外」と表示されます。"
-
-#: src/components/landing/HomeProgress.tsx:65
-msgid "次のスポット"
-msgstr "次のスポット"
