@@ -50,6 +50,8 @@ export function SpotSheet({
 }) {
   // A place without a stamp has a page to read, but no stamp card and no stamp button.
   const stampable = spot.stampable !== false;
+  // A 遥拝 place's stamp is pressed at its waypoint, so the waypoint's status decides it (2026-11-27, user); its own 情報のみ still means none.
+  const stampStatus = spot.stampFrom?.status && spot.status !== "info" ? spot.stampFrom.status : spot.status;
   const description = pickText(locale, spot.descriptionJa, spot.descriptionEn);
   const history = pickText(locale, spot.historyJa ?? null, spot.historyEn ?? null);
   const source = pickText(locale, spot.sourceJa ?? null, spot.sourceEn ?? null);
@@ -83,7 +85,7 @@ export function SpotSheet({
 
       {/* The grid already says the status; the block is for what needs more: caution, closed, or a note. */}
       {spot.status !== "open" || spot.statusNoteJa || spot.statusNoteEn ? (
-        <StatusBanner status={spot.status} noteJa={spot.statusNoteJa} noteEn={spot.statusNoteEn} updatedAt={spot.statusUpdatedAt} locale={locale} />
+        <StatusBanner status={spot.status} noteJa={spot.statusNoteJa} noteEn={spot.statusNoteEn} updatedAt={spot.statusUpdatedAt} locale={locale} stampOpen={stampStatus !== "closed"} />
       ) : null}
 
       {stampable ? (
@@ -191,7 +193,7 @@ export function SpotSheet({
       <LastUpdated iso={spot.updatedAt} locale={locale} className="px-4" />
 
       {stampable ? (
-        <StampHere spotId={spot.id} status={spot.status} alreadyStamped={spot.stamped === true} stampImage={spot.stampImageUrl} loginHref={loginHref} mock={stampMock} progress={stampProgress} />
+        <StampHere spotId={spot.id} status={stampStatus} alreadyStamped={spot.stamped === true} stampImage={spot.stampImageUrl} loginHref={loginHref} mock={stampMock} progress={stampProgress} />
       ) : null}
     </article>
   );

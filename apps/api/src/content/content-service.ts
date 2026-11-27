@@ -17,6 +17,7 @@ import type {
   SpotFields,
   SharedSpotRow,
   SpotRow,
+  SpotStatus,
   StoredRouteFields,
 } from "./content-types";
 
@@ -47,7 +48,7 @@ export interface PublicSpot {
   detachedLabelJa: string | null;
   detachedLabelEn: string | null;
   /** The waypoint it is worshipped from (遥拝), where its stamp is pressed: published and with a checked position, else null. */
-  stampFrom: { id: string; nameJa: string; nameEn: string | null; position: { lat: number; lng: number } } | null;
+  stampFrom: { id: string; nameJa: string; nameEn: string | null; position: { lat: number; lng: number }; status: SpotStatus } | null;
   stampImageUrl: string | null;
   /** The fly-along (コースをたどる): see SpotRow. Null means automatic / 5 s / the main photo / the description. */
   flyShow: boolean | null;
@@ -239,7 +240,7 @@ export function withShared(own: SpotRow[], shared: SharedSpotRow[]): SpotRow[] {
 /** The 遥拝 waypoint as visitors may see it: only a published one with a checked position. */
 const stampFromOf = (from: SpotRow | null | undefined): PublicSpot["stampFrom"] =>
   from && from.published && from.positionVerified && from.lat !== null && from.lng !== null
-    ? { id: from.id, nameJa: from.nameJa, nameEn: from.nameEn, position: { lat: from.lat, lng: from.lng } }
+    ? { id: from.id, nameJa: from.nameJa, nameEn: from.nameEn, position: { lat: from.lat, lng: from.lng }, status: from.status }
     : null;
 
 function toPublicSpot(s: SpotRow, from?: SpotRow | null): PublicSpot {

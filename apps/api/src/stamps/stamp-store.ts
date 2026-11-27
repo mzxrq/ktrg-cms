@@ -4,7 +4,7 @@ import { writeAudit } from "../audit/audit-store";
 import type { Db } from "../db/client";
 import { courseCompletions, rallyCompletions, spots, spotTranslations, stamps } from "../db/schema";
 import { ralliesForPlace, recordFinished } from "../rallies/rally-store";
-import type { StampStore } from "./stamp-types";
+import type { StampSpot, StampStore } from "./stamp-types";
 import { withTravel, type Fix } from "./travel";
 
 /** The waypoint a place is worshipped from (遥拝). */
@@ -21,8 +21,10 @@ const spotColumns = {
   lat: sql<number | null>`case when ${spots.stampSpotId} is null then ${spots.lat} when ${stampFrom.published} and ${stampFrom.positionVerified} then ${stampFrom.lat} end`.mapWith(Number),
   lng: sql<number | null>`case when ${spots.stampSpotId} is null then ${spots.lng} when ${stampFrom.published} and ${stampFrom.positionVerified} then ${stampFrom.lng} end`.mapWith(Number),
   radiusM: spots.radiusM,
-  status: spots.status,
-  statusUpdatedAt: spots.statusUpdatedAt,
+  // Whether the stamp can be pressed follows where it is pressed (2026-11-27, user): a 遥拝 place closed itself is still
+  // stamped from its open waypoint, and not while that waypoint is closed. Its own 情報のみ still means no stamp.
+  status: sql<StampSpot["status"]>`case when ${spots.stampSpotId} is null or ${spots.status} = 'info' then ${spots.status} else ${stampFrom.status} end`.mapWith(spots.status),
+  statusUpdatedAt: sql<Date | null>`case when ${spots.stampSpotId} is null or ${spots.status} = 'info' then ${spots.statusUpdatedAt} else ${stampFrom.statusUpdatedAt} end`.mapWith(spots.statusUpdatedAt),
   stampSpotId: spots.stampSpotId,
 };
 

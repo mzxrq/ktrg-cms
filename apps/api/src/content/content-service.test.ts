@@ -240,7 +240,7 @@ describe("places", () => {
     // The waypoint is still a draft: visitors see no 遥拝 place yet.
     expect((await svc.publicSpot(mound.id))?.stampFrom).toBeNull();
     if (!(await svc.publishSpot(ADMIN, battery.id)).ok) throw new Error("publish battery");
-    expect((await svc.publicSpot(mound.id))?.stampFrom).toEqual({ id: battery.id, nameJa: "第4砲台跡", nameEn: null, position: { lat: 34.2, lng: 135.05 } });
+    expect((await svc.publicSpot(mound.id))?.stampFrom).toEqual({ id: battery.id, nameJa: "第4砲台跡", nameEn: null, position: { lat: 34.2, lng: 135.05 }, status: "open" });
     expect((await svc.publicSpot(mound.id))?.position).toMatchObject({ lat: 34.3, lng: 135.1 });
   });
 

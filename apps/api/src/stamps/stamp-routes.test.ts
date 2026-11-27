@@ -105,14 +105,26 @@ describe("collecting a stamp", () => {
     mem.spots.set(MOUND, spot({ id: MOUND, stampSpotId: SPOT_ID }));
     mem.spots.set(CLOSED, spot({ id: CLOSED, stampSpotId: SPOT_ID, status: "closed" }));
     const first = (await (await stamp(cookies.alice)).json()) as Json;
-    expect(first.stamp.also).toEqual([{ spotId: MOUND, nameJa: MOUND, nameEn: null, alreadyStamped: false }]); // the closed one is left out
+    // A 遥拝 place closed itself is still stamped from its open waypoint (2026-11-27, user).
+    expect(first.stamp.also.map((s: Json) => s.spotId).sort()).toEqual([MOUND, CLOSED].sort());
     const mine = (await (await call("GET", "/stamps", { cookie: cookies.alice })).json()) as Json;
-    expect(mine.stamps.map((s: Json) => s.spotId).sort()).toEqual([SPOT_ID, MOUND].sort());
+    expect(mine.stamps.map((s: Json) => s.spotId).sort()).toEqual([SPOT_ID, MOUND, CLOSED].sort());
 
     const fromMound = (await (await stamp(cookies.bob, { spotId: MOUND })).json()) as Json;
-    expect(fromMound.stamp).toMatchObject({ spotId: MOUND, alreadyStamped: false, also: [{ spotId: SPOT_ID, alreadyStamped: false }] });
+    expect(fromMound.stamp).toMatchObject({ spotId: MOUND, alreadyStamped: false, also: [{ spotId: SPOT_ID, alreadyStamped: false }, { spotId: CLOSED, alreadyStamped: false }] });
     // Pressing again: both already held.
-    expect(((await (await stamp(cookies.bob)).json()) as Json).stamp).toMatchObject({ alreadyStamped: true, also: [{ spotId: MOUND, alreadyStamped: true }] });
+    expect(((await (await stamp(cookies.bob)).json()) as Json).stamp).toMatchObject({ alreadyStamped: true, also: [{ spotId: MOUND, alreadyStamped: true }, { spotId: CLOSED, alreadyStamped: true }] });
+  });
+
+  test("遥拝: the stamp follows the waypoint, so a closed waypoint gives neither; a place set to 情報のみ is never stamped", async () => {
+    const { stamp, cookies, answer, mem } = await setup();
+    const MOUND = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+    const INFO = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+    mem.spots.set(MOUND, spot({ id: MOUND, stampSpotId: SPOT_ID }));
+    mem.spots.set(INFO, spot({ id: INFO, stampSpotId: SPOT_ID, status: "info" }));
+    expect((((await (await stamp(cookies.alice)).json()) as Json).stamp.also as Json[]).map((s) => s.spotId)).toEqual([MOUND]);
+    mem.spots.set(SPOT_ID, { ...mem.spots.get(SPOT_ID)!, status: "closed", statusUpdatedAt: new Date() });
+    expect(await answer(await stamp(cookies.bob, { spotId: MOUND }))).toEqual([409, "spot_closed"]);
   });
 
   test("user B never sees user A's stamps, and stamps for themselves only", async () => {
