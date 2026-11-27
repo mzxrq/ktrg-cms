@@ -1,4 +1,5 @@
 import type { WalkStyle } from "@/lib/walk-style";
+import type { FlyStop } from "./fly-along";
 import type { RideSpan } from "./elevation-profile";
 import type { PhotoFocus } from "./photo-focus";
 import type { AccessPoint } from "./access-points";
@@ -75,10 +76,14 @@ export interface MapScreenStop {
   /** The spot's own page, with the locale. */
   href: string;
   description: string | null;
-  statusNote: string | null;
+  /** The status note in both languages: StatusBanner picks one and marks an untranslated one. */
+  statusNoteJa: string | null;
+  statusNoteEn: string | null;
   /** ISO timestamp of the last status change. */
   statusUpdatedAt: string | null;
   photo: MapPhoto | null;
+  /** The fly-along pauses here and for how long (lib/fly-along.ts flyStopOf); left out when it flies past. */
+  fly?: FlyStop;
 }
 
 /** A route's navigation point (a toilet, a turn, a viewpoint ...) shown on the map once the course is open and zoomed in. */

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CheckOfficial } from "@/components/CheckOfficial";
 import { Trans } from "@lingui/react/macro";
 import { ChevronIcon, ClosedIcon } from "@/components/icons";
 import { Localized } from "@/components/Localized";
@@ -63,7 +64,7 @@ export function NoticeRows({ notices, locale }: { notices: TrailNotice[]; locale
                   </a>
                 ) : null}
                 <p className="text-base text-muted">
-                  <Trans>出かける前に公式サイトで最新情報を確認してください。</Trans>
+                  <CheckOfficial />
                 </p>
               </div>
             </details>

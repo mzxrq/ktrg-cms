@@ -1,5 +1,6 @@
 import { Trans } from "@lingui/react/macro";
-import { pickText, type SpotStatus } from "@/lib/content";
+import { pickText } from "@/lib/pick-text";
+import type { SpotStatus } from "@/lib/content";
 import { formatUpdated } from "@/lib/format";
 import { StatusWord } from "./StatusWord";
 import { Localized } from "./Localized";

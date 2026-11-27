@@ -3,6 +3,7 @@ import { useLingui } from "@lingui/react/macro";
 import { ChartIcon, ClockIcon, FlagIcon, MountainIcon, RouteIcon, RulerIcon } from "@/components/icons";
 import { InfoTip } from "@/components/InfoTip";
 import { Stars } from "@/components/Stars";
+import { WalkStyleWord } from "@/components/RouteJourney";
 import { physicalStars, technicalStars } from "@/lib/grading";
 import type { RouteSummary } from "@/lib/content";
 import type { WalkStyle } from "@/lib/walk-style";
@@ -24,7 +25,7 @@ export function RouteStats({ route, compact = false, icons = false, inline = fal
   const items: { label: string; value: ReactNode; icon: ReactNode; short?: string; info?: "physical" | "technical" }[] = [];
   // The shape of the walk (通り抜け, 一周 or 往復), where the page chooses to say it: it reads as one more number of the
   // route. "歩き方: 片道" read oddly (2026-11-16, user's manager), like a ticket.
-  if (walkStyle) items.push({ label: t`コース形式`, icon: <RouteIcon />, value: walkStyle === "loop" ? t`一周` : walkStyle === "out_and_back" ? t`往復` : t`通り抜け` });
+  if (walkStyle) items.push({ label: t`コース形式`, icon: <RouteIcon />, value: <WalkStyleWord style={walkStyle} /> });
   if (route.distanceKm !== null) {
     const km = numbers.format(route.distanceKm);
     items.push({ label: t`距離`, icon: <RulerIcon />, value: t`${km}km` });

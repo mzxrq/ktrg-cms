@@ -13,13 +13,11 @@ import { walkedStats, type TextField, type RouteDraft, stampFromChoices } from "
 import { RubyEditor } from "./RubyEditor";
 import { draftProblems, placeChanged, type DraftProblem } from "@/lib/admin/save-plan";
 import { useRouteDraft } from "./useRouteDraft";
-import { CourseMapEditor, RestoreOffer } from "./CourseMapEditor";
+import { CourseMapEditor, PublishedEditGuard, RestoreOffer, SaveButton, SaveState, useConfirmRemoval } from "./CourseMapEditor";
 import type { AdminSharedSpot } from "@/lib/admin/types";
-import { formatUpdated } from "@/lib/format";
 import { adminTab, adminTabRow, Check, Field, inputClass, MultilingualField, NumberInput, Section, TextInput } from "./fields";
 import { LivePreview } from "./LivePreview";
 import { walkStyleOf } from "@/lib/walk-style";
-import { PublishedEditDialog } from "./PublishedEditDialog";
 import { AccessPointsEditor } from "./AccessPointsEditor";
 import { GradingFields } from "./GradingFields";
 import { MunicipalitiesField } from "./MunicipalitiesField";
@@ -83,8 +81,8 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
     onCreated: (id) => router.replace(`/admin/routes/${id}`),
   });
   const {
-    dispatch, draft, saved, dirty, saving, busyKey, problems, setMessage, selectedKey, setSelectedKey,
-    pendingEdit, setPendingEdit, guarded, save, savePlace, unpublishAll, setPublished,
+    dispatch, draft, saved, saving, busyKey, problems, setMessage, selectedKey, setSelectedKey,
+    guarded, savePlace, unpublishAll, setPublished,
   } = d;
   const isNew = draft.id === null;
 
@@ -100,13 +98,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
   const savedByKey = useMemo(() => new Map(saved.places.map((p) => [p.key, p])), [saved.places]);
   // Places of this course that other courses hold too: listed in the shared block, and removing one asks first.
   const lent = draft.places.flatMap((p) => (p.id && sharedWith[p.id] ? [{ key: p.key, name: locale === "en" && p.nameEn ? p.nameEn : p.nameJa, routeIds: sharedWith[p.id]! }] : []));
-  const confirmRemoval = async (key: string) => {
-    const one = lent.find((x) => x.key === key);
-    if (!one) return true;
-    const name = one.name;
-    const where = one.routeIds.map((id) => routeNames[id]).filter(Boolean).join(", ");
-    return confirmDialog({ title: t`経由地を消しますか？`, body: t`「${name}」は、ほかのコース（${where}）にも置いてあります。消すと、そこからも消えます。よろしいですか？`, yes: t`消す` });
-  };
+  const confirmRemoval = useConfirmRemoval(draft, sharedWith, routeNames, locale);
   const problemOf = (kind: DraftProblem["kind"], key?: string) => problems.some((p) => p.kind === kind && (!("key" in p) || p.key === key));
   // A walk that comes back to where it began (周回 or 往復); its first waypoint on the way is the start and the goal.
   const comesBack = draft.walkStyle === "loop" || draft.walkStyle === "out_and_back";
@@ -140,25 +132,16 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
 
   return (
     <div className={`flex flex-col gap-5 ${saving ? "[&_fieldset]:pointer-events-none" : ""}`} aria-busy={saving} style={{ "--head": `${headHeight}px` } as CSSProperties}>
-      <PublishedEditDialog
-        name={pendingEdit ? (draft.places.find((p) => p.key === pendingEdit.key)?.nameJa || t`名前のない経由地`) : null}
-        onProceed={() => {
-          if (pendingEdit) dispatch(pendingEdit.action);
-          setPendingEdit(null);
-        }}
-        onCancel={() => setPendingEdit(null)}
-      />
+      <PublishedEditGuard d={d} />
       {/* Title bar: always in reach, with the one button that matters and the tabs. On a narrow window the name goes on its own line under the
           buttons (squeezed beside them it would be one letter wide), and the saved line wraps instead of being pushed out. */}
       <div ref={head} className="sticky top-0 z-20 -mx-4 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-line bg-paper px-4 pt-3 lg:-mx-8 lg:px-8">
         {back}
         <h1 className="order-last min-w-0 basis-full break-words text-2xl font-bold lg:order-none lg:basis-0 lg:flex-1">{isNew ? t`新しいコース` : draft.nameJa || t`（名前がありません）`}</h1>
         <p className="order-last min-w-0 basis-full text-base text-muted lg:order-none lg:basis-auto lg:flex-none" aria-live="polite">
-          {dirty ? t`保存していない変更があります` : isNew ? "" : t`保存済み（更新 ${formatUpdated(locale, draft.updatedAt ?? new Date().toISOString())}）`}
+          <SaveState d={d} locale={locale} isNew={isNew} />
         </p>
-        <button type="button" disabled={!dirty || saving || busyKey !== null} onClick={save} className="tap-target rounded-full bg-ink px-8 text-xl font-bold text-paper disabled:opacity-40">
-          {saving ? t`保存中…` : t`保存する`}
-        </button>
+        <SaveButton d={d} />
         {/* The tabs stay in the bar, so another part of the course is one click away however far down the page is. */}
         <div className="order-last flex basis-full items-center gap-3">
           <nav aria-label={t`編集する内容`} className={`${adminTabRow} min-w-0 flex-1`} role="tablist">

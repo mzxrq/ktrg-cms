@@ -6,32 +6,32 @@ import { BookmarkIcon } from "./icons";
 import { useBookmarks } from "./useBookmarks";
 
 /**
- * Bookmark one route. `compact`: the icon alone (the phone's jump bar, where there is no room for a word); a short
+ * Bookmark a route, a rally or a blog post (one list: on the account when signed in, on the device when not). `compact`: the icon alone (the phone's jump bar, where there is no room for a word); a short
  * note under it says what happened, so the word is still given. Otherwise the icon with its word. Saved = filled red.
  */
-export function BookmarkButton({ routeId, compact = false }: { routeId: string; compact?: boolean }) {
+export function BookmarkButton({ id, compact = false, wide = false }: { id: string; compact?: boolean; /** The whole width of a narrow column (the rally page). */ wide?: boolean }) {
   const { t } = useLingui();
   const { list, toggle } = useBookmarks();
-  const saved = list.includes(routeId);
+  const saved = list.includes(id);
   const [note, setNote] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const label = saved ? t`ブックマーク済み` : t`ブックマークする`;
   const press = () => {
-    toggle(routeId);
+    toggle(id);
     setNote(saved ? t`ブックマークをはずしました` : t`ブックマークしました`);
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => setNote(null), 2500);
   };
   const look = saved ? "border-selected bg-selected text-on-selected" : "border-ink bg-paper text-ink hover:bg-surface";
   return (
-    <span className="relative inline-flex">
+    <span className={`relative inline-flex ${wide ? "w-full flex-wrap" : ""}`}>
       <button
         type="button"
         aria-pressed={saved}
         aria-label={compact ? label : undefined}
         title={compact ? label : undefined}
         onClick={press}
-        className={`tap-target inline-flex items-center justify-center gap-1.5 rounded-full border font-bold ${compact ? "px-0" : "px-3 text-base"} ${look}`}
+        className={`tap-target inline-flex items-center justify-center gap-1.5 rounded-full border font-bold ${wide ? "w-full" : ""} ${compact ? "px-0" : "px-3 text-base"} ${look}`}
       >
         <BookmarkIcon filled={saved} />
         {compact ? null : label}

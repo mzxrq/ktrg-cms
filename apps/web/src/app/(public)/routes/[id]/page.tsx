@@ -6,7 +6,7 @@ import { BackLink } from "@/components/BackLink";
 import { TrailNotices } from "@/components/landing/TrailNotices";
 import { listNotices } from "@/lib/notices";
 import { OfflinePack } from "@/components/OfflinePack";
-import { ShareRoute } from "@/components/ShareRoute";
+import { ShareButtons } from "@/components/ShareButtons";
 import { RouteView } from "@/components/RouteView";
 import Link from "next/link";
 import { ChevronIcon } from "@/components/icons";
@@ -86,7 +86,9 @@ export default async function RouteDetailPage({ params }: Props) {
         <ChevronIcon />
       </Link>
       {/* Share: handy, but not what a visitor opens the page for, so it comes last (the bookmark is in the jump bar). */}
-      <ShareRoute route={{ nameJa: route.nameJa }} />
+      <div className="px-4 print:hidden">
+        <ShareButtons title={route.nameJa} />
+      </div>
     </div>
   );
 }

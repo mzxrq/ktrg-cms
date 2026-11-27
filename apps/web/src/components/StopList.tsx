@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NoStampChip } from "./StopParts";
 import { useId, type ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
 import type { RoutePoint, SpotListItem } from "@/lib/content";
@@ -113,9 +114,7 @@ export function StopList({ rows, hrefFor, locale }: { rows: WalkRow[]; hrefFor: 
                   <span className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
                     {stop.type === "point" ? (
                       <>
-                        <span className={chip}>
-                          <Trans>スタンプなし</Trans>
-                        </span>
+                        <NoStampChip />
                         <span className="text-lg text-muted">
                           <PointKindName kind={stop.point.kind} />
                         </span>

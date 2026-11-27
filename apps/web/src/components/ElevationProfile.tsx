@@ -1,6 +1,6 @@
 import { useLingui } from "@lingui/react/macro";
 import { elevationArea } from "@/lib/sketch";
-import { ElevationChart } from "./ElevationChart";
+import { ElevationChart, ElevationHeading } from "./ElevationChart";
 import type { RideSpan } from "@/lib/elevation-profile";
 
 const W = 300;
@@ -45,13 +45,7 @@ export function ElevationProfile({
 
   return (
     <figure className="flex flex-col gap-3 rounded-lg bg-surface p-4">
-      <figcaption className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <span className="text-xl font-bold">{t`高低差`}</span>
-        <span className="flex gap-4 text-lg tabular-nums">
-          <span>{t`最高 ${highest}m`}</span>
-          <span>{t`最低 ${lowest}m`}</span>
-        </span>
-      </figcaption>
+      <ElevationHeading highest={highest} lowest={lowest} />
       <div role="img" aria-label={t`標高グラフ（${lowest}m～${highest}m）`}>
         <svg aria-hidden="true" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="h-32 w-full">
           <line x1={PAD} x2={W - PAD} y1={PAD} y2={PAD} className="stroke-line" strokeWidth="1" strokeDasharray="3 4" vectorEffect="non-scaling-stroke" />

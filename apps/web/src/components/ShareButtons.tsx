@@ -9,7 +9,7 @@ const url = () => window.location.href;
 const canShare = () => typeof navigator.share === "function";
 
 /**
- * Share a post: the phone's own share sheet where there is one, a copy-the-link button, and LINE and X. The address is the
+ * Share a page (a blog post, a course): the phone's own share sheet where there is one, a copy-the-link button, and LINE and X. The address is the
  * page's own, read in the browser; until then (and on the server) the buttons that need it wait.
  */
 export function ShareButtons({ title }: { title: string }) {
@@ -36,7 +36,7 @@ export function ShareButtons({ title }: { title: string }) {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t`この記事を共有する`}>
+    <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t`共有`}>
       {native ? (
         <button type="button" className={button} onClick={() => void navigator.share({ title, url: href }).catch(() => {})}>
           {t`共有する`}

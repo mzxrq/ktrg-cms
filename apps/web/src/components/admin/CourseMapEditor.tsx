@@ -1,6 +1,7 @@
 "use client";
 
 import { useLingui } from "@lingui/react/macro";
+import { confirmDialog } from "@/components/ConfirmDialog";
 import { useErrorMessages } from "@/components/useErrorMessages";
 import { api } from "@/lib/api";
 import { outcome } from "@/lib/admin/admin-client";
@@ -11,6 +12,7 @@ import { stampFromChoices, type RouteDraft } from "@/lib/admin/route-draft";
 import { formatUpdated } from "@/lib/format";
 import { Check, Field, TextInput } from "./fields";
 import { MapEditorLoader } from "./map-editor/MapEditorLoader";
+import { PublishedEditDialog } from "./PublishedEditDialog";
 import { WaypointTypeFields } from "./WaypointTypeFields";
 import type { useRouteDraft } from "./useRouteDraft";
 
@@ -138,5 +140,52 @@ export function RestoreOffer({ d, initial, locale }: { d: ReturnType<typeof useR
         {t`捨てる`}
       </button>
     </div>
+  );
+}
+
+// ---- the frame around a course being edited: the course page (RouteEditor) and the one map (OneMapCourseEditor) share it ----
+
+/** Asks before removing a waypoint that other courses hold too (removing it takes it off them as well). */
+export function useConfirmRemoval(draft: RouteDraft, sharedWith: Record<string, string[]>, routeNames: Record<string, string>, locale: string) {
+  const { t } = useLingui();
+  return async (key: string) => {
+    const p = draft.places.find((x) => x.key === key);
+    const others = p?.id ? sharedWith[p.id] : undefined;
+    if (!p || !others) return true;
+    const name = locale === "en" && p.nameEn ? p.nameEn : p.nameJa;
+    const where = others.map((r) => routeNames[r]).filter(Boolean).join(", ");
+    return confirmDialog({ title: t`経由地を消しますか？`, body: t`「${name}」は、ほかのコース（${where}）にも置いてあります。消すと、そこからも消えます。よろしいですか？`, yes: t`消す` });
+  };
+}
+
+/** Unsaved changes, or when it was last saved (nothing yet for a course never saved). */
+export function SaveState({ d, locale, isNew = false }: { d: ReturnType<typeof useRouteDraft>; locale: string; isNew?: boolean }) {
+  const { t } = useLingui();
+  return <>{d.dirty ? t`保存していない変更があります` : isNew ? "" : t`保存済み（更新 ${formatUpdated(locale, d.draft.updatedAt ?? new Date().toISOString())}）`}</>;
+}
+
+/** The course's one save button. */
+export function SaveButton({ d }: { d: ReturnType<typeof useRouteDraft> }) {
+  const { t } = useLingui();
+  return (
+    <button type="button" disabled={!d.dirty || d.saving || d.busyKey !== null} onClick={d.save} className="tap-target rounded-full bg-ink px-8 text-xl font-bold text-paper disabled:opacity-40">
+      {d.saving ? t`保存中…` : t`保存する`}
+    </button>
+  );
+}
+
+/** Editing a published waypoint turns it back into a draft: the question asked first (useRouteDraft's `guarded`). */
+export function PublishedEditGuard({ d }: { d: ReturnType<typeof useRouteDraft> }) {
+  const { t } = useLingui();
+  const { pendingEdit, setPendingEdit, dispatch, draft } = d;
+  return (
+    <PublishedEditDialog
+      name={pendingEdit ? draft.places.find((p) => p.key === pendingEdit.key)?.nameJa || t`名前のない経由地` : null}
+      onProceed={() => {
+        if (pendingEdit) dispatch(pendingEdit.action);
+        setPendingEdit(null);
+      }}
+      onCancel={() => setPendingEdit(null)}
+    />
   );
 }
