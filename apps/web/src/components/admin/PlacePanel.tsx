@@ -63,11 +63,11 @@ export function PlacePanel(p: PlacePanelProps) {
   const isStamp = place.stampable;
   const isInfo = place.status === "info";
   const blockerText: Record<PublishBlocker, string> = {
-    unsaved: t`先に「この経由地を保存」してください。`,
-    no_coordinates: t`位置を決めてください（地図に置くか、緯度と経度を入れます）。`,
-    position_not_verified: t`位置を公式の情報で確認し、「位置を確認した」にチェックを入れて情報源を書いてください。`,
+    unsaved: t`先に「経由地を保存」を押してください。`,
+    no_coordinates: t`位置を設定してください（地図上で指定するか、緯度・経度を入力します）。`,
+    position_not_verified: t`公式情報で位置を確認し、「位置確認済み」にチェックを入れて情報源を入力してください。`,
     permission_required: t`現地の許可を確認し、「許可確認済み」にチェックを入れてください。`,
-    note_required: t`「状態のひとこと」（日本語）を書いてください。「現在、立ち入りできません」など、訪れる人に伝えたいことです。`,
+    note_required: t`「「状況の補足」（日本語）を入力してください。「現在立ち入り禁止」など、訪問者に伝えたい内容を記載します。`,
   };
   const statusName: Record<SpotStatus, string> = { open: t`通常`, caution: t`注意`, closed: t`通行止め`, info: t`案内のみ` };
   const id = `place-${place.key}`;
@@ -89,24 +89,24 @@ export function PlacePanel(p: PlacePanelProps) {
         </span>
         {p.onSelect ? (
           <button type="button" onClick={p.onSelect} aria-expanded={p.selected} className="min-w-0 flex-1 text-left text-xl font-bold text-accent underline underline-offset-4">
-            {place.nameJa || t`（名前がありません）`}
+            {place.nameJa || t`（名称未設定）`}
           </button>
         ) : (
-          <h3 className="min-w-0 flex-1 break-words text-xl font-bold">{place.nameJa || t`（名前がありません）`}</h3>
+          <h3 className="min-w-0 flex-1 break-words text-xl font-bold">{place.nameJa || t`（名称未設定）`}</h3>
         )}
         <span className="rounded-full bg-surface px-3 py-1 text-base">{kindName[place.kind]}</span>
         <span className={`rounded-full px-3 py-1 text-base font-bold ${place.published ? "bg-moss text-paper" : "bg-surface text-ink"}`}>{place.published ? t`公開中` : t`下書き`}</span>
         {p.dirty ? <span className="text-base font-bold text-accent">{t`未保存`}</span> : null}
         {!place.published && !p.selected && blockers.filter((b) => b !== "unsaved").length > 0 ? (
-          <p className="w-full pl-[3.25rem] text-base text-muted">{t`公開まで、あと${blockers.filter((b) => b !== "unsaved").length}つ`}</p>
+          <p className="w-full pl-[3.25rem] text-base text-muted">{t`公開まであと${blockers.filter((b) => b !== "unsaved").length}項目`}</p>
         ) : null}
       </div>
 
       {p.selected ? (
         <div className="flex flex-col gap-6 border-t border-line p-4">
-          <Group title={t`文章`} first>
-          <MultilingualField id={`${id}-name`} label={t`経由地の名前`} field="name" ja={place.nameJa} en={place.nameEn} translations={place.translations} onJa={(v) => p.onChange({ nameJa: v })} onEn={(v) => p.onChange({ nameEn: v })} onTranslations={(v) => p.onChange({ translations: v })} required invalid={p.invalidName} />
-          <Field label={t`名前の読み`} hint={t`漢字の上に出るふりがなです。寺社や経塚の名前は、辞書には任せず人が入れます。`}>
+          <Group title={t`基本情報`} first>
+          <MultilingualField id={`${id}-name`} label={t`経由地名`} field="name" ja={place.nameJa} en={place.nameEn} translations={place.translations} onJa={(v) => p.onChange({ nameJa: v })} onEn={(v) => p.onChange({ nameEn: v })} onTranslations={(v) => p.onChange({ translations: v })} required invalid={p.invalidName} />
+          <Field label={t`ふりがな（読み）`} >
             <RubyEditor name={place.nameJa} value={place.nameKana} onChange={(v) => p.onChange({ nameKana: v })} />
           </Field>
           <MultilingualField id={`${id}-desc`} label={t`説明`} field="description" ja={place.descriptionJa} en={place.descriptionEn} translations={place.translations} onJa={(v) => p.onChange({ descriptionJa: v })} onEn={(v) => p.onChange({ descriptionEn: v })} onTranslations={(v) => p.onChange({ translations: v })} long="short" />
@@ -139,20 +139,20 @@ export function PlacePanel(p: PlacePanelProps) {
             indent
             label={
               <Check id={`${id}-stampable`} checked={place.stampable} onChange={(v) => p.onChange({ stampable: v })}>
-                {t`スタンプを押せる`}
+                {t`スタンプ対象`}
               </Check>
             }
-            hint={isStamp ? t`ここに着いた人が、スタンプを押せます。公開するには、現地の許可の確認が必要です。` : t`スタンプは押せません。場所のページは見られます。公開するには、現地の許可の確認が必要です。`}
+            hint={isStamp ? t`現地に到着した利用者がスタンプを獲得できます。公開には現地の許可確認が必要です。` : t`スタンプ対象外となります（詳細ページは表示されます）。公開には現地の許可確認が必要です。`}
           />
 
           <InfoTip
             indent
             label={
               <Check id={`${id}-stopby`} checked={place.stopBy && !place.detached} onChange={(v) => p.onChange(v ? { stopBy: true, detached: false } : { stopBy: false, detached: false })}>
-                {t`寄り道（道すじから少しはずれた、任意の立ち寄り先）`}
+                {t`寄り道（ルートから少し外れた任意の立ち寄り先）`}
               </Check>
             }
-            hint={t`チェックを入れると、「経由地をつないで道をつくる」で、この点は通りません。代わりに、一つ前の経由地から、この場所までの寄り道の線（青い細い点線）を、地図で描けます。分かれ道に経由地を置き、その次にこの場所を並べてください。`}
+            hint={t`チェックを入れると、自動ルート生成の対象から外れます。代わりに、直前の経由地からこの地点までの寄り道ルート（青い点線）を地図上で描画できます。分岐点となる経由地の直後に配置してください。`}
           />
 
           {/* 2026-11-17, user: a place nobody can walk to (a mound worshipped from afar) is not a side trip. Stored as a side trip
@@ -161,30 +161,30 @@ export function PlacePanel(p: PlacePanelProps) {
             indent
             label={
               <Check id={`${id}-detached`} checked={place.detached} onChange={(v) => p.onChange(v ? { stopBy: true, detached: true } : { stopBy: false, detached: false, stampSpotId: null })}>
-                {t`道とつながらない（行けない場所。遠くから拝む経塚など）`}
+                {t`ルート外`}
               </Check>
             }
-            hint={t`地図には出ますが、番号はつかず、道の線も寄り道の線も引きません。距離や時間にも入りません。利用者には、下に入れた言葉が「寄り道」の代わりに表示されます。`}
+            hint={t`地図には表示されますが、番号やルート線は付かず、総距離・歩行時間にも含まれません。下の表示ラベルが「寄り道」の代わりに表示されます。`}
           />
           {place.detached ? (
             <div className="grid gap-3 sm:grid-cols-2">
               {/* 2026-11-20, user: 第1経塚 is stamped from 第4砲台, 第22経塚 from 水分神社. Chosen from the course's waypoints, never
                   typed: the stamp is checked at that waypoint's own checked position, and one press there gives both stamps. */}
-              <Field label={t`どこから拝む（スタンプを押す場所）`} htmlFor={`${id}-stamp-from`} hint={p.stampFrom?.isHub ? t`ほかの経由地が、ここから拝む場所になっています。そのため、ここには選べません。` : t`選んだ経由地でスタンプを押すと、この場所のスタンプも一緒に押されます。地図のピンは、この経由地の位置のままです。保存済みの経由地から選べます。`}>
+              <Field label={t`遥拝場所`} htmlFor={`${id}-stamp-from`} hint={p.stampFrom?.isHub ? t`他の経由地の遥拝場所に設定されているため、指定できません。` : t`指定した経由地でスタンプを押すと、この地点のスタンプも同時に獲得できます（地図上のピン位置は変わりません）。保存済みの経由地から選択できます。`}>
                 <select id={`${id}-stamp-from`} value={place.stampSpotId ?? ""} disabled={p.stampFrom?.isHub} onChange={(e) => p.onChange({ stampSpotId: e.target.value || null })} className={`${inputClass} max-w-md`}>
-                  <option value="">{t`ここで押す（選ばない）`}</option>
+                  <option value="">{t`この地点で押す（指定なし）`}</option>
                   {(p.stampFrom?.choices ?? []).map((c) => (
                     <option key={c.id} value={c.id}>
-                      {c.name || t`（名前がありません）`}
+                      {c.name || t`（名称未設定）`}
                     </option>
                   ))}
                 </select>
               </Field>
               <div className="hidden sm:block" />
-              <Field label={t`利用者に見せる言葉`} htmlFor={`${id}-detached-ja`} hint={t`空のままなら、選んだ経由地から「〇〇から遥拝」と表示します（選んでいなければ「道からはなれた場所」）。`}>
-                <TextInput id={`${id}-detached-ja`} value={place.detachedLabelJa} onChange={(v) => p.onChange({ detachedLabelJa: v })} maxLength={100} placeholder={t`空のままでよい`} />
+              <Field label={t`表示ラベル（日本語）`} htmlFor={`${id}-detached-ja`} hint={t`未入力の場合、遥拝場所が設定されていれば「〇〇から遥拝」、未設定なら「ルートから離れた場所」と表示されます。`}>
+                <TextInput id={`${id}-detached-ja`} value={place.detachedLabelJa} onChange={(v) => p.onChange({ detachedLabelJa: v })} maxLength={100} placeholder={t`省略可`} />
               </Field>
-              <Field label={t`英語（なくてもよい）`} htmlFor={`${id}-detached-en`}>
+              <Field label={t`表示ラベル（英語・任意）`} htmlFor={`${id}-detached-en`}>
                 <TextInput id={`${id}-detached-en`} lang="en" value={place.detachedLabelEn} onChange={(v) => p.onChange({ detachedLabelEn: v })} maxLength={100} placeholder="Can stay empty" />
               </Field>
             </div>
@@ -197,18 +197,18 @@ export function PlacePanel(p: PlacePanelProps) {
                 {t`案内のみ（スタンプなし）`}
               </Check>
             }
-            hint={t`見せるだけの場所です。立ち入りできない場所などに使います。スタンプは押せず、コースやラリーの数にも入りません。「状態のひとこと」に、「現在、立ち入りできません」などを書きます。公開には、現地の許可の確認は要りません。`}
+            hint={t`表示専用の地点です（立ち入り禁止の場所などに使用）。スタンプ対象外となり、コースやラリーのスポット数にも含まれません。「状況の補足」に「現在立ち入り禁止」などを記載してください。公開に現地の許可確認は不要です。`}
           />
 
           {isInfo ? null : isStamp || place.stampImageUrl ? (
             <div className="flex flex-col gap-2">
-              <p className="text-base font-bold">{t`この場所のスタンプの絵`}</p>
-              <p className="text-base text-muted">{t`入れると、この場所のスタンプが、ふつうの赤い印の代わりにこの絵になります。正方形で、背景が透明な画像がきれいです。`}</p>
+              <p className="text-base font-bold">{t`専用スタンプ画像`}</p>
+              <p className="text-base text-muted">{t`設定すると、標準の赤いスタンプの代わりにこの画像が表示されます。正方形・背景透過の画像を推奨します。`}</p>
               <PhotoUpload onUploaded={(url) => p.onChange({ stampImageUrl: url })} />
               <PhotoSlot url={place.stampImageUrl} className="max-w-32" />
               {place.stampImageUrl ? (
                 <button type="button" className="self-start text-base font-bold text-accent underline" onClick={() => p.onChange({ stampImageUrl: "" })}>
-                  {t`絵をはずす`}
+                  {t`削除`}
                 </button>
               ) : null}
             </div>
@@ -223,15 +223,15 @@ export function PlacePanel(p: PlacePanelProps) {
               lat={place.lat}
               lng={place.lng}
             />
-            {p.invalidPhoto ? <p role="alert" className="text-base font-bold text-danger">{t`写真のリンクは、https:// で始まるものだけ使えます。`}</p> : null}
+            {p.invalidPhoto ? <p role="alert" className="text-base font-bold text-danger">{t`写真URLは https:// で始まる形式で入力してください。`}</p> : null}
           </Group>
 
           {/* 2026-11-26, user: the visitor's fly-along over the 3D course map stops at waypoints and shows a card; how, per waypoint. */}
-          <Group title={t`コースをたどる`}>
+          <Group title={t`3D再生の設定`}>
             <Field
-              label={t`ここで止まる`}
+              label={t`一時停止の設定`}
               htmlFor={`${id}-fly-show`}
-              hint={t`立体の地図で「コースをたどる」を再生したとき、ここで止まって紹介するかどうかです。自動では、スタンプの場所と寄り道で止まります。`}
+              hint={t`3Dマップでルートを再生した際、この地点で一時停止して紹介カードを表示するかどうかを設定します。「自動」ではスタンプスポットと寄り道で停止します。`}
             >
               <select
                 id={`${id}-fly-show`}
@@ -240,11 +240,11 @@ export function PlacePanel(p: PlacePanelProps) {
                 className={`${inputClass} max-w-md`}
               >
                 <option value="">{t`自動`}</option>
-                <option value="yes">{t`止まる`}</option>
-                <option value="no">{t`止まらない`}</option>
+                <option value="yes">{t`停止する`}</option>
+                <option value="no">{t`通過する`}</option>
               </select>
             </Field>
-            <Field label={t`止まる長さ（秒）`} htmlFor={`${id}-fly-seconds`}>
+            <Field label={t`停止時間（秒）`} htmlFor={`${id}-fly-seconds`}>
               <div className="flex items-center gap-3">
                 <input
                   id={`${id}-fly-seconds`}
@@ -259,7 +259,7 @@ export function PlacePanel(p: PlacePanelProps) {
                 <span className="w-20 text-lg font-bold tabular-nums">{place.flySeconds ?? 5} s</span>
               </div>
             </Field>
-            <Field label={t`見せる写真`} htmlFor={`${id}-fly-photo`}>
+            <Field label={t`表示する写真`} htmlFor={`${id}-fly-photo`}>
               <select
                 id={`${id}-fly-photo`}
                 value={place.flyPhotoUrl}
@@ -279,7 +279,7 @@ export function PlacePanel(p: PlacePanelProps) {
             <PhotoSlot url={place.flyPhotoUrl || place.photoUrl} className="max-w-48" />
             <MultilingualField
               id={`${id}-fly-note`}
-              label={t`紹介のひとこと`}
+              label={t`紹介コメント`}
               field="flyNote"
               ja={place.flyNoteJa}
               en={place.flyNoteEn}
@@ -288,7 +288,6 @@ export function PlacePanel(p: PlacePanelProps) {
               onEn={(v) => p.onChange({ flyNoteEn: v })}
               onTranslations={(v) => p.onChange({ translations: v })}
             />
-            <p className="text-base text-muted">{t`空のままなら、説明のはじめの部分を見せます。`}</p>
           </Group>
 
           <Group title={t`位置`}>
@@ -300,12 +299,12 @@ export function PlacePanel(p: PlacePanelProps) {
                 <NumberInput id={`${id}-lng`} value={place.lng} min={-180} max={180} onChange={(v) => p.onChange({ lng: v })} />
               </Field>
             </div>
-            <p className="text-base text-muted">{t`位置は、公式の情報から入れて、地図で確かめます。推測では入れません。`}</p>
+            <p className="text-base text-muted">{t`位置情報は公式データをもとに設定し、地図上で確認してください（推測での入力は不可）。`}</p>
             {p.positionMap}
             <Check id={`${id}-verified`} checked={place.positionVerified} disabled={place.lat === null} onChange={(v) => p.onChange({ positionVerified: v })}>
-              {t`位置を確認した`}
+              {t`位置確認済み`}
             </Check>
-            <Field label={t`確認した情報源（サイト名やリンク）`} htmlFor={`${id}-source`}>
+            <Field label={t`確認元の情報源（サイト名・URLなど））`} htmlFor={`${id}-source`}>
               <TextInput id={`${id}-source`} value={place.positionSource} onChange={(v) => p.onChange({ positionSource: v })} maxLength={500} />
             </Field>
           </Group>
@@ -314,13 +313,13 @@ export function PlacePanel(p: PlacePanelProps) {
           <details ref={settings} open className="rounded-xl bg-surface p-4">
             <summary className="tap-target flex cursor-pointer flex-wrap items-center gap-x-3 text-lg font-bold">
               {isStamp ? t`スタンプ・状態・許可の設定` : t`状態・許可の設定`}
-              {place.permissionConfirmed ? null : <span className="rounded-full border-2 border-danger px-2 text-base text-danger">{t`許可が未確認`}</span>}
+              {place.permissionConfirmed ? null : <span className="rounded-full border-2 border-danger px-2 text-base text-danger">{t`許可未確認`}</span>}
             </summary>
             <div className="mt-3 flex flex-col gap-5">
               {isStamp && !isInfo ? (
-                <Field label={t`スタンプを押せる範囲（メートル）`} htmlFor={`${id}-radius`} hint={t`この経由地から、この距離の中にいるとスタンプを押せます。`}>
+                <Field label={t`スタンプ獲得範囲（m）`} htmlFor={`${id}-radius`} hint={t`この経由地から指定した半径内にいる場合、スタンプを獲得できます。`}>
                   <div className="flex items-center gap-3">
-                    <input id={`${id}-radius`} type="range" min={10} max={500} step={5} value={place.radiusM} onChange={(e) => p.onChange({ radiusM: Number(e.target.value) })} className="h-10 w-full max-w-sm accent-[var(--color-brand)]" />
+                    <input id={`${id}-radius`} type="range" min={10} max={1000} step={5} value={place.radiusM} onChange={(e) => p.onChange({ radiusM: Number(e.target.value) })} className="h-10 w-full max-w-sm accent-[var(--color-brand)]" />
                     <span className="w-20 text-lg font-bold tabular-nums">{place.radiusM} m</span>
                   </div>
                 </Field>
@@ -328,13 +327,13 @@ export function PlacePanel(p: PlacePanelProps) {
 
               <fieldset className="flex flex-col gap-3">
                 <legend className="text-base font-bold">{t`いまの状態`}</legend>
-                <select aria-label={t`いまの状態`} value={place.status} onChange={(e) => p.onChange({ status: e.target.value as SpotStatus })} className={`${inputClass} max-w-xs`}>
+                <select aria-label={t`現在の状況`} value={place.status} onChange={(e) => p.onChange({ status: e.target.value as SpotStatus })} className={`${inputClass} max-w-xs`}>
                   <option value="open">{statusName.open}</option>
                   <option value="caution">{statusName.caution}</option>
                   <option value="closed">{statusName.closed}</option>
                   <option value="info">{statusName.info}</option>
                 </select>
-                <MultilingualField id={`${id}-note`} label={t`状態のひとこと`} field="statusNote" ja={place.statusNoteJa} en={place.statusNoteEn} translations={place.translations} onJa={(v) => p.onChange({ statusNoteJa: v })} onEn={(v) => p.onChange({ statusNoteEn: v })} onTranslations={(v) => p.onChange({ translations: v })} />
+                <MultilingualField id={`${id}-note`} label={t`状況の補足`} field="statusNote" ja={place.statusNoteJa} en={place.statusNoteEn} translations={place.translations} onJa={(v) => p.onChange({ statusNoteJa: v })} onEn={(v) => p.onChange({ statusNoteEn: v })} onTranslations={(v) => p.onChange({ translations: v })} />
               </fieldset>
 
               <fieldset className="flex flex-col gap-3">
@@ -342,7 +341,7 @@ export function PlacePanel(p: PlacePanelProps) {
                 <Check id={`${id}-permission`} checked={place.permissionConfirmed} onChange={(v) => p.onChange({ permissionConfirmed: v })}>
                   {t`許可確認済み`}
                 </Check>
-                <Field label={t`許可してくれた人`} htmlFor={`${id}-permnote`}>
+                <Field label={t`許可元・担当者`} htmlFor={`${id}-permnote`}>
                   <TextInput id={`${id}-permnote`} value={place.permissionNote} onChange={(v) => p.onChange({ permissionNote: v })} maxLength={500} />
                 </Field>
               </fieldset>
@@ -352,15 +351,15 @@ export function PlacePanel(p: PlacePanelProps) {
           <div className="flex flex-col gap-3 rounded-xl bg-surface p-4">
             <div className="flex flex-wrap items-center gap-3">
               <button type="button" disabled={p.busy || !p.dirty || !p.canSave} onClick={p.onSave} className="tap-target w-fit rounded-full bg-ink px-6 text-lg font-bold text-paper disabled:opacity-40">
-                {t`この経由地を保存`}
+                {t`経由地を保存`}
               </button>
-              {!p.canSave ? <p className="text-base text-muted">{t`先にコースを保存してください。`}</p> : place.published && p.dirty ? <p className="text-base text-muted">{t`保存すると、この経由地は下書きに戻ります。`}</p> : null}
+              {!p.canSave ? <p className="text-base text-muted">{t`先にコースを保存してください。`}</p> : place.published && p.dirty ? <p className="text-base text-muted">{t`保存するとこの経由地は下書きに戻ります。`}</p> : null}
             </div>
             {place.published ? (
               <div className="flex flex-wrap items-center gap-3">
                 <p className="text-lg font-bold">{t`この経由地は公開されています。`}</p>
                 <button type="button" disabled={p.busy} onClick={p.onUnpublish} className="tap-target rounded-full border border-line px-5 text-lg font-bold disabled:opacity-40">
-                  {t`公開をやめる`}
+                  {t`非公開にする`}
                 </button>
               </div>
             ) : (
@@ -405,7 +404,7 @@ export function PlacePanel(p: PlacePanelProps) {
               {t`この経由地を削除`}
             </button>
           </div>
-          {place.published ? <p className="text-base text-muted">{t`公開中の経由地は、先に「公開をやめる」と、削除できます。`}</p> : null}
+          {place.published ? <p className="text-base text-muted">{t`公開中の経由地を削除するには、先に「非公開にする」を押してください。`}</p> : null}
         </div>
       ) : null}
     </li>
