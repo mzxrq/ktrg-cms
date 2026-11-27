@@ -988,6 +988,7 @@ msgid "アカウント設定"
 msgstr "Account settings"
 
 #: src/app/(admin)/admin/page.tsx:67
+#: src/components/RallyBook.tsx:158
 #: src/components/RouteView.tsx:131
 msgid "アクセス"
 msgstr "Visits"
@@ -1398,10 +1399,6 @@ msgstr "Click to remove this point"
 #: src/components/landing/Landing.tsx:200
 msgid "グルメ"
 msgstr "Gourmet"
-
-#: src/components/InfoTip.tsx:42
-msgid "くわしく見る"
-msgstr "Learn more"
 
 #: src/components/GuestNag.tsx:91
 msgid "ゲストのまま使う"
@@ -1952,10 +1949,6 @@ msgstr "Other stamps collectible here: {0}"
 #: src/components/StatusBanner.tsx:77
 msgid "この場所にスタンプ対象外です。"
 msgstr "No stamp is available at this spot."
-
-#: src/components/RallyBook.tsx:176
-msgid "この場所のページを開く"
-msgstr "Open this place's page"
 
 #: src/components/map/PlacesPanel.tsx:261
 msgid "この場所の位置は仮のもので、まだ確認されていません。"
@@ -2737,14 +2730,6 @@ msgstr "Next"
 msgid "つぎにもらえそうなバッジ"
 msgstr "The badge closest to hand"
 
-#: src/components/RallyBook.tsx:131
-msgid "つぎに押す場所"
-msgstr "Your next stamp"
-
-#: src/components/RallyBook.tsx:147
-msgid "つぎの場所まで"
-msgstr "To the next place"
-
 #: src/components/auth/RegisterFlow.tsx:128
 #: src/components/auth/RegisterFlow.tsx:184
 #: src/components/settings/WelcomeFlow.tsx:165
@@ -3465,7 +3450,6 @@ msgid "まず、GPXファイルをここにドラッグするか「GPXファイ�
 msgstr "Start by dragging a GPX file here or pressing \"Load a GPX file\". To enter by hand, place waypoints with \"Add waypoint\", then draw the path leg by leg with \"Draw path\"."
 
 #: src/components/admin/RouteEditor.tsx:435
-#: src/components/RallyBook.tsx:133
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:10
 msgid "まだ"
@@ -5200,6 +5184,10 @@ msgstr "Ask to delete"
 msgid "削除を取り消す"
 msgstr "Cancel deletion"
 
+#: src/components/RallyBook.tsx:181
+msgid "前のスポット"
+msgstr "Previous spot"
+
 #: src/components/SpotStats.tsx:33
 msgid "前のスポットから"
 msgstr "From previous spot"
@@ -5218,7 +5206,6 @@ msgid "前の動画のリンク"
 msgstr "Earlier video links"
 
 #: src/components/map/TrailMap.tsx:637
-#: src/components/RallyBook.tsx:181
 msgid "前の場所"
 msgstr "Previous place"
 
@@ -6284,15 +6271,10 @@ msgstr "Collapse"
 msgid "折り返し"
 msgstr "Turnaround"
 
-#: src/components/RallyBook.tsx:128
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:9
 msgid "押した"
 msgstr "Stamped"
-
-#: src/components/RallyBook.tsx:126
-msgid "押した日時　{when}"
-msgstr "Stamped　{when}"
 
 #: src/components/ProfileSettings.tsx:284
 msgid "押すと、アカウントと、集めたスタンプなどの記録を、3日後にすべて消します。"
@@ -6667,6 +6649,7 @@ msgstr "If left blank, visitors will see \"Worshipped from [waypoint]\" when a v
 msgid "未回答"
 msgstr "Not answered"
 
+#: src/components/RallyBook.tsx:133
 #: src/components/RallyViews.tsx:159
 msgid "未獲得"
 msgstr "Not yet"
@@ -6809,6 +6792,8 @@ msgid "次のスタンプの場所"
 msgstr "Next stamp place"
 
 #: src/components/landing/HomeProgress.tsx:65
+#: src/components/RallyBook.tsx:131
+#: src/components/RallyBook.tsx:189
 msgid "次のスポット"
 msgstr "Next spot"
 
@@ -6816,13 +6801,16 @@ msgstr "Next spot"
 msgid "次のスポットへ進みますか？"
 msgstr "Continue to the next spot?"
 
+#: src/components/RallyBook.tsx:147
+msgid "次のスポットまで"
+msgstr "To next spot"
+
 #: src/components/landing/HeroSlides.tsx:92
 #: src/components/Zoomable.tsx:140
 msgid "次の写真"
 msgstr "Next photo"
 
 #: src/components/map/TrailMap.tsx:643
-#: src/components/RallyBook.tsx:189
 msgid "次の場所"
 msgstr "Next place"
 
@@ -7095,6 +7083,11 @@ msgstr "Status note"
 msgid "獲得したスタンプは消えません。"
 msgstr "Your collected stamps will be kept."
 
+#: src/components/RallyBook.tsx:126
+msgid "獲得日時：{when}"
+msgstr "Collected: {when}"
+
+#: src/components/RallyBook.tsx:128
 #: src/components/RallyViews.tsx:159
 #: src/components/SpotStats.tsx:40
 msgid "獲得済み"
@@ -8073,7 +8066,6 @@ msgid "行きと同じ道を戻ります。"
 msgstr "You'll return along the same trail."
 
 #: src/components/navigation/NavFarCard.tsx:50
-#: src/components/RallyBook.tsx:158
 msgid "行き方"
 msgstr "How to get there"
 
@@ -8328,6 +8320,7 @@ msgstr "No matching places."
 msgid "該当する店舗・施設はありません。"
 msgstr "No matching places found."
 
+#: src/components/InfoTip.tsx:42
 #: src/components/map/MapScreen.tsx:491
 #: src/components/map/MapScreen.tsx:538
 msgid "詳しく見る"
@@ -8338,6 +8331,7 @@ msgid "詳細"
 msgstr "Details"
 
 #: src/components/map/StopCard.tsx:87
+#: src/components/RallyBook.tsx:176
 msgid "詳細を見る"
 msgstr "View details"
 

@@ -994,6 +994,7 @@ msgid "アカウント設定"
 msgstr ""
 
 #: src/app/(admin)/admin/page.tsx:67
+#: src/components/RallyBook.tsx:158
 #: src/components/RouteView.tsx:131
 msgid "アクセス"
 msgstr ""
@@ -1403,10 +1404,6 @@ msgstr ""
 
 #: src/components/landing/Landing.tsx:200
 msgid "グルメ"
-msgstr ""
-
-#: src/components/InfoTip.tsx:42
-msgid "くわしく見る"
 msgstr ""
 
 #: src/components/GuestNag.tsx:91
@@ -1957,10 +1954,6 @@ msgstr ""
 
 #: src/components/StatusBanner.tsx:77
 msgid "この場所にスタンプ対象外です。"
-msgstr ""
-
-#: src/components/RallyBook.tsx:176
-msgid "この場所のページを開く"
 msgstr ""
 
 #: src/components/map/PlacesPanel.tsx:261
@@ -2743,14 +2736,6 @@ msgstr ""
 msgid "つぎにもらえそうなバッジ"
 msgstr ""
 
-#: src/components/RallyBook.tsx:131
-msgid "つぎに押す場所"
-msgstr ""
-
-#: src/components/RallyBook.tsx:147
-msgid "つぎの場所まで"
-msgstr ""
-
 #: src/components/auth/RegisterFlow.tsx:128
 #: src/components/auth/RegisterFlow.tsx:184
 #: src/components/settings/WelcomeFlow.tsx:165
@@ -3471,7 +3456,6 @@ msgid "まず、GPXファイルをここにドラッグするか「GPXファイ�
 msgstr ""
 
 #: src/components/admin/RouteEditor.tsx:435
-#: src/components/RallyBook.tsx:133
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:10
 msgid "まだ"
@@ -5206,6 +5190,10 @@ msgstr ""
 msgid "削除を取り消す"
 msgstr ""
 
+#: src/components/RallyBook.tsx:181
+msgid "前のスポット"
+msgstr ""
+
 #: src/components/SpotStats.tsx:33
 msgid "前のスポットから"
 msgstr ""
@@ -5224,7 +5212,6 @@ msgid "前の動画のリンク"
 msgstr ""
 
 #: src/components/map/TrailMap.tsx:637
-#: src/components/RallyBook.tsx:181
 msgid "前の場所"
 msgstr ""
 
@@ -6290,14 +6277,9 @@ msgstr ""
 msgid "折り返し"
 msgstr ""
 
-#: src/components/RallyBook.tsx:128
 #: src/components/RallyTrail.tsx:39
 #: src/components/StampLegend.tsx:9
 msgid "押した"
-msgstr ""
-
-#: src/components/RallyBook.tsx:126
-msgid "押した日時　{when}"
 msgstr ""
 
 #: src/components/ProfileSettings.tsx:284
@@ -6673,6 +6655,7 @@ msgstr ""
 msgid "未回答"
 msgstr ""
 
+#: src/components/RallyBook.tsx:133
 #: src/components/RallyViews.tsx:159
 msgid "未獲得"
 msgstr ""
@@ -6815,11 +6798,17 @@ msgid "次のスタンプの場所"
 msgstr ""
 
 #: src/components/landing/HomeProgress.tsx:65
+#: src/components/RallyBook.tsx:131
+#: src/components/RallyBook.tsx:189
 msgid "次のスポット"
 msgstr ""
 
 #: src/components/navigation/NavPrompts.tsx:138
 msgid "次のスポットへ進みますか？"
+msgstr ""
+
+#: src/components/RallyBook.tsx:147
+msgid "次のスポットまで"
 msgstr ""
 
 #: src/components/landing/HeroSlides.tsx:92
@@ -6828,7 +6817,6 @@ msgid "次の写真"
 msgstr ""
 
 #: src/components/map/TrailMap.tsx:643
-#: src/components/RallyBook.tsx:189
 msgid "次の場所"
 msgstr ""
 
@@ -7101,6 +7089,11 @@ msgstr ""
 msgid "獲得したスタンプは消えません。"
 msgstr ""
 
+#: src/components/RallyBook.tsx:126
+msgid "獲得日時：{when}"
+msgstr ""
+
+#: src/components/RallyBook.tsx:128
 #: src/components/RallyViews.tsx:159
 #: src/components/SpotStats.tsx:40
 msgid "獲得済み"
@@ -8079,7 +8072,6 @@ msgid "行きと同じ道を戻ります。"
 msgstr ""
 
 #: src/components/navigation/NavFarCard.tsx:50
-#: src/components/RallyBook.tsx:158
 msgid "行き方"
 msgstr ""
 
@@ -8334,6 +8326,7 @@ msgstr ""
 msgid "該当する店舗・施設はありません。"
 msgstr ""
 
+#: src/components/InfoTip.tsx:42
 #: src/components/map/MapScreen.tsx:491
 #: src/components/map/MapScreen.tsx:538
 msgid "詳しく見る"
@@ -8344,6 +8337,7 @@ msgid "詳細"
 msgstr ""
 
 #: src/components/map/StopCard.tsx:87
+#: src/components/RallyBook.tsx:176
 msgid "詳細を見る"
 msgstr ""
 

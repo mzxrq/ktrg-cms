@@ -123,14 +123,14 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
 
               <p className="text-lg font-bold">
                 {page.state === "stamped" && page.stampedAt ? (
-                  <span className="text-moss">{t`押した日時　${when}`}</span>
+                  <span className="text-moss">{t`獲得日時：${when}`}</span>
                 ) : page.state === "stamped" ? (
-                  <span className="text-moss">{t`押した`}</span>
+                  <span className="text-moss">{t`獲得済み`}</span>
                 ) : page.state === "next" ? (
                   // The place to stamp next stands out (2026-11-16, user: a plain つぎ was easy to miss). White on brand red is for large bold words only.
-                  <span className="inline-flex items-center rounded-full bg-brand px-4 py-1 text-xl font-bold text-paper">{t`つぎに押す場所`}</span>
+                  <span className="inline-flex items-center rounded-full bg-brand px-4 py-1 text-xl font-bold text-paper">{t`次のスポット`}</span>
                 ) : page.state === "todo" ? (
-                  <span className="text-muted">{t`まだ`}</span>
+                  <span className="text-muted">{t`未獲得`}</span>
                 ) : null}
               </p>
 
@@ -144,9 +144,9 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
 
               {page.next && nextName ? (
                 <p className="text-base">
-                  <span className="text-muted">{t`つぎの場所まで`}　</span>
+                  <span className="text-muted">{t`次のスポットまで`} </span>
                   <span className="font-bold">
-                    {nextName}　{distance(page.next.meters)}
+                    {nextName} {distance(page.next.meters)}
                   </span>
                 </p>
               ) : null}
@@ -155,7 +155,7 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
 
               {access ? (
                 <section className="flex flex-col gap-1">
-                  <h3 className={label}>{t`行き方`}</h3>
+                  <h3 className={label}>{t`アクセス`}</h3>
                   <div lang={access.lang} className="whitespace-pre-line text-base leading-relaxed">
                     <RichText text={access.text} lang={access.lang} />
                   </div>
@@ -166,19 +166,19 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
                 <section className="flex flex-col gap-1">
                   <h3 className={label}>{t`近くのトイレ`}</h3>
                   <p className="text-base">
-                    <span className="font-bold">{toiletName}</span>　{distance(page.toilet.meters)}
-                    {toiletHours ? <span className="text-muted">　{toiletHours}</span> : null}
+                    <span className="font-bold">{toiletName}</span> {distance(page.toilet.meters)}
+                    {toiletHours ? <span className="text-muted"> {toiletHours}</span> : null}
                   </p>
                 </section>
               ) : null}
 
               <Link href={`/spots/${page.id}`} className={buttonStyle("primary", "lg", "flex w-full")}>
-                {t`この場所のページを開く`}
+                {t`詳細を見る`}
               </Link>
 
               {/* Pinned to the bottom edge, so a long page can still be turned without scrolling back down. */}
               <div className="sticky bottom-0 -mx-5 -mb-5 flex items-center justify-between gap-3 border-t border-line/40 bg-paper px-5 py-3">
-                <button type="button" aria-label={t`前の場所`} disabled={index === 0} onClick={() => turn(-1)} className={arrow}>
+                <button type="button" aria-label={t`前のスポット`} disabled={index === 0} onClick={() => turn(-1)} className={arrow}>
                   <span className="rotate-180">
                     <ChevronIcon />
                   </span>
@@ -186,7 +186,7 @@ export function RallyBook({ pages, children }: { pages: readonly BookPage[]; chi
                 <button type="button" onClick={() => setIndex(null)} className={buttonStyle("secondary", "md", "inline-flex")}>
                   {t`閉じる`}
                 </button>
-                <button type="button" aria-label={t`次の場所`} disabled={index === pages.length - 1} onClick={() => turn(1)} className={arrow}>
+                <button type="button" aria-label={t`次のスポット`} disabled={index === pages.length - 1} onClick={() => turn(1)} className={arrow}>
                   <ChevronIcon />
                 </button>
               </div>
