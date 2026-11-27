@@ -47,7 +47,7 @@ export function PrefsForm({
 
   const sizes: Record<TextSize, { name: string; hint: string }> = {
     small: { name: t`小さい`, hint: t`文字のみ小さくなります。ボタンの大きさは標準のままです。` },
-    standard: { name: t`標準`, hint: t`標準の大きさです。` },
+    standard: { name: t`標準`, hint: "" },
     large: { name: t`大きい`, hint: t`文字とボタンが少し大きくなります。` },
     xlarge: { name: t`特大`, hint: t`文字とボタンが最も大きくなります。` },
   };
