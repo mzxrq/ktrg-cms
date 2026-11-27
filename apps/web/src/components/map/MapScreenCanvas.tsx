@@ -6,8 +6,11 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import type { GeoJSONSource, Map as MapLibreMap, Marker } from "maplibre-gl";
-import { MinusIcon, PlusIcon, WarningIcon } from "@/components/icons";
-import { areaCollection, courseDotState, COURSE_DOT_PX, framePoints, namesThatFit, revealedRouteId, spreadLabels, type LabelBox, type MapScreenPoint, type MapScreenRoute, } from "@/lib/map-screen";
+import { MinusIcon, PlayIcon, PlusIcon, StopIcon, WarningIcon } from "@/components/icons";
+import { buttonStyle } from "@/components/button";
+import { motionLevel } from "@/lib/motion";
+import { useFlyAlong } from "./useFlyAlong";
+import { areaCollection, courseDotState, COURSE_DOT_PX, framePoints, namesThatFit, revealedRouteId, spreadLabels, type LabelBox, type MapScreenPoint, type MapScreenStop, type MapScreenRoute, } from "@/lib/map-screen";
 import { pinPhotoSrc } from "@/lib/pin-photo";
 import { defaultLayers, moundStops, offeredLayers, type MapLayer } from "@/lib/map-layers";
 import { groupOf } from "@/lib/places";
@@ -47,6 +50,7 @@ const START_CENTER: [number, number] = [135.35, 34.4];
 
 /** One empty list for every render, so the pins are not drawn again for a new `[]`. */
 const NO_POINTS: MapScreenPoint[] = [];
+const NO_STOPS: readonly MapScreenStop[] = [];
 
 export function MapScreenCanvas({
   routes,
@@ -172,6 +176,31 @@ export function MapScreenCanvas({
   }, [wanted]);
   const draftShown = focus ? focus.draft || focus.area?.verified === false : routes.some((r) => r.area && !r.area.verified);
 
+  // The fly-along of the open course (2026-11-27, user: as on the course page; the same player, useFlyAlong). It plays the
+  // course chosen when it started: choosing another stops it. Not while navigating (the camera follows the visitor then).
+  const [flyingId, setFlyingId] = useState<string | null>(null);
+  const flying = flyingId !== null && flyingId === route?.id;
+  const flyingRef = useRef(false);
+  useEffect(() => {
+    flyingRef.current = flying;
+  }, [flying]);
+  const [pausedId, setPausedId] = useState<string | null>(null);
+  const flyLine = route && focus?.id === route.id ? focus.line : null;
+  const canFly = route !== null && (route.stops?.length ?? 0) > 1 && !user && motionLevel() === "full";
+  const { flightAt } = useFlyAlong({
+    mapRef,
+    on: flying,
+    line: flyLine,
+    stops: route?.stops ?? NO_STOPS,
+    mapGen,
+    onPause: setPausedId,
+    onEnd: () => {
+      setFlyingId(null);
+      setPausedId(null);
+    },
+  });
+  const pausedStop = flying && pausedId ? route?.stops?.find((st) => st.id === pausedId) : undefined;
+
   // Keep what is framed above the sheet and clear of the buttons (menu on the left, zoom on the right).
   const padding = () => ({ top: 144, left: 36 + leftRef.current, right: 72, bottom: coveredRef.current + 28 });
 
@@ -224,7 +253,8 @@ export function MapScreenCanvas({
         map.on("zoom", sizePins);
         sizePins();
         map.on("moveend", () => {
-          if (!map) return;
+          // The fly-along moves the camera every frame: the pins and the course shown are read again once it ends.
+          if (!map || flyingRef.current) return;
           const c = map.getCenter();
           mapMemory.camera = { center: [c.lng, c.lat], zoom: map.getZoom(), pitch: map.getPitch(), bearing: map.getBearing(), padding: map.getPadding() };
           setAutoId(revealedRouteId(routesRef.current, { lat: c.lat, lng: c.lng }, map.getZoom(), REVEAL_ZOOM));
@@ -236,8 +266,9 @@ export function MapScreenCanvas({
           if (started || cancelled || !map || !map.isStyleLoaded()) return;
           started = true;
           // 3D, when an admin turned it on: the hills raised under the tilted view (GSI elevation tiles; see lib/gsi-dem.ts).
+          // The protocol is always there (nothing is fetched until a source uses it): the fly-along raises the ground for itself.
+          registerGsiDem(ml);
           if (settings.terrain3d) {
-            registerGsiDem(ml);
             map.addSource("gsi-dem", { ...GSI_DEM_SOURCE, attribution: gsiAttribution });
             map.setTerrain({ source: "gsi-dem", exaggeration: 1.5 });
           }
@@ -409,7 +440,7 @@ export function MapScreenCanvas({
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready) return;
-    const read = () => setCamera({ bearing: map.getBearing(), pitch: map.getPitch() });
+    const read = () => !flyingRef.current && setCamera({ bearing: map.getBearing(), pitch: map.getPitch() });
     read();
     map.on("rotate", read);
     map.on("pitch", read);
@@ -668,14 +699,41 @@ export function MapScreenCanvas({
         })}
       </div>
 
-      {draftShown ? (
-        <p style={{ marginLeft: coveredLeftPx, ...(controlsTopPx > 0 ? { top: controlsTopPx } : {}) }} className="absolute left-3 top-[calc(4.5rem+var(--top-clear))] z-[4] flex max-w-[calc(100%-6rem)] items-center gap-1.5 rounded-lg border-2 border-caution bg-paper px-2 py-1 text-base font-bold leading-tight">
-          <span className="text-caution">
-            <WarningIcon />
-          </span>
-          {t`仮の位置を表示中（目安）`}
-        </p>
-      ) : null}
+      <div style={{ marginLeft: coveredLeftPx, ...(controlsTopPx > 0 ? { top: controlsTopPx } : {}) }} className="pointer-events-none absolute left-3 top-[calc(4.5rem+var(--top-clear))] z-[4] flex max-w-[calc(100%-6rem)] flex-col items-start gap-2 [&>*]:pointer-events-auto">
+        {draftShown ? (
+          <p className="flex items-center gap-1.5 rounded-lg border-2 border-caution bg-paper px-2 py-1 text-base font-bold leading-tight">
+            <span className="text-caution">
+              <WarningIcon />
+            </span>
+            {t`仮の位置を表示中（目安）`}
+          </p>
+        ) : null}
+        {/* Labelled, apart from the filter pills (user, 2026-11-26); the line must have come first, or the flight would restart. */}
+        {canFly ? (
+          <button
+            type="button"
+            onClick={() => setFlyingId(flying ? null : route.id)}
+            disabled={route.hasLine && !flyLine}
+            aria-pressed={flying}
+            className={buttonStyle("primary", "md", "inline-flex shadow-md")}
+          >
+            {flying ? <StopIcon /> : <PlayIcon />}
+            {t`ルート再生`}
+          </button>
+        ) : null}
+        {/* Where the flight is (as on the course page), and the stop it is paused at. */}
+        {flightAt ? (
+          <p aria-live="off" className="rounded-lg bg-paper/95 px-3 py-1 text-lg font-bold tabular-nums text-ink shadow-sm">
+            {pausedStop ? (
+              <span lang={pausedStop.nameLang} className="block">
+                {pausedStop.order === null ? "" : `${pausedStop.order}. `}
+                {pausedStop.name}
+              </span>
+            ) : null}
+            {flightAt.m === null ? `${flightAt.km} km` : t`標高 ${flightAt.m} m・${flightAt.km} km`}
+          </p>
+        ) : null}
+      </div>
 
       <div style={controlsTopPx > 0 ? { top: controlsTopPx } : undefined} className="absolute right-[calc(0.75rem+env(safe-area-inset-right))] top-[calc(4.5rem+var(--top-clear))] z-[4] flex flex-col gap-2">
         {(["in", "out"] as const).map((sign) => (

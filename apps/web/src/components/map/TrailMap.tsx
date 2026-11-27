@@ -27,7 +27,8 @@ import { mapStyleSource } from "@/lib/large-map-style";
 import { GSI_DEM_SOURCE, registerGsiDem } from "@/lib/gsi-dem";
 import { motionLevel } from "@/lib/motion";
 import { setElevationCursor } from "@/lib/elevation-cursor";
-import { flightPath, flightSeconds, flightStops, headingAt, heightAt, pointAt, turnToward, type FlyStop } from "@/lib/fly-along";
+import { DEM_SOURCE, useFlyAlong } from "./useFlyAlong";
+import type { FlyStop } from "@/lib/fly-along";
 import type { MapSettings } from "@/lib/map-settings";
 import type { StopRole } from "@/lib/route-stops";
 import type { PointKind } from "@/lib/point-kinds";
@@ -70,7 +71,6 @@ type Selection = { kind: "stop" | "place"; id: string } | null;
 
 const LINE_SOURCE = "route";
 const SIDE_SOURCE = "route-side";
-const DEM_SOURCE = "gsi-dem";
 // A constant, not `[]` in the parameter list: a new array each render would rebuild the map each render.
 const NO_SIDE_LINES: Position[][] = [];
 // Keep every stop clear of the buttons: zoom buttons at the top right, the chip at the top left,
@@ -134,11 +134,8 @@ export function TrailMap({
   const [expanded, setExpanded] = useState(false);
   const [listOpen, setListOpen] = useState(false);
   const [terrain, setTerrain] = useState(false);
-  // The fly-along over the 3D map, and where it is (rounded, so the readout re-renders only when its words change).
+  // The fly-along over the 3D map (useFlyAlong).
   const [flying, setFlying] = useState(false);
-  const [flightAt, setFlightAt] = useState<{ km: string; m: number | null } | null>(null);
-  // The stepper's › while the fly-along is paused at a stop: go on before its seconds are up.
-  const skipPause = useRef(false);
   // Side trips (寄り道) are off at first: some places are worth a mention without being a stop on the way.
   const [showSide, setShowSide] = useState(false);
   const hasSide = sideLines.some((l) => l.length >= 2);
@@ -357,79 +354,19 @@ export function TrailMap({
     }
   }, [terrain, expanded, loaded, mapGen]);
 
-  // The fly-along (2026-11-26, user): the 3D camera follows the course from start to goal, looking ahead along it, with a dot
-  // and a readout of the distance and height. Any touch, drag or scroll on the map, the button again, turning 3D off, closing
-  // or leaving the page stops it; the view then turns north-up again. Only offered at the full motion level.
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!flying || !map || !expanded || !terrain) return;
-    const path = flightPath(line ?? stops.map((s) => s.position));
-    if (path.total === 0) return;
-    const seconds = flightSeconds(path.total);
-    // Where it pauses (2026-11-26, user): at each waypoint the admin left on (automatic: stamp places and side trips), for
-    // that waypoint's seconds, with its card; 次へ ends a pause early.
-    const pauses = flightStops(path, stops.filter((s) => s.fly).map((s) => ({ id: s.id, position: s.position })));
-    const pauseSeconds = new Map(stops.map((s) => [s.id, s.fly?.seconds ?? 0]));
-    let last = 0;
-    let d = 0;
-    let nextPause = 0;
-    let holdUntil = 0;
-    let frame = 0;
-    let bearing = headingAt(path, 0);
-    let shown = "";
-    skipPause.current = false;
-    const tick = (now: number) => {
-      const dt = last ? now - last : 0;
-      last = now;
-      if (holdUntil) {
-        if (now < holdUntil && !skipPause.current) {
-          frame = requestAnimationFrame(tick);
-          return;
-        }
-        holdUntil = 0;
-        skipPause.current = false;
-        setSelected(null);
-      } else {
-        d = Math.min(path.total, d + (dt / 1000 / seconds) * path.total);
-      }
-      const pause = pauses[nextPause];
-      if (pause && d >= pause.d) {
-        d = pause.d;
-        nextPause++;
-        holdUntil = now + (pauseSeconds.get(pause.id) ?? 5) * 1000;
-        // The stop is chosen: the stepper names it and opens its card, as the arrows do.
-        setSelected({ kind: "stop", id: pause.id });
-      }
-      const at = pointAt(path, d);
-      bearing = turnToward(bearing, headingAt(path, d), 0.06);
-      map.jumpTo({ center: [at.lng, at.lat], bearing, pitch: 60, zoom: 14.5 });
-      setElevationCursor(at);
-      const height = heightAt(path, lineElevations, d);
-      const next = { km: (d / 1000).toFixed(1), m: height === null ? null : Math.round(height) };
-      if (`${next.km}|${next.m}` !== shown) {
-        shown = `${next.km}|${next.m}`;
-        setFlightAt(next);
-      }
-      if (d >= path.total && !holdUntil) setFlying(false);
-      else frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    const box = map.getCanvasContainer();
-    const interrupt = () => setFlying(false);
-    const onHide = () => document.hidden && setFlying(false);
-    box.addEventListener("pointerdown", interrupt);
-    box.addEventListener("wheel", interrupt, { passive: true });
-    document.addEventListener("visibilitychange", onHide);
-    return () => {
-      cancelAnimationFrame(frame);
-      box.removeEventListener("pointerdown", interrupt);
-      box.removeEventListener("wheel", interrupt);
-      document.removeEventListener("visibilitychange", onHide);
-      setElevationCursor(null);
-      setFlightAt(null);
-      map.easeTo({ bearing: 0, duration: motionLevel() === "full" ? 600 : 0 });
-    };
-  }, [flying, expanded, terrain, mapGen, line, stops, lineElevations]);
+  // The fly-along (lib: useFlyAlong, the same player as the big map's): only on the enlarged map in 3D. At each pause the
+  // stop is chosen, so the stepper names it and opens its card, as the arrows do.
+  const { flightAt, skip } = useFlyAlong({
+    mapRef,
+    on: flying && expanded && terrain,
+    line,
+    stops,
+    heights: lineElevations,
+    mapGen,
+    onPause: (id) => setSelected(id ? { kind: "stop", id } : null),
+    onEnd: () => setFlying(false),
+    onMove: setElevationCursor,
+  });
 
   // Expanded view: keep the page still behind it, close on Escape, and move focus sensibly.
   useEffect(() => {
@@ -703,7 +640,7 @@ export function TrailMap({
               <p aria-live="polite" className="min-w-[3.75rem] text-center text-lg font-bold tabular-nums">
                 {stopIndex === -1 ? "－" : stopIndex + 1} / {stops.length}
               </p>
-              <button type="button" onClick={() => (flying ? (skipPause.current = true) : goToStop(1))} disabled={!flying && stopIndex === stops.length - 1} aria-label={t`次の場所`} className={hit}>
+              <button type="button" onClick={() => (flying ? skip() : goToStop(1))} disabled={!flying && stopIndex === stops.length - 1} aria-label={t`次の場所`} className={hit}>
                 <ChevronIcon />
               </button>
             </div>

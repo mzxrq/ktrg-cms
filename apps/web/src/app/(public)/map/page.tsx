@@ -1,4 +1,5 @@
 import { isGuidanceOnly, journeyOf, roleLabel, stopNumbers, stopRoles, trailStops } from "@/lib/route-stops";
+import { flyStopOf } from "@/lib/fly-along";
 import type { Metadata } from "next";
 import { msg } from "@lingui/core/macro";
 import { MapScreen } from "@/components/map/MapScreen";
@@ -109,6 +110,7 @@ async function mapRoutes(routes: RouteSummary[], places: PlaceItem[], viewer: Vi
                 if (!item.position) return null;
                 const spotName = pickText(locale, item.nameJa, item.nameEn);
                 if (!spotName) return null;
+                const fly = flyStopOf({ ...item, stampable: t.type === "stamp" }, locale);
                 const stamped = t.type === "stamp" ? t.spot.stamped : null;
                 const status = t.type === "stamp" ? t.spot.status : (t.point.status ?? "open");
                 const parts = [t.number === null ? spotName.text : `${t.number}. ${spotName.text}`];
@@ -135,6 +137,8 @@ async function mapRoutes(routes: RouteSummary[], places: PlaceItem[], viewer: Vi
                   statusNoteEn: item.statusNoteEn ?? null,
                   statusUpdatedAt: t.type === "stamp" ? t.spot.statusUpdatedAt ?? null : null,
                   photo: item.photoUrl ? { src: item.photoUrl, alt: spotName.text, credit: item.photoCredit ?? null } : null,
+                  // Where the fly-along pauses, as on the course page (RouteView): the admin's settings, else automatic.
+                  ...(fly ? { fly } : {}),
                 };
               })
               .filter((s): s is MapScreenStop => s !== null);
