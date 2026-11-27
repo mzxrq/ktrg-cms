@@ -5,7 +5,7 @@ import { useLingui } from "@lingui/react/macro";
 import { pointKinds, stampableByDefault, type PointKind } from "@/lib/point-kinds";
 import type { PlaceDraft } from "@/lib/admin/route-draft";
 import { inputClass, NumberInput } from "./fields";
-import { useKindLabels } from "./PlacePanel";
+import { usePointKindNames } from "@/components/PointKindName";
 import { PlusIcon } from "@/components/admin/admin-icons";
 
 /** Column widths in px: #, name, kind, stamp, latitude, longitude, delete. Drag the edge of a heading to change one. */
@@ -60,7 +60,7 @@ export function PlaceTable({
   onAdd: () => void;
 }) {
   const { t } = useLingui();
-  const kindName = useKindLabels();
+  const kindName = usePointKindNames();
   // The saved widths are known only in the browser: the server's first render uses the defaults, then the saved ones take over.
   const saved = useSyncExternalStore(onStorage, savedWidths, () => null);
   const [dragged, setDragged] = useState<number[] | null>(null);

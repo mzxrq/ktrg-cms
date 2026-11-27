@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { pointKinds, type PointKind } from "@/lib/point-kinds";
-import { useKindLabels } from "../PlacePanel";
+import { usePointKindNames } from "@/components/PointKindName";
 import { TrashIcon, UndoIcon } from "@/components/admin/admin-icons";
 import { ArrowDownIcon, ArrowUpIcon, ChevronDownIcon, ChevronUpIcon, InfoIcon, MountainIcon, PlusIcon, RouteIcon, StampIcon } from "@/components/admin/admin-icons";
 import { PinIcon } from "@/components/admin/admin-icons";
@@ -42,7 +42,7 @@ export function PlaceList({ places, selectedKey, onSelectPlace, onRemovePlace, o
   back: { legs: { from: string; to: string }[]; activeIndex: number; options: string[]; onAdd: (toKey: string) => void; onRemoveLast: () => void; onDraw: (index: number) => void };
 }) {
   const { t } = useLingui();
-  const kindName = useKindLabels();
+  const kindName = usePointKindNames();
   const [backTo, setBackTo] = useState("");
   const nameOfKey = (key: string) => {
     const p = places.find((x) => x.key === key);
