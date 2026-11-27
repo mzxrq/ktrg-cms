@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import { useLingui } from "@lingui/react/macro";
 import { ChevronDownIcon, ChevronUpIcon, FingerprintIcon, GearIcon, HomeIcon, LogOutIcon, MoonIcon, SunIcon, UserIcon } from "@/components/admin/admin-icons";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
@@ -54,6 +55,8 @@ export function AdminProfileMenu({ name, role }: { name: string | null; role: "e
   // While open: a tap outside, Escape, or a change of window size closes it (Escape puts focus back on the button).
   useEffect(() => {
     if (!open) return;
+    // The panel is drawn at the end of the page (see below), so the keyboard is taken to it.
+    panel.current?.querySelector<HTMLElement>("a, button")?.focus();
     const onDown = (e: PointerEvent) => {
       const target = e.target as Node;
       if (!panel.current?.contains(target) && !button.current?.contains(target)) setOpen(false);
@@ -105,7 +108,9 @@ export function AdminProfileMenu({ name, role }: { name: string | null; role: "e
         </span>
         <span className="lg:group-data-[folded=true]:hidden">{open ? <ChevronUpIcon size={20} /> : <ChevronDownIcon size={20} />}</span>
       </button>
-      {open ? (
+      {/* Drawn at the end of the page, not inside the menu: the menu's sticky foot is its own layer, and the page's table
+          was painted over the panel there (2026-11-27, user). */}
+      {open ? createPortal(
         <div ref={panel} id={id} style={place} className="fixed z-50 flex max-h-[80vh] flex-col overflow-y-auto rounded-2xl border border-line bg-paper p-2 shadow-xl">
           <Link href="/" className={row} onClick={() => setOpen(false)}>
             <HomeIcon size={20} />
@@ -142,7 +147,8 @@ export function AdminProfileMenu({ name, role }: { name: string | null; role: "e
               {t`ログアウト`}
             </button>
           </div>
-        </div>
+        </div>,
+        document.body,
       ) : null}
     </div>
   );
