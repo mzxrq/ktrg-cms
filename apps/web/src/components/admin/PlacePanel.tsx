@@ -304,7 +304,7 @@ export function PlacePanel(p: PlacePanelProps) {
             <Check id={`${id}-verified`} checked={place.positionVerified} disabled={place.lat === null} onChange={(v) => p.onChange({ positionVerified: v })}>
               {t`位置確認済み`}
             </Check>
-            <Field label={t`確認元の情報源（サイト名・URLなど））`} htmlFor={`${id}-source`}>
+            <Field label={t`確認元の情報源（サイト名・URLなど）`} htmlFor={`${id}-source`}>
               <TextInput id={`${id}-source`} value={place.positionSource} onChange={(v) => p.onChange({ positionSource: v })} maxLength={500} />
             </Field>
           </Group>
