@@ -97,10 +97,10 @@ export function CourseMapEditor({ d, confirmRemoval }: { d: ReturnType<typeof us
       <fieldset className="flex flex-col gap-3 rounded-xl bg-paper p-4">
         <legend className="px-1 text-base font-bold">{t`線の確認`}</legend>
         <p className="text-base text-muted">{t`確認していない線は、利用者には表示されません。公式の地図などと見比べてから、チェックを入れてください。`}</p>
-        <Check id="route-line-verified" checked={draft.lineVerified} disabled={draft.line.length < 2} onChange={(v) => dispatch({ type: "lineVerified", value: v })}>
+        <Check id="route-line-verified" checked={draft.lineVerified} disabled={draft.line.length < 2} onChange={(v) => dispatch({ type: "lineVerified", value: v })} required>
           {t`線を確認した`}
         </Check>
-        <Field label={t`確認した情報源（サイト名やリンク）`} htmlFor="route-line-source">
+        <Field label={t`確認した情報源（サイト名やリンク）`} htmlFor="route-line-source" required>
           <TextInput id="route-line-source" value={draft.lineSource} onChange={text("lineSource")} maxLength={500} invalid={draft.lineVerified && draft.lineSource.trim() === ""} />
         </Field>
         {draft.lineVerified && draft.lineSource.trim() === "" ? <p role="alert" className="text-base font-bold text-danger">{t`情報源を入れないと、「確認した」は保存されません。`}</p> : null}

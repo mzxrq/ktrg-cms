@@ -163,7 +163,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
             ))}
           </nav>
           {section !== "map" ? (
-            <button type="button" aria-pressed={preview} onClick={() => setPreview(!preview)} className={`tap-target shrink-0 rounded-xl border px-4 text-lg font-bold ${preview ? "border-ink bg-ink text-paper" : "border-line"}`}>
+            <button type="button" aria-pressed={preview} onClick={() => setPreview(!preview)} className={`tap-target shrink-0 rounded-full border px-5 text-lg font-bold ${preview ? "border-ink bg-ink text-paper" : "border-line"}`}>
               {t`プレビュー`}
             </button>
           ) : null}
@@ -274,7 +274,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
             {section === "text" ? (
               <>
                 <Section title={t`コースの説明`}>
-                  <MultilingualField id="route-desc" field="description" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`コースの説明`} ja={draft.descriptionJa} en={draft.descriptionEn} onJa={text("descriptionJa")} onEn={text("descriptionEn")} long="short" />
+                  <MultilingualField id="route-desc" field="description" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`コースの説明`} ja={draft.descriptionJa} en={draft.descriptionEn} onJa={text("descriptionJa")} onEn={text("descriptionEn")} long="short" required />
                 </Section>
                 <Section title={t`歴史・由来`}>
                   <MultilingualField id="route-history" field="history" translations={draft.translations} onTranslations={(v) => dispatch({ type: "translations", value: v })} label={t`歴史・由来`} ja={draft.historyJa} en={draft.historyEn} onJa={text("historyJa")} onEn={text("historyEn")} long="short" />

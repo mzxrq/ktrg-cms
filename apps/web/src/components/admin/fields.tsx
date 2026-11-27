@@ -24,7 +24,6 @@ export const inputClass = `${inputShell} rounded-full`;
 const textAreaClass = `${inputShell} rounded-2xl`;
 
 export function Field({ label, hint, children, htmlFor, required = false, status }: { label: string; hint?: ReactNode; children: ReactNode; htmlFor?: string; required?: boolean; /** A short state beside the label ("not chosen yet"). */ status?: string }) {
-  const { t } = useLingui();
   return (
     <div className="flex flex-col gap-1">
       <InfoTip
@@ -32,7 +31,7 @@ export function Field({ label, hint, children, htmlFor, required = false, status
         label={
           <label htmlFor={htmlFor} className="text-base font-bold">
             {label}
-            {required ? <span className="ml-2 rounded-full bg-surface px-2 py-0.5 text-sm font-bold text-accent">{t`必須`}</span> : null}
+            {required ? <RequiredMark /> : null}
             {status ? <span className="ml-3 text-base font-normal text-muted">{status}</span> : null}
           </label>
         }
@@ -177,7 +176,7 @@ export function MultilingualField({
   const title = (
     <legend className="text-base font-bold">
       {label}
-      {required ? <span className="ml-2 rounded-full bg-surface px-2 py-0.5 text-sm font-bold text-accent">{t`必須`}</span> : null}
+      {required ? <RequiredMark /> : null}
     </legend>
   );
   const note = (
@@ -310,11 +309,20 @@ export function NumberInput({
   );
 }
 
-export function Check({ id, checked, onChange, children, disabled }: { id: string; checked: boolean; onChange: (v: boolean) => void; children: ReactNode; disabled?: boolean }) {
+/** 必須 beside a label: the one mark for every field the admin must fill (to save, or to publish). */
+export function RequiredMark() {
+  const { t } = useLingui();
+  return <span className="ml-2 rounded-full bg-surface px-2 py-0.5 text-sm font-bold text-accent">{t`必須`}</span>;
+}
+
+export function Check({ id, checked, onChange, children, disabled, required = false }: { id: string; checked: boolean; onChange: (v: boolean) => void; children: ReactNode; disabled?: boolean; required?: boolean }) {
   return (
     <label htmlFor={id} className="tap-target flex items-center gap-3 text-lg">
       <input id={id} type="checkbox" checked={checked} disabled={disabled} onChange={(e) => onChange(e.target.checked)} className="size-6 accent-[var(--color-brand)]" />
-      <span>{children}</span>
+      <span>
+        {children}
+        {required ? <RequiredMark /> : null}
+      </span>
     </label>
   );
 }

@@ -113,7 +113,7 @@ msgid "{0}のブックマークをはずす"
 msgstr "Remove the bookmark for {0}"
 
 #. placeholder {0}: LOCALE_NAMES[l]
-#: src/components/admin/fields.tsx:154
+#: src/components/admin/fields.tsx:153
 msgid "{0}を削除"
 msgstr "Remove {0}"
 
@@ -314,7 +314,7 @@ msgstr "Set location for {label} on map"
 msgid "{label}の次に経由地を追加"
 msgstr "Add waypoint after {label}"
 
-#: src/components/admin/fields.tsx:129
+#: src/components/admin/fields.tsx:128
 msgid "{label}の言語"
 msgstr "Language of {label}"
 
@@ -5141,7 +5141,7 @@ msgstr "Restricted"
 #: src/components/admin/CommentInbox.tsx:143
 #: src/components/admin/CommentInbox.tsx:184
 #: src/components/admin/DuplicateFinder.tsx:85
-#: src/components/admin/fields.tsx:157
+#: src/components/admin/fields.tsx:156
 #: src/components/admin/FuriganaWords.tsx:160
 #: src/components/admin/HoursInput.tsx:36
 #: src/components/admin/map-editor/PlaceList.tsx:121
@@ -6190,8 +6190,7 @@ msgstr "Required: {0}"
 msgid "必要なこと"
 msgstr "Required"
 
-#: src/components/admin/fields.tsx:35
-#: src/components/admin/fields.tsx:180
+#: src/components/admin/fields.tsx:315
 msgid "必須"
 msgstr "Required"
 
@@ -6655,7 +6654,7 @@ msgstr "Thursday"
 msgid "未保存"
 msgstr "Unsaved"
 
-#: src/components/admin/fields.tsx:204
+#: src/components/admin/fields.tsx:203
 #: src/components/admin/RouteTable.tsx:205
 msgid "未入力"
 msgstr "Not entered"
@@ -8018,7 +8017,7 @@ msgstr "English name and description"
 msgid "英語の字幕です。もう一度送ると、置き換わります。字幕は動画の横に保存され、動画を入れ替えたときは、字幕も送りなおしてください。"
 msgstr "These are English subtitles. Sending again replaces them. Subtitles are stored beside the video; if you swap the video, send the subtitles again."
 
-#: src/components/admin/fields.tsx:185
+#: src/components/admin/fields.tsx:184
 msgid "英語は未入力です（日本語を表示します）"
 msgstr "English is empty (the Japanese text is shown)"
 
@@ -8261,11 +8260,11 @@ msgstr "Add a word"
 msgid "言語"
 msgstr "Language"
 
-#: src/components/admin/fields.tsx:186
+#: src/components/admin/fields.tsx:185
 msgid "言語は{MAX_LANGUAGES}つまで（日本語を含む）。英語以外は、まだ訪れる人には表示されません。"
 msgstr "Up to {MAX_LANGUAGES} languages (Japanese included). Languages other than English are not shown to visitors yet."
 
-#: src/components/admin/fields.tsx:173
+#: src/components/admin/fields.tsx:172
 msgid "言語を追加"
 msgstr "Add a language"
 

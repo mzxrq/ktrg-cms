@@ -209,19 +209,19 @@ export function PlacePanel(p: PlacePanelProps) {
 
           <Group title={t`位置`}>
             <div className="flex flex-wrap gap-4">
-              <Field label={t`緯度`} htmlFor={`${id}-lat`}>
+              <Field label={t`緯度`} htmlFor={`${id}-lat`} required>
                 <NumberInput id={`${id}-lat`} value={place.lat} min={-90} max={90} onChange={(v) => p.onChange({ lat: v })} />
               </Field>
-              <Field label={t`経度`} htmlFor={`${id}-lng`}>
+              <Field label={t`経度`} htmlFor={`${id}-lng`} required>
                 <NumberInput id={`${id}-lng`} value={place.lng} min={-180} max={180} onChange={(v) => p.onChange({ lng: v })} />
               </Field>
             </div>
             <p className="text-base text-muted">{t`位置情報は公式データをもとに設定し、地図上で確認してください（推測での入力は不可）。`}</p>
             {p.positionMap}
-            <Check id={`${id}-verified`} checked={place.positionVerified} disabled={place.lat === null} onChange={(v) => p.onChange({ positionVerified: v })}>
+            <Check id={`${id}-verified`} checked={place.positionVerified} disabled={place.lat === null} onChange={(v) => p.onChange({ positionVerified: v })} required>
               {t`位置確認済み`}
             </Check>
-            <Field label={t`確認元の情報源（サイト名・URLなど）`} htmlFor={`${id}-source`}>
+            <Field label={t`確認元の情報源（サイト名・URLなど）`} htmlFor={`${id}-source`} required>
               <TextInput id={`${id}-source`} value={place.positionSource} onChange={(v) => p.onChange({ positionSource: v })} maxLength={500} />
             </Field>
           </Group>
@@ -250,12 +250,12 @@ export function PlacePanel(p: PlacePanelProps) {
                   <option value="closed">{statusName.closed}</option>
                   <option value="info">{statusName.info}</option>
                 </select>
-                <MultilingualField id={`${id}-note`} label={t`状況の補足`} field="statusNote" ja={place.statusNoteJa} en={place.statusNoteEn} translations={place.translations} onJa={(v) => p.onChange({ statusNoteJa: v })} onEn={(v) => p.onChange({ statusNoteEn: v })} onTranslations={(v) => p.onChange({ translations: v })} />
+                <MultilingualField id={`${id}-note`} label={t`状況の補足`} field="statusNote" ja={place.statusNoteJa} en={place.statusNoteEn} translations={place.translations} onJa={(v) => p.onChange({ statusNoteJa: v })} onEn={(v) => p.onChange({ statusNoteEn: v })} onTranslations={(v) => p.onChange({ translations: v })} required={isInfo} />
               </fieldset>
 
               <fieldset className="flex flex-col gap-3">
                 <legend className="text-base font-bold">{t`現地の許可`}</legend>
-                <Check id={`${id}-permission`} checked={place.permissionConfirmed} onChange={(v) => p.onChange({ permissionConfirmed: v })}>
+                <Check id={`${id}-permission`} checked={place.permissionConfirmed} onChange={(v) => p.onChange({ permissionConfirmed: v })} required={!isInfo}>
                   {t`許可確認済み`}
                 </Check>
                 <Field label={t`許可元・担当者`} htmlFor={`${id}-permnote`}>

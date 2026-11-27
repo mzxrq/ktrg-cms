@@ -113,7 +113,7 @@ msgid "{0}のブックマークをはずす"
 msgstr "{0}のブックマークをはずす"
 
 #. placeholder {0}: LOCALE_NAMES[l]
-#: src/components/admin/fields.tsx:154
+#: src/components/admin/fields.tsx:153
 msgid "{0}を削除"
 msgstr "{0}を削除"
 
@@ -314,7 +314,7 @@ msgstr "{label}の位置を地図で設定"
 msgid "{label}の次に経由地を追加"
 msgstr "{label}の次に経由地を追加"
 
-#: src/components/admin/fields.tsx:129
+#: src/components/admin/fields.tsx:128
 msgid "{label}の言語"
 msgstr "{label}の言語"
 
@@ -5141,7 +5141,7 @@ msgstr "制限中"
 #: src/components/admin/CommentInbox.tsx:143
 #: src/components/admin/CommentInbox.tsx:184
 #: src/components/admin/DuplicateFinder.tsx:85
-#: src/components/admin/fields.tsx:157
+#: src/components/admin/fields.tsx:156
 #: src/components/admin/FuriganaWords.tsx:160
 #: src/components/admin/HoursInput.tsx:36
 #: src/components/admin/map-editor/PlaceList.tsx:121
@@ -6190,8 +6190,7 @@ msgstr "必要：{0}"
 msgid "必要なこと"
 msgstr "必要なこと"
 
-#: src/components/admin/fields.tsx:35
-#: src/components/admin/fields.tsx:180
+#: src/components/admin/fields.tsx:315
 msgid "必須"
 msgstr "必須"
 
@@ -6655,7 +6654,7 @@ msgstr "木曜日"
 msgid "未保存"
 msgstr "未保存"
 
-#: src/components/admin/fields.tsx:204
+#: src/components/admin/fields.tsx:203
 #: src/components/admin/RouteTable.tsx:205
 msgid "未入力"
 msgstr "未入力"
@@ -8018,7 +8017,7 @@ msgstr "英語の名前と説明"
 msgid "英語の字幕です。もう一度送ると、置き換わります。字幕は動画の横に保存され、動画を入れ替えたときは、字幕も送りなおしてください。"
 msgstr "英語の字幕です。もう一度送ると、置き換わります。字幕は動画の横に保存され、動画を入れ替えたときは、字幕も送りなおしてください。"
 
-#: src/components/admin/fields.tsx:185
+#: src/components/admin/fields.tsx:184
 msgid "英語は未入力です（日本語を表示します）"
 msgstr "英語は未入力です（日本語を表示します）"
 
@@ -8261,11 +8260,11 @@ msgstr "言葉を加える"
 msgid "言語"
 msgstr "言語"
 
-#: src/components/admin/fields.tsx:186
+#: src/components/admin/fields.tsx:185
 msgid "言語は{MAX_LANGUAGES}つまで（日本語を含む）。英語以外は、まだ訪れる人には表示されません。"
 msgstr "言語は{MAX_LANGUAGES}つまで（日本語を含む）。英語以外は、まだ訪れる人には表示されません。"
 
-#: src/components/admin/fields.tsx:173
+#: src/components/admin/fields.tsx:172
 msgid "言語を追加"
 msgstr "言語を追加"
 
