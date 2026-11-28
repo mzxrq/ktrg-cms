@@ -190,34 +190,53 @@ describe.skipIf(!url)("Drizzle stores on real PostgreSQL", () => {
       expect(rows).toHaveLength(1);
     });
 
-    test("promoteToAdmin: 3 parallel calls promote once and write exactly one audit row", async () => {
-      const user = await otp.findOrCreateUser(email("otp-admin"));
-      try {
-        const results = await Promise.all(Array.from({ length: 3 }, () => otp.promoteToAdmin(user.id)));
-        expect(results.filter(Boolean)).toHaveLength(1);
+    /** ADMIN_EMAILS only bootstraps the first admin: these run with no admin on the site, inside a rollback (dev data stays). */
+    async function withNoAdmin(body: (store: ReturnType<typeof createDrizzleOtpStore>, tx: Parameters<Parameters<typeof db.transaction>[0]>[0]) => Promise<void>) {
+      const undo = new Error("rollback");
+      await db
+        .transaction(async (tx) => {
+          await tx.update(users).set({ role: "participant" }).where(eq(users.role, "admin"));
+          await body(createDrizzleOtpStore(tx as unknown as typeof db), tx);
+          throw undo;
+        })
+        .catch((e: unknown) => {
+          if (e !== undo) throw e;
+        });
+    }
 
-        const [row] = await db.select({ role: users.role }).from(users).where(eq(users.id, user.id));
+    test("promoteToAdmin: 3 calls promote once and write exactly one audit row", async () => {
+      await withNoAdmin(async (store, tx) => {
+        const user = await store.findOrCreateUser(email("otp-admin"));
+        const results = [];
+        for (let i = 0; i < 3; i++) results.push(await store.promoteToAdmin(user.id));
+        expect(results.filter(Boolean)).toHaveLength(1);
+        const [row] = await tx.select({ role: users.role }).from(users).where(eq(users.id, user.id));
         expect(row!.role).toBe("admin");
-        const audits = await db.select().from(auditLog).where(eq(auditLog.targetId, user.id));
+        const audits = await tx.select().from(auditLog).where(eq(auditLog.targetId, user.id));
         expect(audits).toHaveLength(1);
         expect(audits[0]).toMatchObject({ actorUserId: user.id, action: "user.role.bootstrap_admin", targetType: "user" });
+      });
+    });
 
-        expect(await otp.promoteToAdmin(user.id)).toBe(false);
-      } finally {
-        await db.delete(auditLog).where(eq(auditLog.targetId, user.id));
-      }
+    test("promoteToAdmin: once the site has an admin, nobody else is promoted", async () => {
+      await withNoAdmin(async (store, tx) => {
+        const first = await store.findOrCreateUser(email("otp-first"));
+        const second = await store.findOrCreateUser(email("otp-second"));
+        expect(await store.promoteToAdmin(first.id)).toBe(true);
+        expect(await store.promoteToAdmin(second.id)).toBe(false);
+        const [row] = await tx.select({ role: users.role }).from(users).where(eq(users.id, second.id));
+        expect(row!.role).toBe("participant");
+      });
     });
 
     test("promoteToAdmin: an account whose role an admin has set is not promoted", async () => {
-      const user = await otp.findOrCreateUser(email("otp-demoted"));
-      try {
-        await db.insert(auditLog).values({ actorUserId: null, action: "user.role.change", targetType: "user", targetId: user.id });
-        expect(await otp.promoteToAdmin(user.id)).toBe(false);
-        const [row] = await db.select({ role: users.role }).from(users).where(eq(users.id, user.id));
+      await withNoAdmin(async (store, tx) => {
+        const user = await store.findOrCreateUser(email("otp-demoted"));
+        await tx.insert(auditLog).values({ actorUserId: null, action: "user.role.change", targetType: "user", targetId: user.id });
+        expect(await store.promoteToAdmin(user.id)).toBe(false);
+        const [row] = await tx.select({ role: users.role }).from(users).where(eq(users.id, user.id));
         expect(row!.role).toBe("participant");
-      } finally {
-        await db.delete(auditLog).where(eq(auditLog.targetId, user.id));
-      }
+      });
     });
   });
 

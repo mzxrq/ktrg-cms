@@ -106,11 +106,13 @@ export function createDrizzleOtpStore(db: Db): OtpStore {
           .where(and(eq(auditLog.targetType, "user"), eq(auditLog.targetId, userId), eq(auditLog.action, "user.role.change")))
           .limit(1);
         if (set) return false;
-        // Only a real change counts, so two parallel logins write one audit row, not two.
+        // Only a real change counts, so two parallel logins write one audit row, not two. And only while the site has no
+        // admin: ADMIN_EMAILS bootstraps the first one (CLAUDE.md); after that roles are an admin's choice, so a demoted
+        // person whose account was deleted and made again is not promoted back.
         const changed = await tx
           .update(users)
           .set({ role: "admin", updatedAt: sql`now()` })
-          .where(and(eq(users.id, userId), ne(users.role, "admin")))
+          .where(and(eq(users.id, userId), ne(users.role, "admin"), sql`not exists (select 1 from ${users} as other where other.role = 'admin')`))
           .returning({ id: users.id });
         if (changed.length === 0) return false;
         // The account promoted itself by proving it owns a listed mailbox. Same transaction:

@@ -63,7 +63,7 @@ export function createMemoryOtpStore(
     },
     async promoteToAdmin(userId) {
       const user = [...users.values()].find((u) => u.id === userId);
-      if (!user || user.role === "admin" || roleSetByAdmin.has(userId)) return false;
+      if (!user || user.role === "admin" || roleSetByAdmin.has(userId) || [...users.values()].some((u) => u.role === "admin")) return false;
       user.role = "admin";
       promotions.push(userId);
       return true;

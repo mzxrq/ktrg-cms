@@ -95,6 +95,14 @@ describe("first admin from ADMIN_EMAILS on email-code login", () => {
     expect(promotions).toHaveLength(0);
   });
 
+  test("once the site has an admin, the list promotes nobody (a demoted person whose account was made again stays out)", async () => {
+    const { login, users, promotions } = setup("owner@example.com, second@example.com");
+    expect(await login("owner@example.com")).toMatchObject({ ok: true, user: { role: "admin" } });
+    expect(await login("second@example.com")).toMatchObject({ ok: true, user: { role: "participant" } });
+    expect(users.get("second@example.com")!.role).toBe("participant");
+    expect(promotions).toHaveLength(1);
+  });
+
   test("a wrong code promotes nobody", async () => {
     const { service, sent, users, promotions } = setup("owner@example.com");
     await service.request("owner@example.com");
