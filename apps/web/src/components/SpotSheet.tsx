@@ -14,6 +14,7 @@ import { NearestPlaces, type NearestGroup } from "./NearestPlaces";
 import { Notice } from "./Notice";
 import { SpotGallery } from "./SpotGallery";
 import { StampHere } from "./StampHere";
+import { stampStatusSource } from "@/lib/stamp-point";
 import { StatusBanner } from "./StatusBanner";
 import type { StampMock } from "@/lib/stamp-flow";
 import { buttonStyle } from "@/components/button";
@@ -50,9 +51,9 @@ export function SpotSheet({
 }) {
   // A place without a stamp has a page to read, but no stamp card and no stamp button.
   const stampable = spot.stampable !== false;
-  // As the server (stamp-store): a 遥拝 place always, any other place only while closed (閉鎖時のスタンプ地点).
-  const usesStampFrom = !!spot.stampFrom?.status && spot.status !== "info" && (spot.detached === true || spot.status === "closed");
-  const stampStatus = usesStampFrom ? spot.stampFrom!.status! : spot.status;
+  // As the server: the stamp follows the waypoint it is pressed at (遥拝, 閉鎖時のスタンプ地点); the live poll asks that spot.
+  const stampSource = stampStatusSource(spot);
+  const stampStatus = stampSource.status;
   const description = pickText(locale, spot.descriptionJa, spot.descriptionEn);
   const history = pickText(locale, spot.historyJa ?? null, spot.historyEn ?? null);
   const source = pickText(locale, spot.sourceJa ?? null, spot.sourceEn ?? null);
@@ -136,7 +137,7 @@ export function SpotSheet({
       <LastUpdated iso={spot.updatedAt} locale={locale} className="px-4" />
 
       {stampable ? (
-        <StampHere spotId={spot.id} status={stampStatus} alreadyStamped={spot.stamped === true} stampImage={spot.stampImageUrl} loginHref={loginHref} mock={stampMock} progress={stampProgress} />
+        <StampHere spotId={spot.id} statusSpotId={stampSource.spotId} status={stampStatus} alreadyStamped={spot.stamped === true} stampImage={spot.stampImageUrl} loginHref={loginHref} mock={stampMock} progress={stampProgress} />
       ) : null}
     </article>
   );

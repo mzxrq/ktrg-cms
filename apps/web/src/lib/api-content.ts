@@ -74,7 +74,7 @@ export function spotListItemFromApi(s: PublicSpot, stamped = false): SpotListIte
     ...(s.stopBy ? { stopBy: true } : {}),
     ...(s.detached ? { detached: true, detachedLabelJa: s.detachedLabelJa ?? null, detachedLabelEn: s.detachedLabelEn ?? null } : {}),
     // Also an on-trail place's 閉鎖時のスタンプ地点: its page follows that waypoint's status while it is closed.
-    ...(s.stampFrom ? { stampFrom: { nameJa: s.stampFrom.nameJa, nameEn: s.stampFrom.nameEn, status: s.stampFrom.status } } : {}),
+    ...(s.stampFrom ? { stampFrom: { id: s.stampFrom.id, nameJa: s.stampFrom.nameJa, nameEn: s.stampFrom.nameEn, status: s.stampFrom.status } } : {}),
     stampable: s.stampable,
     stamped,
     position: s.position ? { lat: s.position.lat, lng: s.position.lng, verified: true } : null,
@@ -137,7 +137,7 @@ export function routePointFromApi(s: PublicSpot): RoutePoint | null {
     ...(s.stopBy ? { stopBy: true } : {}),
     ...(s.detached ? { detached: true, detachedLabelJa: s.detachedLabelJa ?? null, detachedLabelEn: s.detachedLabelEn ?? null } : {}),
     // Also an on-trail place's 閉鎖時のスタンプ地点: its page follows that waypoint's status while it is closed.
-    ...(s.stampFrom ? { stampFrom: { nameJa: s.stampFrom.nameJa, nameEn: s.stampFrom.nameEn, status: s.stampFrom.status } } : {}),
+    ...(s.stampFrom ? { stampFrom: { id: s.stampFrom.id, nameJa: s.stampFrom.nameJa, nameEn: s.stampFrom.nameEn, status: s.stampFrom.status } } : {}),
     status: s.status,
     statusNoteJa: s.statusNoteJa ?? null,
     statusNoteEn: s.statusNoteEn ?? null,
