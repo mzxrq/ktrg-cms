@@ -507,10 +507,13 @@ function apply(d: RouteDraft, a: DraftAction): RouteDraft {
   }
 }
 
-/** What a save settled for good: undo takes back the words and the map, never a thing's id or the time the server gave it. */
+/**
+ * What a save settled for good: undo takes back the words and the map, never a thing's id, the time the server gave it, or
+ * whether it is published (an undo past 公開する would otherwise take the place off the site on the next save).
+ */
 function keepServerIds(d: RouteDraft, a: Extract<DraftAction, { type: "savedPlace" | "savedRoute" }>): RouteDraft {
   if (a.type === "savedRoute") return { ...d, id: a.id, updatedAt: a.updatedAt };
-  return { ...d, places: d.places.map((p) => (p.key === a.key ? { ...p, id: a.place.id, updatedAt: a.place.updatedAt } : p)) };
+  return { ...d, places: d.places.map((p) => (p.key === a.key ? { ...p, id: a.place.id, updatedAt: a.place.updatedAt, published: a.place.published } : p)) };
 }
 
 export function draftReducer(state: DraftState, a: DraftAction): DraftState {
