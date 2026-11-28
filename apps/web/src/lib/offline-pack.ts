@@ -1,6 +1,7 @@
 import type { RouteArea } from "./map-screen";
 import { gsiTileUrl, vectorTileUrl, zoomLimits } from "./map";
-import type { MapSettings } from "./map-settings";
+import { largeStyleUrl } from "./large-map-style";
+import { defaultMapSettings, type MapSettings } from "./map-settings";
 import { tileUrls } from "./offline-tiles";
 import { readJson } from "@/lib/read-json";
 
@@ -24,14 +25,21 @@ const AT_A_TIME = 6;
 
 export const packCacheName = (routeId: string) => `ktrg-pack-${routeId}`;
 
-/** The tiles a course needs: the visitor's base map and its terrain overlay, from zoom 11 to 15 (the overlay stops sooner). */
-export function packTileUrls(area: RouteArea, settings: Pick<MapSettings, "base" | "terrain">): string[] {
+/** The vector map's style and icons (app/map-style): without them offline the 大きい文字 map has nothing to draw with. */
+const SPRITE_FILES = ["std.json", "std.png", "std@2x.json", "std@2x.png"].map((f) => `/map-style/sprite/${f}`);
+
+/**
+ * The tiles a course needs: the visitor's base map and its terrain overlay, from zoom 11 to 15 (the overlay stops sooner).
+ * With the 大きい文字 base, its style (at the address this visitor's map asks for) and icons too.
+ */
+export function packTileUrls(area: RouteArea, settings: Pick<MapSettings, "base" | "terrain"> & Partial<MapSettings>): string[] {
   // The vector map's tiles are GSI's vector tiles; its names (glyphs) and icons are not kept yet, so offline it draws without names.
   const baseTemplate = settings.base === "large" ? vectorTileUrl : gsiTileUrl(settings.base === "photo" ? "seamlessphoto" : settings.base);
   const baseMax = settings.base === "blank" ? 14 : settings.base === "large" ? 16 : MAX_ZOOM;
   const terrainLayer = settings.terrain === "relief" ? "relief" : "hillshademap";
   const terrainMax = Math.min(MAX_ZOOM, settings.terrain === "relief" ? zoomLimits.reliefMax : zoomLimits.hillshadeMax);
   return [
+    ...(settings.base === "large" ? [largeStyleUrl({ ...defaultMapSettings, ...settings }), ...SPRITE_FILES] : []),
     ...tileUrls(area, baseTemplate, MIN_ZOOM, baseMax, PER_LAYER_LIMIT),
     ...tileUrls(area, gsiTileUrl(terrainLayer), MIN_ZOOM, terrainMax, PER_LAYER_LIMIT),
   ];

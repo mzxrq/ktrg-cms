@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, expect, test } from "bun:test";
 import { claimSavedPages, deletePack, megabytes, packAge, packTileUrls, readPack, refreshSavedPages, savePack } from "./offline-pack";
+import { largeStyleUrl } from "./large-map-style";
+import { defaultMapSettings } from "./map-settings";
 
 const area = { lat: 34.45, lng: 135.65, widthM: 4000, heightM: 4000, verified: true };
 
@@ -31,6 +33,13 @@ test("the tile list holds the base map and the overlay, each within its own zoom
   expect(urls.some((u) => u.includes("/relief/15/"))).toBe(true);
   expect(packTileUrls(area, { base: "blank", terrain: "hillshade" }).some((u) => u.includes("/blank/15/"))).toBe(false);
   expect(packTileUrls(area, { base: "photo", terrain: "hillshade" }).some((u) => u.includes("/seamlessphoto/") && u.endsWith(".jpg"))).toBe(true);
+});
+
+test("the 大きい文字 base also keeps its style and icons, or offline the map has nothing to draw with", () => {
+  const urls = packTileUrls(area, { base: "large", terrain: "hillshade" });
+  expect(urls).toContain(largeStyleUrl({ ...defaultMapSettings, terrain: "hillshade" }));
+  expect(urls).toContain("/map-style/sprite/std@2x.png");
+  expect(packTileUrls(area, { base: "pale", terrain: "hillshade" }).some((u) => u.startsWith("/map-style/"))).toBe(false);
 });
 
 // Pages answer with a body, tiles with bytes; the course answers with a line.

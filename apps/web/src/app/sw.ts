@@ -53,6 +53,19 @@ const serwist: Serwist = new Serwist({
         }
       },
     },
+    // The 大きい文字 map's style and icons, saved with a course's offline map: from the network, the saved copy when it fails.
+    {
+      matcher: ({ url, sameOrigin, request }) => sameOrigin && request.method === "GET" && url.pathname.startsWith("/map-style/"),
+      handler: async ({ request }) => {
+        try {
+          return await fetch(request, { signal: AbortSignal.timeout(8000) });
+        } catch (error) {
+          const saved = await caches.match(request);
+          if (saved) return saved;
+          throw error;
+        }
+      },
+    },
     // Map tiles saved with a course's offline map (lib/offline-pack.ts) come from the phone; any other tile goes to the
     // network and is not kept (the visitor chose what to keep, nothing is saved unasked).
     {
