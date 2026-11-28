@@ -135,30 +135,44 @@ export function createMemoryQueueStore(): QueueStore & { rows: QueuedStamp[] } {
 
 /** The IndexedDB store: database `ktrg`, object store `stampQueue`, indexed by user key. Browser only. */
 export function createIdbQueueStore(): QueueStore {
-  const db = openDB("ktrg", 1, {
-    upgrade(d) {
-      const s = d.createObjectStore("stampQueue", { keyPath: "id" });
-      s.createIndex("userKey", "userKey");
-    },
-  });
+  const open = () =>
+    openDB("ktrg", 1, {
+      upgrade(d) {
+        const s = d.createObjectStore("stampQueue", { keyPath: "id" });
+        s.createIndex("userKey", "userKey");
+      },
+    });
+  let db = open();
+  // iOS drops an IndexedDB connection now and then (after the app was in the background): the one opened at load then
+  // fails every call until a reload. A failed call opens it again and is tried once more.
+  type Db = Awaited<ReturnType<typeof open>>;
+  async function withDb<T>(fn: (d: Db) => Promise<T>): Promise<T> {
+    try {
+      return await fn(await db);
+    } catch {
+      db = open();
+      return fn(await db);
+    }
+  }
   return {
     async add(row) {
-      await (await db).put("stampQueue", row);
+      await withDb((d) => d.put("stampQueue", row));
     },
     async list(userKey) {
-      const rows = (await (await db).getAllFromIndex("stampQueue", "userKey", userKey)) as QueuedStamp[];
+      const rows = (await withDb((d) => d.getAllFromIndex("stampQueue", "userKey", userKey))) as QueuedStamp[];
       return rows.sort((a, b) => Date.parse(a.scannedAt) - Date.parse(b.scannedAt));
     },
     async all() {
-      return (await (await db).getAll("stampQueue")) as QueuedStamp[];
+      return (await withDb((d) => d.getAll("stampQueue"))) as QueuedStamp[];
     },
     async remove(id) {
-      await (await db).delete("stampQueue", id);
+      await withDb((d) => d.delete("stampQueue", id));
     },
     async update(id, patch) {
-      const d = await db;
-      const row = (await d.get("stampQueue", id)) as QueuedStamp | undefined;
-      if (row) await d.put("stampQueue", { ...row, ...patch });
+      await withDb(async (d) => {
+        const row = (await d.get("stampQueue", id)) as QueuedStamp | undefined;
+        if (row) await d.put("stampQueue", { ...row, ...patch });
+      });
     },
   };
 }

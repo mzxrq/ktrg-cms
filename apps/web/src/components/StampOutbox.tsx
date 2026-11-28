@@ -46,6 +46,8 @@ export function StampOutbox({ userKey }: { userKey: string }) {
       if (result.outcomes.some((o) => o.kind === "accepted")) router.refresh();
       const bad = result.outcomes.flatMap((o) => (o.kind === "rejected" ? [o.failure === "expired" ? ("stale_scan" as const) : o.failure] : []));
       if (bad.length > 0) setRefused((r) => [...r, ...bad]);
+    } catch {
+      // The phone's storage failed even after opening it again: the rows stay, and the next try (focus, online) sends them.
     } finally {
       setBusy(false);
     }
