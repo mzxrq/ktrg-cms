@@ -94,9 +94,14 @@ export function useRouteDraft(
   useUnsavedGuard(dirty);
 
   // ---- undo and redo from the keyboard (not while typing in a box: the box has its own) -----------------------------
+  // Not while saving either: the save would overwrite the undone draft with what it sent.
+  const busyRef = useRef(false);
+  useEffect(() => {
+    busyRef.current = saving || busyKey !== null;
+  }, [saving, busyKey]);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== "z" || isTyping(e.target)) return;
+      if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== "z" || isTyping(e.target) || busyRef.current) return;
       e.preventDefault();
       dispatch({ type: e.shiftKey ? "redo" : "undo" });
     };

@@ -131,7 +131,8 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
   };
 
   return (
-    <div className={`flex flex-col gap-5 ${saving ? "[&_fieldset]:pointer-events-none" : ""}`} aria-busy={saving} style={{ "--head": `${headHeight}px` } as CSSProperties}>
+    // inert while saving: an edit made then (the map, Ctrl+Z) would be overwritten by the saved copy without a word.
+    <div className="flex flex-col gap-5" inert={saving || busyKey !== null} aria-busy={saving} style={{ "--head": `${headHeight}px` } as CSSProperties}>
       <PublishedEditGuard d={d} />
       {/* Title bar: always in reach, with the one button that matters and the tabs. On a narrow window the name goes on its own line under the
           buttons (squeezed beside them it would be one letter wide), and the saved line wraps instead of being pushed out. */}
