@@ -1830,6 +1830,23 @@ describe.skipIf(!url)("site settings on real PostgreSQL", () => {
     await client.end();
   });
 
+  test("a save over a version someone else replaced is refused; over the current one it goes through", async () => {
+    const actor = (await otp.findOrCreateUser(`${tag}-versions@example.test`)).id;
+    const key = `${tag}-page`;
+    try {
+      expect(await store.version(key)).toBeNull();
+      expect(await store.set(actor, key, { n: 1 }, null)).toBe(true);
+      const v1 = await store.version(key);
+      expect(v1).not.toBeNull();
+      expect(await store.set(actor, key, { n: 2 }, null)).toBe(false); // read before the first save
+      expect(await store.set(actor, key, { n: 2 }, v1)).toBe(true);
+      expect(await store.set(actor, key, { n: 3 }, v1)).toBe(false); // v1 is gone now
+      expect(await store.get(key)).toEqual({ n: 2 });
+    } finally {
+      await db.delete(siteSettings).where(eq(siteSettings.key, key));
+    }
+  });
+
   test("a value is saved, then replaced (one row), and each change is audited", async () => {
     const actor = (await otp.findOrCreateUser(`${tag}-admin@example.test`)).id;
     await db.delete(siteSettings).where(eq(siteSettings.key, "map_style"));

@@ -1,5 +1,6 @@
 "use client";
 
+import { versionFrom, withVersion } from "@/lib/admin/setting-version";
 import { useState, type ReactNode } from "react";
 import type { I18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
@@ -38,11 +39,12 @@ function Words({ i18n, children }: { i18n: I18n | null; children: (words: Record
 
 // 管理 > ページ > one page. Each language has a title and a text. A language that was never written starts from
 // the text the app has now, so nothing is typed from nothing; emptying both boxes brings the built-in page back.
-export function PageTextEditor({ pageKey, saved, builtIn, locale, home }: { pageKey: PageKey; saved: PageText | null; home?: HomeData; builtIn: PageText; locale: string }) {
+export function PageTextEditor({ pageKey, saved, version: readVersion, builtIn, locale, home }: { pageKey: PageKey; saved: PageText | null; /** When it was last saved, as read (see setting-version.ts). */ version?: string | null; home?: HomeData; builtIn: PageText; locale: string }) {
   const { t } = useLingui();
   const messages = useErrorMessages();
   const start = (lang: Lang): PageLang => (saved && (saved[lang].title !== "" || saved[lang].body !== "") ? saved[lang] : builtIn[lang]);
   const [done, setDone] = useState<PageText>(() => ({ ja: start("ja"), en: start("en") }));
+  const [version, setVersion] = useState(readVersion);
   const [text, setText] = useState<PageText>(done);
   const [busy, setBusy] = useState(false);
   const adminLang: Lang = locale === "en" ? "en" : "ja";
@@ -68,7 +70,7 @@ export function PageTextEditor({ pageKey, saved, builtIn, locale, home }: { page
     setBusy(true);
     showToast(null);
     try {
-      const res = await fetch(`/api/v1/admin/settings/pages/${pageKey}`, {
+      const res = await fetch(withVersion(`/api/v1/admin/settings/pages/${pageKey}`, version), {
         method: "PUT",
         credentials: "same-origin",
         headers: { "content-type": "application/json" },
@@ -77,6 +79,7 @@ export function PageTextEditor({ pageKey, saved, builtIn, locale, home }: { page
       const json = await readJson<{ ok?: unknown; error?: unknown }>(res);
       if (res.ok && json?.ok === true) {
         setDone(text);
+        setVersion(versionFrom(json));
         showToast({ kind: "ok", text: t`保存しました。サイトに反映されています。` });
       } else showToast({ kind: "error", text: messages[json?.ok === false && isServerCode(json.error) ? json.error : errorKeyFromApi(res.status, json)] });
     } catch {

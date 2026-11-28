@@ -101,6 +101,23 @@ describe("who may change a page's text", () => {
     expect(Object.keys((await call("admin", "GET", "/admin/settings/pages")).body.pages).sort()).toEqual(["faq", "guide", "home", "privacy", "terms"]);
   });
 
+  test("two editors on one page: the second save over the version both read is refused, not written over the first", async () => {
+    const { call } = await setup();
+    const read = async () => (await call("editor", "GET", "/admin/settings/pages")).body.versions.faq as string | null;
+    const v0 = await read();
+    expect(v0).toBeNull(); // never saved
+    const first = await call("editor", "PUT", `/admin/settings/pages/faq?updatedAt=`, page("first"));
+    expect(first.status).toBe(200);
+    const second = await call("editor", "PUT", `/admin/settings/pages/faq?updatedAt=`, page("second"));
+    expect(second.status).toBe(409);
+    expect(second.body).toEqual({ ok: false, error: "conflict" });
+    expect((await call(null, "GET", "/pages/faq")).body.page.ja.title).toBe("first");
+    // With the version the first save gave back, the next save goes through; without one (an older page) as before.
+    expect((await call("editor", "PUT", `/admin/settings/pages/faq?updatedAt=${encodeURIComponent(first.body.updatedAt)}`, page("third"))).status).toBe(200);
+    expect(await read()).not.toBe(first.body.updatedAt);
+    expect((await call("editor", "PUT", "/admin/settings/pages/faq", page("fourth"))).status).toBe(200);
+  });
+
   test("a participant or a visitor who is not signed in changes and reads nothing here", async () => {
     const { call } = await setup();
     expect((await call("participant", "PUT", "/admin/settings/pages/faq", page("x"))).status).toBe(403);

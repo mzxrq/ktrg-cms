@@ -28,7 +28,7 @@ export default async function EditPageText({ params }: { params: Promise<{ key: 
   const i18n = await initLingui();
   const { key } = await params;
   if (!(PAGE_KEYS as readonly string[]).includes(key)) notFound();
-  const { body } = await adminGet<{ ok: true; pages: Partial<Record<PageKey, PageText | null>> }>("/settings/pages");
+  const { body } = await adminGet<{ ok: true; pages: Partial<Record<PageKey, PageText | null>>; versions?: Partial<Record<PageKey, string | null>> }>("/settings/pages");
   // A page this person may not change is not in the answer (the terms and privacy are for an admin).
   if (!body?.ok || !(key in body.pages)) notFound();
   const saved = body.pages[key as PageKey] ?? null;
@@ -54,12 +54,15 @@ export default async function EditPageText({ params }: { params: Promise<{ key: 
           banners: order.status === 200 && order.body?.ok ? order.body.items : null,
         }))
       : undefined;
+  // Only an admin can read (and save) the sections; for anyone else the version stays unknown.
+  const homeSectionsVersion =
+    key === "home" ? await adminGet<{ ok: true; versions?: { homeSections?: string | null } }>("/settings").then((r) => (r.status === 200 && r.body?.ok ? r.body.versions?.homeSections : undefined)) : undefined;
   return (
     <div className="flex max-w-6xl flex-col gap-4">
       <AdminBack href="/admin/pages">
         <Trans>ページ一覧に戻る</Trans>
       </AdminBack>
-      <PageTextEditor pageKey={key as PageKey} saved={saved} builtIn={builtIn} locale={i18n.locale} home={home} />
+      <PageTextEditor pageKey={key as PageKey} saved={saved} version={body.versions?.[key as PageKey]} builtIn={builtIn} locale={i18n.locale} home={home} />
       {homeParts ? (
         homeParts.banners ? (
           <HomeBanners meta={homeParts.meta} items={homeParts.banners} locale={i18n.locale} />
@@ -69,7 +72,7 @@ export default async function EditPageText({ params }: { params: Promise<{ key: 
           </p>
         )
       ) : null}
-      {home ? <HomeSectionsForm initial={{ tourism: home.showTourism, pinnedJourney: !home.flow }} /> : null}
+      {home ? <HomeSectionsForm initial={{ tourism: home.showTourism, pinnedJourney: !home.flow }} version={homeSectionsVersion} /> : null}
     </div>
   );
 }

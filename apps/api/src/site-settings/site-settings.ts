@@ -98,8 +98,13 @@ const pageSetting = (key: PageKey) => `page:${key}`;
 export interface SiteSettingsStore {
   /** The saved value of a setting, or null when it was never set. */
   get(key: string): Promise<unknown | null>;
-  /** Saves it and writes the audit row (the key only) in the same step. */
-  set(actor: string, key: string, value: unknown): Promise<void>;
+  /**
+   * Saves it and writes the audit row (the key only) in the same step. With `expected` (the update time the editor read,
+   * null for never saved) nothing is written when someone saved in between, and the answer is false.
+   */
+  set(actor: string, key: string, value: unknown, expected?: string | null): Promise<boolean>;
+  /** When the setting was last saved (ISO), or null when never: what an editor sends back to save over exactly that. */
+  version(key: string): Promise<string | null>;
 }
 
 /** What the dashboard keeps as its goals (validated by GOALS in dashboard/dashboard.ts). */
@@ -111,18 +116,21 @@ export function createSiteSettingsService(deps: { store: SiteSettingsStore }) {
   return {
     /** The saved map style, or null (the site then uses its built-in default). */
     mapStyle: async () => (await deps.store.get(SETTING_KEYS.mapStyle)) as MapStyleSetting | null,
-    setMapStyle: (actor: string, value: MapStyleSetting) => deps.store.set(actor, SETTING_KEYS.mapStyle, value),
+    setMapStyle: (actor: string, value: MapStyleSetting, expected?: string | null) => deps.store.set(actor, SETTING_KEYS.mapStyle, value, expected),
+    mapStyleVersion: () => deps.store.version(SETTING_KEYS.mapStyle),
     /** The goals the dashboard measures its four numbers against (see dashboard/), or null when none were set. */
     dashboardGoals: async () => (await deps.store.get(SETTING_KEYS.dashboardGoals)) as DashboardGoals | null,
     setDashboardGoals: (actor: string, value: DashboardGoals) => deps.store.set(actor, SETTING_KEYS.dashboardGoals, value),
     /** Which optional home page sections are on; every one is off until set. */
     homeSections: async (): Promise<HomeSections> => ({ ...defaultHomeSections, ...(((await deps.store.get(SETTING_KEYS.homeSections)) as Partial<HomeSections> | null) ?? {}) }),
-    setHomeSections: (actor: string, value: Static<typeof HOME_SECTIONS>) => deps.store.set(actor, SETTING_KEYS.homeSections, value),
+    setHomeSections: (actor: string, value: Static<typeof HOME_SECTIONS>, expected?: string | null) => deps.store.set(actor, SETTING_KEYS.homeSections, value, expected),
+    homeSectionsVersion: () => deps.store.version(SETTING_KEYS.homeSections),
     /** The uploaded adjustments of the 「大きい文字」 map, or null (use the built-in ones). */
     largeStyle: async () => ((await deps.store.get(SETTING_KEYS.largeStyle)) as LargeStyleSetting | null)?.entries ?? null,
     setLargeStyle: (actor: string, value: LargeStyleSetting) => deps.store.set(actor, SETTING_KEYS.largeStyle, value),
     pageText: async (key: PageKey) => (await deps.store.get(pageSetting(key))) as PageText | null,
-    setPageText: (actor: string, key: PageKey, value: PageText) => deps.store.set(actor, pageSetting(key), value),
+    setPageText: (actor: string, key: PageKey, value: PageText, expected?: string | null) => deps.store.set(actor, pageSetting(key), value, expected),
+    pageVersion: (key: PageKey) => deps.store.version(pageSetting(key)),
   };
 }
 
@@ -143,13 +151,21 @@ export const SETTING_AUDIT = "site_setting.update" as const;
 /** In-memory settings for tests and the dev page. */
 export function createMemorySiteSettingsStore(audit: AuditWriter): SiteSettingsStore {
   const values = new Map<string, unknown>();
+  const versions = new Map<string, string>();
+  let tick = 0;
   return {
     async get(key) {
       return values.get(key) ?? null;
     },
-    async set(actor, key, value) {
+    async set(actor, key, value, expected) {
+      if (expected !== undefined && (versions.get(key) ?? null) !== expected) return false;
       values.set(key, value);
+      versions.set(key, new Date(Date.UTC(2026, 0, 1) + ++tick).toISOString());
       await audit.record({ actorUserId: actor, action: SETTING_AUDIT, targetId: SETTING_TARGET[key] ?? null });
+      return true;
+    },
+    async version(key) {
+      return versions.get(key) ?? null;
     },
   };
 }
@@ -158,27 +174,43 @@ export interface SiteSettingsServices extends KitServices {
   siteSettings: SiteSettingsService;
 }
 
+/**
+ * The update time the editor read, sent back as `?updatedAt=` ("" = it was never saved): a save over a newer one is refused
+ * with 409 conflict. Left out (an older page), the save goes through as before.
+ */
+const VERSION_QUERY = t.Object({ updatedAt: t.Optional(t.String({ maxLength: 40 })) });
+const expectedOf = (q: { updatedAt?: string }) => (q.updatedAt === undefined ? undefined : q.updatedAt === "" ? null : q.updatedAt);
+
 /** Admin: read and change the settings (`site.manage`). */
 export function siteSettingsRoutes(getServices: () => SiteSettingsServices, opts: RouteOptions) {
   const { plugins } = routeKit(getServices, opts);
   return new Elysia({ prefix: "/admin/settings", detail: { tags: ["Site settings"] } })
     .use(plugins)
-    .get("/", async () => ({ ok: true as const, mapStyle: await getServices().siteSettings.mapStyle(), homeSections: await getServices().siteSettings.homeSections() }), { auth: "site.manage" })
+    .get(
+      "/",
+      async () => {
+        const svc = getServices().siteSettings;
+        return { ok: true as const, mapStyle: await svc.mapStyle(), homeSections: await svc.homeSections(), versions: { mapStyle: await svc.mapStyleVersion(), homeSections: await svc.homeSectionsVersion() } };
+      },
+      { auth: "site.manage" },
+    )
     .put(
       "/home-sections",
-      async ({ user, body }) => {
-        await getServices().siteSettings.setHomeSections(user.id, body);
-        return { ok: true as const, homeSections: body };
+      async ({ user, body, query, set }) => {
+        const svc = getServices().siteSettings;
+        if (!(await svc.setHomeSections(user.id, body, expectedOf(query)))) return fail(set, 409, "conflict");
+        return { ok: true as const, homeSections: body, updatedAt: await svc.homeSectionsVersion() };
       },
-      { auth: "site.manage", rateLimit: { adminWriteUser: "user.id" }, body: HOME_SECTIONS },
+      { auth: "site.manage", rateLimit: { adminWriteUser: "user.id" }, body: HOME_SECTIONS, query: VERSION_QUERY },
     )
     .put(
       "/map-style",
-      async ({ user, body }) => {
-        await getServices().siteSettings.setMapStyle(user.id, body);
-        return { ok: true as const, mapStyle: body };
+      async ({ user, body, query, set }) => {
+        const svc = getServices().siteSettings;
+        if (!(await svc.setMapStyle(user.id, body, expectedOf(query)))) return fail(set, 409, "conflict");
+        return { ok: true as const, mapStyle: body, updatedAt: await svc.mapStyleVersion() };
       },
-      { auth: "site.manage", rateLimit: { adminWriteUser: "user.id" }, body: MAP_STYLE },
+      { auth: "site.manage", rateLimit: { adminWriteUser: "user.id" }, body: MAP_STYLE, query: VERSION_QUERY },
     )
     .put(
       "/large-style",
@@ -196,19 +228,25 @@ export function siteSettingsRoutes(getServices: () => SiteSettingsServices, opts
       async ({ user }) => {
         const svc = getServices().siteSettings;
         const pages: Partial<Record<PageKey, PageText | null>> = {};
-        for (const key of PAGE_KEYS) if (!LEGAL_PAGES.includes(key) || can(user.role, "site.manage")) pages[key] = await svc.pageText(key);
-        return { ok: true as const, pages };
+        const versions: Partial<Record<PageKey, string | null>> = {};
+        for (const key of PAGE_KEYS) {
+          if (LEGAL_PAGES.includes(key) && !can(user.role, "site.manage")) continue;
+          pages[key] = await svc.pageText(key);
+          versions[key] = await svc.pageVersion(key);
+        }
+        return { ok: true as const, pages, versions };
       },
       { auth: "notice.manage" },
     )
     .put(
       "/pages/:key",
-      async ({ user, params, body, set }) => {
+      async ({ user, params, body, query, set }) => {
         if (LEGAL_PAGES.includes(params.key) && !can(user.role, "site.manage")) return fail(set, 403, "forbidden");
-        await getServices().siteSettings.setPageText(user.id, params.key, body);
-        return { ok: true as const, page: body };
+        const svc = getServices().siteSettings;
+        if (!(await svc.setPageText(user.id, params.key, body, expectedOf(query)))) return fail(set, 409, "conflict");
+        return { ok: true as const, page: body, updatedAt: await svc.pageVersion(params.key) };
       },
-      { auth: "notice.manage", rateLimit: { adminWriteUser: "user.id" }, params: t.Object({ key: oneOf(PAGE_KEYS) }), body: PAGE_TEXT },
+      { auth: "notice.manage", rateLimit: { adminWriteUser: "user.id" }, params: t.Object({ key: oneOf(PAGE_KEYS) }), body: PAGE_TEXT, query: VERSION_QUERY },
     );
 }
 

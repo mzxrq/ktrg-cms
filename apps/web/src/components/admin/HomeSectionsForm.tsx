@@ -1,5 +1,6 @@
 "use client";
 
+import { versionFrom, withVersion } from "@/lib/admin/setting-version";
 import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { useUnsavedGuard } from "./useUnsavedGuard";
@@ -10,12 +11,13 @@ import { showToast } from "@/lib/admin/toast";
 import { readJson } from "@/lib/read-json";
 
 /** 管理 > ページ > ホーム: which optional sections visitors see. Each one is off until it is turned on here. */
-export function HomeSectionsForm({ initial }: { initial: { tourism: boolean; pinnedJourney: boolean } }) {
+export function HomeSectionsForm({ initial, version: readVersion }: { initial: { tourism: boolean; pinnedJourney: boolean }; version?: string | null }) {
   const { t } = useLingui();
   const messages = useErrorMessages();
   const [saved, setSaved] = useState(initial);
   const [s, setS] = useState(initial);
   const [busy, setBusy] = useState(false);
+  const [version, setVersion] = useState(readVersion);
   const dirty = s.tourism !== saved.tourism || s.pinnedJourney !== saved.pinnedJourney;
   useUnsavedGuard(dirty);
 
@@ -24,7 +26,7 @@ export function HomeSectionsForm({ initial }: { initial: { tourism: boolean; pin
     setBusy(true);
     showToast(null);
     try {
-      const res = await fetch("/api/v1/admin/settings/home-sections", {
+      const res = await fetch(withVersion("/api/v1/admin/settings/home-sections", version), {
         method: "PUT",
         credentials: "same-origin",
         headers: { "content-type": "application/json" },
@@ -33,6 +35,7 @@ export function HomeSectionsForm({ initial }: { initial: { tourism: boolean; pin
       const json = await readJson<{ ok?: unknown; error?: unknown }>(res);
       if (res.ok && json?.ok === true) {
         setSaved(s);
+        setVersion(versionFrom(json));
         showToast({ kind: "ok", text: t`保存しました。` });
       } else {
         showToast({ kind: "error", text: messages[json?.ok === false && isServerCode(json.error) ? json.error : errorKeyFromApi(res.status, json)] });
