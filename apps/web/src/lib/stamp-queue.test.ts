@@ -48,6 +48,13 @@ describe("flushQueue", () => {
     }
   });
 
+  test("one stamp the server keeps failing on does not hold back the ones after it", async () => {
+    const store = await queueOf({ spot: "broken", ago: 3000 }, { spot: "good", ago: 2000 });
+    const res = await run(store, (s) => (s === "broken" ? { ok: false, failure: "failed" } : ok()));
+    expect(res.outcomes.map((o) => [o.kind, o.row.spotId])).toEqual([["accepted", "good"]]);
+    expect(res).toMatchObject({ left: 1, waiting: true });
+  });
+
   test("a row older than the age limit is dropped without a request", async () => {
     const store = await queueOf({ spot: "old", ago: MAX_QUEUE_AGE_MS + 1000 }, { spot: "new", ago: 1000 });
     const sent: string[] = [];

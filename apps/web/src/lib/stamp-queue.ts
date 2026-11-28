@@ -42,11 +42,8 @@ export function newQueuedStamp(userKey: string, spotId: string, reading: Reading
   return { id, userKey, spotId, lat: reading.lat, lng: reading.lng, accuracyM: reading.accuracyM, scannedAt: now.toISOString(), tries: 0, ...(celebrate ? { celebrate } : {}) };
 }
 
-/**
- * Answers that mean "not now, try again later": the row stays and the rest of the queue waits too. A server error
- * ("failed") is one: retries come every 30 s, so a short outage must not delete a walker's stamps; the 48 h age is the limit.
- */
-const RETRY_LATER: ReadonlySet<StampFailure> = new Set(["network", "too_many_requests", "login_needed", "failed"]);
+/** Answers that mean "not now, try again later": the row stays and the rest of the queue waits too. */
+const RETRY_LATER: ReadonlySet<StampFailure> = new Set(["network", "too_many_requests", "login_needed"]);
 
 export type Outcome =
   | { kind: "accepted"; row: QueuedStamp; already: boolean }
@@ -87,6 +84,10 @@ export async function flushQueue(opts: {
     } else if (RETRY_LATER.has(result.failure)) {
       waiting = true;
       break;
+    } else if (result.failure === "failed") {
+      // A server error: the row stays (a short outage must not delete a walker's stamps; the 48 h age is the limit), and
+      // the next rows are still tried, so one place the server keeps failing on does not hold back the others.
+      waiting = true;
     } else {
       await store.remove(row.id);
       outcomes.push({ kind: "rejected", row, failure: result.failure });
