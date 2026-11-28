@@ -346,6 +346,15 @@ describe("rate limits", () => {
     void codes;
   });
 
+  test("many machines together get at most 30 code emails a day for one address", async () => {
+    const { post } = setup({ trustProxy: true });
+    for (let i = 0; i < 30; i++) {
+      expect((await post("otp/request", { email: "victim@example.com" }, undefined, { "x-forwarded-for": `203.0.113.${i + 1}` })).status).toBe(200);
+    }
+    expect((await post("otp/request", { email: "victim@example.com" }, undefined, { "x-forwarded-for": "198.51.100.1" })).status).toBe(429);
+    expect((await post("otp/request", { email: "someone-else@example.com" }, undefined, { "x-forwarded-for": "198.51.100.1" })).status).toBe(200);
+  });
+
   test("malformed requests are rejected before they count", async () => {
     const { post } = setup();
     for (let i = 0; i < 30; i++) await post("otp/request", { email: "not-an-email" });
