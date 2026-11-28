@@ -124,17 +124,17 @@ export function StampOutbox({ userKey }: { userKey: string }) {
       className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg bg-paper p-6 text-ink backdrop:bg-black/60"
     >
       <h2 id="outbox-ask-title" className="text-2xl font-bold">
-        {t`登録なしで押したスタンプがあります`}
+        {t`ログイン前に押したスタンプがあります`}
       </h2>
       {ask ? (
-        <p className="mt-3 text-lg leading-8">{t`電波がなくて送れなかったスタンプが${ask.guest}件あります。このアカウントには、すでに${ask.mine}個のスタンプがあります。このアカウントに送りますか？`}</p>
+        <p className="mt-3 text-lg leading-8">{t`未送信のスタンプが${ask.guest}件あります。このアカウントにはすでに${ask.mine}個のスタンプが記録されています。このアカウントへ送信しますか？`}</p>
       ) : null}
       <div className="mt-6 flex flex-col gap-3">
         <button type="button" onClick={() => void answer(true)} className={buttonStyle("action", "lg", "flex w-full shadow-lg")}>
-          {t`このアカウントに送る`}
+          {t`このアカウントへ送信する`}
         </button>
         <button type="button" onClick={() => void answer(false)} className={buttonStyle("secondary", "lg", "flex w-full")}>
-          {t`送らずに捨てる`}
+          {t`破棄する`}
         </button>
       </div>
     </dialog>
@@ -146,7 +146,7 @@ export function StampOutbox({ userKey }: { userKey: string }) {
     <div data-stamp-outbox="" className="fixed inset-x-3 bottom-[calc(5.5rem+var(--nav-toast,0px)+env(safe-area-inset-bottom))] z-20 flex flex-col gap-2 md:inset-x-auto md:bottom-[calc(1.5rem+var(--nav-toast,0px))] md:right-6 md:w-[24rem]">
       {refused.length > 0 ? (
         <div role="alert" className="flex flex-col gap-2 rounded-lg border-2 border-caution bg-paper p-4 shadow-2xl">
-          <p className="text-lg font-bold leading-snug">{t`送信待ちだった${count}件のスタンプは、受け付けられませんでした。`}</p>
+          <p className="text-lg font-bold leading-snug">{t`送信待ちにスタンプ${count}件は受け付けられませんでした。`}</p>
           <ul className="flex list-disc flex-col gap-1 pl-5 text-base leading-snug">
             {reasons.map((r) => (
               <li key={r}>{messages[r]}</li>
@@ -162,15 +162,15 @@ export function StampOutbox({ userKey }: { userKey: string }) {
           <span aria-hidden="true" className="grid size-8 shrink-0 place-items-center rounded-full bg-moss text-paper">
             <TickIcon size={20} />
           </span>
-          <p className="text-lg font-bold leading-snug">{t`送信待ちだったスタンプが、${accepted}件、受け付けられました！`}</p>
+          <p className="text-lg font-bold leading-snug">{t`送信待ちのスタンプ${accepted}件が受け付けられました！`}</p>
         </div>
       ) : null}
       {pending > 0 ? (
         <div role="status" className="flex flex-col gap-2 rounded-lg bg-paper p-4 shadow-2xl ring-1 ring-line/30">
-          <p className="text-lg font-bold leading-snug tabular-nums">{t`${pending}件のスタンプが、送信待ちです。`}</p>
-          <p className="text-base leading-snug text-muted">{t`つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。`}</p>
+          <p className="text-lg font-bold leading-snug tabular-nums">{t`送信待ちのスタンプが${pending}件あります。`}</p>
+          <p className="text-base leading-snug text-muted">{t`通信が回復すると自動で送信されます。接続が不安定な場合は30秒ごとに再試行します。`}</p>
           <button type="button" disabled={busy} onClick={() => void run()} className={buttonStyle("action", "md", "flex w-full")}>
-            {busy ? t`送っています…` : t`いま送る`}
+            {busy ? t`スタンプ送信中…` : t`今すぐ送信`}
           </button>
         </div>
       ) : null}

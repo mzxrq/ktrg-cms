@@ -35,13 +35,13 @@ export default async function BadgesPage() {
     <div className="flex flex-col gap-6 pt-2 wide:pt-0">
       <div className="flex flex-col gap-2 px-4">
         <BackLink href="/rallies">
-          <Trans>ラリー</Trans>
+          <Trans>スタンプラリー</Trans>
         </BackLink>
         <h1 className="font-serif text-3xl font-bold text-accent wide:text-4xl">
           <Trans>バッジ</Trans>
         </h1>
         <p className="max-w-prose text-lg leading-8">
-          <Trans>コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。</Trans>
+          <Trans>コース内のすべてのスポットでスタンプを集めると、そのコースのバッジを獲得できます。</Trans>
         </p>
         {routes.length > 0 ? (
           <div className="flex max-w-xl flex-col gap-1">
@@ -50,7 +50,7 @@ export default async function BadgesPage() {
                 {earned} / {routes.length} コース
               </Trans>
             </p>
-            <PathProgress stamped={earned} total={routes.length} label={i18n._(msg`もらったバッジの数`)} />
+            <PathProgress stamped={earned} total={routes.length} label={i18n._(msg`獲得済みバッジ数`)} />
           </div>
         ) : null}
       </div>
@@ -60,7 +60,7 @@ export default async function BadgesPage() {
           <Medal number={near.r.order} done={false} stamped={near.r.stampedCount ?? 0} total={near.r.spotCount} className="h-20 w-auto shrink-0" />
           <span className="flex min-w-0 flex-col gap-1">
             <span className="text-base font-bold text-muted">
-              <Trans>つぎにもらえそうなバッジ</Trans>
+              <Trans>もうすぐ獲得できるバッジ</Trans>
             </span>
             <span className="text-xl font-bold leading-snug">
               <Localized value={pickText(i18n.locale, near.r.nameJa, near.r.nameEn)} tag={false} />
@@ -73,8 +73,8 @@ export default async function BadgesPage() {
       ) : null}
 
       {routes.length === 0 ? (
-        <EmptyState title={<Trans>バッジは、まだ準備中です。</Trans>}>
-          <Trans>公開できるようになったら、ここにコースのバッジが表示されます。</Trans>
+        <EmptyState title={<Trans>バッジは準備中です。</Trans>}>
+          <Trans>コースが公開されると、ここにバッジが表示されます。</Trans>
         </EmptyState>
       ) : (
         <ul className="list-in grid grid-cols-2 gap-x-4 gap-y-8 px-4 sm:grid-cols-3 wide:grid-cols-4">
@@ -88,7 +88,7 @@ export default async function BadgesPage() {
                     <Localized value={pickText(i18n.locale, r.nameJa, r.nameEn)} tag={false} />
                   </span>
                   <span className="text-base font-bold text-muted">
-                    {done ? <Trans>もらいました</Trans> : <span className="tabular-nums">{r.stampedCount ?? 0} / {r.spotCount}</span>}
+                    {done ? <Trans>獲得済み</Trans> : <span className="tabular-nums">{r.stampedCount ?? 0} / {r.spotCount}</span>}
                   </span>
                 </Link>
               </li>

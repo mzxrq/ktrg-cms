@@ -6,9 +6,9 @@ import type { StampState } from "./StampFace";
 export function StampLegend() {
   const { t } = useLingui();
   const items: { state: StampState; label: string }[] = [
-    { state: "stamped", label: t`押した` },
-    { state: "empty", label: t`まだ` },
-    { state: "next", label: t`つぎ` },
+    { state: "stamped", label: t`獲得済み` },
+    { state: "empty", label: t`未獲得` },
+    { state: "next", label: t`次` },
   ];
   return (
     // One tidy row, the seal and its word side by side (three columns across the page's width spread them far apart).

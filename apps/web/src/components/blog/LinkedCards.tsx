@@ -27,7 +27,7 @@ export function RouteCard({ route, locale }: { route: RouteSummary; locale: stri
         <span className="text-base text-muted">
           {route.distanceKm !== null ? <Trans>{route.distanceKm}km</Trans> : null}
           {route.distanceKm !== null && route.elevationGainM !== null ? "　" : null}
-          {route.elevationGainM !== null ? <Trans>のぼり {route.elevationGainM}m</Trans> : null}
+          {route.elevationGainM !== null ? <Trans>登り {route.elevationGainM}m</Trans> : null}
         </span>
       </span>
       <span className="grid shrink-0 place-items-center pr-3 text-muted">

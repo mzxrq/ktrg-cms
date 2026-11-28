@@ -40,7 +40,7 @@ export function CertificateButton({ title, total, locale }: { title: string; tot
     draw(canvas, {
       heading: t`コンプリート証`,
       title,
-      done: t`全${total}か所のスタンプをそろえました`,
+      done: t`全${total}か所のスタンプを獲得しました`,
       date: new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date()),
     });
     const blob = await new Promise<Blob | null>((ok) => canvas.toBlob(ok, "image/png"));

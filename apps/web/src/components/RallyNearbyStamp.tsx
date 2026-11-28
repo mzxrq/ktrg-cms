@@ -91,9 +91,9 @@ export function RallyNearbyStamp({ places, held, locale, rallyName, quiet = fals
         aria-live="polite"
         className={`tap-target flex min-h-12 w-full items-center justify-center rounded-full px-6 text-xl font-bold disabled:opacity-60 ${quiet ? "border border-ink bg-paper text-ink hover:bg-surface" : "bg-ink text-paper"}`}
       >
-        {phase.name === "working" ? (phase.what === "locating" ? t`いまの位置を調べています…` : t`スタンプを押しています…`) : t`近くのスタンプを押す`}
+        {phase.name === "working" ? (phase.what === "locating" ? t`現在地を取得中…` : t`送信中…`) : t`近くのスタンプを押す`}
       </button>
-      <p className="text-base text-muted">{t`スタンプの場所の近くで押してください。現在地は1度だけ確かめ、記録には残しません。`}</p>
+      <p className="text-base text-muted">{t`スタンプスポットの近くで押してください。`}</p>
       <dialog
         ref={dialog}
         aria-labelledby="rally-explain-title"
@@ -101,35 +101,34 @@ export function RallyNearbyStamp({ places, held, locale, rallyName, quiet = fals
         className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg bg-paper p-6 text-ink backdrop:bg-black/60"
       >
         <h2 id="rally-explain-title" className="text-2xl font-bold">
-          {t`いまの位置を調べます`}
+          {t`現在地を確認します`}
         </h2>
-        <p className="mt-3 text-lg leading-8">{t`スタンプの場所の近くにいるかを確かめるため、スマートフォンの現在地を1度だけ調べます。`}</p>
-        <p className="mt-2 text-lg leading-8">{t`現在地は記録に残しません。記録するのは、スタンプを押したことだけです。`}</p>
+        <p className="mt-3 text-lg leading-8">{t`スタンプスポットの近くにいるか確認するため、端末の現在地を1度だけ取得します。`}</p>
         <div className="mt-6 flex flex-col gap-3">
           <button type="button" onClick={() => void start()} className={buttonStyle("action", "lg", "flex w-full shadow-lg")}>
-            {t`位置を調べてスタンプを押す`}
+            {t`現在地を確認してスタンプを押す`}
           </button>
           <button type="button" onClick={() => setPhase({ name: "idle" })} className={buttonStyle("secondary", "lg", "flex w-full")}>
-            {t`やめる`}
+            {t`キャンセル`}
           </button>
         </div>
       </dialog>
       {phase.name === "done" ? (
         <div role="status" className="flex flex-col gap-3 rounded-lg bg-surface py-4">
           <p className="px-4 text-xl font-bold leading-snug">
-            {phase.already ? t`「${phase.place}」のスタンプは、もう押してあります。` : t`「${phase.place}」のスタンプを押しました！`}
+            {phase.already ? t`「${phase.place}」のスタンプは獲得済みです。` : t`「${phase.place}」のスタンプを獲得しました！`}
           </p>
           <AlsoSeals also={phase.also} />
         </div>
       ) : null}
       {phase.name === "queued" ? (
         <p role="status" className="rounded-lg bg-surface p-4 text-lg font-bold leading-snug">
-          {t`電波が弱いか、つながらないため、「${phase.place}」のスタンプは、あとで送ります。そのときに受け付けられないこともあります。`}
+          {t`電波が不安定なため、「${phase.place}」のスタンプは後ほど送信します。送信時に受け付けられない場合があります。`}
         </p>
       ) : null}
       {phase.name === "none" ? (
         <p role="alert" className="rounded-lg border-2 border-caution bg-paper p-4 text-lg font-bold leading-7">
-          {t`近くにスタンプの場所がありません。いちばん近いのは「${phase.place}」で、${away(phase.distanceM)}です。`}
+          {t`近くにスタンプスポットがありません。最寄りの「${phase.place}」で、${away(phase.distanceM)}です。`}
         </p>
       ) : null}
       {phase.name === "problem" ? (
