@@ -16,7 +16,7 @@ export function JourneyFlow({ children, seals }: { children: ReactNode; seals: n
   useEffect(() => {
     const el = root.current;
     if (!el) return;
-    const mode = motionMode({ reduce: window.matchMedia("(prefers-reduced-motion: reduce)").matches, calm: document.documentElement.hasAttribute("data-calm") });
+    const mode = motionMode({ reduce: window.matchMedia("(prefers-reduced-motion: reduce)").matches, calm: document.documentElement.hasAttribute("data-calm"), fade: document.documentElement.hasAttribute("data-fade") });
     if (mode === "static") return;
 
     const stage = el.querySelector<HTMLElement>("[data-ridge-stage]");

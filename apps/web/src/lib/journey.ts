@@ -123,8 +123,11 @@ export function stageLine(ridge: Ridge | null): { d: string; points: [number, nu
   return { d: points.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`).join(" "), points };
 }
 
-/** What the scene does for this visitor: the full scroll scene, only a fade-in of each beat, or nothing (calm wins). */
-export function motionMode(env: { reduce: boolean; calm: boolean }): "scene" | "fade" | "static" {
+/**
+ * What the scene does for this visitor: the full scroll scene, only a fade-in of each beat, or nothing (calm wins). `fade`
+ * is the visitor's own フェードだけ level (data-fade on <html>), which asks for the fade even where the device allows motion.
+ */
+export function motionMode(env: { reduce: boolean; calm: boolean; fade: boolean }): "scene" | "fade" | "static" {
   if (env.calm) return "static";
-  return env.reduce ? "fade" : "scene";
+  return env.reduce || env.fade ? "fade" : "scene";
 }

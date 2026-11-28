@@ -22,6 +22,8 @@ export function StoryMotion({ children, className = "" }: { children: ReactNode;
       show();
       return;
     }
+    // The visitor's フェードだけ level: the words only fade in; nothing rises, blurs, draws or drifts.
+    const fadeOnly = document.documentElement.hasAttribute("data-fade");
     let stop = () => {};
     let gone = false;
     void Promise.all([import("gsap"), import("gsap/ScrollTrigger")])
@@ -37,11 +39,10 @@ export function StoryMotion({ children, className = "" }: { children: ReactNode;
             const parts = Array.from(g.querySelectorAll<HTMLElement>(HIDDEN));
             if (parts.length === 0) return;
             // opacity, never autoAlpha: visibility:hidden would take the links and buttons out of Tab and screen readers until scrolled to.
-            gsap.set(parts, { opacity: 0, y: 28, filter: "blur(6px)" });
+            gsap.set(parts, fadeOnly ? { opacity: 0 } : { opacity: 0, y: 28, filter: "blur(6px)" });
             gsap.to(parts, {
               opacity: 1,
-              y: 0,
-              filter: "blur(0px)",
+              ...(fadeOnly ? {} : { y: 0, filter: "blur(0px)" }),
               duration: 1,
               stagger: 0.14,
               ease: "power3.out",
@@ -50,6 +51,7 @@ export function StoryMotion({ children, className = "" }: { children: ReactNode;
             });
           });
           show(); // after gsap.set, in the same tick: no frame where the words are neither hidden nor positioned
+          if (fadeOnly) return;
           // The ridge draws as it passes: pathLength="1" on the path, so the dash is the whole line at any size.
           gsap.utils.toArray<SVGPathElement>("[data-ridge]", el).forEach((path) => {
             if (path.closest("[data-journey]")) return;
