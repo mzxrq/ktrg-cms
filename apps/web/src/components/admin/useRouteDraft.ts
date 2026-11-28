@@ -40,6 +40,10 @@ export function useRouteDraft(
   const draft = state.present;
   const [saved, setSaved] = useState<RouteDraft>(initial);
   const savedRef = useRef<RouteDraft>(initial);
+  // A save was refused because someone saved first: the browser copy is marked (with the saved copy the edits started
+  // from), so it is still offered after the reload and comes back on top of what the other person saved.
+  const conflicted = useRef(false);
+  const conflictFrom = useRef<RouteDraft | undefined>(undefined);
   // The draft as it is now, for a save that has been running a while (see keepLaterEdits).
   const draftRef = useRef<RouteDraft>(initial);
   const [saving, setSaving] = useState(false);
@@ -86,7 +90,7 @@ export function useRouteDraft(
   const offerOpen = offered !== null && !offerClosed;
   useEffect(() => {
     if (offerOpen) return; // the old copy is not overwritten (or dropped) before the person has chosen
-    const timer = setTimeout(() => writeBackup(localStorage, draft, savedRef.current.updatedAt, dirty), 1000);
+    const timer = setTimeout(() => writeBackup(localStorage, draft, savedRef.current.updatedAt, dirty, new Date(), conflictFrom.current), 1000);
     return () => clearTimeout(timer);
   }, [draft, dirty, offerOpen]);
 
@@ -180,6 +184,7 @@ export function useRouteDraft(
         const res = await outcome(api.admin.spots({ id: step.id }).unpublish.post());
         if (!res.ok) {
           failure = messages[res.key];
+          conflicted.current ||= res.key === "conflict";
           break;
         }
         const next: PlaceDraft = { ...placeFromServer(res.data.spot), key: step.key };
@@ -191,6 +196,7 @@ export function useRouteDraft(
         const res = await outcome(api.admin.spots({ id: step.id }).delete());
         if (!res.ok) {
           failure = messages[res.key];
+          conflicted.current ||= res.key === "conflict";
           break;
         }
         base = { ...base, places: base.places.filter((p) => p.key !== step.key) };
@@ -199,6 +205,7 @@ export function useRouteDraft(
         const res = await outcome(api.admin.routes.post(withLegIds(step.body, ids)));
         if (!res.ok) {
           failure = messages[res.key];
+          conflicted.current ||= res.key === "conflict";
           break;
         }
         routeId = res.data.route.id;
@@ -210,6 +217,7 @@ export function useRouteDraft(
         const res = await outcome(api.admin.routes({ id: routeId! }).patch({ updatedAt: routeUpdatedAt!, ...withLegIds(step.body, ids) }));
         if (!res.ok) {
           failure = messages[res.key];
+          conflicted.current ||= res.key === "conflict";
           break;
         }
         routeUpdatedAt = res.data.route.updatedAt;
@@ -220,6 +228,7 @@ export function useRouteDraft(
         const res = await outcome(api.admin.routes({ id: routeId! }).spots.post(step.body));
         if (!res.ok) {
           failure = messages[res.key];
+          conflicted.current ||= res.key === "conflict";
           break;
         }
         const place: PlaceDraft = { ...placeFromServer(res.data.spot), key: step.key };
@@ -232,6 +241,7 @@ export function useRouteDraft(
         const res = await outcome(api.admin.spots({ id: step.id }).patch({ updatedAt: freshUpdatedAt.get(step.key) ?? current.updatedAt!, ...step.body }));
         if (!res.ok) {
           failure = messages[res.key];
+          conflicted.current ||= res.key === "conflict";
           break;
         }
         const place: PlaceDraft = { ...placeFromServer(res.data.spot), key: step.key };
@@ -243,6 +253,7 @@ export function useRouteDraft(
         const res = await outcome(api.admin.routes({ id: routeId! }).spots.order.put({ ids: order }));
         if (!res.ok) {
           failure = messages[res.key];
+          conflicted.current ||= res.key === "conflict";
           break;
         }
         const byKey = new Map(base.places.map((p) => [p.key, p]));
@@ -252,6 +263,10 @@ export function useRouteDraft(
     }
 
     if (failure) {
+      if (conflicted.current) {
+        conflictFrom.current ??= savedRef.current;
+        writeBackup(localStorage, draftRef.current, savedRef.current.updatedAt, true, new Date(), conflictFrom.current);
+      }
       // A waypoint that was taken off the site before the failure stays off: say so.
       const names = unpublished.join("、");
       setMessage({ kind: "error", text: unpublished.length > 0 ? `${failure} ${t`すでに公開をやめた経由地があります（${names}）。「経由地」タブで確かめてください。`}` : failure }, found);
@@ -268,6 +283,8 @@ export function useRouteDraft(
       setSavedCopy(next);
       setSelectedKey(index >= 0 ? (next.places[index]?.key ?? null) : null);
       attempted.current = null;
+      conflicted.current = false;
+      conflictFrom.current = undefined;
     }
     const heldCount = held.size;
     setMessage(

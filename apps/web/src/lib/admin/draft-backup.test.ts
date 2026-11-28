@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { backupKey, firstRead, parseBackup, worthRestoring, writeBackup } from "./draft-backup";
-import { emptyDraft } from "./route-draft";
+import { backupKey, firstRead, parseBackup, restoreOnto, worthRestoring, writeBackup } from "./draft-backup";
+import { emptyDraft, newPlace } from "./route-draft";
 
 const memory = () => {
   const m = new Map<string, string>();
@@ -18,6 +18,40 @@ describe("the unsaved-work backup", () => {
     expect(worthRestoring(kept, saved)).toBe(true);
     writeBackup(store, saved, saved.updatedAt, false);
     expect(m.size).toBe(0);
+  });
+
+  test("after a save conflict the copy is offered although the route moved on; restoring keeps the other person's changes", () => {
+    const { store, m } = memory();
+    const a = { ...newPlace("a", 34, 135, 1), id: "a", updatedAt: "2026-10-21T00:00:00.000Z" };
+    const b = { ...newPlace("b", 34.1, 135.1, 2), id: "b", updatedAt: "2026-10-21T00:00:00.000Z" };
+    const start = { ...saved, places: [a, b] };
+    // Mine: the English name, and waypoint a's name.
+    const mine = { ...start, nameEn: "Mine", places: [{ ...a, nameJa: "わたしの経由地" }, b] };
+    writeBackup(store, mine, saved.updatedAt, true, new Date(), start);
+    // Theirs, saved first: the description, waypoint a's note and publishing it, a new waypoint c; newer times everywhere.
+    const c = { ...newPlace("c", 34.2, 135.2, 3), id: "c", updatedAt: "2026-10-22T00:00:00.000Z" };
+    const theirs = {
+      ...start,
+      updatedAt: "2026-10-22T00:00:00.000Z",
+      descriptionJa: "ほかの人の説明",
+      places: [{ ...a, statusNoteJa: "ほかの人の注意", published: true, updatedAt: "2026-10-22T01:00:00.000Z" }, { ...b, updatedAt: "2026-10-22T02:00:00.000Z" }, c],
+    };
+    const kept = parseBackup(m.get(backupKey("r1")) ?? null);
+    expect(worthRestoring(kept, theirs)).toBe(true);
+    const back = restoreOnto(kept!, theirs);
+    expect(back).toMatchObject({ nameEn: "Mine", descriptionJa: "ほかの人の説明", updatedAt: "2026-10-22T00:00:00.000Z" });
+    expect(back.places.map((p) => [p.key, p.nameJa, p.statusNoteJa, p.updatedAt, p.published])).toEqual([
+      ["a", "わたしの経由地", "ほかの人の注意", "2026-10-22T01:00:00.000Z", true],
+      ["b", b.nameJa, b.statusNoteJa, "2026-10-22T02:00:00.000Z", false],
+      ["c", c.nameJa, c.statusNoteJa, "2026-10-22T00:00:00.000Z", false],
+    ]);
+  });
+
+  test("a copy without a conflict comes back exactly as it was kept", () => {
+    const { store, m } = memory();
+    const mine = { ...saved, nameJa: "変えた" };
+    writeBackup(store, mine, saved.updatedAt, true);
+    expect(restoreOnto(parseBackup(m.get(backupKey("r1")) ?? null)!, saved)).toEqual(mine);
   });
 
   test("a copy of another version, an identical one, or junk is not offered", () => {

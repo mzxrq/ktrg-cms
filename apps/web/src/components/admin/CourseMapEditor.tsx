@@ -7,7 +7,7 @@ import { api } from "@/lib/api";
 import { outcome } from "@/lib/admin/admin-client";
 import { editorPlacesOf } from "@/lib/admin/editor-places";
 import type { LngLatEle } from "@/lib/admin/line";
-import { writeBackup } from "@/lib/admin/draft-backup";
+import { restoreOnto, writeBackup } from "@/lib/admin/draft-backup";
 import { stampFromChoices, type RouteDraft } from "@/lib/admin/route-draft";
 import { formatUpdated } from "@/lib/format";
 import { Check, Field, TextInput } from "./fields";
@@ -121,7 +121,7 @@ export function RestoreOffer({ d, initial, locale }: { d: ReturnType<typeof useR
       <button
         type="button"
         onClick={() => {
-          dispatch({ type: "loaded", draft: offered.draft });
+          dispatch({ type: "loaded", draft: restoreOnto(offered, initial) });
           setOfferClosed(true);
           setMessage({ kind: "ok", text: t`編集を戻しました。内容を確かめて、「保存する」を押してください。` });
         }}
