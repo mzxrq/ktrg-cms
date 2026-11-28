@@ -1,5 +1,6 @@
 "use client";
 
+import { onGlobe } from "@/lib/admin/save-plan";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type DragEvent, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
@@ -570,7 +571,8 @@ export function MapEditor(props: MapEditorProps) {
     const map = mapRef.current;
     const ml = mlRef.current;
     if (!ready || !map || !ml) return;
-    const wanted = props.places.filter((p) => p.lat !== null && p.lng !== null);
+    // Off the globe (a mistyped latitude) is left off the map: MapLibre refuses it. The form marks it to fix (draftProblems).
+    const wanted = props.places.filter((p) => p.lat !== null && p.lng !== null && onGlobe(p));
     const keys = new Set(wanted.map((p) => p.key));
     for (const [key, entry] of markers.current) {
       if (!keys.has(key)) {

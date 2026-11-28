@@ -389,8 +389,9 @@ export function draftProblems(d: RouteDraft): DraftProblem[] {
   for (const p of d.places) {
     if (p.nameJa.trim() === "") out.push({ kind: "place_name", key: p.key });
     if (!photoLinkLooksValid(p.photoUrl)) out.push({ kind: "place_photo_link", key: p.key });
-    // A position is both numbers or neither; the app never fills in the missing one.
-    if ((p.lat === null) !== (p.lng === null)) out.push({ kind: "place_position", key: p.key });
+    // A position is both numbers or neither (the app never fills in the missing one), and on the globe: a latitude and
+    // longitude typed the wrong way round (135.7 as 緯度) is caught here, not by a failed save or a map that will not draw.
+    if ((p.lat === null) !== (p.lng === null) || !onGlobe(p)) out.push({ kind: "place_position", key: p.key });
   }
   return out;
 }
@@ -403,3 +404,6 @@ export function lineNoLongerChecked(course: Pick<RouteDraft, "lineVerified" | "l
   const moved = before.lat !== after.lat || before.lng !== after.lng;
   return moved && course.lineVerified && course.legs.some((l) => l.from === key || l.to === key);
 }
+
+/** A position a map can draw: no number, or |lat| <= 90 and |lng| <= 180. */
+export const onGlobe = (p: { lat: number | null; lng: number | null }) => (p.lat === null || Math.abs(p.lat) <= 90) && (p.lng === null || Math.abs(p.lng) <= 180);
