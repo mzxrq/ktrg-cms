@@ -78,7 +78,7 @@ function setup() {
     return call("GET", `/${provider}/callback?code=the-code&state=${o.state ?? flow.state}`, { cookie });
   }
   const passTime = (ms: number) => (at = new Date(at.getTime() + ms));
-  return { call, cookieFor, cookieValue, roundTrip, users, mem, tokenCalls, passTime, audit, setNonce: (n: string) => (nonce = n) };
+  return { call, cookieFor, cookieValue, roundTrip, users, mem, tokenCalls, passTime, audit, setNonce: (n: string) => (nonce = n), setAnswer: (a: Record<string, unknown>) => (answer = a) };
 }
 
 describe("reading the ID token", () => {
@@ -271,6 +271,19 @@ describe("linking to the signed-in account", () => {
     setNonce(decodeFlow(raw)!.nonce);
     const res = await call("GET", `/google/callback?code=c&state=${decodeFlow(raw)!.state}`, { cookie: `${await cookieFor(bob)}; ktrg_sso=${raw}` });
     expect(res.headers.get("location")).toContain("sso_error=sso_failed");
+  });
+
+  test("a login flow's cookie rewritten to link does not skip the fresh login: nothing is linked", async () => {
+    const { call, cookieFor, cookieValue, setNonce, setAnswer, mem } = setup();
+    const stale = await cookieFor(alice, false);
+    const start = await call("POST", "/google/login", { body: {}, cookie: stale });
+    const flow = decodeFlow(cookieValue(start, "ktrg_sso")!)!;
+    const forged = Buffer.from(JSON.stringify({ ...flow, mode: "link", userId: alice.id, returnTo: "/settings" })).toString("base64url");
+    setNonce(flow.nonce);
+    setAnswer({ iss: ISS.google, aud: "g-id", sub: "G-A" });
+    const res = await call("GET", `/google/callback?code=c&state=${flow.state}`, { cookie: `${stale}; ktrg_sso=${forged}` });
+    expect(res.headers.get("location")).toBe(`${ORIGIN}/settings?sso_error=reauth_required`);
+    expect(mem.actions).toEqual([]);
   });
 });
 

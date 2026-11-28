@@ -122,6 +122,8 @@ export function ssoRoutes(getServices: () => SsoServices, opts: RouteOptions & {
           if (!auth || auth.user.id !== flow.userId) return failed("sso_failed");
           if (flow.mode === "link") {
             if (auth.user.role !== "participant") return failed("sso_staff");
+            // Checked again here: the flow cookie is not signed, so a login flow's cookie could be rewritten to "link".
+            if (!auth.fresh) return failed("reauth_required");
             if ((await sso.link(auth.user.id, flow.provider, claims.subject)) === "taken") return failed("sso_taken");
             // A new way in: every other device is signed out, this one stays (as for a new email).
             await session.endOthers(auth.user.id, auth.sessionId);
