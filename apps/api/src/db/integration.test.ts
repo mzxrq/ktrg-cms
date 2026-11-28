@@ -988,6 +988,30 @@ describe.skipIf(!url)("seed on real PostgreSQL", () => {
     });
   });
 
+  test("a 遥拝 place whose waypoint is closed or a draft counts as done, like a closed place", async () => {
+    await inRollback(async (tx) => {
+      await seed(tx);
+      const course4 = (await tx.select().from(routes).orderBy(asc(routes.sortOrder)))[3]!.id;
+      const ready = { lat: 34.3, lng: 135.1, permissionConfirmed: true, positionVerified: true, published: true };
+      const [a, b] = await tx.select().from(spots).where(eq(spots.routeId, course4)).orderBy(asc(spots.sortOrder));
+      await tx.update(spots).set(ready).where(inArray(spots.id, [a!.id, b!.id]));
+      // a is worshipped from b; the visitor stamped b, then b closed: a can no longer be stamped anywhere.
+      await tx.update(spots).set({ stampSpotId: b!.id, detached: true, stopBy: true }).where(eq(spots.id, a!.id));
+      const [me] = await tx.insert(users).values({}).returning({ id: users.id });
+      await tx.insert(stamps).values({ userId: me!.id, spotId: b!.id });
+      await tx.update(spots).set({ status: "closed" }).where(eq(spots.id, b!.id));
+      expect((await recordFinished(tx, me!.id)).routeIds).toEqual([course4]);
+
+      // A waypoint that is a draft (a turn, no stamp): the same for the next visitor.
+      await tx.update(spots).set({ status: "open" }).where(eq(spots.id, b!.id));
+      const [draft] = await tx.insert(spots).values({ routeId: course4, sortOrder: 99, stampable: false }).returning({ id: spots.id });
+      await tx.update(spots).set({ stampSpotId: draft!.id }).where(eq(spots.id, a!.id));
+      const [you] = await tx.insert(users).values({}).returning({ id: users.id });
+      await tx.insert(stamps).values({ userId: you!.id, spotId: b!.id });
+      expect((await recordFinished(tx, you!.id)).routeIds).toEqual([course4]);
+    });
+  });
+
   test("a saved course finish stays when the course gets another place later", async () => {
     await inRollback(async (tx) => {
       await seed(tx);
