@@ -13,7 +13,14 @@ export function NavElevation({ profile }: { profile: LegProfile }) {
   if (!area) return null;
   const up = Math.round(profile.climbM);
   const down = Math.round(profile.descentM);
-  const words = up > 0 && down > 0 ? t`次まで 登り${up}m・下り${down}m` : up > 0 ? t`次まで 登り${up}m` : t`次まで 下り${down}m`;
+  const words =
+  up > 0 && down > 0
+    ? t`登り${up}m・下り${down}m`
+    : up > 0
+      ? t`次まで 登り${up}m`
+      : down > 0
+        ? t`次まで 下り${down}m`
+        : t`次まで 平坦`;
   return (
     <div className="flex items-center gap-3">
       <svg aria-hidden="true" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="h-10 min-w-0 flex-1">

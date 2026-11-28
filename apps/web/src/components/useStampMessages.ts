@@ -15,7 +15,7 @@ export function useStampMessages(): Record<Problem, string> {
     unavailable: t`現在地を取得できませんでした。空の開けた場所で、もう一度お試しください。`,
     timeout: t`現在地の取得に時間がかかっています。空の開けた場所で、もう一度お試しください。`,
     too_far: errors.too_far,
-    low_accuracy: t`GPSの精度が低い状態です。空の開けた場所に移動してからもう一度お試しください。`,
+    low_accuracy: t`GPSの精度が低い状態です。空の明けた場所に移動してからもう一度お試しください。`,
     spot_closed: errors.spot_closed,
     stale_scan: errors.stale_scan,
     bad_time: errors.bad_time,

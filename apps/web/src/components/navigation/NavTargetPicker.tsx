@@ -41,7 +41,7 @@ export function NavTargetPicker() {
   return (
     <>
       <button type="button" onClick={() => dialog.current?.showModal()} className={buttonStyle("secondary", "md", "flex w-full")}>
-        {t`ほかの場所へ`}
+        {t`目的地を変更`}
         {snap.forcedId ? (
           <>
             <TickIcon size={22} />
@@ -59,7 +59,7 @@ export function NavTargetPicker() {
         className="nav-sheet mx-0 mb-0 mt-auto max-h-[85dvh] w-full max-w-none flex-col overflow-hidden rounded-t-3xl bg-paper text-ink backdrop:bg-black/60 open:flex md:m-auto md:w-[calc(100%-2rem)] md:max-w-sm md:rounded-lg"
       >
         <h2 id="nav-target-title" className="shrink-0 px-5 pt-5 text-2xl font-bold">
-          {t`どこへ向かいますか？`}
+          {t`目的地を選ぶ`}
         </h2>
         <ul className="mt-4 flex min-h-0 flex-col gap-2 overflow-y-auto px-5 pb-1">
           {left.map((s) => {
@@ -73,7 +73,7 @@ export function NavTargetPicker() {
                     <span lang={info?.nameLang} className="block">
                       {info?.name ?? ""}
                     </span>
-                    <span className="block text-base font-normal text-muted">{closed ? t`閉鎖中` : now ? t`いま向かっている場所` : away(s)}</span>
+                    <span className="block text-base font-normal text-muted">{closed ? t`閉鎖中` : now ? t`現在の目的地` : away(s)}</span>
                   </span>
                 </button>
               </li>
@@ -83,11 +83,11 @@ export function NavTargetPicker() {
         <div data-nav-footer className="flex shrink-0 flex-col gap-2 border-t border-line px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] pt-4 md:pb-5">
           {snap.forcedId ? (
             <button type="button" onClick={() => pick(null)} className={buttonStyle("primary", "lg", "flex w-full")}>
-              {t`近い順にもどす`}
+              {t`近い順に戻す`}
             </button>
           ) : null}
           <button type="button" onClick={() => dialog.current?.close()} className={buttonStyle("secondary", "lg", "flex w-full")}>
-            {t`とじる`}
+            {t`閉じる`}
           </button>
         </div>
       </dialog>

@@ -121,16 +121,16 @@ export function NavigationStart({ route, more }: { route: MapScreenRoute; more: 
         onClick={() => {
           setStarting(true);
           // Said inside the tap: an iPhone lets a page speak only after a touch, and the voice may be on without one.
-          if (voiceIsOn(voiceByDefault)) say(t`ナビをはじめます`, i18n.locale);
+          if (voiceIsOn(voiceByDefault)) say(t`ナビを開始します`, i18n.locale);
           // The compass, also inside the tap: an iPhone shows its permission question only then (Android needs none).
           void askCompass();
           void beginNavigation(route, start).finally(() => setStarting(false));
         }}
       >
-        {starting ? t`ナビを準備しています…` : session ? t`この区間のナビに切り替える` : t`ナビをはじめる`}
+        {starting ? t`ナビを準備中…` : session ? t`このコースのナビに切り替え` : t`ナビを開始`}
       </button>
       {more}
-      <p className="text-base leading-snug">{t`いまいる場所から、いちばん近いスタンプの場所まで案内します。位置は、この端末の中だけで使います。`}</p>
+      <p className="text-base leading-snug">{t`現在地から最寄りのスタンプスポットまで案内します。`}</p>
     </section>
   );
 }
@@ -206,7 +206,7 @@ export function NavigationToast() {
   const { snapshot: snap, routeName } = session;
   // Just started and no position yet: the screen dims and says so rather than look frozen. A problem (denied, timed out)
   // or a pause takes over with its own message; やめる ends the navigation.
-  const finding = snap.lastFixAtMs === null && !snap.problem && !snap.paused ? <LoadingOverlay label={t`いまの位置を調べています…`} onCancel={stop} /> : null;
+  const finding = snap.lastFixAtMs === null && !snap.problem && !snap.paused ? <LoadingOverlay label={t`現在地を取得中…`} onCancel={stop} /> : null;
   const st = snap.state;
   const target = st.targetId ? session.stops[st.targetId] : undefined;
   const turnWords: Record<TurnKind, string> = {
@@ -220,14 +220,14 @@ export function NavigationToast() {
   };
   // Which way, relative to where the visitor walks (no line to follow).
   const steerWords: Record<TurnKind | "straight", string> = {
-    straight: t`まっすぐ`,
+    straight: t`直進`,
     "slight-left": t`やや左`,
     left: t`左`,
-    "sharp-left": t`左うしろ`,
+    "sharp-left": t`左後ろ`,
     "slight-right": t`やや右`,
     right: t`右`,
-    "sharp-right": t`右うしろ`,
-    "u-turn": t`うしろ`,
+    "sharp-right": t`右後ろ`,
+    "u-turn": t`後ろ`,
   };
   const compass: Record<CompassPoint, string> = {
     N: t`北`, NE: t`北東`, E: t`東`, SE: t`南東`, S: t`南`, SW: t`南西`, W: t`西`, NW: t`北西`,
@@ -243,18 +243,18 @@ export function NavigationToast() {
 
   const problem =
     snap.problem === "denied"
-      ? t`位置情報が許可されていません。ブラウザの設定で、このサイトの位置情報を「許可」にしてください。`
+      ? t`位置情報が許可されていません。ブラウザの設定でこのサイトの位置情報を許可してください。`
       : snap.problem === "unsupported"
-        ? t`この端末・ブラウザでは、位置情報を使えません。`
+        ? t`この端末・ブラウザは位置情報に対応していません。`
         : snap.problem === "unavailable" || snap.problem === "timeout"
-          ? t`いまの位置が、わかりません。空の開けた場所で、しばらくお待ちください。`
+          ? t`現在地を取得できません。空の明けた場所でしばらくお待ちください。`
           : null;
 
   // Off the course line: say so once (the block appears when the visitor leaves it), with the way back.
   const isFar = snap.position !== null && st.far && st.mode !== "path" && st.targetId !== null;
   const back = !isFar && st.offRoute && st.backM !== null && st.backBearingDeg !== null ? { m: st.backM, deg: st.backBearingDeg } : null;
   // With a walking direction the arrow beside it says which way; a compass word only when there is none.
-  const backText = back ? (st.headingDeg !== null ? t`道まで ${meters(back.m)}` : t`道まで ${meters(back.m)}（${compass[compassPoint(back.deg)]}）`) : "";
+  const backText = back ? (st.headingDeg !== null ? t`コースまで ${meters(back.m)}` : t`コースまで ${meters(back.m)}（${compass[compassPoint(back.deg)]}）`) : "";
   if (!back && offClosed) setOffClosed(false);
   const offRouteWords = back ? (
     <>
@@ -263,7 +263,7 @@ export function NavigationToast() {
         <path d="M12 3 L19 20 L12 16 L5 20 Z" fill="currentColor" />
       </svg>
       <p className="min-w-0 flex-1 text-lg font-bold leading-snug">
-        {t`道からはずれています`}
+        {t`コースから外れています`}
         <span className="block text-base font-normal tabular-nums">{backText}</span>
       </p>
     </>
@@ -279,7 +279,7 @@ export function NavigationToast() {
       <div role="alert" className="flex items-center gap-3 rounded-lg border-l-4 border-caution bg-surface py-2 pl-3 pr-2">
         {offRouteWords}
         {back.m <= OFF_ROUTE_LOCKED_M ? (
-          <button type="button" onClick={() => setOffClosed(true)} aria-label={t`とじる`} className="tap-target inline-flex shrink-0 items-center justify-center rounded-full text-ink hover:bg-paper">
+          <button type="button" onClick={() => setOffClosed(true)} aria-label={t`閉じる`} className="tap-target inline-flex shrink-0 items-center justify-center rounded-full text-ink hover:bg-paper">
             <CloseIcon />
           </button>
         ) : null}
@@ -288,26 +288,26 @@ export function NavigationToast() {
 
   // At most one short note under the two lines, the most useful one first.
   const note = snap.paused
-    ? t`画面が見えない間は、位置を止めています。`
+    ? t`バックグラウンド中は位置情報の取得を一時停止しています。`
     : problem && snap.position !== null
       ? problem
       : ageS !== null && ageS * 1000 > STALE_MS
-        ? t`位置は${ageS}秒前のものです。`
+        ? t`現在地は${ageS}秒前の情報です。`
         : !snap.stampsKnown
-          ? t`スタンプの記録を読めませんでした。`
+          ? t`スタンプの履歴を読み込めませんでした。`
           : null;
 
   // Far from the course, with no walking path chosen: how to get there, not a distance and direction that mean nothing.
   const far = isFar;
   let main;
   if (far) {
-    main = pathname === "/map" ? <NavFarCard /> : <p className="text-base font-bold leading-snug">{t`この区間は遠くにあります。電車やバスで向かいましょう。`}</p>;
+    main = pathname === "/map" ? <NavFarCard /> : <p className="text-base font-bold leading-snug">{t`このコースは現在地から離れています。電車やバスなどで向かってください。`}</p>;
   } else if (problem && snap.position === null) {
     main = <p className="text-base font-bold leading-snug">{problem}</p>;
   } else if (snap.position === null) {
-    main = <p className="text-base">{st.ignoredFixes > 0 ? t`GPSの電波が弱いようです。空の開けた場所に動いてください。` : t`現在地を調べています…`}</p>;
+    main = <p className="text-base">{st.ignoredFixes > 0 ? t`GPSの精度が低い状態です。空の明けた場所に移動してからもう一度お試しください。` : t`現在地を取得中…`}</p>;
   } else if (!st.targetId || !target) {
-    main = <p className="text-base font-bold leading-snug">{t`この区間のスタンプは、すべて押しました。`}</p>;
+    main = <p className="text-base font-bold leading-snug">{t`このコースのスタンプはすべて獲得済みです。`}</p>;
   } else {
     const direction = st.bearingDeg !== null ? compass[compassPoint(st.bearingDeg)] : "";
     const turn = st.turn && st.turn.inM <= TURN_ANNOUNCE_M ? st.turn : null;
@@ -320,7 +320,7 @@ export function NavigationToast() {
     // Words a walker can use: left, right, along the path. A compass word only when nothing better is known.
     const onWay = st.mode === "line" || st.mode === "path";
     const line1 = turn ? turnText : steer ? t`${steerWord} ${distText}` : onWay ? t`道なりに ${distText}` : direction ? t`${direction} ${distText}` : distText;
-    const mode = st.mode === "line" ? null : st.mode === "path" ? t`道の外・歩ける道` : t`道の外・直線`;
+    const mode = st.mode === "line" ? null : st.mode === "path" ? t`コース外・迂回ルート` : t`コース外・直線案内`;
     const line2 = turn ? distText : mode;
     main = (
       <div className="flex min-w-0 items-center gap-3">
@@ -329,7 +329,7 @@ export function NavigationToast() {
           <p className="truncate text-xl font-bold leading-tight tabular-nums">{line1}</p>
           {/* The distance comes first and nothing is cut: a long place name may take a second line. */}
           <p className="text-base leading-snug text-muted">
-            <span className="sr-only">{t`次のスタンプの場所`} </span>
+            <span className="sr-only">{t`次のスポット`} </span>
             {line2 ? <span className="whitespace-nowrap tabular-nums">{line2} · </span> : null}
             <span lang={target.nameLang}>{target.name}</span>
           </p>
@@ -340,7 +340,7 @@ export function NavigationToast() {
 
   // Where the course stands: places done, time to the next one, and what is left (only numbers that can be true).
   const progress = courseProgress(session.model, st, snap.stamped);
-  const mins = (m: number) => (m < 60 ? t`${m}分` : t`${Math.floor(m / 60)}時間${m % 60}分`);
+  const mins = (m: number) => (m < 60 ? t`${m}分` : t`${Math.floor(m / 60)}時間${m % 60 === 0}分`);
   // The clock time of the arrival, in Japan's time like every date here. `now` ticks, so it stays true while standing still.
   const arrival = progress.toNextMin === null ? null : new Intl.DateTimeFormat(i18n.locale === "ja" ? "ja-JP" : "en-US", { hour: "numeric", minute: "2-digit", timeZone: "Asia/Tokyo" }).format(now + progress.toNextMin * 60_000);
   const left = progress.leftM !== null && progress.leftMin !== null ? t`残り ${meters(progress.leftM)}（${mins(progress.leftMin)}）` : null;
@@ -411,8 +411,8 @@ export function NavigationToast() {
                 type="button"
                 role="switch"
                 aria-checked={awake}
-                aria-label={t`画面をつけたままにする（電池を多く使います）`}
-                title={t`画面をつけたままにする（電池を多く使います）`}
+                aria-label={t`画面を常時点灯する（バッテリー消費が増えます）`}
+                title={t`画面を常時点灯する（バッテリー消費が増えます）`}
                 onClick={() => setAwake(!awake)}
                 className={`tap-target inline-flex shrink-0 items-center justify-center rounded-full border border-ink ${awake ? "bg-ink text-paper" : "bg-paper text-ink"}`}
               >
@@ -435,11 +435,11 @@ export function NavigationToast() {
           </div>
           {tucked ? (
             <button type="button" onClick={() => window.dispatchEvent(new Event(NAV_RESUME_EVENT))} className={buttonStyle("primary", "md", "mt-1 flex w-full")}>
-              {t`ナビにもどる`}
+              {t`ナビに戻る`}
             </button>
           ) : null}
           {note ? <p className="text-base leading-snug">{note}</p> : null}
-          {voice.supported && voice.on && !voice.canVibrate && !far && !tucked ? <p className="text-base text-muted">{t`この端末では、振動は使えません。`}</p> : null}
+          {voice.supported && voice.on && !voice.canVibrate && !far && !tucked ? <p className="text-base text-muted">{t`この端末はバイブレーションに対応していません。`}</p> : null}
         </section>
         <section
           ref={box}
@@ -460,7 +460,7 @@ export function NavigationToast() {
           <div className={far ? "" : "grid grid-cols-2 gap-2"}>
             {far ? null : <NavTargetPicker />}
             <button type="button" onClick={() => setEnding(true)} className={buttonStyle("secondary", "md", "flex w-full")}>
-              {t`ナビを終える`}
+              {t`ナビを終了`}
             </button>
           </div>
           </div>
@@ -486,7 +486,7 @@ export function NavigationToast() {
               {t`地図`}
             </Link>
           )}
-          <button type="button" className={quiet} onClick={() => setEnding(true)} aria-label={t`ナビを終える`}>
+          <button type="button" className={quiet} onClick={() => setEnding(true)} aria-label={t`ナビを終了`}>
             {t`終了`}
           </button>
         </div>

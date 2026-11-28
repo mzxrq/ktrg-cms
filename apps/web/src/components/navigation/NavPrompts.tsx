@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useLingui } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { buttonStyle } from "@/components/button";
 import { WarningIcon } from "@/components/icons";
 import { CreditCaption } from "@/components/PhotoCredit";
@@ -132,8 +132,10 @@ export function PassedPrompt({ name, nameLang, onGoOn, onGoBack }: { name: strin
       <section ref={cardRef} role="alertdialog" aria-modal="true" aria-labelledby="nav-passed" className={`${CARD} flex max-h-full flex-col gap-3 overflow-hidden`}>
         <div className="flex min-h-0 flex-col gap-3 overflow-y-auto">
           <h2 id="nav-passed" className="text-xl font-bold leading-snug">
-            <span lang={nameLang}>{name}</span>
-            {t`を通り過ぎました`}
+            <Trans>
+              <span lang={nameLang}>{name}</span>
+              を通り過ぎました
+            </Trans>
           </h2>
           <p className="text-lg leading-snug">{t`次のスポットへ進みますか？`}</p>
         </div>
