@@ -557,9 +557,14 @@ function mapStepOf(step: RouteDraft, now: RouteDraft): RouteDraft {
     distanceKm: now.distanceManual ? now.distanceKm : step.distanceKm,
     elevationGainM: now.climbManual ? now.elevationGainM : step.elevationGainM,
     expectedTimeMin: now.timeManual ? now.expectedTimeMin : step.expectedTimeMin,
+    // A line or position that comes back brings its own 確認 tick (and 公開) with it: a check made on what is undone never
+    // carries over to an older line or place (the data rule: nothing unchecked shows as checked).
+    lineVerified: JSON.stringify([step.line, step.legs]) === JSON.stringify([now.line, now.legs]) ? now.lineVerified : step.lineVerified,
     places: step.places.map((p) => {
       const cur = typed.get(p.key);
-      return cur ? { ...cur, lat: p.lat, lng: p.lng } : p;
+      if (!cur) return p;
+      const moved = cur.lat !== p.lat || cur.lng !== p.lng;
+      return moved ? { ...cur, lat: p.lat, lng: p.lng, positionVerified: p.positionVerified, published: p.published } : cur;
     }),
   };
   if (step.spareLegs === undefined) delete out.spareLegs;

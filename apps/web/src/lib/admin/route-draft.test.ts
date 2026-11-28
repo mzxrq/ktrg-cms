@@ -107,6 +107,13 @@ describe("legs", () => {
     expect(redone.places.find((p) => p.key === "b")).toMatchObject({ lat: 34.05, lng: 135.05, });
     expect(redone.descriptionJa).toBe("あとから書いた説明");
   });
+  test("a 位置を確認した tick made after a move does not stay on the position Ctrl+Z brings back", () => {
+    let s = withStops();
+    const before = s.present.places.find((p) => p.key === "b")!;
+    s = run(s, { type: "movePlace", key: "b", lat: 34.05, lng: 135.05 }, { type: "place", key: "b", patch: { positionVerified: true } });
+    const back = run(s, { type: "undo" }).present.places.find((p) => p.key === "b")!;
+    expect([back.lat, back.positionVerified, back.published]).toEqual([before.lat, before.positionVerified, before.published]);
+  });
   test("a course area is part of the draft: saved, loaded again, undone, and drawn in the preview in place of the automatic box", () => {
     const box = { west: 135.0, south: 34.2, east: 135.3, north: 34.4 };
     let s = run(fresh(), { type: "area", value: box });
