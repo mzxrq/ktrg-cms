@@ -13,8 +13,6 @@ import type { Reading, StampFailure, StampResult } from "./stamp-flow";
 
 /** A queued stamp this old is dropped on the phone without asking (the server refuses it after 48 h anyway). */
 export const MAX_QUEUE_AGE_MS = 48 * 60 * 60 * 1000;
-/** After this many attempts that failed for an unknown reason (a server error), the row is given up on. */
-export const MAX_TRIES = 5;
 
 export interface QueuedStamp {
   /** Random id, the row's own key (also what a Web Lock names). */
@@ -44,8 +42,11 @@ export function newQueuedStamp(userKey: string, spotId: string, reading: Reading
   return { id, userKey, spotId, lat: reading.lat, lng: reading.lng, accuracyM: reading.accuracyM, scannedAt: now.toISOString(), tries: 0, ...(celebrate ? { celebrate } : {}) };
 }
 
-/** Answers that mean "not now, try again later": the row stays and the rest of the queue waits too. */
-const RETRY_LATER: ReadonlySet<StampFailure> = new Set(["network", "too_many_requests", "login_needed"]);
+/**
+ * Answers that mean "not now, try again later": the row stays and the rest of the queue waits too. A server error
+ * ("failed") is one: retries come every 30 s, so a short outage must not delete a walker's stamps; the 48 h age is the limit.
+ */
+const RETRY_LATER: ReadonlySet<StampFailure> = new Set(["network", "too_many_requests", "login_needed", "failed"]);
 
 export type Outcome =
   | { kind: "accepted"; row: QueuedStamp; already: boolean }
@@ -62,8 +63,7 @@ export interface FlushResult {
 
 /**
  * Sends the rows of `userKey`, oldest first. `send` does one request and never throws. Stops at the first answer that
- * means "later" (so a dropped signal does not burn every row's tries); a definite answer removes the row; an unknown
- * failure keeps it up to MAX_TRIES times.
+ * means "later" (so a dropped signal does not burn every row's tries); a definite answer removes the row.
  */
 export async function flushQueue(opts: {
   store: QueueStore;
@@ -87,12 +87,6 @@ export async function flushQueue(opts: {
     } else if (RETRY_LATER.has(result.failure)) {
       waiting = true;
       break;
-    } else if (result.failure === "failed") {
-      // Unknown (a server error, say): try again later, but not for ever.
-      if (row.tries + 1 >= MAX_TRIES) {
-        await store.remove(row.id);
-        outcomes.push({ kind: "rejected", row, failure: "failed" });
-      } else await store.update(row.id, { tries: row.tries + 1 });
     } else {
       await store.remove(row.id);
       outcomes.push({ kind: "rejected", row, failure: result.failure });

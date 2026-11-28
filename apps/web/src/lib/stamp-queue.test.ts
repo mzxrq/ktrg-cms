@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import type { StampResult } from "./stamp-flow";
-import { createMemoryQueueStore, flushQueue, MAX_QUEUE_AGE_MS, MAX_TRIES, newQueuedStamp, withUploadLock } from "./stamp-queue";
+import { createMemoryQueueStore, flushQueue, MAX_QUEUE_AGE_MS, newQueuedStamp, withUploadLock } from "./stamp-queue";
 
 const NOW = new Date("2026-11-04T12:00:00.000Z");
 const at = (msAgo: number) => new Date(NOW.getTime() - msAgo);
@@ -41,14 +41,11 @@ describe("flushQueue", () => {
     expect(res.left).toBe(0);
   });
 
-  test("an unknown failure is retried, then given up after MAX_TRIES", async () => {
-    const store = await queueOf({ spot: "x", ago: 1000 });
-    for (let i = 1; i < MAX_TRIES; i++) {
-      expect((await run(store, () => ({ ok: false, failure: "failed" }))).left).toBe(1);
-      expect(store.rows[0]!.tries).toBe(i);
+  test("a server error (an outage, say) keeps every row however often it repeats; only the age limit drops them", async () => {
+    const store = await queueOf({ spot: "x", ago: 3000 }, { spot: "y", ago: 2000 });
+    for (let i = 0; i < 20; i++) {
+      expect(await run(store, () => ({ ok: false, failure: "failed" }))).toMatchObject({ left: 2, waiting: true, outcomes: [] });
     }
-    const last = await run(store, () => ({ ok: false, failure: "failed" }));
-    expect(last).toMatchObject({ left: 0, outcomes: [{ kind: "rejected", failure: "failed" }] });
   });
 
   test("a row older than the age limit is dropped without a request", async () => {
