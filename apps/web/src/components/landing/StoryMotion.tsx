@@ -36,9 +36,10 @@ export function StoryMotion({ children, className = "" }: { children: ReactNode;
             if (g.closest("[data-journey]")) return; // the journey has its own scene (JourneyScene)
             const parts = Array.from(g.querySelectorAll<HTMLElement>(HIDDEN));
             if (parts.length === 0) return;
-            gsap.set(parts, { autoAlpha: 0, y: 28, filter: "blur(6px)" });
+            // opacity, never autoAlpha: visibility:hidden would take the links and buttons out of Tab and screen readers until scrolled to.
+            gsap.set(parts, { opacity: 0, y: 28, filter: "blur(6px)" });
             gsap.to(parts, {
-              autoAlpha: 1,
+              opacity: 1,
               y: 0,
               filter: "blur(0px)",
               duration: 1,
