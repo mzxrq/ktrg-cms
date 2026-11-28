@@ -2,7 +2,7 @@ import { useSyncExternalStore } from "react";
 
 /** Chrome's install offer (beforeinstallprompt): not in the DOM types. */
 export interface InstallPrompt extends Event {
-  prompt(): Promise<void>;
+  prompt: () => Promise<void>;
 }
 
 // The browser offers the install once, near page load, long before the install steps are opened: it is caught here at
