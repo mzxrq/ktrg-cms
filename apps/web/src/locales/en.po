@@ -417,13 +417,13 @@ msgstr "{number} of {total}"
 msgid "{number}番 スタンプ済み"
 msgstr "No. {number}, stamped"
 
-#: src/components/StampGrid.tsx:54
-msgid "{number}番 つぎのスタンプ"
-msgstr "No. {number}, next stamp"
-
 #: src/components/StampGrid.tsx:55
-msgid "{number}番 まだ押していません"
-msgstr "No. {number}, not stamped yet"
+msgid "{number}番 未獲得"
+msgstr "#{number} Not yet collected"
+
+#: src/components/StampGrid.tsx:54
+msgid "{number}番 次のスタンプ"
+msgstr "#{number} Next stamp"
 
 #: src/components/map/MapScreen.tsx:372
 #: src/components/map/MapScreenCanvas.tsx:544
@@ -437,10 +437,6 @@ msgstr "{order}. {name} (Stamped)"
 #: src/components/map/MapScreenCanvas.tsx:544
 msgid "{order}. {name}（準備中）"
 msgstr "{order}. {name} (coming soon)"
-
-#: src/components/StampOutbox.tsx:170
-msgid "{pending}件のスタンプが、送信待ちです。"
-msgstr "{pending} stamps are waiting to be sent."
 
 #: src/app/(admin)/admin/page.tsx:52
 msgid "{r}日"
@@ -546,14 +542,14 @@ msgid "{v}m"
 msgstr "{v} m"
 
 #. placeholder {0}: phase.place
-#: src/components/RallyNearbyStamp.tsx:120
-msgid "「{0}」のスタンプは、もう押してあります。"
+#: src/components/RallyNearbyStamp.tsx:119
+msgid "「{0}」のスタンプは獲得済みです。"
 msgstr "You already have the stamp for \"{0}\"."
 
 #. placeholder {0}: phase.place
-#: src/components/RallyNearbyStamp.tsx:120
-msgid "「{0}」のスタンプを押しました！"
-msgstr "Stamped \"{0}\"!"
+#: src/components/RallyNearbyStamp.tsx:119
+msgid "「{0}」のスタンプを獲得しました！"
+msgstr "Stamp collected for \"{0}\"!"
 
 #. placeholder {0}: row.word
 #: src/components/admin/FuriganaWords.tsx:65
@@ -1155,13 +1151,8 @@ msgid "いまの位置が、わかりません。空の開けた場所で、し�
 msgstr "Your position is not known yet. Please wait a moment in open sky."
 
 #: src/components/navigation/NavigationHud.tsx:209
-#: src/components/RallyNearbyStamp.tsx:94
 msgid "いまの位置を調べています…"
 msgstr "Checking your location…"
-
-#: src/components/RallyNearbyStamp.tsx:104
-msgid "いまの位置を調べます"
-msgstr "We will check your location"
 
 #: src/components/admin/CommentInbox.tsx:102
 #: src/components/admin/PlacePanel.tsx:246
@@ -1203,10 +1194,6 @@ msgstr "Heading here now"
 #: src/components/SampleNotice.tsx:55
 msgid "いま表示しているのは、見本と下書きのデータです。確認前の情報を含みます。"
 msgstr "What you see now is sample and draft data. It includes information that has not been checked."
-
-#: src/components/StampOutbox.tsx:173
-msgid "いま送る"
-msgstr "Send now"
 
 #: src/app/offline/page.tsx:22
 msgid "インターネットに接続されていません"
@@ -1381,6 +1368,7 @@ msgstr "Select a leg (between two waypoints) to place guide points on."
 msgid "カフェ・喫茶"
 msgstr "Cafe"
 
+#: src/components/RallyNearbyStamp.tsx:112
 #: src/components/StampHere.tsx:242
 msgid "キャンセル"
 msgstr "Cancel"
@@ -1467,6 +1455,10 @@ msgstr "There are no courses yet."
 msgid "コースがまだありません。「新しいコース」から作ってください。"
 msgstr "There are no courses yet. Add one with New course."
 
+#: src/app/(public)/badges/page.tsx:77
+msgid "コースが公開されると、ここにバッジが表示されます。"
+msgstr "Course badges will appear here once courses are published."
+
 #: src/components/admin/RallyEditor.tsx:135
 msgid "コースでつくったラリー：えらんだコースを全部終えると達成。"
 msgstr "A rally of courses: complete when every chosen course is finished."
@@ -1486,10 +1478,6 @@ msgstr "Back to Courses"
 #: src/app/(public)/grading/page.tsx:57
 msgid "コースの「体力の目安」と「道のけわしさ」は、歩く前に大変さを知るための目安で、どちらも星の数で表します。星が少ないほどやさしいコースです。コースをめぐるのが簡単なのか、大変なのかの目安を示す簡単な指標で、公式の情報ではありません。天候や体調によって、大変さの感じ方は変わります。"
 msgstr "Each course's Estimated Effort and Trail Difficulty are rated with stars to help you gauge how challenging a trail is before you set out. Fewer stars mean an easier course. These ratings are simple guidelines and are not official information. How diffifcult a course feels can vary depending on the weather and your physical condition."
-
-#: src/app/(public)/badges/page.tsx:44
-msgid "コースのすべての場所でスタンプを押すと、そのコースのバッジがもらえます。"
-msgstr "Press a stamp at every place of a course to get that course's badge."
 
 #: src/components/admin/one-map/OneMapCourseEditor.tsx:63
 msgid "コースのページで直す"
@@ -1625,6 +1613,10 @@ msgstr "Back to all courses"
 msgid "コース一覧を見る"
 msgstr "Courses"
 
+#: src/app/(public)/badges/page.tsx:44
+msgid "コース内のすべてのスポットでスタンプを集めると、そのコースのバッジを獲得できます。"
+msgstr "Collect stamps at every spot on a course to earn its badge."
+
 #: src/components/admin/RouteEditor.tsx:232
 msgid "コース写真"
 msgstr "Course Photo"
@@ -1707,10 +1699,6 @@ msgstr "This GPX file has no track with elevation data, or it does not match the
 msgid "このアカウントでは、顔・指紋のログインをまだ使っていません。"
 msgstr "This account does not use face or fingerprint login yet."
 
-#: src/components/StampOutbox.tsx:134
-msgid "このアカウントに送る"
-msgstr "Send to this account"
-
 #: src/components/useErrorMessages.ts:43
 msgid "このアカウントはすでに別のアカウントと連携されています。"
 msgstr "This account is already linked to another user."
@@ -1718,6 +1706,10 @@ msgstr "This account is already linked to another user."
 #: src/components/useErrorMessages.ts:76
 msgid "このアカウントは現在制限されています。スタンプの取得やコメントの投稿はできません。"
 msgstr "This account is currently restricted. You can't collect stamps or post comments."
+
+#: src/components/StampOutbox.tsx:134
+msgid "このアカウントへ送信する"
+msgstr "Send to this account"
 
 #: src/components/SiteHeader.tsx:463
 msgid "このアプリについて"
@@ -2090,10 +2082,6 @@ msgstr "Edit this waypoint"
 msgid "この言葉はもう一覧にあります。"
 msgstr "This word is already in the list."
 
-#: src/app/(public)/blog/[id]/page.tsx:167
-msgid "この記事の場所"
-msgstr "What this post is about"
-
 #: src/app/(public)/blog/[id]/page.tsx:208
 msgid "この記事を共有する"
 msgstr "Share this post"
@@ -2137,13 +2125,13 @@ msgstr "Comments"
 msgid "コメント（管理）"
 msgstr "Comments (admin)"
 
-#: src/components/blog/CommentSection.tsx:113
-msgid "コメントする"
-msgstr "Post comment"
-
 #: src/components/admin/CommentInbox.tsx:152
 msgid "コメントはありません。"
 msgstr "No comments."
+
+#: src/components/blog/CommentSection.tsx:63
+msgid "コメントはまだありません。"
+msgstr "No comments yet."
 
 #: src/components/admin/CommentInbox.tsx:118
 #: src/components/admin/CommentInbox.tsx:118
@@ -2154,13 +2142,17 @@ msgstr "Search comments"
 msgid "コメントを受け付けました"
 msgstr "Comment received"
 
+#: src/components/blog/CommentSection.tsx:113
+msgid "コメントを投稿"
+msgstr "Post"
+
+#: src/components/blog/CommentSection.tsx:125
+msgid "コメントを投稿するにはログインが必要です。"
+msgstr "Please log in to post a comment."
+
 #: src/components/blog/CommentSection.tsx:101
 msgid "コメントを書く"
 msgstr "Write a comment"
-
-#: src/components/blog/CommentSection.tsx:125
-msgid "コメントを書くには、ログインが必要です。"
-msgstr "You need to log in to write a comment."
 
 #: src/app/(admin)/admin/comments/page.tsx:30
 msgid "コメントを読み込めませんでした。しばらくしてから、ページを開き直してください。"
@@ -2314,8 +2306,8 @@ msgid "スタイルファイルを選ぶ"
 msgstr "Choose a style file"
 
 #: src/components/blog/CommentSection.tsx:87
-msgid "スタッフが確認すると、ここに表示されます。"
-msgstr "It will appear here once the staff have checked it."
+msgid "スタッフの確認後、公開されます。"
+msgstr "Your comment will be published after staff review."
 
 #: src/app/(admin)/admin/page.tsx:77
 #: src/app/(public)/rallies/[id]/page.tsx:176
@@ -2374,6 +2366,14 @@ msgstr "Tap the button when you're near a stamp spot to collect its stamp. Your 
 msgid "スタンプスポットの付近にいるか確認するため、現在地を1回だけ取得します。"
 msgstr "We'll check your device's location once to verify that you're near this stamp spot."
 
+#: src/components/RallyNearbyStamp.tsx:96
+msgid "スタンプスポットの近くで押してください。"
+msgstr "Tap near a stamp spot."
+
+#: src/components/RallyNearbyStamp.tsx:106
+msgid "スタンプスポットの近くにいるか確認するため、端末の現在地を1度だけ取得します。"
+msgstr "We check your device's location once to verify that you are near a stamp spot."
+
 #: src/components/map/MapScreen.tsx:510
 msgid "スタンプスポットは準備中です。"
 msgstr "This stamp spot is coming soon."
@@ -2394,14 +2394,6 @@ msgstr "Stamp backup link"
 msgid "スタンプの取得時刻が正しくありません。端末の日時設定を確認してください。"
 msgstr "The stamp timestamp is invalid. Please check your device's date and time settings."
 
-#: src/components/RallyNearbyStamp.tsx:96
-msgid "スタンプの場所の近くで押してください。現在地は1度だけ確かめ、記録には残しません。"
-msgstr "Press this when you are at a stamp place. We check your location once and never store it."
-
-#: src/components/RallyNearbyStamp.tsx:106
-msgid "スタンプの場所の近くにいるかを確かめるため、スマートフォンの現在地を1度だけ調べます。"
-msgstr "To make sure you are at the stamp place, we read your phone's location once."
-
 #. placeholder {0}: c.publishedStampPlaceCount
 #: src/components/admin/RallyMemberPicker.tsx:88
 msgid "スタンプの経由地 {0}"
@@ -2420,9 +2412,11 @@ msgstr "Stamp progress"
 msgid "スタンプの進捗"
 msgstr "Stamp progress"
 
+#: src/app/(public)/badges/page.tsx:38
 #: src/app/(public)/sitemap/page.tsx:91
 #: src/components/admin/HomeTextFields.tsx:18
 #: src/components/landing/useHomeWords.ts:9
+#: src/components/pages/PageViews.tsx:33
 #: src/components/RallyViews.tsx:173
 #: src/components/SiteHeader.tsx:100
 msgid "スタンプラリー"
@@ -2456,7 +2450,6 @@ msgstr "Restore stamps"
 msgid "スタンプを押した人"
 msgstr "People with a stamp"
 
-#: src/components/RallyNearbyStamp.tsx:94
 #: src/components/StampHere.tsx:183
 #: src/components/StampHere.tsx:218
 msgid "スタンプを押しています…"
@@ -2467,7 +2460,6 @@ msgid "スタンプを押してから48時間以上経過しているため、�
 msgstr "This stamp couldn't be accepted because more than 48 hours have passed since it was collected."
 
 #: src/components/StampHere.tsx:145
-#: src/components/StampProgressPopup.tsx:50
 msgid "スタンプを押しました！"
 msgstr "Stamp collected!"
 
@@ -2479,6 +2471,10 @@ msgstr "Stamp here"
 #: src/components/admin/RallyMemberPicker.tsx:48
 msgid "スタンプを押せる経由地がまだありません。コースの画面で経由地を作ってください。"
 msgstr "There are no stamp waypoints yet. Create waypoints on a course first."
+
+#: src/components/StampProgressPopup.tsx:50
+msgid "スタンプを獲得しました！"
+msgstr "Stamp collected!"
 
 #: src/app/(public)/sitemap/page.tsx:93
 msgid "スタンプ一覧"
@@ -2531,6 +2527,10 @@ msgstr "Stamp radius (m)"
 #: src/components/landing/useHomeWords.ts:11
 msgid "スタンプ設置場所の近くでボタンを押すと、スタンプが記録されます。現在地はボタンを押したときに一度だけ確認し、保存しません。"
 msgstr "Tap the button near a stamp spot to record your stamp. Your location is checked only once when you tap and is never stored."
+
+#: src/components/StampOutbox.tsx:173
+msgid "スタンプ送信中…"
+msgstr "Sending..."
 
 #: src/components/admin/useRouteDraft.ts:252
 msgid "すでに公開をやめた経由地があります（{names}）。「経由地」タブで確かめてください。"
@@ -2657,6 +2657,10 @@ msgstr "As is"
 msgid "その他"
 msgstr "Other"
 
+#: src/app/(public)/blog/[id]/page.tsx:250
+msgid "その他の記事"
+msgstr "More posts"
+
 #: src/components/admin/AdminProfileMenu.tsx:140
 #: src/components/ThemeSwitcher.tsx:30
 msgid "ダーク"
@@ -2708,18 +2712,6 @@ msgstr "Check"
 msgid "チェックを入れると、自動ルート生成の対象から外れます。代わりに、直前の経由地からこの地点までの寄り道ルート（青い点線）を地図上で描画できます。分岐点となる経由地の直後に配置してください。"
 msgstr "When checked, this point is excluded from automatic route generation. Instead, you can draw a side-trip line (thin blue dashed line) on the map from the previous waypoint to this point. Place it right after the junction waypoint."
 
-#: src/components/RallyTrail.tsx:39
-#: src/components/StampGrid.tsx:77
-#: src/components/StampGrid.tsx:99
-#: src/components/StampGrid.tsx:109
-#: src/components/StampLegend.tsx:11
-msgid "つぎ"
-msgstr "Next"
-
-#: src/app/(public)/badges/page.tsx:63
-msgid "つぎにもらえそうなバッジ"
-msgstr "The badge closest to hand"
-
 #: src/components/auth/RegisterFlow.tsx:128
 #: src/components/auth/RegisterFlow.tsx:184
 #: src/components/settings/WelcomeFlow.tsx:165
@@ -2758,10 +2750,6 @@ msgstr "Change how it is made…"
 #: src/app/(public)/rallies/[id]/page.tsx:151
 msgid "つづきをはじめる"
 msgstr "Continue"
-
-#: src/components/StampOutbox.tsx:171
-msgid "つながると、自動で送ります。つながりにくいときは、30秒ごとにもう一度試します。"
-msgstr "It is sent automatically once connected. When the signal is weak, it tries again every 30 seconds."
 
 #: src/components/settings/SsoMethods.tsx:77
 msgid "つなぎました。次からは、このアカウントでもログインできます。"
@@ -2813,7 +2801,6 @@ msgstr "Where do you want to go?"
 #: src/components/navigation/NavFarCard.tsx:126
 #: src/components/navigation/NavigationHud.tsx:282
 #: src/components/navigation/NavTargetPicker.tsx:90
-#: src/components/StampProgressPopup.tsx:61
 msgid "とじる"
 msgstr "Close"
 
@@ -2915,11 +2902,6 @@ msgstr "Your screen stays on during navigation. Toggle this with the sun button 
 #: src/components/auth/RegisterFlow.tsx:82
 msgid "ニックネームでもかまいません。"
 msgstr "A nickname is fine."
-
-#. placeholder {0}: route.elevationGainM
-#: src/components/blog/LinkedCards.tsx:30
-msgid "のぼり {0}m"
-msgstr "Climb {0} m"
 
 #: src/components/admin/AdminItemForm.tsx:163
 msgid "はい"
@@ -3077,8 +3059,8 @@ msgid "バッジ"
 msgstr "Badges"
 
 #: src/app/(public)/badges/page.tsx:76
-msgid "バッジは、まだ準備中です。"
-msgstr "Badges are not ready yet."
+msgid "バッジは準備中です。"
+msgstr "Badges coming soon."
 
 #: src/components/admin/BannerOrder.tsx:85
 msgid "バナーがまだありません。「新しいバナー」から作ってください。"
@@ -3250,7 +3232,6 @@ msgstr "Shown by the author's name on the blog posts you write."
 msgid "ブログへ戻る"
 msgstr "Back to the blog"
 
-#: src/app/(public)/blog/[id]/page.tsx:260
 #: src/components/landing/BlogCard.tsx:42
 msgid "ブログをすべて見る"
 msgstr "See all posts"
@@ -3277,7 +3258,6 @@ msgid "プロフィール写真"
 msgstr "Profile photo"
 
 #: src/app/(admin)/admin/pages/page.tsx:30
-#: src/app/(public)/blog/page.tsx:88
 #: src/components/admin/AdminNav.tsx:80
 msgid "ページ"
 msgstr "Pages"
@@ -3325,6 +3305,7 @@ msgstr "Back to Pages"
 msgid "ページ番号"
 msgstr "Page number"
 
+#: src/app/(public)/blog/page.tsx:88
 #: src/components/Pager.tsx:19
 msgid "ページ移動"
 msgstr "Pagination"
@@ -3436,18 +3417,9 @@ msgstr "More filters"
 msgid "ほかの言語（ドイツ語など）の訪問者には、English の文章が表示されます。"
 msgstr "Visitors in other languages (such as German) see the English text."
 
-#: src/app/(public)/blog/[id]/page.tsx:250
-msgid "ほかの記事"
-msgstr "More posts"
-
 #: src/components/ElevationChart.tsx:73
 msgid "ほぼ平坦"
 msgstr "Mostly flat"
-
-#: src/components/RallyTrail.tsx:39
-#: src/components/StampLegend.tsx:10
-msgid "まだ"
-msgstr "Not yet"
 
 #: src/components/admin/AdminItemForm.tsx:217
 msgid "まだ、ありません。"
@@ -3464,10 +3436,6 @@ msgstr "No history yet."
 #: src/components/admin/PlaceTable.tsx:216
 msgid "まだありません。「＋ 行を追加」で、経由地を表に入れてください。"
 msgstr "No waypoints yet. Use “+ Add a row” to put waypoints in the table."
-
-#: src/components/blog/CommentSection.tsx:63
-msgid "まだコメントはありません。"
-msgstr "No comments yet."
 
 #: src/components/GuestBackup.tsx:37
 msgid "まだスタンプがありません。"
@@ -3514,10 +3482,6 @@ msgstr "Map"
 #: src/components/landing/LandingMap.tsx:103
 msgid "マップを開く"
 msgstr "Open Map"
-
-#: src/app/(public)/blog/[id]/page.tsx:200
-msgid "まわりの場所"
-msgstr "Places nearby"
 
 #: src/components/admin/PhotoFocusPicker.tsx:64
 msgid "まんなかに戻す"
@@ -3623,9 +3587,9 @@ msgstr "Expand menu"
 msgid "メニューを隠す"
 msgstr "Hide menu"
 
-#: src/components/blog/CommentSection.tsx:89
-msgid "もう一つ書く"
-msgstr "Write another"
+#: src/app/(public)/badges/page.tsx:63
+msgid "もうすぐ獲得できるバッジ"
+msgstr "Almost there"
 
 #: src/components/FileVideo.tsx:58
 msgid "もう一度ためす"
@@ -3668,21 +3632,12 @@ msgstr "Home course"
 msgid "もどる"
 msgstr "Back"
 
-#: src/app/(public)/badges/page.tsx:91
-msgid "もらいました"
-msgstr "Earned"
-
-#: src/app/(public)/badges/page.tsx:53
-msgid "もらったバッジの数"
-msgstr "Badges earned"
-
 #: src/components/admin/PublishedEditDialog.tsx:63
 #: src/components/admin/RallyEditor.tsx:191
 #: src/components/auth/ReauthDialog.tsx:91
 #: src/components/auth/ReauthDialog.tsx:113
 #: src/components/LoadingOverlay.tsx:26
 #: src/components/ProfileSettings.tsx:291
-#: src/components/RallyNearbyStamp.tsx:113
 #: src/components/settings/PasskeyManager.tsx:139
 #: src/components/settings/PasskeyManager.tsx:213
 #: src/components/settings/PasswordMethod.tsx:92
@@ -3736,13 +3691,11 @@ msgid "ライト"
 msgstr "Light"
 
 #: src/app/(admin)/admin/rallies/page.tsx:23
-#: src/app/(public)/badges/page.tsx:38
 #: src/app/(public)/rallies/[id]/page.tsx:95
 #: src/app/(public)/rallies/page.tsx:21
 #: src/app/(public)/rallies/page.tsx:37
 #: src/components/admin/AdminNav.tsx:75
 #: src/components/BookmarkList.tsx:55
-#: src/components/pages/PageViews.tsx:33
 msgid "ラリー"
 msgstr "Rallies"
 
@@ -4026,6 +3979,10 @@ msgstr "Your session has expired. Please sign in again."
 msgid "ログインを確認できませんでした。時間切れか、別のブラウザで開かれた可能性があります。もう一度お試しください。"
 msgstr "We couldn't verify your sign-in. It may have timed out or opened in a different browser. Please try again."
 
+#: src/components/StampOutbox.tsx:127
+msgid "ログイン前に押したスタンプがあります"
+msgstr "Stamps collected before logging in"
+
 #: src/app/(public)/sitemap/page.tsx:120
 msgid "ログイン方法"
 msgstr "Sign-in Methods"
@@ -4221,6 +4178,10 @@ msgstr "Create an account now, or you may lose your record!"
 msgid "今すぐ削除する"
 msgstr "Delete now"
 
+#: src/components/StampOutbox.tsx:173
+msgid "今すぐ送信"
+msgstr "Send now"
+
 #: src/components/admin/PublishedEditDialog.tsx:56
 msgid "今後はこの確認を表示しない"
 msgstr "Do not show this again"
@@ -4303,10 +4264,6 @@ msgstr "Position not checked"
 #: src/components/admin/PlacePanel.tsx:66
 msgid "位置を設定してください（地図上で指定するか、緯度・経度を入力します）。"
 msgstr "Set the location (place it on the map or enter latitude and longitude)."
-
-#: src/components/RallyNearbyStamp.tsx:110
-msgid "位置を調べてスタンプを押す"
-msgstr "Check my location and collect the stamp"
 
 #: src/components/useErrorMessages.ts:63
 msgid "位置情報が公式情報で確認されていません。確認後、「位置を確認した」にチェックを入れてください"
@@ -4635,8 +4592,8 @@ msgid "全{TOTAL_ROUTES}区間を見る"
 msgstr "See all {TOTAL_ROUTES} sections"
 
 #: src/components/CertificateButton.tsx:43
-msgid "全{total}か所のスタンプをそろえました"
-msgstr "Collected all {total} stamps"
+msgid "全{total}か所のスタンプを獲得しました"
+msgstr "All {total} stamps collected"
 
 #: src/app/(public)/sitemap/page.tsx:64
 #: src/components/landing/useHomeWords.ts:13
@@ -4689,10 +4646,6 @@ msgstr "Published."
 #: src/components/admin/RallyEditor.tsx:131
 msgid "公開する"
 msgstr "Publish"
-
-#: src/app/(public)/badges/page.tsx:77
-msgid "公開できるようになったら、ここにコースのバッジが表示されます。"
-msgstr "When they can be published, the course badges will show here."
 
 #: src/app/(public)/rallies/page.tsx:63
 msgid "公開できるようになったら、ここにスタンプのラリーが表示されます。"
@@ -5092,6 +5045,10 @@ msgstr "Use the default"
 msgid "別のコースにひもづいています"
 msgstr "Linked to another course"
 
+#: src/components/blog/CommentSection.tsx:89
+msgid "別のコメントを書く"
+msgstr "Write another comment"
+
 #: src/app/(admin)/admin/pages/page.tsx:25
 #: src/app/(public)/sitemap/page.tsx:132
 #: src/components/admin/PageTextEditor.tsx:60
@@ -5366,6 +5323,10 @@ msgstr "Draw leg"
 msgid "区間を選択"
 msgstr "Select a leg"
 
+#: src/components/blog/CommentSection.tsx:70
+msgid "匿名"
+msgstr "Anonymous"
+
 #: src/components/map/MapSheet.tsx:182
 msgid "半分"
 msgstr "half"
@@ -5504,7 +5465,6 @@ msgstr "Filter by name"
 
 #: src/components/admin/CommentInbox.tsx:157
 #: src/components/admin/CommentInbox.tsx:164
-#: src/components/blog/CommentSection.tsx:70
 msgid "名前なし"
 msgstr "No name"
 
@@ -5569,6 +5529,7 @@ msgstr "Nearby places"
 msgid "周辺の場所（駐車場・自販機・トイレなど）"
 msgstr "Nearby places (parking, vending machines, toilets ...)"
 
+#: src/app/(public)/blog/[id]/page.tsx:200
 #: src/components/map/PlacesPanel.tsx:148
 #: src/components/map/PlacesPanel.tsx:149
 #: src/components/map/TrailMap.tsx:625
@@ -6294,11 +6255,6 @@ msgstr "Collapse"
 msgid "折り返し"
 msgstr "Turnaround"
 
-#: src/components/RallyTrail.tsx:39
-#: src/components/StampLegend.tsx:9
-msgid "押した"
-msgstr "Stamped"
-
 #: src/components/ProfileSettings.tsx:284
 msgid "押すと、アカウントと、集めたスタンプなどの記録を、3日後にすべて消します。"
 msgstr "If you press this, your account and your records, such as your stamps, will all be erased after 3 days."
@@ -6462,10 +6418,6 @@ msgstr "New points will be inserted after point #{chosenNo}. Click it again to d
 msgid "新しい言葉はありませんでした。"
 msgstr "No new words."
 
-#: src/app/(public)/blog/page.tsx:76
-msgid "新しい記事"
-msgstr "Newest posts"
-
 #: src/components/admin/AdminListTable.tsx:412
 #: src/components/admin/PhotoLibrary.tsx:145
 msgid "新しい順"
@@ -6624,10 +6576,6 @@ msgstr "Manage writers"
 msgid "書き方"
 msgstr "How to write"
 
-#: src/app/(public)/blog/page.tsx:69
-msgid "書けたら、ここに表示されます。"
-msgstr "Once it is written, it will show up here."
-
 #: src/components/admin/HoursInput.tsx:15
 msgid "月曜日"
 msgstr "Monday"
@@ -6673,13 +6621,21 @@ msgid "未完了"
 msgstr "Pending"
 
 #: src/components/RallyBook.tsx:133
+#: src/components/RallyTrail.tsx:39
 #: src/components/RallyViews.tsx:159
+#: src/components/StampLegend.tsx:10
 msgid "未獲得"
 msgstr "Not yet"
 
 #: src/components/ProfileSettings.tsx:145
 msgid "未設定"
 msgstr "Not set"
+
+#. placeholder {0}: ask.guest
+#. placeholder {1}: ask.mine
+#: src/components/StampOutbox.tsx:130
+msgid "未送信のスタンプが{0}件あります。このアカウントにはすでに{1}個のスタンプが記録されています。このアカウントへ送信しますか？"
+msgstr "You have {0, plural, one {# unsent stamp} other {# unsent stamps}}. This account already has {1, plural, one {# stamp} other {# stamps}}. Send pending stamps to this account?"
 
 #: src/components/admin/MunicipalitiesField.tsx:65
 #: src/components/admin/RouteEditor.tsx:191
@@ -6816,7 +6772,12 @@ msgstr "Width"
 msgid "欄には、いまサイトに出ている文章が入っています。書きかえた欄だけが保存されます。写真はバナー、コースはコース、お知らせはお知らせの画面で変えられます。"
 msgstr "Each box holds the words the site shows now. Only the boxes you change are saved. Photos are changed in Banners, courses in Courses, and notices in Notices."
 
+#: src/components/RallyTrail.tsx:39
 #: src/components/RallyViews.tsx:112
+#: src/components/StampGrid.tsx:77
+#: src/components/StampGrid.tsx:99
+#: src/components/StampGrid.tsx:109
+#: src/components/StampLegend.tsx:11
 msgid "次"
 msgstr "Next"
 
@@ -7105,11 +7066,18 @@ msgstr "Collected: {when}"
 msgid "獲得標高（登り）"
 msgstr "Elevation gain"
 
+#: src/app/(public)/badges/page.tsx:91
 #: src/components/RallyBook.tsx:128
+#: src/components/RallyTrail.tsx:39
 #: src/components/RallyViews.tsx:159
 #: src/components/SpotStats.tsx:40
+#: src/components/StampLegend.tsx:9
 msgid "獲得済み"
 msgstr "Collected"
+
+#: src/app/(public)/badges/page.tsx:53
+msgid "獲得済みバッジ数"
+msgstr "Badges earned"
 
 #: src/components/admin/map-editor/MapEditor.tsx:1096
 msgid "現在のガイド点を通るルートを検索します）"
@@ -7144,10 +7112,6 @@ msgstr "About {m}m away"
 msgid "現在地の取得に時間がかかっています。空の開けた場所で、もう一度お試しください。"
 msgstr "Location request timed out. Please try again in an open area."
 
-#: src/components/RallyNearbyStamp.tsx:107
-msgid "現在地は記録に残しません。記録するのは、スタンプを押したことだけです。"
-msgstr "We never store your location, only the stamp itself."
-
 #: src/components/map/MapScreenCanvas.tsx:768
 msgid "現在地を中心に表示（進行方向が上）"
 msgstr "Center on my location (heading up)"
@@ -7156,14 +7120,17 @@ msgstr "Center on my location (heading up)"
 msgid "現在地を取得できませんでした。空の開けた場所で、もう一度お試しください。"
 msgstr "Couldn't get your location. Please try again in an open area."
 
+#: src/components/RallyNearbyStamp.tsx:94
 #: src/components/StampHere.tsx:176
 msgid "現在地を取得中…"
 msgstr "Getting your location..."
 
+#: src/components/RallyNearbyStamp.tsx:109
 #: src/components/StampHere.tsx:239
 msgid "現在地を確認してスタンプを押す"
 msgstr "Check location & collect stamp"
 
+#: src/components/RallyNearbyStamp.tsx:104
 #: src/components/StampHere.tsx:233
 msgid "現在地を確認します"
 msgstr "Check your location"
@@ -7273,9 +7240,14 @@ msgstr "Climb {0} m"
 msgid "登り {0}%"
 msgstr "Up {0}%"
 
+#. placeholder {0}: route.elevationGainM
+#: src/components/blog/LinkedCards.tsx:30
+msgid "登り {0}m"
+msgstr "Up {0}m"
+
 #: src/components/ElevationChart.tsx:159
 msgid "登り {up}m"
-msgstr "Up {up} m"
+msgstr "Up {up}m"
 
 #: src/components/settings/WelcomeFlow.tsx:146
 #: src/components/settings/WelcomeFlow.tsx:178
@@ -7306,10 +7278,6 @@ msgstr "With an account your stamps and walks are kept and you can see them on o
 #: src/components/navigation/NavFarCard.tsx:117
 msgid "登録せずに道を見る"
 msgstr "See the way without signing up"
-
-#: src/components/StampOutbox.tsx:127
-msgid "登録なしで押したスタンプがあります"
-msgstr "You have stamps from before you signed in"
 
 #: src/components/useErrorMessages.ts:33
 msgid "登録に失敗しました。もう一度お試しください。"
@@ -7382,6 +7350,10 @@ msgstr "Optional"
 #: src/components/ProfileSettings.tsx:151
 msgid "知ったきっかけ"
 msgstr "How you found it"
+
+#: src/components/StampOutbox.tsx:137
+msgid "破棄する"
+msgstr "Discard"
 
 #: src/app/(admin)/admin/page.tsx:83
 msgid "確認が必要なスタンプ：{flagged}件"
@@ -8054,6 +8026,10 @@ msgstr "Katsuragi Shugen | Ancient Mountain Trails & Stamp Rally"
 msgid "葛城修験とは"
 msgstr "About Katsuragi Shugen"
 
+#: src/app/(public)/blog/page.tsx:56
+msgid "葛城修験のコース情報や、現地の様子をお届けします。"
+msgstr "Trail updates and field notes from Katsuragi Shugendō."
+
 #: src/components/landing/Landing.tsx:180
 msgid "葛城修験の基礎知識"
 msgstr "Basics of Katsuragi Shugen"
@@ -8061,10 +8037,6 @@ msgstr "Basics of Katsuragi Shugen"
 #: src/app/(public)/sitemap/page.tsx:58
 msgid "葛城修験の物語"
 msgstr "The Story of Katsuragi Shugen"
-
-#: src/app/(public)/blog/page.tsx:56
-msgid "葛城修験の道のことや、歩いた日のことをお知らせします。"
-msgstr "News about the Katsuragi Shugen trail and the days we walked it."
 
 #: src/components/SiteHeader.tsx:98
 msgid "葛城修験の道のり"
@@ -8277,6 +8249,10 @@ msgstr "Up to {MAX_LANGUAGES} languages (Japanese included). Languages other tha
 msgid "言語を追加"
 msgstr "Add a language"
 
+#: src/app/(public)/blog/page.tsx:69
+msgid "記事が公開されると、ここに表示されます。"
+msgstr "Posts will appear here once published."
+
 #: src/app/(admin)/admin/pages/page.tsx:55
 msgid "記事とページへ"
 msgstr "Go to Posts and pages"
@@ -8286,12 +8262,24 @@ msgid "記事に入れる場所"
 msgstr "Place to add to the post"
 
 #: src/app/(public)/blog/page.tsx:68
-msgid "記事は、まだありません。"
-msgstr "There are no posts yet."
+msgid "記事はまだありません。"
+msgstr "No posts yet."
 
 #: src/components/admin/CommentInbox.tsx:197
 msgid "記事を見る"
 msgstr "View the post"
+
+#: src/app/(public)/blog/page.tsx:76
+msgid "記事一覧"
+msgstr "Posts"
+
+#: src/app/(public)/blog/[id]/page.tsx:260
+msgid "記事一覧を見る"
+msgstr "View all posts"
+
+#: src/app/(public)/blog/[id]/page.tsx:167
+msgid "記事内のコース・スポット"
+msgstr "Feature in this post"
 
 #: src/components/admin/SiteSettingsForm.tsx:120
 msgid "記号の大きさ"
@@ -8507,9 +8495,9 @@ msgstr "No {category} nearby."
 
 #. placeholder {0}: phase.place
 #. placeholder {1}: away(phase.distanceM)
-#: src/components/RallyNearbyStamp.tsx:132
-msgid "近くにスタンプの場所がありません。いちばん近いのは「{0}」で、{1}です。"
-msgstr "There is no stamp place nearby. The nearest is \"{0}\", {1} away."
+#: src/components/RallyNearbyStamp.tsx:131
+msgid "近くにスタンプスポットがありません。最寄りの「{0}」で、{1}です。"
+msgstr "No stamp spots nearby. The nearest spot is \"{0}\" ({1} away)."
 
 #: src/app/(public)/places/[id]/page.tsx:100
 msgid "近くのコース・スポット"
@@ -8555,8 +8543,6 @@ msgstr ";"
 
 #: src/components/admin/PhotoUpload.tsx:108
 #: src/components/admin/SubtitleUpload.tsx:62
-#: src/components/blog/CommentSection.tsx:113
-#: src/components/StampOutbox.tsx:173
 msgid "送っています…"
 msgstr "Uploading…"
 
@@ -8570,17 +8556,22 @@ msgstr "Sending… {0}/{1}"
 msgid "送っています… {percent}%"
 msgstr "Sending… {percent}%"
 
-#: src/components/StampOutbox.tsx:137
-msgid "送らずに捨てる"
-msgstr "Discard them"
+#: src/components/blog/CommentSection.tsx:113
+#: src/components/RallyNearbyStamp.tsx:94
+msgid "送信中…"
+msgstr "Collecting stamp…"
 
 #: src/components/StampOutbox.tsx:149
-msgid "送信待ちだった{count}件のスタンプは、受け付けられませんでした。"
-msgstr "{count} of the waiting stamps were not accepted."
+msgid "送信待ちにスタンプ{count}件は受け付けられませんでした。"
+msgstr "{count, plural, one {# pending stamp could not be accepted.} other {# pending stamps could not be accepted.}}"
 
 #: src/components/StampOutbox.tsx:165
-msgid "送信待ちだったスタンプが、{accepted}件、受け付けられました！"
-msgstr "{accepted} waiting stamp(s) were accepted!"
+msgid "送信待ちのスタンプ{accepted}件が受け付けられました！"
+msgstr "{accepted, plural, one {# pending stamp was accepted!} other {# pending stamps were accepted!}}"
+
+#: src/components/StampOutbox.tsx:170
+msgid "送信待ちのスタンプが{pending}件あります。"
+msgstr "{pending, plural, one {# stamp pending upload.} other {# stamps pending upload.}"
 
 #: src/components/SiteHeader.tsx:180
 msgid "送信待ちのスタンプが{waiting}件あります。ログアウトすると、再ログインするまで送信できません。このままログアウトしますか？"
@@ -8597,6 +8588,10 @@ msgstr "Put them in the order the course passes through. Choose cities, towns an
 #: src/components/useErrorMessages.ts:88
 msgid "通信エラーが発生しました。もう一度お試しください。"
 msgstr "Connection error. Please try again where you have a signal."
+
+#: src/components/StampOutbox.tsx:171
+msgid "通信が回復すると自動で送信されます。接続が不安定な場合は30秒ごとに再試行します。"
+msgstr "Stamps will send automatically once you're back online. If your signal is weak, we'll retry every 30 seconds."
 
 #: src/components/StampHere.tsx:156
 msgid "通信できないため、あとで自動送信します。"
@@ -8871,6 +8866,7 @@ msgstr "Friday"
 #: src/components/SampleNotice.tsx:65
 #: src/components/SiteHeader.tsx:318
 #: src/components/StampOutbox.tsx:156
+#: src/components/StampProgressPopup.tsx:61
 #: src/components/TabBar.tsx:234
 #: src/components/TabBar.tsx:248
 #: src/components/Zoomable.tsx:118
@@ -8935,20 +8931,14 @@ msgstr "Difficulty (free text)"
 msgid "難易度の自由記述（任意）"
 msgstr "Difficulty note (optional)"
 
-#. placeholder {0}: ask.guest
-#. placeholder {1}: ask.mine
-#: src/components/StampOutbox.tsx:130
-msgid "電波がなくて送れなかったスタンプが{0}件あります。このアカウントには、すでに{1}個のスタンプがあります。このアカウントに送りますか？"
-msgstr "{0} stamps could not be sent for lack of signal. This account already has {1} stamps. Send them to this account?"
+#. placeholder {0}: phase.place
+#: src/components/RallyNearbyStamp.tsx:126
+msgid "電波が不安定なため、「{0}」のスタンプは後ほど送信します。送信時に受け付けられない場合があります。"
+msgstr "Weak or no signal—your stamp for \"{0}\" is queued to send later. It may not be accepted once submitted."
 
 #: src/components/StampHere.tsx:157
 msgid "電波が回復すると自動で送信されます。送信時に確認を行うため、スポットが閉鎖中になっている場合などは獲得できないことがあります。"
 msgstr "It will be sent automatically once you're back online. Because it's verified when sent, it may not be accepted if the spot has since closed."
-
-#. placeholder {0}: phase.place
-#: src/components/RallyNearbyStamp.tsx:127
-msgid "電波が弱いか、つながらないため、「{0}」のスタンプは、あとで送ります。そのときに受け付けられないこともあります。"
-msgstr "There is little or no signal, so the stamp for \"{0}\" will be sent when you are back online. It may still be refused then."
 
 #: src/components/map/PlacesPanel.tsx:231
 msgid "電話"

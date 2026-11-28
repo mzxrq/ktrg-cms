@@ -164,7 +164,7 @@ export default async function BlogPostPage({ params }: Props) {
           {hasAbout ? (
             <section className="flex flex-col gap-4 px-4 wide:px-0">
               <SectionBanner>
-                <Trans>この記事の場所</Trans>
+                <Trans>記事内のコース・スポット</Trans>
               </SectionBanner>
               {route ? <RouteCard route={route} locale={locale} /> : null}
               {spot ? <SpotCard spot={spot} locale={locale} /> : null}
@@ -197,7 +197,7 @@ export default async function BlogPostPage({ params }: Props) {
           {nearby.length > 0 ? (
             <section className="flex flex-col gap-3 px-4 wide:px-0">
               <SectionBanner>
-                <Trans>まわりの場所</Trans>
+                <Trans>周辺の施設</Trans>
               </SectionBanner>
               <NearbyPlaces places={nearby} />
             </section>
@@ -247,7 +247,7 @@ export default async function BlogPostPage({ params }: Props) {
         {others.length > 0 ? (
           <aside className="flex flex-col gap-4 px-4 wide:sticky wide:top-6 wide:px-0">
             <h2 className="border-l-[6px] border-accent pl-3 text-2xl font-bold">
-              <Trans>ほかの記事</Trans>
+              <Trans>その他の記事</Trans>
             </h2>
             <ul className="divide-y divide-line border-y border-line">
               {others.map((p) => (
@@ -257,7 +257,7 @@ export default async function BlogPostPage({ params }: Props) {
               ))}
             </ul>
             <Link href="/blog" className={buttonStyle("secondary", "md", "flex")}>
-              <Trans>ブログをすべて見る</Trans>
+              <Trans>記事一覧を見る</Trans>
             </Link>
           </aside>
         ) : null}

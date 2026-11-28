@@ -53,7 +53,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
             <Trans>ブログ</Trans>
           </h1>
           <p className="max-w-prose text-lg leading-8 text-muted">
-            <Trans>葛城修験の道のことや、歩いた日のことをお知らせします。</Trans>
+            <Trans>葛城修験のコース情報や、現地の様子をお届けします。</Trans>
           </p>
         </div>
       </div>
@@ -65,15 +65,15 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
       ) : null}
 
       {posts.length === 0 ? (
-        <EmptyState title={<Trans>記事は、まだありません。</Trans>}>
-          <Trans>書けたら、ここに表示されます。</Trans>
+        <EmptyState title={<Trans>記事はまだありません。</Trans>}>
+          <Trans>記事が公開されると、ここに表示されます。</Trans>
         </EmptyState>
       ) : (
         <>
           {page === 1 && feature ? <PostRow post={feature} locale={i18n.locale} lead /> : null}
 
           {shown.length > 0 ? (
-            <section aria-label={i18n._(msg`新しい記事`)} className="px-4 wide:px-0">
+            <section aria-label={i18n._(msg`記事一覧`)} className="px-4 wide:px-0">
               <ul className="list-in flex flex-col gap-3">
                 {shown.map((post) => (
                   <li key={post.id}>
@@ -85,7 +85,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
           ) : null}
 
           {pages > 1 ? (
-            <nav aria-label={i18n._(msg`ページ`)} className="flex items-center justify-between gap-3 px-4 wide:px-0">
+            <nav aria-label={i18n._(msg`ページ移動`)} className="flex items-center justify-between gap-3 px-4 wide:px-0">
               {page > 1 ? (
                 <Link href={href(page - 1)} className={pager}>
                   <ChevronLeftIcon size={22} />

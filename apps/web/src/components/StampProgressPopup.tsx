@@ -47,7 +47,7 @@ export function StampProgressPopup() {
       {info ? (
         <div className="flex flex-col items-center gap-3">
           <h2 id="stamp-progress-title" className="text-2xl font-bold">
-            {done ? t`コンプリート！` : t`スタンプを押しました！`}
+            {done ? t`コンプリート！` : t`スタンプを獲得しました！`}
           </h2>
           <p className="text-lg font-bold">{info.place}</p>
           <div className={done ? "medal-pop" : ""}>
@@ -58,7 +58,7 @@ export function StampProgressPopup() {
             {Math.min(shown, info.total)} / {info.total}
           </p>
           <button type="button" onClick={() => dialog.current?.close()} className={buttonStyle("primary", "lg", "mt-2 flex w-full")}>
-            {t`とじる`}
+            {t`閉じる`}
           </button>
         </div>
       ) : null}

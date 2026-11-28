@@ -30,7 +30,7 @@ export function GuideView({ help }: { help: Help }) {
     <div className="page-narrow flex flex-col gap-6 pt-2">
       <div className="flex flex-col gap-6 px-4">
         <BackLink href="/rallies">
-          <Trans>ラリー</Trans>
+          <Trans>スタンプラリー</Trans>
         </BackLink>
         <h1 className="font-serif text-3xl font-bold text-accent">{help.guideTitle}</h1>
         <div className="max-w-prose whitespace-pre-line text-lg leading-8">
@@ -92,9 +92,9 @@ export function TermsView({ terms: t, locale }: { terms: Terms; locale: string }
         </h1>
       </div>
 
-      {locale === "ja" || !t.builtIn ? null : <Notice>The terms of use are available in Japanese only. They are shown below as written.</Notice>}
+      {locale === "ja" || !t.builtIn ? null : <Notice>The Terms of Use are currently available in Japanese only.</Notice>}
 
-      {t.builtIn ? <Notice>{locale === "ja" ? "この文章は案です。公開の前に、財団が内容を確認します。" : "This text is a draft. The foundation will check it before launch."}</Notice> : null}
+      {t.builtIn ? <Notice>{locale === "ja" ? "この利用規約は草案です。公開前に財団にて内容を確認します。" : "This text is a draft. The foundation will check it before launch."}</Notice> : null}
 
       <div lang={t.builtIn ? "ja" : locale === "ja" ? "ja" : "en"} className="flex flex-col gap-8">
         {t.updated ? <p className="px-4 text-lg text-muted">更新日：{t.updated}</p> : null}

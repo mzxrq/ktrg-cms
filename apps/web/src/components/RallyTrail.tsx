@@ -36,7 +36,7 @@ export function RallyTrail({ places, held, locale }: { places: readonly TrailPla
                 ? "border-[3px] border-accent bg-paper text-accent"
                 : "border-2 border-dashed border-line bg-paper text-muted";
         // A closed place has no word here: its status line below already says 通行止め.
-        const stateWord = s.state === "stamped" ? t`押した` : next ? t`つぎ` : s.state === "todo" ? t`まだ` : null;
+        const stateWord = s.state === "stamped" ? t`獲得済み` : next ? t`次` : s.state === "todo" ? t`未獲得` : null;
         return (
           <li key={s.id} className="relative flex gap-3">
             <div className="relative z-10 flex w-11 shrink-0 flex-col items-center">

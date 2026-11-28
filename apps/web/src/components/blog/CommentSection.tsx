@@ -60,14 +60,14 @@ export function CommentSection({ postId, comments, signedIn, locale, loginHref }
         {list.length > 0 ? <span className="ml-2 text-lg text-muted">{list.length}</span> : null}
       </h2>
 
-      {list.length === 0 ? <p className="text-lg text-muted">{t`まだコメントはありません。`}</p> : null}
+      {list.length === 0 ? <p className="text-lg text-muted">{t`コメントはまだありません。`}</p> : null}
       <ul className="flex flex-col gap-3">
         {list.map((c) => (
           <li key={c.id} className="flex gap-3 rounded-lg bg-surface p-4">
             <Avatar src={null} name={c.authorName} size={40} />
             <div className="min-w-0 flex-1">
               <p className="flex flex-wrap items-baseline gap-x-3 text-base">
-                <span className="font-bold">{c.authorName ?? t`名前なし`}</span>
+                <span className="font-bold">{c.authorName ?? t`匿名`}</span>
                 <time dateTime={c.createdAt} className="text-muted">
                   {formatDay(locale, japanDay(c.createdAt))}
                 </time>
@@ -84,9 +84,9 @@ export function CommentSection({ postId, comments, signedIn, locale, loginHref }
             <TickIcon size={28} />
             {t`コメントを受け付けました`}
           </p>
-          <p className="text-lg leading-8">{t`スタッフが確認すると、ここに表示されます。`}</p>
+          <p className="text-lg leading-8">{t`スタッフの確認後、公開されます。`}</p>
           <button type="button" onClick={() => setHeld(false)} className={buttonStyle("secondary", "md", "inline-flex w-fit")}>
-            {t`もう一つ書く`}
+            {t`別のコメントを書く`}
           </button>
         </div>
       ) : signedIn ? (
@@ -110,7 +110,7 @@ export function CommentSection({ postId, comments, signedIn, locale, loginHref }
           />
           <div className="flex flex-wrap items-center gap-3">
             <button type="submit" disabled={busy || text.trim() === ""} className={buttonStyle("action", "md", "inline-flex")}>
-              {busy ? t`送っています…` : t`コメントする`}
+              {busy ? t`送信中…` : t`コメントを投稿`}
             </button>
             <span className="text-base text-muted tabular-nums">{text.length} / {MAX}</span>
           </div>
@@ -122,7 +122,7 @@ export function CommentSection({ postId, comments, signedIn, locale, loginHref }
         </form>
       ) : (
         <p className="rounded-lg bg-surface p-4 text-lg leading-8">
-          {t`コメントを書くには、ログインが必要です。`}{" "}
+          {t`コメントを投稿するにはログインが必要です。`}{" "}
           <Link href={loginHref} className="font-bold text-accent underline underline-offset-4">
             {t`ログイン`}
           </Link>

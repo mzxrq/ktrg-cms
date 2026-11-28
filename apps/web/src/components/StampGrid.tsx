@@ -13,7 +13,7 @@ export function nextStamp(stamped: ReadonlySet<number>, total: number) {
  * of a dozen places is not a long scroll), each with its number and, when the names
  * are given, the name of the place, so a seal says what it is without opening anything. `columns={4}` is the
  * small version (the example on the home page). Never by colour alone: stamped is a filled seal, the next one
- * a thick ring with the word つぎ, the rest a dashed outline.
+ * a thick ring with the word 次, the rest a dashed outline.
  */
 export function StampGrid({
   total,
@@ -51,11 +51,11 @@ export function StampGrid({
           state === "stamped"
             ? t`${number}番 スタンプ済み`
             : state === "next"
-              ? t`${number}番 つぎのスタンプ`
-              : t`${number}番 まだ押していません`;
+              ? t`${number}番 次のスタンプ`
+              : t`${number}番 未獲得`;
         if (art && book && big) {
           // A page of the book: the pressed seal, and the name written down the side. The state is still the shape: pressed
-          // art, a thicker frame with つぎ, or the dashed outline art on a plain page.
+          // art, a thicker frame with 次, or the dashed outline art on a plain page.
           return (
             <li key={number} className={`flex gap-2 rounded-lg bg-paper p-2 ${state === "next" ? "border-2 border-accent" : "border border-line/60"}`}>
               <div aria-hidden="true" className="flex min-w-0 flex-1 items-center">
@@ -74,14 +74,14 @@ export function StampGrid({
                     {name}
                   </span>
                 ) : null}
-                {state === "next" ? <span className="text-base font-bold text-accent">{t`つぎ`}</span> : null}
+                {state === "next" ? <span className="text-base font-bold text-accent">{t`次`}</span> : null}
               </p>
               <span className="sr-only">{name ? `${status} ${name}` : status}</span>
             </li>
           );
         }
         if (art) {
-          // The state is still the shape, never the colour alone: pressed art, a thick ring with つぎ, or the dashed outline.
+          // The state is still the shape, never the colour alone: pressed art, a thick ring with 次, or the dashed outline.
           return (
             <li key={number} className={`flex flex-col items-center ${big ? "gap-2" : "gap-1"}`}>
               <div aria-hidden="true" className={`aspect-square w-full ${state === "next" ? "rounded-full border-4 border-accent p-1" : ""}`}>
@@ -96,7 +96,7 @@ export function StampGrid({
               <p aria-hidden="true" className="text-center leading-snug">
                 <span className={`${big ? "text-2xl" : "text-xl"} font-bold tabular-nums`}>{number}</span>
                 {big && name ? <span className="mt-1 line-clamp-2 break-all text-lg font-bold [text-wrap:balance]">{name}</span> : null}
-                {state === "next" ? <span className="block text-base font-bold text-accent">{t`つぎ`}</span> : null}
+                {state === "next" ? <span className="block text-base font-bold text-accent">{t`次`}</span> : null}
               </p>
               <span className="sr-only">{name ? `${status} ${name}` : status}</span>
             </li>
@@ -106,7 +106,7 @@ export function StampGrid({
           <li key={number} className="flex flex-col items-center gap-1">
             <Seal state={state} number={number} rough={big} className="aspect-square w-full" />
             {big && name ? <span aria-hidden="true" className="line-clamp-2 break-all text-center text-lg font-bold leading-snug [text-wrap:balance]">{name}</span> : null}
-            {state === "next" ? <span aria-hidden="true" className="text-base font-bold text-accent">{t`つぎ`}</span> : null}
+            {state === "next" ? <span aria-hidden="true" className="text-base font-bold text-accent">{t`次`}</span> : null}
             <span className="sr-only">{name ? `${status} ${name}` : status}</span>
           </li>
         );
