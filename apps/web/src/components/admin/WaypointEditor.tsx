@@ -8,7 +8,7 @@ import { useErrorMessages } from "@/components/useErrorMessages";
 import { api } from "@/lib/api";
 import { outcome } from "@/lib/admin/admin-client";
 import { draftReducer, initialState, type DraftAction, type PlaceDraft, type RouteDraft, stampFromChoices } from "@/lib/admin/route-draft";
-import { draftProblems, placeChanged, type DraftProblem } from "@/lib/admin/save-plan";
+import { draftProblems, lineNoLongerChecked, placeChanged, type DraftProblem } from "@/lib/admin/save-plan";
 import { showToast } from "@/lib/admin/toast";
 import { PlacePanel } from "./PlacePanel";
 import { PositionMap } from "./PositionMap";
@@ -55,6 +55,11 @@ export function WaypointEditor({ initial, placeId, deleteWarning }: { initial: R
     // Whatever reached the server before a failure is kept, so the next try has fresh times; what was typed stays on a failure.
     if (failed) setSaved((s) => ({ ...s, places: s.places.map((p) => (p.key === key ? (current ?? before) : p)) }));
     else keep(current ?? before);
+    // The checked course line still ends where the stop was: it is not the line a person checked any more.
+    if (!failed && current && saved.id && saved.updatedAt && lineNoLongerChecked(saved, key, before, current)) {
+      const res = await outcome(api.admin.routes({ id: saved.id }).patch({ updatedAt: saved.updatedAt, lineVerified: false }));
+      if (res.ok) setSaved((s) => ({ ...s, lineVerified: false, updatedAt: res.data.route.updatedAt }));
+    }
     showToast(toast);
     setBusy(false);
   }

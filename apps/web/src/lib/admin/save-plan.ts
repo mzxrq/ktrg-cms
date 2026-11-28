@@ -394,3 +394,12 @@ export function draftProblems(d: RouteDraft): DraftProblem[] {
   }
   return out;
 }
+
+/**
+ * A stop moved on its own page while the course line is marked checked: the line still ends where the stop was, so it is no
+ * longer what was checked (data rule: 線を確認した only for a line a person checked). Only for a stop a stretch of line touches.
+ */
+export function lineNoLongerChecked(course: Pick<RouteDraft, "lineVerified" | "legs">, key: string, before: Pick<PlaceDraft, "lat" | "lng">, after: Pick<PlaceDraft, "lat" | "lng">): boolean {
+  const moved = before.lat !== after.lat || before.lng !== after.lng;
+  return moved && course.lineVerified && course.legs.some((l) => l.from === key || l.to === key);
+}
