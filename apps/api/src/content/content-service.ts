@@ -681,7 +681,7 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       // A side trip is shown only once the place it leads to is published, like the place itself.
       const byId = new Map(found.spots.map((s) => [s.id, s]));
       const pub = (s: SpotRow) => toPublicSpot(s, s.stampSpotId ? byId.get(s.stampSpotId) : null, stampedAt(s.id, found.spots));
-      return { route: toPublicRoute(found.route, stamps.length, true, new Set(published.map((s) => s.id))), spots: stamps.map(pub), points: points.map(pub) };
+      return { route: toPublicRoute(found.route, stamps.filter((s) => s.status !== "info").length, true, new Set(published.map((s) => s.id))), spots: stamps.map(pub), points: points.map(pub) };
     },
 
     /** Status of every published place, nothing else: small enough to poll every minute. */

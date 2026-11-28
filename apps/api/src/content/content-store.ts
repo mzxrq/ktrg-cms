@@ -128,7 +128,8 @@ export function createDrizzleContentStore(db: Db): ContentStore {
           routeId: routeSpots.routeId,
           // Waypoints with a stamp and the route's other waypoints are counted apart (a place shared with this course counts here too).
           total: sql<number>`count(*) filter (where ${spots.stampable})`.mapWith(Number),
-          published: sql<number>`count(*) filter (where ${spots.published} and ${spots.stampable})`.mapWith(Number),
+          // An info-only place gives no stamp, so it never opens a 準備中 course.
+          published: sql<number>`count(*) filter (where ${spots.published} and ${spots.stampable} and ${spots.status} <> 'info')`.mapWith(Number),
           points: sql<number>`count(*) filter (where not ${spots.stampable})`.mapWith(Number),
         })
         .from(routeSpots)

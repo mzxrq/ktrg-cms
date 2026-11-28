@@ -499,6 +499,14 @@ describe("the route's other points (turns, toilets, danger ...)", () => {
     expect(await svc.updateSpot(ADMIN, s.id, back.value.updatedAt, { stampable: false })).toEqual({ ok: false, reason: "spot_has_stamps" });
   });
 
+  test("a published info-only place (no stamp) does not open a 準備中 course", async () => {
+    const r = await route({ geometry: LINE });
+    const s = await spot(r.id, { ...verified, status: "info", statusNoteJa: "現在、立ち入りできません。" });
+    expect((await svc.publishSpot(ADMIN, s.id)).ok).toBe(true);
+    expect((await svc.publicRoutes())[0]).toMatchObject({ status: "soon", publishedSpotCount: 0 });
+    expect((await svc.publicRoute(r.id))?.route).toMatchObject({ status: "soon", publishedSpotCount: 0 });
+  });
+
   test("visitors get stamp places and the other points apart; only stamp places make a route ready; the lists count stamp places only", async () => {
     const r = await route({ geometry: LINE });
     const stamp = await spot(r.id, { nameJa: "経塚", ...verified, permissionConfirmed: true });
