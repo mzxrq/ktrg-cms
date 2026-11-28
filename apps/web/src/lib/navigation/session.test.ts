@@ -47,6 +47,19 @@ describe("the nearest stop, wherever the visitor joins", () => {
   });
 });
 
+describe("the stamp button near the edge of a stop's range", () => {
+  test("one drifting fix just past the edge does not take the button away; walking well out does", () => {
+    // Stop a has a 50 m range; 0.001° of longitude here is about 92 m.
+    expect(walk([at(135.00243)]).inRadius).toBe(false); // ~52 m: not in yet
+    let s = walk([at(135.0026)]); // ~37 m: in
+    expect(s.inRadius).toBe(true);
+    s = walk([at(135.00243)], none, s); // ~52 m, a fix drifting out while the stamp is being pressed
+    expect(s.inRadius).toBe(true);
+    s = walk([at(135.0022)], none, s); // ~73 m: out
+    expect(s.inRadius).toBe(false);
+  });
+});
+
 describe("on the course line: guided along it", () => {
   test("distance is measured along the line, the direction points along it, and the stamp is offered inside the radius", () => {
     let s = walk([at(135.0)]);
