@@ -13,8 +13,6 @@ import type { Reading, StampFailure, StampResult } from "./stamp-flow";
 
 /** A queued stamp this old is dropped on the phone without asking (the server refuses it after 48 h anyway). */
 export const MAX_QUEUE_AGE_MS = 48 * 60 * 60 * 1000;
-/** After this many attempts that failed for an unknown reason (a server error), the row is given up on. */
-export const MAX_TRIES = 5;
 
 export interface QueuedStamp {
   /** Random id, the row's own key (also what a Web Lock names). */
@@ -36,6 +34,8 @@ export interface QueueStore {
   add(row: QueuedStamp): Promise<void>;
   /** The rows of one user key, oldest first. */
   list(userKey: string): Promise<QueuedStamp[]>;
+  /** Every row, whoever's (for clearing out old ones). */
+  all(): Promise<QueuedStamp[]>;
   remove(id: string): Promise<void>;
   update(id: string, patch: Partial<Pick<QueuedStamp, "tries" | "userKey">>): Promise<void>;
 }
@@ -62,8 +62,7 @@ export interface FlushResult {
 
 /**
  * Sends the rows of `userKey`, oldest first. `send` does one request and never throws. Stops at the first answer that
- * means "later" (so a dropped signal does not burn every row's tries); a definite answer removes the row; an unknown
- * failure keeps it up to MAX_TRIES times.
+ * means "later" (so a dropped signal does not burn every row's tries); a definite answer removes the row.
  */
 export async function flushQueue(opts: {
   store: QueueStore;
@@ -88,11 +87,9 @@ export async function flushQueue(opts: {
       waiting = true;
       break;
     } else if (result.failure === "failed") {
-      // Unknown (a server error, say): try again later, but not for ever.
-      if (row.tries + 1 >= MAX_TRIES) {
-        await store.remove(row.id);
-        outcomes.push({ kind: "rejected", row, failure: "failed" });
-      } else await store.update(row.id, { tries: row.tries + 1 });
+      // A server error: the row stays (a short outage must not delete a walker's stamps; the 48 h age is the limit), and
+      // the next rows are still tried, so one place the server keeps failing on does not hold back the others.
+      waiting = true;
     } else {
       await store.remove(row.id);
       outcomes.push({ kind: "rejected", row, failure: result.failure });
@@ -122,6 +119,9 @@ export function createMemoryQueueStore(): QueueStore & { rows: QueuedStamp[] } {
     async list(userKey) {
       return rows.filter((r) => r.userKey === userKey).sort((a, b) => Date.parse(a.scannedAt) - Date.parse(b.scannedAt));
     },
+    async all() {
+      return [...rows];
+    },
     async remove(id) {
       const i = rows.findIndex((r) => r.id === id);
       if (i >= 0) rows.splice(i, 1);
@@ -135,27 +135,44 @@ export function createMemoryQueueStore(): QueueStore & { rows: QueuedStamp[] } {
 
 /** The IndexedDB store: database `ktrg`, object store `stampQueue`, indexed by user key. Browser only. */
 export function createIdbQueueStore(): QueueStore {
-  const db = openDB("ktrg", 1, {
-    upgrade(d) {
-      const s = d.createObjectStore("stampQueue", { keyPath: "id" });
-      s.createIndex("userKey", "userKey");
-    },
-  });
+  const open = () =>
+    openDB("ktrg", 1, {
+      upgrade(d) {
+        const s = d.createObjectStore("stampQueue", { keyPath: "id" });
+        s.createIndex("userKey", "userKey");
+      },
+    });
+  let db = open();
+  // iOS drops an IndexedDB connection now and then (after the app was in the background): the one opened at load then
+  // fails every call until a reload. A failed call opens it again and is tried once more.
+  type Db = Awaited<ReturnType<typeof open>>;
+  async function withDb<T>(fn: (d: Db) => Promise<T>): Promise<T> {
+    try {
+      return await fn(await db);
+    } catch {
+      db = open();
+      return fn(await db);
+    }
+  }
   return {
     async add(row) {
-      await (await db).put("stampQueue", row);
+      await withDb((d) => d.put("stampQueue", row));
     },
     async list(userKey) {
-      const rows = (await (await db).getAllFromIndex("stampQueue", "userKey", userKey)) as QueuedStamp[];
+      const rows = (await withDb((d) => d.getAllFromIndex("stampQueue", "userKey", userKey))) as QueuedStamp[];
       return rows.sort((a, b) => Date.parse(a.scannedAt) - Date.parse(b.scannedAt));
     },
+    async all() {
+      return (await withDb((d) => d.getAll("stampQueue"))) as QueuedStamp[];
+    },
     async remove(id) {
-      await (await db).delete("stampQueue", id);
+      await withDb((d) => d.delete("stampQueue", id));
     },
     async update(id, patch) {
-      const d = await db;
-      const row = (await d.get("stampQueue", id)) as QueuedStamp | undefined;
-      if (row) await d.put("stampQueue", { ...row, ...patch });
+      await withDb(async (d) => {
+        const row = (await d.get("stampQueue", id)) as QueuedStamp | undefined;
+        if (row) await d.put("stampQueue", { ...row, ...patch });
+      });
     },
   };
 }

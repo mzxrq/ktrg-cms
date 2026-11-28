@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
-import { getOutbox } from "@/lib/stamp-outbox";
+import { canQueue, getOutbox } from "@/lib/stamp-outbox";
 import { locationAlreadyAllowed, mockPosition, mockStamp, readPosition, requestStamp } from "@/lib/stamp-client";
 import { distanceParts, type Problem, type StampMock, type AlsoName } from "@/lib/stamp-flow";
 import { buzz, playThud, unlockAudio } from "@/lib/stamp-feel";
@@ -116,6 +116,9 @@ export function StampHere({
       // Moving on takes this button off the screen, and the press with it: the press plays first.
       window.setTimeout(() => onStamped?.(), result.already ? 0 : STAMP_PRESS_MS + alsoMs);
       router.refresh();
+    } else if (result.failure === "network" && !mock && !canQueue(position.reading)) {
+      // No signal and a rough reading: it would be refused when sent, so say so now, while the walker can still move.
+      setPhase({ name: "problem", problem: "low_accuracy" });
     } else if (result.failure === "network" && !mock && (await getOutbox().enqueue(spotId, position.reading, progress))) {
       // No signal: the stamp waits on this phone and is sent when the app is online (the server still decides then).
       setPhase({ name: "queued" });

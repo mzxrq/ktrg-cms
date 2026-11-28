@@ -31,6 +31,11 @@ const spotColumns = {
   statusUpdatedAt: sql<Date | null>`case when ${usesStampFrom} then ${stampFrom.statusUpdatedAt} else ${spots.statusUpdatedAt} end`.mapWith(spots.statusUpdatedAt),
   // Only while in use, so one press links exactly the places stamped at the same waypoint.
   stampSpotId: sql<string | null>`case when ${usesStampFrom} then ${spots.stampSpotId} end`,
+  // A closed on-trail place (not 遥拝): when it closed and where it stands itself, for a stamp pressed there before.
+  closedAt: sql<Date | null>`case when ${usesStampFrom} and not ${spots.detached} then ${spots.statusUpdatedAt} end`.mapWith(spots.statusUpdatedAt),
+  ownLat: sql<number | null>`case when ${usesStampFrom} and not ${spots.detached} and ${spots.positionVerified} then ${spots.lat} end`.mapWith(Number),
+  ownLng: sql<number | null>`case when ${usesStampFrom} and not ${spots.detached} and ${spots.positionVerified} then ${spots.lng} end`.mapWith(Number),
+  ownRadiusM: sql<number | null>`case when ${usesStampFrom} and not ${spots.detached} then ${spots.radiusM} end`.mapWith(Number),
 };
 
 const nameJa = alias(spotTranslations, "name_ja");
@@ -120,16 +125,18 @@ export function createDrizzleStampStore(db: Db): StampStore {
 
     async setRevoked(actor, id, revoked) {
       return db.transaction(async (tx) => {
+        // The same per-visitor lock as award: otherwise a stamp that finishes a course at this moment could save a finish
+        // that still counts the stamp being revoked, and a saved finish stays for good.
+        const [owner] = await tx.select({ userId: stamps.userId }).from(stamps).where(eq(stamps.id, id)).limit(1);
+        if (!owner) return "not_found";
+        await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`stamps.${owner.userId}`}))`);
         const [row] = await tx
           .update(stamps)
           .set(revoked ? { revokedAt: new Date(), revokedBy: actor } : { revokedAt: null, revokedBy: null })
           // Only a stamp in the other state changes, so a second click keeps the first admin and time.
           .where(and(eq(stamps.id, id), revoked ? isNull(stamps.revokedAt) : isNotNull(stamps.revokedAt)))
           .returning({ id: stamps.id, userId: stamps.userId, spotId: stamps.spotId });
-        if (!row) {
-          const [exists] = await tx.select({ id: stamps.id }).from(stamps).where(eq(stamps.id, id)).limit(1);
-          return exists ? "ok" : "not_found";
-        }
+        if (!row) return "ok"; // already in that state
         if (revoked) {
           // A saved finish only ever grows, so a revoked stamp would leave "complete" standing: drop the finishes it was part of.
           const touched = await ralliesForPlace(tx, row.spotId);

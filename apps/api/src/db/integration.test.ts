@@ -190,34 +190,53 @@ describe.skipIf(!url)("Drizzle stores on real PostgreSQL", () => {
       expect(rows).toHaveLength(1);
     });
 
-    test("promoteToAdmin: 3 parallel calls promote once and write exactly one audit row", async () => {
-      const user = await otp.findOrCreateUser(email("otp-admin"));
-      try {
-        const results = await Promise.all(Array.from({ length: 3 }, () => otp.promoteToAdmin(user.id)));
-        expect(results.filter(Boolean)).toHaveLength(1);
+    /** ADMIN_EMAILS only bootstraps the first admin: these run with no admin on the site, inside a rollback (dev data stays). */
+    async function withNoAdmin(body: (store: ReturnType<typeof createDrizzleOtpStore>, tx: Parameters<Parameters<typeof db.transaction>[0]>[0]) => Promise<void>) {
+      const undo = new Error("rollback");
+      await db
+        .transaction(async (tx) => {
+          await tx.update(users).set({ role: "participant" }).where(eq(users.role, "admin"));
+          await body(createDrizzleOtpStore(tx as unknown as typeof db), tx);
+          throw undo;
+        })
+        .catch((e: unknown) => {
+          if (e !== undo) throw e;
+        });
+    }
 
-        const [row] = await db.select({ role: users.role }).from(users).where(eq(users.id, user.id));
+    test("promoteToAdmin: 3 calls promote once and write exactly one audit row", async () => {
+      await withNoAdmin(async (store, tx) => {
+        const user = await store.findOrCreateUser(email("otp-admin"));
+        const results = [];
+        for (let i = 0; i < 3; i++) results.push(await store.promoteToAdmin(user.id));
+        expect(results.filter(Boolean)).toHaveLength(1);
+        const [row] = await tx.select({ role: users.role }).from(users).where(eq(users.id, user.id));
         expect(row!.role).toBe("admin");
-        const audits = await db.select().from(auditLog).where(eq(auditLog.targetId, user.id));
+        const audits = await tx.select().from(auditLog).where(eq(auditLog.targetId, user.id));
         expect(audits).toHaveLength(1);
         expect(audits[0]).toMatchObject({ actorUserId: user.id, action: "user.role.bootstrap_admin", targetType: "user" });
+      });
+    });
 
-        expect(await otp.promoteToAdmin(user.id)).toBe(false);
-      } finally {
-        await db.delete(auditLog).where(eq(auditLog.targetId, user.id));
-      }
+    test("promoteToAdmin: once the site has an admin, nobody else is promoted", async () => {
+      await withNoAdmin(async (store, tx) => {
+        const first = await store.findOrCreateUser(email("otp-first"));
+        const second = await store.findOrCreateUser(email("otp-second"));
+        expect(await store.promoteToAdmin(first.id)).toBe(true);
+        expect(await store.promoteToAdmin(second.id)).toBe(false);
+        const [row] = await tx.select({ role: users.role }).from(users).where(eq(users.id, second.id));
+        expect(row!.role).toBe("participant");
+      });
     });
 
     test("promoteToAdmin: an account whose role an admin has set is not promoted", async () => {
-      const user = await otp.findOrCreateUser(email("otp-demoted"));
-      try {
-        await db.insert(auditLog).values({ actorUserId: null, action: "user.role.change", targetType: "user", targetId: user.id });
-        expect(await otp.promoteToAdmin(user.id)).toBe(false);
-        const [row] = await db.select({ role: users.role }).from(users).where(eq(users.id, user.id));
+      await withNoAdmin(async (store, tx) => {
+        const user = await store.findOrCreateUser(email("otp-demoted"));
+        await tx.insert(auditLog).values({ actorUserId: null, action: "user.role.change", targetType: "user", targetId: user.id });
+        expect(await store.promoteToAdmin(user.id)).toBe(false);
+        const [row] = await tx.select({ role: users.role }).from(users).where(eq(users.id, user.id));
         expect(row!.role).toBe("participant");
-      } finally {
-        await db.delete(auditLog).where(eq(auditLog.targetId, user.id));
-      }
+      });
     });
   });
 
@@ -909,8 +928,10 @@ describe.skipIf(!url)("seed on real PostgreSQL", () => {
       // On the trail and open, a place with a 閉鎖時のスタンプ地点 is stamped at its own position until it closes.
       await tx.update(spots).set({ detached: false, stopBy: false }).where(eq(spots.id, a!.id));
       expect(await store.findSpot(a!.id)).toMatchObject({ lat: 34.3, lng: 135.1, stampSpotId: null });
-      await tx.update(spots).set({ status: "closed" }).where(eq(spots.id, a!.id));
-      expect(await store.findSpot(a!.id)).toMatchObject({ lat: 34.2, lng: 135.05, stampSpotId: b!.id });
+      const closedAt = new Date("2026-11-28T01:00:00.000Z");
+      await tx.update(spots).set({ status: "closed", statusUpdatedAt: closedAt, positionVerified: true }).where(eq(spots.id, a!.id));
+      // Closed: stamped at the waypoint, and it carries its own position and closing time for a stamp pressed before.
+      expect(await store.findSpot(a!.id)).toMatchObject({ lat: 34.2, lng: 135.05, stampSpotId: b!.id, closedAt, ownLat: 34.3, ownLng: 135.1 });
     });
   });
 
@@ -985,6 +1006,30 @@ describe.skipIf(!url)("seed on real PostgreSQL", () => {
       expect(rows.every((r) => r.nameJa !== "" && r.hasLine === false)).toBe(true);
       expect(rows.flatMap((r) => r.spots)).toHaveLength(31);
       expect(rows.flatMap((r) => r.spots).every((s) => s.nameJa !== "")).toBe(true);
+    });
+  });
+
+  test("a 遥拝 place whose waypoint is closed or a draft counts as done, like a closed place", async () => {
+    await inRollback(async (tx) => {
+      await seed(tx);
+      const course4 = (await tx.select().from(routes).orderBy(asc(routes.sortOrder)))[3]!.id;
+      const ready = { lat: 34.3, lng: 135.1, permissionConfirmed: true, positionVerified: true, published: true };
+      const [a, b] = await tx.select().from(spots).where(eq(spots.routeId, course4)).orderBy(asc(spots.sortOrder));
+      await tx.update(spots).set(ready).where(inArray(spots.id, [a!.id, b!.id]));
+      // a is worshipped from b; the visitor stamped b, then b closed: a can no longer be stamped anywhere.
+      await tx.update(spots).set({ stampSpotId: b!.id, detached: true, stopBy: true }).where(eq(spots.id, a!.id));
+      const [me] = await tx.insert(users).values({}).returning({ id: users.id });
+      await tx.insert(stamps).values({ userId: me!.id, spotId: b!.id });
+      await tx.update(spots).set({ status: "closed" }).where(eq(spots.id, b!.id));
+      expect((await recordFinished(tx, me!.id)).routeIds).toEqual([course4]);
+
+      // A waypoint that is a draft (a turn, no stamp): the same for the next visitor.
+      await tx.update(spots).set({ status: "open" }).where(eq(spots.id, b!.id));
+      const [draft] = await tx.insert(spots).values({ routeId: course4, sortOrder: 99, stampable: false }).returning({ id: spots.id });
+      await tx.update(spots).set({ stampSpotId: draft!.id }).where(eq(spots.id, a!.id));
+      const [you] = await tx.insert(users).values({}).returning({ id: users.id });
+      await tx.insert(stamps).values({ userId: you!.id, spotId: b!.id });
+      expect((await recordFinished(tx, you!.id)).routeIds).toEqual([course4]);
     });
   });
 
@@ -1785,6 +1830,23 @@ describe.skipIf(!url)("site settings on real PostgreSQL", () => {
     if (ids.length) await db.delete(auditLog).where(inArray(auditLog.actorUserId, ids));
     await db.delete(users).where(like(users.email, `${tag}-%`));
     await client.end();
+  });
+
+  test("a save over a version someone else replaced is refused; over the current one it goes through", async () => {
+    const actor = (await otp.findOrCreateUser(`${tag}-versions@example.test`)).id;
+    const key = `${tag}-page`;
+    try {
+      expect(await store.version(key)).toBeNull();
+      expect(await store.set(actor, key, { n: 1 }, null)).toBe(true);
+      const v1 = await store.version(key);
+      expect(v1).not.toBeNull();
+      expect(await store.set(actor, key, { n: 2 }, null)).toBe(false); // read before the first save
+      expect(await store.set(actor, key, { n: 2 }, v1)).toBe(true);
+      expect(await store.set(actor, key, { n: 3 }, v1)).toBe(false); // v1 is gone now
+      expect(await store.get(key)).toEqual({ n: 2 });
+    } finally {
+      await db.delete(siteSettings).where(eq(siteSettings.key, key));
+    }
   });
 
   test("a value is saved, then replaced (one row), and each change is audited", async () => {

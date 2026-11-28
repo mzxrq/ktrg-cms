@@ -49,14 +49,18 @@ const isStampPlace = (spot: StampSpot | null): spot is StampPlace =>
 
 /** The place checks of a stamp (open, close enough, accurate enough), shared by an account's stamp and a guest's. */
 async function check(r: Reading, store: StampStore, now: Date): Promise<Result<{ spot: StampPlace; flagged: boolean; scannedAt: Date | null }>> {
-  const spot = await store.findSpot(r.spotId);
-  if (!isStampPlace(spot)) return { ok: false, reason: "not_found" };
+  const found = await store.findSpot(r.spotId);
   let scannedAt: Date | null = null;
   if (r.scannedAt !== undefined) {
     scannedAt = new Date(r.scannedAt);
     if (Number.isNaN(scannedAt.getTime()) || scannedAt.getTime() > now.getTime() + MAX_SCAN_AHEAD_MS) return { ok: false, reason: "bad_time" };
     if (scannedAt.getTime() < now.getTime() - MAX_SCAN_AGE_MS) return { ok: false, reason: "stale_scan" };
   }
+  // Pressed (offline) at a closed on-trail place before it closed: it was open there then, so its own position decides.
+  const pressedBeforeClosing = !!(found && scannedAt && found.closedAt && scannedAt < found.closedAt && found.ownLat != null && found.ownLng != null);
+  const spot: StampSpot | null =
+    found && pressedBeforeClosing ? { ...found, lat: found.ownLat!, lng: found.ownLng!, radiusM: found.ownRadiusM ?? found.radiusM, status: "open", stampSpotId: null } : found;
+  if (!isStampPlace(spot)) return { ok: false, reason: "not_found" };
   // Closed now: refused, unless the phone pressed the stamp before the closure was set (it was open when they stood there).
   if (spot.status === "closed" && !(scannedAt && spot.statusUpdatedAt && scannedAt < spot.statusUpdatedAt)) return { ok: false, reason: "spot_closed" };
   if (r.accuracyM > MAX_ACCURACY_M) return { ok: false, reason: "gps_accuracy_poor" };

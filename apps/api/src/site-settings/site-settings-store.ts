@@ -10,14 +10,24 @@ export function createDrizzleSiteSettingsStore(db: Db): SiteSettingsStore {
       const [row] = await db.select({ value: siteSettings.value }).from(siteSettings).where(eq(siteSettings.key, key)).limit(1);
       return row?.value ?? null;
     },
-    async set(actor, key, value) {
-      await db.transaction(async (tx) => {
+    async set(actor, key, value, expected) {
+      return db.transaction(async (tx) => {
+        if (expected !== undefined) {
+          // Locked until this save ends, so two saves over the same version cannot both pass.
+          const [row] = await tx.select({ at: siteSettings.updatedAt }).from(siteSettings).where(eq(siteSettings.key, key)).for("update");
+          if ((row ? row.at.toISOString() : null) !== expected) return false;
+        }
         await tx
           .insert(siteSettings)
           .values({ key, value })
           .onConflictDoUpdate({ target: siteSettings.key, set: { value, updatedAt: sql`clock_timestamp()` } });
         await writeAudit(tx, { actorUserId: actor, action: SETTING_AUDIT, targetId: SETTING_TARGET[key] ?? null });
+        return true;
       });
+    },
+    async version(key) {
+      const [row] = await db.select({ at: siteSettings.updatedAt }).from(siteSettings).where(eq(siteSettings.key, key)).limit(1);
+      return row ? row.at.toISOString() : null;
     },
   };
 }

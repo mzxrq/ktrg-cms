@@ -21,6 +21,14 @@ export interface StampSpot {
   detached?: boolean;
   /** When the status last changed: an offline stamp pressed before a closure is still accepted. */
   statusUpdatedAt?: Date | null;
+  /**
+   * Only while an on-trail place is closed and stamped at its 閉鎖時のスタンプ地点: when it closed, and its own position and
+   * range. A stamp pressed (offline) before then was pressed at the place itself while it was open, so it is checked there.
+   */
+  closedAt?: Date | null;
+  ownLat?: number | null;
+  ownLng?: number | null;
+  ownRadiusM?: number | null;
 }
 
 /** Courses and rallies a stamp has just completed. */

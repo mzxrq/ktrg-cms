@@ -7,7 +7,7 @@ import { createRateLimiter } from "./rate-limit";
 import { createMemoryRateLimitStore } from "./rate-limit-memory-store";
 import { createMemorySessionStore } from "./session-memory-store";
 import { createSessionService } from "./session-service";
-import { appleClientSecret, createSso, decodeFlow, readIdToken, safeReturnTo, ssoProvidersFromEnv, type SsoProvider } from "./sso";
+import { appleClientSecret, createSso, readIdToken, safeReturnTo, ssoProvidersFromEnv, type SsoProvider } from "./sso";
 import { createMemorySsoStore } from "./sso-memory-store";
 import { ssoRoutes } from "./sso-routes";
 import { createSsoService } from "./sso-service";
@@ -37,6 +37,7 @@ function setup() {
   const tokenCalls: URLSearchParams[] = [];
   const ssoProviders = createSso({
     appOrigin: ORIGIN,
+    secret: "s".repeat(32),
     now,
     providers: { google: { clientId: "g-id", clientSecret: "g-secret" }, line: { clientId: "l-id", clientSecret: "l-secret" } },
     fetch: async (_url, init) => {
@@ -71,14 +72,14 @@ function setup() {
     const start = await call("POST", `/${provider}/${mode}`, { body: { returnTo: o.returnTo }, cookie: o.cookie });
     expect(start.status).toBe(200);
     const flowRaw = cookieValue(start, "ktrg_sso")!;
-    const flow = decodeFlow(flowRaw)!;
+    const flow = ssoProviders.openFlow(flowRaw)!;
     nonce = flow.nonce;
     answer = { iss: ISS[provider], aud: provider === "google" ? "g-id" : "l-id", ...claims };
     const cookie = [o.cookie, `ktrg_sso=${flowRaw}`].filter(Boolean).join("; ");
     return call("GET", `/${provider}/callback?code=the-code&state=${o.state ?? flow.state}`, { cookie });
   }
   const passTime = (ms: number) => (at = new Date(at.getTime() + ms));
-  return { call, cookieFor, cookieValue, roundTrip, users, mem, tokenCalls, passTime, audit, setNonce: (n: string) => (nonce = n) };
+  return { call, cookieFor, cookieValue, roundTrip, users, mem, tokenCalls, passTime, audit, setNonce: (n: string) => (nonce = n), setAnswer: (a: Record<string, unknown>) => (answer = a), openFlow: ssoProviders.openFlow, sealFlow: ssoProviders.sealFlow };
 }
 
 describe("reading the ID token", () => {
@@ -229,10 +230,10 @@ describe("signing in", () => {
   });
 
   test("cancelling at the provider comes back with a calm message", async () => {
-    const { call, cookieValue } = setup();
+    const { call, cookieValue, openFlow } = setup();
     const start = await call("POST", "/google/login", { body: {} });
     const raw = cookieValue(start, "ktrg_sso")!;
-    const res = await call("GET", `/google/callback?error=access_denied&state=${decodeFlow(raw)!.state}`, { cookie: `ktrg_sso=${raw}` });
+    const res = await call("GET", `/google/callback?error=access_denied&state=${openFlow(raw)!.state}`, { cookie: `ktrg_sso=${raw}` });
     expect(res.headers.get("location")).toContain("sso_error=sso_cancelled");
   });
 
@@ -265,12 +266,30 @@ describe("linking to the signed-in account", () => {
   });
 
   test("the callback must come back to the account that started it", async () => {
-    const { call, cookieFor, cookieValue, setNonce } = setup();
+    const { call, cookieFor, cookieValue, setNonce, openFlow } = setup();
     const start = await call("POST", "/google/link", { body: { returnTo: "/settings" }, cookie: await cookieFor(alice) });
     const raw = cookieValue(start, "ktrg_sso")!;
-    setNonce(decodeFlow(raw)!.nonce);
-    const res = await call("GET", `/google/callback?code=c&state=${decodeFlow(raw)!.state}`, { cookie: `${await cookieFor(bob)}; ktrg_sso=${raw}` });
+    setNonce(openFlow(raw)!.nonce);
+    const res = await call("GET", `/google/callback?code=c&state=${openFlow(raw)!.state}`, { cookie: `${await cookieFor(bob)}; ktrg_sso=${raw}` });
     expect(res.headers.get("location")).toContain("sso_error=sso_failed");
+  });
+
+  test("a login flow's cookie rewritten to link is refused; even signed, it does not skip the fresh login", async () => {
+    const { call, cookieFor, cookieValue, setNonce, setAnswer, openFlow, sealFlow, mem } = setup();
+    const stale = await cookieFor(alice, false);
+    const start = await call("POST", "/google/login", { body: {}, cookie: stale });
+    const raw = cookieValue(start, "ktrg_sso")!;
+    const flow = openFlow(raw)!;
+    const asLink = { ...flow, mode: "link" as const, userId: alice.id, returnTo: "/settings" };
+    setNonce(flow.nonce);
+    setAnswer({ iss: ISS.google, aud: "g-id", sub: "G-A" });
+    const callback = (cookie: string) => call("GET", `/google/callback?code=c&state=${flow.state}`, { cookie: `${stale}; ktrg_sso=${cookie}` });
+    // Edited by hand, keeping the old signature: not a flow at all.
+    const edited = `${Buffer.from(JSON.stringify(asLink)).toString("base64url")}.${raw.split(".")[1]}`;
+    expect((await callback(edited)).headers.get("location")).toBe(`${ORIGIN}/login?sso_error=sso_failed`);
+    // Signed with our key (as if it had leaked): the fresh-login check still stops it.
+    expect((await callback(sealFlow(asLink))).headers.get("location")).toBe(`${ORIGIN}/settings?sso_error=reauth_required`);
+    expect(mem.actions).toEqual([]);
   });
 });
 

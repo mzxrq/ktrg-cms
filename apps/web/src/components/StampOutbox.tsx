@@ -1,5 +1,6 @@
 "use client";
 
+import { claimSavedPages } from "@/lib/offline-pack";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
@@ -45,6 +46,8 @@ export function StampOutbox({ userKey }: { userKey: string }) {
       if (result.outcomes.some((o) => o.kind === "accepted")) router.refresh();
       const bad = result.outcomes.flatMap((o) => (o.kind === "rejected" ? [o.failure === "expired" ? ("stale_scan" as const) : o.failure] : []));
       if (bad.length > 0) setRefused((r) => [...r, ...bad]);
+    } catch {
+      // The phone's storage failed even after opening it again: the rows stay, and the next try (focus, online) sends them.
     } finally {
       setBusy(false);
     }
@@ -65,6 +68,7 @@ export function StampOutbox({ userKey }: { userKey: string }) {
     let live = true;
     (async () => {
       const outbox = getOutbox();
+      await claimSavedPages(userKey); // pages saved under another account are not this person's
       await outbox.setUser(userKey);
       if (userKey !== "guest") {
         const guest = await outbox.guestWaiting();

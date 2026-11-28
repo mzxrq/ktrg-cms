@@ -1,4 +1,5 @@
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, inArray, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 import type { Db } from "../db/client";
 import {
   courseCompletions,
@@ -36,14 +37,23 @@ export async function ralliesForPlace(q: Reader, spotId: string): Promise<{ rout
 const stampsOf = (q: Reader, userId: string): Promise<HeldStamp[]> =>
   q.select({ spotId: stamps.spotId, createdAt: stamps.createdAt, revokedAt: stamps.revokedAt }).from(stamps).where(eq(stamps.userId, userId));
 
+const stampFrom = alias(spots, "stamp_from");
+/**
+ * The status progress reads. A place stamped at its waypoint (遥拝, or closed with a 閉鎖時のスタンプ地点) cannot be stamped
+ * while that waypoint is closed or a draft, so it counts as closed, like a closed place (user, 2026-11-28). Same rule as
+ * `usesStampFrom` in stamps/stamp-store.ts; it only ever adds "closed", so no finish gets harder.
+ */
+const progressStatus = sql<PlaceMember["status"]>`case when ${spots.stampSpotId} is not null and ${spots.status} <> 'info' and (${spots.detached} or ${spots.status} = 'closed') and (not ${stampFrom.published} or ${stampFrom.status} = 'closed') then 'closed' else ${spots.status} end`.mapWith(spots.status);
+
 /** The stamp places of these courses (navigation points never count), grouped by course. */
 async function courseMembers(q: Reader, routeIds: readonly string[]): Promise<Map<string, PlaceMember[]>> {
   const out = new Map<string, PlaceMember[]>(routeIds.map((id) => [id, []]));
   if (routeIds.length === 0) return out;
   const rows = await q
-    .select({ routeId: routeSpots.routeId, spotId: spots.id, published: spots.published, status: spots.status })
+    .select({ routeId: routeSpots.routeId, spotId: spots.id, published: spots.published, status: progressStatus })
     .from(routeSpots)
     .innerJoin(spots, eq(spots.id, routeSpots.spotId))
+    .leftJoin(stampFrom, eq(stampFrom.id, spots.stampSpotId))
     .where(and(inArray(routeSpots.routeId, [...routeIds]), eq(spots.stampable, true)));
   for (const r of rows) out.get(r.routeId)!.push({ spotId: r.spotId, published: r.published, status: r.status });
   return out;
@@ -54,9 +64,10 @@ async function placeMembers(q: Reader, rallyIds: readonly string[]): Promise<Map
   const out = new Map<string, PlaceMember[]>(rallyIds.map((id) => [id, []]));
   if (rallyIds.length === 0) return out;
   const rows = await q
-    .select({ rallyId: rallySpots.rallyId, spotId: spots.id, published: spots.published, status: spots.status })
+    .select({ rallyId: rallySpots.rallyId, spotId: spots.id, published: spots.published, status: progressStatus })
     .from(rallySpots)
     .innerJoin(spots, eq(spots.id, rallySpots.spotId))
+    .leftJoin(stampFrom, eq(stampFrom.id, spots.stampSpotId))
     .where(and(inArray(rallySpots.rallyId, [...rallyIds]), eq(spots.stampable, true)))
     .orderBy(asc(rallySpots.position));
   for (const r of rows) out.get(r.rallyId)!.push({ spotId: r.spotId, published: r.published, status: r.status });

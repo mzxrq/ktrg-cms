@@ -32,7 +32,7 @@ export function authRoutes(getServices: () => AuthServices, opts: RouteOptions) 
       },
       {
         body: t.Object({ email: emailSchema, locale: t.Optional(localeSchema) }),
-        rateLimit: { otpRequestEmail: "body.email+ip", otpRequestIp: "ip" },
+        rateLimit: { otpRequestEmail: "body.email+ip", otpRequestEmailDay: "body.email", otpRequestIp: "ip" },
       },
     )
     .post(
@@ -132,7 +132,7 @@ export function authRoutes(getServices: () => AuthServices, opts: RouteOptions) 
       {
         auth: "me.sensitive",
         body: t.Object({ email: emailSchema }),
-        rateLimit: { otpRequestEmail: "body.email+ip", otpRequestIp: "ip" },
+        rateLimit: { otpRequestEmail: "body.email+ip", otpRequestEmailDay: "body.email", otpRequestIp: "ip" },
       },
     )
     // Step 2: the right code from the new mailbox becomes the account's email.

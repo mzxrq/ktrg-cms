@@ -3,7 +3,7 @@ import { localeSchema, oneOf } from "../lib/schemas";
 import { fail, type SetLike } from "./http";
 import { routeKit, type KitServices, type RouteOptions } from "./route-kit";
 import { clearSessionCookie, readCookie, serializeSessionCookie } from "./session";
-import { decodeFlow, encodeFlow, SSO_FLOW_MS, SSO_PROVIDERS, ssoCookieName, withQuery, type Sso, type SsoFlow, type SsoMode, type SsoProvider } from "./sso";
+import { SSO_FLOW_MS, SSO_PROVIDERS, ssoCookieName, withQuery, type Sso, type SsoFlow, type SsoMode, type SsoProvider } from "./sso";
 import type { SsoService } from "./sso-service";
 
 export interface SsoServices extends KitServices {
@@ -45,7 +45,7 @@ export function ssoRoutes(getServices: () => SsoServices, opts: RouteOptions & {
     const sso = getServices().ssoProviders;
     if (!sso?.enabled(provider)) return fail(set, 404, "sso_unavailable");
     const flow = sso.newFlow(provider, mode, { locale: o.locale ?? "ja", returnTo: o.returnTo, userId: o.userId });
-    addCookie(set, serializeSessionCookie({ name: cookieName, value: encodeFlow(flow), maxAgeSec: SSO_FLOW_MS / 1000, secure: opts.secureCookies }));
+    addCookie(set, serializeSessionCookie({ name: cookieName, value: sso.sealFlow(flow), maxAgeSec: SSO_FLOW_MS / 1000, secure: opts.secureCookies }));
     return { ok: true as const, url: sso.authorizeUrl(flow, { installedApp: o.installedApp }) };
   }
 
@@ -90,7 +90,7 @@ export function ssoRoutes(getServices: () => SsoServices, opts: RouteOptions & {
         "/:provider/callback",
         async ({ params, query, headers, set, redirect }) => {
           const raw = readCookie(headers.cookie, cookieName);
-          const flow = raw ? decodeFlow(raw) : null;
+          const flow = raw ? (getServices().ssoProviders?.openFlow(raw) ?? null) : null;
           // The flow is used up whatever happens. Added last, after the session cookie (startSession sets the header whole).
           const back = (path: string) => {
             addCookie(set, clearSessionCookie(cookieName, opts.secureCookies));
@@ -122,6 +122,8 @@ export function ssoRoutes(getServices: () => SsoServices, opts: RouteOptions & {
           if (!auth || auth.user.id !== flow.userId) return failed("sso_failed");
           if (flow.mode === "link") {
             if (auth.user.role !== "participant") return failed("sso_staff");
+            // Checked again here, not only at the start: the link must follow a fresh login even if the cookie were forged.
+            if (!auth.fresh) return failed("reauth_required");
             if ((await sso.link(auth.user.id, flow.provider, claims.subject)) === "taken") return failed("sso_taken");
             // A new way in: every other device is signed out, this one stays (as for a new email).
             await session.endOthers(auth.user.id, auth.sessionId);

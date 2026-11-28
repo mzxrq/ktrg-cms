@@ -7,7 +7,7 @@ import { api } from "@/lib/api";
 import { outcome } from "@/lib/admin/admin-client";
 import { editorPlacesOf } from "@/lib/admin/editor-places";
 import type { LngLatEle } from "@/lib/admin/line";
-import { writeBackup } from "@/lib/admin/draft-backup";
+import { restoreOnto, writeBackup } from "@/lib/admin/draft-backup";
 import { stampFromChoices, type RouteDraft } from "@/lib/admin/route-draft";
 import { formatUpdated } from "@/lib/format";
 import { Check, Field, TextInput } from "./fields";
@@ -20,7 +20,7 @@ import type { useRouteDraft } from "./useRouteDraft";
 export function CourseMapEditor({ d, confirmRemoval }: { d: ReturnType<typeof useRouteDraft>; confirmRemoval: (key: string) => Promise<boolean> }) {
   const { t } = useLingui();
   const messages = useErrorMessages();
-  const { state, dispatch, draft, selectedKey, setSelectedKey, guarded, setMessage, heightsState } = d;
+  const { state, dispatch, draft, selectedKey, setSelectedKey, guarded, heightsState } = d;
   const editorPlaces = editorPlacesOf(draft);
   const text = (field: "lineSource") => (value: string) => dispatch({ type: "text", field, value });
   return (
@@ -76,11 +76,7 @@ export function CourseMapEditor({ d, confirmRemoval }: { d: ReturnType<typeof us
         }}
         onAddPlaces={(list) => dispatch({ type: "addPlaces", places: list })}
         onMovePlace={(key, lat, lng) => guarded(key, { type: "movePlace", key, lat, lng })}
-        onRemovePlace={(key) => {
-          const p = draft.places.find((x) => x.key === key);
-          if (p?.published) setMessage({ kind: "error", text: t`公開中の経由地は消せません。先に「公開をやめる」を押してください。` });
-          else void confirmRemoval(key).then((yes) => yes && dispatch({ type: "removePlace", key }));
-        }}
+        onRemovePlace={(key) => void confirmRemoval(key).then((yes) => yes && dispatch({ type: "removePlace", key }))}
         onSelectPlace={setSelectedKey}
         area={{ value: draft.area, onChange: (value) => dispatch({ type: "area", value }) }}
         onPatchPlace={(key, patch) => guarded(key, { type: "place", key, patch })}
@@ -121,7 +117,7 @@ export function RestoreOffer({ d, initial, locale }: { d: ReturnType<typeof useR
       <button
         type="button"
         onClick={() => {
-          dispatch({ type: "loaded", draft: offered.draft });
+          dispatch({ type: "loaded", draft: restoreOnto(offered, initial) });
           setOfferClosed(true);
           setMessage({ kind: "ok", text: t`編集を戻しました。内容を確かめて、「保存する」を押してください。` });
         }}
@@ -146,10 +142,21 @@ export function RestoreOffer({ d, initial, locale }: { d: ReturnType<typeof useR
 // ---- the frame around a course being edited: the course page (RouteEditor) and the one map (OneMapCourseEditor) share it ----
 
 /** Asks before removing a waypoint that other courses hold too (removing it takes it off them as well). */
-export function useConfirmRemoval(draft: RouteDraft, sharedWith: Record<string, string[]>, routeNames: Record<string, string>, locale: string) {
+export function useConfirmRemoval(
+  draft: RouteDraft,
+  sharedWith: Record<string, string[]>,
+  routeNames: Record<string, string>,
+  locale: string,
+  /** Where the editor shows its message: a published waypoint is refused here, for every remove button (map, panel, table). */
+  setMessage: (m: { kind: "error"; text: string }) => void,
+) {
   const { t } = useLingui();
   return async (key: string) => {
     const p = draft.places.find((x) => x.key === key);
+    if (p?.published) {
+      setMessage({ kind: "error", text: t`公開中の経由地は消せません。先に「公開をやめる」を押してください。` });
+      return false;
+    }
     const others = p?.id ? sharedWith[p.id] : undefined;
     if (!p || !others) return true;
     const name = locale === "en" && p.nameEn ? p.nameEn : p.nameJa;

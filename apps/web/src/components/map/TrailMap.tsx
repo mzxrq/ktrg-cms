@@ -153,6 +153,8 @@ export function TrailMap({
   const origin: Coord | undefined = selectedStop?.position ?? stops[0]?.position;
 
   // Create the map once for these inputs; remove it again on unmount (CLAUDE.md: map.remove()).
+  // router.refresh() hands over equal props as new objects: keyed by value, the map is not rebuilt (camera, tiles, ルート再生).
+  const mapKey = JSON.stringify([stops, line, sideLines, settings]);
   useEffect(() => {
     let cancelled = false;
     let map: MapLibreMap | undefined;
@@ -237,7 +239,7 @@ export function TrailMap({
     };
     // `t` changes only with the language, which reloads the page.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stops, line, sideLines, settings, i18n.locale]);
+  }, [mapKey, i18n.locale]);
 
   useCursorMarker(mapRef, mlRef, mapGen);
 

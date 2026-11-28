@@ -34,7 +34,7 @@ export function createMemoryContentStore(audit: AuditWriter, opts: { now?: () =>
           const ss = sortedSpots(r.id);
           const stamps = ss.filter((s) => s.stampable);
           const { legs: _legs, ...line } = r.geometry ?? { type: "LineString" as const, coordinates: [] as [number, number][], legs: undefined };
-          return { ...r, geometry: r.geometry ? line : null, spotCount: stamps.length, publishedSpotCount: stamps.filter((s) => s.published).length, pointCount: ss.length - stamps.length };
+          return { ...r, geometry: r.geometry ? line : null, spotCount: stamps.length, publishedSpotCount: stamps.filter((s) => s.published && s.status !== "info").length, pointCount: ss.length - stamps.length };
         });
     },
     async listForAttention() {

@@ -1,6 +1,7 @@
 import type { RouteArea } from "./map-screen";
 import { gsiTileUrl, vectorTileUrl, zoomLimits } from "./map";
-import type { MapSettings } from "./map-settings";
+import { largeStyleUrl } from "./large-map-style";
+import { defaultMapSettings, type MapSettings } from "./map-settings";
 import { tileUrls } from "./offline-tiles";
 import { readJson } from "@/lib/read-json";
 
@@ -9,9 +10,8 @@ import { readJson } from "@/lib/read-json";
 // a tile request from here before it asks the network. A small JSON entry in the same cache says when it was saved and
 // how big it is, so the cache and its description can never disagree.
 // The pack also keeps the pages the map needs (the map and the course page) and the course's line, so the app opens cold with
-// no signal. Pages are the visitor's own (their stamps), kept in one shared cache that is emptied at sign-out (clearSavedPages),
-// and the worker only uses them when the network fails, never in place of a page it can fetch.
-// shortcut: a person whose session simply expired never signs out; their saved pages stay until the next sign-out or save.
+// no signal. Pages are the visitor's own (their stamps), kept in one shared cache and fetched again for whoever is signed in
+// next (claimSavedPages), and the worker only uses them when the network fails, never in place of a page it can fetch.
 // shortcut: a tile shared by two neighbouring courses is stored twice, when storage matters keep one shared tile cache.
 
 const META_URL = "/__pack-meta";
@@ -25,14 +25,21 @@ const AT_A_TIME = 6;
 
 export const packCacheName = (routeId: string) => `ktrg-pack-${routeId}`;
 
-/** The tiles a course needs: the visitor's base map and its terrain overlay, from zoom 11 to 15 (the overlay stops sooner). */
-export function packTileUrls(area: RouteArea, settings: Pick<MapSettings, "base" | "terrain">): string[] {
+/** The vector map's style and icons (app/map-style): without them offline the 大きい文字 map has nothing to draw with. */
+const SPRITE_FILES = ["std.json", "std.png", "std@2x.json", "std@2x.png"].map((f) => `/map-style/sprite/${f}`);
+
+/**
+ * The tiles a course needs: the visitor's base map and its terrain overlay, from zoom 11 to 15 (the overlay stops sooner).
+ * With the 大きい文字 base, its style (at the address this visitor's map asks for) and icons too.
+ */
+export function packTileUrls(area: RouteArea, settings: Pick<MapSettings, "base" | "terrain"> & Partial<MapSettings>): string[] {
   // The vector map's tiles are GSI's vector tiles; its names (glyphs) and icons are not kept yet, so offline it draws without names.
   const baseTemplate = settings.base === "large" ? vectorTileUrl : gsiTileUrl(settings.base === "photo" ? "seamlessphoto" : settings.base);
   const baseMax = settings.base === "blank" ? 14 : settings.base === "large" ? 16 : MAX_ZOOM;
   const terrainLayer = settings.terrain === "relief" ? "relief" : "hillshademap";
   const terrainMax = Math.min(MAX_ZOOM, settings.terrain === "relief" ? zoomLimits.reliefMax : zoomLimits.hillshadeMax);
   return [
+    ...(settings.base === "large" ? [largeStyleUrl({ ...defaultMapSettings, ...settings }), ...SPRITE_FILES] : []),
     ...tileUrls(area, baseTemplate, MIN_ZOOM, baseMax, PER_LAYER_LIMIT),
     ...tileUrls(area, gsiTileUrl(terrainLayer), MIN_ZOOM, terrainMax, PER_LAYER_LIMIT),
   ];
@@ -50,7 +57,9 @@ export async function readPack(routeId: string): Promise<PackInfo | null> {
   try {
     if (!(await caches.has(packCacheName(routeId)))) return null;
     const hit = await (await caches.open(packCacheName(routeId))).match(META_URL);
-    return hit ? ((await hit.json()) as PackInfo) : null;
+    // Without its course page the map does not open offline, so the course is not 保存済み.
+    if (!hit || !(await (await caches.open(PAGES_CACHE)).match(coursePage(routeId)))) return null;
+    return (await hit.json()) as PackInfo;
   } catch {
     return null;
   }
@@ -64,10 +73,50 @@ export async function deletePack(routeId: string): Promise<void> {
   if (!(await caches.keys()).some((k) => k.startsWith("ktrg-pack-"))) await pages.delete(MAP_PAGE);
 }
 
-/** Sign-out: the saved pages show the person's name and stamps, so they must not outlive the session. Tiles are public and stay. */
-export async function clearSavedPages(): Promise<void> {
-  if (typeof caches !== "undefined") await caches.delete(PAGES_CACHE).catch(() => false);
+/** Whose saved pages these are (a user id, or "guest"): kept beside them in the same cache. */
+const OWNER_URL = "/__ktrg-pages-owner";
+
+/**
+ * The page knows who is signed in (an account, or "guest" after signing out). The saved pages show the person who saved
+ * them (name, stamps), so when that is someone else they are fetched again with this session: the offline map stays
+ * available on this phone whoever uses it (user, 2026-11-28), and it shows, and queues stamps for, the person now here.
+ * They count as this person's only once every page came back; a page that could not be fetched keeps its old copy, and
+ * the next page load tries again.
+ */
+export async function claimSavedPages(userKey: string): Promise<void> {
+  if (typeof caches === "undefined") return;
+  try {
+    const pages = await caches.open(PAGES_CACHE);
+    const owner = await (await pages.match(OWNER_URL))?.text();
+    if (owner === userKey) return;
+    if (owner !== undefined && !(await refreshSavedPages())) return;
+    await pages.put(OWNER_URL, new Response(userKey));
+  } catch {
+    // storage blocked: nothing is saved here anyway
+  }
 }
+
+/**
+ * A new version took over: the saved pages name the old version's scripts, which it has just deleted, so opened offline they
+ * would be blank. Each is fetched again (with the visitor's session, like saving it); one that fails keeps its old copy.
+ * True when every page came back.
+ */
+export async function refreshSavedPages(): Promise<boolean> {
+  if (typeof caches === "undefined" || !(await caches.has(PAGES_CACHE))) return true;
+  const pages = await caches.open(PAGES_CACHE);
+  const got = await Promise.all(
+    (await pages.keys()).map(async (page) => {
+      if ((typeof page === "string" ? page : page.url).endsWith(OWNER_URL)) return true;
+      const res = await fetch(page, { cache: "reload" }).catch(() => null);
+      if (res?.ok) await pages.put(page, res);
+      return res?.ok === true;
+    }),
+  );
+  return got.every(Boolean);
+}
+
+/** How long one tile may take (headers and body) before it counts as missing. */
+const TILE_TIMEOUT_MS = 15_000;
 
 const coursePage = (routeId: string) => `/routes/${encodeURIComponent(routeId)}`;
 const lineUrl = (routeId: string) => `/api/v1/routes/${encodeURIComponent(routeId)}`;
@@ -114,8 +163,9 @@ export async function savePack(routeId: string, urls: string[], onProgress: (don
     await Promise.all(
       urls.slice(i, i + AT_A_TIME).map(async (url) => {
         try {
-          // reload: past the worker's saved copy too, or an update would only save the old tile again (app/sw.ts).
-          const res = await fetch(url, { cache: "reload" });
+          // reload: past the worker's saved copy too, or an update would only save the old tile again (app/sw.ts). A tile
+          // that has not arrived in 15 s counts as missing, so a stalled connection cannot freeze the progress for ever.
+          const res = await fetch(url, { cache: "reload", signal: AbortSignal.timeout(TILE_TIMEOUT_MS) });
           if (res.ok) {
             const size = (await res.clone().blob()).size; // added after the await: `bytes += await` would lose parallel updates
             bytes += size;

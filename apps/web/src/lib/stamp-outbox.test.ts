@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { createOutbox } from "./stamp-outbox";
+import { canQueue, createOutbox } from "./stamp-outbox";
 import { createMemoryQueueStore } from "./stamp-queue";
 import type { StampResult } from "./stamp-flow";
 
@@ -61,7 +61,7 @@ describe("the outbox", () => {
     await outbox.enqueue("spot-a", reading);
     expect((await outbox.flush()).ran).toBe(false);
     const broken = createOutbox({
-      store: { add: async () => { throw new Error("full"); }, list: async () => [], remove: async () => {}, update: async () => {} },
+      store: { add: async () => { throw new Error("full"); }, list: async () => [], all: async () => [], remove: async () => {}, update: async () => {} },
       send: async () => ({ ok: true, already: false }),
       now: () => new Date(),
       lock: async (fn) => ({ ran: true, value: await fn() }),
@@ -106,5 +106,31 @@ describe("the outbox", () => {
     expect(outbox.pending).toBe(1);
     expect((await store.list("u1")).length).toBe(1);
     expect(await outbox.waitingSpots()).toEqual(["spot-a"]);
+  });
+
+  test("a waiting stamp the server would refuse for a rough reading is replaced by a better press", async () => {
+    const { outbox, store } = make([]);
+    await outbox.setUser("u1");
+    // An older version queued a 250 m reading; the walker presses again in the open.
+    await store.add({ id: "old", userKey: "u1", spotId: "spot-a", lat: 34.5, lng: 135, accuracyM: 250, scannedAt: "2026-11-04T09:00:00.000Z", tries: 0 });
+    expect(await outbox.enqueue("spot-a", reading)).toBe(true);
+    expect((await store.list("u1")).map((r) => r.accuracyM)).toEqual([10]);
+  });
+
+  test("on page load, waiting stamps of any account older than 48 h leave the phone (they hold coordinates)", async () => {
+    const { outbox, store } = make([]);
+    const row = (id: string, userKey: string, scannedAt: string) => ({ id, userKey, spotId: id, lat: 34.5, lng: 135, accuracyM: 10, scannedAt, tries: 0 });
+    await store.add(row("old-other", "someone-signed-out", "2026-11-01T09:00:00.000Z"));
+    await store.add(row("new-other", "someone-signed-out", "2026-11-04T09:00:00.000Z"));
+    await store.add(row("old-mine", "u1", "2026-11-02T09:00:00.000Z"));
+    await outbox.setUser("u1");
+    expect(store.rows.map((r) => r.id).sort()).toEqual(["new-other"]);
+  });
+});
+
+describe("what may wait on the phone", () => {
+  test("only a reading the server would accept (100 m or better) is queued", () => {
+    expect(canQueue({ lat: 34.5, lng: 135, accuracyM: 100 })).toBe(true);
+    expect(canQueue({ lat: 34.5, lng: 135, accuracyM: 101 })).toBe(false);
   });
 });

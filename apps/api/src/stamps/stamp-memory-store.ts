@@ -25,9 +25,10 @@ export function createMemoryStampStore(audit: AuditWriter, opts: { now?: () => D
     const uses = !!s.stampSpotId && s.status !== "info" && (s.detached === true || s.status === "closed");
     const from = uses ? spots.get(s.stampSpotId!) : undefined;
     if (!uses) return { ...s, stampSpotId: null };
+    const own = s.detached === true ? {} : { closedAt: s.statusUpdatedAt ?? null, ownLat: s.positionVerified ? s.lat : null, ownLng: s.positionVerified ? s.lng : null, ownRadiusM: s.radiusM };
     return from
-      ? { ...s, lat: from.lat, lng: from.lng, radiusM: from.radiusM, status: from.status, statusUpdatedAt: from.statusUpdatedAt ?? null }
-      : { ...s, lat: null, lng: null };
+      ? { ...s, ...own, lat: from.lat, lng: from.lng, radiusM: from.radiusM, status: from.status, statusUpdatedAt: from.statusUpdatedAt ?? null }
+      : { ...s, ...own, lat: null, lng: null };
   };
   const store: StampStore = {
     async findSpot(id) {

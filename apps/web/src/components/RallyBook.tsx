@@ -227,11 +227,16 @@ function BookStrip({ state }: { state: BookPage["state"] }) {
   const box = useRef<HTMLDivElement>(null);
   const walker = useRef<SVGSVGElement>(null);
   useLayoutEffect(() => {
-    const b = box.current;
-    const w = walker.current;
-    if (!b || !w) return;
-    const travel = Math.max(0, b.clientWidth - w.clientWidth - 24);
-    moveTo(w, { x: isDone(state) ? travel : 0 }, walkSeconds(travel) + 0.3, { x: 0 });
+    // One frame later: on a phone the page sits in a <dialog> the book opens in its own effect, which runs after this one;
+    // measured before that, the closed dialog is 0 wide and the walker stays at the start.
+    const frame = requestAnimationFrame(() => {
+      const b = box.current;
+      const w = walker.current;
+      if (!b || !w) return;
+      const travel = Math.max(0, b.clientWidth - w.clientWidth - 24);
+      moveTo(w, { x: isDone(state) ? travel : 0 }, walkSeconds(travel) + 0.3, { x: 0 });
+    });
+    return () => cancelAnimationFrame(frame);
   }, [state]);
   const walking = isDone(state) || state === "next";
   return (

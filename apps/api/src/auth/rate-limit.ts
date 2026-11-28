@@ -23,6 +23,10 @@ const MINUTE = 60 * 1000;
 export const AUTH_LIMITS = {
   otpRequestEmail: { name: "otp-request-email", limit: 5, windowMs: 15 * MINUTE },
   otpRequestIp: { name: "otp-request-ip", limit: 20, windowMs: 15 * MINUTE },
+  // Per address from anywhere: many machines together can mail one person at most this many codes a day (CLAUDE.md worst
+  // case: code emails used to spam someone), and with 5 guesses a code this caps guessing too. Reaching it stops only the
+  // emailed code for that address, never a passkey or a password.
+  otpRequestEmailDay: { name: "otp-request-email-day", limit: 30, windowMs: 24 * 60 * MINUTE },
   otpVerifyEmail: { name: "otp-verify-email", limit: 10, windowMs: 15 * MINUTE },
   otpVerifyIp: { name: "otp-verify-ip", limit: 30, windowMs: 15 * MINUTE },
   // Password guesses. Each one costs a slow hash, and unlike a mailed number the same password can be tried again and again.

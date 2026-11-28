@@ -92,8 +92,8 @@ export interface ServiceDeps {
   /** ADMIN_EMAILS, normalized: promoted to admin on an email-code login. */
   adminEmails?: ReadonlySet<string>;
   passkey: PasskeyConfig;
-  /** Sign in with Google, LINE or Apple. Absent or no providers: no buttons, the start routes answer 404. */
-  sso?: SsoConfig;
+  /** Sign in with Google, LINE or Apple. Absent or no providers: no buttons, the start routes answer 404. Its flow cookie is signed with `secret`. */
+  sso?: Omit<SsoConfig, "secret">;
   /** Photo storage (Cloudflare R2) and its public address. Without them uploads answer 503. */
   uploads?: { storage: FileStorage; publicBaseUrl: string };
   /** Host names a photo address may use (PHOTO_HOSTS). Empty or missing: any https address. */
@@ -129,7 +129,7 @@ export function createServices(deps: ServiceDeps): Services {
     passwords: createPasswordService({ store: stores.passwords, mailer, appOrigin: deps.passkey.origin, now }),
     // Google, LINE and Apple accounts linked to ours, and the trip to the provider and back.
     sso: createSsoService({ store: stores.sso, adminEmails: deps.adminEmails }),
-    ssoProviders: deps.sso ? createSso({ now, ...deps.sso }) : undefined,
+    ssoProviders: deps.sso ? createSso({ now, secret, ...deps.sso }) : undefined,
     // Profile, language, display name and deletion requests (emails the owner).
     me: createMeService({ store: stores.me, mailer, now, photoHosts: deps.photoHosts }),
     // Routes and places: what the admin edits and visitors read.

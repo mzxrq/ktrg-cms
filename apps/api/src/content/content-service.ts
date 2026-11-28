@@ -681,7 +681,9 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       // A side trip is shown only once the place it leads to is published, like the place itself.
       const byId = new Map(found.spots.map((s) => [s.id, s]));
       const pub = (s: SpotRow) => toPublicSpot(s, s.stampSpotId ? byId.get(s.stampSpotId) : null, stampedAt(s.id, found.spots));
-      return { route: toPublicRoute(found.route, stamps.length, true, new Set(published.map((s) => s.id))), spots: stamps.map(pub), points: points.map(pub) };
+      const ready = stamps.filter((s) => s.status !== "info").length;
+      // A 準備中 course shows only its name, numbers, photo and line: none of its waypoints yet (CLAUDE.md).
+      return { route: toPublicRoute(found.route, ready, true, new Set(published.map((s) => s.id))), spots: ready > 0 ? stamps.map(pub) : [], points: ready > 0 ? points.map(pub) : [] };
     },
 
     /** Status of every published place, nothing else: small enough to poll every minute. */
@@ -702,7 +704,10 @@ export function createContentService(deps: { store: ContentStore; photoHosts?: r
       if (!s || !s.published) return null;
       const from = s.stampSpotId ? await store.getSpot(s.stampSpotId) : null;
       // Only a waypoint can have places stamped at it; one more read for those (same course, see stampFromOk).
-      const here = s.stampSpotId ? [] : stampedAt(s.id, (await store.getRoute(s.routeId))?.spots ?? []);
+      const course = s.stampSpotId ? null : await store.getRoute(s.routeId);
+      // A point (toilet, water, turn) on a 準備中 course is not public yet, like the course's other details.
+      if (course && !s.stampable && !course.spots.some((x) => x.published && x.stampable && x.status !== "info")) return null;
+      const here = course ? stampedAt(s.id, course.spots) : [];
       return toPublicSpot(s, from, here);
     },
   };

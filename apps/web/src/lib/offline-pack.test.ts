@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, expect, test } from "bun:test";
-import { clearSavedPages, deletePack, megabytes, packAge, packTileUrls, readPack, savePack } from "./offline-pack";
+import { claimSavedPages, deletePack, megabytes, packAge, packTileUrls, readPack, refreshSavedPages, savePack } from "./offline-pack";
+import { largeStyleUrl } from "./large-map-style";
+import { defaultMapSettings } from "./map-settings";
 
 const area = { lat: 34.45, lng: 135.65, widthM: 4000, heightM: 4000, verified: true };
 
@@ -33,6 +35,13 @@ test("the tile list holds the base map and the overlay, each within its own zoom
   expect(packTileUrls(area, { base: "photo", terrain: "hillshade" }).some((u) => u.includes("/seamlessphoto/") && u.endsWith(".jpg"))).toBe(true);
 });
 
+test("the 大きい文字 base also keeps its style and icons, or offline the map has nothing to draw with", () => {
+  const urls = packTileUrls(area, { base: "large", terrain: "hillshade" });
+  expect(urls).toContain(largeStyleUrl({ ...defaultMapSettings, terrain: "hillshade" }));
+  expect(urls).toContain("/map-style/sprite/std@2x.png");
+  expect(packTileUrls(area, { base: "pale", terrain: "hillshade" }).some((u) => u.startsWith("/map-style/"))).toBe(false);
+});
+
 // Pages answer with a body, tiles with bytes; the course answers with a line.
 const site = (u: string) =>
   u === "/api/v1/routes/r1" ? new Response(JSON.stringify({ route: { line: { coordinates: [[1, 2]] }, spots: ["private"] } })) : new Response("x".repeat(1000));
@@ -45,7 +54,7 @@ test("the pages and the line are kept with the pack, the line without the rest o
   expect(line).toEqual({ route: { line: { coordinates: [[1, 2]] } } });
 });
 
-test("deleting the last pack takes the map page too, and signing out empties the saved pages", async () => {
+test("deleting the last pack takes the map page too", async () => {
   globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
   await savePack("r1", ["u/1"], () => {});
   await savePack("r2", ["u/1"], () => {});
@@ -53,9 +62,55 @@ test("deleting the last pack takes the map page too, and signing out empties the
   expect([...(fake.stores.get("ktrg-pages")?.keys() ?? [])].sort()).toEqual(["/map", "/routes/r2"]);
   await deletePack("r2");
   expect([...(fake.stores.get("ktrg-pages")?.keys() ?? [])]).toEqual([]);
-  await savePack("r2", ["u/1"], () => {});
-  await clearSavedPages();
-  expect(fake.stores.has("ktrg-pages")).toBe(false);
+});
+
+test("after a new version takes over, every saved page is fetched again; one that fails keeps its old copy", async () => {
+  globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
+  await savePack("r1", ["u/1"], () => {});
+  const asked: string[] = [];
+  globalThis.fetch = (async (u: string, init?: RequestInit) => {
+    asked.push(`${u} ${init?.cache}`);
+    return u === "/map" ? new Response("new map page") : new Response("", { status: 503 });
+  }) as unknown as typeof fetch;
+  await refreshSavedPages();
+  expect(asked.sort()).toEqual(["/map reload", "/routes/r1 reload"]);
+  expect(await fake.stores.get("ktrg-pages")?.get("/map")?.text()).toBe("new map page");
+  expect(await fake.stores.get("ktrg-pages")?.get("/routes/r1")?.text()).toBe("x".repeat(1000));
+});
+
+test("a course whose course page is missing (tiles still on the phone) is not shown as saved", async () => {
+  globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
+  await savePack("r1", ["u/1"], () => {}, 5000);
+  expect(await readPack("r1")).not.toBeNull();
+  fake.stores.get("ktrg-pages")!.delete("/routes/r1");
+  expect(await readPack("r1")).toBeNull();
+});
+
+test("another person here (signed in, or signed out): the saved pages stay and are fetched again for them", async () => {
+  globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
+  await claimSavedPages("user-a");
+  await savePack("r1", ["u/1"], () => {});
+  const asked: string[] = [];
+  globalThis.fetch = (async (u: string) => (asked.push(u), new Response(`page for b: ${u}`))) as unknown as typeof fetch;
+  await claimSavedPages("user-a"); // the same person: nothing fetched
+  expect(asked).toEqual([]);
+  await claimSavedPages("user-b"); // A signed out or their session ended; B is here now
+  expect(asked.sort()).toEqual(["/map", "/routes/r1"]);
+  expect(await readPack("r1")).not.toBeNull(); // still 保存済み, still opens offline
+  expect(await fake.stores.get("ktrg-pages")?.get("/routes/r1")?.text()).toBe("page for b: /routes/r1");
+});
+
+test("with no signal for the new person, the pages stay as they were and are fetched again on a later load", async () => {
+  globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
+  await claimSavedPages("user-a");
+  await savePack("r1", ["u/1"], () => {});
+  globalThis.fetch = (async () => { throw new TypeError("offline"); }) as unknown as typeof fetch;
+  await claimSavedPages("guest");
+  expect(await readPack("r1")).not.toBeNull();
+  const asked: string[] = [];
+  globalThis.fetch = (async (u: string) => (asked.push(u), new Response("ok"))) as unknown as typeof fetch;
+  await claimSavedPages("guest"); // not marked as the guest's yet: tried again
+  expect(asked.sort()).toEqual(["/map", "/routes/r1"]);
 });
 
 test("a page that cannot be fetched fails the whole pack", async () => {
@@ -105,7 +160,9 @@ test("tiles are asked for past the worker's saved copy, so an update really fetc
     return site(u);
   }) as unknown as typeof fetch;
   await savePack("r1", ["u/1"], () => {});
-  expect(asked).toEqual([{ cache: "reload" }]);
+  expect(asked.map((i) => i?.cache)).toEqual(["reload"]);
+  // and with a time limit, so a stalled tile counts as missing instead of freezing the progress
+  expect(asked[0]?.signal).toBeInstanceOf(AbortSignal);
 });
 
 test("age and size read plainly", () => {

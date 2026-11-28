@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { beatAt, drawnShare, motionMode, sealsPlaced } from "@/lib/journey";
+import { beatAt, drawnShare, motionMode, sealsPlaced, progressOfBeat } from "@/lib/journey";
 import { DESK_QUERY, PHONE_RIDGE_ROOM_PX, RIDGE_ROOM_PX, SCENE_QUERY, SHORT_SCREEN_QUERY, beatsFit } from "@/lib/landing-desktop";
 
 /**
@@ -21,7 +21,7 @@ export function JourneyScene({ children, seals }: { children: ReactNode; seals: 
   useEffect(() => {
     const el = root.current;
     if (!el) return;
-    const mode = motionMode({ reduce: window.matchMedia("(prefers-reduced-motion: reduce)").matches, calm: document.documentElement.hasAttribute("data-calm") });
+    const mode = motionMode({ reduce: window.matchMedia("(prefers-reduced-motion: reduce)").matches, calm: document.documentElement.hasAttribute("data-calm"), fade: document.documentElement.hasAttribute("data-fade") });
     if (mode === "static") return;
 
     const ridge = el.querySelector<SVGPathElement>("[data-ridge]");
@@ -114,7 +114,18 @@ export function JourneyScene({ children, seals }: { children: ReactNode; seals: 
               }
             },
           });
-          return () => reset((targets, vars) => gsap.set(targets, vars));
+          // Tab (or a screen reader) into a beat that is not showing: scroll the scene to it, so what has focus can be seen.
+          const onFocus = (e: FocusEvent) => {
+            const n = Number((e.target as Element | null)?.closest?.("[data-beat]")?.getAttribute("data-beat"));
+            if (!Number.isInteger(n) || n === beat || n < 0 || n > 2) return;
+            const top = el.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: top + (el.offsetHeight - window.innerHeight) * progressOfBeat(n as 0 | 1 | 2), behavior: "instant" });
+          };
+          el.addEventListener("focusin", onFocus);
+          return () => {
+            el.removeEventListener("focusin", onFocus);
+            reset((targets, vars) => gsap.set(targets, vars));
+          };
         });
         stop = () => mm.revert();
       })

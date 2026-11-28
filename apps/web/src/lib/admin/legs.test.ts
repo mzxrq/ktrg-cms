@@ -26,6 +26,7 @@ import {
   stopsFollowLine,
   toggleAnchorCurve,
   type Leg,
+  withAutoLegs,
   type Path,
   type Stop,
 } from "./legs";
@@ -366,5 +367,24 @@ describe("a waypoint on the line that becomes a side trip", () => {
     const gone = was.filter((p) => p.key !== "mid");
     const kept = reconcileLegs(pathStops(gone), [toMid, fromMid], sidePairs(gone));
     expect(kept.map((l) => [l.from, l.to])).toEqual([["a", "b"]]);
+  });
+});
+
+describe("legs from the route finder", () => {
+  const line = (n: number): Leg["points"] => [[135, 34], [135 + n, 34]];
+  test("replace only legs still waiting for it; a leg drawn by hand meanwhile stays", () => {
+    const now: Leg[] = [
+      { from: "a", to: "b", points: line(1), auto: true, stale: true },
+      { from: "b", to: "c", points: line(2) }, // drawn by hand while the finder was working
+    ];
+    const built: Leg[] = [
+      { from: "a", to: "b", points: line(3), auto: true },
+      { from: "b", to: "c", points: line(4), auto: true },
+      { from: "c", to: "d", points: line(5), auto: true },
+    ];
+    const out = withAutoLegs(now, built);
+    expect(out.find((l) => l.from === "a")!.points).toEqual(line(3));
+    expect(out.find((l) => l.from === "b")!.points).toEqual(line(2));
+    expect(out.find((l) => l.from === "c")!.points).toEqual(line(5));
   });
 });

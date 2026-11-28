@@ -431,3 +431,16 @@ export const removeAnchors = (path: Path, indexes: ReadonlySet<number>): Path =>
 export const toggleAnchorCurve = (path: Path, index: number): Path => ({ anchors: path.anchors, curves: path.curves.map((c, i): AnchorCurve => (i === index ? (c ? null : "auto") : c)) });
 
 export const setAllCurves = (path: Path, smooth: boolean): Path => ({ anchors: path.anchors, curves: path.anchors.map((): AnchorCurve => (smooth ? "auto" : null)) });
+
+/**
+ * Puts the legs the route finder made into the course as it is now. A leg is replaced only while it is still waiting for the
+ * finder (missing, or made by it and gone stale): one drawn by hand while the finder was working stays as drawn.
+ */
+export function withAutoLegs(now: readonly Leg[], built: readonly Leg[]): Leg[] {
+  const waiting = (b: Leg) => {
+    const cur = now.find((l) => l.from === b.from && l.to === b.to);
+    return !cur || (!!cur.auto && !!cur.stale);
+  };
+  const take = built.filter(waiting);
+  return [...now.filter((l) => !take.some((b) => b.from === l.from && b.to === l.to)), ...take];
+}

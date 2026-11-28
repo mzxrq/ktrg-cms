@@ -64,7 +64,7 @@ function Editor({ initial, sharedWith, routeNames, locale, onDirtyChange, onSave
       }),
     onCreated: () => {}, // a new course from the map is step 6
   });
-  const { draft, saved, dirty, saving } = d;
+  const { draft, saved, dirty, saving, busyKey } = d;
 
   useEffect(() => onDirtyChange(dirty), [dirty, onDirtyChange]);
   useEffect(() => () => onDirtyChange(false), [onDirtyChange]);
@@ -76,10 +76,11 @@ function Editor({ initial, sharedWith, routeNames, locale, onDirtyChange, onSave
     onSaved();
   }, [saved, onSaved]);
 
-  const confirmRemoval = useConfirmRemoval(draft, sharedWith, routeNames, locale);
+  const confirmRemoval = useConfirmRemoval(draft, sharedWith, routeNames, locale, d.setMessage);
 
   return (
-    <div className={`flex flex-col gap-4 ${saving ? "[&_fieldset]:pointer-events-none" : ""}`} aria-busy={saving}>
+    // inert while saving: an edit made then (the map, Ctrl+Z) would be overwritten by the saved copy without a word.
+    <div className="flex flex-col gap-4" inert={saving || busyKey !== null} aria-busy={saving}>
       <PublishedEditGuard d={d} />
       <div className="sticky top-0 z-20 flex flex-wrap items-center gap-3 border-b border-line bg-paper py-3">
         <p className="min-w-0 flex-1 text-lg" aria-live="polite">

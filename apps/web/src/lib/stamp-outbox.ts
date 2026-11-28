@@ -5,9 +5,13 @@
 // keeps the count the screens show, and runs the upload under a lock so two tabs do not send the same row.
 
 import { useSyncExternalStore } from "react";
-import { createIdbQueueStore, flushQueue, newQueuedStamp, withUploadLock, type FlushResult, type Outcome, type QueuedStamp, type QueueStore } from "./stamp-queue";
+import { createIdbQueueStore, flushQueue, MAX_QUEUE_AGE_MS, newQueuedStamp, withUploadLock, type FlushResult, type Outcome, type QueuedStamp, type QueueStore } from "./stamp-queue";
 import { requestStampFor } from "./stamp-client";
 import type { Reading, StampResult } from "./stamp-flow";
+
+/** The server refuses a reading rougher than this (gps_accuracy_poor), so such a reading is never kept to send later. */
+export const MAX_ACCURACY_M = 100;
+export const canQueue = (reading: Reading) => reading.accuracyM <= MAX_ACCURACY_M;
 
 export interface OutboxDeps {
   store: QueueStore;
@@ -36,13 +40,23 @@ export function createOutbox(deps: OutboxDeps) {
     /** Whose stamps these are: the account's id, or "guest". Set by the layout; a row never uploads under another key. */
     async setUser(key: string) {
       userKey = key;
+      // Rows hold coordinates and must not outlive the upload window, also those of an account signed out on this phone.
+      try {
+        const now = deps.now().getTime();
+        for (const r of await deps.store.all()) if (now - Date.parse(r.scannedAt) > MAX_QUEUE_AGE_MS) await deps.store.remove(r.id);
+      } catch {
+        // storage blocked: nothing is kept here anyway
+      }
       await refresh();
     },
     /** Writes the stamp to the queue. False when it could not be kept (storage blocked or full): the screen must say so. */
     async enqueue(spotId: string, reading: Reading, celebrate?: QueuedStamp["celebrate"]): Promise<boolean> {
       try {
-        // Pressed again while it waits: the first press is the one that counts, as it was the earlier time at the place.
-        if (!(await deps.store.list(userKey)).some((r) => r.spotId === spotId)) await deps.store.add(newQueuedStamp(userKey, spotId, reading, deps.now(), undefined, celebrate));
+        // Pressed again while it waits: the first press is the one that counts, as it was the earlier time at the place, unless
+        // the waiting one is a reading the server would refuse (kept by an older version): the better press replaces it.
+        const waiting = (await deps.store.list(userKey)).find((r) => r.spotId === spotId);
+        if (waiting && !canQueue(waiting)) await deps.store.remove(waiting.id);
+        if (!waiting || !canQueue(waiting)) await deps.store.add(newQueuedStamp(userKey, spotId, reading, deps.now(), undefined, celebrate));
       } catch {
         return false;
       }

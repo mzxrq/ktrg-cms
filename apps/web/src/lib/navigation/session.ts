@@ -34,6 +34,8 @@ export const MAX_ACCURACY_M = 100;
 export const LOOK_AHEAD_M = 30;
 /** While on the line, a fix is matched only this far from where the visitor was, so a doubled-back trail does not jump. */
 const SEARCH_WINDOW_M = 300;
+/** How far past a stop's edge a visitor who was inside still counts as inside (the stamp button stays). */
+const STAY_IN_M = 20;
 /** Beyond this, the fix is re-matched against the whole line (the visitor may have rejoined it somewhere else). */
 const OFF_LINE_RECHECK_M = 100;
 /** Once following a walking path, the visitor leaves it only beyond this (joining needs OFF_ROUTE_M). */
@@ -209,7 +211,9 @@ export function applyFix(model: NavModel, prev: NavState, reading: NavReading, s
   if (i === null) return base;
   const stop = model.stops[i]!;
   const straightM = distanceM(reading, stop);
-  const inRadius = straightM <= stop.radiusM;
+  // Once in, the visitor stays in until STAY_IN_M past the edge: one drifting fix must not take the stamp button away while
+  // it is finding the position or sending (the server still decides with its own reading).
+  const inRadius = straightM <= stop.radiusM + (prev.targetId === stop.id && prev.inRadius ? STAY_IN_M : 0);
   const closestM = prev.targetId === stop.id && prev.closestM !== null ? Math.min(prev.closestM, straightM) : straightM;
 
   // Where is the visitor relative to the course line? Near the last position first, then anywhere.

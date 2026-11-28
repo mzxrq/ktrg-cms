@@ -1,5 +1,6 @@
 "use client";
 
+import { versionFrom, withVersion } from "@/lib/admin/setting-version";
 import { useState } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { useUnsavedGuard } from "./useUnsavedGuard";
@@ -22,11 +23,12 @@ const choice = (on: boolean) =>
  * again before saving. The first setting is the look of the map (the base map, the terrain shading, and how calm the
  * colours are); the preview map follows the choices before anything is saved.
  */
-export function SiteSettingsForm({ initial }: { initial: MapSettings }) {
+export function SiteSettingsForm({ initial, version: readVersion }: { initial: MapSettings; version?: string | null }) {
   const { t } = useLingui();
   const messages = useErrorMessages();
   const [saved, setSaved] = useState(initial);
   const [s, setS] = useState(initial);
+  const [version, setVersion] = useState(readVersion);
   const [busy, setBusy] = useState(false);
   // A file chosen for the large-text map but not applied yet; the preview shows it.
   const [draft, setDraft] = useState<Entry[] | null>(null);
@@ -51,7 +53,7 @@ export function SiteSettingsForm({ initial }: { initial: MapSettings }) {
     setBusy(true);
     showToast(null);
     try {
-      const res = await fetch("/api/v1/admin/settings/map-style", {
+      const res = await fetch(withVersion("/api/v1/admin/settings/map-style", version), {
         method: "PUT",
         credentials: "same-origin",
         headers: { "content-type": "application/json" },
@@ -60,6 +62,7 @@ export function SiteSettingsForm({ initial }: { initial: MapSettings }) {
       const json = await readJson<{ ok?: unknown; error?: unknown }>(res);
       if (res.ok && json?.ok === true) {
         setSaved(s);
+        setVersion(versionFrom(json));
         showToast({ kind: "ok", text: t`保存しました。サイトの地図に反映されています。` });
       } else {
         showToast({ kind: "error", text: messages[json?.ok === false && isServerCode(json.error) ? json.error : errorKeyFromApi(res.status, json)] });

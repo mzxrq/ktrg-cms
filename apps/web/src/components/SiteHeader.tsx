@@ -12,7 +12,6 @@ import {
 } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { logOut } from "@/lib/auth-client";
-import { clearSavedPages } from "@/lib/offline-pack";
 import {
   BookmarkIcon,
   ChevronIcon,
@@ -38,6 +37,7 @@ import { SampleNoticeButton } from "./SampleNotice";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { confirmDialog } from "@/components/ConfirmDialog";
 import { buttonStyle } from "@/components/button";
+import { useErrorMessages } from "./useErrorMessages";
 
 const barButton =
   "inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-ink bg-paper px-2.5 text-base font-bold text-ink hover:bg-surface [&>svg]:size-6";
@@ -84,6 +84,9 @@ export function SiteHeader({
   const pathname = usePathname() ?? "/";
   const { open, setOpen, railButton } = useMenu();
   const [leaving, setLeaving] = useState(false);
+  // Signing out did not reach the server (no signal): the session is still valid, which on a shared phone matters.
+  const [leaveFailed, setLeaveFailed] = useState<string | null>(null);
+  const errorMessages = useErrorMessages();
   // Whether this visit has moved between pages yet: then "back" is the browser's own, else it goes to the page's parent.
   const moved = useRef(false);
   const first = useRef(pathname);
@@ -183,9 +186,14 @@ export function SiteHeader({
     )
       return;
     setLeaving(true);
-    await clearSavedPages(); // the saved pages show this person's stamps
-    await logOut();
+    setLeaveFailed(null);
+    // The pages saved for offline use stay on the phone: once signed out they are fetched again as a guest (StampOutbox).
+    const left = await logOut();
     setLeaving(false);
+    if (!left.ok) {
+      setLeaveFailed(errorMessages[left.code]);
+      return;
+    }
     setOpen(false);
     router.refresh();
   }
@@ -386,6 +394,11 @@ export function SiteHeader({
                     >
                       {t`ログアウト`}
                     </button>
+                    {leaveFailed ? (
+                      <p role="alert" className="text-base font-bold text-accent">
+                        {leaveFailed}
+                      </p>
+                    ) : null}
                   </>
                 ) : (
                   <div className="pattern-shippo flex flex-col gap-3 rounded-lg bg-surface p-4">

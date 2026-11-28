@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { BEAT_STARTS, beatAt, drawnShare, moundSealPoints, motionMode, sealPoints, sealsPlaced, stageLine } from "./journey";
+import { BEAT_STARTS, beatAt, drawnShare, moundSealPoints, motionMode, sealPoints, sealsPlaced, stageLine, progressOfBeat } from "./journey";
 import { RIDGE_HEIGHT, RIDGE_WIDTH, ridgePath } from "./ridge";
 
 test("the beat is the last one whose start the scroll has reached", () => {
@@ -92,13 +92,18 @@ test("with ridge data the stage draws the ridge's own line and points", () => {
 });
 
 test("motion allowed gives the scene, reduced motion gives the fade, calm gives the plain page", () => {
-  expect(motionMode({ reduce: false, calm: false })).toBe("scene");
-  expect(motionMode({ reduce: true, calm: false })).toBe("fade");
-  expect(motionMode({ reduce: false, calm: true })).toBe("static");
+  expect(motionMode({ reduce: false, calm: false, fade: false })).toBe("scene");
+  expect(motionMode({ reduce: true, calm: false, fade: false })).toBe("fade");
+  expect(motionMode({ reduce: false, calm: true, fade: false })).toBe("static");
+});
+
+test("the フェードだけ level gives the fade, whatever the device allows; calm still wins", () => {
+  expect(motionMode({ reduce: false, calm: false, fade: true })).toBe("fade");
+  expect(motionMode({ reduce: false, calm: true, fade: true })).toBe("static");
 });
 
 test("calm wins over reduced motion", () => {
-  expect(motionMode({ reduce: true, calm: true })).toBe("static");
+  expect(motionMode({ reduce: true, calm: true, fade: false })).toBe("static");
 });
 
 describe("seals by mound", () => {
@@ -121,4 +126,8 @@ describe("seals by mound", () => {
     expect(moundSealPoints(line, [])).toEqual([]);
     expect(moundSealPoints([[3, 3]], [1, 2])).toEqual([]);
   });
+});
+
+test("scrolling to a beat's place shows that beat (Tab into beat 1 or 2 brings it up)", () => {
+  for (const b of [0, 1, 2] as const) expect(beatAt(progressOfBeat(b))).toBe(b);
 });

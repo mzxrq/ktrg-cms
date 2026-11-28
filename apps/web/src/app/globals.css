@@ -1253,6 +1253,19 @@ body.map-expanded :is([data-tabbar], [data-menu-fab], [data-scroll-top], [data-i
 
 /* On paper the map keeps to the page width, and its buttons (useless there) are left off. */
 @media print {
+  /* The landing and /story reveal their words as they scroll in (StoryMotion, JourneyFlow): on paper nothing scrolls, so
+     every part prints as it ends up on screen. !important: the motion sets these inline. */
+  :is([data-reveal] > *, [data-ground] h2, [data-beat], [data-seal]) {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  [data-ridge] {
+    stroke-dashoffset: 0 !important;
+  }
+  svg:has([data-ridge]), [data-grow] {
+    clip-path: none !important;
+  }
   .trail-map .maplibregl-canvas {
     max-width: 100%;
     height: auto !important;
@@ -1699,17 +1712,18 @@ body.map-nav-mode .map-layer-pills {
   padding-top: 3rem;
   padding-bottom: 13rem;
 }
+/* Hidden beats are only see-through, never visibility:hidden: Tab and screen readers still reach their words and buttons
+   (focus scrolls the scene to that beat, JourneyScene). */
 .journey-live [data-beat] {
   opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s, visibility 0s 0.5s;
+  pointer-events: none;
+  transition: opacity 0.5s;
 }
 .journey-live[data-active-beat="0"] [data-beat="0"],
 .journey-live[data-active-beat="1"] [data-beat="1"],
 .journey-live[data-active-beat="2"] [data-beat="2"] {
   opacity: 1;
-  visibility: visible;
-  transition: opacity 0.5s;
+  pointer-events: auto;
 }
 /* The ridge and its seals stay once they appear, along the bottom of the stage, above the text. */
 .journey-live [data-ridge-stage] {

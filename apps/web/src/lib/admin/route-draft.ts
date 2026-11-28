@@ -507,10 +507,13 @@ function apply(d: RouteDraft, a: DraftAction): RouteDraft {
   }
 }
 
-/** What a save settled for good: undo takes back the words and the map, never a thing's id or the time the server gave it. */
+/**
+ * What a save settled for good: undo takes back the words and the map, never a thing's id, the time the server gave it, or
+ * whether it is published (an undo past 公開する would otherwise take the place off the site on the next save).
+ */
 function keepServerIds(d: RouteDraft, a: Extract<DraftAction, { type: "savedPlace" | "savedRoute" }>): RouteDraft {
   if (a.type === "savedRoute") return { ...d, id: a.id, updatedAt: a.updatedAt };
-  return { ...d, places: d.places.map((p) => (p.key === a.key ? { ...p, id: a.place.id, updatedAt: a.place.updatedAt } : p)) };
+  return { ...d, places: d.places.map((p) => (p.key === a.key ? { ...p, id: a.place.id, updatedAt: a.place.updatedAt, published: a.place.published } : p)) };
 }
 
 export function draftReducer(state: DraftState, a: DraftAction): DraftState {
@@ -520,11 +523,11 @@ export function draftReducer(state: DraftState, a: DraftAction): DraftState {
   }
   if (a.type === "undo") {
     const prev = state.past.at(-1);
-    return prev ? { present: prev, past: state.past.slice(0, -1), future: [state.present, ...state.future] } : state;
+    return prev ? { present: mapStepOf(prev, state.present), past: state.past.slice(0, -1), future: [state.present, ...state.future] } : state;
   }
   if (a.type === "redo") {
     const next = state.future[0];
-    return next ? { present: next, past: [...state.past, state.present], future: state.future.slice(1) } : state;
+    return next ? { present: mapStepOf(next, state.present), past: [...state.past, state.present], future: state.future.slice(1) } : state;
   }
   let present = apply(state.present, a);
   if (present === state.present) return state;
@@ -535,6 +538,38 @@ export function draftReducer(state: DraftState, a: DraftAction): DraftState {
   if (a.type === "autoLegs") return { ...state, present };
   if (!undoable.has(a.type)) return { ...state, present };
   return { present, past: [...state.past, state.present].slice(-HISTORY), future: [] };
+}
+
+/**
+ * Undo and redo step through the map (line, legs, area, which waypoints there are, their order and positions): only map
+ * steps are kept in the history. Everything typed since (texts, translations, video, photos, a waypoint's words) stays
+ * as it is now, so Ctrl+Z never throws words away. The numbers the line gives (distance, climb, time) follow the map
+ * unless someone typed them.
+ */
+function mapStepOf(step: RouteDraft, now: RouteDraft): RouteDraft {
+  const typed = new Map(now.places.map((p) => [p.key, p]));
+  const out: RouteDraft = {
+    ...now,
+    line: step.line,
+    legs: step.legs,
+    spareLegs: step.spareLegs,
+    area: step.area,
+    distanceKm: now.distanceManual ? now.distanceKm : step.distanceKm,
+    elevationGainM: now.climbManual ? now.elevationGainM : step.elevationGainM,
+    expectedTimeMin: now.timeManual ? now.expectedTimeMin : step.expectedTimeMin,
+    // A line or position that comes back brings its own 確認 tick (and 公開) with it: a check made on what is undone never
+    // carries over to an older line or place (the data rule: nothing unchecked shows as checked).
+    lineVerified: JSON.stringify([step.line, step.legs]) === JSON.stringify([now.line, now.legs]) ? now.lineVerified : step.lineVerified,
+    places: step.places.map((p) => {
+      const cur = typed.get(p.key);
+      if (!cur) return p;
+      const moved = cur.lat !== p.lat || cur.lng !== p.lng;
+      return moved ? { ...cur, lat: p.lat, lng: p.lng, positionVerified: p.positionVerified, published: p.published } : cur;
+    }),
+  };
+  if (step.spareLegs === undefined) delete out.spareLegs;
+  // Nothing typed since: the step itself, unchanged (callers may compare by identity).
+  return JSON.stringify(out) === JSON.stringify(step) ? step : out;
 }
 
 const withoutSpare = (d: RouteDraft): RouteDraft => {

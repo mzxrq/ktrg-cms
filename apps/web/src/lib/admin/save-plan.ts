@@ -278,11 +278,13 @@ export function planSave(draft: RouteDraft, saved: RouteDraft | null): SaveStep[
     if (Object.keys(diff).length > 0) steps.push({ op: "updateRoute", body: diff });
   }
 
-  // 3. New and changed places.
+  // 3. New and changed places. A cleared 遥拝 / 閉鎖時 link goes first: the server checks each link against the links it
+  // holds, so a place pointed at must have stopped pointing elsewhere before (A -> B while B -> C is cleared).
+  const placeSteps: SaveStep[] = [];
   for (const p of draft.places) {
     const before = savedPlaces.get(p.key) ?? null;
     if (p.id === null || before === null) {
-      steps.push({ op: "createSpot", key: p.key, body: placeBody(p) });
+      placeSteps.push({ op: "createSpot", key: p.key, body: placeBody(p) });
       continue;
     }
     const diff = changed(placeBody(p), placeBody(before));
@@ -294,8 +296,10 @@ export function planSave(draft: RouteDraft, saved: RouteDraft | null): SaveStep[
       diff.positionVerified = full.positionVerified;
       diff.positionSource = full.positionSource;
     }
-    if (Object.keys(diff).length > 0) steps.push({ op: "updateSpot", key: p.key, id: p.id, body: diff });
+    if (Object.keys(diff).length > 0) placeSteps.push({ op: "updateSpot", key: p.key, id: p.id, body: diff });
   }
+  const clearsLink = (x: SaveStep) => x.op === "updateSpot" && "stampSpotId" in x.body && x.body.stampSpotId === null;
+  steps.push(...placeSteps.filter(clearsLink), ...placeSteps.filter((x) => !clearsLink(x)));
 
   if (after) steps.push({ op: "updateRoute", body: after });
 
@@ -389,8 +393,21 @@ export function draftProblems(d: RouteDraft): DraftProblem[] {
   for (const p of d.places) {
     if (p.nameJa.trim() === "") out.push({ kind: "place_name", key: p.key });
     if (!photoLinkLooksValid(p.photoUrl)) out.push({ kind: "place_photo_link", key: p.key });
-    // A position is both numbers or neither; the app never fills in the missing one.
-    if ((p.lat === null) !== (p.lng === null)) out.push({ kind: "place_position", key: p.key });
+    // A position is both numbers or neither (the app never fills in the missing one), and on the globe: a latitude and
+    // longitude typed the wrong way round (135.7 as 緯度) is caught here, not by a failed save or a map that will not draw.
+    if ((p.lat === null) !== (p.lng === null) || !onGlobe(p)) out.push({ kind: "place_position", key: p.key });
   }
   return out;
 }
+
+/**
+ * A stop moved on its own page while the course line is marked checked: the line still ends where the stop was, so it is no
+ * longer what was checked (data rule: 線を確認した only for a line a person checked). Only for a stop a stretch of line touches.
+ */
+export function lineNoLongerChecked(course: Pick<RouteDraft, "lineVerified" | "legs">, key: string, before: Pick<PlaceDraft, "lat" | "lng">, after: Pick<PlaceDraft, "lat" | "lng">): boolean {
+  const moved = before.lat !== after.lat || before.lng !== after.lng;
+  return moved && course.lineVerified && course.legs.some((l) => l.from === key || l.to === key);
+}
+
+/** A position a map can draw: no number, or |lat| <= 90 and |lng| <= 180. */
+export const onGlobe = (p: { lat: number | null; lng: number | null }) => (p.lat === null || Math.abs(p.lat) <= 90) && (p.lng === null || Math.abs(p.lng) <= 180);
