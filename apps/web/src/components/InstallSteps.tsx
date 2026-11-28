@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, JSX, SVGProps } from "react";
+import { useState, JSX, SVGProps } from "react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { isInAppBrowser } from "@/lib/browser-check";
+import { useInstallOffer } from "@/lib/install-offer";
 
 const big =
   "tap-target flex min-h-12 w-full items-center justify-center rounded-full px-6 text-xl font-bold";
@@ -28,7 +29,6 @@ const ShareIcon: React.FC<React.SVGProps<SVGSVGElement>> = (
   </svg>
 );
 
-type InstallPrompt = Event & { prompt: () => Promise<unknown> };
 
 /**
  * How to put the app on the home screen (see MDN, "Making PWAs installable"). Where the browser offers an install prompt
@@ -62,19 +62,11 @@ function StepPicture({
 
 export function InstallSteps({ titleId }: { titleId: string }) {
   const { t } = useLingui();
-  const [offer, setOffer] = useState<InstallPrompt | null>(null);
+  const offer = useInstallOffer(); // caught at page load (InstallNudge), long before these steps open
   const [ua] = useState(() => navigator.userAgent);
   const ios =
     /\b(iPhone|iPad|iPod)\b/.test(ua) ||
     (/\bMacintosh\b/.test(ua) && navigator.maxTouchPoints > 1);
-  useEffect(() => {
-    const onOffer = (e: Event) => {
-      e.preventDefault(); // keep the browser's own mini bar away: the button below asks instead
-      setOffer(e as InstallPrompt);
-    };
-    window.addEventListener("beforeinstallprompt", onOffer);
-    return () => window.removeEventListener("beforeinstallprompt", onOffer);
-  }, []);
   return (
     <>
       <h2 id={titleId} className="font-serif text-3xl font-bold text-accent">

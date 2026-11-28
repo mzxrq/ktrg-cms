@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { InstallSteps } from "@/components/InstallSteps";
 import { isInAppBrowser } from "@/lib/browser-check";
+import { listenForInstallOffer } from "@/lib/install-offer";
 import { installNudgeShows } from "@/lib/landing-story";
 import { usePresence } from "@/lib/motion";
 
@@ -36,6 +37,8 @@ export function InstallNudge() {
   // InstallSteps reads the browser's user agent, which the server cannot: it is drawn only once the visitor has asked.
   const [asked, setAsked] = useState(false);
   const started = useRef(0); // set on mount: Date.now() is not for render
+  // The browser offers the install near page load: listen now, the steps that show the button open later.
+  useEffect(() => listenForInstallOffer(), []);
   const dialog = useRef<HTMLDialogElement>(null);
   // The bar rises in and fades out (lib/motion), so putting it away is not a jump.
   const { mounted: barMounted, ref: barRef } = usePresence<HTMLDivElement>(show, "rise");
