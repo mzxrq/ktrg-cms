@@ -18,6 +18,10 @@ function setup() {
       // What drizzle throws: its own error, with the driver's as the cause.
       throw new Error("Failed query: select 1", { cause: Object.assign(new Error("password authentication failed for user \"app\""), { code: "28P01" }) });
     })
+    .get("/query-values", () => {
+      // drizzle's DrizzleQueryError puts the bound values after "params:" (an email, a token hash).
+      throw new Error("Failed query: select * from users where email = $1\nparams: walker@example.com", { cause: Object.assign(new Error("timeout"), { code: "57014" }) });
+    })
     .get("/bad-response", () => ({ count: "many" }) as unknown as { count: number }, {
       response: t.Object({ count: t.Number() }),
     })
@@ -109,6 +113,16 @@ describe("one error shape", () => {
     const line = logs.find((l) => l.includes("/api/v1/wrapped"))!;
     expect(line).toContain("Failed query: select 1");
     expect(line).toContain("caused by [28P01]: password authentication failed");
+  });
+
+  test("a failed query's bound values (emails, hashes) never reach the log", async () => {
+    const { call, logs } = setup();
+    expect((await call("GET", "/query-values")).status).toBe(500);
+    const line = logs.find((l) => l.includes("/api/v1/query-values"))!;
+    expect(line).toContain("Failed query: select * from users");
+    expect(line).toContain("caused by [57014]: timeout");
+    expect(line).not.toContain("walker@example.com");
+    expect(line).not.toContain("params:");
   });
 
   test("routes' own errors pass through untouched", async () => {
