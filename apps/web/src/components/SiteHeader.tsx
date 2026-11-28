@@ -177,7 +177,7 @@ export function SiteHeader({
       waiting > 0 &&
       !(await confirmDialog({
         title: t`ログアウトしますか？`,
-        body: t`送信待ちのスタンプが${waiting}件あります。ログアウトすると、次にログインするまで送れません。ログアウトしますか？`,
+        body: t`送信待ちのスタンプが${waiting}件あります。ログアウトすると、再ログインするまで送信できません。このままログアウトしますか？`,
         yes: t`ログアウトする`,
       }))
     )
@@ -228,7 +228,7 @@ export function SiteHeader({
             <button
               type="button"
               onClick={goBack}
-              aria-label={t`もどる`}
+              aria-label={t`戻る`}
               className={`${barButton} min-w-12 justify-center justify-self-start`}
             >
               <ChevronLeftIcon />
@@ -453,9 +453,8 @@ export function SiteHeader({
                     </div>
                   </div>
                   <MenuLinks>
-                    <MenuLink href="/settings" label={t`見やすさの設定`} />
+                    <MenuLink href="/settings" label={t`表示設定`} />
                   </MenuLinks>
-                  <p className="text-base text-muted">{t`文字の大きさ、ふりがな、くっきり表示、画面の動き、音、地図の表示`}</p>
                 </div>
               </MenuGroup>
 

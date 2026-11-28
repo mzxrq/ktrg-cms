@@ -41,6 +41,7 @@ const QUEUED_READ_MS = 4000;
 
 export function StampHere({
   spotId,
+  statusSpotId,
   status: shownStatus,
   alreadyStamped,
   stampImage,
@@ -52,6 +53,8 @@ export function StampHere({
   onStamped,
 }: {
   spotId: string;
+  /** The spot whose status decides the stamp, when it is not this one (遥拝, 閉鎖時のスタンプ地点): `status` is that spot's. */
+  statusSpotId?: string;
   status: "open" | "caution" | "closed" | "info";
   /** The visitor already holds this stamp (before this visit). */
   alreadyStamped: boolean;
@@ -72,7 +75,7 @@ export function StampHere({
   const { t, i18n } = useLingui();
   const router = useRouter();
   // A page left open learns of a closure without being reloaded.
-  const status = useLiveStatus(spotId, shownStatus);
+  const status = useLiveStatus(statusSpotId ?? spotId, shownStatus);
   const [phase, setPhase] = useState<Phase>({ name: "idle" });
   const dialog = useRef<HTMLDialogElement>(null);
   const busy = phase.name === "locating" || phase.name === "sending";

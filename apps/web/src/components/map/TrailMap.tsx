@@ -182,9 +182,9 @@ export function TrailMap({
           // One finger scrolls the page, two fingers move the map: no trap on a long page.
           cooperativeGestures: true,
           locale: {
-            "CooperativeGesturesHandler.MobileHelpText": t`2本の指で地図を動かします`,
-            "CooperativeGesturesHandler.WindowsHelpText": t`Ctrlキーを押しながら地図を動かします`,
-            "CooperativeGesturesHandler.MacHelpText": t`⌘キーを押しながら地図を動かします`,
+            "CooperativeGesturesHandler.MobileHelpText": t`2本指で地図を操作します`,
+            "CooperativeGesturesHandler.WindowsHelpText": t`Ctrl＋スクロールで地図を拡大・縮小`,
+            "CooperativeGesturesHandler.MacHelpText": t`⌘＋スクロールで地図を拡大・縮小`,
           },
           attributionControl: { compact: false },
           // Without this the map prints as a blank box (the browser prints what the canvas still holds).
@@ -432,13 +432,13 @@ export function TrailMap({
   const stopName = selectedStop?.name ?? "";
   const fromLabel = selectedStop
     ? t`「${stopName}」から近い順`
-    : t`コースの出発地点から近い順（まっすぐ測った距離です）`;
+    : t`コースの出発地点から近い順（直線距離）`;
   const anyPlaces = places.length > 0;
 
   if (failed) {
     return (
       <p className="rounded-lg bg-surface p-4 text-lg">
-        {t`この端末では地図を表示できません。下の一覧から場所を選べます。`}
+        {t`この端末では地図を表示できません。下の一覧からスポットを選べます。`}
       </p>
     );
   }
@@ -529,8 +529,8 @@ export function TrailMap({
                 setFlying(false);
               }}
               aria-pressed={terrain}
-              aria-label={t`立体の地図（3D）`}
-              title={t`立体の地図（3D）`}
+              aria-label={t`3D表示`}
+              title={t`3D表示`}
               className={hit}
             >
               <span className={`flex size-9 items-center justify-center rounded-full border border-ink text-base font-bold shadow-sm ${terrain ? "bg-ink text-paper" : "bg-paper/95 text-ink"}`}>
@@ -539,7 +539,7 @@ export function TrailMap({
             </button>
           ) : null}
           {expanded ? null : (
-            <button ref={expandRef} type="button" onClick={() => setExpanded(true)} aria-label={t`大きく表示`} className={hit}>
+            <button ref={expandRef} type="button" onClick={() => setExpanded(true)} aria-label={t`全画面表示`} className={hit}>
               <span className={disc}>
                 <ExpandIcon />
               </span>
@@ -574,7 +574,7 @@ export function TrailMap({
             className={buttonStyle("primary", "md", "order-1 inline-flex self-start shadow-md @4xl:order-none")}
           >
             {flying ? <StopIcon /> : <PlayIcon />}
-            {t`ルート再生`}
+            {flying ? t`停止` : t`ルート再生`}
           </button>
         ) : null}
         {selectedStop || selectedPlace ? (
@@ -634,13 +634,13 @@ export function TrailMap({
               <p className="min-w-0 flex-1 truncate pl-4 text-lg font-bold @4xl:hidden" lang={selectedStop?.nameLang}>
                 {selectedStop ? `${selectedStop.order ? `${selectedStop.order}. ` : ""}${selectedStop.name}` : t`スポットを順に見る`}
               </p>
-              <button type="button" onClick={() => goToStop(-1)} disabled={stopIndex === 0 || flying} aria-label={t`前の場所`} className={hit}>
+              <button type="button" onClick={() => goToStop(-1)} disabled={stopIndex === 0 || flying} aria-label={t`前のスポット`} className={hit}>
                 <ChevronLeftIcon />
               </button>
               <p aria-live="polite" className="min-w-[3.75rem] text-center text-lg font-bold tabular-nums">
                 {stopIndex === -1 ? "－" : stopIndex + 1} / {stops.length}
               </p>
-              <button type="button" onClick={() => (flying ? skip() : goToStop(1))} disabled={!flying && stopIndex === stops.length - 1} aria-label={t`次の場所`} className={hit}>
+              <button type="button" onClick={() => (flying ? skip() : goToStop(1))} disabled={!flying && stopIndex === stops.length - 1} aria-label={t`次のスポット`} className={hit}>
                 <ChevronIcon />
               </button>
             </div>
