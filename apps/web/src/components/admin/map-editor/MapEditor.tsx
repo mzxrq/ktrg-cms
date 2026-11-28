@@ -8,7 +8,7 @@ import { isAllSmooth } from "@/lib/admin/drawn-path";
 import { parseGpx, type GpxWaypoint } from "@/lib/admin/gpx";
 import { applyGpxElevations } from "@/lib/admin/gpx-elevation";
 import { LEG_HIT, LEG_SOURCE, legFeatures, legLayers } from "@/lib/admin/leg-map";
-import { backChoices, backLeg, backPairs, isStraightBack, guideRoute, insertAnchor, insertGuidePoint, legFromPath, legOf, MAX_GUIDE_POINTS, moveAnchor, moveGuidePoint, pairId, pairsOf, pathOfLeg, pathStops, pointsFromAnchors, removeAnchors, removeGuidePoint, RIDE_MODES, setAllCurves, sidePairs, toggleAnchorCurve, type GuidePoint, type Leg, type Path, type RideMode, type Stop } from "@/lib/admin/legs";
+import { backChoices, backLeg, backPairs, isStraightBack, guideRoute, insertAnchor, insertGuidePoint, legFromPath, legOf, MAX_GUIDE_POINTS, moveAnchor, moveGuidePoint, pairId, pairsOf, pathOfLeg, pathStops, pointsFromAnchors, removeAnchors, removeGuidePoint, RIDE_MODES, setAllCurves, sidePairs, toggleAnchorCurve, withAutoLegs, type GuidePoint, type Leg, type Path, type RideMode, type Stop } from "@/lib/admin/legs";
 import { simplify, type LngLatEle } from "@/lib/admin/line";
 import { legTime } from "@/lib/leg-times";
 import { searchPlaces, type PlaceHit } from "@/lib/admin/place-search";
@@ -792,8 +792,8 @@ export function MapEditor(props: MapEditorProps) {
           const r = await buildLine(through, "trail");
           built.push({ from: from.key, to: to.key, points: withEnds(simplify(roundLine(r.line), MAX_POINTS), from, to), ...keep, auto: true });
         }
-        const latestLegs = latest.current.legs;
-        latest.current.onAutoLegs([...latestLegs.filter((l) => !built.some((b) => b.from === l.from && b.to === l.to)), ...built]);
+        // Into the legs as they are now: one drawn by hand while this ran stays as drawn.
+        latest.current.onAutoLegs(withAutoLegs(latest.current.legs, built));
         autoBusy.current = false;
         setWorking(false);
       })();
