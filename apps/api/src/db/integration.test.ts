@@ -928,8 +928,10 @@ describe.skipIf(!url)("seed on real PostgreSQL", () => {
       // On the trail and open, a place with a 閉鎖時のスタンプ地点 is stamped at its own position until it closes.
       await tx.update(spots).set({ detached: false, stopBy: false }).where(eq(spots.id, a!.id));
       expect(await store.findSpot(a!.id)).toMatchObject({ lat: 34.3, lng: 135.1, stampSpotId: null });
-      await tx.update(spots).set({ status: "closed" }).where(eq(spots.id, a!.id));
-      expect(await store.findSpot(a!.id)).toMatchObject({ lat: 34.2, lng: 135.05, stampSpotId: b!.id });
+      const closedAt = new Date("2026-11-28T01:00:00.000Z");
+      await tx.update(spots).set({ status: "closed", statusUpdatedAt: closedAt, positionVerified: true }).where(eq(spots.id, a!.id));
+      // Closed: stamped at the waypoint, and it carries its own position and closing time for a stamp pressed before.
+      expect(await store.findSpot(a!.id)).toMatchObject({ lat: 34.2, lng: 135.05, stampSpotId: b!.id, closedAt, ownLat: 34.3, ownLng: 135.1 });
     });
   });
 

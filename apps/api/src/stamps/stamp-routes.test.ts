@@ -138,6 +138,20 @@ describe("collecting a stamp", () => {
     expect((((await (await stamp(cookies.bob)).json()) as Json).stamp.also as Json[]).map((s) => s.spotId)).toEqual([TRAIL]);
   });
 
+  test("閉鎖時のスタンプ地点: a stamp pressed offline at the place while it was open is accepted after it closes", async () => {
+    const { stamp, cookies, answer, mem } = await setup();
+    const TRAIL = "ffffffff-ffff-4fff-8fff-ffffffffffff";
+    const H = 60 * 60 * 1000;
+    const ago = (ms: number) => new Date(Date.now() - ms).toISOString();
+    // The place stands at a spot of its own; its fallback (SPOT_ID) is somewhere else. Closed an hour ago.
+    mem.spots.set(TRAIL, spot({ id: TRAIL, stampSpotId: SPOT_ID, lat: HERE.lat + 0.02, lng: HERE.lng, status: "closed", statusUpdatedAt: new Date(Date.now() - H) }));
+    const atPlace = { spotId: TRAIL, lat: HERE.lat + 0.02, lng: HERE.lng };
+    // Pressed there two hours ago (it was open): checked at the place itself, not at the fallback.
+    expect((await stamp(cookies.alice, { ...atPlace, scannedAt: ago(2 * H) })).status).toBe(200);
+    // Pressed there after the closure: the fallback decides, and the place is far from it.
+    expect(await answer(await stamp(cookies.bob, { ...atPlace, scannedAt: ago(H / 2) }))).toEqual([409, "too_far"]);
+  });
+
   test("user B never sees user A's stamps, and stamps for themselves only", async () => {
     const { stamp, cookies, call } = await setup();
     await stamp(cookies.alice);

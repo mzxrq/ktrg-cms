@@ -31,6 +31,11 @@ const spotColumns = {
   statusUpdatedAt: sql<Date | null>`case when ${usesStampFrom} then ${stampFrom.statusUpdatedAt} else ${spots.statusUpdatedAt} end`.mapWith(spots.statusUpdatedAt),
   // Only while in use, so one press links exactly the places stamped at the same waypoint.
   stampSpotId: sql<string | null>`case when ${usesStampFrom} then ${spots.stampSpotId} end`,
+  // A closed on-trail place (not 遥拝): when it closed and where it stands itself, for a stamp pressed there before.
+  closedAt: sql<Date | null>`case when ${usesStampFrom} and not ${spots.detached} then ${spots.statusUpdatedAt} end`.mapWith(spots.statusUpdatedAt),
+  ownLat: sql<number | null>`case when ${usesStampFrom} and not ${spots.detached} and ${spots.positionVerified} then ${spots.lat} end`.mapWith(Number),
+  ownLng: sql<number | null>`case when ${usesStampFrom} and not ${spots.detached} and ${spots.positionVerified} then ${spots.lng} end`.mapWith(Number),
+  ownRadiusM: sql<number | null>`case when ${usesStampFrom} and not ${spots.detached} then ${spots.radiusM} end`.mapWith(Number),
 };
 
 const nameJa = alias(spotTranslations, "name_ja");
