@@ -127,7 +127,9 @@ test("tiles are asked for past the worker's saved copy, so an update really fetc
     return site(u);
   }) as unknown as typeof fetch;
   await savePack("r1", ["u/1"], () => {});
-  expect(asked).toEqual([{ cache: "reload" }]);
+  expect(asked.map((i) => i?.cache)).toEqual(["reload"]);
+  // and with a time limit, so a stalled tile counts as missing instead of freezing the progress
+  expect(asked[0]?.signal).toBeInstanceOf(AbortSignal);
 });
 
 test("age and size read plainly", () => {

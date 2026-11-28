@@ -87,6 +87,9 @@ export async function refreshSavedPages(): Promise<void> {
   );
 }
 
+/** How long one tile may take (headers and body) before it counts as missing. */
+const TILE_TIMEOUT_MS = 15_000;
+
 const coursePage = (routeId: string) => `/routes/${encodeURIComponent(routeId)}`;
 const lineUrl = (routeId: string) => `/api/v1/routes/${encodeURIComponent(routeId)}`;
 
@@ -132,8 +135,9 @@ export async function savePack(routeId: string, urls: string[], onProgress: (don
     await Promise.all(
       urls.slice(i, i + AT_A_TIME).map(async (url) => {
         try {
-          // reload: past the worker's saved copy too, or an update would only save the old tile again (app/sw.ts).
-          const res = await fetch(url, { cache: "reload" });
+          // reload: past the worker's saved copy too, or an update would only save the old tile again (app/sw.ts). A tile
+          // that has not arrived in 15 s counts as missing, so a stalled connection cannot freeze the progress for ever.
+          const res = await fetch(url, { cache: "reload", signal: AbortSignal.timeout(TILE_TIMEOUT_MS) });
           if (res.ok) {
             const size = (await res.clone().blob()).size; // added after the await: `bytes += await` would lose parallel updates
             bytes += size;
