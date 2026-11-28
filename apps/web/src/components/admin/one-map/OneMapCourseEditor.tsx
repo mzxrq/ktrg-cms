@@ -76,7 +76,7 @@ function Editor({ initial, sharedWith, routeNames, locale, onDirtyChange, onSave
     onSaved();
   }, [saved, onSaved]);
 
-  const confirmRemoval = useConfirmRemoval(draft, sharedWith, routeNames, locale);
+  const confirmRemoval = useConfirmRemoval(draft, sharedWith, routeNames, locale, d.setMessage);
 
   return (
     // inert while saving: an edit made then (the map, Ctrl+Z) would be overwritten by the saved copy without a word.

@@ -98,7 +98,7 @@ export function RouteEditor({ initial, order, locale, shared = [], sharedWith = 
   const savedByKey = useMemo(() => new Map(saved.places.map((p) => [p.key, p])), [saved.places]);
   // Places of this course that other courses hold too: listed in the shared block, and removing one asks first.
   const lent = draft.places.flatMap((p) => (p.id && sharedWith[p.id] ? [{ key: p.key, name: locale === "en" && p.nameEn ? p.nameEn : p.nameJa, routeIds: sharedWith[p.id]! }] : []));
-  const confirmRemoval = useConfirmRemoval(draft, sharedWith, routeNames, locale);
+  const confirmRemoval = useConfirmRemoval(draft, sharedWith, routeNames, locale, setMessage);
   const problemOf = (kind: DraftProblem["kind"], key?: string) => problems.some((p) => p.kind === kind && (!("key" in p) || p.key === key));
   // A walk that comes back to where it began (周回 or 往復); its first waypoint on the way is the start and the goal.
   const comesBack = draft.walkStyle === "loop" || draft.walkStyle === "out_and_back";
