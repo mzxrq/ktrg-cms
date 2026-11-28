@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, test } from "bun:test";
-import { clearSavedPages, deletePack, megabytes, packAge, packTileUrls, readPack, refreshSavedPages, savePack } from "./offline-pack";
+import { claimSavedPages, clearSavedPages, deletePack, megabytes, packAge, packTileUrls, readPack, refreshSavedPages, savePack } from "./offline-pack";
 
 const area = { lat: 34.45, lng: 135.65, widthM: 4000, heightM: 4000, verified: true };
 
@@ -78,6 +78,17 @@ test("after signing out (the saved pages gone) a course with its tiles still on 
   expect(await readPack("r1")).not.toBeNull();
   await clearSavedPages();
   expect(await readPack("r1")).toBeNull();
+});
+
+test("saved pages of someone else are dropped when the page loads for another person; the owner's stay", async () => {
+  globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
+  await claimSavedPages("user-a");
+  await savePack("r1", ["u/1"], () => {});
+  await claimSavedPages("user-a");
+  expect(await readPack("r1")).not.toBeNull();
+  await claimSavedPages("user-b"); // A's session ended elsewhere; B signs in on this phone
+  expect(await readPack("r1")).toBeNull();
+  expect([...(fake.stores.get("ktrg-pages")?.keys() ?? [])]).toEqual(["/__ktrg-pages-owner"]);
 });
 
 test("a page that cannot be fetched fails the whole pack", async () => {

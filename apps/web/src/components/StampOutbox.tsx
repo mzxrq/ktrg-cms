@@ -1,5 +1,6 @@
 "use client";
 
+import { claimSavedPages } from "@/lib/offline-pack";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLingui } from "@lingui/react/macro";
@@ -65,6 +66,7 @@ export function StampOutbox({ userKey }: { userKey: string }) {
     let live = true;
     (async () => {
       const outbox = getOutbox();
+      await claimSavedPages(userKey); // pages saved under another account are not this person's
       await outbox.setUser(userKey);
       if (userKey !== "guest") {
         const guest = await outbox.guestWaiting();

@@ -67,6 +67,28 @@ export async function deletePack(routeId: string): Promise<void> {
   if (!(await caches.keys()).some((k) => k.startsWith("ktrg-pack-"))) await pages.delete(MAP_PAGE);
 }
 
+/** Whose saved pages these are (a user id, or "guest"): kept beside them in the same cache. */
+const OWNER_URL = "/__ktrg-pages-owner";
+
+/**
+ * The page knows who is signed in: saved pages of someone else (a session that ended without signing out here: expired,
+ * revoked, deleted) are dropped, so they are never shown to the next person, and stamps pressed offline on them are not
+ * queued under the wrong account. Then the pages are marked as this person's.
+ */
+export async function claimSavedPages(userKey: string): Promise<void> {
+  if (typeof caches === "undefined") return;
+  try {
+    const pages = await caches.open(PAGES_CACHE);
+    const owner = await (await pages.match(OWNER_URL))?.text();
+    if (owner !== undefined && owner !== userKey) {
+      await caches.delete(PAGES_CACHE);
+      await (await caches.open(PAGES_CACHE)).put(OWNER_URL, new Response(userKey));
+    } else if (owner === undefined) await pages.put(OWNER_URL, new Response(userKey));
+  } catch {
+    // storage blocked: nothing is saved here anyway
+  }
+}
+
 /** Sign-out: the saved pages show the person's name and stamps, so they must not outlive the session. Tiles are public and stay. */
 export async function clearSavedPages(): Promise<void> {
   if (typeof caches !== "undefined") await caches.delete(PAGES_CACHE).catch(() => false);
@@ -81,6 +103,7 @@ export async function refreshSavedPages(): Promise<void> {
   const pages = await caches.open(PAGES_CACHE);
   await Promise.all(
     (await pages.keys()).map(async (page) => {
+      if ((typeof page === "string" ? page : page.url).endsWith(OWNER_URL)) return;
       const res = await fetch(page, { cache: "reload" }).catch(() => null);
       if (res?.ok) await pages.put(page, res);
     }),
