@@ -507,6 +507,19 @@ describe("the route's other points (turns, toilets, danger ...)", () => {
     expect((await svc.publicRoute(r.id))?.route).toMatchObject({ status: "soon", publishedSpotCount: 0 });
   });
 
+  test("a 準備中 course sends none of its published waypoints, and a point on it is not found on its own", async () => {
+    const r = await route({ geometry: LINE });
+    const water = await spot(r.id, { nameJa: "水場", kind: "drinking_water", ...verified, permissionConfirmed: true, descriptionJa: "説明" });
+    await svc.publishSpot(ADMIN, water.id);
+    expect(await svc.publicRoute(r.id)).toMatchObject({ route: { status: "soon" }, spots: [], points: [] });
+    expect(await svc.publicSpot(water.id)).toBeNull();
+    // The first stamp place opens the course, and its points with it.
+    const stamp = await spot(r.id, { nameJa: "経塚", ...verified, permissionConfirmed: true });
+    await svc.publishSpot(ADMIN, stamp.id);
+    expect((await svc.publicRoute(r.id))?.points.map((p) => p.nameJa)).toEqual(["水場"]);
+    expect((await svc.publicSpot(water.id))?.nameJa).toBe("水場");
+  });
+
   test("visitors get stamp places and the other points apart; only stamp places make a route ready; the lists count stamp places only", async () => {
     const r = await route({ geometry: LINE });
     const stamp = await spot(r.id, { nameJa: "経塚", ...verified, permissionConfirmed: true });
