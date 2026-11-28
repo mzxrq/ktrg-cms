@@ -1,4 +1,4 @@
-import { createHash, randomBytes } from "node:crypto";
+import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { normalizeDisplayName } from "../me/me-service";
 import { normalizeEmail } from "./otp";
 import type { Locale } from "./user";
@@ -29,6 +29,8 @@ export interface SsoConfig {
   /** Tests pass a fake provider. */
   fetch?: (url: string, init: RequestInit) => Promise<Response>;
   now?: () => Date;
+  /** The server secret (OTP_HMAC_SECRET); the flow cookie is signed with a key made from it. */
+  secret: string;
 }
 
 const PROVIDERS: Record<SsoProvider, { authorize: string; token: string; issuers: string[]; scope: string; pkce: boolean }> = {
@@ -76,11 +78,22 @@ export interface SsoFlow {
 
 export const ssoCookieName = (secure: boolean) => (secure ? "__Host-ktrg_sso" : "ktrg_sso");
 
-export const encodeFlow = (flow: SsoFlow) => Buffer.from(JSON.stringify(flow)).toString("base64url");
+const flowMac = (key: Buffer, body: string) => createHmac("sha256", key).update(body).digest();
 
-export function decodeFlow(raw: string): SsoFlow | null {
+/** The cookie's value: the flow, then its signature, so an edited cookie (mode, account, return path) is refused. */
+export function encodeFlow(flow: SsoFlow, key: Buffer): string {
+  const body = Buffer.from(JSON.stringify(flow)).toString("base64url");
+  return `${body}.${flowMac(key, body).toString("base64url")}`;
+}
+
+export function decodeFlow(raw: string, key: Buffer): SsoFlow | null {
+  const [body, mac, extra] = raw.split(".");
+  if (!body || !mac || extra !== undefined) return null;
+  const given = Buffer.from(mac, "base64url");
+  const want = flowMac(key, body);
+  if (given.length !== want.length || !timingSafeEqual(given, want)) return null;
   try {
-    const f = JSON.parse(Buffer.from(raw, "base64url").toString("utf8")) as Partial<SsoFlow>;
+    const f = JSON.parse(Buffer.from(body, "base64url").toString("utf8")) as Partial<SsoFlow>;
     const ok =
       SSO_PROVIDERS.includes(f.provider as SsoProvider) &&
       ["login", "link", "reauth"].includes(f.mode as string) &&
@@ -154,8 +167,14 @@ export function createSso(config: SsoConfig) {
   const now = config.now ?? (() => new Date());
   const doFetch = config.fetch ?? ((url: string, init: RequestInit) => fetch(url, init));
   const redirectUri = (p: SsoProvider) => `${config.appOrigin}/api/v1/auth/sso/${p}/callback`;
+  const flowKey = createHmac("sha256", config.secret).update("sso-flow-cookie").digest();
 
   return {
+    /** The flow as the cookie keeps it (signed). */
+    sealFlow: (flow: SsoFlow) => encodeFlow(flow, flowKey),
+    /** The cookie back as a flow; null when it was edited, signed with another key, or is not a flow. */
+    openFlow: (raw: string) => decodeFlow(raw, flowKey),
+
     /** The providers this site has set up, for the buttons. */
     providers: (): SsoProvider[] => SSO_PROVIDERS.filter((p) => config.providers[p]),
 
