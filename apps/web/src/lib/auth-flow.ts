@@ -47,6 +47,9 @@ export function failureFromApi(status: number, value: unknown): AuthFailure {
  */
 export function safeNextPath(next: string | null | undefined, fallback: string): string {
   if (!next || !next.startsWith("/") || next.startsWith("//") || next.includes("\\")) return fallback;
+  // URL parsing drops tabs and newlines ("/\t/evil.example" becomes "//evil.example"), so no control characters, and the
+  // parsed result must still be on this site.
+  if (/[\u0000-\u001f\u007f]/.test(next) || new URL(next, "https://x.invalid").origin !== "https://x.invalid") return fallback;
   return next;
 }
 

@@ -28,7 +28,7 @@ describe("safeNextPath", () => {
   });
 
   test("anything that could leave the site falls back", () => {
-    for (const bad of ["https://evil.example", "//evil.example", "/\\evil.example", "javascript:alert(1)", "", null, undefined]) {
+    for (const bad of ["https://evil.example", "//evil.example", "/\\evil.example", "/\t/evil.example", "/\n/evil.example", "/\r//evil.example", "javascript:alert(1)", "", null, undefined]) {
       expect(safeNextPath(bad, "/")).toBe("/");
     }
   });
