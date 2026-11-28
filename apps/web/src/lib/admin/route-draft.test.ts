@@ -94,6 +94,19 @@ describe("legs", () => {
     // one step to undo
     expect(run(s, { type: "undo" }).present.legs).toEqual([]);
   });
+  test("Ctrl+Z takes back the map step and keeps the words typed after it", () => {
+    let s = withStops(); // a, b, c
+    s = run(s, { type: "movePlace", key: "b", lat: 34.05, lng: 135.05 });
+    s = run(s, { type: "text", field: "descriptionJa", value: "あとから書いた説明" }, { type: "place", key: "a", patch: { nameJa: "あとから付けた名前" } });
+    const undone = run(s, { type: "undo" }).present;
+    expect(undone.places.find((p) => p.key === "b")).not.toMatchObject({ lat: 34.05, lng: 135.05 });
+    expect(undone.descriptionJa).toBe("あとから書いた説明");
+    expect(undone.places.find((p) => p.key === "a")!.nameJa).toBe("あとから付けた名前");
+    // Redo brings the move back, still with the words.
+    const redone = run(run(s, { type: "undo" }), { type: "redo" }).present;
+    expect(redone.places.find((p) => p.key === "b")).toMatchObject({ lat: 34.05, lng: 135.05, });
+    expect(redone.descriptionJa).toBe("あとから書いた説明");
+  });
   test("a course area is part of the draft: saved, loaded again, undone, and drawn in the preview in place of the automatic box", () => {
     const box = { west: 135.0, south: 34.2, east: 135.3, north: 34.4 };
     let s = run(fresh(), { type: "area", value: box });

@@ -523,11 +523,11 @@ export function draftReducer(state: DraftState, a: DraftAction): DraftState {
   }
   if (a.type === "undo") {
     const prev = state.past.at(-1);
-    return prev ? { present: prev, past: state.past.slice(0, -1), future: [state.present, ...state.future] } : state;
+    return prev ? { present: mapStepOf(prev, state.present), past: state.past.slice(0, -1), future: [state.present, ...state.future] } : state;
   }
   if (a.type === "redo") {
     const next = state.future[0];
-    return next ? { present: next, past: [...state.past, state.present], future: state.future.slice(1) } : state;
+    return next ? { present: mapStepOf(next, state.present), past: [...state.past, state.present], future: state.future.slice(1) } : state;
   }
   let present = apply(state.present, a);
   if (present === state.present) return state;
@@ -538,6 +538,33 @@ export function draftReducer(state: DraftState, a: DraftAction): DraftState {
   if (a.type === "autoLegs") return { ...state, present };
   if (!undoable.has(a.type)) return { ...state, present };
   return { present, past: [...state.past, state.present].slice(-HISTORY), future: [] };
+}
+
+/**
+ * Undo and redo step through the map (line, legs, area, which waypoints there are, their order and positions): only map
+ * steps are kept in the history. Everything typed since (texts, translations, video, photos, a waypoint's words) stays
+ * as it is now, so Ctrl+Z never throws words away. The numbers the line gives (distance, climb, time) follow the map
+ * unless someone typed them.
+ */
+function mapStepOf(step: RouteDraft, now: RouteDraft): RouteDraft {
+  const typed = new Map(now.places.map((p) => [p.key, p]));
+  const out: RouteDraft = {
+    ...now,
+    line: step.line,
+    legs: step.legs,
+    spareLegs: step.spareLegs,
+    area: step.area,
+    distanceKm: now.distanceManual ? now.distanceKm : step.distanceKm,
+    elevationGainM: now.climbManual ? now.elevationGainM : step.elevationGainM,
+    expectedTimeMin: now.timeManual ? now.expectedTimeMin : step.expectedTimeMin,
+    places: step.places.map((p) => {
+      const cur = typed.get(p.key);
+      return cur ? { ...cur, lat: p.lat, lng: p.lng } : p;
+    }),
+  };
+  if (step.spareLegs === undefined) delete out.spareLegs;
+  // Nothing typed since: the step itself, unchanged (callers may compare by identity).
+  return JSON.stringify(out) === JSON.stringify(step) ? step : out;
 }
 
 const withoutSpare = (d: RouteDraft): RouteDraft => {
