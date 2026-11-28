@@ -12,7 +12,6 @@ import {
 } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { logOut } from "@/lib/auth-client";
-import { clearSavedPages } from "@/lib/offline-pack";
 import {
   BookmarkIcon,
   ChevronIcon,
@@ -188,7 +187,7 @@ export function SiteHeader({
       return;
     setLeaving(true);
     setLeaveFailed(null);
-    await clearSavedPages(); // the saved pages show this person's stamps
+    // The pages saved for offline use stay on the phone: once signed out they are fetched again as a guest (StampOutbox).
     const left = await logOut();
     setLeaving(false);
     if (!left.ok) {

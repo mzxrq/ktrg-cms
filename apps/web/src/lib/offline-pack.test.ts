@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, test } from "bun:test";
-import { claimSavedPages, clearSavedPages, deletePack, megabytes, packAge, packTileUrls, readPack, refreshSavedPages, savePack } from "./offline-pack";
+import { claimSavedPages, deletePack, megabytes, packAge, packTileUrls, readPack, refreshSavedPages, savePack } from "./offline-pack";
 
 const area = { lat: 34.45, lng: 135.65, widthM: 4000, heightM: 4000, verified: true };
 
@@ -45,7 +45,7 @@ test("the pages and the line are kept with the pack, the line without the rest o
   expect(line).toEqual({ route: { line: { coordinates: [[1, 2]] } } });
 });
 
-test("deleting the last pack takes the map page too, and signing out empties the saved pages", async () => {
+test("deleting the last pack takes the map page too", async () => {
   globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
   await savePack("r1", ["u/1"], () => {});
   await savePack("r2", ["u/1"], () => {});
@@ -53,9 +53,6 @@ test("deleting the last pack takes the map page too, and signing out empties the
   expect([...(fake.stores.get("ktrg-pages")?.keys() ?? [])].sort()).toEqual(["/map", "/routes/r2"]);
   await deletePack("r2");
   expect([...(fake.stores.get("ktrg-pages")?.keys() ?? [])]).toEqual([]);
-  await savePack("r2", ["u/1"], () => {});
-  await clearSavedPages();
-  expect(fake.stores.has("ktrg-pages")).toBe(false);
 });
 
 test("after a new version takes over, every saved page is fetched again; one that fails keeps its old copy", async () => {
@@ -72,23 +69,39 @@ test("after a new version takes over, every saved page is fetched again; one tha
   expect(await fake.stores.get("ktrg-pages")?.get("/routes/r1")?.text()).toBe("x".repeat(1000));
 });
 
-test("after signing out (the saved pages gone) a course with its tiles still on the phone is not shown as saved", async () => {
+test("a course whose course page is missing (tiles still on the phone) is not shown as saved", async () => {
   globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
   await savePack("r1", ["u/1"], () => {}, 5000);
   expect(await readPack("r1")).not.toBeNull();
-  await clearSavedPages();
+  fake.stores.get("ktrg-pages")!.delete("/routes/r1");
   expect(await readPack("r1")).toBeNull();
 });
 
-test("saved pages of someone else are dropped when the page loads for another person; the owner's stay", async () => {
+test("another person here (signed in, or signed out): the saved pages stay and are fetched again for them", async () => {
   globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
   await claimSavedPages("user-a");
   await savePack("r1", ["u/1"], () => {});
+  const asked: string[] = [];
+  globalThis.fetch = (async (u: string) => (asked.push(u), new Response(`page for b: ${u}`))) as unknown as typeof fetch;
+  await claimSavedPages("user-a"); // the same person: nothing fetched
+  expect(asked).toEqual([]);
+  await claimSavedPages("user-b"); // A signed out or their session ended; B is here now
+  expect(asked.sort()).toEqual(["/map", "/routes/r1"]);
+  expect(await readPack("r1")).not.toBeNull(); // still 保存済み, still opens offline
+  expect(await fake.stores.get("ktrg-pages")?.get("/routes/r1")?.text()).toBe("page for b: /routes/r1");
+});
+
+test("with no signal for the new person, the pages stay as they were and are fetched again on a later load", async () => {
+  globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
   await claimSavedPages("user-a");
+  await savePack("r1", ["u/1"], () => {});
+  globalThis.fetch = (async () => { throw new TypeError("offline"); }) as unknown as typeof fetch;
+  await claimSavedPages("guest");
   expect(await readPack("r1")).not.toBeNull();
-  await claimSavedPages("user-b"); // A's session ended elsewhere; B signs in on this phone
-  expect(await readPack("r1")).toBeNull();
-  expect([...(fake.stores.get("ktrg-pages")?.keys() ?? [])]).toEqual(["/__ktrg-pages-owner"]);
+  const asked: string[] = [];
+  globalThis.fetch = (async (u: string) => (asked.push(u), new Response("ok"))) as unknown as typeof fetch;
+  await claimSavedPages("guest"); // not marked as the guest's yet: tried again
+  expect(asked.sort()).toEqual(["/map", "/routes/r1"]);
 });
 
 test("a page that cannot be fetched fails the whole pack", async () => {

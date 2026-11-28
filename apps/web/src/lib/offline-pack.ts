@@ -9,9 +9,8 @@ import { readJson } from "@/lib/read-json";
 // a tile request from here before it asks the network. A small JSON entry in the same cache says when it was saved and
 // how big it is, so the cache and its description can never disagree.
 // The pack also keeps the pages the map needs (the map and the course page) and the course's line, so the app opens cold with
-// no signal. Pages are the visitor's own (their stamps), kept in one shared cache that is emptied at sign-out (clearSavedPages),
-// and the worker only uses them when the network fails, never in place of a page it can fetch.
-// shortcut: a person whose session simply expired never signs out; their saved pages stay until the next sign-out or save.
+// no signal. Pages are the visitor's own (their stamps), kept in one shared cache and fetched again for whoever is signed in
+// next (claimSavedPages), and the worker only uses them when the network fails, never in place of a page it can fetch.
 // shortcut: a tile shared by two neighbouring courses is stored twice, when storage matters keep one shared tile cache.
 
 const META_URL = "/__pack-meta";
@@ -50,8 +49,7 @@ export async function readPack(routeId: string): Promise<PackInfo | null> {
   try {
     if (!(await caches.has(packCacheName(routeId)))) return null;
     const hit = await (await caches.open(packCacheName(routeId))).match(META_URL);
-    // The tiles stay after signing out, but the course page went with the session (clearSavedPages): without it the map
-    // does not open offline, so the course is not 保存済み.
+    // Without its course page the map does not open offline, so the course is not 保存済み.
     if (!hit || !(await (await caches.open(PAGES_CACHE)).match(coursePage(routeId)))) return null;
     return (await hit.json()) as PackInfo;
   } catch {
@@ -71,43 +69,42 @@ export async function deletePack(routeId: string): Promise<void> {
 const OWNER_URL = "/__ktrg-pages-owner";
 
 /**
- * The page knows who is signed in: saved pages of someone else (a session that ended without signing out here: expired,
- * revoked, deleted) are dropped, so they are never shown to the next person, and stamps pressed offline on them are not
- * queued under the wrong account. Then the pages are marked as this person's.
+ * The page knows who is signed in (an account, or "guest" after signing out). The saved pages show the person who saved
+ * them (name, stamps), so when that is someone else they are fetched again with this session: the offline map stays
+ * available on this phone whoever uses it (user, 2026-11-28), and it shows, and queues stamps for, the person now here.
+ * They count as this person's only once every page came back; a page that could not be fetched keeps its old copy, and
+ * the next page load tries again.
  */
 export async function claimSavedPages(userKey: string): Promise<void> {
   if (typeof caches === "undefined") return;
   try {
     const pages = await caches.open(PAGES_CACHE);
     const owner = await (await pages.match(OWNER_URL))?.text();
-    if (owner !== undefined && owner !== userKey) {
-      await caches.delete(PAGES_CACHE);
-      await (await caches.open(PAGES_CACHE)).put(OWNER_URL, new Response(userKey));
-    } else if (owner === undefined) await pages.put(OWNER_URL, new Response(userKey));
+    if (owner === userKey) return;
+    if (owner !== undefined && !(await refreshSavedPages())) return;
+    await pages.put(OWNER_URL, new Response(userKey));
   } catch {
     // storage blocked: nothing is saved here anyway
   }
 }
 
-/** Sign-out: the saved pages show the person's name and stamps, so they must not outlive the session. Tiles are public and stay. */
-export async function clearSavedPages(): Promise<void> {
-  if (typeof caches !== "undefined") await caches.delete(PAGES_CACHE).catch(() => false);
-}
-
 /**
  * A new version took over: the saved pages name the old version's scripts, which it has just deleted, so opened offline they
  * would be blank. Each is fetched again (with the visitor's session, like saving it); one that fails keeps its old copy.
+ * True when every page came back.
  */
-export async function refreshSavedPages(): Promise<void> {
-  if (typeof caches === "undefined" || !(await caches.has(PAGES_CACHE))) return;
+export async function refreshSavedPages(): Promise<boolean> {
+  if (typeof caches === "undefined" || !(await caches.has(PAGES_CACHE))) return true;
   const pages = await caches.open(PAGES_CACHE);
-  await Promise.all(
+  const got = await Promise.all(
     (await pages.keys()).map(async (page) => {
-      if ((typeof page === "string" ? page : page.url).endsWith(OWNER_URL)) return;
+      if ((typeof page === "string" ? page : page.url).endsWith(OWNER_URL)) return true;
       const res = await fetch(page, { cache: "reload" }).catch(() => null);
       if (res?.ok) await pages.put(page, res);
+      return res?.ok === true;
     }),
   );
+  return got.every(Boolean);
 }
 
 /** How long one tile may take (headers and body) before it counts as missing. */
