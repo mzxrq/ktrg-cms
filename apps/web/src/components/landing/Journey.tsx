@@ -57,7 +57,7 @@ export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = 
               <dl className="grid min-w-0 flex-1 grid-cols-1 gap-3 @[34rem]:grid-cols-3 @[34rem]:text-center">
                 <Fact term={<Trans>コース</Trans>} value={<Trans>全{TOTAL_ROUTES}区間</Trans>} />
                 <Fact term={<Trans>総距離</Trans>} value={<Trans>約{TRAIL_KM}km</Trans>} />
-                <Fact term={<Trans>経塚</Trans>} value={<Trans>{TOTAL_STAMPS}か所</Trans>} />
+                <Fact term={<Trans>経塚</Trans>} value={<Trans>28か所</Trans>} />
               </dl>
               <figure className="flex w-28 shrink-0 flex-col gap-1 @[34rem]:w-36">
                 <EnNoGyoja className="h-auto w-full" />
