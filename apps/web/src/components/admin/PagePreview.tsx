@@ -47,7 +47,7 @@ export function PagePreview({ text, locale, home }: { text: PageText; locale: st
     <PreviewFrame locale={locale} canWiden={false} plain={!phone} extra={buttons}>
       {(lang) => (
         <div inert key={`${lang}-${calm}-${phone}`}>
-          {home ? <Landing {...home} locale={lang} text={homeTextIn(shown, lang)} /> : null}
+          {home ? <Landing {...home} locale={lang} text={homeTextIn(shown, lang)} still /> : null}
         </div>
       )}
     </PreviewFrame>

@@ -64,6 +64,7 @@ export function Landing({
   chapterPhotos,
   mapLook,
   flow = false,
+  still = false,
 }: {
   locale: string;
   routes: RouteSummary[];
@@ -85,6 +86,8 @@ export function Landing({
   mapLook?: MapSettings;
   /** The journey scrolls with the page instead of being pinned (the default; an admin can switch back in 詳細設定). */
   flow?: boolean;
+  /** The admin's preview: every chapter shown at once, no motion and no scroll line (it scrolls in a box, not the window). */
+  still?: boolean;
 }) {
   const w = useHomeWords(text);
   // Grounds for the chapters after the first ones: surface, paper, surface ... in page order. The journey ends on a surface
@@ -235,10 +238,10 @@ export function Landing({
     // One column on a phone and a tablet; two columns on a desktop. Most sections span both. Sized by the page's own width, not
     // the screen's, so the admin's phone-shaped preview shows the phone layout on a desktop.
     // data-landing-top: the public layout drops its top padding for this page, so the photo starts at the top edge.
-    <StoryMotion className="@container">
+    <StoryMotion className="@container" still={still}>
     {/* The photo runs behind the status bar; the strip comes back once it has left (CoverWatch). The line shows how far the story goes. */}
     <CoverWatch />
-    {top ? null : <ScrollProgress />}
+    {top || still ? null : <ScrollProgress />}
     <div data-landing-top="" className="grid grid-cols-1 gap-10 @[42rem]:grid-cols-2 @[42rem]:gap-x-8">
       {/* The same photos for everyone; a signed-in visitor's greeting takes the line's place, and their walk is the first chapter below. */}
       {top ? (
@@ -248,7 +251,7 @@ export function Landing({
       ) : (
         // A first-time visitor: the journey (the photos, what it is, the rally, where to start), edge to edge like the hero.
         <div className="@[42rem]:col-span-2 @[42rem]:mx-[calc((100%-100vw+var(--rail))/2)]">
-          <Journey slides={slides} routes={routes} locale={locale} w={w} chapterPhotos={chapterPhotos} flow={flow} />
+          <Journey slides={slides} routes={routes} locale={locale} w={w} chapterPhotos={chapterPhotos} flow={flow} still={still} />
         </div>
       )}
 

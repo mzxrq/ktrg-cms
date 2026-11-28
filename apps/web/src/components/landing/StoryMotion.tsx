@@ -11,14 +11,15 @@ import { useEffect, useRef, type ReactNode } from "react";
 // failing to load (the catch), reduced motion or calm (the rule never applies; the effect leaves at once).
 const HIDDEN = "[data-reveal] > *, [data-ground] h2";
 
-export function StoryMotion({ children, className = "" }: { children: ReactNode; className?: string }) {
+/** `still`: everything shown at once, no motion (the admin's preview scrolls inside a box, which scroll triggers on the window never see). */
+export function StoryMotion({ children, className = "", still = false }: { children: ReactNode; className?: string; still?: boolean }) {
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = root.current;
     if (!el) return;
     const show = () => el.classList.remove("story-pending");
-    if (!window.matchMedia("(prefers-reduced-motion: no-preference)").matches || document.documentElement.hasAttribute("data-calm")) {
+    if (still || !window.matchMedia("(prefers-reduced-motion: no-preference)").matches || document.documentElement.hasAttribute("data-calm")) {
       show();
       return;
     }
@@ -76,7 +77,7 @@ export function StoryMotion({ children, className = "" }: { children: ReactNode;
       gone = true;
       stop();
     };
-  }, []);
+  }, [still]);
 
   return (
     <div ref={root} className={`story-pending ${className}`}>
