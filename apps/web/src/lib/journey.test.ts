@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { BEAT_STARTS, beatAt, drawnShare, moundSealPoints, motionMode, sealPoints, sealsPlaced, stageLine } from "./journey";
+import { BEAT_STARTS, beatAt, drawnShare, moundSealPoints, motionMode, sealPoints, sealsPlaced, stageLine, progressOfBeat } from "./journey";
 import { RIDGE_HEIGHT, RIDGE_WIDTH, ridgePath } from "./ridge";
 
 test("the beat is the last one whose start the scroll has reached", () => {
@@ -126,4 +126,8 @@ describe("seals by mound", () => {
     expect(moundSealPoints(line, [])).toEqual([]);
     expect(moundSealPoints([[3, 3]], [1, 2])).toEqual([]);
   });
+});
+
+test("scrolling to a beat's place shows that beat (Tab into beat 1 or 2 brings it up)", () => {
+  for (const b of [0, 1, 2] as const) expect(beatAt(progressOfBeat(b))).toBe(b);
 });

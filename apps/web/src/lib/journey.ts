@@ -9,6 +9,13 @@ export type BeatIndex = 0 | 1 | 2;
 
 const clamp01 = (n: number) => (Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 0);
 
+/** Where to scroll to show a beat: a little past its start, so the beat is fully there. */
+export function progressOfBeat(beat: BeatIndex): number {
+  const start = BEAT_STARTS[beat] ?? 0;
+  const next = BEAT_STARTS[beat + 1] ?? 1;
+  return start + (next - start) * 0.25;
+}
+
 /** The current beat: the last whose start the scroll has reached. */
 export function beatAt(progress: number): BeatIndex {
   const p = clamp01(progress);

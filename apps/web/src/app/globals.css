@@ -1712,17 +1712,18 @@ body.map-nav-mode .map-layer-pills {
   padding-top: 3rem;
   padding-bottom: 13rem;
 }
+/* Hidden beats are only see-through, never visibility:hidden: Tab and screen readers still reach their words and buttons
+   (focus scrolls the scene to that beat, JourneyScene). */
 .journey-live [data-beat] {
   opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s, visibility 0s 0.5s;
+  pointer-events: none;
+  transition: opacity 0.5s;
 }
 .journey-live[data-active-beat="0"] [data-beat="0"],
 .journey-live[data-active-beat="1"] [data-beat="1"],
 .journey-live[data-active-beat="2"] [data-beat="2"] {
   opacity: 1;
-  visibility: visible;
-  transition: opacity 0.5s;
+  pointer-events: auto;
 }
 /* The ridge and its seals stay once they appear, along the bottom of the stage, above the text. */
 .journey-live [data-ridge-stage] {
