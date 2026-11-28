@@ -69,6 +69,21 @@ export async function clearSavedPages(): Promise<void> {
   if (typeof caches !== "undefined") await caches.delete(PAGES_CACHE).catch(() => false);
 }
 
+/**
+ * A new version took over: the saved pages name the old version's scripts, which it has just deleted, so opened offline they
+ * would be blank. Each is fetched again (with the visitor's session, like saving it); one that fails keeps its old copy.
+ */
+export async function refreshSavedPages(): Promise<void> {
+  if (typeof caches === "undefined" || !(await caches.has(PAGES_CACHE))) return;
+  const pages = await caches.open(PAGES_CACHE);
+  await Promise.all(
+    (await pages.keys()).map(async (page) => {
+      const res = await fetch(page, { cache: "reload" }).catch(() => null);
+      if (res?.ok) await pages.put(page, res);
+    }),
+  );
+}
+
 const coursePage = (routeId: string) => `/routes/${encodeURIComponent(routeId)}`;
 const lineUrl = (routeId: string) => `/api/v1/routes/${encodeURIComponent(routeId)}`;
 

@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { SerwistProvider, useSerwist } from "@serwist/turbopack/react";
+import { refreshSavedPages } from "@/lib/offline-pack";
 
 /**
  * Registers the service worker (src/app/sw.ts) in the built app. A new version takes over quietly when the visitor next goes
@@ -31,8 +32,12 @@ function QuietUpdate() {
       waiting.current = true;
     };
     // A new version took over: load it. Not on a first visit, where the first worker taking the page changes nothing on it.
+    // The pages saved for offline use name the old version's files, which are gone now: they are fetched again first (at
+    // most 8 s, then the reload goes ahead and the old copies stay).
     const onControlling = ({ isUpdate }: { isUpdate?: boolean }) => {
-      if (isUpdate) window.location.reload();
+      if (!isUpdate) return;
+      const refreshed = navigator.onLine ? refreshSavedPages().catch(() => {}) : Promise.resolve();
+      void Promise.race([refreshed, new Promise((done) => setTimeout(done, 8000))]).then(() => window.location.reload());
     };
     serwist.addEventListener("waiting", onWaiting);
     serwist.addEventListener("controlling", onControlling);

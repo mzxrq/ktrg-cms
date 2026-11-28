@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, test } from "bun:test";
-import { clearSavedPages, deletePack, megabytes, packAge, packTileUrls, readPack, savePack } from "./offline-pack";
+import { clearSavedPages, deletePack, megabytes, packAge, packTileUrls, readPack, refreshSavedPages, savePack } from "./offline-pack";
 
 const area = { lat: 34.45, lng: 135.65, widthM: 4000, heightM: 4000, verified: true };
 
@@ -56,6 +56,20 @@ test("deleting the last pack takes the map page too, and signing out empties the
   await savePack("r2", ["u/1"], () => {});
   await clearSavedPages();
   expect(fake.stores.has("ktrg-pages")).toBe(false);
+});
+
+test("after a new version takes over, every saved page is fetched again; one that fails keeps its old copy", async () => {
+  globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
+  await savePack("r1", ["u/1"], () => {});
+  const asked: string[] = [];
+  globalThis.fetch = (async (u: string, init?: RequestInit) => {
+    asked.push(`${u} ${init?.cache}`);
+    return u === "/map" ? new Response("new map page") : new Response("", { status: 503 });
+  }) as unknown as typeof fetch;
+  await refreshSavedPages();
+  expect(asked.sort()).toEqual(["/map reload", "/routes/r1 reload"]);
+  expect(await fake.stores.get("ktrg-pages")?.get("/map")?.text()).toBe("new map page");
+  expect(await fake.stores.get("ktrg-pages")?.get("/routes/r1")?.text()).toBe("x".repeat(1000));
 });
 
 test("a page that cannot be fetched fails the whole pack", async () => {
