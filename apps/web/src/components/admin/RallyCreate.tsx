@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useUnsavedGuard } from "./useUnsavedGuard";
 import { useLingui } from "@lingui/react/macro";
 import { useErrorMessages } from "@/components/useErrorMessages";
 import { api } from "@/lib/api";
@@ -34,6 +35,8 @@ export function RallyCreate({
   const [picked, setPicked] = useState<Record<AdminRallyKind, string[]>>({ places: [], course: [] });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [created, setCreated] = useState(false);
+  useUnsavedGuard(!created && (nameJa !== "" || nameEn !== "" || Object.keys(translations).length > 0 || picked.places.length > 0 || picked.course.length > 0));
 
   async function save() {
     if (nameJa.trim() === "") return;
@@ -43,6 +46,7 @@ export function RallyCreate({
     const res = await outcome(api.admin.rallies.post({ kind, nameJa, nameEn: nameEn.trim() || null, translations, ...members }));
     setBusy(false);
     if (!res.ok) return setError(messages[res.key]);
+    setCreated(true);
     router.push(`/admin/rallies/${res.data.rally.id}`);
   }
 

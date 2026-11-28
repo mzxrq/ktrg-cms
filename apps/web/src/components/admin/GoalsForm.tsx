@@ -5,6 +5,7 @@ import { useLingui } from "@lingui/react/macro";
 import { goalFromText, type Goals } from "@/lib/admin/dashboard";
 import { Field, inputClass } from "./fields";
 import { showToast } from "@/lib/admin/toast";
+import { useUnsavedGuard } from "./useUnsavedGuard";
 
 const KEYS = ["visits", "stamps", "signups", "completions"] as const;
 
@@ -13,6 +14,8 @@ export function GoalsForm({ initial }: { initial: Goals }) {
   const { t } = useLingui();
   const [text, setText] = useState<Record<(typeof KEYS)[number], string>>({ visits: String(initial.visits ?? ""), stamps: String(initial.stamps ?? ""), signups: String(initial.signups ?? ""), completions: String(initial.completions ?? "") });
   const [saving, setSaving] = useState(false);
+  const [savedText, setSavedText] = useState(text);
+  useUnsavedGuard(JSON.stringify(text) !== JSON.stringify(savedText));
   const labels = { visits: t`アクセス数`, stamps: t`スタンプ数`, signups: t`登録した人`, completions: t`ラリーを達成した人・回数` };
 
   async function save() {
@@ -21,6 +24,7 @@ export function GoalsForm({ initial }: { initial: Goals }) {
     setSaving(true);
     try {
       const res = await fetch("/api/v1/admin/dashboard/goals", { method: "PUT", credentials: "same-origin", headers: { "content-type": "application/json" }, body: JSON.stringify(goals) });
+      if (res.ok) setSavedText(text);
       showToast(res.ok ? { kind: "ok", text: t`保存しました。` } : { kind: "error", text: t`保存できませんでした。` });
     } catch {
       showToast({ kind: "error", text: t`保存できませんでした。` });
