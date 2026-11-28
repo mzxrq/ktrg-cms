@@ -72,6 +72,14 @@ test("after a new version takes over, every saved page is fetched again; one tha
   expect(await fake.stores.get("ktrg-pages")?.get("/routes/r1")?.text()).toBe("x".repeat(1000));
 });
 
+test("after signing out (the saved pages gone) a course with its tiles still on the phone is not shown as saved", async () => {
+  globalThis.fetch = (async (u: string) => site(u)) as unknown as typeof fetch;
+  await savePack("r1", ["u/1"], () => {}, 5000);
+  expect(await readPack("r1")).not.toBeNull();
+  await clearSavedPages();
+  expect(await readPack("r1")).toBeNull();
+});
+
 test("a page that cannot be fetched fails the whole pack", async () => {
   globalThis.fetch = (async (u: string) => (u === "/map" ? new Response("", { status: 500 }) : site(u))) as unknown as typeof fetch;
   await expect(savePack("r1", ["u/1"], () => {})).rejects.toThrow();

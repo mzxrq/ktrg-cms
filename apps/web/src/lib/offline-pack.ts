@@ -50,7 +50,10 @@ export async function readPack(routeId: string): Promise<PackInfo | null> {
   try {
     if (!(await caches.has(packCacheName(routeId)))) return null;
     const hit = await (await caches.open(packCacheName(routeId))).match(META_URL);
-    return hit ? ((await hit.json()) as PackInfo) : null;
+    // The tiles stay after signing out, but the course page went with the session (clearSavedPages): without it the map
+    // does not open offline, so the course is not 保存済み.
+    if (!hit || !(await (await caches.open(PAGES_CACHE)).match(coursePage(routeId)))) return null;
+    return (await hit.json()) as PackInfo;
   } catch {
     return null;
   }
