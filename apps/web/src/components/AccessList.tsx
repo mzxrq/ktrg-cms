@@ -26,7 +26,7 @@ export function AccessIcon({ type, size = 28 }: { type: AccessType; size?: numbe
 export function AccessList({ points, locale }: { points: AccessPoint[]; locale: string }) {
   const names = useAccessTypeNames();
   const { t } = useLingui();
-  const externalLabel = t`（外部サイトが新しいタブで開きます）`;
+  const externalLabel = t`（外部サイトを新しいタブで開きます）`;
   return (
     <ul className="flex flex-col gap-3 rounded-lg bg-surface p-4">
       {points.map((p, i) => {

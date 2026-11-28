@@ -34,29 +34,29 @@ export function NavFarCard() {
   if (!session) return null;
   const { model, snapshot, access } = session;
   const points = sortAccess(access, nearerEnd(courseEnds(model), snapshot.position ?? { lat: 0, lng: 0 }));
-  const external = t`（外部サイトが新しいタブで開きます）`;
+  const external = t`（外部サイトを新しいタブで開きます）`;
 
   // The banner stays small so the map is still seen; the ways to get there open in a dialog.
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-lg font-bold leading-snug">{t`この区間は遠くにあります。電車やバスで向かいましょう。`}</p>
+      <p className="text-lg font-bold leading-snug">{t`このコースは現在地から離れています。電車やバスなどで向かってください。`}</p>
       <button type="button" onClick={() => dialog.current?.showModal()} className={buttonStyle("primary", "md", "flex w-full")}>
-        {t`行き方を見る`}
+        {t`アクセスを見る`}
       </button>
       {/* Rule 1 (docs/navigation-v2-plan.md): the title and the buttons stay put; only the ways to get there scroll. */}
       <dialog ref={dialog} aria-labelledby="nav-far-title" className="m-auto max-h-[85dvh] w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-lg bg-paper text-ink backdrop:bg-black/60 open:flex">
         <div className="flex shrink-0 items-center justify-between gap-2 px-5 pt-5">
           <h2 id="nav-far-title" className="text-2xl font-bold">
-            {t`行き方`}
+            {t`アクセス`}
           </h2>
-          <button type="button" onClick={() => dialog.current?.close()} aria-label={t`とじる`} className="tap-target -mr-2 inline-flex shrink-0 items-center justify-center rounded-full text-ink hover:bg-surface">
+          <button type="button" onClick={() => dialog.current?.close()} aria-label={t`閉じる`} className="tap-target -mr-2 inline-flex shrink-0 items-center justify-center rounded-full text-ink hover:bg-surface">
             <CloseIcon />
           </button>
         </div>
         <div className="mt-3 flex min-h-0 flex-col gap-4 overflow-y-auto px-5 pb-1">
           {points.length > 0 ? (
             <section className="flex flex-col gap-2">
-              <h3 className="text-lg font-bold">{t`電車・バスで行く`}</h3>
+              <h3 className="text-lg font-bold">{t`電車・バスなどで向かう`}</h3>
               <ul className="flex flex-col gap-2">
                 {points.map((p, i) => {
                   const name = pickText(i18n.locale, p.nameJa, p.nameEn);
@@ -97,33 +97,33 @@ export function NavFarCard() {
                   );
                 })}
               </ul>
-              <p className="text-base leading-snug text-muted">{t`リンクは別のサービスを開きます。渡すのは駅の場所だけで、あなたの位置は渡しません。`}</p>
+              <p className="text-base leading-snug text-muted">{t`外部サービスが開きます。共有されるのは目的地の位置のみで、現在地は送信されません。`}</p>
             </section>
           ) : (
-            <p className="text-base leading-snug text-muted">{t`この区間の行き方は、まだ登録されていません。`}</p>
+            <p className="text-base leading-snug text-muted">{t`このコースのアクセス情報はまだ登録されていません。`}</p>
           )}
         </div>
         <div data-nav-footer className="flex shrink-0 flex-col gap-2 border-t border-line px-5 pb-5 pt-4">
           {offer ? (
             <section aria-labelledby="nav-far-signup" className="flex flex-col gap-2 rounded-lg bg-surface p-3">
               <h3 id="nav-far-signup" className="text-lg font-bold">
-                {t`登録しておきませんか`}
+                {t`アカウントを登録しませんか？`}
               </h3>
-              <p className="text-base leading-snug">{t`登録すると、スタンプや歩いた記録がアカウントに残り、ほかの端末でも見られます。登録しなくても、このまま道を見られます。`}</p>
+              <p className="text-base leading-snug">{t`登録すると、スタンプや歩行記録をアカウントに保存でき、他の端末からも確認できます。登録せずにこのままルートを見ることもできます。`}</p>
               <Link href="/register" className={buttonStyle("primary", "md", "flex w-full")}>
-                {t`新規登録する`}
+                {t`新規登録`}
               </Link>
               <button type="button" onClick={walk} className={buttonStyle("secondary", "md", "flex w-full")}>
-                {t`登録せずに道を見る`}
+                {t`登録せずに徒歩ルートを見る`}
               </button>
             </section>
           ) : (
             <button type="button" disabled={asked} onClick={() => (signedIn ? walk() : setOffer(true))} className={buttonStyle("secondary", "md", "flex w-full")}>
-              {asked ? t`歩く道を調べています…` : t`歩いて行く道を見る`}
+              {asked ? t`徒歩ルートを検索中…` : t`徒歩ルートを見る`}
             </button>
           )}
           <button type="button" onClick={() => dialog.current?.close()} className={buttonStyle("secondary", "md", "flex w-full")}>
-            {t`とじる`}
+            {t`閉じる`}
           </button>
         </div>
       </dialog>
