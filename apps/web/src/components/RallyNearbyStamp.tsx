@@ -8,7 +8,7 @@ import { pickText } from "@/lib/pick-text";
 import { distanceParts, type Problem, type AlsoName } from "@/lib/stamp-flow";
 import { nearestToStamp, type RallyPlace } from "@/lib/rally-nearby";
 import { buzz, playThud, unlockAudio } from "@/lib/stamp-feel";
-import { getOutbox } from "@/lib/stamp-outbox";
+import { canQueue, getOutbox } from "@/lib/stamp-outbox";
 import { locationAlreadyAllowed, readPosition, requestStamp } from "@/lib/stamp-client";
 import { announceProgress } from "@/lib/stamp-progress";
 import { track } from "@/lib/track";
@@ -63,6 +63,8 @@ export function RallyNearbyStamp({ places, held, locale, rallyName, quiet = fals
     if (!found.near) return setPhase({ name: "none", place: nameOf(found.place), distanceM: found.distanceM });
     setPhase({ name: "working", what: "sending" });
     const result = await requestStamp(found.place.id, position.reading);
+    // No signal and a rough reading: it would be refused when sent, so say so now, while the walker can still move.
+    if (!result.ok && result.failure === "network" && !canQueue(position.reading)) return setPhase({ name: "problem", problem: "low_accuracy" });
     if (!result.ok && result.failure === "network" && (await getOutbox().enqueue(found.place.id, position.reading))) return setPhase({ name: "queued", place: nameOf(found.place) });
     if (!result.ok) return setPhase({ name: "problem", problem: result.failure, distanceM: result.distanceM });
     setPhase({ name: "done", place: nameOf(found.place), already: result.already, also: result.also ?? [] });

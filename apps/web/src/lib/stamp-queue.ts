@@ -34,6 +34,8 @@ export interface QueueStore {
   add(row: QueuedStamp): Promise<void>;
   /** The rows of one user key, oldest first. */
   list(userKey: string): Promise<QueuedStamp[]>;
+  /** Every row, whoever's (for clearing out old ones). */
+  all(): Promise<QueuedStamp[]>;
   remove(id: string): Promise<void>;
   update(id: string, patch: Partial<Pick<QueuedStamp, "tries" | "userKey">>): Promise<void>;
 }
@@ -117,6 +119,9 @@ export function createMemoryQueueStore(): QueueStore & { rows: QueuedStamp[] } {
     async list(userKey) {
       return rows.filter((r) => r.userKey === userKey).sort((a, b) => Date.parse(a.scannedAt) - Date.parse(b.scannedAt));
     },
+    async all() {
+      return [...rows];
+    },
     async remove(id) {
       const i = rows.findIndex((r) => r.id === id);
       if (i >= 0) rows.splice(i, 1);
@@ -143,6 +148,9 @@ export function createIdbQueueStore(): QueueStore {
     async list(userKey) {
       const rows = (await (await db).getAllFromIndex("stampQueue", "userKey", userKey)) as QueuedStamp[];
       return rows.sort((a, b) => Date.parse(a.scannedAt) - Date.parse(b.scannedAt));
+    },
+    async all() {
+      return (await (await db).getAll("stampQueue")) as QueuedStamp[];
     },
     async remove(id) {
       await (await db).delete("stampQueue", id);
