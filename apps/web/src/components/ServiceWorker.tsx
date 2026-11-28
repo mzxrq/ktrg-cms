@@ -42,11 +42,12 @@ function QuietUpdate() {
     };
   }, [serwist]);
 
-  // The visitor moved to another page: let the waiting version take over now.
+  // The visitor moved to another page: let the waiting version take over now. Not with no signal: the old version's files
+  // go, the reload would fail, and every other open tab (one may be stamping) reloads too. It waits for a page change online.
   useEffect(() => {
     if (pathname === first.current) return;
     first.current = pathname;
-    if (waiting.current && serwist) serwist.messageSkipWaiting();
+    if (waiting.current && serwist && navigator.onLine) serwist.messageSkipWaiting();
   }, [pathname, serwist]);
 
   return null;
