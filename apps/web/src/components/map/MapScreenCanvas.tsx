@@ -204,6 +204,9 @@ export function MapScreenCanvas({
   // Keep what is framed above the sheet and clear of the buttons (menu on the left, zoom on the right).
   const padding = () => ({ top: 144, left: 36 + leftRef.current, right: 72, bottom: coveredRef.current + 28 });
 
+  // router.refresh() (after a stamp, the outbox sending) hands over equal settings as a new object: keyed by value, the map
+  // keeps its camera, tiles and a running ルート再生 instead of being rebuilt.
+  const settingsKey = JSON.stringify(settings);
   // Create the map once for these settings; remove it again on unmount (CLAUDE.md: map.remove()).
   useEffect(() => {
     let cancelled = false;
@@ -313,7 +316,7 @@ export function MapScreenCanvas({
       map?.remove();
       mapRef.current = null;
     };
-  }, [settings, i18n.locale]); // eslint-disable-line react-hooks/exhaustive-deps -- startCamera only sets the first view
+  }, [settingsKey, i18n.locale]); // eslint-disable-line react-hooks/exhaustive-deps -- startCamera only sets the first view
 
   // What is drawn: the rectangles (all of them, or only the chosen course) and the shown course's path.
   useEffect(() => {
