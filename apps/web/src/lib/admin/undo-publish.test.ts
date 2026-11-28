@@ -19,4 +19,11 @@ describe("undo and the server's own state", () => {
     expect(s.present.places[0]!.published).toBe(true);
     expect(planSave(s.present, saved1).some((x) => x.op === "unpublishSpot")).toBe(false);
   });
+
+  test("a link that is cleared is sent before a link that points at that place", () => {
+    const saved = draftFromServer(route, [spot("a"), spot("b", { stampSpotId: "c" }), spot("c")]);
+    const edited = { ...saved, places: saved.places.map((p) => (p.key === "a" ? { ...p, stampSpotId: "b" } : p.key === "b" ? { ...p, stampSpotId: null } : p)) };
+    const order = planSave(edited, saved).flatMap((x) => (x.op === "updateSpot" && "stampSpotId" in x.body ? [x.key] : []));
+    expect(order).toEqual(["b", "a"]);
+  });
 });

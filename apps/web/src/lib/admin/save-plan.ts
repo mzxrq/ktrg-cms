@@ -278,11 +278,13 @@ export function planSave(draft: RouteDraft, saved: RouteDraft | null): SaveStep[
     if (Object.keys(diff).length > 0) steps.push({ op: "updateRoute", body: diff });
   }
 
-  // 3. New and changed places.
+  // 3. New and changed places. A cleared 遥拝 / 閉鎖時 link goes first: the server checks each link against the links it
+  // holds, so a place pointed at must have stopped pointing elsewhere before (A -> B while B -> C is cleared).
+  const placeSteps: SaveStep[] = [];
   for (const p of draft.places) {
     const before = savedPlaces.get(p.key) ?? null;
     if (p.id === null || before === null) {
-      steps.push({ op: "createSpot", key: p.key, body: placeBody(p) });
+      placeSteps.push({ op: "createSpot", key: p.key, body: placeBody(p) });
       continue;
     }
     const diff = changed(placeBody(p), placeBody(before));
@@ -294,8 +296,10 @@ export function planSave(draft: RouteDraft, saved: RouteDraft | null): SaveStep[
       diff.positionVerified = full.positionVerified;
       diff.positionSource = full.positionSource;
     }
-    if (Object.keys(diff).length > 0) steps.push({ op: "updateSpot", key: p.key, id: p.id, body: diff });
+    if (Object.keys(diff).length > 0) placeSteps.push({ op: "updateSpot", key: p.key, id: p.id, body: diff });
   }
+  const clearsLink = (x: SaveStep) => x.op === "updateSpot" && "stampSpotId" in x.body && x.body.stampSpotId === null;
+  steps.push(...placeSteps.filter(clearsLink), ...placeSteps.filter((x) => !clearsLink(x)));
 
   if (after) steps.push({ op: "updateRoute", body: after });
 
