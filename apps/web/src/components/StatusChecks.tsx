@@ -7,6 +7,25 @@ import { buttonStyle } from "@/components/button";
 type State = "checking" | "ok" | "down" | "unknown";
 type Result = { api: State; db: State; at: Date };
 
+const TONE: Record<State, { badge: string; text: string }> = {
+  checking: {
+    badge: "bg-line/50 text-muted motion-safe:animate-pulse",
+    text: "text-muted",
+  },
+  ok: {
+    badge: "bg-moss text-paper",
+    text: "text-moss",
+  },
+  down: {
+    badge: "bg-danger text-paper",
+    text: "text-danger",
+  },
+  unknown: {
+    badge: "border-2 border-caution bg-paper text-ink",
+    text: "text-ink",
+  },
+};
+
 async function ask(path: string, field: "status" | "database"): Promise<State> {
   try {
     const res = await fetch(`/api/v1/${path}`, { cache: "no-store" });
@@ -31,6 +50,7 @@ export function StatusChecks() {
   const api = result?.api ?? "checking";
   const db = result?.db ?? "checking";
   const at = result?.at ?? null;
+  const checkedAt = at ? at.toLocaleTimeString("ja-JP", { timeZone: "Asia/Tokyo" }) : "";
   const check = () => {
     setResult(null);
     void checkAll().then(setResult);
@@ -41,29 +61,39 @@ export function StatusChecks() {
     void checkAll().then(setResult);
   }, []);
 
-  const word: Record<State, string> = { checking: t`確認中…`, ok: t`動いています`, down: t`止まっています`, unknown: t`確認できません（この端末がインターネットにつながっていません）` };
+  const word: Record<State, string> = {
+    checking: t`確認中…`,
+    ok: t`正常に稼働中`,
+    down: t`停止中`,
+    unknown: t`確認できません（インターネットに接続されていません）`,
+  };
   const mark: Record<State, string> = { checking: "…", ok: "✓", down: "✕", unknown: "?" };
   const rows = [
-    { name: t`サイトとサーバー`, state: api },
-    { name: t`データベース（スタンプ、ログイン、内容）`, state: db },
+    { name: t`サイト・サーバー`, state: api },
+    { name: t`データベース（スタンプ・ログイン・各種データ）`, state: db },
   ];
 
   return (
     <div className="flex flex-col gap-4">
       <dl className="flex flex-col gap-3 rounded-lg bg-surface p-5" aria-live="polite">
         {rows.map((r) => (
-          <div key={r.name} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+          <div key={r.name} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
             <dt className="text-lg font-bold">{r.name}</dt>
-            <dd className={`text-lg font-bold ${r.state === "down" ? "text-danger" : ""}`}>
-              <span aria-hidden="true">{mark[r.state]} </span>
-              {word[r.state]}
+            <dd className={`inline-flex items-center gap-2 text-lg font-bold ${TONE[r.state].text}`}>
+              <span
+                aria-hidden="true"
+                className={`inline-flex size-6 shrink-0 items-center justify-center rounded-full text-sm font-bold leading-none ${TONE[r.state].badge}`}
+              >
+                {mark[r.state]}
+              </span>
+              <span>{word[r.state]}</span>
             </dd>
           </div>
         ))}
       </dl>
-      {at ? <p className="text-base text-muted">{t`確認した時刻：${at.toLocaleTimeString("ja-JP", { timeZone: "Asia/Tokyo" })}（日本時間）`}</p> : null}
+      {at ? <p className="text-base text-muted">{t`確認時刻：${checkedAt}（日本時間）`}</p> : null}
       <button type="button" onClick={check} disabled={api === "checking" || db === "checking"} className={buttonStyle("secondary", "md", "inline-flex self-start items-center tap-target")}>
-        {t`もう一度確認する`}
+        {t`再確認する`}
       </button>
     </div>
   );

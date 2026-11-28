@@ -7,7 +7,7 @@ import { initLingui } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const i18n = await initLingui();
-  return { title: i18n._(msg`サイトの状態`) };
+  return { title: i18n._(msg`システム状況`) };
 }
 
 // Is the site working right now: the API and its database, checked when the page opens (no outside service watches it).
@@ -19,11 +19,8 @@ export default async function StatusPage() {
         <Trans>ホーム</Trans>
       </BackLink>
       <h1 className="font-serif text-3xl font-bold text-accent">
-        <Trans>サイトの状態</Trans>
+        <Trans>システム状況</Trans>
       </h1>
-      <p className="text-lg">
-        <Trans>このページを開いたときに、サイトが動いているかを確かめます。スタンプが押せない、ログインできないときは、ここを見てください。</Trans>
-      </p>
       <StatusChecks />
     </div>
   );

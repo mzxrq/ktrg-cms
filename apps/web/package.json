@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "lingui:compile": "lingui compile",
     "lingui:extract": "lingui extract --clean",
     "build:map-style": "bun scripts/build-large-text-style.ts",
     "check:catalogs": "bun scripts/check-catalogs.ts",

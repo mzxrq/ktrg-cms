@@ -37,7 +37,7 @@ export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = 
     <Scene seals={TOTAL_STAMPS}>
       {/* For anyone who does not want the introduction: a real link, first in the tab order. */}
       <a href="#start-title" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-40 focus:rounded-full focus:bg-paper focus:px-4 focus:py-2 focus:text-lg focus:font-bold focus:text-ink focus:underline">
-        <Trans>スキップ</Trans>
+        <Trans>紹介をスキップ</Trans>
       </a>
       <div data-journey-stage>
         <div data-beat="0">
@@ -55,7 +55,7 @@ export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = 
             <div className="flex items-end gap-4">
               {/* One ruled row per fact on a phone (English values are longer), three columns from a wider box. */}
               <dl className="grid min-w-0 flex-1 grid-cols-1 gap-3 @[34rem]:grid-cols-3 @[34rem]:text-center">
-                <Fact term={<Trans>コース</Trans>} value={<Trans>全{TOTAL_ROUTES}区間</Trans>} />
+                <Fact term={<Trans>コース</Trans>} value={<Trans>全{TOTAL_ROUTES}コース</Trans>} />
                 <Fact term={<Trans>総距離</Trans>} value={<Trans>約{TRAIL_KM}km</Trans>} />
                 <Fact term={<Trans>経塚</Trans>} value={<Trans>28か所</Trans>} />
               </dl>
@@ -88,7 +88,7 @@ export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = 
           {ridge ? (
             <figcaption className="mx-auto w-full max-w-5xl text-base opacity-90">
               <Trans>
-                海から山へ。{ridge.courses}区間の標高を順につないだ線です。最高地点は約{ridge.topM}m。
+              海から山へ。{ridge.courses}コースの標高をつないだ高低図です（最高地点：約{ridge.topM}m）。
               </Trans>
             </figcaption>
           ) : null}
@@ -99,7 +99,7 @@ export function Journey({ slides, routes, locale, w, chapterPhotos = [], flow = 
             <p className="font-serif text-2xl font-bold leading-snug">{w.rallyLead}</p>
             <p className="text-lg leading-9">{w.rallyText}</p>
             <Link href="/rallies" className={buttonStyle("secondary", "lg", "flex w-full @[34rem]:w-fit")}>
-              <Trans>ラリーを見る</Trans>
+              <Trans>スタンプラリーを見る</Trans>
             </Link>
           </Chapter>
         </div>
